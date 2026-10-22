@@ -1,0 +1,127 @@
+{
+  "verdict": "revise",
+  "summary": "The repair replaces the fixed-A shortcut with a fixed-count shortcut: inspecting A alone answers both delivered subset questions. The other seven checks passed. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify matrices of a specified rank using dimension bounds and visible independent pivots.",
+    "reasoning_steps": [
+      "Reject matrices with insufficient rows or columns.",
+      "Inspect eligible matrices for the requested pivot count.",
+      "Select the qualifying matrix or subset."
+    ],
+    "invariants": [
+      "Rank cannot exceed either matrix dimension.",
+      "Answers and solutions must follow the displayed pivot structures.",
+      "Joint qualification remains eligible in subset questions."
+    ],
+    "permitted_variations": [
+      "Change qualifying labels and subsets.",
+      "Change inspection-friendly pivot structures.",
+      "Vary harmless coefficients and presentation."
+    ],
+    "source_refs": [
+      "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
+      "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
+      "Tutorial c062d466-946c-526b-aba8-0a0895671218 (4151)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-summary.json",
+        "replays.json"
+      ],
+      "details": "Ten complete profiles replayed: 15 fields and 54 choices. Missing source evidence is explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "targeted-results.json",
+        "counterfactual-grader-summary.json"
+      ],
+      "details": "Independent exact-rank checks found no incorrect answers or tested solution assertions."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "catalog.json",
+        "coverage-results.json",
+        "targeted-delivery-results.json"
+      ],
+      "details": "The catalog retains 39 presentations and 24 structural classes with meaningful rank-role changes."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Source-backed inspection workloads and response contracts are retained."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-results.json",
+        "targeted-grader-results.json",
+        "shortcut-grader-results.json",
+        "exclusive-grader-results.json"
+      ],
+      "details": "Native grading matched 704 acceptance/rejection expectations without unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "render-contact-1.png",
+        "render-contact-2.png",
+        "render-contact-3.png",
+        "render-contact-4.png"
+      ],
+      "details": "Twelve actual-UI renders were inspected, including every batch record and controlled changes."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "retained-check.stdout",
+        "package-final.json"
+      ],
+      "details": "Relocation, deterministic replay, exact dependency versions and retained positive/negative regressions passed. Package unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-failing-batch.json",
+        "exclusive-subset-results.json",
+        "exclusive-grader-results.json",
+        "selection-rule-results.json",
+        "learner-selection.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "The changed two-record selection rule forces exclusive singleton answers. Inspecting A and assuming C has the opposite result succeeds 2/2 after delivery filtering."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Both delivered rank-3 subset records with B dimension-excluded have exactly one qualifying matrix: A-only or C-only. Learners can inspect A alone and infer C. The new contrasting-subset rule forces this exclusivity whenever it selects two records from this subgroup, excluding the legitimate A+C outcome. Same-layout pair controls reject the shortcut.",
+      "source_refs": [
+        "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965): jointly qualifying matrices are supported.",
+        "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
+        "generate/principles.md section 2: correct-choice count is an eligible answer-bearing role."
+      ],
+      "reproduction": "Run `python3 -B check_exclusive_subset.py --input delivery-batch/accepted.json --report exclusive-subset-results.json`; exits 1. Minimal delivered IDs: 20ccd7a5-e8b5-55f6-85dc-37a089ac87ea and 285ea86c-73ab-591c-a3da-76a6312cff44. Both use q-139965, seed 0, assignment [C,A,B], scale 2, with matches [A] and [C]. Native grading accepts both shortcut responses. `prove_selection_rule.py` verifies the family-wide construction rule.",
+      "requested_change": "Revise repeated-profile selection so varying individual labels does not impose mutual exclusivity. Preserve joint-qualification cases in delivered practice, adjusting profile allocation or subset selection as needed. Retain the old regression and add check_exclusive_subset.py with the same-layout A+C control."
+    }
+  ]
+}

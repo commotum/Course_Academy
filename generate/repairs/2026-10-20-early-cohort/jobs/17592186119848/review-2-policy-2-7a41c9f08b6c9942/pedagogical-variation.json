@@ -1,0 +1,457 @@
+{
+  "learner_operation": "Read target r; reject matrices with fewer than r rows or columns; distinguish remaining matrices with exactly r independent pivots from rank-deficient alternatives; encode the qualifying labels in the supplied radio or checkbox contract.",
+  "fixed_features": [
+    {
+      "feature": "Small integer inspection-friendly matrices and observed radio/checkbox contracts",
+      "justification": "Canonical e-5417 uses dimension bounds and pivot inspection; tutorial4151 counts row-echelon pivots. Following lesson step19981 assesses general row reduction separately."
+    },
+    {
+      "feature": "One correct matrix in singular five-matrix radio; dimension-ineligible matrices cannot qualify",
+      "justification": "Essential response contract and rank<=min(rows,columns). These do not imply exclusivity in subset-radio with two eligible matrices."
+    },
+    {
+      "feature": "Per-profile target, shape multiset and sparse coefficient scaffolds",
+      "justification": "Conservative source-backed workload; across profiles targets3,4,5,6. Magnitude scaling is harmless but supplies no new semantic capacity. Winner labels and subset cardinality remain eligible answer-bearing variations."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "q-139958 excluded=A,B,D",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-139965 excluded=C",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"A\": 2, \"A,B\": 2, \"B\": 2}}"
+    },
+    {
+      "role": "q-139965 excluded=B",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"A\": 2, \"A,C\": 2, \"C\": 2}}"
+    },
+    {
+      "role": "q-139965 excluded=A",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"B\": 2, \"B,C\": 2, \"C\": 2}}"
+    },
+    {
+      "role": "q-34823 excluded=B",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 4, \"outcomes\": {\"A\": 1, \"A,C\": 1, \"C\": 1, \"None\": 1}}"
+    },
+    {
+      "role": "q-34824 excluded=B,D,E",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"A\": 1, \"C\": 1}}"
+    },
+    {
+      "role": "q-35283 excluded=A,B",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"None\": 1}}"
+    },
+    {
+      "role": "q-79559 excluded=B,C,D",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"A\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-79560 excluded=A,B,E",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"D\": 1}}"
+    },
+    {
+      "role": "q-79561 excluded=A,C,D",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"B\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-79562 excluded=C",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 3, \"outcomes\": {\"A\": 1, \"A,B\": 1, \"B\": 1}}"
+    },
+    {
+      "role": "q-79568 excluded=A,C",
+      "eligible_variation": "Each dimension-eligible matrix may qualify or fail by pivot structure, respecting the supplied response contract. In subset-radio, singleton and joint qualification are eligible; independence must not be replaced with a batch-imposed exclusive relation.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"B\": 1, \"None\": 1}}"
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Unchanged complete source profiles and catalog",
+      "sample_refs": [
+        "source-replay.json",
+        "catalog.json",
+        "coverage-results.json"
+      ],
+      "result": "Ten complete profiles,39 presentations/24 structural classes, ranks3\u20136. Catalog retains singleton, pair and None decisions; two incomplete source captures are explicitly unsupported."
+    },
+    {
+      "case": "Exact runner batch after actual delivery filtering",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "exclusive-subset-results.json",
+        "selection-rule-results.json"
+      ],
+      "result": "5/5 survive. q-139965 has A-only and C-only; the valid pair outcome is excluded by the new rule for two-record repeated groups. q-79568 has B-only and None (its single eligible matrix makes this response-count pattern essential, unlike the subset-radio defect). Remaining q-139958 singleton cannot establish conditional coverage."
+    },
+    {
+      "case": "Fresh sampler and finite capacity boundary",
+      "sample_refs": [
+        "targeted-sampler-records.json",
+        "targeted-results.json",
+        "targeted-delivery-results.json"
+      ],
+      "result": "Nine fresh seed/count checks including0,1,2,3,4,5 and24. Three fresh five-record batches and a24-record capacity batch all survive delivery. Existing marginal-label regression passes, but its omission of conditional subset count is demonstrated by the new failing test."
+    },
+    {
+      "case": "Generate API fresh seeds and catalog delivery",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/delivery.json",
+        "delivery-catalog/delivery.json",
+        "coverage-results.json"
+      ],
+      "result": "Fresh6->5 with one duplicate; catalog39->39. Raw and accepted profile/label distributions retained."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-139965 seed38117, assignment[C,A,B],scale2: matches[A] -> matches[A,C]. Keep A/B exactly fixed; add C independent pivot.",
+      "expected": "A-only must become A+C-only. Prompt C, explanation and actual grader must follow; ignoring C must fail the pair.",
+      "observed": "A and B identical; C rank2->3. Render006 versus008 and solution follow. Native grader accepts A-only before, rejects it after, and accepts A+C after. New two-record sampler excludes this pair control.",
+      "status": "passed",
+      "justification": "Source q-139965 itself has a jointly qualifying pair; tutorial4151 and canonical e-5417 make each eligible pivot count decisive.",
+      "sample_refs": [
+        "targeted-counterfactual-records.json",
+        "selection-rule-results.json",
+        "counterfactual-grader-summary.json",
+        "targeted-grader-results.json",
+        "render/input.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-139965 C-only: scale2 -> scale1 with assignments, dimensions and zero patterns fixed.",
+      "expected": "Ranks, C-only response and correct/wrong learner grading preserved; displayed coefficients change.",
+      "observed": "Exact coefficient relation and rank preservation verified. Same worked solution; all five choices have identical acceptance/rejection outcomes. Render007/009 inspected. q-34823 scalar control also passes.",
+      "status": "passed",
+      "justification": "Nonzero scaling preserves independent pivots and dimensions, the source rank evidence.",
+      "sample_refs": [
+        "targeted-counterfactual-records.json",
+        "targeted-results.json",
+        "counterfactual-grader-summary.json",
+        "targeted-grader-results.json",
+        "counterfactual-records.json",
+        "render/input.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Mutual exclusion of eligible A/C in rank3; shapes2x4/3x4/5x5; excluded B",
+      "subgroup": "Exact five-record batch after delivery, repeated q-139965 subgroup",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Inspect A only; choose A-only if rank(A)=3, otherwise choose C-only. Skip C inspection.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.6666666666666666,
+      "disposition": "defect",
+      "conclusion": "The same-layout catalog baseline is4/6 over three nonempty eligible subsets A,C,AC. Both delivered members are exclusive singletons, so the strategy succeeds2/2. Native grading accepts both. This fixed-count relation is forced by the new two-record contrasting-subset rule; the source permits A+C and does not justify excluding it from repeated pairs.",
+      "sample_refs": [
+        "minimal-failing-batch.json",
+        "exclusive-subset-results.json",
+        "exclusive-grader-results.json",
+        "selection-rule-results.json"
+      ]
+    },
+    {
+      "cue": "Same dimensions, labels and bank, but full rank-role domain",
+      "subgroup": "Six same-subgroup catalog records after delivery",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Inspect A only and assume C opposite.",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline2/3 is the success rate over equally represented A-only,C-only,A+C. Both legitimate pair controls reject the shortcut; larger control coverage does not waive the batch defect.",
+      "sample_refs": [
+        "exclusive-subset-catalog-results.json",
+        "exclusive-all-grader-input.json",
+        "exclusive-grader-results.json"
+      ]
+    },
+    {
+      "cue": "Prior fixed-A strategy",
+      "subgroup": "Current repeated subgroup, B excluded",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hardcode A as qualifying; inspect only C.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Catalog baseline2/3; current C-only member defeats the old strategy. The retained regression correctly detects its original failing batch, but does not test the new mutual-exclusion dependency.",
+      "sample_refs": [
+        "prior-failure-reproduced.json",
+        "current-batch-regression.json",
+        "shortcut-grader-results.json"
+      ]
+    },
+    {
+      "cue": "First displayed radio position",
+      "subgroup": "Three radio records in exact batch",
+      "scope": "overall",
+      "strategy": "Choose first rendered option.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random choice from five options has baseline0.2; no universally correct displayed position appears in these three records. Small descriptive sample.",
+      "sample_refs": [
+        "batch.json",
+        "rendered-position-probe.json",
+        "render/input.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-139958 excluded=A,B,D",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('C',)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-139965 excluded=C",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('A',)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-139965 excluded=B",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('A',)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-139965 excluded=A",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('B',)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-34823 excluded=B",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ()",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-34824 excluded=B,D,E",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('A',)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-35283 excluded=A,B",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ()",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-79559 excluded=B,C,D",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('A',)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-79560 excluded=A,B,E",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('C',)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-79561 excluded=A,C,D",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('B',)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-79562 excluded=C",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ('A',)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Profile and dimension-excluded label subgroup",
+      "subgroup": "q-79568 excluded=A,C",
+      "scope": "within_template",
+      "strategy": "Always choose the most frequent literal qualifying subset ()",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform selection of five radio options, or independent checkbox-bit guessing. All eligible labels vary in this catalog subgroup; modal literal response is not universal. Counts and stored positions are retained separately in shortcut-probes.json.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Visible independent pivots",
+      "subgroup": "Affected relevant controlled A-only / A+C-only pair",
+      "scope": "within_template",
+      "strategy": "Inspect both eligible matrices and compare their independent pivots with3.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline0.2 is random choice from five radio options. C changes from rank2 to3 with A and excluded B identical, so A-only changes to A+C-only. This dependency is the source skill.",
+      "sample_refs": [
+        "targeted-counterfactual-records.json",
+        "selection-rule-results.json",
+        "counterfactual-grader-summary.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator catalog, seeded shuffle and fingerprint rejection",
+      "new repeated-profile contrasting-subset selection",
+      "nonempty checkbox policy and source-backed explicit None",
+      "requested easy difficulty",
+      "actual publisher normalization/identity validation and captured inventory/within-batch deduplication",
+      "learner practice validity, seen filtering, rated-band weights and within-band selection; read-only captured scenarios"
+    ],
+    "sample_refs": [
+      "implementation.diff",
+      "targeted-results.json",
+      "targeted-delivery-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-catalog/delivery.json",
+      "delivery-fresh/delivery.json",
+      "coverage-results.json",
+      "learner-selection.json",
+      "inventory-review.json"
+    ],
+    "result": "No publication preparation exists; shared actual delivery helper used read-only. Batch5->5, catalog39->39, fresh6->5. New exclusive-pair shortcut survives all applicable filtering. Equal easy-band selection does not add missing same-subgroup pair outcomes; no-history and originals-seen scenarios retained."
+  },
+  "limitations": [
+    "Captured inventory basis5415 has12 original source questions and no generated records. affected-inventory.json is verified empty for stored generated items, not an untested inventory.",
+    "No live history, reservations, policy distribution or actual new entity IDs supplied. Selection scenarios use declared hypothetical IDs; concurrent inventory can change survivors.",
+    "Two source questions lack keys/solutions; canonical example lacks bank. No exact solution/bank replay is invented for missing evidence.",
+    "Finite audit does not establish absence of all shortcuts. This finding concerns the changed two-record selection rule and exact delivered subgroup, not a universal defect in individual generated mathematics."
+  ]
+}

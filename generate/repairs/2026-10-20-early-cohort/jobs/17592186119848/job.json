@@ -6,43 +6,43 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186119848.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 2,
+  "stage": "generate",
+  "attempt": 3,
   "seed": 1942785431,
   "created": 1792639151.9288547,
-  "updated": 1792641468.792306,
+  "updated": 1792642167.8098946,
   "source_hash": "85a2f2ac50bd80025dfc45b405bd0399cc4eac36154fba05258753379a48016a",
   "inventory_hash": "1159772bd67b582b70b5a7dd1ea772e95fd89f3b7ce3ae0048614e7b3c3a32cd",
   "needs_repair": true,
   "error": {
     "verdict": "revise",
-    "summary": "The delivered batch contains a conditional shortcut: both repeated rank-3 questions qualify A, so learners can skip inspecting A. The other seven checks passed. Package files remain unchanged.",
+    "summary": "The repair replaces the fixed-A shortcut with a fixed-count shortcut: inspecting A alone answers both delivered subset questions. The other seven checks passed. Package files remain unchanged.",
     "source_analysis": {
-      "skill": "Identify matrices with a specified rank by inspecting dimensions and independent pivots.",
+      "skill": "Identify matrices of a specified rank using dimension bounds and visible independent pivots.",
       "reasoning_steps": [
-        "Reject matrices with fewer than the requested number of rows or columns.",
-        "Inspect remaining matrices for independent pivots.",
-        "Select the qualifying matrix or subset using the supplied answer controls."
+        "Reject matrices with insufficient rows or columns.",
+        "Inspect eligible matrices for the requested pivot count.",
+        "Select the qualifying matrix or subset."
       ],
       "invariants": [
         "Rank cannot exceed either matrix dimension.",
-        "Rank equals the pivot count in row echelon form.",
-        "Prompts, answers and solutions must follow the same matrices.",
-        "Eligible winning labels are incidental source assignments."
+        "Answers and solutions must follow the displayed pivot structures.",
+        "Joint qualification remains eligible in subset questions."
       ],
       "permitted_variations": [
-        "Change eligible qualifying labels and subsets.",
-        "Change visible pivot structures while retaining inspection difficulty.",
-        "Vary harmless coefficients, labels and option order."
+        "Change qualifying labels and subsets.",
+        "Change inspection-friendly pivot structures.",
+        "Vary harmless coefficients and presentation."
       ],
       "source_refs": [
-        "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
         "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
-        "Tutorial c062d466-946c-526b-aba8-0a0895671218 (4151): rank counts pivots in row echelon form."
+        "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
+        "Tutorial c062d466-946c-526b-aba8-0a0895671218 (4151)"
       ],
       "evidence_paths": [
         "source-analysis.json",
-        "source-replay.json"
+        "source-replay.json",
+        "provenance.json"
       ]
     },
     "checks": {
@@ -53,26 +53,25 @@
           "source-replay-summary.json",
           "replays.json"
         ],
-        "details": "Ten complete source profiles replayed: 15 fields and 54 choices. Missing keys, solutions and canonical bank evidence are explicitly documented."
+        "details": "Ten complete profiles replayed: 15 fields and 54 choices. Missing source evidence is explicitly documented."
       },
       "math": {
         "status": "passed",
         "evidence_paths": [
-          "review.py",
           "math-results.json",
-          "counterfactual-results.json"
+          "targeted-results.json",
+          "counterfactual-grader-summary.json"
         ],
-        "details": "Independent exact elimination checked 69 records; no incorrect answers or tested solution rank assertions were found."
+        "details": "Independent exact-rank checks found no incorrect answers or tested solution assertions."
       },
       "variety": {
         "status": "passed",
         "evidence_paths": [
           "catalog.json",
           "coverage-results.json",
-          "delivery-catalog/delivery.json",
-          "delivery-fresh/delivery.json"
+          "targeted-delivery-results.json"
         ],
-        "details": "The finite catalog contains meaningful rank-role changes across ten complete profiles. The delivered batch's conditional defect is assessed separately."
+        "details": "The catalog retains 39 presentations and 24 structural classes with meaningful rank-role changes."
       },
       "scope": {
         "status": "passed",
@@ -85,61 +84,64 @@
       "grading": {
         "status": "passed",
         "evidence_paths": [
-          "grader-input.json",
           "grader-results.json",
-          "shortcut-grader-input.json",
-          "shortcut-grader-results.json"
+          "targeted-grader-results.json",
+          "shortcut-grader-results.json",
+          "exclusive-grader-results.json"
         ],
-        "details": "Native grading matched 376 general acceptance/rejection expectations and eight additional shortcut probes."
+        "details": "Native grading matched 704 acceptance/rejection expectations without unresolved outcomes."
       },
       "rendering": {
         "status": "passed",
         "evidence_paths": [
           "render-inspection.json",
           "render/rendering.json",
-          "render-more/rendering.json",
-          "rendered-position-probe.json"
+          "render-contact-1.png",
+          "render-contact-2.png",
+          "render-contact-3.png",
+          "render-contact-4.png"
         ],
-        "details": "Eighteen actual-UI renders were inspected, including every runner record and both counterfactual types."
+        "details": "Twelve actual-UI renders were inspected, including every batch record and controlled changes."
       },
       "packaging": {
         "status": "passed",
         "evidence_paths": [
           "packaging-results.json",
-          "relocation-sample.json",
+          "retained-check.stdout",
           "package-final.json"
         ],
-        "details": "Declared-only relocation and deterministic replay passed. Installed dependency versions match. The retained import regression passes current code and rejects its restored failing fixture."
+        "details": "Relocation, deterministic replay, exact dependency versions and retained positive/negative regressions passed. Package unchanged."
       },
       "decision_variation": {
         "status": "failed",
         "evidence_paths": [
           "pedagogical-variation.json",
           "minimal-failing-batch.json",
-          "batch-regression.json",
-          "shortcut-grader-results.json",
+          "exclusive-subset-results.json",
+          "exclusive-grader-results.json",
+          "selection-rule-results.json",
           "learner-selection.json",
           "inventory-review.json",
           "affected-inventory.json"
         ],
-        "details": "All five runner records survive delivery filtering. In the repeated rank-3 subgroup with B excluded, hardcoding A and inspecting only C succeeds 2/2. Same-subgroup catalog controls defeat this strategy in two of six cases."
+        "details": "The changed two-record selection rule forces exclusive singleton answers. Inspecting A and assuming C has the opposite result succeeds 2/2 after delivery filtering."
       }
     },
     "findings": [
       {
         "kind": "decision_shortcut",
-        "description": "The delivered subgroup with target rank 3, matrix shapes 2\u00d74/3\u00d74/5\u00d75, and B dimension-excluded always qualifies A. Its answers are A-only and A+C-only. Learners can hardcode A and inspect only C, bypassing one required rank decision. This is a batch-selection defect; the larger generator contains counterexamples.",
+        "description": "Both delivered rank-3 subset records with B dimension-excluded have exactly one qualifying matrix: A-only or C-only. Learners can inspect A alone and infer C. The new contrasting-subset rule forces this exclusivity whenever it selects two records from this subgroup, excluding the legitimate A+C outcome. Same-layout pair controls reject the shortcut.",
         "source_refs": [
-          "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
+          "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965): jointly qualifying matrices are supported.",
           "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
-          "generate/principles.md, section 2"
+          "generate/principles.md section 2: correct-choice count is an eligible answer-bearing role."
         ],
-        "reproduction": "Run `python3 -B check_batch_decisions.py --input batch.json --report batch-regression.json`; it exits 1. Minimal records are 30778945-23df-50b0-95ba-a8bed6b6d058 (seed 0; matches [A], assignment [C,A,B], scale 2) and b47f067d-9b6e-563f-be93-6367ac2f712e (seed 0; matches [A,C], assignment [A,C,B], scale 2). Both shortcut responses are accepted by the native grader; complete records are retained in minimal-failing-batch.json.",
-        "requested_change": "Change batch selection to check eligible-label variation within recognizable profile and dimension-exclusion subgroups after filtering. Include an existing same-subgroup C-only case so A must be inspected. Retain the source family, compatible answer banks and failing regression."
+        "reproduction": "Run `python3 -B check_exclusive_subset.py --input delivery-batch/accepted.json --report exclusive-subset-results.json`; exits 1. Minimal delivered IDs: 20ccd7a5-e8b5-55f6-85dc-37a089ac87ea and 285ea86c-73ab-591c-a3da-76a6312cff44. Both use q-139965, seed 0, assignment [C,A,B], scale 2, with matches [A] and [C]. Native grading accepts both shortcut responses. `prove_selection_rule.py` verifies the family-wide construction rule.",
+        "requested_change": "Revise repeated-profile selection so varying individual labels does not impose mutual exclusivity. Preserve joint-qualification cases in delivered practice, adjusting profile allocation or subset selection as needed. Retain the old regression and add check_exclusive_subset.py with the same-layout A+C control."
       }
     ]
   },
-  "author_running": false,
+  "author_running": true,
   "manifest": "package.json",
   "effective_difficulty": "easy",
   "batch_hash": "cbf37256eeb6708309825b61cab9eed5c277b108f86e8a63b115a467a7f5d33c",
@@ -148,11 +150,11 @@
   "assets": {},
   "package_hash": "4479e973e74719d28ff07f1d70e618a3de97ab78f9a23f95bbebc6eef8c2648a",
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119848/review-1-policy-2-36e1ecca399a86e2",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119848/review-2-policy-2-7a41c9f08b6c9942",
     "binding": {
       "policy_version": 2,
-      "package_hash": "53dbbc583c2ab353f8ab0cb89ec8c915dec5d4e2bf7b5d9eb9ba6fadf9b805ec",
-      "batch_hash": "f25586c437cac80d5aacc47eda8a34a81827d5cb08102588688d0fb045ed9e1f",
+      "package_hash": "4479e973e74719d28ff07f1d70e618a3de97ab78f9a23f95bbebc6eef8c2648a",
+      "batch_hash": "cbf37256eeb6708309825b61cab9eed5c277b108f86e8a63b115a467a7f5d33c",
       "source_hash": "85a2f2ac50bd80025dfc45b405bd0399cc4eac36154fba05258753379a48016a",
       "inventory_hash": "1159772bd67b582b70b5a7dd1ea772e95fd89f3b7ce3ae0048614e7b3c3a32cd",
       "assets": {},
@@ -160,7 +162,7 @@
       "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
     }
   },
-  "last_rejected_package": "53dbbc583c2ab353f8ab0cb89ec8c915dec5d4e2bf7b5d9eb9ba6fadf9b805ec",
+  "last_rejected_package": "4479e973e74719d28ff07f1d70e618a3de97ab78f9a23f95bbebc6eef8c2648a",
   "last_rejected_source": "85a2f2ac50bd80025dfc45b405bd0399cc4eac36154fba05258753379a48016a",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
 }
