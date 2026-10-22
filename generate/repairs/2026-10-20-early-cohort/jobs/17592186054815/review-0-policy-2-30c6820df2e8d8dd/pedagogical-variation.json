@@ -1,0 +1,1270 @@
+{
+  "learner_operation": "Identify which of four displayed numbers satisfy a scripted special set: intersect numerical class (integer/rational/real), sign, and zero inclusion.",
+  "fixed_features": [
+    {
+      "feature": "Four elementary real candidates and class/sign/zero membership",
+      "justification": "Canonical e-13139 and all 11 supplied prompts require four independent classifications; tutorial 8215 defines scripted sets."
+    },
+    {
+      "feature": "Current code fixes response type to checkbox and targets to Q-, R0-, Z0-, Q0+, R0+",
+      "justification": "This restriction is not justified by the original material: fully keyed radio sources q-80337 and q-104686 exist, and the former requires Q0-. Recorded as a failed coverage obligation, not endorsed as essential."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target base class, sign and zero inclusion",
+      "eligible_variation": "At least preserve original Q0-, Z0+, and radio Q0+ cases as well as existing targets; lesson permits same-method target changes.",
+      "observed": "Five checkbox targets exercised; Q0- and Z0+ rejected explicitly; all radio families omitted."
+    },
+    {
+      "role": "Which candidate positions qualify and number of qualifying candidates",
+      "eligible_variation": "Any of four positions can qualify; zero through four ordinary members are meaningful.",
+      "observed": "All 16 masks reproduced under each of five existing targets; None is selected precisely for mask zero."
+    },
+    {
+      "role": "Candidate sign, number class and superficial numeric magnitude",
+      "eligible_variation": "Change number class/sign to reconsider membership; preserve response for within-class magnitude changes.",
+      "observed": "Q0+ -> R0+ adds sqrt2; 1/2 -> 3/4 under Q0+ preserves response. Actual rendered prompt/solution and native grader follow both changes."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every existing target and membership mask",
+      "sample_refs": [
+        "controlled-records.json",
+        "coverage.json",
+        "math-checks.json",
+        "grader-report.json"
+      ],
+      "result": "80 controlled records: every mask 0..15 under each of five supported targets passed independent oracle and actual native true/false grading."
+    },
+    {
+      "case": "Missing original radio source families",
+      "sample_refs": [
+        "source-replay-checks.json",
+        "source-acceptance-result.json"
+      ],
+      "result": "Three radio sources absent from replay. Fully keyed q-80337 Q0- and q-104686 Q0+ have no replay path; explicit Q0- target raises ValueError and Q0+ radio replay raises StopIteration."
+    },
+    {
+      "case": "Actual finite runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-selection-checks.json"
+      ],
+      "result": "All five survive. Profiles R0-, Q-, Q0+, R0+, Z0-; ordinary masks 12,4,12,4,11. Fixed first/last/none/all strategies do not solve the batch. Sign/zero reasoning suffices for all five; no claim that this small batch exercises class ambiguity."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold [0, sqrt2, 1/2, -3] fixed, change target Q0+ to R0+ (counterfactual records 0 and 1).",
+      "expected": "sqrt2 changes from excluded to included; other three ordinary responses and None remain unchanged. Prompt and solution must follow target.",
+      "observed": "Truth vectors [true,false,true,false,false] -> [true,true,true,false,false]. Native grader accepts correct and rejects opposite on every field. Screenshots 001/002 visibly show target, changed sqrt2 selection and explanation/conclusion.",
+      "status": "passed",
+      "justification": "Tutorial 8215 distinguishes rational versus real class under identical sign/zero scripts. Target identity is an eligible answer-bearing role.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-checks.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Under Q0+, hold other candidates fixed, replace positive noninteger rational 1/2 by 3/4 (counterfactual records 0 and 2).",
+      "expected": "Preserve all five truth values while updating displayed value and explanation/conclusion.",
+      "observed": "Both truth vectors [true,false,true,false,false]; actual native grader follows each field choice; screenshots 001/003 preserve selections and show updated fraction.",
+      "status": "passed",
+      "justification": "Magnitude within the positive rational noninteger class cannot affect Q0+ membership.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-checks.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "first only",
+      "correct": 7,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "last only",
+      "correct": 7,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "none",
+      "correct": 3,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "all",
+      "correct": 3,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "positions III and IV",
+      "correct": 4,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: all",
+      "scope": "overall",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 47,
+      "total": 64,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 6,
+      "total": 13,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 7,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 7,
+      "total": 8,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "fresh: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 11,
+      "total": 11,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-fresh/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "none",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "all",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "positions III and IV",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: R0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: Q-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: Q0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: R0+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "none",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "all",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "answer positions / selection count",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "positions III and IV",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "not_predictive",
+      "conclusion": "No tested fixed position/count strategy solves the whole family or exact batch. A subgroup with one batch member cannot establish a template predictor; all 16 masks are constructible per target. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "visible sign and zero",
+      "subgroup": "batch: Z0-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "sign and zero only, ignoring base class",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.0625,
+      "disposition": "intended_skill",
+      "conclusion": "Sign and zero are explicit essential source criteria. Sign-only solves 5/5 batch and 47/64 fresh records; class-ambiguous distractors are not present in this small batch, limiting class practice. This is an intended mathematical exclusion, not an incidental layout cue. Controlled masks and the target counterfactual require class reasoning elsewhere. Baseline 0.0625 means uniformly guessing one of 16 ordinary four-item subsets, with the explicit None state derived from the subset; it is not a statistical confidence threshold.",
+      "sample_refs": [
+        "delivery-selection-checks.json",
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator semantic-duplicate exclusion and explicit-None/nonempty policy",
+      "requested difficulty",
+      "actual shared publication validation, normalization and deduplication against inventory basis 5456",
+      "learner fresh/usable requirement and seen_before_task exclusions from source inspection",
+      "question_selection.rs all-easy positively weighted-band draw and unconfigured deterministic fallback"
+    ],
+    "sample_refs": [
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-fresh/accepted.json",
+      "delivery-selection-checks.json",
+      "controlled-records.json"
+    ],
+    "result": "5/5 exact batch and 64/64 independent seeded records survive publication filtering; before/after masks and probe results identical. Controlled mask0 survives explicit None rather than being rejected. All-easy positive-weight selection has no membership-dependent filter; 128 deterministic draw seeds retained per proposed pool. Missing radio/target coverage is unchanged through delivery."
+  },
+  "limitations": [
+    "No live learner history, configured policy weights or future entity IDs were supplied. Inspected both configured positively weighted easy-band and unconfigured fallback rules; synthetic candidate ordering used for retained draws. Actual future selection probabilities under unknown policy/history are not claimed.",
+    "Captured inventory is fixed at basis 5456; later changes may alter deduplication. Publication preparation was absent.",
+    "No finite probe establishes the absence of all possible shortcuts. Sign/zero-only sufficiency in the exact batch is disclosed as limited class practice, not mislabeled an incidental surface cue.",
+    "Five non-source inventory records lack generation metadata; none demonstrated affected by the source-replay omissions. Original source radio questions were not treated as generated."
+  ]
+}

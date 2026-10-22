@@ -1,0 +1,84 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/review-0-policy-2-30c6820df2e8d8dd",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B audit.py",
+      "expected_exit": 0,
+      "evidence": [
+        "math-checks.json",
+        "source-replay-checks.json",
+        "packaging-checks.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py",
+      "observed_exit": 1,
+      "evidence": [
+        "source-acceptance-result.json"
+      ],
+      "meaning": "Strict acceptance intentionally fails on current package."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+      "observed_exit": 0,
+      "evidence": [
+        "grader-report.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B canonical_check.py",
+      "observed_exit": 0,
+      "evidence": [
+        "canonical-checks.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine canonical-grader-input.json canonical-grader-report.json",
+      "observed_exit": 0,
+      "evidence": [
+        "canonical-grader-report.json"
+      ]
+    },
+    {
+      "command": "python3 finish_checks.py",
+      "observed_exit": 0,
+      "evidence": [
+        "solution-checks.json",
+        "delivery-selection-checks.json"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+      "observed_exit": 0,
+      "evidence": [
+        "delivery-batch/delivery.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input fresh-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-fresh --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+      "observed_exit": 0,
+      "evidence": [
+        "delivery-fresh/delivery.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+      "observed_exit": 0,
+      "evidence": [
+        "render/rendering.json"
+      ]
+    },
+    {
+      "command": "python3 -B write_report.py",
+      "observed_exit": 0,
+      "evidence": [
+        "pedagogical-variation.json",
+        "evidence-contract.json",
+        "result.json"
+      ]
+    }
+  ],
+  "notes": "Scripts write only under evidence_root. Finish checks require delivery output first. Report schema validation uses system python3 with installed jsonschema; generator runtime uses the supplied Python 3.13.5."
+}
