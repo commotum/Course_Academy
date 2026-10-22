@@ -1,0 +1,109 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. The three retained failures are resolved. Package unchanged; no publishing or database writes.",
+  "source_analysis": {
+    "skill": "Identify true triangularity statements by testing strict off-diagonal regions after the indicated matrix transformation.",
+    "reasoning_steps": [
+      "Read each statement independently.",
+      "Compute the indicated transpose, sum or difference.",
+      "Check the required region for zeros.",
+      "Select every true statement."
+    ],
+    "invariants": [
+      "Upper triangular requires zeros below the diagonal; lower requires zeros above.",
+      "Diagonal entries do not determine triangularity.",
+      "Preserve observed operations, checkbox responses and comparable workload."
+    ],
+    "permitted_variations": [
+      "Vary entries, labels and nonzero positions.",
+      "Vary which off-diagonal regions contain nonzeros.",
+      "Vary mirrored cancellation in hard questions."
+    ],
+    "source_refs": [
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+      "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+      "f41ff7d0-b754-5033-a620-53eef8a376e3",
+      "814b1f0e-0432-56a4-8a3b-10efb7462756"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "regression-verification.json"
+      ],
+      "details": "All 12 supplied source questions replay with complete banks. Retained regressions fail on old code and pass on the revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit_revision.py",
+        "math-results.json"
+      ],
+      "details": "Independent exact arithmetic verified 106 records, including keys, proof matrices, truth assertions and witnesses."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "control-index.json",
+        "stage-coverage.json",
+        "rejections.json"
+      ],
+      "details": "Every moderate bank supports all four zero-region cases; hard banks also vary cancellation. Valid boundaries pass and malformed inputs reject."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Observed dimensions, operations and workload are preserved. The canonical example\u2019s missing answer bank is documented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "The native grader matched 280 accepted and 280 rejected Boolean submissions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render-contact.png"
+      ],
+      "details": "Ten records rendered through the actual UI. Runner and counterfactual screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-final.json",
+        "commands.json"
+      ],
+      "details": "Exact dependency versions, relocation, deterministic generation and runner replay pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "variation-schema-validation.json",
+        "shortcut-results.json",
+        "counterfactual-grading-rendering.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "The prior shortcut is broken within every controlled family and solves only 3/5 delivered runner items. Counterfactuals pass math, grading and rendering checks. The batch covers two response patterns; live-selection and inventory-provenance limits are explicit."
+    }
+  },
+  "findings": []
+}

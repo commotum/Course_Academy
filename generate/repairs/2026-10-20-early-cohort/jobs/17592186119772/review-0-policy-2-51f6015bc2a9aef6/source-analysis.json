@@ -1,0 +1,187 @@
+{
+  "skill": "Identify upper or lower triangular square matrices by checking every entry on the specified side of the main diagonal.",
+  "reasoning_steps": [
+    "Read whether upper or lower triangular is requested.",
+    "For each square candidate inspect entries below (upper target) or above (lower target) the main diagonal.",
+    "Qualify exactly when every inspected entry is zero; a single nonzero entry disproves qualification.",
+    "Select the sole qualifying matrix for easy radio questions, or all qualifying matrices for moderate checkbox/subset questions. Explain zeros or provide a nonzero witness."
+  ],
+  "response_contract": {
+    "easy": "One radio field with five labeled matrix choices and exactly one correct matrix.",
+    "moderate": "Three labeled matrices with either per-matrix Boolean checkbox fields or a radio bank of subsets.",
+    "canonical": "e-4395 has prompt and solution but no captured answer bank."
+  },
+  "difficulty": "Requested easy: visual inspection of 2x2 and 3x3 integer matrices, five candidates; moderate sources also include 4x4, decimals, and multiple qualifying candidates.",
+  "invariants": [
+    "Square matrices; definition uses all entries strictly on one side of the diagonal.",
+    "Any diagonal entry and any entry on the unconstrained side may be zero or nonzero, with either sign.",
+    "Easy radio banks must have exactly one qualifying matrix.",
+    "Preserve target orientation, bank completeness, field type, and explanation method on source replay."
+  ],
+  "permitted_variations": [
+    "Upper/lower target; transpose offers a controlled matched change.",
+    "Qualifying label and displayed position may change independently of values and size.",
+    "Move or add nonzero violating entries on the forbidden side; vary unconstrained and diagonal entries without changing classification.",
+    "Allow diagonal/zero matrices to qualify for either target, as directly supported by moderate source examples and lesson definition.",
+    "Vary square sizes within source difficulty, sparse/dense allowed-side patterns, integer values/signs, and distractor types.",
+    "For moderate families vary which eligible labels qualify and the number selected when the response bank can represent it."
+  ],
+  "essential_vs_incidental": "Zero condition and exactly-one easy answer are essential. Source-specific labels, size assignments, zero masks, signs, and choice order are incidental answer-bearing assignments and need not stay fixed. Mere numeric perturbation of fixed role profiles risks a template shortcut.",
+  "source_refs": [
+    "1a1fe1df-e314-527e-a884-f0c092b97472",
+    "91c8b870-01b8-5cdd-a0e6-31fdbbd32f0e",
+    "addfb264-5013-5ace-a74a-d9286a8c951b",
+    "e2e910d3-5a56-5ffe-990b-2c75157e1876",
+    "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+    "3f081148-4183-50c8-903b-3014f5de1d45",
+    "7c5c71ff-a77d-5a86-8573-305cd57f3d0f",
+    "9af406e1-4ead-558e-9219-f0bb53a377fc",
+    "39f938c0-efcb-5d8b-9b9f-266e88925e56",
+    "40b938cb-f23c-5d0f-a251-58ee4d72d0a4",
+    "5028fbd4-ee30-5a81-83e7-13be078fa1c6",
+    "55bf6bb8-fc59-5bd1-a9cb-d12ca64021ed",
+    "64b1b919-c94a-54de-9b3d-b841120bf12f",
+    "d7c263d4-5d0a-52cd-b876-cfa3bd3171e0",
+    "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739 (2983), Introduction"
+  ],
+  "source_passages": [
+    "Introduction: An upper triangular matrix is a square matrix in which all entries below the diagonal are zeros.",
+    "Introduction: Note that we can have any number (including 0) on the diagonal and above.",
+    "Introduction: A lower triangular matrix is a square matrix in which all entries above the diagonal are zeros.",
+    "Introduction: Again, note that we can have any number (including 0) on the diagonal and below.",
+    "addfb264-5013-5ace-a74a-d9286a8c951b qualifies identity A and strict lower B; 39f938c0-efcb-5d8b-9b9f-266e88925e56 qualifies zero B and 4x4 decimal upper C."
+  ],
+  "source_families": [
+    {
+      "id": "1a1fe1df-e314-527e-a884-f0c092b97472",
+      "difficulty": ":question.difficulty/moderate",
+      "type": ":answer-field.type/checkbox",
+      "fields": 3,
+      "bank_sizes": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "91c8b870-01b8-5cdd-a0e6-31fdbbd32f0e",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "addfb264-5013-5ace-a74a-d9286a8c951b",
+      "difficulty": ":question.difficulty/moderate",
+      "type": ":answer-field.type/checkbox",
+      "fields": 3,
+      "bank_sizes": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "e2e910d3-5a56-5ffe-990b-2c75157e1876",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "3f081148-4183-50c8-903b-3014f5de1d45",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "7c5c71ff-a77d-5a86-8573-305cd57f3d0f",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "9af406e1-4ead-558e-9219-f0bb53a377fc",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "39f938c0-efcb-5d8b-9b9f-266e88925e56",
+      "difficulty": ":question.difficulty/moderate",
+      "type": ":answer-field.type/checkbox",
+      "fields": 3,
+      "bank_sizes": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "40b938cb-f23c-5d0f-a251-58ee4d72d0a4",
+      "difficulty": ":question.difficulty/moderate",
+      "type": ":answer-field.type/checkbox",
+      "fields": 3,
+      "bank_sizes": [
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "id": "5028fbd4-ee30-5a81-83e7-13be078fa1c6",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "55bf6bb8-fc59-5bd1-a9cb-d12ca64021ed",
+      "difficulty": ":question.difficulty/easy",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "64b1b919-c94a-54de-9b3d-b841120bf12f",
+      "difficulty": ":question.difficulty/moderate",
+      "type": ":answer-field.type/radio",
+      "fields": 1,
+      "bank_sizes": [
+        5
+      ]
+    }
+  ],
+  "gaps": [
+    "Canonical example has no answer fields; do not invent exact bank replay. No image evidence is needed: material.images is empty."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

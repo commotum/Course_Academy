@@ -1,0 +1,527 @@
+{
+  "learner_operation": "Identify every true triangularity statement by inspecting the correct off-diagonal half of a square matrix, transposing and, for the hard family, adding or subtracting the transpose.",
+  "fixed_features": [
+    {
+      "feature": "Square 3x3 or 4x4 matrices and three ordinary triangularity statements per source bank",
+      "justification": "Square is part of the tutorial definition. Observed sizes and three statements preserve moderate/hard workload; all original source banks are separately replayed."
+    },
+    {
+      "feature": "Identity and transpose at moderate; one source-backed transpose sum/difference at hard",
+      "justification": "Preserves the original reasoning operations and prerequisite workload. No inversion, multiplication or new representation is introduced."
+    },
+    {
+      "feature": "Template-specific label, dimensions and expression wording",
+      "justification": "These visible features retain source families without fixing correctness: every recognizable family has four moderate or five hard response cases in delivered controls. Labels are incidental and carry no rule selecting their original answer."
+    },
+    {
+      "feature": "Boolean checkbox fields, with None of the above last during normal generation",
+      "justification": "All supplied source practice uses Boolean checkboxes. q-42115 and q-42116 explicitly support None. Its value is derived as the negation of every substantive truth, retaining all-false matrix cases."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which off-diagonal half is entirely zero",
+      "eligible_variation": "Neither half, just upper, just lower or both; correctness must follow those entries, not source label or bank.",
+      "observed": "Four zero-region cases accepted for every moderate template; 42 moderate records survive delivery with all four cases."
+    },
+    {
+      "role": "Whether mirrored terms cancel in the assessed sum/difference",
+      "eligible_variation": "Equal, opposite or unequal mirrored entries, holding the expressions and all other data fixed.",
+      "observed": "Hard controls include symmetry, antisymmetry, and unequal pairs; five truth patterns per hard bank survive delivery."
+    },
+    {
+      "role": "Qualifying statements and correct selection count",
+      "eligible_variation": "Every substantive statement can become true or false as the matrix profile changes; None is true only for all-false ordinary statements.",
+      "observed": "No source-signature lookup is perfect in a delivered controlled subgroup. The exact runner batch has two complete response patterns; lower and transpose-upper are true throughout that small batch."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every supplied source bank",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json"
+      ],
+      "result": "12/12 exact prompt, solution, difficulty, response type, ordered complete bank and independent key checks pass. Canonical example has no captured bank; no bank invented."
+    },
+    {
+      "case": "Controlled region and cancellation roles, plus fresh seeds",
+      "sample_refs": [
+        "controls.json",
+        "control-index.json",
+        "fresh.json",
+        "stage-coverage.json"
+      ],
+      "result": "60 controlled records and 36 fresh records cover four moderate and five hard response cases within every source bank. Numeric entries and nonzero support vary in fresh samples."
+    },
+    {
+      "case": "Exact five-item runner batch after delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive actual filtering: two diagonal, three lower-only. Source-signature strategy and fixed positions 2/3 each solve 3/5; select-all solves 2/5. The two 4x4 records happen to share the lower-only outcome. Singleton signature hits do not establish a repeatable shortcut rule; same-signature controls exhibit contradictions. No all-batch shortcut from the tested strategies. This is limited finite practice, not full decision coverage."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-42091 seed 101: clear the sole strict-lower entry at row 2 column 1, holding template, seed and all other entries fixed.",
+      "expected": "F,T,T,F becomes T,T,T,F, including native grader reversal for the direct-upper field.",
+      "observed": "Exact expected responses, recomputed proof matrices and truth assertions; actual UI screenshots 6/7 show the changed matrix, explanation and selection; native grader accepts/rejects both Boolean entries as expected.",
+      "status": "passed",
+      "justification": "Tutorial allows zero in the unrestricted half; a diagonal matrix qualifies as both upper and lower. This is the retained failing counterexample.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-grading-rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-126474 seed 401: change only the lower mirrored entry from -2 to +2, preserving nonzero entries on both sides.",
+      "expected": "The transpose-sum statement changes true to false and None false to true.",
+      "observed": "F,F,T,F becomes F,F,F,T; off-diagonal sums change 0 to 4 in the worked matrix, screenshots 9/10, and native outcomes.",
+      "status": "passed",
+      "justification": "Observed hard sources explicitly require mirrored cancellation before triangularity, so this changes decisive evidence while preserving the task.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-grading-rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-42091 seed 101: change only the first diagonal entry from 4 to -8.",
+      "expected": "All four Boolean decisions preserved; displayed matrix and proof diagonal update.",
+      "observed": "F,T,T,F preserved, diagonal -8 shown in prompt and transposed proof, native outcomes unchanged by Boolean value; screenshots 6/8 visually inspected.",
+      "status": "passed",
+      "justification": "Tutorial explicitly allows any diagonal number including zero. Triangularity tests strict off-diagonal regions only.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-grading-rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "label + dimension + statement wording",
+      "subgroup": "delivered-moderate",
+      "scope": "overall",
+      "strategy": "Use the source-example selection for each visible signature",
+      "correct": 12,
+      "total": 42,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the source-example selection for each visible signature; fails on changed answer-bearing assignments; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered-moderate",
+      "scope": "overall",
+      "strategy": "Always select ordinary positions 2 and 3",
+      "correct": 10,
+      "total": 42,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Always select ordinary positions 2 and 3; does not answer the complete pool; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "selection count / all ordinary",
+      "subgroup": "delivered-moderate",
+      "scope": "overall",
+      "strategy": "Always select all three ordinary statements",
+      "correct": 12,
+      "total": 42,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Always select all three ordinary statements; diagonal cases make this mathematically correct but other cases defeat it; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('A', 3, ('A^Tisuppertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('C', 3, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('B', 3, ('B^Tislowertriangular.', 'Bislowertriangular.', 'Bisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('C', 4, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('D', 3, ('D^Tisuppertriangular.', 'Dislowertriangular.', 'Disuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-moderate:('D', 4, ('D^Tisuppertriangular.', 'Dislowertriangular.', 'Disuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2857142857142857,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "label + dimension + statement wording",
+      "subgroup": "delivered-hard",
+      "scope": "overall",
+      "strategy": "Use the source-example selection for each visible signature",
+      "correct": 11,
+      "total": 54,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the source-example selection for each visible signature; fails on changed answer-bearing assignments; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered-hard",
+      "scope": "overall",
+      "strategy": "Always select ordinary positions 2 and 3",
+      "correct": 0,
+      "total": 54,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Always select ordinary positions 2 and 3; does not answer the complete pool; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "selection count / all ordinary",
+      "subgroup": "delivered-hard",
+      "scope": "overall",
+      "strategy": "Always select all three ordinary statements",
+      "correct": 6,
+      "total": 54,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Always select all three ordinary statements; diagonal cases make this mathematically correct but other cases defeat it; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('A', 3, ('A^T+Aisuppertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('B', 4, ('B-B^Tisuppertriangular.', 'Bislowertriangular.', 'Bisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('A', 3, ('A^T+Aislowertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('A', 3, ('A^T-Aislowertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('A', 3, ('A+A^Tisuppertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-hard:('B', 3, ('B^T+Bisuppertriangular.', 'Bislowertriangular.', 'Bisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this visible signature",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2222222222222222,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this visible signature; controlled same-signature matrices demonstrate multiple complete responses; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "label + dimension + statement wording",
+      "subgroup": "delivered-batch",
+      "scope": "overall",
+      "strategy": "Use the source-example selection for each visible signature",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Use the source-example selection for each visible signature; fails on changed answer-bearing assignments; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered-batch",
+      "scope": "overall",
+      "strategy": "Always select ordinary positions 2 and 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Always select ordinary positions 2 and 3; does not answer the complete pool; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "selection count / all ordinary",
+      "subgroup": "delivered-batch",
+      "scope": "overall",
+      "strategy": "Always select all three ordinary statements",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Always select all three ordinary statements; diagonal cases make this mathematically correct but other cases defeat it; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-batch:('C', 3, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this batch signature",
+      "correct": 1,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this batch signature; singleton signatures are observations, not evidence of a stable generator rule; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-batch:('A', 3, ('A^Tisuppertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this batch signature",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this batch signature; singleton signatures are observations, not evidence of a stable generator rule; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-batch:('C', 4, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this batch signature",
+      "correct": 0,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this batch signature; singleton signatures are observations, not evidence of a stable generator rule; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable template signature",
+      "subgroup": "delivered-batch:('D', 4, ('D^Tisuppertriangular.', 'Dislowertriangular.', 'Disuppertriangular.'))",
+      "scope": "within_template",
+      "strategy": "Use the original source selection within this batch signature",
+      "correct": 1,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Use the original source selection within this batch signature; singleton signatures are observations, not evidence of a stable generator rule; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "diagonal zero regions",
+      "subgroup": "delivered moderate diagonal matrices",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Inspect zeros on both off-diagonal halves, then select all three ordinary statements",
+      "correct": 12,
+      "total": 12,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Inspect zeros on both off-diagonal halves, then select all three ordinary statements; this is the intended definition applied correctly; baseline is empirical best single fixed complete selection in this subgroup. A hit means the entire response, including None, is correct.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator rejection and deterministic nonempty-checkbox wrapper",
+      "Requested difficulty and knowledge-point validation",
+      "Stable identities and inventory/within-batch deduplication through actual publisher prepare_records",
+      "Captured inventory inspection",
+      "Freshness exclusions, positive-weight difficulty bands, uniform within-band and unconfigured first-candidate selection from question_selection.rs"
+    ],
+    "sample_refs": [
+      "rejections.json",
+      "packaging-results.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "stage-coverage.json",
+      "inventory-assessment.json"
+    ],
+    "result": "42 moderate controls/fresh and 54 hard controls/fresh accepted, with unchanged case counts; all five exact runner records accepted. Explicit None prevents all-false rejection. Read-only selection reproduction covers configured weights, unknown-rating fallback, unconfigured first-candidate behavior and all 32 freshness subsets of the new batch; individual live draws are not asserted."
+  },
+  "limitations": [
+    "No finite audit proves absence of all shortcuts. Tested cue strategies are label/dimension/bank lookup, answer positions, and fixed selection count; diagonal zero recognition is the intended skill.",
+    "Exact runner batch lacks upper-only and neither matrices. Two response vectors remain, so broad coverage is supported by the independent delivered controls, not claimed for these five records.",
+    "Live learner history, configured policy weights and eventual allocated new entity IDs are not captured. Selection is a faithful conditional read-only model of inspected Rust rules; actual publication and live learner draws were not performed.",
+    "Inventory is captured basis 5452. Twelve original source questions are excluded from generated-affected reporting; one other stored question lacks generation provenance. No matching complete generated record was demonstrated, so affected-inventory.json is empty without claiming verified absence.",
+    "Canonical example lacks answer fields in captured source; its instructional method is present but its original answer bank cannot be reconstructed."
+  ]
+}

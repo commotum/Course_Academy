@@ -1,0 +1,128 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. The three retained failures are resolved. Verified 12 source replays, 106 independent math records, 560 native grading outcomes and 10 actual-UI renders. The exact five-item batch has limited but nonconstant decisions. Package unchanged.",
+  "source_analysis": {
+    "skill": "Identify every true triangularity statement by inspecting the correct off-diagonal half of a square matrix, transposing and, for the hard family, adding or subtracting the transpose.",
+    "reasoning_steps": [
+      "Read the matrix and each independently phrased statement.",
+      "Form the indicated transpose or sum/difference when applicable.",
+      "Upper triangular means every entry strictly below the diagonal is zero; lower means every entry strictly above is zero.",
+      "Select all and only true statements; None of the above is true exactly when all substantive statements are false."
+    ],
+    "invariants": [
+      "Square matrices; diagonal entries do not determine triangularity.",
+      "Retain zero-testing, transpose and observed +/- operations, Boolean select-all response and comparable workload.",
+      "Diagonal matrices qualify as both upper and lower; transpose swaps the halves."
+    ],
+    "permitted_variations": [
+      "Vary label independently of truth, signed integer entries including diagonal zeros, sparse nonzero positions, and 3x3/4x4 size.",
+      "Vary which off-diagonal half has nonzeros: lower-only, upper-only, both, neither. This changes qualifying statements and selection counts and is essential eligible answer-bearing variation.",
+      "Vary transpose target upper/lower and statement order independently of label and matrix profile.",
+      "Within hard scope vary symmetry/antisymmetry of mirrored entries so sums/differences may cancel or not; do not fix the derived statement true just because a source example does."
+    ],
+    "source_refs": [
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: upper triangular is square with all entries below the diagonal zero; lower uses above; any number including 0 is allowed on diagonal and other half.",
+      "canonical 205d32a2-ac26-5eaf-896a-c6182a70eff7: A lower true, upper and A^T-A lower false.",
+      "prerequisite e3d1f202-a3d6-561f-bd4b-3e886142e5a0: interchange rows and columns.",
+      "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+      "64e75667-2ca8-5517-b38f-4bfa5cf4e995",
+      "d3df39a1-3dce-5051-9bb1-2a36ee3c62ca",
+      "f41ff7d0-b754-5033-a620-53eef8a376e3",
+      "a03e6ad4-897b-5475-96e7-f211a321e037",
+      "ccdf19a6-45a3-5b56-b00e-b00d25e501ba",
+      "7fc84187-05b2-57ce-8e48-261250d11c80",
+      "deb97145-eaf3-5dcc-a36b-24fae2c52b5c",
+      "e68d4b2f-c3b6-584c-8430-662a571e8316",
+      "10915988-162b-5dec-9de2-5241d5fc3202",
+      "5fc95051-8b70-5447-aece-290d3854c40e",
+      "814b1f0e-0432-56a4-8a3b-10efb7462756"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "regression-verification.json"
+      ],
+      "details": "All 12 supplied current checkbox banks, prompts, solutions and original difficulty attributes replay exactly. Both previously unsupported source cases now pass; canonical bank gap retained."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit_revision.py",
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent integer arithmetic verified keys, worked matrices, truth assertions and nonzero-region witnesses for 106 controls, fresh records, runner records and counterfactuals; source keys also independently checked."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "controls.json",
+        "control-index.json",
+        "fresh.json",
+        "stage-coverage.json",
+        "rejections.json"
+      ],
+      "details": "Every moderate bank accepts all four zero-region cases, and hard banks include both cancellation and noncancellation. Valid decision changes and numeric boundaries pass; malformed parameters reject."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "source-replay-records.json"
+      ],
+      "details": "Observed matrix sizes, checkbox selection, triangularity, transpose and hard sum/difference workload preserved. None is source-backed and permits all-false cases."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-grading-rendering.json"
+      ],
+      "details": "Real native learner grader matched 280 accepted and 280 rejected Boolean submissions. No free-entry fields apply."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render-contact.png",
+        "render/question-007.png",
+        "render/question-009.png",
+        "render/question-010.png"
+      ],
+      "details": "Ten records rendered through actual UI without reported errors; all runner screenshots and relevant/irrelevant counterfactual screenshots visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-final.json",
+        "commands.json"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match the nested manifest. Declared-file relocation, deterministic seeds and all five runner replays pass. Full package byte hashes unchanged; no assets published or database writes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "variation-schema-validation.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Prior fixed-signature shortcut is broken within every controlled visible family and solves only 3/5 delivered runner items. Relevant and irrelevant counterfactuals verified through math, native grading and UI. Exact batch has two response vectors and limited case coverage; captured delivery and conditional learner-selection limits documented."
+    }
+  },
+  "findings": []
+}
