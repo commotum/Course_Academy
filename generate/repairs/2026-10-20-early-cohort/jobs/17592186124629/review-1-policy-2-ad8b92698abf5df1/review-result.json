@@ -1,0 +1,136 @@
+{
+  "verdict": "revise",
+  "summary": "Revise the five-item batch: both determinant/column-space/pivot checkbox questions are answered by selecting only column space. Mathematics, source replay, native grading, rendering and runtime packaging pass; the broader generator does vary this decision.",
+  "source_analysis": {
+    "skill": "Complete an implication about a real square matrix using the invertible matrix theorem. Infer invertibility or singularity from the premise, then evaluate each of three candidate conclusions and select exactly the true subset.",
+    "reasoning_steps": [
+      "Read the square dimension and premise; infer invertible versus singular.",
+      "Translate that status into determinant, rank/pivots, column space, null space, nullity, and homogeneous-solution consequences.",
+      "Evaluate each candidate including mismatched numeric dimensions, then report the true subset with the observed checkbox or radio bank."
+    ],
+    "invariants": [
+      "Real square matrix, positive dimension, one premise establishing invertible or singular status.",
+      "Three conclusions and explanation of each using the same theorem; no extra computation prerequisites.",
+      "Noninvertibility implies rank<n and positive nullity, not a specific nonzero rank/nullity.",
+      "Every finite-dimensional null space has a basis, including the empty basis of {0}."
+    ],
+    "permitted_variations": [
+      "Change positive square dimension, symbolic n versus concrete dimension, matrix letter, and equivalent premise.",
+      "Change whether premise establishes invertible or singular status.",
+      "Vary candidate proposition type, polarity, matching or mismatching dimension, order, and qualifying subset; derive keys and explanation together.",
+      "Vary radio bank alternatives while preserving source banks at replay; shuffle positions independently of truth."
+    ],
+    "source_refs": [
+      "c1120305-c8cb-5f57-97b1-9b31dc059b4a",
+      "f935b331-7ef7-5abb-b2c6-c78c4160f9a8",
+      "7f4e1182-d195-5cca-bb1a-601ea1f9c921",
+      "795129ab-7204-5692-a97c-e32525213e2a",
+      "7036dc73-9ca4-59f2-b983-11eaacfb5a4b",
+      "2c600e13-fdff-5526-82d0-6659ac10dfc3",
+      "e25ee2d5-6236-5cb7-ae46-36798fde6f33",
+      "251cfe7e-474d-59b2-8ccf-101401daf068",
+      "833e6fc8-0df5-5faa-ab1e-b5f4126e71c3",
+      "a9326523-4bce-5554-9699-fb91223b9531",
+      "ec73c900-b909-5aa7-beeb-5f5b6ee2fba4",
+      "f1d7f6a4-6114-5671-a52c-7df48bee5e24",
+      "a20e0f6e-9a4b-59f0-b28f-3a10b5209120",
+      "48e66ecf-d81b-50c1-a8a1-a9e2ad76a682",
+      "624ebabe-0dfa-5173-b265-5c678170209c",
+      "dae4fbb5-bcbf-541b-9afd-ea52e3dddf91",
+      "db5a5ae3-0add-50b7-955f-ff73e4e003cc",
+      "lesson 6257a384-69ce-502a-8a3f-5b199a93b00a; tutorial 555ca00c-d37e-5c67-a658-69b087390920; step 4620379b-2eed-5dd7-bf3a-9edf0b4aea79"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-report.json"
+      ],
+      "details": "All 15 complete source questions reproduce normalized prompts, full 81-choice banks, keys and worked implication paragraphs. Documented correction fixes three nonzero-nullity premise quotations; theorem reflow preserves identities. Incomplete source evidence is explicitly excluded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "111 source, independent, controlled and batch records checked from visible propositions against independent rank/nullity witnesses. No key mismatch; explanations inspected in actual UI."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "minimal-failing-case.json",
+        "failing-batch-execution.json"
+      ],
+      "details": "Broader controls vary all permitted masks, but the exact delivered batch repeats the same middle-only answer in its two recognizable det/Col/pivot checkbox members."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "independent-samples.json"
+      ],
+      "details": "Moderate conceptual theorem implications retain the three-conclusion workload, source response shapes and prerequisites."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Real native grader passes 610 correct/distractor submissions: 221 accepted, 389 rejected, none unresolved. Every owned radio and checkbox alternative tested; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "All 11 actual-UI renders pass and screenshots were inspected: complete batch, controlled pairs and original checkbox replays."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime_review.py",
+        "runtime-results.json",
+        "boundary-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Manifest-only relocation, deterministic replay and invalid-parameter rejection pass; Python exactly 3.13.5 and empty third-party dependency map verified. Legacy scripts dependency failure reproduced with explicitly simulated non-repository ancestry. Package remains unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-failing-case.json",
+        "delivery-batch/accepted.json",
+        "selection-analysis.json",
+        "failing_batch_check.py"
+      ],
+      "details": "The intended decision varies in controlled pairs and controls, but selecting only column space solves 2/2 surviving members of the repeated batch subgroup (uniform nonempty-subset baseline 1/7). This is a delivered-batch defect, not a universal generator defect."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Batch-selection defect: the two surviving checkbox questions with determinant, column-space and pivot conclusions both have [false,true,false]. Choosing only column space (the second field) answers 2/2 without evaluating either premise. Fresh same-family controls score only 2/14 with that strategy. All three batch checkbox questions also have one correct selection.",
+      "source_refs": [
+        "7f4e1182-d195-5cca-bb1a-601ea1f9c921 (q-47599)",
+        "7036dc73-9ca4-59f2-b983-11eaacfb5a4b (q-142476)",
+        "tutorial 555ca00c-d37e-5c67-a658-69b087390920: theorem equivalence and all columns pivot"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B failing_batch_check.py under evidence_root (exits 1). It regenerates batch(moderate,count=5,seed=2086806769). Minimal complete records aa60eb69-461c-5c0c-a750-07393618ac40 and 63eaf48a-f80a-5b68-a3f9-e6daebbdc899 are in minimal-failing-case.json; both survive check_delivery unchanged.",
+      "requested_change": "Change finite batch selection so repeated recognizable determinant/column-space/pivot checkbox questions retain different qualifying subsets, or avoid repeating that family in this batch. Regenerate the five-item batch and rerun the strict test plus delivery checks. Preserve the existing valid decision domain and source families; no engine change is needed."
+    }
+  ]
+}

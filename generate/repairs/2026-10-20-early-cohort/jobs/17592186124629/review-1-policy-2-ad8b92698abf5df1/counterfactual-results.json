@@ -1,0 +1,45 @@
+{
+  "records": "counterfactual-records.json",
+  "native_cases": "native-input.json cases 102..105, native-report.json labels 102..105",
+  "base_truths": [
+    true,
+    false,
+    true
+  ],
+  "relevant_polarity_change": {
+    "before": 0,
+    "after": 1,
+    "expected_and_observed_after": [
+      false,
+      false,
+      true
+    ],
+    "old_first_field_true_action": "rejected after; accepted before",
+    "solution_follows": "first implication changes true to false, with determinant fact retained"
+  },
+  "irrelevant_equivalent_hypothesis": {
+    "before": 0,
+    "after": 2,
+    "change": "rank=7 to nullity=0",
+    "expected_and_observed_after": [
+      true,
+      false,
+      true
+    ],
+    "grader": "same selection action accepted on both",
+    "solution_follows": "conditional premise changes; full-rank consequence retained"
+  },
+  "relevant_premise_change": {
+    "before": 0,
+    "after": 3,
+    "change": "rank=7 to rank<7, holding all three printed conclusions fixed",
+    "expected_and_observed_after": [
+      false,
+      true,
+      false
+    ],
+    "grader": "previous three selections rejected; complementary selections accepted",
+    "solution_follows": "rank/nullity fact and every implication truth changes together"
+  },
+  "rendering": "render-records.json indices 5..8; render/question-006.png through question-009.png"
+}

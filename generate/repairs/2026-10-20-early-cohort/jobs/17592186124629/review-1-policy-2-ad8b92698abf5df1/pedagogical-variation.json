@@ -1,0 +1,218 @@
+{
+  "learner_operation": "Infer invertibility versus singularity from a real square-matrix premise, evaluate each of three theorem conclusions, and select exactly the true subset.",
+  "fixed_features": [
+    {
+      "feature": "Real square matrix, positive dimension, one premise and three conclusions",
+      "justification": "The lesson theorem and every target source question share this conceptual workload; rectangular matrices require different implications."
+    },
+    {
+      "feature": "Moderate band and observed radio/checkbox response shapes",
+      "justification": "Only moderate is supported. Keeping source bank shapes preserves response workload; correctness still varies across five radio subsets or seven nonempty checkbox subsets."
+    },
+    {
+      "feature": "Source-profile dimensions remain n,3,5,6,7,8",
+      "justification": "Conservative context within a finite family; these constants do not justify fixing truth assignments, and are not counted as meaningful variation."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Premise implying invertible or singular state",
+      "eligible_variation": "Equivalent determinant, rank, column-space, null-space, or nullity premise; both statuses.",
+      "observed": "Both statuses occur across the independent sample and in the batch. Same-conclusion controlled premise flip changes all truth values correctly."
+    },
+    {
+      "role": "Qualifying conclusion labels, count and position",
+      "eligible_variation": "Change conclusion polarity and premise state; vary which and how many conclusions qualify. Source examples include one, two and three true conclusions.",
+      "observed": "All seven permitted checkbox masks and all five bank masks per radio profile occur in 87 controls. The delivered batch repeats middle-only on both det/Col/pivot questions, and all three checkbox questions have exactly one true statement."
+    },
+    {
+      "role": "Radio choice order and equivalent premise wording",
+      "eligible_variation": "Shuffle alternatives without changing mathematics; change to an equivalent premise without changing the conclusion subset.",
+      "observed": "Radio positions vary, but are not counted as semantic variety. Native grading and rendered equivalent-premise pair preserve the selection vector. Actual UI may additionally reorder radio alternatives."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source fidelity",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-report.json"
+      ],
+      "result": "15 complete moderate source cases, 81 full bank choices and normalized prompts replay; implication paragraphs match with documented nonzero-nullity quotation correction."
+    },
+    {
+      "case": "Fresh decision variation",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "87 seeded controls cover every source-bank answer mask for each profile; same-family column-space-only strategy succeeds 2/14. Not an exhaustive cross-product of premise slots."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-reproduction.json",
+        "minimal-failing-case.json",
+        "batch-acceptance-test.json"
+      ],
+      "result": "Seed 2086806769 reproduces the actual five records. Both repeated det/Col/pivot checkbox members are [false,true,false], failing the retained batch acceptance test."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For q-47599 at seed 319, flip only the determinant conclusion from nonzero to zero.",
+      "expected": "[true,false,true] becomes [false,false,true]; prompt, first implication and grader must change together.",
+      "observed": "Independent visible-proposition check and native field grading agree; screenshots 006 and 007 show the changed determinant proposition and solution.",
+      "status": "passed",
+      "justification": "Determinant is a theorem consequence and its polarity changes whether that conclusion follows.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-007.html"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold all three printed conclusions fixed; change rank(A)=7 to rank(A)<7.",
+      "expected": "Invertible becomes singular and the full selection vector complements from [true,false,true] to [false,true,false].",
+      "observed": "The two records retain identical conclusion strings; solution rank/nullity fact, three truth labels and native accepted selections all complement. Screenshots 006 and 009 inspected.",
+      "status": "passed",
+      "justification": "The premise determines which side of the invertible matrix theorem applies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-009.html"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace the full-rank premise rank(A)=7 with the equivalent nullity(A)=0, retaining the three conclusions.",
+      "expected": "Selection vector [true,false,true] remains correct; equivalent new conditional appears in the solution.",
+      "observed": "Both keys and all native field outcomes preserve the same semantic selections; screenshots 006 and 008 display the new premise and unchanged conclusions.",
+      "status": "passed",
+      "justification": "Lesson tutorial 555ca00c-d37e-5c67-a658-69b087390920 makes these premises equivalent for square matrices.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-008.html"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Checkbox layout, no mathematical evidence",
+      "subgroup": "All 42 independent checkbox samples",
+      "scope": "overall",
+      "strategy": "Select only the last visible checkbox.",
+      "correct": 6,
+      "total": 42,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Matches the uniform seven-nonempty-subset baseline of 1/7; no evidence for this overall layout shortcut.",
+      "sample_refs": [
+        "independent-samples.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "cue": "Three checkbox concepts: determinant, column space, pivot columns",
+      "subgroup": "Both members of this repeated family in the exact surviving runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select only the column-space checkbox, which is also the second visible field, ignoring signs and premise.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "defect",
+      "conclusion": "2/2 succeeds in the finite delivered subgroup, versus 1/7 for a uniform nonempty subset and 2/14 in fresh same-family controls. This demonstrates a batch-selection failure, not universal predictability of generate(). Actual UI preserves these checkbox positions; the concept cue also survives any field shuffle.",
+      "sample_refs": [
+        "minimal-failing-case.json",
+        "delivery-batch/accepted.json",
+        "render/question-003.html",
+        "render/question-004.html",
+        "native-report.json",
+        "failing-batch-execution.json"
+      ]
+    },
+    {
+      "cue": "Same determinant/column-space/pivot concept triplet",
+      "subgroup": "14 independently sampled members of that family",
+      "scope": "within_template",
+      "strategy": "Select only column space, ignoring the premise.",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "2/14 equals 1/7; the generator can defeat the batch shortcut when its decision cases survive selection.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout in exact runner batch",
+      "subgroup": "All three delivered checkbox questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict that exactly one box must be checked.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.42857142857142855,
+      "disposition": "defect",
+      "conclusion": "The count cue is correct for 3/3, compared with 3/7 singleton subsets in the seven-case control domain. This predicts only response size and is supporting evidence; the demonstrated full-answer shortcut is the two-item column-space subgroup.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Wording: Null(A) has no basis",
+      "subgroup": "Independent samples containing a basis conclusion",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Reject a no-basis assertion; accept a has-basis assertion.",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Every finite-dimensional null space has a basis, including the empty basis. This uses the mathematical content of the proposition; it is not an incidental cue. The 0.5 baseline is a random Boolean response, not an estimate of the sampled key distribution.",
+      "sample_refs": [
+        "independent-samples.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator domain and deterministic nonempty-checkbox rejection/resampling policy",
+      "Generator batch semantic deduplication and seeded truncation",
+      "Actual publisher prepare_records validation, content deduplication against captured basis 5418, and requested moderate difficulty filtering",
+      "Native learner selection freshness and difficulty-band/within-band selection rules (static eligibility analysis)",
+      "Actual UI checkbox order and radio controls"
+    ],
+    "sample_refs": [
+      "boundary-results.json",
+      "runtime-results.json",
+      "batch-reproduction.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-samples/delivery.json",
+      "coverage-results.json",
+      "selection-analysis.json",
+      "render/rendering.json"
+    ],
+    "result": "All 87 controls and all five batch records survive actual delivery filtering. The two-item shortcut subgroup survives unchanged. Learner selection does not inspect or rebalance true subsets, so it cannot guarantee removal of the weakness; its precise live draw is unavailable."
+  },
+  "limitations": [
+    "Captured inventory is basis 5418; future inventory, learner histories and active policy weights are not supplied. Exact live learner order/probabilities are not claimed.",
+    "The failure is confined to a recognizable two-record subgroup of the reviewed finite five-item batch; the larger generator domain has counterexamples.",
+    "One incomplete source radio case lacks a key, solution and valid correct bank option; canonical example lacks fields. No missing source bank was invented.",
+    "No finite audit proves absence of every shortcut. The independently seeded 87 controls cover all response masks, not every premise/status combination within every profile."
+  ]
+}
