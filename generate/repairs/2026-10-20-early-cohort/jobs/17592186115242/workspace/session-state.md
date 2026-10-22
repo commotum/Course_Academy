@@ -1,11 +1,30 @@
-# Current repair state — pass 242
+# Current repair state — pass 245
 
-Read feedback and all five retained findings before validation. Preserved the runtime, manifest, completed construction repairs, exact historical counterexamples, and staged replacement proposal. No new generator construction defect is reported.
+Read feedback and all five retained findings before testing. The first check,
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`,
+exited 1: five captured historical records retain the sign-only extremum
+shortcut; the retained possible-history witness succeeds on 64/64 draws.
 
-First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exits 1: five historical banks retain the sign-only extremum shortcut; 64/64 successes in the retained possible-history witness. Evidence: `evidence/repair-242/initial-reproduction.json`.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-245`
+exited 1 solely for finding 591f580cadb749294588. All four generator findings
+pass: construction shortcuts, 17 complete source banks, zero roots, and finite
+batch contrasts. Shared delivery retains 14/14 test records. Native grading
+accepts 7 correct and rejects 28 wrong choices. Controlled changes, relocation,
+pinned dependencies, protected hashes, and the staged replacement mapping pass.
+Reinspected `evidence/repair-3/render/question-001.png`; content is readable.
 
-Validation: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-242` exits 1 only for finding 591f580cadb749294588. Four current-generator regressions pass, including 17 complete source banks and canonical replay. Three CLI batches (14 records total) preserve within-sign-group decision contrasts through shared delivery filtering. Native grading accepts 7 correct and rejects 28 wrong choices. Relevant/irrelevant counterfactuals, relocation, dependencies, protected hashes and staged mapping pass. Reinspected the retained actual-UI screenshot `evidence/repair-3/render/question-001.png`; unchanged presentation is readable.
+No runtime change is justified by unchanged evidence. Preserved the existing
+instructional account, source coverage, repairs, complete historical records,
+and strict failing regression. No publication, database, engine, source,
+inventory, or other-job changes were made.
 
-Status: unsupported for the captured selectable pool. No database, publication, engine, source, inventory, manifest or runtime edits. All five non-source inventory records tested and affected. Commands/results: `evidence/repair-242/commands.json`, `results.json`, `scope-resolution.json`.
+Status: unsupported for the captured selectable pool. The review explicitly
+requires separate inventory remediation and fresh capture. This task explicitly
+prohibits database changes. Five replacement records and mappings already exist
+at `evidence/repair-3/inventory-repair-proposal.json`; they remain unapplied.
+Next unfinished step: the separate authorized remediation workflow, then fresh
+inventory capture and the unchanged strict regression. Further identical author
+passes cannot alter the stored pool and must not waive this failure.
 
-Next required action: separate authorized inventory remediation using `evidence/repair-3/inventory-repair-proposal.json`, then a fresh inventory capture and strict regression. Workspace generator edits cannot change historical stored banks. Do not repeat this unchanged author repair or weaken its failing check.
+Current evidence: `evidence/repair-245/initial-reproduction.json`,
+`commands.json`, `results.json`, `scope-resolution.json`, and `grader-report.json`.

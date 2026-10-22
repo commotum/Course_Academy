@@ -71,6 +71,11 @@ def main():
         if level=='moderate':assert fs[0]['rank']!=fs[3]['rank']
         controls.append({'difficulty':level,'facts':fs});records+=rs
     save('counterfactuals.json',controls)
+    # The random cue probes miss row=3; exercise it constructively in both bands.
+    for level,profile,count in [('easy','q-34805',2),('moderate','q-34806',5)]:
+        boundary=g.generate(level,seed=7,parameters={'name':'A','rows':3,'columns':6,'count':count,'kind':'pivot' if level=='easy' else 'non-pivot'},bank_profile=profile)
+        inspect(boundary);records.append(boundary)
+    save('boundary-records.json',records[-2:])
     # Exercise sign assignments and bank positions within every recognizable profile.
     probes=[]
     for level,profiles in g.PROFILES.items():
