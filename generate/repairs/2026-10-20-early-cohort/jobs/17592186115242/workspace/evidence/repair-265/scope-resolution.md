@@ -1,0 +1,7 @@
+# Instructional scope and remaining failure
+
+The retained instructional-account.md defines the supported skill and variation. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to obtain (k+4)y=-5, then sets k=-4 to obtain a contradiction. Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistent as no solutions and dependent as infinitely many solutions. Practice 534e2a93-e71a-5475-894e-dfd5ca99a3a6 has an interior correct choice; extremum rank is not a skill constraint. Preserve the repaired five-choice banks, all source families and zero-root cases.
+
+The first regression reproduced 591f580cadb749294588 on all five historical records. The five retained findings require no additional generator design change: four concern completed repairs, and the fifth explicitly requests the separate inventory-remediation workflow. Captured stored banks are inputs to the selector, independent of the current Python generator. A runtime edit cannot change them. Reuse the staged complete replacements and mapping without treating them as applied inventory. Keep the strict historical check failing. Database changes, source edits, engine edits and publication are prohibited; none will be performed.
+
+Run the retained regression declarations, native grader and relocation check once. Reuse unchanged UI rendering evidence, with visual inspection. Report the unresolved stored-pool failure without claiming the source skill is unsupported or weakening acceptance.

@@ -1,0 +1,5 @@
+# Retained instructional scope and repair boundary
+
+Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to obtain `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions and dependence by infinitely many solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 establishes that the correct choice need not be an extreme. Preserve the five-choice response, easy arithmetic, source families, and repaired bank-role and batch variation specified in instructional-account.md.
+
+The first executed check reproduced finding 591f580cadb749294588 on all five captured historical records, with 64/64 shortcut successes in the retained possible-history witness. The latest feedback supplies no new current-generator failure. The requested remedy for this finding is explicitly a separate inventory-remediation workflow; this task explicitly forbids database changes. Reuse and verify the staged proposal without applying it. Keep the strict historical failure and unsupported result while the captured pool is unchanged. No runtime design change can alter stored banks, and no source evidence changed to invalidate the counterexample.
