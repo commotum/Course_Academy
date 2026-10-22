@@ -1,0 +1,9 @@
+# Verified state
+
+Preserved the existing repaired generator, manifest, source families and executable regressions. The first test reproduced finding 591f580cadb749294588: five historical banks remain shortcut-prone; the retained possible-history selection witness succeeds 64/64 times. This is a conditional witness, not a claim about every learner history.
+
+`checks/recheck_status.py --output evidence/author-386` exits 1 solely for that retained inventory finding. The other four finding regressions pass. Seventeen source banks replay, zero-root cases and controlled relevant/irrelevant changes pass, three batches retain conditional variation after shared delivery (14 accepted records), and native grading accepts 7 correct responses and rejects 28 wrong ones. Exact dependencies and relocated deterministic execution pass. Protected runtime, manifest and captured input hashes remain unchanged. All non-source inventory records are tested.
+
+The five staged replacements and one-to-one mapping remain verified, unapplied, in `evidence/repair-3/inventory-repair-proposal.json`. Historical complete records remain in `evidence/generated-records.json`; affected identities and evidence-root-relative paths remain in `affected-inventory.json`. Retained rendering binds the unchanged candidate; question-002.png was visually inspected again: readable prompt, five choices, matrices, row operation and contradiction. The source tutorial flowchart was also inspected. No new interchangeable rendering was needed.
+
+No current construction failure is demonstrated by this feedback. Editing the workspace generator cannot alter already stored banks or their selection eligibility. The explicit prohibition on database changes prevents applying the separate inventory-remediation request. The strict check is preserved as failing. Status: unsupported pending that external remediation and a fresh inventory capture. Nothing was published or written to the database.
