@@ -1,41 +1,28 @@
 {
   "verdict": "revise",
-  "summary": "Source replay omits all three radio cases and adds an extra checkbox to six source banks. Tested generated membership, grading, rendering and packaging passed; package unchanged.",
+  "summary": "Replay omits three source radio cases and adds an extra checkbox to six source banks. Tested mathematics, grading, rendering, and packaging passed. Package unchanged; full report saved in result.json.",
   "source_analysis": {
-    "skill": "Identify which of four displayed numbers satisfy a scripted special set: intersect numerical class (integer/rational/real), sign, and zero inclusion.",
+    "skill": "Identify which displayed numbers satisfy a scripted integer, rational, or real set using number class, sign, and zero inclusion.",
     "reasoning_steps": [
-      "Decode base letter Z/Q/R, superscript sign, and subscript 0.",
-      "Simplify simple square roots and fractions enough to determine integer/rational/real status; pi and nonsquare roots are irrational.",
-      "Apply class and sign/zero tests separately to each displayed candidate.",
-      "Select all qualifying checkbox fields, using None of the above only for empty membership, or select the radio choice naming the complete qualifying Roman-label subset."
+      "Decode the base set, sign superscript, and zero subscript.",
+      "Classify each candidate, simplifying elementary roots and fractions as needed.",
+      "Apply membership criteria and select the complete qualifying subset."
     ],
     "invariants": [
-      "Four simple real-number candidates; same elementary class/sign/zero membership decision and easy workload.",
-      "Preserve checkbox and radio source families and their complete response banks on replay.",
-      "The set definition determines membership independently of candidate location and superficial representation.",
-      "Zero belongs exactly when subscript 0 includes it."
+      "Four elementary real-number candidates at easy difficulty.",
+      "Membership follows mathematical properties independently of candidate position.",
+      "Source replay preserves response types and complete answer banks."
     ],
     "permitted_variations": [
-      "Target among lesson-supported scripted integer/rational/real sets, keeping elementary real candidates and response format.",
-      "Vary sign, rationality, integer status, zero presence, roots/fractions/integers/terminating decimals/pi, and their displayed positions.",
-      "Vary qualifying candidate identities and qualifying count, including none and all when supported by independent per-candidate membership. Source-specific masks are incidental assignments, not necessary constraints.",
-      "Change target while holding candidate list fixed; change candidate class/sign while retaining target; reorder candidates without changing underlying member values."
+      "Change eligible targets, candidate classes, signs, representations, and positions.",
+      "Vary qualifying identities and selection counts.",
+      "Preserve membership when changing irrelevant within-class magnitudes."
     ],
     "source_refs": [
-      "59f3318f-8861-5823-9f55-694de5f640be",
-      "9392ab96-5be3-5aab-8c35-808d0b88162a",
-      "c2a941ac-46f5-56a9-b5ba-03889446453a",
-      "016b340f-7aa5-5001-aeb3-927982c5cf50",
-      "c84fa181-6eb1-5e84-b542-36ff40a06a4c",
-      "0e62d29f-2834-5b4e-b720-bc361e2a5dc0",
-      "12109bd9-1ea8-5fd9-b15c-ba4373902b35",
-      "ac020dea-1486-5e82-bd01-29594c8fbf7a",
-      "4eae16cb-f514-5e15-a012-1e904a842a1d",
+      "ce8a56c1-709e-50e8-ac10-d3f92bf15db0",
       "891fa895-d529-5c21-9765-4d2a287c7001",
       "c620ed83-c013-5ff0-8983-14697bd50f1b",
-      "ce8a56c1-709e-50e8-ac10-d3f92bf15db0",
-      "tutorial 05d0929b-b494-531b-9eea-35af04606555 (8215): superscripts limit to positive/negative; subscript 0 includes zero; table Z/Q/R signed sets",
-      "tutorial 2d61ed1f-938f-51f3-8f72-19f2a9db35ea (8214): integers; rational numbers are ratios of integers; reals include rational and irrational numbers"
+      "Tutorial 05d0929b-b494-531b-9eea-35af04606555: scripted set definitions"
     ],
     "evidence_paths": [
       "source-analysis.json"
@@ -45,13 +32,11 @@
     "source_replay": {
       "status": "failed",
       "evidence_paths": [
-        "source-analysis.json",
         "source-replay-checks.json",
         "source-acceptance-result.json",
-        "replay-records.json",
-        "canonical-checks.json"
+        "replay-records.json"
       ],
-      "details": "Strict original-source comparison fails: 3/11 omitted radio cases and six four-field checkbox sources replayed with five fields. Canonical numeric values independently verified; canonical bank absent in source. q-181542 key/solution absent, but two omitted radio sources are fully keyed."
+      "details": "Three radio sources omitted; six four-field checkbox sources replayed with five fields. Strict regression exits 1."
     },
     "math": {
       "status": "passed",
@@ -60,36 +45,33 @@
         "solution-checks.json",
         "canonical-checks.json"
       ],
-      "details": "153 independently parsed generated records have correct membership; 612 solution bullets and 335 exact displayed identities/conversions passed. Canonical -0.2 and -sqrt4 membership verified separately."
+      "details": "153 generated records, 612 solution bullets, and 335 exact identities/conversions passed independent checks. Canonical numeric membership checked separately."
     },
     "variety": {
       "status": "failed",
       "evidence_paths": [
         "coverage.json",
-        "fresh-records.json",
         "controlled-records.json",
-        "source-replay-checks.json",
-        "delivery-selection-checks.json"
+        "source-replay-checks.json"
       ],
-      "details": "Existing five checkbox targets cover all 16 masks, but source radio response families and original Q0-/Z0+ targets have zero support. The restriction persists after delivery filtering."
+      "details": "All 16 masks work under each existing target, but original radio families and Q0-/Z0+ targets are excluded."
     },
     "scope": {
       "status": "passed",
       "evidence_paths": [
-        "source-analysis.json",
-        "scope-checks.json"
+        "scope-checks.json",
+        "source-analysis.json"
       ],
-      "details": "Tested output retains four elementary real-number classifications at easy difficulty with lesson-supported representations. Source omissions and replay bank changes are recorded separately."
+      "details": "Tested variations retain elementary class/sign/zero membership and comparable easy workload."
     },
     "grading": {
       "status": "passed",
       "evidence_paths": [
         "grader-input.json",
         "grader-report.json",
-        "canonical-grader-input.json",
         "canonical-grader-report.json"
       ],
-      "details": "Native learning::grade_field accepted 770 independently expected correct responses and rejected 770 opposite choices. All checkbox checked/unchecked states tested; no free-entry fields exist in this package."
+      "details": "Native grader matched 770 expected acceptances and 770 expected rejections across checkbox states."
     },
     "rendering": {
       "status": "passed",
@@ -102,16 +84,16 @@
         "render/question-005.png",
         "render/question-006.png"
       ],
-      "details": "Six actual-UI records rendered without reported math/font/image/JavaScript errors; five screenshots visually inspected, including relevant/irrelevant counterfactuals, empty subset and exact batch member."
+      "details": "Six actual-UI renders passed; five screenshots inspected, including counterfactuals, empty selection, and an exact batch member."
     },
     "packaging": {
       "status": "passed",
       "evidence_paths": [
         "packaging-checks.json",
         "package-integrity.json",
-        "package-hashes-before.json"
+        "commands.json"
       ],
-      "details": "Python 3.13.5 exactly matches manifest; packages object empty and imports standard-library/local only. Seed replay and relocated package match; invalid difficulty/negative count rejected, zero count empty. Package hashes unchanged."
+      "details": "Exact Python version matches. Determinism, relocation, and CLI boundaries passed. Package hashes unchanged."
     },
     "decision_variation": {
       "status": "failed",
@@ -119,38 +101,36 @@
         "pedagogical-variation.json",
         "delivery-selection-checks.json",
         "counterfactual-records.json",
-        "grader-report.json",
         "render-inspection.json"
       ],
-      "details": "Existing checkbox roles respond correctly to relevant target and irrelevant magnitude changes; tested incidental position/count strategies fail. Overall source-domain coverage remains incomplete because radio target/response roles were excluded. Exact batch and post-filter metrics retained; unknown live policy/history limits stated."
+      "details": "Existing checkbox counterfactuals behave correctly, but source target/response roles remain excluded. All five batch records and 64 fresh records survive delivery filtering. Selection-policy and history limits are documented."
     }
   },
   "findings": [
     {
       "kind": "restriction",
-      "description": "The generator excludes every captured radio family, including fully keyed Q0- and Q0+ cases. TARGETS also rejects original Q0- and Z0+ targets; the generator always constructs checkbox fields. This is a family-wide restriction, not a random sampling omission.",
+      "description": "Every captured radio family is excluded, including two fully keyed sources. Q0- and Z0+ targets are rejected; construction always produces checkboxes.",
       "source_refs": [
-        "891fa895-d529-5c21-9765-4d2a287c7001 (q-80337): Q0-, answer None, complete five-choice radio bank",
-        "c620ed83-c013-5ff0-8983-14697bd50f1b (q-104686): Q0+, answer I and IV only, complete five-choice radio bank",
-        "59f3318f-8861-5823-9f55-694de5f640be (q-181542): Z0+, bank captured; key and solution absent",
-        "tutorial 05d0929b-b494-531b-9eea-35af04606555: scripted Z/Q/R sets"
+        "891fa895-d529-5c21-9765-4d2a287c7001: Q0-, correct radio answer None",
+        "c620ed83-c013-5ff0-8983-14697bd50f1b: Q0+, correct radio answer I and IV only",
+        "59f3318f-8861-5823-9f55-694de5f640be: Z0+; captured key and solution absent"
       ],
-      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py from evidence_root: exits 1, listing the three omitted source IDs. audit.py also calls generate(Q0-, four numbers), which raises ValueError, and replays q-104686 at its original [0,sqrt20,-sqrt25,1/2] parameters, which raises StopIteration. See source-replay-checks.json.",
-      "requested_change": "Restore all original radio families and original target profiles through response-type-aware construction/replay. Preserve original complete radio banks on source replay; vary eligible qualifying subsets in authored practice rather than dropping these sources. Retain the source_acceptance.py failing regression."
+      "reproduction": "From evidence_root, run /home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py. It exits 1 and identifies all three omissions. audit.py additionally reproduces ValueError for Q0- and StopIteration when replaying q-104686 at [0,sqrt20,-sqrt25,1/2].",
+      "requested_change": "Restore source radio families and original target profiles through response-aware construction and replay. Preserve complete source banks and retain the strict regression."
     },
     {
       "kind": "source_fidelity",
-      "description": "Replay adds an unobserved fifth None of the above checkbox to each of six sources with exactly four checkbox fields. For example q-80336 changes from four original candidates to five response fields, although its correct selection is already nonempty. Correct ordinary membership does not establish exact response-bank replay.",
+      "description": "Replay appends an unobserved None of the above checkbox to six original four-field banks, including cases whose correct selection is already nonempty.",
       "source_refs": [
-        "c2a941ac-46f5-56a9-b5ba-03889446453a (q-80336): four checkbox fields -pi, sqrt3, -4/5, 0",
+        "c2a941ac-46f5-56a9-b5ba-03889446453a",
         "c84fa181-6eb1-5e84-b542-36ff40a06a4c",
         "0e62d29f-2834-5b4e-b720-bc361e2a5dc0",
         "12109bd9-1ea8-5fd9-b15c-ba4373902b35",
         "ac020dea-1486-5e82-bd01-29594c8fbf7a",
         "4eae16cb-f514-5e15-a012-1e904a842a1d"
       ],
-      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py. For c2a941ac-46f5-56a9-b5ba-03889446453a it records expected_fields=4, actual_fields=5. Replay record and per-field comparison are in replay-records.json and source-replay-checks.json.",
-      "requested_change": "Preserve exact original field counts/banks during replay. Restrict automatic explicit-None extension to authored practice or sources whose captured banks include it; keep the original two None-checkbox source cases intact."
+      "reproduction": "Run source_acceptance.py. For c2a941ac-46f5-56a9-b5ba-03889446453a, source-acceptance-result.json records expected_fields=4 and actual_fields=5.",
+      "requested_change": "Preserve original field counts and banks during replay. Apply authored explicit-None extensions separately while retaining None options captured in the original sources."
     }
   ]
 }
