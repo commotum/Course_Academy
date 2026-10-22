@@ -1,0 +1,93 @@
+Build or repair one Course Academy question generator. Work only in the supplied workspace. Do not publish images, change database content, or edit another job. The runner handles publication after independent review.
+
+If the workspace already contains a candidate, continue it and preserve completed repairs. Read feedback first when present, fix its concrete defects, and rerun affected checks. existing_entrypoint is a starting point when no usable candidate exists; do not overwrite a repaired workspace with an older draft.
+
+Job context (paths and requested output):
+{
+  "repo_root": "/home/jake/Developer/Course_Academy",
+  "workspace": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/workspace",
+  "source_root": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/source",
+  "source_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/source/source.json",
+  "inventory_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/source/inventory.json",
+  "publisher_file": "/home/jake/Developer/Course_Academy/scripts/generator_publish.py",
+  "question_selection_file": "/home/jake/Developer/Course_Academy/engine/rust/question_selection.rs",
+  "publication_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/publication/preparation.json",
+  "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186229165.py",
+  "feedback_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/feedback.json",
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "a96387a8d5d2987ef17521e4eaadcdd620d406cdb2765cd18c1cab2ac96cd8e4",
+      "batch_hash": "ed2fd0177c112708ee28f68f5bedc503625b89cadf4b4f2caab4e8e9ec099b7f",
+      "source_hash": "e44bd770b14fc33a90b79bea01b5860e53653c10a82f579d7710228d8996a02c",
+      "inventory_hash": "bb6c67d6f75acb8bc37275c3a78382db81cd9a280036a9a1344a53fe7e68a78f",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "d8bc1d632589bed22447eb23b48692d880d58915b18fe0cbfa0091686b590045"
+    }
+  },
+  "evidence_root": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/author-1044",
+  "package_root": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/workspace",
+  "manifest_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/workspace/package.json",
+  "requested_difficulty": "easy",
+  "count": 5,
+  "knowledge_point": 17592186229165,
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "review_policy_version": 2,
+  "review_binding": {
+    "policy_version": 2,
+    "package_hash": "a96387a8d5d2987ef17521e4eaadcdd620d406cdb2765cd18c1cab2ac96cd8e4",
+    "batch_hash": "ed2fd0177c112708ee28f68f5bedc503625b89cadf4b4f2caab4e8e9ec099b7f",
+    "source_hash": "e44bd770b14fc33a90b79bea01b5860e53653c10a82f579d7710228d8996a02c",
+    "inventory_hash": "bb6c67d6f75acb8bc37275c3a78382db81cd9a280036a9a1344a53fe7e68a78f",
+    "assets": {},
+    "effective_difficulty": "easy",
+    "engine_hash": "d8bc1d632589bed22447eb23b48692d880d58915b18fe0cbfa0091686b590045"
+  },
+  "math_root": "/media/jake/SSD/EDB/math",
+  "batch_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/samples.json",
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/repair-history.json",
+  "repair_mode": "root_cause",
+  "repair_regressions_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/workspace/repair-regressions.json",
+  "repair_preflight_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/repair-preflight.json",
+  "engine_repair_allowed": false,
+  "retrospective_review": {
+    "purpose": "Review an existing generator for structural bypasses; repair only demonstrated failures.",
+    "cohort_cutoff": "2026-10-16T14:51:26-07:00",
+    "existing_pool": "Also inspect inventory_file for already stored instances of any demonstrated weakness. Save affected-inventory.json as {\"affected_questions\": [{\"question_id\":\"UUID\", \"entity_id\":123, \"finding\":\"specific defect\", \"reproduction\":\"exact command/parameters\", \"evidence_path\":\"generated-records.json\"}]}. evidence_path must be relative to evidence_root and contain reproduced complete generated records with question/id and generation metadata matching the stored question. An empty array means none demonstrated; distinguish untested inventory from a verified absence. Do not modify the database or mark original source questions as generated.",
+    "engine_limitations": "Do not remove source families or constrain valid learner notation to conceal an engine limitation. Retain strict failing acceptance/rejection tests and identify the missing engine capability."
+  }
+}
+
+On a repair, read feedback_file AND repair_history_file when present. The history retains all earlier findings, not just the latest report. Start by reproducing the exact latest failure; then identify the construction rule responsible across its whole supported family. Preserve completed repairs and turn each retained finding into an executable regression. Write repair-regressions.json in the workspace as {"findings":[{"id":"the finding ID from repair-history.json","script":"relative/check.py","args":[]}]}. Each named Python script must exit nonzero if the reported defect persists and zero only after actually testing it against the current generator. One script may cover several finding IDs. Tests may write evidence but must not modify runtime package files, contact services, or write database content. The runner executes these checks before another independent review. Do not satisfy this contract with an unconditional success, a copied expected result, or checks that merely mirror implementation metadata. Parse visible records or use independent mathematical/structural witnesses where appropriate. If source evidence changed, explicitly test and explain why the old counterexample no longer applies.
+
+When repair_mode is root_cause, the ordinary repair pass did not converge. Change the defective design rule, rather than making another isolated value patch. Reuse prior source analysis and validation scripts. Run the reported counterexample and retained regressions first, then only checks affected by the change plus a small regression sample. Do not repeat hundreds of unrelated checks or render many interchangeable examples. A concrete review finding is a repair task, not a reason to abandon a source-supported generator or hide a grading limitation by narrowing valid answers.
+
+Exception to the workspace-only rule: when engine_repair_allowed is true, a retained grading finding authorizes a narrowly scoped answer-engine repair under repo_root/engine/rust plus the required grader harness rebuild and regression tests. First reproduce a valid-response rejection or wrong-response acceptance with the real native grader and establish that the defect is in the engine. Preserve the generator's source-supported scope and valid notation. Fix the engine's mathematical rule and add acceptance AND rejection regressions; do not special-case a question, bypass grading, or edit unrelated application code. Rebuild the native grader used by the shared validation tools before rerunning the failing case. Save exact changes, commands and results in the workspace so independent review can verify the engine repair. Do not change database content or restart live services from the author session.
+
+Read `generate/principles.md`, `generate/docs/3-classify.md`, `generate/docs/4-template-extraction.md`, and `generate/docs/6-template-generator.md` under repo_root. Read `generate/docs/5-plot-extraction.md` and `generate/docs/7-plot-generator.md` when source or output uses diagrams. The supplied workspace overrides legacy scratch-directory examples in those documents. Start with the original lesson and worked examples, all supplied questions with complete fields, choices and solutions, diagrams, and relevant prerequisite context in source_root/source_file. Existing templates and review reports are interpretations to check. Reuse existing_entrypoint when supplied; do not replace working coverage unnecessarily.
+
+Keep tool output bounded. Read supplied paths directly; avoid repository-wide searches, wildcard document dumps, and printing complete inventories, generated batches, or large test reports. Save full data to files and print counts, failures, and a few representative cases. Start tests with the source cases, boundaries, decision cases, and specific shortcut probes; enlarge samples only to resolve a concrete coverage or uncertainty gap. Stop after required checks pass. On repair, retain the implementation and scripts, address feedback, and rerun affected checks plus a small regression sample; do not recreate the project or repeat unrelated investigations. Before retrying an interrupted session, inspect its existing files and a brief `workspace/session-state.md` if present. Update that file at completed implementation/validation milestones with commands, results, and the next unfinished step, not after every tool call. Return concise summaries and evidence paths instead of embedding reports.
+
+Write a short instructional account in the workspace before implementing changes. Cite source question IDs and lesson passages. Define what the learner must inspect, distinguish, infer, calculate, or construct before choosing random parameters. State the skill and reasoning stages, response contract, difficulty, instructional constraints, and allowed variations. Identify answer-bearing roles (qualifying objects, surviving terms, decisive evidence, applicable cases, correct responses), eligible changes to their assignments, and decision-case coverage obligations. Give a mathematical or instructional reason for every fixed feature; repeated source arrangements alone do not establish a constraint. Explain how every variation preserves method and workload. Distinguish source observations from conservative extensions and record source errors or missing evidence.
+
+Use `generate/pipeline/validation-tools.md` for the shared delivery-filter, native grader, and renderer interfaces. Run `check_delivery.py` on your test records instead of reconstructing publication normalization and deduplication in each workspace. Compare your own coverage and shortcut probes before and after its filtering; separately examine generator rejection and learner selection where applicable. Read implementation code only for a specific gap. Batch grader cases in one input file; do not spawn a process per response. Keep independent math and pedagogical checks specific to this source.
+
+Design decision-relevant variation before incidental variation. Choose the eligible assignment of answer-bearing roles or rule cases first, then sample compatible values and presentation details; derive the key, distractors, explanation, and diagram from that shared instance. Use another generation order when the mathematics requires it, but verify that it still exercises the justified role assignments. Do not make a fixed outcome look varied by changing only its surrounding data. For example, cancellation must not always identify the same matrix label, and classification must not preserve the same qualifying labels within a recognizable template, unless the lesson explicitly justifies that invariant.
+
+Implement one seeded Python entry point accepting `--difficulty`, `--count`, `--seed`, and `--format json`, using the existing question record format. Preserve source replay at original parameters and complete answer banks. Derive prompts, diagrams, correct answers, distractors, and worked solutions from the same instance. Generated assets must be written under the directory given by `COURSE_ACADEMY_GENERATOR_OUTPUT_DIR`, never inside the published package. The package must run after relocation: do not depend on repository-relative runtime imports, hard-coded scratch paths, undeclared files, or database writes. Standard-library imports and declared third-party packages are allowed. Include necessary local helpers and source data; reference already published images by their canonical paths.
+
+Write `package.json` in the workspace with `entrypoint` (relative path), `files` (all runtime files, relative paths), and `dependencies` (runtime and third-party version declarations). Use exactly this dependency shape, substituting versions inspected using the job context's python executable: `{"python":"3.13.5","packages":{"sympy":"1.14.0","matplotlib":"3.11.2"}}`. Version values are exact installed versions without ranges, comparison operators or `==`; third-party names belong inside packages. For standard-library-only code, packages is `{}`. Include a pinned requirements file when third-party packages are needed. Do not include logs, generated outputs, reviews, or package.json itself in the runtime files. Use relative paths inside the package and an explicit output directory for generated files.
+
+When requested_difficulty is `unclassified`, choose a source-justified `default_difficulty` (`easy`, `moderate`, or `hard`) in package.json and record all supported and unsupported bands in the instructional account. The runner samples five questions in that band. Preserve original source difficulty labels. For an explicit requested band, support that band or report unsupported; do not silently choose another.
+
+Run source replay, independent mathematical checks where possible, actual learner-grader checks, and representative rendering checks. Measure meaningful coverage of each permitted slot and profile, including changed targets with other data held constant. Count semantic instances, not seeds, UUIDs, label shuffles, or cosmetic differences. Numerical variations are legitimate when the source skill supports them. Do not introduce new reasoning methods to inflate variety. Save reproducible scripts and results as evidence. Consult feedback_file if present, repair its concrete findings, and retain useful earlier evidence.
+
+Check for surface variation with a fixed decision structure: changing numbers or layouts is insufficient if an incidental cue still predicts the answer-producing action. Test labels, positions, correct-choice counts, and other obvious cues within each recognizable template, not just across the whole sample. Use controlled changes to relevant evidence and verify that the prompt, answer, explanation, and actual grading change together as expected; test response preservation under irrelevant changes where meaningful. Inspect the batch surviving rejection, deduplication, difficulty filtering, and inventory selection, or reproduce those filters read-only and state the limits. Preserve valid simplifications and justified finite families; do not maximize randomness or impose arbitrary balance quotas. Report fidelity, correctness, grading, and decision-relevant variation as separate claims. Your specification is also subject to independent review.
+
+For actual UI rendering, save representative generated records as a JSON array and run `python3 <repo_root>/generate/pipeline/render_preview.py --input <records.json> --output <evidence/render> --asset-root <generated-asset-directory>`. Repeat --asset-root if needed; canonical images resolve under math_root via --math-root. This serves the unmodified Learning.html/learning.js UI locally using the installed Node Playwright and Chromium headless shell, waits for MathJax, fonts, and image decoding, and saves screenshots plus rendering.json. Inspect the screenshots; a passing DOM report does not replace visual inspection. Do not build a separate MathJax/Node rendering stack. The existing database-free grader interface is documented by `generate/runs/current/check-engine.rs`, with executable `generate/runs/current/check-engine`, under repo_root.
+
+Before returning `ready`, run your own counterfactual and within-template shortcut checks on generated records, including the applicable delivery filters. Repair any incidental predictor you find and rerun the affected checks before handing the package to the reviewer. Include the commands, samples, and results in your returned `evidence_paths`, using paths relative to the workspace. Do not knowingly hand off a shortcut for the reviewer to discover; if it cannot be removed within the supported skill, report the limitation and use `unsupported`. The independent reviewer must still reconstruct and test the design separately.
+
+Return the required structured author result. Use ready only when the package and evidence exist. Use unsupported with an explicit limitation when missing source evidence or unsupported behavior prevents a defensible result. This status is not approval; a fresh reviewer decides that.
