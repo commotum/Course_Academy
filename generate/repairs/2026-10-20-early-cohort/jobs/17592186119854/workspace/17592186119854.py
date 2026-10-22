@@ -137,6 +137,7 @@ def generate(difficulty,seed=0,template=None,parameters=None):
   else:raise ValueError('Bounded sampler exhausted')
  else:
   b=sp.Matrix(parameters['b'])
+  if b.shape!=(3,1) or any(not v.is_Integer for v in b):raise ValueError('RHS must contain three integers')
   bank_rng=random.Random(hashlib.sha256(json.dumps([seed,sid,list(map(str,b))]).encode()).hexdigest())
   numeric_rank=parameters.get('numeric_rank',bank_rng.randint(1,numeric_count)) if numeric_count and difficulty=='moderate' else None
  # Original parameters replay the entire observed bank unless an extension is explicitly requested.
@@ -156,6 +157,7 @@ def batch(difficulty,count,seed):
  if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported level')
  if count<1:raise ValueError('Count must be positive')
  out=[];seen=set();templates=sorted(s for s in CASES if s.startswith('q-') and level(s)==difficulty)
+ random.Random(seed).shuffle(templates)
  for i in range(max(100,count*20)):
   r=generate(difficulty,seed+i,templates[i%len(templates)]);fp=r['generation']['mathematical_fingerprint']
   if fp not in seen:out.append(r);seen.add(fp)
@@ -163,5 +165,6 @@ def batch(difficulty,count,seed):
  raise ValueError('Distinct bounded sampler exhausted')
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard'],required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--template');ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args()
- records=[generate(a.difficulty,a.seed,a.template)] if a.template else batch(a.difficulty,a.count,a.seed)
+ if a.count<1:ap.error('--count must be positive')
+ records=[generate(a.difficulty,a.seed+i,a.template) for i in range(a.count)] if a.template else batch(a.difficulty,a.count,a.seed)
  print(json.dumps(records,indent=2) if a.format=='json' else '\n\n---\n\n'.join(r['question'][':question/problem']+'\n\n'+r['question'][':question/worked-solution'] for r in records))
