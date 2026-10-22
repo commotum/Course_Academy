@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Source-derived moderate vector systems; deterministic bounded RHS translations.
+"""Moderate vector systems with source replay and independent consistency roles.
 
-No database access. See adjacent classification and extraction evidence. Each
-source bank remains a separate profile; offsets describe observed values, not
-an inferred misconception. New solutions retain each source's ordered method.
+No database access. See instructional-account.md for the conservative target
+residual and choice-bank extensions. New solutions retain each source method.
 """
 import argparse
 import hashlib
@@ -43,10 +42,14 @@ PLANS={
  'q-73957':('eliminate',0,0,1,1,2,1,2),
  'q-73950':('eliminate',1,1,2,1,1,1,0),
 }
+def scalar(text):
+    text=re.sub(r'\s+','',text)
+    match=re.fullmatch(r'(-?)\\frac\{(-?\d+)\}\{(\d+)\}',text)
+    return (-1 if match[1] else 1)*sp.Rational(match[2],match[3]) if match else sp.Rational(text)
 def vectors(text):
-    return [sp.ImmutableMatrix([sp.Rational(v.strip()) for v in m[1].split(r'\\')]) for m in MATRIX.finditer(text)]
+    return [sp.ImmutableMatrix([scalar(v) for v in m[1].split(r'\\')]) for m in MATRIX.finditer(text)]
 def tex(v):
-    return matrix_tex([[str(z)] for z in v]) if isinstance(v,sp.MatrixBase) else sp.latex(v)
+    return matrix_tex([[sp.latex(z)] for z in v]) if isinstance(v,sp.MatrixBase) else sp.latex(v)
 def domain(sid):return (-2,-1,0,1,2)
 def template_id(sid):return '-'.join(map(str,PLANS[sid]))
 def fingerprint(q):
@@ -59,7 +62,7 @@ def fingerprint(q):
     return hashlib.sha256(json.dumps(sorted(rows)).encode()).hexdigest()
 def term(coef,symbol):
     if coef==0:return ''
-    return ('-' if coef==-1 else '' if coef==1 else str(coef))+symbol
+    return ('-' if coef==-1 else '' if coef==1 else tex(coef))+symbol
 def linear(a,c,symbols=X):
     terms=[term(a,symbols[0]),term(c,symbols[1])]
     return ''.join(('+' if i and t and not t.startswith('-') and terms[0] else '')+t for i,t in enumerate(terms)) or '0'

@@ -1,35 +1,34 @@
-# Current repair state — pass 188
+# Current repair state — pass 192
 
-Preserved the repaired runtime, instructional account, all five strict regression
-declarations, and the verified replacement proposal. Read the current feedback,
-all retained findings and latest history event. No runtime, engine, database or
-publication changes.
+Read feedback and all five retained findings; inspected history through attempt
+191, existing source analysis, all 17 complete source questions, lesson context,
+and required generation docs. Preserved completed runtime repairs and all five
+strict regression declarations.
 
-First ran job Python -B checks/batch_regressions.py --finding inventory.
-Exit 1: five reproduced historical banks retain the sign-extremum shortcut.
-The 64/64 result is a possible-history witness, not observed learner usage.
-Evidence: evidence/repair-188/initial-reproduction.json.
+First test:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five reproduced historical records retain the sign-extremum shortcut;
+64/64 successes in a possible-history witness, not observed learner usage.
 
-Then ran job Python -B checks/recheck_status.py --output evidence/repair-188.
-Exit 1 preserves the historical failure. Four generator findings pass, all 17
-source banks replay, three CLI batches preserve contrasts after shared delivery
-(14 records), and native grading accepts 7 correct and rejects 28 wrong choices.
-Relocation, exact dependencies, protected hashes and proposed replacement mappings
-pass. All five generated inventory records were reproduced; none are untested.
-Affected evidence paths resolve from author-188.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-192`
+Exit 1 solely for historical finding 591f580cadb749294588. Four current-generator
+findings pass; 17 complete source banks replay; 14 records survive shared delivery
+with conditional contrasts. Native grading accepts 7 correct responses and
+rejects 28 incorrect responses. Exact dependencies, relocation, protected hashes,
+and staged replacement mappings pass. All five generated inventory records were
+reproduced; none remain untested. Affected evidence paths resolve relative to
+author-192. Commands and results: evidence/repair-192/commands.json and results.json.
 
-Reinspected the retained actual-UI screenshot evidence/repair-3/render/question-002.png:
-legible prompt, five choices, matrices, (k-12)y=3 and k=12 conclusion agree.
-Runtime and rendered records are unchanged; no duplicate rendering was needed.
+Visually reinspected unchanged actual-UI evidence/repair-3/render/question-002.png:
+prompt, choices, matrices, (k-12)y=3, and k=12 are legible and consistent. No new
+runtime change or interchangeable rendering was warranted.
 
-The remaining failure concerns stored content. question_selection.rs:125 consumes
-stored candidate entities independently of this Python entrypoint. A package
-change cannot change their banks or eligibility. Do not rewrite captured
-inventory, weaken the regression, or claim the proposal has been applied.
-
-Next required state change: separate inventory remediation using
- evidence/repair-3/inventory-repair-proposal.json, fresh inventory capture, and
-strict inventory regression. Another unchanged author retry cannot resolve this
-finding. The retry gate and exact inventory hash are recorded in
- evidence/repair-188/scope-resolution.json. Status: unsupported under the supplied
-restrictions. The source skill and repaired current generator remain supported.
+Unfinished requirement: the separate inventory-remediation workflow must reconcile
+the five stored generated identities, then supply a fresh inventory capture.
+Mappings and validated replacement records are staged in
+`evidence/repair-3/inventory-repair-proposal.json`. The selector reads stored
+entities independently of this generator. No permitted workspace edit changes
+those stored banks or eligibility. Database changes, publication, and engine
+repairs are prohibited; none occurred. The strict historical regression remains
+failing. Status unsupported under the supplied restrictions.

@@ -127,6 +127,16 @@ def main():
   try:g.generate(*args)
   except ValueError:pass
   else:raise AssertionError('Invalid input accepted')
+ # Small unforced sampler probe for the two formerly cue-bearing surface families.
+ normal=[check(g.generate('moderate',seed,sid)) for sid in ('q-34568','q-105165') for seed in range(8)]
+ for sid in ('q-34568','q-105165'):
+  items=[r for r in normal if r['generation']['source_id']==sid]
+  assert {expected(r)=='No solution' for r in items}=={False,True}
+  assert len({rank(r) for r in items if expected(r)!='No solution'})>1
+  assert len({next(i for i,a in enumerate(choices(r)) if a[':answer/value']==key(r)) for r in items if expected(r)=='No solution'})>1
+  assert all(len([a for a in choices(r) if a[':answer/type']==':answer.type/text'])==1 for r in items)
+ save('normal-sampler-records.json',normal)
+ records+=normal
  batch=[check(r) for r in g.batch('moderate',5,119807)]
  assert any(rank(r)!=3 for r in batch)
  assert batch==g.batch('moderate',5,119807)
@@ -146,7 +156,7 @@ def main():
  for sid in g.CASES:
   assert {expected(r)=='No solution' for r in groups[sid]}=={False,True}
   assert {rank(r) for r in groups[sid] if expected(r)!='No solution'}=={1,2,3,4}
- save('post-delivery-shortcuts.json',{'raw':metrics(records),'accepted':metrics(delivered),'replacement_batch':metrics(dbatch),'all_profiles_both_branches_and_all_numeric_ranks':True,'zero_writes':True})
+ save('post-delivery-shortcuts.json',{'raw':metrics(records+controls_records),'accepted':metrics(delivered),'replacement_batch':metrics(dbatch),'all_profiles_both_branches_and_all_numeric_ranks':True,'zero_writes':True})
  save('regression-results.json',{'passed':True,'source_banks':len(replay),'matched_source_choices':len(replay)*5,'checked_records':len(records)+len(controls_records)+len(batch),'retained_findings':['ff8f3c22155f60689a0c','6eae84335e516e298861','0afea531a58b614ace78']})
  print(json.dumps({'passed':True,'source_banks':len(replay),'records':len(records)+len(controls_records)+len(batch),'batch':metrics(batch)['overall']}))
 if __name__=='__main__':main()

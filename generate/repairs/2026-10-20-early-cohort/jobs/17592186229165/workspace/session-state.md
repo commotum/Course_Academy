@@ -1,13 +1,13 @@
-# Current state — author 219
+# Current state — author 224
 
-Read feedback, both retained findings, latest history event (219 events), source lesson and practice records, instructional account, and required generation/validation documentation. Runtime and source are unchanged. The latest finding explicitly requests no generator authoring.
+Read current feedback, both retained findings and all repair-history events. Latest failure reproduced first. No runtime or regression changes: the remaining finding explicitly requests report installation, not generator authoring.
 
-Ran, in order:
+Executed:
 
-1. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` — exit 1. The required prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. Before that failure, the staged correction passed actual contract/schema validation and 26 current-record replays. Log: `evidence/report-repair/current-reproduction.log`.
-2. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py` — exit 0. Controlled reorder and exponent transfer, conditional shortcut probes, shared delivery filtering, and 30 native-grader checks pass. Delivered positions: 19 first-resonant, 17 second-resonant, five both-nonresonant. Report: `evidence/role-regression/results.json`.
-3. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` — exit 0. Verified all 55 staged artifact hashes, unchanged runtime/source, and eight independently parsed mathematical records. Log: `evidence/retained-state-current.log`.
+1. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — exit 1. Required prior-review report fails with `decision_variation has an unresolved decision shortcut`; staged contract/schema validation and 26 current-record replays pass.
+2. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Controlled counterfactuals, conditional shortcut probes, shared delivery filtering and 30 native-grader expectations pass. Delivered positions: 19 first, 17 second, five both-nonresonant.
+3. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. Verified 55 handoff artifact hashes, unchanged runtime/source and eight independently parsed math cases.
 
-Preserved package, source replay, historical inventory reproductions, rendering evidence and both strict regression declarations. Evidence index: `evidence/current-validation.json`. No external writes, runtime edits, engine changes, image publication or database changes.
+Evidence: `evidence/current-validation.json`. Completed source replay, inventory reproductions and UI inspection remain applicable to unchanged runtime/source. No external writes, database writes, publication or engine edits.
 
-Unfinished: finding 645672a4cd3f9bf609ca requests replacement of a stale report at `../review-1-policy-2-48d685555902faba`, outside the supplied workspace. The corrected report and checksummed installation list already exist at `evidence/corrected-review/` and `evidence/review-installation-handoff.json`. The runner must install it with its own write authority, run the strict default regression, and obtain fresh independent review. This author cannot perform that external write under the explicit workspace-only instruction. Status remains unsupported; the local correction does not close the external installation finding. Do not change construction rules or weaken the regression to conceal it.
+Unfinished finding 645672a4cd3f9bf609ca requires installation at `../review-1-policy-2-48d685555902faba`, outside the user-authorized workspace. Validated artifacts and checksums already exist in `evidence/corrected-review/` and `evidence/review-installation-handoff.json`. Runner must install, rerun the strict default check and obtain fresh independent review. Another unchanged workspace-only author retry cannot perform that external action. Status unsupported; strict acceptance criteria retained.
