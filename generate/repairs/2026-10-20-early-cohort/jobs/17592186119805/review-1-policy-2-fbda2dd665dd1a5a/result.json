@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "The revision resolves all four retained generator failures. All eight checks pass, and package files remain unchanged. Two affected historical inventory records are documented separately; no database remediation is claimed.",
+  "source_analysis": {
+    "skill": "Solve for one scalar coefficient in a vector linear combination.",
+    "reasoning_steps": [
+      "Isolate the unknown scalar-vector product.",
+      "Compute the residual componentwise.",
+      "Determine a scalar and verify agreement across components.",
+      "Select the scalar or No solution."
+    ],
+    "invariants": [
+      "One unknown scalar and equal-dimensional column vectors.",
+      "Vector addition, subtraction and scalar multiplication.",
+      "Five-choice radio responses."
+    ],
+    "permitted_variations": [
+      "Vary coordinates, coefficients, signs, labels and correct bank roles.",
+      "Vary informative and contradictory components.",
+      "Vary homogeneous consistency without fixing its outcome."
+    ],
+    "source_refs": [
+      "fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+      "lesson 17592186120045 step 17592186120673",
+      "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+      "ce5d7202-47f0-50c1-9bc6-a025b8d27432"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json"
+      ],
+      "details": "All 12 complete rated sources replay their full banks, wording and solution mathematics. Missing evidence for the incomplete unrated source is documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "rejection-results.json"
+      ],
+      "details": "288 independent arithmetic and solution checks pass. The original invalid subtraction parameters are rejected."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "role-records.json",
+        "delivery-coverage.json",
+        "affected-inventory.json"
+      ],
+      "details": "192 fresh samples cover all 12 profiles. All eligible bank roles are exercised; every moderate profile reaches both consistency outcomes."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "normal-records.json"
+      ],
+      "details": "Variations preserve the source operations, dimensions, response format and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-execution.json"
+      ],
+      "details": "Native grading accepts 487 independently verified correct selections and rejects 1,948 distractors."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-followup/rendering.json",
+        "render-observations.json"
+      ],
+      "details": "29 actual-UI previews pass. Seven representative screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "retained-findings-results.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and external output pass. Package hashes are unchanged. Retained checks fail on the frozen original and pass on the revision."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "delivery-coverage.json",
+        "selection-results.json",
+        "inventory-selection-results.json",
+        "ui-order-results.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals agree across mathematics, solutions, rendering and native grading. Conditional shortcut probes demonstrate no current bypass. The exact batch and captured inventory limitations are assessed separately."
+    }
+  },
+  "findings": []
+}

@@ -20,7 +20,8 @@
       },
       "native_acceptance_checks": 11,
       "native_rejection_checks": 19,
-      "report": "evidence/role-regression/results.json"
+      "report": "evidence/role-regression/results.json",
+      "log": "evidence/current-role-regression.log"
     },
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
@@ -33,12 +34,12 @@
   ],
   "remaining_finding": "645672a4cd3f9bf609ca",
   "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
-  "next_action": "Runner installs the staged corrected artifacts at the required external destination, reruns the strict regression, and obtains fresh independent review.",
+  "next_action": "Runner installs the staged corrected artifacts at the required external destination, reruns the strict regression, and obtains fresh independent review. Workspace-only retries cannot perform this installation.",
   "handoff": "evidence/review-installation-handoff.json",
   "strict_regressions_preserved": true,
   "scope": "No runtime changes, external writes, image publication, database writes, or engine changes.",
-  "author_attempt": 203,
-  "validated_at": "2026-10-22T00:37:01.782659+00:00",
+  "author_attempt": 209,
+  "validated_at": "2026-10-22T00:43:09.741531+00:00",
   "staged_handoff_artifacts_verified": 55,
   "source_unchanged": true,
   "runtime_sha256": {
@@ -47,6 +48,12 @@
     "package.json": "3e6187e4ec1122b372284ef69ca32661a4b97c8a9e3f64dcd47e5870061e794b"
   },
   "retained_evidence": "Source replay, inventory reproductions and inspected UI renders retained because runtime and source are unchanged.",
-  "history_events_read": 203,
-  "retry_precondition": "Install the corrected evidence at required_destination using the existing handoff before scheduling another identical workspace-only author retry."
+  "history_events_read": 209,
+  "retry_precondition": "Runner must install the existing staged correction at required_destination before another workspace-only author retry; the retained finding explicitly requests no generator authoring.",
+  "retained_findings_read": [
+    "efa97df560cec8fee6e1",
+    "645672a4cd3f9bf609ca"
+  ],
+  "latest_failure_reproduced_first": true,
+  "authorization_constraint": "User explicitly restricts writes to supplied workspace; required prior-review destination is outside it. No installation attempted there."
 }

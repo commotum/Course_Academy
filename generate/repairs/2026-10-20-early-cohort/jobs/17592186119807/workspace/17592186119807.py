@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""Source-derived moderate vector systems; deterministic bounded RHS translations.
+
+No database access. See adjacent classification and extraction evidence. Each
+source bank remains a separate profile; offsets describe observed values, not
+an inferred misconception. New solutions retain each source's ordered method.
+"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import random
+import re
+import sys
+import uuid
+try:
+    import sympy as sp
+except ModuleNotFoundError:
+    if __name__ != '__main__': raise
+    import os
+    interpreter=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+    os.execv(str(interpreter),[str(interpreter),str(Path(__file__).resolve()),*sys.argv[1:]])
+ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'scripts/question_capture'))
+from math_format import checked_math_content, matrix_tex, system_tex, normalize_prose, normalize_tex
+HERE=Path(__file__).resolve().with_suffix('')
+SOURCE=json.loads((HERE/'source.json').read_text())
+KP_ID=17592186119807
+KP_UUID=SOURCE['record'][':knowledge-point/id']
+GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:generator:'+str(KP_ID)))
+VERSION='two-coefficients-1'
+SUPPORTED_LEVELS=('moderate',)
+CASES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
+MATRIX=re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
+X=('{x}_{1}','{x}_{2}')
+# eliminated variable, equation rows, multipliers, substitution row, check row.
+# Direct and immediate-contradiction cases have distinct ordered backbones.
+PLANS={
+ 'q-34054':('direct',1,2,1,0),
+ 'q-34242':('contradiction',0),
+ 'q-34568':('eliminate',0,0,1,3,1,0,2),
+ 'q-105166':('eliminate',0,0,1,2,1,1,2),
+ 'q-105167':('eliminate',0,0,1,1,1,1,2),
+ 'q-73951':('eliminate',1,1,2,1,1,2,0),
+ 'q-73952':('eliminate',0,0,1,1,1,0,2),
+ 'q-73954':('eliminate',0,0,1,3,2,1,2),
+ 'q-73981':('eliminate',1,0,2,1,-1,2,1),
+ 'q-73950':('eliminate',1,1,2,1,1,1,0),
+}
+def vectors(text):
+    return [sp.ImmutableMatrix([sp.Integer(v.strip()) for v in m[1].split(r'\\')]) for m in MATRIX.finditer(text)]
+def tex(v):
+    return matrix_tex([[str(z)] for z in v]) if isinstance(v,sp.MatrixBase) else str(v)
+def domain(sid):return (0,) if PLANS[sid][0]=='contradiction' else (-2,-1,0,1,2)
+def template_id(sid):return '-'.join(map(str,PLANS[sid]))
+def fingerprint(q):
+    a,c,b=vectors(q[':question/problem'])[:3]
+    # Normalize each complete equation, ignoring names, bank, order and seed.
+    rows=[]
+    for row in zip(a,c,b):
+        pivot=next((v for v in row if v),sp.Integer(1))
+        rows.append(tuple(str(sp.Rational(v,pivot)) for v in row))
+    return hashlib.sha256(json.dumps(sorted(rows)).encode()).hexdigest()
+def term(coef,symbol):
+    if coef==0:return ''
+    return ('-' if coef==-1 else '' if coef==1 else str(coef))+symbol
+def linear(a,c,symbols=X):
+    terms=[term(a,symbols[0]),term(c,symbols[1])]
+    return ''.join(('+' if i and t and not t.startswith('-') and terms[0] else '')+t for i,t in enumerate(terms)) or '0'
+def display(s):return '$$\n'+s+'\n$$'
+def aligned(rows):return r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'
+def data(sid,t):
+    a,c,b0=vectors(CASES[sid][':question/problem']);b=b0+t*a+2*t*c
+    plan=PLANS[sid]
+    if plan[0]=='contradiction':return a,c,b,None,None,False
+    rows=(plan[2],plan[3]) if plan[0]=='eliminate' else (plan[2],plan[3])
+    x=sp.ImmutableMatrix([[a[i],c[i]] for i in rows]).inv()*sp.ImmutableMatrix([b[i] for i in rows])
+    check=plan[-1];lhs=a[check]*x[0]+c[check]*x[1]
+    return a,c,b,x,lhs,lhs==b[check]
+def render_solution(sid,a,c,b,x,lhs,consistent):
+    old=CASES[sid];plan=PLANS[sid];names=('a','b') if '{a}_{1}' in old[':question/problem'] else ('c','d')
+    n,y=names;u='{'+n+'}_{1}';w='{'+n+'}_{2}'
+    result='If $'+X[0]+u+'+'+X[1]+w+'='+y+'$, then we have\n\n'
+    result+=display(aligned([X[0]+tex(a)+'+'+X[1]+tex(c)+' &='+tex(b),
+        matrix_tex([[term(v,X[0]) or '0'] for v in a])+'+'+matrix_tex([[term(v,X[1]) or '0'] for v in c])+' &='+tex(b),
+        matrix_tex([[linear(ai,ci)] for ai,ci in zip(a,c)])+' &='+tex(b)]))
+    result+='\n\nEquating the corresponding components, we get the following system:\n\n'+display(system_tex([linear(ai,ci)+'='+str(bi) for ai,ci,bi in zip(a,c,b)]))
+    ordinals=('first','second','third')
+    if plan[0]=='contradiction':return result+'\n\nThe first equation is a false statement. Hence, the system has no solution.'
+    if plan[0]=='direct':
+        _,known,row,sub,check=plan
+        result+='\n\nFrom the '+ordinals[row]+' equation we get $'+X[known]+'='+str(x[known])+'$.'
+    else:
+        _,elim,i,j,m,n,sub,check=plan;known=1-elim
+        coef=m*(a[i] if known==0 else c[i])+n*(a[j] if known==0 else c[j]);rhs=m*b[i]+n*b[j]
+        if m==n==1:sentence='Adding the '+ordinals[i]+' and the '+ordinals[j]+' equations we get'
+        elif n==1:sentence='Multiplying the '+ordinals[i]+' equation by $'+str(m)+'$ and adding the result to the '+ordinals[j]+' equation, we get'
+        elif m==1:sentence='Multiplying the '+ordinals[j]+' equation by $'+str(n)+'$ and adding the result to the '+ordinals[i]+' equation, we get'
+        else:sentence='Multiplying the '+ordinals[i]+' equation by $'+str(m)+'$, the '+ordinals[j]+' equation by $'+str(n)+'$, and adding the resulting equations, we obtain'
+        result+='\n\n'+sentence+'\n\n'
+        rows=[term(coef,X[known])+' &='+str(rhs)]
+        if coef!=1:rows.append(X[known]+' &='+str(x[known]))
+        result+=display(aligned(rows))
+    unknown=1-known;coefs=(a[sub],c[sub]);remainder=b[sub]-coefs[known]*x[known]
+    symbols=list(X);symbols[known]='('+str(x[known])+')'
+    result+='\n\nSubstituting $'+X[known]+'='+str(x[known])+'$ into the '+ordinals[sub]+' equation, we get\n\n'
+    result+=display(aligned([linear(a[sub],c[sub])+' &='+str(b[sub]),linear(a[sub],c[sub],symbols)+' &='+str(b[sub]),term(coefs[unknown],X[unknown])+' &='+str(remainder),X[unknown]+' &='+str(x[unknown])]))
+    result+='\n\nFinally, we substitute $'+X[0]+'='+str(x[0])+'$ and $'+X[1]+'='+str(x[1])+'$ into the '+ordinals[check]+' equation to get\n\n'
+    result+=display(aligned([linear(a[check],c[check])+' &='+str(b[check]),linear(a[check],c[check],['('+str(z)+')' for z in x])+' &='+str(b[check]),str(lhs)+' &='+str(b[check])]))
+    result+='\n\nwhich gives a '+('true' if consistent else 'false')+' statement.'
+    if not consistent:return result+'\n\nSo, the system has no solution.'
+    result+='\n\nSo the solution of the system is $'+X[0]+'='+str(x[0])+'$ and $'+X[1]+'='+str(x[1])+'$, which means\n\n'+display(linear(x[0],x[1],(u,w))+'='+y+'.')
+    return result+'\n\nConsequently,\n\n'+display(X[0]+'+'+X[1]+'=('+str(x[0])+')+('+str(x[1])+')='+str(sum(x))+'.')
+@checked_math_content
+def generate(level,seed=0,profile=None,parameters=None):
+    if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level+'; see capabilities.json')
+    rng=random.Random(seed);sid=profile or rng.choice(sorted(CASES))
+    if sid not in CASES:raise ValueError('Unknown profile')
+    if parameters is not None and set(parameters)!={'translation'}:raise ValueError('Exactly translation required')
+    t=rng.choice(domain(sid)) if parameters is None else parameters['translation']
+    if type(t) is not int or t not in domain(sid):raise ValueError('Translation outside bounded domain')
+    old=CASES[sid];a,c,b,x,lhs,consistent=data(sid,t)
+    correct=str(sum(x)) if consistent else 'No solution'
+    problem=old[':question/problem'];ms=list(MATRIX.finditer(problem));m=ms[2];problem=problem[:m.start()]+tex(b)+problem[m.end():]
+    solution=old[':question/worked-solution'] if t==0 else render_solution(sid,a,c,b,x,lhs,consistent)
+    problem=normalize_prose(problem);solution=normalize_prose(solution)
+    bank=[(str(o[':answer/type'][':db/ident']),str(sp.Integer(o[':answer/value'])+3*t) if o[':answer/type'][':db/ident']==':answer.type/math' else o[':answer/value']) for o in old[':question/answer-fields'][0][':answer-field/choices']]
+    content=hashlib.sha256(json.dumps([VERSION,problem,solution,sorted(bank)]).encode()).hexdigest()
+    uid=lambda key:str(uuid.uuid5(uuid.NAMESPACE_URL,str(KP_ID)+':'+content+':'+key))
+    choices=[{':answer/id':uid('selection:'+kind+':'+value),':answer/type':kind,':answer/value':normalize_tex(value) if kind==':answer.type/math' else value} for kind,value in bank]
+    cid=next(o[':answer/id'] for o in choices if o[':answer/value']==correct);rng.shuffle(choices)
+    field={':answer-field/id':uid('selection'),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',cid]}
+    q={':question/id':uid('question'),':question/difficulty':':question.difficulty/moderate',':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[field]}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template_id(sid),'bank_profile':sid,'source_id':sid,'parameters':{'translation':t},'mathematical_fingerprint':fingerprint(q),'content_fingerprint':content,'correct_value':correct,'candidate_coefficients':list(map(str,x)) if x is not None else None,'consistent':bool(consistent),'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'domain':'t in -2..2; b=b0+t*a1+2*t*a2; immediate contradiction restricted to original only','bank_policy':'complete observed numeric bank translated by 3t; text No solution retained; value pattern extension, misconception intent unresolved'}}
+def catalog():
+    seen=set();records=[]
+    for sid in sorted(CASES):
+        for t in domain(sid):
+            rec=generate('moderate',0,sid,{'translation':t});fp=fingerprint(rec['question'])
+            if fp not in seen:seen.add(fp);records.append(rec)
+    return records
+def batch(level,count,seed=0):
+    if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
+    records=catalog();random.Random(seed).shuffle(records)
+    if count<0 or count>len(records):raise ValueError('Finite variant limit: '+str(len(records)))
+    return records[:count]
+def markdown(rec):
+    q=rec['question'];return q[':question/problem']+'\n\n'+'\n'.join(o[':answer/value'] for o in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--difficulty',default='moderate');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=5);p.add_argument('--format',choices=['json','markdown'],default='json');args=p.parse_args()
+    records=batch(args.difficulty,args.count,args.seed);print(json.dumps(records,indent=2) if args.format=='json' else '\n\n'.join(map(markdown,records)))

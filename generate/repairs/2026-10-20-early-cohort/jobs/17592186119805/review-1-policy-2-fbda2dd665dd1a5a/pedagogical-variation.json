@@ -1,0 +1,2043 @@
+{
+  "learner_operation": "Isolate the unknown scalar-vector product, compute the residual componentwise, find a scalar from a nonzero component, and check all components agree; otherwise select No solution.",
+  "fixed_features": [
+    {
+      "feature": "one unknown scalar, nonzero unknown vector, equal dimensions",
+      "justification": "Canonical example and lesson isolate one coefficient; a nonzero vector avoids an unsupported infinite-solutions response."
+    },
+    {
+      "feature": "2–4 coordinates and one five-choice radio field",
+      "justification": "All 13 captured question banks have this response shape; dimension bounded by source workload."
+    },
+    {
+      "feature": "easy sampler has unique scalars; moderate sampler varies consistency",
+      "justification": "All eight complete easy cases focus on finding a scalar; moderate source worked solutions explicitly add consistency/contradiction checking. Keeping easy as this narrower focused operation is instructional, while homogeneous wording within moderate must not fix its outcome."
+    },
+    {
+      "feature": "subtraction coefficient c=1",
+      "justification": "The displayed subtraction family is a1-x*a2=b, so enforcing c=1 keeps prompt and arithmetic coherent. General addition coefficient still varies."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "correct scalar and its bank rank/sign/position",
+      "eligible_variation": "Any numeric role in a held bank may be correct; relabeling unknown is cosmetic.",
+      "observed": "56 held-bank role records plus 192 normal samples; every profile reaches all five stored positions, labels vary, positive/negative values occur, and many profiles reach zero."
+    },
+    {
+      "role": "homogeneous consistency outcome",
+      "eligible_variation": "Changing one unknown-vector component may switch No solution to a numeric scalar without changing the form or bank.",
+      "observed": "Exact prior one-coordinate witness now gives -6; all four moderate profiles show both outcomes in fresh normal and delivered samples."
+    },
+    {
+      "role": "informative and contradictory component",
+      "eligible_variation": "Any coordinate can supply first nonzero information or a mismatch; no mathematical reason fixes the first row.",
+      "observed": "Moderate normal samples reach all possible first-informative coordinates. Mismatches and zero components checked from visible equations; no stale key/solution found."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-34249 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-1', '-2', '-3', '0', '2', '3']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-105152 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-1', '-2', '-3', '0', '1', '2', '3']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-105154 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-2', '-3', '-4', '-5', '-6', '3', '4', '5']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34051 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-1', '-2', '-3', '-4', '0', '1', '2', '3', '4']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34241 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-2', '-3', '-4', '0', '1', '2', '3', '4']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34570 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-1', '-2', '-7', '1', '2', '3', '6', '7', 'No solution']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34600 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-1', '-2', '-3', '-4', '-5', '-6', '0', '1', '2', '3', '5']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34602 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-11', '-3', '-4', '-5', '-8', '12', '3', '6', '7', '8', 'No solution']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1, 2]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-73923 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-10/3', '-3', '-5', '-6', '-7', '-7/3', '4', '6', '7/3', 'No solution']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-34572 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-2', '-4', '-6', '0', '1', '2', '3', '5', '6']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-105156 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-2', '-3', '-4', '2', '3', '4', '5', 'No solution']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1, 2]. All survive requested-band delivery."
+    },
+    {
+      "case": "q-105153 normal decisions",
+      "sample_refs": [
+        "normal-records.json",
+        "sampling-inputs.json",
+        "coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "16 fresh cases; answers ['-2', '-3', '1', '2', '3', '4']; correct stored positions [0, 1, 2, 3, 4]; informative coordinates [0, 1]. All survive requested-band delivery."
+    },
+    {
+      "case": "exact five-question runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-coverage.json",
+        "ui-order-results.json"
+      ],
+      "result": "Five distinct mathematical tasks, dimensions 2 and 4, known coefficients 1,3,4; answers -1,-2,-2,-7,-2. All negative, but 2,4,2,5,2 negative options respectively; sign alone does not identify a choice. Original composite shortcut succeeds 1/5; tested value/rank/position actions at most 3/5. Not merely sign variants of one task."
+    },
+    {
+      "case": "all eligible held-bank roles",
+      "sample_refs": [
+        "role-records.json",
+        "math-results.json",
+        "grader-report.json"
+      ],
+      "result": "56 explicit records cover every numeric correct role of all 12 complete source banks, plus No solution in every moderate bank. Normal bank-first construction permits these assignments; source replay is a separate path."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "u[0]: 3 -> 1, all other parameters and full visible bank held fixed (q-34570)",
+      "expected": "['No solution', '-6']",
+      "observed": "['No solution', '-6']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-34249)",
+      "expected": "['-2', '2']",
+      "observed": "['-2', '2']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-105152)",
+      "expected": "['2', '1']",
+      "observed": "['2', '1']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-105154)",
+      "expected": "['-5', '-3']",
+      "observed": "['-5', '-3']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-34051)",
+      "expected": "['-3', '-4']",
+      "observed": "['-3', '-4']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-34241)",
+      "expected": "['2', '0']",
+      "observed": "['2', '0']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-34600)",
+      "expected": "['3', '2']",
+      "observed": "['3', '2']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-34572)",
+      "expected": "['2', '-1']",
+      "observed": "['2', '-1']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change target b through new scalar; a,u,c,label and full bank fixed (q-105153)",
+      "expected": "['-2', '3']",
+      "observed": "['-2', '3']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "a1[0] 9 -> 10 and b[0] 45 -> 50, unchanged residual and bank (q-34249)",
+      "expected": "['-2', '-2']",
+      "observed": "['-2', '-2']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "l -> x only (q-34249)",
+      "expected": "['-2', '-2']",
+      "observed": "['-2', '-2']; prompt/solution math independently checked, all five native learner selections checked, both members rendered.",
+      "status": "passed",
+      "justification": "Changing the residual or a nonzero unknown-vector component can change scalar or consistency; coupled known-vector/target translations and a cosmetic unknown label preserve the response. This follows the canonical isolation and source component-consistency argument.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "old-label-bank",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 33,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "33/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "No solution",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "No solution using visible bank/label/target only",
+      "correct": 15,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 28,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "28/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "closest-zero",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "closest-zero using visible bank/label/target only",
+      "correct": 41,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "41/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "literal-minus-two",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "literal-minus-two using visible bank/label/target only",
+      "correct": 23,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "23/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-0",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-0 using visible bank/label/target only",
+      "correct": 41,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "41/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-1 using visible bank/label/target only",
+      "correct": 37,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "37/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-2",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-2 using visible bank/label/target only",
+      "correct": 32,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "32/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-3",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-3 using visible bank/label/target only",
+      "correct": 30,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "30/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-4",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-4 using visible bank/label/target only",
+      "correct": 52,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "52/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 44,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "44/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-1",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-1 using visible bank/label/target only",
+      "correct": 36,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "36/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-2",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-2 using visible bank/label/target only",
+      "correct": 46,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "46/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-3",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-3 using visible bank/label/target only",
+      "correct": 39,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "39/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 37,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "37/192; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34249",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34249",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34249",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 5,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34249",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-105152",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 5,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-105152",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-105152",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-105152",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 5,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-105154",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-105154",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-105154",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 7,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-105154",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34051",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34051",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34051",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34051",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34241",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34241",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34241",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34241",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34600",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34600",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34600",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34600",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34572",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34572",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 1,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34572",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34572",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 5,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-105153",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-105153",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-105153",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-105153",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34570",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34570",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34570",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34570",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-34602",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-34602",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-34602",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-34602",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-73923",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-73923",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-73923",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 6,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-73923",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "profile:q-105156",
+      "scope": "within_template",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "profile:q-105156",
+      "scope": "within_template",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "profile:q-105156",
+      "scope": "within_template",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "profile:q-105156",
+      "scope": "within_template",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. ",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "old-label-bank",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "old-label-bank using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "No solution",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "No solution using visible bank/label/target only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "negative-nearest-zero",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "negative-nearest-zero using visible bank/label/target only",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "closest-zero",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "closest-zero using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "literal-minus-two",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "literal-minus-two using visible bank/label/target only",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-0",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-0 using visible bank/label/target only",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-1 using visible bank/label/target only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-2",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-2 using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-3",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-3 using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "position-4",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "position-4 using visible bank/label/target only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-0",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-0 using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-1",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-1 using visible bank/label/target only",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-2",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-2 using visible bank/label/target only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-3",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-3 using visible bank/label/target only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "rank-4",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "rank-4 using visible bank/label/target only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Batch has multiple negative choices in each record, so its all-negative answers are not a unique answer-producing action.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "No solution",
+      "subgroup": "target:zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "No solution using visible bank/label/target only",
+      "correct": 15,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/64; baseline 0.2 is uniform blind choice among five radio options. This is a measured success rate, not proof of statistical independence; no complete reproducible bypass is demonstrated for this tested action. Homogeneous prompts now yield numeric scalars as well as No solution; zero-RHS wording no longer fixes the correct choice.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 36,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 41,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 34,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 36,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 45,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 42,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 35,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 41,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 37,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 37,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 40,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 46,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 37,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 46,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "normal-records.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 23,
+      "total": 192,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "normal-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 107",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 2",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 3",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 4",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "runner-batch.json; synthetic item id 1007",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose displayed position 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform blind choice among five options. Uses the actual UI FNV ordering, verified against 29 HTML previews; future real task-item IDs are unavailable. None of the tested constant UI positions answers the entire batch or an entire 16-case profile.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "zero unknown-vector component has nonzero residual",
+      "subgroup": "homogeneous component contradictions",
+      "scope": "within_template",
+      "strategy": "select No solution after computing/inspecting that component equation",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Blind-choice baseline is 0.2. This perfect rule is the mathematical consistency test itself: 0 times the scalar cannot equal a nonzero residual. Source homogeneous worked solutions require component agreement, so this is a valid simplification, not an incidental shape cue.",
+      "sample_refs": [
+        "zero-component-contradictions.json",
+        "normal-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator input validation",
+      "normal construction and rejection/resampling",
+      "within-batch mathematical fingerprint deduplication",
+      "requested difficulty",
+      "actual publisher normalization/validation/stable identities",
+      "captured inventory and within-batch publication deduplication",
+      "learner freshness/usability prefilter and weighted same-band selection",
+      "actual UI answer ordering"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "resampling-easy.json",
+      "resampling-moderate.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-coverage.json",
+      "selection-results.json",
+      "inventory-selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "20/20 attempts accepted in each instrumented normal batch. Publisher accepts 128/128 easy,64/64 moderate and5/5 exact runner records against inventory basis5398; cases/shortcuts unchanged by delivery. Read-only weighted selection scenarios retain access to both moderate outcomes in fresh delivered controls. Captured legacy moderate inventory remains all No solution and is explicitly not claimed remediated."
+  },
+  "limitations": [
+    "Finite source-grounded audit does not prove absence of every possible shortcut.",
+    "No live learner histories or active policy weights captured; candidate selection scenarios use stated synthetic IDs and positive requested-band weights, with a second half-excluded scenario. No actual future task draw is claimed.",
+    "Two legacy v1.0.0 generated inventory records reproduce the prior homogeneous-family weakness. They are saved in affected-inventory.json; acceptance of v1.1.0 does not claim database repair. The requested new batch is easy only.",
+    "The five runner answers are all negative and three equal -2; no tested complete sign/rank/label/position shortcut answers the entire batch, and each item has multiple negative choices.",
+    "Incomplete unrated q-34250 has no authored key/solution. Implied answer4 is identified as inference; no missing source fields invented.",
+    "Source canonical example lacks an answer bank; mathematical prompt/solution replay uses a clearly authored bank.",
+    "Actual free-entry equivalence does not apply to this source radio-response contract. Every choice, including every plausible distractor, was exercised through the native learner grader."
+  ]
+}

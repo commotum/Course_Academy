@@ -1,0 +1,124 @@
+{
+  "verdict": "accepted",
+  "summary": "The revision resolves all four retained generator failures and passes the eight independent checks. Package unchanged. Two historical affected inventory records are documented separately; stored-data remediation is not claimed.",
+  "source_analysis": {
+    "skill": "Solving for one coefficient in a linear combination of two column vectors.",
+    "reasoning_steps": [
+      "Substitute the given vectors into c a1 +/- x a2 = b or 0.",
+      "Isolate x a2 by vector subtraction with the appropriate sign.",
+      "Read a candidate scalar from a nonzero component and verify all remaining components.",
+      "Choose exactly one scalar or No solution from the complete radio bank."
+    ],
+    "invariants": [
+      "One unknown scalar, two known equal-dimensional vectors, known scalar multiplier, vector addition/subtraction only.",
+      "Unique scalar or no solution; exclude all-zero unknown vector leading to infinitely many solutions unless source-supported.",
+      "Keep componentwise vector isolation and the source workload; do not introduce multi-unknown systems."
+    ],
+    "permitted_variations": [
+      "Change integer coordinates, dimension 2–4, known coefficient and sign, unknown symbol, and scalar answer including zero where unique.",
+      "Change the consistency-determining component, positions of zero entries, and which options represent the answer.",
+      "Homogeneous versus explicit-target form need not dictate consistency: consistent homogeneous and inconsistent nonzero-target instances are eligible same-method extensions, with difficulty justified by reasoning.",
+      "Permute choices and vary full bank profiles including observed banks without No solution."
+    ],
+    "source_refs": [
+      "4e441944-ad54-59d2-9897-793ac5452b92",
+      "ad60885f-7a0b-58e2-b4e4-f60e38dd9918",
+      "b99af0d8-b75f-54bf-9697-c5d904e35653",
+      "ab1a2dbb-2f20-5b38-9d5d-1509f7f1ce65",
+      "3910d8c3-7517-5b80-9efc-a8b60965d481",
+      "ce5d7202-47f0-50c1-9bc6-a025b8d27432",
+      "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+      "c8dd7df5-a62a-5efa-a6ef-0c480856813f",
+      "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+      "80bf8c74-6292-5b04-9a45-fc39723fd232",
+      "1c4f9063-8349-57ea-b235-d134f5cba639",
+      "6154ace2-6af4-581c-9596-72c7ea4a622a",
+      "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+      "fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+      "lesson 17592186120045 step 17592186120673 (17458)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json"
+      ],
+      "details": "All12 complete rated source cases replay full banks, wording and solution mathematics; canonical math replay passes. The incomplete unrated source gap is recorded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "rejection-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "288 independent rational-arithmetic and full worked-solution checks pass. Original subtraction c=2 and neighboring invalid inputs are rejected."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "role-records.json",
+        "delivery-coverage.json",
+        "affected-inventory.json"
+      ],
+      "details": "192 normal cases cover all12 profiles, varying scalar roles, signs, labels, positions and homogeneous consistency. Exact batch assessed separately. Two legacy affected records are reproduced, without claiming stored-data repair."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "normal-records.json"
+      ],
+      "details": "One scalar, dimensions2–4, source vector operations and radio responses; moderate rational arithmetic is already present in the source."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-execution.json"
+      ],
+      "details": "Native grade_field accepts487 independent correct choices and rejects1948 distractors; includes all controlled pairs and delivered records. Radio response contract has no typed-entry notation."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-followup/rendering.json",
+        "render-observations.json",
+        "ui-order-results.json"
+      ],
+      "details": "29 actual-UI previews pass; seven representative screenshots inspected, including both homogeneous outcomes, subtraction, fraction, four-coordinate vectors and non-first pivot."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "retained-findings-results.json"
+      ],
+      "details": "Exact declared dependency versions match; deterministic/current-batch replay, relocation with manifest-only runtime files and external output pass. All package file hashes unchanged. All four retained checks fail on frozen original and pass on revision."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "delivery-coverage.json",
+        "selection-results.json",
+        "inventory-selection-results.json",
+        "ui-order-results.json"
+      ],
+      "details": "Controlled relevant/irrelevant changes agree across prompt, solution and native grading. Conditional label/bank/rank/UI-position probes find no demonstrated current bypass; prior homogeneous cue succeeds15/64 rather than always. All5 runner questions survive filtering and are separately measured. Captured history/policy and legacy-pool limits are explicit."
+    }
+  },
+  "findings": []
+}

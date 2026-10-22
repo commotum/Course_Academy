@@ -1,27 +1,31 @@
-# Current repair state — pass 178
+# Current repair state — pass 182
 
-Preserved the repaired runtime, source families, strict regression declarations,
-and staged inventory replacement proposal. No runtime changes were justified
-by the unchanged finding; no database or publication changes were performed.
+Preserved all repaired runtime files, source families, strict regression declarations,
+and staged replacements. No runtime, engine, database, or publication changes.
 
-First test:
+First reproduced the latest failure:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: all five historical v2 records still expose the sign-extremum shortcut.
-The 64/64 selection result is a possible-history witness, not observed usage.
+Exit 1: five captured historical records retain the sign-extremum shortcut.
+The 64/64 result is a possible-history witness, not observed learner usage.
 
-Retained checks:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-178`
-Exit 1 overall. Four current-generator regressions pass; 17 complete source
-banks replay. Three delivery batches preserve the checked contrasts across 14
-records. Native grading accepts 7 correct and rejects 28 wrong responses.
-Relocation, exact dependency versions, protected hashes, and the five replacement
-mappings pass. Retained actual-UI screenshot question-002 was visually inspected.
+Then ran once:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-182`
+Exit 1 overall. Four current-generator regressions pass; all 17 practice banks
+replay; three batches preserve the checked contrasts after shared delivery (14 records).
+Native grading accepts 7 correct and rejects 28 wrong responses. Relocation,
+exact dependencies, protected hashes and staged replacement mappings pass.
+Retained actual-UI screenshot `evidence/repair-3/render/question-002.png`
+was visually inspected: prompt, choices, matrices and solution are legible.
+Runtime and rendered records are unchanged; no fresh render needed.
 All five generated inventory records are reproduced; none remain untested.
-Affected-inventory evidence paths resolve relative to author-178.
+Affected-inventory evidence paths resolve relative to author-182.
 
-Remaining: finding 591f580cadb749294588 requires separate inventory remediation
-and a fresh capture. The stored banks cannot be changed by a workspace generator
-edit. Keep the strict regression failing until that external state changes.
-Proposal: evidence/repair-3/inventory-repair-proposal.json (unapplied).
-Current evidence: evidence/repair-178/commands.json, results.json,
-grader-report.json, scope-resolution.json. Status: unsupported.
+Finding 591f580cadb749294588 still requires separate inventory remediation
+and a fresh capture. The selector reads stored candidates independently of the
+generator. This job prohibits database changes and publication. No permissible
+workspace generator edit can change those captured banks. Keep the strict test
+failing; do not substitute proposed replacements for captured inventory.
+The verified, unapplied proposal remains at
+`evidence/repair-3/inventory-repair-proposal.json`.
+Current commands, results and scope resolution: `evidence/repair-182/`.
+Status: unsupported.
