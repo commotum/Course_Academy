@@ -1,0 +1,115 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are resolved. All eight checks passed, including the exact five-record batch. No new concrete failure was demonstrated. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Isolate an unknown vector in p a + q x = b, then select the vector or evaluate a requested component sum or difference.",
+    "reasoning_steps": [
+      "Read the signed coefficients and supplied vectors.",
+      "Compute x = (b - p a)/q componentwise.",
+      "Evaluate the requested target and select its matching choice."
+    ],
+    "invariants": [
+      "Equal vector dimensions and nonzero coefficient of x.",
+      "Prompt, target, answer bank and worked solution agree.",
+      "Five distinct radio choices with exactly one correct answer.",
+      "Preserve the demonstrated easy arithmetic workload."
+    ],
+    "permitted_variations": [
+      "Comparable integer coefficients and vector entries.",
+      "Three- and four-component vectors.",
+      "Eligible component pairs and subtraction directions.",
+      "Correct-answer position, numerical rank and distractor relationships."
+    ],
+    "source_refs": [
+      "548ef945-392b-5e75-9b60-14f4e2de6261: canonical vector-isolation example",
+      "deec7ef1-a437-505b-aec9-2a0d7048c769: component difference",
+      "665aac1d-ba76-55e8-8058-f38999b08deb: component difference",
+      "7b8162a3-2a18-5498-a3a6-ab4fdf90d980: restored complete source profile",
+      "Lesson step fd939fe8-9699-5d8a-9dce-0e749d48075e: addition/subtraction and scalar multiplication to isolate x"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "executable-regression-verification.json"
+      ],
+      "details": "All 14 complete captured banks replay correctly, including q-105158. Missing original key/solution evidence for q-34574 and the canonical answer-bank gap remain explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math.json",
+        "counterfactual-results.json"
+      ],
+      "details": "269 records passed independent exact arithmetic checks covering answers, all choices, worked vectors, division signs and final component arithmetic."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "delivered-probes.json",
+        "delivery-fresh/delivery.json",
+        "delivery-batch/delivery.json",
+        "learner-selection.json",
+        "resampling-results.json"
+      ],
+      "details": "Tested 168 fresh records across 14 profiles and all 53 eligible profile/target cases. Delivery retains 168/168 fresh records and 5/5 batch records. Duplicate retry and bounded exhaustion passed."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json",
+        "fresh-records.json"
+      ],
+      "details": "Variations preserve the demonstrated dimensions, integer isolation method, component operations, radio response and easy workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "delivered-grader-report.json"
+      ],
+      "details": "Native grading accepted 67 independently correct selections and rejected 268 alternatives, including controlled pairs and the normalized delivered batch."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "ui-choice-order.json"
+      ],
+      "details": "Inspected all 12 actual-UI screenshots. Prompts, controls and solutions display correctly. UI choice ordering independently matches every saved DOM."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "external-output.json",
+        "commands.json"
+      ],
+      "details": "Exact dependencies match. Determinism, rejection boundaries, relocation and external-output checks passed. The entire original package file hash map is unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "retained-shortcuts-after-delivery.json",
+        "simple-cues.json",
+        "counterfactual-results.json",
+        "executable-regression-verification.json"
+      ],
+      "details": "Identical strict tests fail on the preserved old executable and pass on the revision. Fixed-bank controls permit every candidate to become correct. Batch, conditional shortcut and delivery measurements passed; finite-sample coincidences and live-selection limits are disclosed."
+    }
+  },
+  "findings": []
+}

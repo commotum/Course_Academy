@@ -1,0 +1,1 @@
+Read feedback/history and supplied source. Reproduced silent truncation: easy count=13 seed=0 returns 12 (evidence/before-count.json); count=5 works. Wrote instructional-account.md before edits. Next: finite task-first batching, packaging closure, source coverage refresh and incidental bank cue repair; then source/counterfactual/delivery/grader/render checks.
