@@ -1,24 +1,31 @@
-# Current verification — author 795
+# Current verification — author 798
 
-Read feedback and all five retained findings first. Exact latest reproduction:
-job Python -B checks/batch_regressions.py --finding inventory exits 1: five
-historical banks retain the shortcut; possible-history selection succeeds 64/64.
+Read feedback, all five retained findings, latest history event, original lesson,
+canonical example and all 17 complete source practice cases. Preserve the
+existing instructional account, runtime, manifest, and all completed repairs.
 
-Job Python -B checks/recheck_status.py --output evidence/author-795 exits 1
-solely for 591f580cadb749294588. Four current-generator regressions pass:
-17 complete source banks, zero-root cases, conditional shortcut probes and
-three delivered batches totaling 14 records. Native grading passes 7 correct
-and 28 wrong responses. Relocation, dependencies, protected hashes and staged
-replacement mapping pass. Existing actual-UI question-002.png and source
-flowchart visually inspected. Runtime unchanged.
+First test:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five historical stored banks retain the shortcut; the retained possible
+learner-history scenario yields 64/64 shortcut successes.
 
-Evidence: evidence/author-795/{commands,results,grader-report}.json and
-disposition.md. Historical records: evidence/generated-records.json.
-Staged proposal: evidence/repair-3/inventory-repair-proposal.json.
+Then:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-798`
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass:
+17 complete source banks, zero roots, counterfactuals and conditional shortcuts.
+Shared delivery accepts 14 records across three small batches with required
+contrasts preserved. Native grading accepts 7 correct and rejects 28 wrong
+choices. Relocation, exact dependencies, protected hashes and staged replacement
+mapping pass. Inspected both retained actual-UI screenshots under
+evidence/repair-3/render; equations, choices and worked solutions are readable.
+Runtime and source bindings are unchanged; no new rendering was necessary.
 
-Unfinished: separate inventory remediation, fresh capture, strict recheck.
-The finding explicitly assigns this separate stage. This job forbids database
-changes and publication. The selector consumes stored candidate entities, not
-this entrypoint; unchanged generator retries cannot retire them. Preserve the
-completed repairs and strict failing regression. No new generator defect was
-demonstrated in this pass.
+Evidence: evidence/author-798/{commands,results,grader-report}.json and disposition.md.
+Historical reproduction: affected-inventory.json and evidence/generated-records.json.
+Staged mapping: evidence/repair-3/inventory-repair-proposal.json.
+
+Next unfinished step: separate inventory remediation explicitly requested by
+finding 591f580cadb749294588, followed by a fresh capture and strict regression.
+This job prohibits database changes and publication; workspace generator edits
+cannot change already stored banks. Keep the regression failing until that
+state changes. Do not repeat unchanged validations as a substitute.
