@@ -1,0 +1,11 @@
+# Author-449 outcome
+
+The repaired candidate is preserved. The latest exact failure remains reproduced: finding 591f580cadb749294588 concerns five historical generated banks in the unchanged captured inventory. The strict test exits 1, including its 64/64 possible-history shortcut witness. This is not a claim about every learner history.
+
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-449` exits 1 for that retained finding. Four current-generator regression checks pass, including 17 complete source banks, bare-k fractional elimination, valid zero roots, construction shortcut probes, controlled relevant/irrelevant changes, and three finite CLI batches before/after shared delivery filtering (14 accepted). Native grading accepts seven correct submissions and rejects 28 wrong submissions. Relocation, exact dependency versions, protected source/inventory/runtime hashes and the previously prepared five-item replacement mapping pass. Full commands and results are in this directory.
+
+The source skill remains elimination, setting the residual affine coefficient to zero and interpreting contradiction or redundancy: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe and tutorial e0c85152-daea-5a87-a3ba-81870558c7a2. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 establishes that an extreme correct numeric option is not required. Source evidence has not changed; no new generator construction defect warrants a runtime edit. The existing instructional account remains applicable.
+
+Visually inspected the lesson flowchart and retained actual-UI screenshot evidence/repair-3/render/question-001.png: equations, choices, augmented matrices and solution are readable. Reused rendering evidence because runtime and presentation are unchanged.
+
+Status is unsupported pending the separate inventory-remediation workflow explicitly requested by the finding. The verified proposal at evidence/repair-3/inventory-repair-proposal.json remains unapplied. This author session cannot change database content or publication state. No test was weakened or hypothetical replacement pool substituted for captured inventory. Repeating another workspace-only author pass with unchanged inputs cannot resolve the remaining failure.

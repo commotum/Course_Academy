@@ -1,0 +1,1 @@
+Source account saved before package inspection. Independently sampled 180 records across 15 profiles; replayed 15 exact source prompts, solutions and full banks. Native input, counterfactuals, boundary cases, math, relocation and inventory evidence saved by audit.py. Next: shared delivery, native grader, actual rendering and conditional shortcut assessment.

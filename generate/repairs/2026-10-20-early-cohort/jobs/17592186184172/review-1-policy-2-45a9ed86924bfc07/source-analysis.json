@@ -1,0 +1,83 @@
+{
+  "skill": "Infer rank and nullity from pivot/non-pivot counts or an explicitly parametrized/spanned null space, apply rank-nullity and the square invertible matrix theorem, and evaluate three statements.",
+  "learner_operation": "Determine the dimension of the supplied null space or pivot count; derive the complementary rank/nullity; decide each statement independently and select the corresponding subset.",
+  "reasoning_steps": [
+    "Identify n, the number of columns.",
+    "Extract rank from pivot columns or nullity from non-pivot columns / independent null-space generators.",
+    "Use rank+nullity=n.",
+    "Use invertibility iff rank=n iff nullity=0; connect column-space dimension and determinant zero.",
+    "Evaluate all three claims and express the subset through the supplied radio bank or three checkbox truth fields."
+  ],
+  "response_contract": "Radio questions use complete five-choice banks of subsets of I/II/III; checkbox questions have three statement keys and true/false choices per field. Preserve each source bank during replay. Canonical example has no captured answer fields: its solution specifies I only.",
+  "difficulty": "Moderate source includes direct counts and low-complexity parametric null spaces; hard includes explicit span and some larger parametrizations. Avoid introducing matrix elimination, nonlinear parameters, determinant calculation, or proof workload.",
+  "invariants": [
+    "A is square when using invertibility equivalences.",
+    "All null-space vectors have n entries; nullity is span dimension, not blindly number of parameters.",
+    "rank+nullity=n and 0<=rank,nullity<=n.",
+    "Every statement and worked explanation must be derived from the supplied data.",
+    "Keep three truth judgments and source response shapes."
+  ],
+  "permitted_variations": [
+    "n and pivot/non-pivot count, including full-rank and zero-rank boundaries if clearly expressed with the same method.",
+    "Null-space coefficients, signs, coordinate locations, and independent directions without adding elimination workload.",
+    "Numerical claims of rank/nullity/column dimension and whether they match the derived values.",
+    "Statement polarity and order, subset of true statements, labels and choice positions; none is mathematically fixed by the theorem.",
+    "Radio distractor subsets may vary provided the true subset appears uniquely and replay banks remain exact."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Square matrices",
+      "justification": "The source applies invertibility equivalences for n by n matrices."
+    },
+    {
+      "feature": "Three candidate statements",
+      "justification": "Observed evaluation workload and response shape."
+    }
+  ],
+  "source_refs": [
+    "4d185801-460b-5883-a896-8f1107477aa5",
+    "50dd3dbf-46fe-5a60-971b-ec20882fc4a4",
+    "9a4ded73-dd50-5431-9dd3-a7f4831d94c0",
+    "5342a760-4f6b-57f7-989c-35eadd9600b3",
+    "322fb855-3d8d-59e6-ba9e-0f5421e84a86",
+    "251cb9e2-c851-5082-b166-e39206cbabf3",
+    "92ccb45d-8792-5a6a-9a10-b7498ac220cf",
+    "8048be79-9af8-51c0-a0c1-5b68f549139c",
+    "017db163-2592-561e-a975-d762dc265a45",
+    "2c7ff497-8845-5d34-a5a1-e0b10d7a1e25",
+    "128f0273-6319-516f-a4e8-3d58e084f0a9",
+    "e3a4804f-9ed9-56b0-80c9-162f94bd57af",
+    "c579df31-38e7-5faa-a719-e9a3badf209e",
+    "c10d4c77-93c5-52a9-900d-275fa9299d3e",
+    "c935622f-4794-551b-bc04-e73546072768",
+    "78547385-d46f-5a2a-bfc1-39e040208ca0",
+    "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc / step af600efe-5480-5b61-8280-594a0825dbc1",
+    "prerequisite canonical c1120305-c8cb-5f57-97b1-9b31dc059b4a"
+  ],
+  "source_passages": [
+    {
+      "ref": "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc",
+      "quote": "the number of pivot columns plus the number of non-pivot columns always equals the total number of columns of the matrix"
+    },
+    {
+      "ref": "canonical 78547385-d46f-5a2a-bfc1-39e040208ca0 worked solution",
+      "quote": "rank(A) + nullity(A) = n; nullity(A)=2; rank(A)=1; I only"
+    },
+    {
+      "ref": "50dd3dbf-46fe-5a60-971b-ec20882fc4a4",
+      "quote": "4 by 4 with 3 pivot columns; rank=3 true, invertible false, nullity=1 true"
+    },
+    {
+      "ref": "5342a760-4f6b-57f7-989c-35eadd9600b3",
+      "quote": "Null(A)={(2a,a,b)}; rank=3 false, invertible false, det(A)=0 true"
+    },
+    {
+      "ref": "prerequisite c1120305-c8cb-5f57-97b1-9b31dc059b4a",
+      "quote": "Null(A)={0} implies rank(A)=n and n pivot columns; det(A)=0 is false"
+    }
+  ],
+  "evidence_gaps": [
+    "No images are present or needed. Canonical answer fields absent; infer only its stated solution answer, not a missing bank."
+  ],
+  "distinction": "Observed sources mostly use singular matrices. Singularity, qualifying labels, numerical claims and truth counts are incidental assignments: theorem also covers nonsingular cases (explicit prerequisite). A fixed truth pattern requires an instructional justification beyond resemblance to a source."
+}
