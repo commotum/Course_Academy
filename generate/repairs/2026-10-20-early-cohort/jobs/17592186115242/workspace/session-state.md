@@ -1,26 +1,13 @@
-# Author-600 verification, 2026-10-22
+# Author-603 verification, 2026-10-22
 
-Read latest feedback, all five retained findings, existing session state,
-instructional account, source material and validation interfaces. Preserved
-completed runtime repairs, strict regressions and staged replacement proposal.
+Read feedback, all five retained findings, latest history event, required generation documents, source practice questions and relevant lesson context. Preserved completed runtime repairs and the staged replacement proposal; instructional account remains in instructional-account.md.
 
-First executed test:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical records; 64/64 possible-history shortcut
-successes. The source and inventory remain unchanged.
+First: job-python -B checks/batch_regressions.py --finding inventory
+Exit 1: five affected historical banks and 64/64 successes in the possible-history shortcut witness.
 
-Then executed:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-600`
-Exit 1 solely for finding 591f580cadb749294588. Four generator finding checks,
-17 source-bank replays, 14 delivered records, controlled variations, 35 native
-grader checks and relocation pass. Protected hashes unchanged. Five proposed
-replacements verify but remain unapplied. Retained actual UI screenshot
-`evidence/repair-3/render/question-002.png` visually inspected: equations,
-five choices, matrices and solution are readable without clipping.
+Then: job-python -B checks/recheck_status.py --output evidence/author-603
+Exit 1 solely for 591f580cadb749294588. Four generator regressions, 17 complete source-bank replays, 14 delivered records, controlled variations, 35 native-grader checks and relocation pass. Protected hashes unchanged. Five staged replacements verified and unapplied. Retained actual-UI screenshot evidence/repair-3/render/question-002.png visually inspected.
 
-Evidence: evidence/author-600/commands.json, results.json, outcome.md.
-Status unsupported. Next unfinished action is separate inventory remediation
-and fresh inventory capture, prohibited in this author workspace. Do not weaken
-the strict check or substitute proposed replacements for captured inventory.
-There is no newly demonstrated runtime defect to patch. Repeating unchanged
-verification cannot resolve the stored-pool finding.
+Next unfinished action: the separate inventory-remediation workflow must resolve the five stored records identified by affected-inventory.json, then recapture and rerun the strict inventory check. Database changes and publication are prohibited in this author task. No workspace-only generator change can alter the captured stored banks. Do not replace captured inventory with a hypothetical pool or weaken the failing check.
+
+Status unsupported. Evidence: evidence/author-603/commands.json, results.json and outcome.md.

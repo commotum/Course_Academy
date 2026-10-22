@@ -55,6 +55,12 @@ def verify(r):
  for i,line in enumerate(lines):
   assert signature(tex(line)) in [signature(tex(e)) for e in entries(q)],line
   assert member(line,target(q))==('does *not* belong' not in line),line
+  v=signature(tex(line));rat=v[0]=='rat';integer=rat and v[1].denominator==1
+  if 'it is an integer' in line:assert integer,line
+  if 'it is an irrational real number' in line:assert not rat,line
+  if 'it is a rational number but not an integer' in line:assert rat and not integer,line
+  if 'It is positive' in line:assert v[1]>0,line
+  if 'It is negative' in line:assert v[1]<0,line
   mathparts=re.findall(r'\$([^$]+)\$',line)
   # Check displayed simplifications and fraction conversions independently.
   for p in mathparts:
@@ -62,6 +68,13 @@ def verify(r):
     vals=p.split('=');assert all(signature(v)==signature(vals[0]) for v in vals);identities+=len(vals)-1
   if 'since it can be written as $' in line:
    rhs=re.search(r'since it can be written as \$([^$]+)\$',line)[1];assert signature(rhs)==signature(tex(line));identities+=1
+ if r.get('generation',{}).get('bank_profile')!='captured':
+  if enum(q[':question/answer-fields'][0][':answer-field/type']).endswith('/radio'):
+   conclusion=expected(r)[0]+'.'
+  else:
+   chosen=[e for i,e in enumerate(entries(q)) if mask(r)&(1<<i)]
+   conclusion='; '.join(chosen)+'.' if chosen else 'None of those listed.'
+  assert q[':question/worked-solution'].endswith(conclusion),q[':question/id']
  return identities
 
 def main():

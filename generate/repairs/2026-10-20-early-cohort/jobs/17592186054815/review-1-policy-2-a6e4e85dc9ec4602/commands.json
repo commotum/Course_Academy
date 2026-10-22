@@ -1,0 +1,43 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/review-1-policy-2-a6e4e85dc9ec4602",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B setup_evidence.py",
+      "purpose": "retain provenance, fail strict old replay regression, pass current, run author checks from evidence-only copy"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B review.py",
+      "purpose": "independent visible math/source/solution checks and controlled/fresh/counterfactual sampling; seeds 92169723,5512026,19031,4109,4120901"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+      "purpose": "1458 actual native learner grader checks"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input delivery-input.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/source/inventory.json --difficulty easy --output delivery-independent --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/workspace --math-root /media/jake/SSD/EDB/math",
+      "purpose": "actual shared normalization/deduplication on independent samples"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/source/inventory.json --difficulty easy --output delivery-batch --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/workspace --math-root /media/jake/SSD/EDB/math",
+      "purpose": "exact runner batch delivery"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B decision_checks.py",
+      "purpose": "coverage, conditional cues, exact selection branch reproduction, retained inventory findings"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 12 --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/workspace --math-root /media/jake/SSD/EDB/math",
+      "purpose": "actual UI source and counterfactual renders"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input batch-records.json --output render-batch --limit 5 --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054815/workspace --math-root /media/jake/SSD/EDB/math",
+      "purpose": "actual UI exact full runner batch"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B finish_review.py",
+      "purpose": "UI cue follow-up, final package integrity and evidence schema validation"
+    }
+  ],
+  "reproduction": "bash run-validation.sh (source regression provenance established separately by setup_evidence.py)",
+  "outputs": "All artifacts under evidence_root; no database mutation or asset publication."
+}

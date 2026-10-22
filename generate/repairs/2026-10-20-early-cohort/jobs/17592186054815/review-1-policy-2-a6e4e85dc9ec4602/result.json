@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained replay defects are resolved. All eight checks pass; no current defect demonstrated. Package unchanged; no database writes or publication.",
+  "source_analysis": {
+    "skill": "Identify membership in scripted integer, rational, and real sets using number class, sign, and zero inclusion.",
+    "reasoning_steps": [
+      "Decode the target set.",
+      "Classify each candidate, simplifying elementary expressions.",
+      "Select the complete qualifying subset."
+    ],
+    "invariants": [
+      "Four elementary real-number candidates at easy difficulty.",
+      "Membership is independent of candidate position.",
+      "Replay preserves source response types and complete banks."
+    ],
+    "permitted_variations": [
+      "Change targets, candidate classes, signs, representations, and positions.",
+      "Vary qualifying identities and counts.",
+      "Change irrelevant magnitudes while preserving membership."
+    ],
+    "source_refs": [
+      "ce8a56c1-709e-50e8-ac10-d3f92bf15db0",
+      "891fa895-d529-5c21-9765-4d2a287c7001",
+      "c620ed83-c013-5ff0-8983-14697bd50f1b",
+      "Tutorial 05d0929b-b494-531b-9eea-35af04606555",
+      "Tutorial 2d61ed1f-938f-51f3-8f72-19f2a9db35ea"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-confirmation.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-checks.json",
+        "source-acceptance-old.json",
+        "source-acceptance-current.json",
+        "retained-check-execution.json"
+      ],
+      "details": "All 11 source banks replay correctly. Retained regression fails the original package and passes this revision. Missing source key/solution explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-checks.json",
+        "canonical-records.json",
+        "review.py"
+      ],
+      "details": "216 records, 864 solution bullets, and 430 exact identities checked independently."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "controlled-records.json",
+        "fresh-records.json"
+      ],
+      "details": "154 controlled cases cover revised response families and qualifying subsets; 32 fresh samples checked."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-checks.json",
+        "source-analysis.json"
+      ],
+      "details": "Variations preserve elementary class/sign/zero reasoning and source workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader matched 522 expected acceptances and 936 rejections."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-batch/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "17 actual UI renders passed; ten screenshots visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-checks.json",
+        "package-integrity.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime contract, determinism, relocation, and CLI boundaries pass. Package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-checks.json",
+        "delivery-selection-checks.json",
+        "ui-choice-order-checks.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Counterfactuals and conditional shortcut probes pass. Delivery retains 200 independent records and all five batch records. Raw position coincidence disappears in actual UI. Selection conclusions are bounded to captured inventory and documented policy/history scenarios."
+    }
+  },
+  "findings": []
+}
