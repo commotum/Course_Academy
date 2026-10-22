@@ -1,31 +1,35 @@
 # Current state
 
-Existing generator repairs and the unapplied five-record replacement proposal
-are preserved. Latest evidence: evidence/repair-331/commands.json, results.json,
-grader-report.json and outcome.md.
+Latest verification: evidence/repair-334/commands.json and results.json.
+Runtime, manifest, captured source and inventory match the protected hashes
+from the completed repair. No runtime, engine, database, publication or image
+changes were made in this continuation.
 
-First command: job Python -B checks/batch_regressions.py --finding inventory
-(exit 1: five historical banks; 64/64 possible-history shortcut successes).
-Then: job Python -B checks/recheck_status.py --output evidence/repair-331
-(exit 1). All four current-generator finding regressions pass. Source replay,
-shared delivery (14/14), counterfactual checks, native grading (7 accepted,
-28 rejected), exact dependencies, relocation and proposal bindings pass.
-Retained actual-UI screenshots question-001.png and question-002.png were
-visually inspected again. Runtime and presentation are unchanged. All five
-generated inventory records are audited; original source questions are excluded
-from affected IDs. Evidence paths resolve relative to author-331.
+First command: job Python -B checks/batch_regressions.py --finding inventory.
+Exit 1: all five historical generated records still exhibit the shortcut;
+the retained possible-history selection witness gives 64/64 successes.
+No generated inventory records are untested. Original source IDs remain excluded.
 
-The selector reads stored candidate entities independently of this generator.
-Finding 591f580cadb749294588 explicitly requires separate inventory remediation;
-this job prohibits database changes. No workspace runtime change can update or
-retire those stored banks. The strict check remains failing, not waived.
+Then ran job Python -B checks/recheck_status.py --output evidence/repair-334.
+All four current-generator finding regressions pass: 17 complete practice banks
+and the canonical example, zero-root cases, and three finite batches with 14/14
+accepted through shared delivery filtering. Relevant and irrelevant
+counterfactuals pass. Native grading accepts 7 correct and rejects 28 wrong
+choices. Relocated seeded execution passes. Installed Python 3.13.5 and SymPy
+1.14.0 match the manifest.
 
-Next unfinished action: independently review and apply the separate inventory
-remediation proposal at evidence/repair-3/inventory-repair-proposal.json, then
-recapture inventory and rerun the strict regression. That action is outside this
-job's authorized scope. Current status: unsupported for the stored pool. No
-runtime, database, source, engine, publication or image changes in this pass.
+The five-record replacement proposal still matches current generation and
+captured-input hashes. Both retained actual-UI screenshots under
+ evidence/repair-3/render were visually inspected again; systems, choices and
+worked matrix elimination are readable. Presentation code is unchanged.
 
-Do not repeat another unchanged full audit on continuation. First inspect whether
-inventory changed or new concrete generator feedback exists; otherwise the same
-outside-scope action remains unfinished. This does not waive the strict check.
+Finding 591f580cadb749294588 remains a strict failure. The selector uses stored
+banks independently of this generator. Its requested separate inventory
+remediation requires database changes, explicitly prohibited in this job.
+Status is unsupported. Proposed replacements have not been applied or
+substituted for the captured pool.
+
+Next unfinished action belongs to the separate inventory-remediation workflow:
+review/apply evidence/repair-3/inventory-repair-proposal.json, recapture inventory,
+then rerun the strict check. Inspect whether that external state or concrete
+feedback changed before repeating unchanged validation.
