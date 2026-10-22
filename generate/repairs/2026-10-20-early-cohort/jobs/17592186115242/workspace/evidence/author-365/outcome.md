@@ -1,0 +1,11 @@
+The existing repaired generator was preserved. Read feedback and all five retained findings (365 history events); no new generator defect was reported. Ran the latest strict failure first via:
+
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-365`
+
+Exit 1: finding 591f580cadb749294588 remains demonstrated on five complete historical generated records. The inventory audit matches captured prompts, solutions, choice identities, keys and generation metadata; no captured generated inventory is untested. Minimal witness: f4f00ddd-faa4-5195-9569-dbec2d0e2e6c, entity 17592186557444, seed 2712914515, system x+2y=-5 and -2x+ky=0, choices {-4,-2,0,2,4}; opposite coefficient signs predict minimum -4. A possible learner-history scenario retains 64/64 shortcut successes. Actual learner history is unavailable.
+
+All four current-generator regressions pass. Seventeen practice banks replay; fourteen records preserve decision contrasts through shared delivery filtering. Native grading accepts 7 correct choices and rejects 28 wrong choices. Exact dependency pins, deterministic relocated CLI, and protected runtime/source/inventory/manifest hashes pass. Commands and results are in this directory. Reviewed retained actual UI screenshot evidence/repair-3/render/question-001.png and source classification flowchart: readable, no visible clipping. Runtime and rendered records are unchanged, so no redundant rerender was performed.
+
+The remaining root cause is old v2 banks stored independently of the current generator. Five replacements and the one-to-one proposal in evidence/repair-3/inventory-repair-proposal.json are verified and unapplied. The required next state change is separate inventory remediation followed by fresh inventory capture and the strict regression. This workspace-only task expressly prohibits that database operation. No runtime change can repair already-stored content; the failing assertion is retained. No source family or valid answer was removed. No database, engine, publication or image change was made.
+
+Status: unsupported because the strict selectable-inventory finding remains unresolved. No new runtime repair is warranted by the supplied evidence.

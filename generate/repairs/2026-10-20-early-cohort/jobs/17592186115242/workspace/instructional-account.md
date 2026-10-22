@@ -1,5 +1,18 @@
 # Instructional account and targeted repair
 
+Current scope (author-366): preserve every runtime repair and the strict failing
+inventory regression. Add a construction control at each historical system's
+exact parameters: hold the equations and singular value fixed while varying
+the complete authored bank. Independently parse the printed equations, matrices,
+choices, and solution; require interior and extreme correct ranks before and
+after shared delivery. These are five mathematical systems, not fifteen new
+semantic instances. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires
+elimination and contradiction; source 534e2a93-e71a-5475-894e-dfd5ca99a3a6
+demonstrates an interior correct option. Tutorial
+e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions.
+Changing the bank preserves that reasoning, easy arithmetic, and five-choice
+radio contract. This control cannot repair or waive the captured stored pool.
+
 Eleventh-pass scope: preserve the existing construction repairs and five staged
 replacements. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to get
 `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 distinguishes no

@@ -1,0 +1,64 @@
+{
+  "implementation": "engine/rust/question_selection.rs::select and seen_before_task, read directly",
+  "reproduction": "Exact SHA256 draw/band selection for delivered moderate pool, fresh-history exclusions applied. Future entity IDs modeled 1..5 because publication has not occurred.",
+  "basis": 5438,
+  "draws": [
+    {
+      "seen_synthetic_ids": [],
+      "counts": {
+        "1": 98,
+        "2": 101,
+        "3": 101,
+        "4": 107,
+        "5": 105
+      },
+      "cue_correct_draws": 512,
+      "draws": 512
+    },
+    {
+      "seen_synthetic_ids": [
+        1
+      ],
+      "counts": {
+        "2": 125,
+        "3": 123,
+        "4": 138,
+        "5": 126
+      },
+      "cue_correct_draws": 512,
+      "draws": 512
+    },
+    {
+      "seen_synthetic_ids": [
+        1,
+        2,
+        3
+      ],
+      "counts": {
+        "4": 248,
+        "5": 264
+      },
+      "cue_correct_draws": 512,
+      "draws": 512
+    }
+  ],
+  "proof": "Selection chooses an existing record without changing its prompt, bank or key. Source-bank signature strategy is correct on every delivered batch member, so arbitrary positive-weight/historical conditioning on nonempty subsets preserves 100% cue success. No actual learner history, policy, or future entity allocation is captured; no exact future task prediction claimed.",
+  "stage_counts": {
+    "batch": {
+      "input": 5,
+      "duplicates": 0,
+      "accepted": 5
+    },
+    "moderate-samples": {
+      "input": 23,
+      "duplicates": 4,
+      "accepted": 19
+    },
+    "hard-samples": {
+      "input": 8,
+      "duplicates": 0,
+      "accepted": 8
+    }
+  },
+  "resampling": "Generator main samples seed..seed+999, rejects repeated (template,shift) pairs, then returns requested count; it never changes bank-role assignments. No math rejection stages. Difficulty chooses source profiles; q-109029 excluded in eligible list."
+}
