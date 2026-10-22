@@ -1,0 +1,1226 @@
+{
+  "learner_operation": "Infer nutrient entry cr and mixed outflow rQ/V, form and solve Q′=cr-rQ/V with Q(0)=Q0, then select the matching expression; moderate cases also evaluate at t and round.",
+  "fixed_features": [
+    {
+      "feature": "Equal positive inflow/outflow, complete mixing and fixed volume",
+      "justification": "Tutorial Step 2 establishes Q/V; canonical derives constant-coefficient removal rQ/V."
+    },
+    {
+      "feature": "Positive concentration and nonconstant transient",
+      "justification": "Tutorial distinguishes nonzero incoming substance from clean-water dilution; nonconstant solutions retain the complementary-plus-particular and initial-condition workload."
+    },
+    {
+      "feature": "Five mathematical radio options; easy asks for Q(t)",
+      "justification": "All ten captured practice questions have five radio options; captured easy questions identify a function."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Selected equilibrium, initial value and removal rate",
+      "eligible_variation": "Both values for each coordinate and all five compatible function targets, with prompt and solution derived together.",
+      "observed": "All five target roles in fresh sample; identical bank across all five target controls with independent mathematical and native-grader checks."
+    },
+    {
+      "role": "Increasing versus decreasing transient",
+      "eligible_variation": "Either sign of Q0-cV; no instructional reason to fix increasing.",
+      "observed": "21 increasing and 3 decreasing easy samples; exact batch 4 increasing and 1 decreasing."
+    },
+    {
+      "role": "Correct position and context",
+      "eligible_variation": "Any position or contextual noun; no source-example assignment needs remain fixed.",
+      "observed": "All five raw key positions; six contexts in independent small random sample and source replay covers remaining supplement context. Actual UI permutation tested at two ID bases."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "sample before and after actual shared filtering",
+      "sample_refs": [
+        "easy-samples.json",
+        "delivery-sample/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "{\"contexts\": {\"coolant\": 5, \"disinfectant\": 2, \"dye\": 4, \"pollutant\": 3, \"salt\": 6, \"sugar\": 4}, \"old_shortcut\": 0, \"positions\": {\"0\": 2, \"1\": 6, \"2\": 8, \"3\": 6, \"4\": 2}, \"roles\": {\"0\": 2, \"1\": 5, \"2\": 10, \"3\": 4, \"4\": 3}, \"semantic_instances\": 24, \"signs\": {\"decreasing\": 3, \"increasing\": 21}, \"total\": 24}"
+    },
+    {
+      "case": "batch before and after actual shared filtering",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "{\"contexts\": {\"coolant\": 2, \"disinfectant\": 1, \"sugar\": 2}, \"old_shortcut\": 0, \"positions\": {\"0\": 1, \"3\": 1, \"4\": 3}, \"roles\": {\"0\": 2, \"4\": 3}, \"semantic_instances\": 5, \"signs\": {\"decreasing\": 1, \"increasing\": 4}, \"total\": 5}"
+    },
+    {
+      "case": "counterfactual before and after actual shared filtering",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "delivery-counterfactual/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "{\"contexts\": {\"coolant\": 5, \"pollutant\": 1}, \"old_shortcut\": 0, \"positions\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 2}, \"roles\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 2}, \"semantic_instances\": 5, \"signs\": {\"decreasing\": 1, \"increasing\": 5}, \"total\": 6}"
+    },
+    {
+      "case": "all three relevant coordinate changes and irrelevant context change",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-inputs.json",
+        "counterfactual-results.json"
+      ],
+      "result": "Same ordered raw bank supports all five distinct correct values; three single-coordinate relevant changes switch response, context preserves response."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "flow; cases 3 and 4",
+      "expected": "change the correct mathematical expression; preserve the choice multiset",
+      "observed": "changed expression, prompt and four-step solution consistent; all five actual native choices tested before and after, including old expression rejection for relevant pairs",
+      "status": "passed",
+      "justification": "Q(t)=cV+(Q0-cV)e^(-rt/V) depends on initial mass, feed concentration and flow; contextual nouns do not enter the model. Canonical Steps 1–4 and tutorial constant-volume IVP.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "initial_amount; cases 2 and 4",
+      "expected": "change the correct mathematical expression; preserve the choice multiset",
+      "observed": "changed expression, prompt and four-step solution consistent; all five actual native choices tested before and after, including old expression rejection for relevant pairs",
+      "status": "passed",
+      "justification": "Q(t)=cV+(Q0-cV)e^(-rt/V) depends on initial mass, feed concentration and flow; contextual nouns do not enter the model. Canonical Steps 1–4 and tutorial constant-volume IVP.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "feed_concentration; cases 1 and 4",
+      "expected": "change the correct mathematical expression; preserve the choice multiset",
+      "observed": "changed expression, prompt and four-step solution consistent; all five actual native choices tested before and after, including old expression rejection for relevant pairs",
+      "status": "passed",
+      "justification": "Q(t)=cV+(Q0-cV)e^(-rt/V) depends on initial mass, feed concentration and flow; contextual nouns do not enter the model. Canonical Steps 1–4 and tutorial constant-volume IVP.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "context; cases 4 and 5",
+      "expected": "preserve the correct mathematical expression; preserve the choice multiset",
+      "observed": "preserved expression, prompt and four-step solution consistent; all five actual native choices tested before and after, including old expression rejection for relevant pairs",
+      "status": "passed",
+      "justification": "Q(t)=cV+(Q0-cV)e^(-rt/V) depends on initial mass, feed concentration and flow; contextual nouns do not enter the model. Canonical Steps 1–4 and tutorial constant-volume IVP.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "position-first",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/24 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/24 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/24 successes, 24 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 5 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "fixed-bank all five targets",
+      "scope": "within_template",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank all five targets",
+      "scope": "within_template",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "fixed-bank all five targets",
+      "scope": "within_template",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "fixed-bank all five targets",
+      "scope": "within_template",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "fixed-bank all five targets",
+      "scope": "within_template",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 5 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes, 5 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. This tiny 2/2 correlation was challenged in the same context with five fixed-bank target assignments: only 1/5 succeeds, refuting a fixed context rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json",
+        "conditional-records.json",
+        "conditional-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes, 2 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 4 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 3 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 successes, 6 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "context sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "context sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "context sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "context sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "context sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes, 4 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/21 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/21 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 7,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/21 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/21 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/21 successes, 21 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-first",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the first raw stored option without reading the prompt.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select shortest visible expression, breaking ties by stored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest-leading-constant",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with largest constant, breaking ties by stored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest-leading-constant",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select option with smallest constant, breaking ties by stored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 successes, 0 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "old-intersection",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the retained repeated-equilibrium/modal-initial-value intersection, without inspecting prompt.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes, 3 abstentions. Baseline .2 is uniform guessing among five choices. No reliable answer-producing rule established; fixed-bank five-target controls limit every deterministic choice-bank-only selector to 1/5 when all targets are equally tested. These finite observations do not prove absence of all correlations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-samples.json",
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "sample fixture content ID base 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 1,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "sample fixture content ID base 17592187000000",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "batch fixture content ID base 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "batch fixture content ID base 17592187000000",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "controlled fixture content ID base 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-counterfactual/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed choice after actual UI permutation",
+      "subgroup": "controlled fixture content ID base 17592187000000",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Execute actual learning.js choiceOrder, then select first displayed choice.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": ".2 is uniform guessing among five options. Actual deterministic UI permutation does not privilege the correct choice; finite position counts are retained. Exact future IDs are unknown.",
+      "sample_refs": [
+        "ui-order.json",
+        "ui_order_check.cjs",
+        "delivery-counterfactual/accepted.json"
+      ]
+    },
+    {
+      "cue": "match feed equilibrium, initial value and removal coefficient to the prompt",
+      "subgroup": "fixed-bank target orbit",
+      "scope": "within_template",
+      "strategy": "Compute cV, compare constant plus signed exponential coefficient with Q0, and match r/V.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Five-choice guessing baseline .2. This evaluates the solution against physical forcing, initial condition and outflow coefficient, all core mathematical dependencies; it is legitimate expression selection rather than an incidental cue.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-results.json",
+        "independent_checks.py"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "default-generator whole-candidate rejection/resampling",
+      "actual prepare_records normalization and validation",
+      "captured inventory and within-batch deduplication",
+      "requested easy difficulty filter",
+      "question_selection.rs history exclusion and band/within-band selection read-only fixture",
+      "actual learning.js choiceOrder"
+    ],
+    "sample_refs": [
+      "resampling-traces.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-counterfactual/delivery.json",
+      "delivery-analysis.json",
+      "ui-order.json",
+      "batch.json"
+    ],
+    "result": "All 24 independently chosen easy records, six counterfactuals, and exact five batch records survive filtering. Decision cases and old-shortcut counts preserved. All batch items have nonzero support under explicit positive easy weights; histories can exhaust cases. Actual UI choice permutations checked separately."
+  },
+  "limitations": [
+    "Finite samples and probes cannot prove absence of every shortcut.",
+    "No publication preparation exists; read-only actual shared preparation used captured inventory basis 5397. Later inventory can change deduplication.",
+    "Live learner histories, policy weights and future entity IDs unavailable; selection fixtures explicitly condition on easy selection. Legacy no-weight policy selects lowest eligible ID.",
+    "Exact batch includes two cube roles and both transient signs; it does not cover every role, which is not a per-five-item quota. Probed surface strategies do not answer every member.",
+    "One source numerical question has missing captured key/solution/difficulty; unique numerical answer independently derived and omissions retained. Hard calibration is not established.",
+    "Inventory audit establishes no affected stored record for the demonstrated prior expression-bank defect; numeric entries not audited for unrelated weaknesses."
+  ]
+}

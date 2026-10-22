@@ -1,0 +1,103 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained failures are repaired. All eight checks pass, including the exact five-question batch. Package files remain unchanged; no database writes occurred.",
+  "source_analysis": {
+    "skill": "Construct and solve a constant-volume dilution model with equal inflow and outflow.",
+    "reasoning_steps": [
+      "Calculate incoming mass rate cr and outgoing mass rate rQ/V.",
+      "Solve Q\u2032+(r/V)Q=cr.",
+      "Apply Q(0)=Q0 and select the matching expression."
+    ],
+    "invariants": [
+      "Equal positive flows, constant volume and complete mixing.",
+      "Positive incoming concentration.",
+      "Five-choice mathematical radio response."
+    ],
+    "permitted_variations": [
+      "Vary volume, flow, concentration, initial mass and context consistently.",
+      "Vary transient sign, eligible target and correct-choice position."
+    ],
+    "source_refs": [
+      "6b62d830-be21-5734-8a12-115b6a5136bf: Steps 1\u20134",
+      "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698",
+      "55a40904-7261-506e-bb45-5a9e0fad5627",
+      "8f9ca797-1282-5c7a-958a-6e7a8b023c5c"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reuse-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "acceptance-current.json",
+        "acceptance-negative.json"
+      ],
+      "details": "All ten source banks replay faithfully. Retained regressions fail on the prior snapshot and pass on the revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "source-math.json",
+        "conditional-results.json"
+      ],
+      "details": "Independent checks verify unique answers, initial conditions, differential equations and worked solutions."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "delivery-analysis.json",
+        "shortcut-results.json",
+        "resampling-traces.json"
+      ],
+      "details": "Fresh samples cover all five target roles and positions, multiple contexts and both transient signs. Exact batch assessed separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json"
+      ],
+      "details": "Requested easy questions preserve the source method, workload and response format."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader returned 88 accepted and 352 rejected outcomes as expected, with none unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve records rendered successfully through the actual UI; representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation, CLI and rejection checks pass. All 139 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "conditional-results.json",
+        "delivery-analysis.json",
+        "ui-order.json"
+      ],
+      "details": "An identical bank supports all five correct targets. Relevant changes alter the response; context changes preserve it. No remaining shortcut was demonstrated by the bounded probes."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,234 @@
+{
+  "skill": "Solving for one coefficient in a linear combination of two column vectors.",
+  "learner_operation": "Isolate the unknown scalar-vector product, compute the residual componentwise, find a scalar from a nonzero component, and check all components agree; otherwise select No solution.",
+  "reasoning_steps": [
+    "Substitute the given vectors into c a1 +/- x a2 = b or 0.",
+    "Isolate x a2 by vector subtraction with the appropriate sign.",
+    "Read a candidate scalar from a nonzero component and verify all remaining components.",
+    "Choose exactly one scalar or No solution from the complete radio bank."
+  ],
+  "response_contract": "All 13 captured questions have one radio selection field and five choices. The canonical worked example has no captured answer field.",
+  "difficulty": "Easy examples have consistent scalar answers, 2\u20134 coordinates and small integers; moderate observed examples are homogeneous inconsistent equations requiring a component consistency check. This correlation is observed, not a mathematical law requiring every homogeneous question to be inconsistent.",
+  "invariants": [
+    "One unknown scalar, two known equal-dimensional vectors, known scalar multiplier, vector addition/subtraction only.",
+    "Unique scalar or no solution; exclude all-zero unknown vector leading to infinitely many solutions unless source-supported.",
+    "Keep componentwise vector isolation and the source workload; do not introduce multi-unknown systems."
+  ],
+  "permitted_variations": [
+    "Change integer coordinates, dimension 2\u20134, known coefficient and sign, unknown symbol, and scalar answer including zero where unique.",
+    "Change the consistency-determining component, positions of zero entries, and which options represent the answer.",
+    "Homogeneous versus explicit-target form need not dictate consistency: consistent homogeneous and inconsistent nonzero-target instances are eligible same-method extensions, with difficulty justified by reasoning.",
+    "Permute choices and vary full bank profiles including observed banks without No solution."
+  ],
+  "source_refs": [
+    "4e441944-ad54-59d2-9897-793ac5452b92",
+    "ad60885f-7a0b-58e2-b4e4-f60e38dd9918",
+    "b99af0d8-b75f-54bf-9697-c5d904e35653",
+    "ab1a2dbb-2f20-5b38-9d5d-1509f7f1ce65",
+    "3910d8c3-7517-5b80-9efc-a8b60965d481",
+    "ce5d7202-47f0-50c1-9bc6-a025b8d27432",
+    "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+    "c8dd7df5-a62a-5efa-a6ef-0c480856813f",
+    "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+    "80bf8c74-6292-5b04-9a45-fc39723fd232",
+    "1c4f9063-8349-57ea-b235-d134f5cba639",
+    "6154ace2-6af4-581c-9596-72c7ea4a622a",
+    "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+    "fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+    "lesson 17592186120045 step 17592186120673 (17458)"
+  ],
+  "lesson_passages": [
+    {
+      "ref": "lesson 17592186120045 step 17592186120673 / fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+      "quote": "Using the properties of addition/subtraction and scalar multiplication of vectors to isolate the $s$ term",
+      "result": "s[4,0,-2]=[16,0,-8], s=4."
+    },
+    {
+      "ref": "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+      "quote": "Equating the first components, we get",
+      "result": "3k=-6 gives k=-2, but [-6,-4] differs from [-6,-12]; no solution."
+    },
+    {
+      "ref": "ce5d7202-47f0-50c1-9bc6-a025b8d27432",
+      "result": "a1-j a2=b; isolate j a2=a1-b; j=2."
+    }
+  ],
+  "gaps": [
+    "ad60885f-7a0b-58e2-b4e4-f60e38dd9918 lacks difficulty, correct link, and worked solution; inferred answer 4 from [32,24]=4[8,6].",
+    "No missing images in the target questions; prerequisite image evidence is not needed for this scalar-vector task."
+  ],
+  "source_cases": [
+    {
+      "id": "4e441944-ad54-59d2-9897-793ac5452b92",
+      "prompt": "Find $l$, if $5{a}_{1}+l{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}9 \\\\ -2 \\\\ 0 \\\\ 7\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}0 \\\\ 5 \\\\ -2 \\\\ 8\\end{bmatrix},\\,b=\\begin{bmatrix}45 \\\\ -20 \\\\ 4 \\\\ 19\\end{bmatrix}.\n$$",
+      "bank": [
+        "2",
+        "-2",
+        "1",
+        "0",
+        "No solution"
+      ],
+      "correct": "-2",
+      "solution_present": true
+    },
+    {
+      "id": "ad60885f-7a0b-58e2-b4e4-f60e38dd9918",
+      "prompt": "Find $q$, if $7a_{1} + qa_{2} = b$ and\n$a_{1} = \\begin{bmatrix}0 \\\\ -1\\end{bmatrix}, a_{2} = \\begin{bmatrix}8 \\\\ 6\\end{bmatrix}, b = \\begin{bmatrix}32 \\\\ 17\\end{bmatrix}$.",
+      "bank": [
+        "No solution",
+        "6",
+        "4",
+        "-5",
+        "-4"
+      ],
+      "correct": null,
+      "solution_present": false
+    },
+    {
+      "id": "b99af0d8-b75f-54bf-9697-c5d904e35653",
+      "prompt": "Find $h$, if $3{a}_{1}+h{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ -1 \\\\ 2 \\\\ 1\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-3 \\\\ 2 \\\\ 4 \\\\ 1\\end{bmatrix},\\,b=\\begin{bmatrix}-3 \\\\ 1 \\\\ 14 \\\\ 5\\end{bmatrix}.\n$$",
+      "bank": [
+        "2",
+        "No solution",
+        "1",
+        "-1",
+        "-2"
+      ],
+      "correct": "2",
+      "solution_present": true
+    },
+    {
+      "id": "ab1a2dbb-2f20-5b38-9d5d-1509f7f1ce65",
+      "prompt": "Find $m$, if $7{a}_{1}+m{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}2 \\\\ -1\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}3 \\\\ 1\\end{bmatrix},\\,b=\\begin{bmatrix}-1 \\\\ -12\\end{bmatrix}.\n$$",
+      "bank": [
+        "-3",
+        "-5",
+        "3",
+        "5",
+        "No solution"
+      ],
+      "correct": "-5",
+      "solution_present": true
+    },
+    {
+      "id": "3910d8c3-7517-5b80-9efc-a8b60965d481",
+      "prompt": "Find $k$, if $2{a}_{1}+k{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ -2 \\\\ 0\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-3 \\\\ 1 \\\\ 4\\end{bmatrix},\\,b=\\begin{bmatrix}11 \\\\ -7 \\\\ -12\\end{bmatrix}.\n$$",
+      "bank": [
+        "-4",
+        "-3",
+        "2",
+        "-2",
+        "1"
+      ],
+      "correct": "-3",
+      "solution_present": true
+    },
+    {
+      "id": "ce5d7202-47f0-50c1-9bc6-a025b8d27432",
+      "prompt": "Find $j$, if ${a}_{1}-j{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}0 \\\\ -1 \\\\ 1\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-2 \\\\ 1 \\\\ 0\\end{bmatrix},\\,b=\\begin{bmatrix}4 \\\\ -3 \\\\ 1\\end{bmatrix}.\n$$",
+      "bank": [
+        "0",
+        "2",
+        "-4",
+        "-2",
+        "4"
+      ],
+      "correct": "2",
+      "solution_present": true
+    },
+    {
+      "id": "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+      "prompt": "Find $k$, if $3{a}_{1}+k{a}_{2}=0$ and \n\n$$\n{a}_{1}=\\begin{bmatrix}2 \\\\ 4\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}3 \\\\ 2\\end{bmatrix}.\n$$",
+      "bank": [
+        "2",
+        "No solution",
+        "1",
+        "-2",
+        "-6"
+      ],
+      "correct": "No solution",
+      "solution_present": true
+    },
+    {
+      "id": "c8dd7df5-a62a-5efa-a6ef-0c480856813f",
+      "prompt": "Find $l$, if $5{a}_{1}+l{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ -3 \\\\ 2 \\\\ 5\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}2 \\\\ 0 \\\\ 5 \\\\ -3\\end{bmatrix},\\,b=\\begin{bmatrix}11 \\\\ -15 \\\\ 25 \\\\ 16\\end{bmatrix}.\n$$",
+      "bank": [
+        "2",
+        "1",
+        "0",
+        "3",
+        "6"
+      ],
+      "correct": "3",
+      "solution_present": true
+    },
+    {
+      "id": "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+      "prompt": "Find $k$, if $8{a}_{1}+k{a}_{2}=0$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}-3 \\\\ 6 \\\\ -4\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-2 \\\\ 3 \\\\ -4\\end{bmatrix}.\n$$",
+      "bank": [
+        "-12",
+        "No solution",
+        "-6",
+        "-8",
+        "4"
+      ],
+      "correct": "No solution",
+      "solution_present": true
+    },
+    {
+      "id": "80bf8c74-6292-5b04-9a45-fc39723fd232",
+      "prompt": "Find $m$, if $5{a}_{1}+m{a}_{2}=0$ and \n\n$$\n{a}_{1}=\\begin{bmatrix}6 \\\\ -2\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-5 \\\\ 3\\end{bmatrix}.\n$$",
+      "bank": [
+        "No solution",
+        "-6",
+        "3",
+        "6",
+        "\\frac{10}{3}"
+      ],
+      "correct": "No solution",
+      "solution_present": true
+    },
+    {
+      "id": "1c4f9063-8349-57ea-b235-d134f5cba639",
+      "prompt": "Find $q$, if $2{a}_{1}+q{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}2 \\\\ -3\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}7 \\\\ 5\\end{bmatrix},\\,b=\\begin{bmatrix}18 \\\\ 4\\end{bmatrix}.\n$$",
+      "bank": [
+        "-1",
+        "4",
+        "2",
+        "-2",
+        "-5"
+      ],
+      "correct": "2",
+      "solution_present": true
+    },
+    {
+      "id": "6154ace2-6af4-581c-9596-72c7ea4a622a",
+      "prompt": "Find $t$, if $2{a}_{1}+t{a}_{2}=0$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}8 \\\\ 1 \\\\ -6\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-4 \\\\ -1 \\\\ 3\\end{bmatrix}.\n$$",
+      "bank": [
+        "4",
+        "No solution",
+        "2",
+        "-4",
+        "-2"
+      ],
+      "correct": "No solution",
+      "solution_present": true
+    },
+    {
+      "id": "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+      "prompt": "Find $k$, if $6{a}_{1}+k{a}_{2}=b$ and\n\n$$\n{a}_{1}=\\begin{bmatrix}3 \\\\ 1 \\\\ -2\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}5 \\\\ 3 \\\\ -9\\end{bmatrix},\\,b=\\begin{bmatrix}8 \\\\ 0 \\\\ 6\\end{bmatrix}.\n$$",
+      "bank": [
+        "3",
+        "2",
+        "No solution",
+        "-3",
+        "-2"
+      ],
+      "correct": "-2",
+      "solution_present": true
+    }
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

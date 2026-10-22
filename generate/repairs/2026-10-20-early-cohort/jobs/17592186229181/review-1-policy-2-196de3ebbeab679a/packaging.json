@@ -1,0 +1,94 @@
+{
+  "runtime": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "declared": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "exact_version_match": true,
+  "deterministic": true,
+  "relocation": true,
+  "rejections": [
+    {
+      "case": "zero flow",
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds",
+      "parameters": {
+        "V": 500,
+        "r": 0,
+        "c": ".02",
+        "q0": 7,
+        "context": "coolant"
+      }
+    },
+    {
+      "case": "zero volume",
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds",
+      "parameters": {
+        "V": 0,
+        "r": 25,
+        "c": ".02",
+        "q0": 7,
+        "context": "coolant"
+      }
+    },
+    {
+      "case": "unknown context",
+      "rejected": true,
+      "error": "unknown context",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": ".02",
+        "q0": 7,
+        "context": "unknown"
+      }
+    },
+    {
+      "case": "equilibrium",
+      "rejected": true,
+      "error": "non-equilibrium initial amount must be below twice feed equilibrium",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": ".02",
+        "q0": 10,
+        "context": "coolant"
+      }
+    },
+    {
+      "case": "zero concentration",
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": 0,
+        "q0": 7,
+        "context": "coolant"
+      }
+    },
+    {
+      "case": "outside arithmetic",
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds",
+      "parameters": {
+        "V": 299,
+        "r": 25,
+        "c": ".02",
+        "q0": 7,
+        "context": "coolant"
+      }
+    }
+  ],
+  "external_outputs": "No asset, network or database output code. stdout CLI only.",
+  "boundaries": "Samples 22 and 23 cover V=300,r=10,c=.01,q0=1 and V=1000,r=50,c=.06,q0=25.",
+  "cli_external_working_directory_records_match": true
+}
