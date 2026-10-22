@@ -1,9 +1,27 @@
 # Current state
 
-Author-449 first ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`: exit 1, five affected historical questions, 64/64 successes in the retained possible-history shortcut witness. Then ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-449`: exit 1 solely for that same inventory finding. Four generator regressions pass; 17 complete source banks replay; three CLI batches preserve contrasts after shared delivery (14 accepted). Native grading accepts seven correct responses and rejects 28 incorrect responses. Relocation, exact dependency versions, protected hashes and the existing replacement mapping pass.
+Author-452 reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five affected stored records; 64/64 shortcut successes in the retained
+possible-history witness.
 
-Read feedback, all five retained findings, original lesson, canonical examples, all 17 source questions with complete fields/banks/solutions, required documentation and prior instructional account. Inspected the tutorial flowchart and retained actual-UI screenshot evidence/repair-3/render/question-001.png. Runtime and rendering are unchanged. No redundant render was needed.
+Then ran:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-452`
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass; 17 source banks replay; 14 records retain tested contrasts
+through shared delivery; native grader accepts 7 correct and rejects 28 wrong
+responses. Relocation, exact dependencies, protected hashes and replacement
+mapping pass. Retained actual-UI rendering and source flowchart inspected.
 
-Preserved completed generator repairs and all strict regression declarations. No database, publication, engine, source, inventory or other-job changes were made. All captured generated inventory was tested. Five replacements remain proposed and unapplied.
+No runtime, engine, database, publication, source, inventory or other-job edits.
+The five historical records remain affected; verified replacements are unapplied.
+Current evidence: evidence/author-452/commands.json, results.json,
+grader-report.json and outcome.md.
 
-Next unfinished step: the separate inventory-remediation workflow explicitly required by finding 591f580cadb749294588, followed by fresh captured inventory and rerunning the strict pool regression. Workspace generator changes cannot alter those stored selection candidates. Status remains unsupported under the retained-findings contract. Evidence: evidence/author-449/commands.json, results.json, outcome.md; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.
+Next unfinished step: separate inventory remediation required by finding
+591f580cadb749294588, then fresh inventory capture and strict pool verification.
+That action is outside this task's explicit no-database-change scope. Preserve
+affected-inventory.json, evidence/generated-records.json, the replacement
+proposal in evidence/repair-3, and the strict repair-regressions.json checks.
+Status remains unsupported; an unchanged captured pool is not fixed by another
+generator edit or by repeating validation.
