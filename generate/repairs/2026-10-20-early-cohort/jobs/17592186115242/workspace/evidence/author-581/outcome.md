@@ -1,0 +1,11 @@
+# Verification outcome
+
+The first command was `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` (exit 1). All five exact historical records still exhibit the sign-only extremum shortcut; the possible new-seen learner-history witness gives 64/64 successes. The archive replay verifies prompts, solutions, complete banks, keys, identities and generation metadata against the captured inventory. No generated inventory entry is untested.
+
+Then `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-581` exited 1 solely for finding 591f580cadb749294588. All four current-generator regression declarations passed: shortcut construction, fractional bare-parameter source replay, zero roots and finite delivered-batch selection. Seventeen complete source banks, 14 delivered records, controlled relevant/irrelevant changes, 35 native-grader cases and relocated packaging passed. Commands and responses are in commands.json; protected runtime/source/inventory hashes are in results.json.
+
+Reused prior rendering because no runtime, source, manifest or inventory changed. Visually inspected evidence/repair-3/render/question-002.png: the two equations, five choices, augmented matrices, elimination and contradiction are legible and consistent.
+
+No new construction defect is demonstrated. The remaining defect is the persisted v2 banks, independent of the current entrypoint. The read-only selector inspection at engine/rust/question_selection.rs:125 confirms selection consumes stored entity candidates. Generator edits cannot replace those stored answer choices. The five reviewed replacement candidates and exact identity mapping remain staged in evidence/repair-3/inventory-repair-proposal.json, not applied.
+
+Status: unsupported for the full selectable-pool requirement. Keep the strict failed regression. The next state-changing step is the separately authorized inventory-remediation workflow followed by a fresh inventory capture; this author task forbids database changes and publication. An unchanged author rerun cannot resolve that external state. No source family, valid response, regression, or acceptance criterion was removed.
