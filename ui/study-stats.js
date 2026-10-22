@@ -35,14 +35,15 @@ export function createStudySidebar() {
     const boundaries = lastSevenDays();
     try {
       const progress = readRequest('/api/study-stats?dayStarts=' + boundaries.join(','));
-      if (refreshForecast) void forecast.refresh();
       const response = await progress;
       const data = await response.json();
       if (!response.ok || !Array.isArray(data.days) || data.days.length !== 7) throw new Error(data.error || 'Statistics are unavailable.');
       if (revision !== generation || !sidebar.isConnected) return;
       render(data, boundaries);
+      if (refreshForecast) void forecast.refresh({ basis: data.basis, dailyXpGoal: data.dailyXpGoal });
     } catch (error) {
       if (revision !== generation || !sidebar.isConnected) return;
+      if (refreshForecast) void forecast.refresh();
       todayCard.replaceChildren(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', error.message));
       const retry = node('button', 'small-button', 'Try again'); retry.type = 'button'; retry.addEventListener('click', load); todayCard.append(retry);
     }

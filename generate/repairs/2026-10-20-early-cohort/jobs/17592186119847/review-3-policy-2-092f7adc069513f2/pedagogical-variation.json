@@ -1,0 +1,802 @@
+{
+  "learner_operation": "Read which count is supplied; rank equals pivot count, or total columns minus non-pivot count. Select the unique matching integer from five radio choices.",
+  "fixed_features": [
+    {
+      "feature": "Rank target, five radio options, one correct",
+      "justification": "Every source-bank question has this response contract."
+    },
+    {
+      "feature": "Easy gives pivots; moderate gives non-pivots",
+      "justification": "Observed difficulty split: direct definition versus one subtraction."
+    },
+    {
+      "feature": "Feasible small positive counts",
+      "justification": "Source-like workload and rank <= min(rows,columns); feasibility does not require rank to differ from rows or non-pivots."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct rank",
+      "eligible_variation": "Pivot count or columns-minus-nonpivots, including equality with rows or non-pivots.",
+      "observed": "Easy ranks 1..12 covered; moderate full-row-rank and rank=nonpivot cases are rejected by every profile."
+    },
+    {
+      "role": "Name and dimensions",
+      "eligible_variation": "Names and feasible rows preserve the response; moderate columns affect it.",
+      "observed": "Successful controls follow these dependencies; source q-79409 rows 5 -> 4 instead fails generation."
+    },
+    {
+      "role": "Answer position and bank",
+      "eligible_variation": "Preserve complete banks on replay; replace colliding distractors on extensions.",
+      "observed": "Fresh positions/orders vary in all profiles, but valid() requires the original unsigned recipe to be distinct before constructing the bank."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "11 source-bank profiles",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-tests.json",
+        "independent-records.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All complete banks replay. Twenty fresh seeds per profile; delivery accepts 100/100 easy and 112/120 moderate, skipping eight duplicates."
+    },
+    {
+      "case": "Canonical full-row rank",
+      "sample_refs": [
+        "canonical-rejection.json",
+        "audit-canonical.py"
+      ],
+      "result": "FAIL: 4x7 with three non-pivots rejected by every moderate profile."
+    },
+    {
+      "case": "Rank equals non-pivots",
+      "sample_refs": [
+        "restriction.json",
+        "restriction-regression.py",
+        "restriction-regression.stderr"
+      ],
+      "result": "FAIL: 3x4/two non-pivots rejected. Six even-column pairs and one additional (columns,count)=(3,2) are absent within current numeric bounds."
+    },
+    {
+      "case": "Exact requested batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-runner-batch/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five survive; ranks 10,1,11,3,8 and correct positions 5,5,1,3,2. No tested fixed action solves all five."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change supplied pivot/nonpivot count at fixed dimensions; additionally change moderate columns 8 -> 9.",
+      "expected": "Easy 5 -> 4; moderate 5 -> 6 under count 3 -> 2 or columns 8 -> 9.",
+      "observed": "Prompts, keys, solutions, actual native acceptance/rejection and rendered answers follow the expected changes after delivery normalization.",
+      "status": "passed",
+      "justification": "Rank=pivots and canonical subtraction columns-minus-nonpivots.",
+      "sample_refs": [
+        "control-records.json",
+        "control-tests.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-tail/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename Q to T and change feasible rows 10 -> 11, preserving columns and count.",
+      "expected": "Easy and moderate rank both remain five.",
+      "observed": "Normalized controls preserve rank; native grading and rendered prompts/solutions agree, with updated names and dimensions.",
+      "status": "passed",
+      "justification": "Rows only bound rank once the column count evidence is supplied.",
+      "sample_refs": [
+        "controls-easy.json",
+        "controls-moderate.json",
+        "control-tests.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Source q-79409 rows 5 -> 4, retaining seven columns and three non-pivots.",
+      "expected": "Rank remains four and the feasible item is generated.",
+      "observed": "Every profile rejects the after parameters. No after prompt, explanation or grader instance is available; before record was source-replayed and native-graded.",
+      "status": "failed",
+      "justification": "Rank four is feasible with four or five rows; canonical example uses four.",
+      "sample_refs": [
+        "row-counterfactual.json",
+        "canonical-rejection.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Always select first option",
+      "subgroup": "easy wording / raw",
+      "scope": "within_template",
+      "strategy": "Always select first option",
+      "correct": 7,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Select second-smallest option",
+      "subgroup": "easy wording / raw",
+      "scope": "within_template",
+      "strategy": "Select second-smallest option",
+      "correct": 31,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "31/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Select maximum option",
+      "subgroup": "easy wording / raw",
+      "scope": "within_template",
+      "strategy": "Select maximum option",
+      "correct": 2,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Copy row dimension",
+      "subgroup": "easy wording / raw",
+      "scope": "within_template",
+      "strategy": "Copy row dimension",
+      "correct": 8,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Copy supplied column count",
+      "subgroup": "easy wording / raw",
+      "scope": "within_template",
+      "strategy": "Copy supplied column count",
+      "correct": 100,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "100/100 against uniform five-option guessing baseline 0.20. Easy is the intended rank=pivots definition. Moderate never has rank=nonpivots because that valid case is suppressed.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-139950 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 3,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34805 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34825 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79157 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79405 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "easy-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "easy wording / delivered",
+      "scope": "within_template",
+      "strategy": "Always select first option",
+      "correct": 7,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select second-smallest option",
+      "subgroup": "easy wording / delivered",
+      "scope": "within_template",
+      "strategy": "Select second-smallest option",
+      "correct": 31,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "31/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select maximum option",
+      "subgroup": "easy wording / delivered",
+      "scope": "within_template",
+      "strategy": "Select maximum option",
+      "correct": 2,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Copy row dimension",
+      "subgroup": "easy wording / delivered",
+      "scope": "within_template",
+      "strategy": "Copy row dimension",
+      "correct": 8,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/100 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Copy supplied column count",
+      "subgroup": "easy wording / delivered",
+      "scope": "within_template",
+      "strategy": "Copy supplied column count",
+      "correct": 100,
+      "total": 100,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "100/100 against uniform five-option guessing baseline 0.20. Easy is the intended rank=pivots definition. Moderate never has rank=nonpivots because that valid case is suppressed.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-139950 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 3,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34805 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34825 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79157 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79405 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-easy-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "moderate wording / raw",
+      "scope": "within_template",
+      "strategy": "Always select first option",
+      "correct": 11,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/120 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Select second-smallest option",
+      "subgroup": "moderate wording / raw",
+      "scope": "within_template",
+      "strategy": "Select second-smallest option",
+      "correct": 42,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "42/120 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Select maximum option",
+      "subgroup": "moderate wording / raw",
+      "scope": "within_template",
+      "strategy": "Select maximum option",
+      "correct": 0,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/120 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Copy row dimension",
+      "subgroup": "moderate wording / raw",
+      "scope": "within_template",
+      "strategy": "Copy row dimension",
+      "correct": 0,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/120 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Copy supplied column count",
+      "subgroup": "moderate wording / raw",
+      "scope": "within_template",
+      "strategy": "Copy supplied column count",
+      "correct": 0,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/120 against uniform five-option guessing baseline 0.20. Easy is the intended rank=pivots definition. Moderate never has rank=nonpivots because that valid case is suppressed.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-139953 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34806 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34826 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79407 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79408 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79409 / raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 3,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "moderate-records.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "moderate wording / delivered",
+      "scope": "within_template",
+      "strategy": "Always select first option",
+      "correct": 10,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/112 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select second-smallest option",
+      "subgroup": "moderate wording / delivered",
+      "scope": "within_template",
+      "strategy": "Select second-smallest option",
+      "correct": 41,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "41/112 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select maximum option",
+      "subgroup": "moderate wording / delivered",
+      "scope": "within_template",
+      "strategy": "Select maximum option",
+      "correct": 0,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/112 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Copy row dimension",
+      "subgroup": "moderate wording / delivered",
+      "scope": "within_template",
+      "strategy": "Copy row dimension",
+      "correct": 0,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/112 against uniform five-option guessing baseline 0.20. Strategy has counterexamples; no exhaustive absence-of-shortcut claim. Moderate row-copy never succeeds because full-row-rank cases are rejected, a demonstrated restriction.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Copy supplied column count",
+      "subgroup": "moderate wording / delivered",
+      "scope": "within_template",
+      "strategy": "Copy supplied column count",
+      "correct": 0,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/112 against uniform five-option guessing baseline 0.20. Easy is the intended rank=pivots definition. Moderate never has rank=nonpivots because that valid case is suppressed.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-139953 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34806 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-34826 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/13 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79407 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/19 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79408 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "q-79409 / delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 3,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/20 against uniform five-option guessing baseline 0.20. Conditional bank-construction probe. Metadata is not learner-visible; no perfect fixed-first action occurs in this profile sample.",
+      "sample_refs": [
+        "delivery-moderate-records/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 against uniform five-option guessing baseline 0.20. Evaluated separately from larger samples; strategy does not solve all five.",
+      "sample_refs": [
+        "delivery-runner-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select fifth option",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Always select fifth option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 against uniform five-option guessing baseline 0.20. Evaluated separately from larger samples; strategy does not solve all five.",
+      "sample_refs": [
+        "delivery-runner-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select second-smallest option",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Select second-smallest option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 against uniform five-option guessing baseline 0.20. Evaluated separately from larger samples; strategy does not solve all five.",
+      "sample_refs": [
+        "delivery-runner-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Select maximum option",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Select maximum option",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 against uniform five-option guessing baseline 0.20. Evaluated separately from larger samples; strategy does not solve all five.",
+      "sample_refs": [
+        "delivery-runner-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Always select first option",
+      "subgroup": "runner q-34825 construction",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select first option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 against uniform five-option guessing baseline 0.20. Three records have three different correct positions and numerical orders; singleton profiles cannot establish a conditional distribution.",
+      "sample_refs": [
+        "delivery-runner-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "catalog construction and bank rejection",
+      "task sampling without replacement; no invalid-item resampling",
+      "requested difficulty",
+      "actual publisher normalization and inventory/within-batch deduplication",
+      "native selector inspection and faithful conditional replay"
+    ],
+    "sample_refs": [
+      "restriction.json",
+      "canonical-rejection.json",
+      "delivery-coverage.json",
+      "delivery-runner-batch/delivery.json",
+      "selection-tests.json"
+    ],
+    "result": "Rejected constructions cannot enter delivery. All five exact batch records survive. Selection depends on difficulty/freshness; conditional replay documents specified weights/history and synthetic future IDs."
+  },
+  "limitations": [
+    "Captured inventory basis 5404; later inventory changes are not predicted.",
+    "Active learner history/weights and future entity IDs are absent; selection scenarios are explicitly conditional.",
+    "Finite shortcut probes do not establish universal absence. Some numerical-order heuristics outperform chance in small groups but have counterexamples.",
+    "Historical stored q-79405 ordering weakness reproduced in affected-inventory.json is not attributed to current v2.",
+    "Canonical example has no bank; its failure concerns the valid stem, without requiring an invented canonical bank."
+  ]
+}

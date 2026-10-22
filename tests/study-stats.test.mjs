@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const source = (await readFile(new URL('../ui/study-stats.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const flush = () => new Promise(resolve => setImmediate(resolve));
 function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
-  const f = { calls: [], data: null, timers: new Map(), forecastRefreshes: 0, goals: [] };
+  const f = { calls: [], data: null, timers: new Map(), forecastRefreshes: 0, forecastRequests: [], goals: [] };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.dataset = {}; this.attrs = {}; this.style = {}; }
     append(...nodes) { for (const node of nodes) { node.parent = this; this.children.push(node); } }
@@ -23,7 +23,7 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
   f.window = new EventTarget();
   const context = vm.createContext({ document, window: f.window, Intl, Number, AbortController, crypto,
     createForecastSidebar: ({ signal }) => { f.forecastSignal = signal; return { cards: [],
-      refresh() { f.forecastRefreshes++; }, updateGoal(goal) { f.goals.push(goal); } }; },
+      refresh(options) { f.forecastRefreshes++; f.forecastRequests.push(options); }, updateGoal(goal) { f.goals.push(goal); } }; },
     Date: class extends Date { constructor(...args) { super(...(args.length ? args : [now])); } static now() { return now; } },
     setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
     clearTimeout: id => f.timers.delete(id),
@@ -32,7 +32,7 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
       f.calls.push({ path });
       if (f.failRead) throw new Error('Offline');
       const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0 }));
-      f.data ||= { dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0 };
+      f.data ||= { basis: 1, dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0 };
       return { ok: true, json: async () => structuredClone(f.data) };
     },
     fetch: async (path, settings) => {
@@ -78,6 +78,8 @@ test('the XP row shows today, week, and compact lifetime totals with exact detai
   assert.equal(chart.children[2].getAttribute('aria-pressed'), 'true');
   assert.equal(f.calls.length, 1); // Chart details need no extra request.
   assert.match(f.calls[0].path, /^\/api\/study-stats\?/);
+  assert.equal(f.forecastRequests[0].basis, 1);
+  assert.equal(f.forecastRequests[0].dailyXpGoal, 200);
 });
 
 test('the sidebar only displays statistics and has no goal editor or activity link', async () => {

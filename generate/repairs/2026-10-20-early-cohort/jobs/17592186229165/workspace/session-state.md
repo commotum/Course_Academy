@@ -1,13 +1,13 @@
-# Current state — author 319
+# Current state — author 323
 
-Parsed feedback and all 319 history events; inspected both retained findings and latest attempt 318. Both findings are unchanged. No generator authoring is requested by the remaining evidence finding. Runtime, manifest, instructional account, source analysis, affected-inventory reproductions and both strict regressions are preserved.
+Read supplied feedback and parsed the full repair history (323 events; latest attempt 322). Both retained findings are unchanged. Preserved runtime files, manifest, instructional account, source/inventory evidence, staged report correction, and strict regression declarations. The remaining finding requests external report installation and explicitly states no generator authoring is needed.
 
-Validation with `/home/jake/Developer/Course_Academy/.venv/bin/python`, in this order:
+Ran latest failure first with `/home/jake/Developer/Course_Academy/.venv/bin/python`:
 
-1. `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — exit 1. Required external report still fails `decision_variation has an unresolved decision shortcut`. The staged correction passes actual contract/schema validation and replays 26 complete records against current code.
-2. `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Exact reorder, controlled transfer, conditional shortcut probes and shared delivery pass. Delivered positions: 19 first, 17 second, five both nonresonant. Native grading: 11 accepted and 19 rejected as expected.
-3. `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. All 55 staged artifact hashes, runtime/source hashes and eight independent mathematical cases pass. Earlier source replay and inspected actual-UI rendering remain applicable to unchanged content.
+1. `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — exit 1. Actual contract validation at the required external destination still reports `decision_variation has an unresolved decision shortcut`. Staged correction passes schema/contract validation and replays 26 complete current-generator records.
+2. `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Exact reported reorder, controlled resonance transfer, conditional shortcut probes, shared delivery and 30 native-grader expectations pass (11 accepted, 19 rejected). Delivered resonance positions: 19 first, 17 second; five both nonresonant.
+3. `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. Verified 55 staged handoff artifact hashes, unchanged runtime/source hashes, and eight independently checked mathematical records. Existing source replay and visually inspected actual-UI rendering remain applicable to unchanged content.
 
-Results: `evidence/current-validation.json`. No runtime edits, external writes, image publication, database changes or engine changes.
+Results: `evidence/current-validation.json`. No runtime edits, external writes, image publication, database changes, or engine changes.
 
-Next required action: runner installation of `evidence/corrected-review/` at the prior-review destination specified in `evidence/review-installation-handoff.json`, followed by the unchanged strict check and fresh independent review. That destination is outside the authorized workspace. Do not weaken the regression, substitute a writable destination, or schedule another identical author retry before resolving this external state.
+Next unfinished step: runner installs `evidence/corrected-review/` at the prior-review destination in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression, and obtains fresh independent review. That destination is outside the user's authorized workspace. Another identical workspace-only retry cannot perform the installation. Preserve the strict failure and historical inventory defect evidence; do not substitute a writable destination or mark the finding resolved.

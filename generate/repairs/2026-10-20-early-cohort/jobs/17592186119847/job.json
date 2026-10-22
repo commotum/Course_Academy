@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186119847.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 3,
+  "stage": "generate",
+  "attempt": 4,
   "seed": 536356594,
   "created": 1792635794.7833421,
-  "updated": 1792637026.3009653,
+  "updated": 1792637877.974614,
   "source_hash": "67d92efc15bfd7ad5e18815aed63d460dff67ed3645890ef743b194617487a21",
   "inventory_hash": "c585796db449770a69b11f7aff0cd49e509818646517b1c96841314e99f6ffb0",
   "manifest": "package.json",
@@ -18,12 +18,144 @@
   "effective_difficulty": "easy",
   "needs_repair": true,
   "error": {
-    "error": "Generator must return exactly the requested number of records; report finite limits explicitly"
+    "verdict": "revise",
+    "summary": "Distractor collisions exclude valid moderate cases, including the canonical lesson example. The five requested easy records pass math, grading, delivery and rendering. Package unchanged.",
+    "source_analysis": {
+      "skill": "Determine rank from pivot count, or subtract non-pivot count from total columns.",
+      "reasoning_steps": [
+        "Identify whether the supplied count describes pivot or non-pivot columns.",
+        "Use rank = pivots, or rank = columns minus non-pivots.",
+        "Select the matching integer."
+      ],
+      "invariants": [
+        "Rank cannot exceed either matrix dimension.",
+        "Five distinct numeric radio choices contain one correct answer.",
+        "Easy uses direct definition recall; moderate uses one subtraction."
+      ],
+      "permitted_variations": [
+        "Vary feasible dimensions, counts, matrix names and answer positions.",
+        "Include feasible cases where rank equals rows or non-pivot count.",
+        "Preserve complete source banks on replay; replace colliding distractors in extensions."
+      ],
+      "source_refs": [
+        "7cce27e9-e2b2-599c-9f4e-437caf1a23ae: canonical example computes 7-3=4.",
+        "186b4c12-6daf-5415-8147-526533c01a95: five rows, seven columns, three non-pivots.",
+        "Tutorial c062d466-946c-526b-aba8-0a0895671218: rank equals pivot count."
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "failed",
+        "evidence_paths": [
+          "source-replay-tests.json",
+          "source-replay-records.json",
+          "canonical-rejection.json"
+        ],
+        "details": "All 11 complete question banks replay, but every moderate profile rejects the canonical example's parameters."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "math-tests.json",
+          "independent-records.json",
+          "control-tests.json"
+        ],
+        "details": "243 independently parsed records have correct ranks, keys, distinct options and consistent solution equations."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "restriction.json",
+          "canonical-rejection.json",
+          "row-counterfactual.json",
+          "delivery-coverage.json"
+        ],
+        "details": "Incidental bank collisions exclude full-row-rank and rank-equals-nonpivot cases."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-analysis.json",
+          "independent-records.json"
+        ],
+        "details": "Generated items preserve source methods, response format and workload."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-input.json",
+          "grader-report.json"
+        ],
+        "details": "The native grader accepted 45 correct radio responses and rejected 180 distractors."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "render-tail/rendering.json",
+          "render-inspection.json"
+        ],
+        "details": "Inspected actual UI screenshots for seven controls and all five runner-batch records."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging.json",
+          "historical-regressions.json",
+          "retained-results/validation.json",
+          "package-integrity.json"
+        ],
+        "details": "Dependencies, deterministic relocation, runner decoding and count boundaries pass. Prior count/envelope failures are resolved. Package hashes are unchanged; repair preflight is absent."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "row-counterfactual.json",
+          "delivery-coverage.json",
+          "selection-tests.json"
+        ],
+        "details": "A feasible irrelevant row change prevents generation. All five requested easy records survive delivery; no tested fixed action answers all five."
+      }
+    },
+    "findings": [
+      {
+        "kind": "restriction",
+        "description": "valid() requires distinct original recipe values before constructing distractors. Every moderate recipe includes both rows and rank, excluding full-row-rank matrices\u2014including canonical 4\u00d77 with three non-pivots. Every profile also rejects 3\u00d74 with two non-pivots, although rank two is feasible and five distinct choices are readily available.",
+        "source_refs": [
+          "7cce27e9-e2b2-599c-9f4e-437caf1a23ae",
+          "186b4c12-6daf-5415-8147-526533c01a95",
+          "generate/principles.md sections 1 and 2"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B restriction-regression.py. The strict expected-success test exits 1. audit-canonical.py reproduces rejection across all six profiles for seed=17, rows=4, columns=7, count=3, kind=non-pivot.",
+        "requested_change": "Separate mathematical feasibility from distractor uniqueness. Preserve complete replay banks, replace colliding distractors for valid extensions, and admit full-row-rank and rank-equals-nonpivot constructions. Retain the strict regression."
+      }
+    ]
   },
-  "author_running": false,
+  "author_running": true,
   "batch_hash": "3163aa9fea8136a1b8f286a9066d95ccb6a84e56ecdb77a82ea622f18e7b3e24",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/runtime-3",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
   "assets": {},
-  "package_hash": "35747c9eae255ea02cada3dde2a1b6e831b263ae23cc78158670e0a4afc33442"
+  "package_hash": "35747c9eae255ea02cada3dde2a1b6e831b263ae23cc78158670e0a4afc33442",
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-3-policy-2-092f7adc069513f2",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "35747c9eae255ea02cada3dde2a1b6e831b263ae23cc78158670e0a4afc33442",
+      "batch_hash": "3163aa9fea8136a1b8f286a9066d95ccb6a84e56ecdb77a82ea622f18e7b3e24",
+      "source_hash": "67d92efc15bfd7ad5e18815aed63d460dff67ed3645890ef743b194617487a21",
+      "inventory_hash": "c585796db449770a69b11f7aff0cd49e509818646517b1c96841314e99f6ffb0",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
+    }
+  },
+  "last_rejected_package": "35747c9eae255ea02cada3dde2a1b6e831b263ae23cc78158670e0a4afc33442",
+  "last_rejected_source": "67d92efc15bfd7ad5e18815aed63d460dff67ed3645890ef743b194617487a21",
+  "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+  "repair_cycle": 1
 }

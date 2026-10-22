@@ -1,0 +1,134 @@
+{
+  "verdict": "revise",
+  "summary": "Distractor collisions exclude valid moderate cases, including the canonical lesson example. The requested five easy records pass math, grading, delivery and rendering. Package unchanged.",
+  "source_analysis": {
+    "skill": "Determine rank from a stated pivot-column count (easy) or subtract non-pivot count from total columns (moderate).",
+    "reasoning_steps": [
+      "Identify matrix dimensions and whether stated columns are pivots or non-pivots.",
+      "For easy recall rank equals pivot count; for moderate compute columns minus non-pivots.",
+      "Select the matching integer."
+    ],
+    "invariants": [
+      "0 <= rank <= min(rows, columns); non-pivots = columns-rank.",
+      "Five distinct numeric radio options with exactly one correct answer.",
+      "Easy items give pivot count; moderate items give non-pivot count.",
+      "No row reduction or explicit matrix computation is needed."
+    ],
+    "permitted_variations": [
+      "Matrix name, dimensions, pivot count/rank and non-pivot count within feasible bounds.",
+      "Square, tall and wide dimensions; zero and full rank are mathematically valid conservative boundary extensions.",
+      "Correct-option location and distractor values/bank profiles may vary.",
+      "Dimensions are irrelevant to easy response once feasibility is assured; moderate column count and non-pivot count are relevant.",
+      "Fixed target rank(A) and one correct radio choice are essential; particular letter, dimensions, rank, answer position and source bank are incidental."
+    ],
+    "source_refs": [
+      "tutorial 6318f9cd-930b-5b7b-acc7-c27b5b241825: rank(A)=dim(Col(A)); two pivot columns imply dimension 2.",
+      "lesson step fd1734a2-5193-5182-9a6f-4a024ee32ce5 / canonical 7cce27e9-e2b2-599c-9f4e-437caf1a23ae: seven columns minus three non-pivots gives rank four.",
+      "tutorial c062d466-946c-526b-aba8-0a0895671218: rank is number of pivot columns, equivalently nonzero rows in echelon form.",
+      "b5549e3a-28d3-5fc9-95bb-dda91eedbf45",
+      "96a00a6f-154e-57db-9e06-bc987fab7496",
+      "c934bab9-e2a5-557f-b70a-32a46819ab48",
+      "9d3fee34-056d-53cd-a4aa-21cc533db201",
+      "aefee286-0658-5eaf-a083-c47c3412eef5",
+      "ba425c74-1df7-5b4c-b055-df4f66ee83a7",
+      "6826463c-847d-5512-b760-3fbeb596f635",
+      "d99c604a-a10b-57d3-8148-d6702b5326c3",
+      "e56cf627-f5bb-57b0-ae99-521a4ce7bf5a",
+      "186b4c12-6daf-5415-8147-526533c01a95",
+      "b89238c4-c724-5269-a873-19d3a331e580"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replay-records.json",
+        "canonical-rejection.json"
+      ],
+      "details": "All 11 complete question banks replay with documented source repairs. Canonical 4x7/three-nonpivot stem is rejected by all six moderate profiles."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "independent-records.json",
+        "control-tests.json"
+      ],
+      "details": "243 independently parsed source/fresh/control/batch records have feasible counts, exact ranks, five distinct choices, correct keys and matching solution equations."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "restriction.json",
+        "canonical-rejection.json",
+        "row-counterfactual.json",
+        "delivery-coverage.json"
+      ],
+      "details": "Incidental distractor collisions suppress full-row-rank and rank=nonpivot constructions without an instructional reason."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-records.json",
+        "independent-records.json"
+      ],
+      "details": "Generated items retain easy definition recall, moderate one-step subtraction, small integers and a five-option radio response."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Real native grader accepted 45 independently correct radio responses and rejected 180 distractors. No free-entry field exists."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-tail/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI screenshots inspected for seven controls and all five exact batch records; prompts, controls and solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "historical-regressions.json",
+        "retained-results/validation.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact installed Python/SymPy versions match manifest. Deterministic relocated runner-compatible CLI, finite capacities and prior failures checked. Package hashes unchanged. Repair preflight absent."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "row-counterfactual.json",
+        "delivery-coverage.json",
+        "selection-tests.json"
+      ],
+      "details": "Feasible irrelevant row change breaks generation and rank=nonpivot cases are omitted. Exact easy batch has no demonstrated universal tested shortcut; this does not waive the moderate restriction."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "valid() requires the original distractor recipe to contain five distinct values before variant-bank construction. All moderate recipes contain both rows and rank, excluding every full-row-rank matrix, including canonical 4x7 with three non-pivots (rank four). Every profile also rejects columns=2*nonpivots: minimal 3x4 with two non-pivots has rank two and admits five distinct choices such as 0,1,2,3,4. These are same-method cases, not additional prerequisites.",
+      "source_refs": [
+        "7cce27e9-e2b2-599c-9f4e-437caf1a23ae: canonical e-5415 computes 7-3=4",
+        "186b4c12-6daf-5415-8147-526533c01a95: q-79409, five rows/seven columns/three non-pivots",
+        "tutorial c062d466-946c-526b-aba8-0a0895671218: rank equals pivot count",
+        "generate/principles.md sections 1 and 2"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B restriction-regression.py (strict expected-success test exits 1). audit-canonical.py records every profile rejecting name=A, rows=4, columns=7, count=3, kind=non-pivot, seed=17. audit-row-counterfactual.py changes only q-79409 rows 5 -> 4 and reproduces rejection.",
+      "requested_change": "Separate mathematical feasibility from source-distractor uniqueness. Preserve complete source banks on exact replay; construct or replace colliding distractors for valid extensions. Include full-row-rank and rank=nonpivot cases in the catalog and retain the strict regression. Verify dependent prompt, solution, key, real grading and delivery."
+    }
+  ]
+}
