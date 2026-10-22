@@ -1,0 +1,94 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "external_files_changed": false,
+  "commands": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_current_handoff.py"
+      ],
+      "exit_code": 1
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
+      ],
+      "exit_code": 1,
+      "log": "evidence/author96-evidence-check.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/author96-batch-check.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_render_binding.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "root_cause": {
+    "file": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "line": 723,
+    "failure": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
+    "reason": "The unchanged-runtime rejection does not distinguish evidence-only review findings from runtime defects. The retained finding requires preserving runtime.",
+    "workspace_fix_available": false,
+    "proposed_external_fix": "runner-fix/evidence-only-rejection.patch",
+    "installed": false
+  },
+  "claims": {
+    "fidelity": {
+      "complete_source_banks": 10,
+      "bound_render_endpoints": 2,
+      "report": "evidence/current-render-binding.json"
+    },
+    "correctness": "Independent visible-record contrast checks pass in the retained batch regression.",
+    "grading": {
+      "native_responses": 25,
+      "report": "evidence/batch-selection-regression.json"
+    },
+    "variation": {
+      "raw": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      },
+      "delivered": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      },
+      "delivery_count": 5
+    },
+    "evidence": {
+      "bundle_validated": true,
+      "relocated_roots": [
+        "author-6",
+        "another-review-attempt"
+      ],
+      "negative_controls": "Wrong-root and missing-provenance cases reject.",
+      "report": "evidence/evidence-contract-validation.json"
+    },
+    "handoff": "Strict installed-runner check still fails; no publication or fresh approval claimed."
+  },
+  "runtime_hashes": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "next_required_action": "Runner owner applies and tests the external evidence-only routing correction, then resumes retained checks and fresh independent review."
+}

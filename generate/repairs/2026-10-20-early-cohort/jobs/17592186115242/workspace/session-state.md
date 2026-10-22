@@ -1,23 +1,21 @@
-# Current verification — author 772
+# Current verification — author 776
 
-Preserved runtime repairs and all five strict regressions. Read feedback,
-retained findings, latest history event, source material and generator guidance.
+Latest exact failure reproduced first: job Python -B checks/batch_regressions.py
+--finding inventory exits 1 for five historical banks and the 64/64 retained
+possible-history shortcut witness.
 
-First test: job Python -B checks/batch_regressions.py --finding inventory exited
-1: five historical banks and 64/64 possible-history shortcut successes.
+Job Python -B checks/recheck_status.py --output evidence/author-776 exits 1
+solely for 591f580cadb749294588. All four generator findings pass; 17 complete
+practice banks plus canonical replay; 14 delivered records retain contrasts;
+native grader accepts 7 correct and rejects 28 wrong choices. Relocation,
+dependencies, protected hashes and staged replacement mappings pass.
+Retained actual-UI screenshot and source tutorial flowchart visually inspected.
 
-Validation: job Python -B checks/recheck_status.py --output evidence/author-772
-exited 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
-17 source banks replay; 14 delivered records retain contrasts. Native grading:
-7 accepted, 28 rejected. Relocation, pinned dependencies, protected hashes and
-replacement mappings pass. Retained actual-UI screenshot
- evidence/repair-3/render/question-001.png visually inspected and readable.
-
-Evidence: evidence/author-772/{commands,results,grader-report}.json and
+Evidence: evidence/author-776/{commands,results,grader-report}.json and
 disposition.md. Historical records: evidence/generated-records.json.
-Unapplied proposal: evidence/repair-3/inventory-repair-proposal.json.
+Staged proposal: evidence/repair-3/inventory-repair-proposal.json.
 
-Next unfinished action: separate inventory remediation, fresh capture and strict
-recheck. Database changes and publication are prohibited here. No new runtime
-defect is demonstrated. Status remains unsupported. Preserve the strict failure;
-do not substitute proposed replacements for captured inventory.
+Next required action: separate inventory remediation, then fresh capture and
+strict recheck. Database changes and publication are prohibited here. The
+current generator cannot retire stored selector candidates. Preserve the failing
+regression and every completed repair; no runtime edits were made.

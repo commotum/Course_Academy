@@ -1,0 +1,98 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "external_files_changed": false,
+  "commands": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_current_handoff.py"
+      ],
+      "exit_code": 1,
+      "evidence": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
+      ],
+      "exit_code": 1,
+      "evidence": "evidence/author98-evidence-check.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "evidence": "evidence/author98-batch-check.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_render_binding.py"
+      ],
+      "exit_code": 0,
+      "evidence": "evidence/current-render-binding.json"
+    }
+  ],
+  "root_cause": {
+    "file": "scripts/generator_pipeline.py",
+    "line": 723,
+    "failure": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
+    "workspace_fix_available": false,
+    "staged_patch": "runner-fix/evidence-only-rejection.patch",
+    "installed": false
+  },
+  "claims": {
+    "fidelity": {
+      "source_banks": 10,
+      "source_choices": 50
+    },
+    "correctness": "Exact independent visible-matrix elimination checks pass for tested contrast banks.",
+    "grading": {
+      "native_responses": 25,
+      "accepted": 5,
+      "rejected": 20
+    },
+    "variation": {
+      "raw": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      },
+      "delivered": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      }
+    },
+    "evidence": {
+      "bundle_validated": true,
+      "installed": false,
+      "negative_controls": [
+        "wrong root",
+        "missing provenance"
+      ],
+      "affected_inventory_records_bound": 3
+    },
+    "rendering": {
+      "retained_render_bound": true,
+      "screenshot_inspected": "evidence/author8-render/question-001.png",
+      "visual_result": "Readable prompt, five matrix choices and elimination steps; no clipping observed."
+    }
+  },
+  "runtime_hashes": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "next_required_action": "Runner owner must resolve evidence-only routing and install the corrected evidence bundle at the supplied evidence root, then execute strict regressions and fresh independent review. Repeating unchanged author sessions cannot perform those external writes."
+}
