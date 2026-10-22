@@ -1241,24 +1241,25 @@
       "claimed": 1792611874.028126,
       "worker_slot": 2,
       "worker_pid": 30000,
-      "repair_cycle": 88,
+      "repair_cycle": 89,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved completed generator repairs. Four generator regressions, source replay, delivery, native grading, and relocation pass. Historical inventory regression still fails.",
+          "summary": "Preserved completed repairs. Four generator regressions, source replay, delivery, native grading, and relocation pass. Five historical inventory questions still fail the shortcut check.",
           "evidence_paths": [
-            "evidence/repair-264/initial-reproduction.json",
-            "evidence/repair-264/commands.json",
-            "evidence/repair-264/results.json",
+            "evidence/repair-267/initial-reproduction.json",
+            "evidence/repair-267/commands.json",
+            "evidence/repair-267/results.json",
             "repair-regressions.json",
             "affected-inventory.json",
             "evidence/generated-records.json",
-            "evidence/repair-3/inventory-repair-proposal.json"
+            "evidence/repair-3/inventory-repair-proposal.json",
+            "session-state.md"
           ],
           "limitations": [
-            "Finding 591f580cadb749294588 remains unresolved for five stored questions. Verified replacements are staged; applying them requires the separate inventory-remediation workflow and database changes prohibited by this task."
+            "Finding 591f580cadb749294588 requires separate inventory remediation and fresh capture. Verified replacements are staged; applying them requires database changes prohibited by this task."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -1308,13 +1309,13 @@
       "claimed": 1792613829.9277666,
       "worker_slot": 0,
       "worker_pid": 29998,
-      "repair_cycle": 111,
+      "repair_cycle": 113,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved the repaired generator. Delivery, 30 native-grader checks, and eight mathematical cases pass. The required external-report regression still fails.",
+          "summary": "Preserved the repaired generator. Delivery, 30 native-grader expectations, and eight mathematical cases pass. Required external-report validation remains blocked.",
           "evidence_paths": [
             "evidence/current-validation.json",
             "evidence/report-repair/current-reproduction.log",
@@ -1324,7 +1325,7 @@
             "session-state.md"
           ],
           "limitations": [
-            "Finding 645672a4cd3f9bf609ca requires runner installation of the staged corrected report outside the authorized workspace, followed by strict validation and independent review. Workspace-only changes cannot complete that step."
+            "Finding 645672a4cd3f9bf609ca requires runner installation of the staged corrected report outside the authorized workspace, followed by strict validation and independent review. No workspace-only generator change can complete that installation."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -1693,129 +1694,31 @@
         "Linear Algebra"
       ],
       "original_order": 432,
-      "state": "running",
+      "state": "verified",
       "started": 1792635792.4886417,
       "claimed": 1792635792.488642,
       "worker_slot": 1,
       "worker_pid": 29999,
       "repair_cycle": 1,
-      "error": {
-        "verdict": "revise",
-        "summary": "Distractor collisions exclude valid moderate cases, including the canonical lesson example. The five requested easy records pass math, grading, delivery and rendering. Package unchanged.",
-        "source_analysis": {
-          "skill": "Determine rank from pivot count, or subtract non-pivot count from total columns.",
-          "reasoning_steps": [
-            "Identify whether the supplied count describes pivot or non-pivot columns.",
-            "Use rank = pivots, or rank = columns minus non-pivots.",
-            "Select the matching integer."
-          ],
-          "invariants": [
-            "Rank cannot exceed either matrix dimension.",
-            "Five distinct numeric radio choices contain one correct answer.",
-            "Easy uses direct definition recall; moderate uses one subtraction."
-          ],
-          "permitted_variations": [
-            "Vary feasible dimensions, counts, matrix names and answer positions.",
-            "Include feasible cases where rank equals rows or non-pivot count.",
-            "Preserve complete source banks on replay; replace colliding distractors in extensions."
-          ],
-          "source_refs": [
-            "7cce27e9-e2b2-599c-9f4e-437caf1a23ae: canonical example computes 7-3=4.",
-            "186b4c12-6daf-5415-8147-526533c01a95: five rows, seven columns, three non-pivots.",
-            "Tutorial c062d466-946c-526b-aba8-0a0895671218: rank equals pivot count."
-          ],
-          "evidence_paths": [
-            "source-analysis.json"
-          ]
-        },
-        "checks": {
-          "source_replay": {
-            "status": "failed",
-            "evidence_paths": [
-              "source-replay-tests.json",
-              "source-replay-records.json",
-              "canonical-rejection.json"
-            ],
-            "details": "All 11 complete question banks replay, but every moderate profile rejects the canonical example's parameters."
-          },
-          "math": {
-            "status": "passed",
-            "evidence_paths": [
-              "math-tests.json",
-              "independent-records.json",
-              "control-tests.json"
-            ],
-            "details": "243 independently parsed records have correct ranks, keys, distinct options and consistent solution equations."
-          },
-          "variety": {
-            "status": "failed",
-            "evidence_paths": [
-              "restriction.json",
-              "canonical-rejection.json",
-              "row-counterfactual.json",
-              "delivery-coverage.json"
-            ],
-            "details": "Incidental bank collisions exclude full-row-rank and rank-equals-nonpivot cases."
-          },
-          "scope": {
-            "status": "passed",
-            "evidence_paths": [
-              "source-analysis.json",
-              "independent-records.json"
-            ],
-            "details": "Generated items preserve source methods, response format and workload."
-          },
-          "grading": {
-            "status": "passed",
-            "evidence_paths": [
-              "grader-input.json",
-              "grader-report.json"
-            ],
-            "details": "The native grader accepted 45 correct radio responses and rejected 180 distractors."
-          },
-          "rendering": {
-            "status": "passed",
-            "evidence_paths": [
-              "render/rendering.json",
-              "render-tail/rendering.json",
-              "render-inspection.json"
-            ],
-            "details": "Inspected actual UI screenshots for seven controls and all five runner-batch records."
-          },
-          "packaging": {
-            "status": "passed",
-            "evidence_paths": [
-              "packaging.json",
-              "historical-regressions.json",
-              "retained-results/validation.json",
-              "package-integrity.json"
-            ],
-            "details": "Dependencies, deterministic relocation, runner decoding and count boundaries pass. Prior count/envelope failures are resolved. Package hashes are unchanged; repair preflight is absent."
-          },
-          "decision_variation": {
-            "status": "failed",
-            "evidence_paths": [
-              "pedagogical-variation.json",
-              "row-counterfactual.json",
-              "delivery-coverage.json",
-              "selection-tests.json"
-            ],
-            "details": "A feasible irrelevant row change prevents generation. All five requested easy records survive delivery; no tested fixed action answers all five."
-          }
-        },
-        "findings": [
-          {
-            "kind": "restriction",
-            "description": "valid() requires distinct original recipe values before constructing distractors. Every moderate recipe includes both rows and rank, excluding full-row-rank matrices\u2014including canonical 4\u00d77 with three non-pivots. Every profile also rejects 3\u00d74 with two non-pivots, although rank two is feasible and five distinct choices are readily available.",
-            "source_refs": [
-              "7cce27e9-e2b2-599c-9f4e-437caf1a23ae",
-              "186b4c12-6daf-5415-8147-526533c01a95",
-              "generate/principles.md sections 1 and 2"
-            ],
-            "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B restriction-regression.py. The strict expected-success test exits 1. audit-canonical.py reproduces rejection across all six profiles for seed=17, rows=4, columns=7, count=3, kind=non-pivot.",
-            "requested_change": "Separate mathematical feasibility from distractor uniqueness. Preserve complete replay banks, replace colliding distractors for valid extensions, and admit full-row-rank and rank-equals-nonpivot constructions. Retain the strict regression."
-          }
-        ]
+      "error": null,
+      "pipeline": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/job.json",
+      "registration": "generators/cb/cbd8c9d93ac7356144592b28880167d86578d270573060ac548628b69a397cca/17592186119847.py",
+      "completed": 1792639147.835063,
+      "pool_review_reports": [
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-4-policy-2-f0e377c88f1ec20e/affected-inventory.json",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-3-policy-2-092f7adc069513f2/affected-inventory.json"
+      ],
+      "pool_repair": {
+        "retired": [
+          17592186547289
+        ],
+        "already_absent": [],
+        "duplicate_reports": [],
+        "unresolved": [],
+        "protected": [],
+        "basis": 5415,
+        "learner_and_engine_facts_unchanged": true,
+        "source_eid": 17592186045443
       }
     },
     {
@@ -1830,7 +1733,11 @@
         "Linear Algebra"
       ],
       "original_order": 433,
-      "state": "pending"
+      "state": "running",
+      "started": 1792639149.79217,
+      "claimed": 1792639149.792171,
+      "worker_slot": 1,
+      "worker_pid": 29999
     },
     {
       "kp": 17592186124629,

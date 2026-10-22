@@ -182,7 +182,17 @@ for level in ['easy','moderate']:
             'by tutorial c062d466-946c-526b-aba8-0a0895671218. Moderate items require columns minus non-pivots; '
             'count=rank coincidences are legitimate simplifications, not a universally sufficient rule.',
         sample_refs=['independent-records.json']))
-save('shortcut-tests.json',dict(probes=probes, exact_batch_render=batch_render,
+wide_small=[r for r in load('delivery-moderate-records/accepted.json') if facts(r)['shape']=='wide']
+wide_control=[r for r in load('delivery-cli-moderate-98/accepted.json') if facts(r)['shape']=='wide']
+wide_wrong=[r for r in wide_control if facts(r)['order']!=1]
+assert len(wide_wrong)>0
+apparent=[dict(cue='Choose smallest for wide moderate questions',
+    small_sample_successes=sum(facts(r)['order']==1 for r in wide_small),small_sample_total=len(wide_small),
+    broader_delivered_successes=sum(facts(r)['order']==1 for r in wide_control),broader_delivered_total=len(wide_control),
+    counterexample=wide_wrong[0],conclusion='Three-record apparent perfection is sampling coincidence, '
+        'contradicted by same-method delivered wide instances with smaller incorrect choices.',
+    sample_refs=['delivery-moderate-records/accepted.json','delivery-cli-moderate-98/accepted.json'])]
+save('shortcut-tests.json',dict(probes=probes, exact_batch_render=batch_render,apparent_predictors=apparent,
     limitations=['Finite test; no proof against every possible heuristic.',
                  'Small post-dedup profile groups are not evidence of universal cue invariants.',
                  'Raw JSON option order is not displayed choice order. Future live item IDs and learner histories are unavailable.']))

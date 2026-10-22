@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "The retained restriction is fixed. All eight checks pass for the current package and exact five-question batch. Package unchanged. One historical inventory weakness is documented separately.",
+  "source_analysis": {
+    "skill": "Determine matrix rank from pivot count, or subtract non-pivot count from total columns.",
+    "reasoning_steps": [
+      "Identify whether the supplied count describes pivot or non-pivot columns.",
+      "Apply rank = pivots or rank = columns minus non-pivots.",
+      "Select the matching integer."
+    ],
+    "invariants": [
+      "Rank cannot exceed either matrix dimension.",
+      "Five distinct numeric radio choices contain one correct response.",
+      "Easy requires definition recall; moderate requires one subtraction."
+    ],
+    "permitted_variations": [
+      "Vary feasible dimensions, counts, matrix names and answer positions.",
+      "Include full-row-rank and rank-equals-nonpivot cases.",
+      "Replace colliding distractors while preserving complete source banks on replay."
+    ],
+    "source_refs": [
+      "Tutorial c062d466-946c-526b-aba8-0a0895671218: rank equals pivot-column count.",
+      "Canonical 7cce27e9-e2b2-599c-9f4e-437caf1a23ae: seven columns minus three non-pivots gives rank four.",
+      "Question 186b4c12-6daf-5415-8147-526533c01a95."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replay-records.json",
+        "restriction.json"
+      ],
+      "details": "All 11 complete source banks replay. Canonical parameters now generate across all six moderate profiles. Missing source fields and notation corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "counterfactual-tests.json"
+      ],
+      "details": "265 records checked independently from visible prompts for feasibility, rank, distinct choices, correct keys and solution equations."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "restriction.json",
+        "regression-tests.json",
+        "delivery-variation-tests.json",
+        "shortcut-tests.json"
+      ],
+      "details": "Previously excluded collision cases pass. All 12 easy ranks and 98 moderate tasks survive delivery filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "independent-records.json",
+        "counterfactual-tests.json"
+      ],
+      "details": "Generated questions preserve source methods, workload and response format."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-report-final.json"
+      ],
+      "details": "Native grader accepted 120 correct responses and rejected 480 wrong responses, including both sides of controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-tail/rendering.json",
+        "render-repaired/rendering.json",
+        "render-inspection.json",
+        "render-order-tests.json"
+      ],
+      "details": "Inspected 17 actual UI screenshots, including every exact batch record and controlled pairs. Displayed choice ordering was verified."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "regression-tests.json",
+        "package-integrity.json",
+        "commands.md"
+      ],
+      "details": "Exact dependency versions, deterministic relocation, CLI decoding and capacity boundaries pass. Retained tests fail the captured old runtime and pass the revision. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-tests.json",
+        "shortcut-tests.json",
+        "delivery-variation-tests.json",
+        "selection-tests.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant changes alter decisions; feasible irrelevant changes preserve responses through delivery, grading and rendering. No reproducible tested shortcut answers the exact batch. Historical inventory findings and selection limitations are recorded separately."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,5 @@
+# Retained repair scope
+
+Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by absence of solutions and dependence by infinitely many solutions. Source q-32245 (534e2a93-e71a-5475-894e-dfd5ca99a3a6) places the correct value inside its numerical bank, so an extreme-choice rule is incidental. The instructional specification in instructional-account.md remains applicable.
+
+Latest finding 591f580cadb749294588 reproduces for five captured historical banks, including f4f00ddd-faa4-5195-9569-dbec2d0e2e6c, entity 17592186557444, seed 2712914515. The current generator cannot alter existing stored banks. Preserve the completed construction repairs and the strict historical regression. Verify the current package and existing replacement proposal; do not apply a transaction, substitute proposed inventory, or claim the pool is repaired. User instructions prohibit database changes and reserve publication for the runner. The review explicitly requests separate inventory remediation. No additional runtime design defect is established by this feedback.

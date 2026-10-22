@@ -1,0 +1,127 @@
+{
+  "verdict": "accepted",
+  "summary": "The retained restriction is fixed. All eight checks pass for the current package and exact five-question batch. Package unchanged; one previously affected historical inventory item is documented separately.",
+  "source_analysis": {
+    "skill": "Determine rank from a stated pivot-column count (easy) or subtract non-pivot count from total columns (moderate).",
+    "reasoning_steps": [
+      "Identify matrix dimensions and whether stated columns are pivots or non-pivots.",
+      "For easy recall rank equals pivot count; for moderate compute columns minus non-pivots.",
+      "Select the matching integer."
+    ],
+    "invariants": [
+      "0 <= rank <= min(rows, columns); non-pivots = columns-rank.",
+      "Five distinct numeric radio options with exactly one correct answer.",
+      "Easy items give pivot count; moderate items give non-pivot count.",
+      "No row reduction or explicit matrix computation is needed."
+    ],
+    "permitted_variations": [
+      "Matrix name, dimensions, pivot count/rank and non-pivot count within feasible bounds.",
+      "Square, tall and wide dimensions; zero and full rank are mathematically valid conservative boundary extensions.",
+      "Correct-option location and distractor values/bank profiles may vary.",
+      "Dimensions are irrelevant to easy response once feasibility is assured; moderate column count and non-pivot count are relevant.",
+      "Fixed target rank(A) and one correct radio choice are essential; particular letter, dimensions, rank, answer position and source bank are incidental."
+    ],
+    "source_refs": [
+      "tutorial 6318f9cd-930b-5b7b-acc7-c27b5b241825: rank(A)=dim(Col(A)); two pivot columns imply dimension 2.",
+      "lesson step fd1734a2-5193-5182-9a6f-4a024ee32ce5 / canonical 7cce27e9-e2b2-599c-9f4e-437caf1a23ae: seven columns minus three non-pivots gives rank four.",
+      "tutorial c062d466-946c-526b-aba8-0a0895671218: rank is number of pivot columns, equivalently nonzero rows in echelon form.",
+      "b5549e3a-28d3-5fc9-95bb-dda91eedbf45",
+      "96a00a6f-154e-57db-9e06-bc987fab7496",
+      "c934bab9-e2a5-557f-b70a-32a46819ab48",
+      "9d3fee34-056d-53cd-a4aa-21cc533db201",
+      "aefee286-0658-5eaf-a083-c47c3412eef5",
+      "ba425c74-1df7-5b4c-b055-df4f66ee83a7",
+      "6826463c-847d-5512-b760-3fbeb596f635",
+      "d99c604a-a10b-57d3-8148-d6702b5326c3",
+      "e56cf627-f5bb-57b0-ae99-521a4ce7bf5a",
+      "186b4c12-6daf-5415-8147-526533c01a95",
+      "b89238c4-c724-5269-a873-19d3a331e580"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replay-records.json",
+        "restriction.json"
+      ],
+      "details": "All 11 complete banks replay; canonical mathematical case now admitted. Missing source fields and documented dimensional-notation correction are explicit."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "restriction-records.json",
+        "cli-moderate-98.json",
+        "counterfactual-tests.json"
+      ],
+      "details": "265 records checked from visible prompts using integer arithmetic: feasible rank, five distinct nonnegative choices, matching key and solution."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "restriction.json",
+        "regression-tests.json",
+        "delivery-variation-tests.json",
+        "shortcut-tests.json"
+      ],
+      "details": "Collision restrictions resolved across profiles; 12 easy ranks and 98 moderate tasks survive delivery. Fresh profile and exact-batch shortcut probes retained."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "independent-records.json",
+        "counterfactual-tests.json"
+      ],
+      "details": "Easy definition recall and moderate one subtraction preserve source workload and five-option response; no added row-reduction task."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-report-final.json"
+      ],
+      "details": "Actual native grader accepted 120 correct and rejected 480 wrong choice UUIDs, including all five responses on both sides of controlled pairs. No free-entry fields."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-tail/rendering.json",
+        "render-repaired/rendering.json",
+        "render-inspection.json",
+        "render-order-tests.json"
+      ],
+      "details": "17 actual UI screenshots inspected, including every exact batch record, relevant/irrelevant pairs and repaired examples; HTML choice orders verified."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "regression-tests.json",
+        "retained-results/validation.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact Python 3.13.5/SymPy 1.14.0 match dependencies. Deterministic relocated runtime, runner envelope, capacities and invalid cases pass. Current preflight also fails the bound old runtime. Package unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-tests.json",
+        "shortcut-tests.json",
+        "delivery-variation-tests.json",
+        "selection-tests.json",
+        "affected-inventory.json"
+      ],
+      "details": "Eligible rank/count, bank and position roles vary. Relevant evidence changes decisions; feasible irrelevant changes preserve them through grading and rendering. Exact five-member pool checked separately; historical inventory weakness is recorded separately from current generator behavior."
+    }
+  },
+  "findings": []
+}
