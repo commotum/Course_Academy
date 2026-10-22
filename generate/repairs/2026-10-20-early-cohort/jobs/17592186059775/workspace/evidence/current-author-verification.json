@@ -1,13 +1,6 @@
 {
-  "author": 236,
-  "history_read": {
-    "finding_ids": [
-      "9e827407d5429a1f8827",
-      "9b8cb52352b8ca3e790e"
-    ],
-    "events": 236
-  },
-  "commands": [
+  "author": 241,
+  "checks": [
     {
       "label": "historical-shortcut",
       "command": [
@@ -15,40 +8,44 @@
         "-B",
         "checks/check_batch_selection.py",
         "--input",
-        "evidence/batch-shortcut-before-records.json"
+        "evidence/contract-correction/previous-runner-batch.json"
       ],
       "exit_code": 1,
+      "expected_exit_code": 1,
       "log": "evidence/current-historical-shortcut.log"
     },
     {
-      "label": "evidence-contract",
+      "label": "legacy_packaging_or_sampling",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
-        "checks/check_evidence_contract.py"
+        "checks/check_all.py"
       ],
-      "exit_code": 1,
-      "log": "evidence/current-evidence-contract.log"
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "evidence/current-legacy_packaging_or_sampling.log"
     },
     {
-      "label": "current-shortcut-delivery-grading",
+      "label": "9e827407d5429a1f8827",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_batch_selection.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-current-shortcut-delivery-grading.log"
+      "expected_exit_code": 0,
+      "log": "evidence/current-9e827407d5429a1f8827.log"
     },
     {
-      "label": "relocated-cli",
+      "label": "9b8cb52352b8ca3e790e",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
-        "checks/check_cli_contract.py"
+        "checks/check_evidence_contract.py"
       ],
-      "exit_code": 0,
-      "log": "evidence/current-relocated-cli.log"
+      "exit_code": 1,
+      "expected_exit_code": 0,
+      "log": "evidence/current-9b8cb52352b8ca3e790e.log"
     },
     {
       "label": "source-render-binding",
@@ -58,10 +55,11 @@
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
+      "expected_exit_code": 0,
       "log": "evidence/current-source-render-binding.log"
     }
   ],
-  "runtime_hashes": {
+  "runtime_hashes_before": {
     "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
     "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
     "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
@@ -70,88 +68,34 @@
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
   "runtime_unchanged": true,
-  "implementation_changed": false,
-  "handoff": {
-    "finding_id": "9b8cb52352b8ca3e790e",
-    "passed": false,
-    "installed_runner_sha256": "6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2",
-    "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
-    "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-    "calls": [
-      "repair"
+  "end_to_end_passed": false,
+  "remaining_failure": "Installed runner rejects unchanged package before evaluating evidence-only correction. The required runner edit is outside the workspace.",
+  "first_reproduction": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "checks/check_current_handoff.py"
     ],
-    "rejection": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
-    "next_stage": "sample",
-    "runtime_hashes_unchanged": {
-      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
-      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
-      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
-      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
-      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
-      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
-    },
-    "patch_installed_by_check": false,
-    "scope": "Actual installed _run; mutations and execution boundaries instrumented. Generator, delivery and native-grader tests run separately."
-  },
-  "evidence_contract": {
-    "finding_id": "9b8cb52352b8ca3e790e",
-    "passed": false,
-    "evidence_bundle_passed": true,
-    "bundle_root": "evidence/contract-correction",
-    "real_review_validator": "scripts/generator_review.py:validate_review",
-    "missing_provenance_negative_control": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
-    "wrong_root_negative_control": "source_analysis.evidence_paths: missing, empty, or escaping evidence: source-analysis.json",
-    "relocated_bundle_roots_validated": [
-      "author-6",
-      "another-review-attempt"
-    ],
-    "current_raw": {
-      "correct": 1,
-      "total": 5,
-      "random_baseline": 0.2
-    },
-    "current_delivered": {
-      "correct": 1,
-      "total": 5,
-      "random_baseline": 0.2
-    },
-    "historical_control": "strict check fails as required (5/5)",
-    "source_capture_prompts_and_fields_reconfirmed": 12,
-    "affected_generated_records_bound": 3,
-    "runtime_files_unchanged": 6,
-    "runner_installation_files": 83,
-    "runner_destination_policy": "runner_supplied_at_installation",
-    "destination_installed": false,
-    "current_runner_regression": "evidence/current-handoff-regression.json",
-    "current_runner_exit_code": 1
-  },
-  "first_action": "Reproduced exact installed handoff first: exit 1, calls=[repair].",
-  "prior_full_regression": "Unchanged-runtime broad checks retained, not rerun.",
-  "unresolved": "Installed runner rejects the unchanged package before corrected evidence, retained regressions and sampling. Applying its staged correction requires a forbidden write outside this workspace.",
-  "retained_finding_registration_checked": true,
-  "separate_claims": {
-    "fidelity": "10 complete source banks / 50 choices replay.",
-    "correctness": "Independent visible-matrix and solution checks pass for current exact batch and retained contrast profiles.",
-    "grading": "25 native acceptance/rejection checks pass on delivered batch.",
-    "decision_variation": "Exact shortcut scores 1/5 raw and delivered; all five ranks and positions; ten profiles checked.",
-    "packaging": "Relocated deterministic CLI, exact counts and finite-limit rejection pass.",
-    "rendering": "Retained actual-UI endpoints match fresh delivered records and were visually inspected.",
-    "handoff": "FAIL: installed runner rejects before retained regressions and sampling."
+    "exit_code": 1,
+    "result_path": "evidence/current-handoff-regression.json"
   },
   "visual_inspection": {
-    "reused_unchanged_rendering": true,
     "screenshots": [
       "evidence/author8-render/question-001.png",
       "evidence/author8-render/question-002.png"
     ],
-    "inspected_this_turn": true,
-    "binding_verified_this_turn": true,
-    "result": "Both retained actual-UI screenshots inspected: readable matrices, five radio choices and elimination stages; no clipping or exposed TeX."
+    "result": "Reinspected both retained actual-UI screenshots. Matrices, five radio choices, signs and row-operation solutions are readable. Current source-render binding passed."
   },
-  "dependency_versions_verified": {
-    "python": "3.13.5",
-    "packages": {
-      "sympy": "1.14.0"
-    }
+  "separate_claims": {
+    "fidelity": "Ten complete source banks / 50 choices replay; two incomplete captures remain documented.",
+    "correctness": "Independent visible matrix and solution readback passes.",
+    "grading": "Retained generator checks and actual delivered batch native acceptance/rejection checks pass.",
+    "decision_variation": "Historical shortcut reproduces as 5/5 negative control. Current raw and delivered batches score 1/5; ten source-profile contrast sets pass.",
+    "evidence": "Corrected bundle validates at its own root and two relocated roots. Wrong-root and missing-provenance controls reject.",
+    "handoff": "Strict installed runner check fails before regressions and sampling."
+  },
+  "repair_history": {
+    "events_read": 241,
+    "retained_findings": 2
   }
 }

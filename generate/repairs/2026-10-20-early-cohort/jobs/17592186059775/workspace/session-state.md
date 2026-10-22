@@ -1,29 +1,33 @@
-# Current state — 2026-10-22, author-238
+# Current state — 2026-10-22, author-241
 
-Read latest feedback, retained findings and repair history (238 events). Reused
-completed instructional/source analysis and preserved runtime package and scripts.
+Preserved the repaired generator, manifest, source banks, instructional account,
+registered regressions and existing staged runner patch. No runtime change is
+justified by the latest evidence-only feedback.
 
-First ran the exact latest reproduction:
+First reproduced the exact latest failure:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed sample-stage flow calls repair before regressions or sampling,
-with “Candidate is byte-identical to the rejected package.”
+Exit 1: installed runner rejects the unchanged package before regressions or
+sampling. This is still a failing acceptance check.
 
-Affected checks and exact commands/logs: evidence/author238-verification.json.
-- Historical batch shortcut: expected strict failure (5/5 negative control).
-- Current raw/delivered batch shortcut: 1/5; five target ranks and positions.
-- Complete contrast sets across ten profiles; 25 native grading checks pass.
-- Corrected evidence bundle passes actual validator, relocation and missing-file
-  negative controls. Registered evidence check still exits 1 on installed handoff.
-- Relocated CLI and source/render binding pass; ten banks / 50 choices replay.
-- Visually inspected both retained actual-UI screenshots, freshly bound to delivery.
-- Every runtime file and manifest remains byte-identical.
+Fresh commands, exit codes, runtime hashes and evidence paths:
+`evidence/current-author-verification.json`.
+- Historical shortcut control exits 1, preserving the reported 5/5 failure.
+- Registered packaging/source/math/delivery/inventory check passes.
+- Registered batch-selection check passes: reported cue scores 1/5 raw and
+  delivered; all ten source-profile contrast sets pass; 25 batch native responses pass.
+- Registered evidence-contract check exits 1. Its corrected bundle and relocation,
+  wrong-root and missing-provenance controls pass; installed runner handoff fails.
+- Source/render binding passes for ten complete banks and 50 choices. Both retained
+  actual-UI screenshots reinspected and readable; their inputs match fresh delivery.
+- Runtime and manifest hashes unchanged. Installed Python/SymPy match manifest.
+- No publication, database writes, engine edits, external writes or services.
 
-No runtime change is warranted by the remaining evidence-only finding. No external
-writes, database changes, engine changes, publication or service calls were made.
-
-Unfinished action: runner owner must repair scripts/generator_pipeline.py:720-727
-and route the corrected evidence to its chosen evidence root. Proposed patch is
-runner-fix/evidence-only-rejection.patch, already tested offline, still uninstalled.
-Both operations require writes outside this authorized workspace. Preserve the
-strict failing regression; do not change package bytes to evade the runner gate.
-Further identical author retries cannot resolve this external routing failure.
+Remaining root cause: `scripts/generator_pipeline.py:720-727` rejects unchanged
+package bytes even when the independent finding is evidence-only and explicitly
+requires preserving the package. The tested proposal remains staged at
+`runner-fix/evidence-only-rejection.patch`, not installed. The corrected evidence
+bundle is `evidence/contract-correction`; its map is
+`evidence/contract-installation.json`. Applying the runner fix and installing
+outside this workspace require the runner owner. Do not modify runtime bytes to
+evade the gate or weaken its strict regression. Another identical author retry
+cannot repair that external control flow under the workspace-only constraint.

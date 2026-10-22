@@ -1,4 +1,4 @@
-# Current repair result — author-238
+# Current repair result — author-241
 
 The repaired Gaussian-elimination generator is preserved. No new runtime defect
 is demonstrated by the latest feedback. End-to-end handoff remains unsupported:
@@ -32,7 +32,7 @@ This is a runner routing failure; another generator rewrite cannot resolve its r
 - All runtime files and manifest remain byte-identical; dependency versions match.
 
 Commands, exit codes, log paths, hashes and separate claims:
-[evidence/author238-verification.json](evidence/author238-verification.json).
+[evidence/current-author-verification.json](evidence/current-author-verification.json).
 Retained finding registrations: [repair-regressions.json](repair-regressions.json).
 Completed instructional analysis, historical controls and earlier broad validation
 remain in the workspace; unrelated broad checks were not repeated.
