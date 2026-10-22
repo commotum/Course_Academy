@@ -1,0 +1,447 @@
+{
+  "learner_operation": "Normalize a Bernoulli ODE, identify n, apply z=y^(1-n), solve the linear equation with an elementary integrating factor, recover valid real branches and select the resulting general solution. Candidate differentiation is a legitimate alternative mathematical check.",
+  "fixed_features": [
+    {
+      "feature": "Nontrivial Bernoulli exponent and elementary coefficient/integration form within each profile",
+      "justification": "Each source profile teaches a particular substitution and inversion workload; coefficients and forcing signs vary while elementary integration remains comparable."
+    },
+    {
+      "feature": "Five-choice radio, general nonzero real solution, source difficulty",
+      "justification": "All ten complete captured practice banks have five math choices. New domain wording makes the divisions and real branches used in the source solutions explicit."
+    },
+    {
+      "feature": "Positive integrating-factor coefficient magnitudes a in small integer ranges",
+      "justification": "Maintains source-sized elementary powers, avoids resonance/logarithmic branches and keeps hard normalization comparable; does not fix the qualifying formula because coefficient magnitude, forcing sign and target vary."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct formula / label / position",
+      "eligible_variation": "Any bank formula may qualify as p and q change; no fixed source key or learner position is essential.",
+      "observed": "Five different formulas become accepted in each of ten controlled fixed banks; actual UI shuffles positions."
+    },
+    {
+      "role": "Particular-solution coefficient and sign",
+      "eligible_variation": "Forcing b may change magnitude and sign with consistent dependent math.",
+      "observed": "b=-3,-2,-1,1,2,3 available; controlled negative/positive targets and exact batch contain both signs."
+    },
+    {
+      "role": "Homogeneous exponential or power",
+      "eligible_variation": "Change p magnitude within comparable elementary integration.",
+      "observed": "a=1,2,3 (2,3,4 in q109172); fixed-bank target controls exercise each supported a and changed formula."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-106073 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109026 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109027 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109028 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109029 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109154 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109170 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109172 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109177 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "q-109158 five fixed-bank target assignments",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ],
+      "result": "All five distinct coefficient targets generate different valid solution keys; all source-supported profiles retained."
+    },
+    {
+      "case": "Exact delivered five-item batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "Five distinct moderate profiles; both signs of forcing, a=1/2/3, restored autonomous family; five accepted records. Old bank/formula strategy and first UI position do not solve the batch."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold a five-formula bank and coordinate fixed, change target ODE coefficients between bank pairs.",
+      "expected": "Prompt, computed integrating factor/particular solution, worked answer and accepted formula must respond; the former correct formula must become rejected.",
+      "observed": "All five keys/prompt/solutions change in each of ten profiles; exact residuals and native full-bank outcomes verify response changes. Actual UI inspected for q109154, autonomous q109029 and hard q109170 pairs.",
+      "status": "passed",
+      "justification": "Source solution depends on p,q,n; original numerical coefficient assignments are incidental.",
+      "sample_refs": [
+        "counterfactual-pairs.json",
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed 612879 to 799367 while fixing complete instance parameters.",
+      "expected": "Same prompt, explanation, formulas and learner-grade outcomes.",
+      "observed": "Complete question objects identical in all ten profiles; native outcomes for that identical question are accepted for its key and rejected for the four others.",
+      "status": "passed",
+      "justification": "A seed carries no mathematical evidence once coefficients, target, coordinate and bank are fixed.",
+      "sample_refs": [
+        "counterfactual-pairs.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-106073 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109026 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109027 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109028 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109029 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109154 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109158 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109170 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109172 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Any fixed choice based solely on the visible bank (root, sign, coefficient, rank or template signature)",
+      "subgroup": "q-109177 fixed-bank coefficient counterfactuals",
+      "scope": "within_template",
+      "strategy": "Pick the most frequently correct visible formula without using the ODE; ties fixed lexically.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every one of the five visible formulas is correct for one of five controlled displayed equations. Thus any deterministic bank-only strategy succeeds at most 1/5, equal to uniform five-choice guessing. Matching coefficients or differentiating a candidate uses mathematical evidence and is an intended solution method.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sole denominator C-2u^(5/2)",
+      "subgroup": "q-109154, retained shift domain",
+      "scope": "within_template",
+      "strategy": "Choose the unique formula with the old coefficient pattern; absence/ambiguity is a failed attempt.",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Old strategy succeeds 0/12 versus 1/5 uniform guessing. Five-target fixed-bank controls also defeat a reformatted formula-signature strategy.",
+      "sample_refs": [
+        "focused-records.json",
+        "prior-failing-examples.json",
+        "retained-regression-results.json"
+      ]
+    },
+    {
+      "cue": "First radio position in actual learner UI",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "Always select the first rendered option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No consistent first-position answer in this subgroup. Uniform five-choice guessing is 0.2; small-subgroup fluctuations are not treated as a universal predictor. Actual UI order, rather than serialized bank order, is measured.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "First radio position in actual learner UI",
+      "subgroup": "q-109154 relevant pair",
+      "scope": "within_template",
+      "strategy": "Always select the first rendered option.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No consistent first-position answer in this subgroup. Uniform five-choice guessing is 0.2; small-subgroup fluctuations are not treated as a universal predictor. Actual UI order, rather than serialized bank order, is measured.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "First radio position in actual learner UI",
+      "subgroup": "q-109029 relevant pair",
+      "scope": "within_template",
+      "strategy": "Always select the first rendered option.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No consistent first-position answer in this subgroup. Uniform five-choice guessing is 0.2; small-subgroup fluctuations are not treated as a universal predictor. Actual UI order, rather than serialized bank order, is measured.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "First radio position in actual learner UI",
+      "subgroup": "q-109170 relevant pair",
+      "scope": "within_template",
+      "strategy": "Always select the first rendered option.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No consistent first-position answer in this subgroup. Uniform five-choice guessing is 0.2; small-subgroup fluctuations are not treated as a universal predictor. Actual UI order, rather than serialized bank order, is measured.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "Recognize complete source-bank signature and recall its old key",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "Normalize TeX sizing/spacing and look up the complete visible source bank.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No batch bank matches a source bank, so the retained source-bank lookup answers 0/5. Batch contains five coefficient profiles, both forcing signs, and five different keys; its decision cases are measured separately from controls. Uniform guessing is 0.2.",
+      "sample_refs": [
+        "batch.json",
+        "source-replays.json",
+        "delivery-coverage.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator admissibility and CLI resampling/determinism",
+      "actual shared publication normalization and captured-inventory deduplication",
+      "within-batch deduplication",
+      "requested difficulty",
+      "captured question bank and Rust learner-history/weighted selection",
+      "actual learner UI option shuffle"
+    ],
+    "sample_refs": [
+      "ordinary-records.json",
+      "delivery-coverage.json",
+      "delivery-batch/accepted.json",
+      "delivery-moderate-samples/accepted.json",
+      "delivery-hard-samples/accepted.json",
+      "selection-results.json",
+      "ui-position-results.json"
+    ],
+    "result": "Raw and accepted decision counts agree: exact batch 5/5, independent moderate 48/48, hard 24/24. Modeled selection retains eligibility of all fresh positive-weight moderate cases. Source-bank signature defect is absent from current batch; prior stored old-version weakness is separately retained in affected-inventory.json."
+  },
+  "limitations": [
+    "Finite targeted audit, not proof against all possible shortcuts.",
+    "No live learner history/policy or allocated future IDs; selector conclusions use captured basis 5438 and explicit modeled histories.",
+    "Historical generated bank item remains captured as affected; this audit cannot change the database and does not certify the old generator.",
+    "Incomplete source q-106074 has absent key/solution and invalid captured choices; canonical e-8965 has no radio bank. Both gaps were confirmed by independent source analysis and prior exact residual evidence."
+  ]
+}

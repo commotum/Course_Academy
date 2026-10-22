@@ -1,0 +1,116 @@
+{
+  "selector_sha256": "d59dea58989cfe9f3cd49ed3b45199d4e7a12723c4d8eae999e495b9660dd760",
+  "captured_basis": 5438,
+  "stages": [
+    "seeded generator profile/difficulty sampling",
+    "CLI duplicate tuple rejection/resampling",
+    "shared publisher normalization/inventory and batch deduplication",
+    "requested difficulty filter",
+    "Rust fresh-history exclusions and weighted difficulty/uniform within-band selection",
+    "actual UI shuffle"
+  ],
+  "stage_counts": {
+    "batch": {
+      "difficulty": "moderate",
+      "input_count": 5,
+      "duplicate_count": 0,
+      "accepted_count": 5
+    },
+    "moderate-samples": {
+      "difficulty": "moderate",
+      "input_count": 48,
+      "duplicate_count": 0,
+      "accepted_count": 48
+    },
+    "hard-samples": {
+      "difficulty": "hard",
+      "input_count": 24,
+      "duplicate_count": 0,
+      "accepted_count": 24
+    }
+  },
+  "draws": [
+    {
+      "scenario": "batch-only",
+      "seen_count": 0,
+      "draws": 256,
+      "entity_counts": {
+        "90000000000003": 54,
+        "90000000000002": 62,
+        "90000000000000": 61,
+        "90000000000004": 35,
+        "90000000000001": 44
+      },
+      "new_batch_counts": {
+        "31d69c14-3d43-5861-b974-708473b62931": 61,
+        "1d3f24cb-97da-5da3-8aba-e7c64368cd6f": 44,
+        "8d37cd9a-c509-5116-b909-ec6ed6581fc9": 62,
+        "093d1b6c-952f-5053-81d9-a9d7411a9698": 54,
+        "54f0a96d-c485-512e-8cf1-6c6c6ce46c7f": 35
+      }
+    },
+    {
+      "scenario": "captured-bank-plus-batch",
+      "seen_count": 0,
+      "draws": 256,
+      "entity_counts": {
+        "90000000000002": 23,
+        "90000000000000": 25,
+        "17592186147725": 29,
+        "90000000000001": 25,
+        "17592186244216": 26,
+        "90000000000004": 13,
+        "17592186244240": 31,
+        "17592186244218": 18,
+        "90000000000003": 17,
+        "17592186244217": 20,
+        "17592186244219": 29
+      },
+      "new_batch_counts": {
+        "31d69c14-3d43-5861-b974-708473b62931": 25,
+        "1d3f24cb-97da-5da3-8aba-e7c64368cd6f": 25,
+        "8d37cd9a-c509-5116-b909-ec6ed6581fc9": 23,
+        "093d1b6c-952f-5053-81d9-a9d7411a9698": 17,
+        "54f0a96d-c485-512e-8cf1-6c6c6ce46c7f": 13
+      }
+    },
+    {
+      "scenario": "seen-source-bank",
+      "seen_count": 12,
+      "draws": 256,
+      "entity_counts": {
+        "90000000000003": 54,
+        "90000000000002": 62,
+        "90000000000000": 61,
+        "90000000000004": 35,
+        "90000000000001": 44
+      },
+      "new_batch_counts": {
+        "31d69c14-3d43-5861-b974-708473b62931": 61,
+        "1d3f24cb-97da-5da3-8aba-e7c64368cd6f": 44,
+        "8d37cd9a-c509-5116-b909-ec6ed6581fc9": 62,
+        "093d1b6c-952f-5053-81d9-a9d7411a9698": 54,
+        "54f0a96d-c485-512e-8cf1-6c6c6ce46c7f": 35
+      }
+    },
+    {
+      "scenario": "seen-two-new",
+      "seen_count": 14,
+      "draws": 256,
+      "entity_counts": {
+        "90000000000004": 70,
+        "90000000000003": 96,
+        "90000000000002": 90
+      },
+      "new_batch_counts": {
+        "31d69c14-3d43-5861-b974-708473b62931": 0,
+        "1d3f24cb-97da-5da3-8aba-e7c64368cd6f": 0,
+        "8d37cd9a-c509-5116-b909-ec6ed6581fc9": 90,
+        "093d1b6c-952f-5053-81d9-a9d7411a9698": 96,
+        "54f0a96d-c485-512e-8cf1-6c6c6ce46c7f": 70
+      }
+    }
+  ],
+  "scope": "Exact Rust SHA256 and uniform arithmetic reproduced for explicit histories and moderate-positive weights. Real captured entity IDs retained; unallocated new IDs modeled. Also inspected None-distribution branch (lowest fresh ID) and zero-weight branch (no rated moderate fallback). No actual learner history/policy or future entity IDs are available, so exact live selection is not claimed. Every sampled new batch member has positive probability under modeled positive moderate weights; selector does not filter by coefficient/sign/key. No stage removes controlled decision cases in tested delivery inputs.",
+  "runtime_rejection": "Generator creates only domain-valid coefficient pairs; no mathematical rejection. CLI uniqueness hashes template plus complete parameters, so different target choices survive. Exact batch is all moderate, 5/5 accepted."
+}
