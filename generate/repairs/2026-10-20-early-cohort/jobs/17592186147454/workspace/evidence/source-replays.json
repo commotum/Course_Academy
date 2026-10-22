@@ -1,0 +1,662 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "dea90b33-d767-59fd-a362-9ff22b6ac9f6",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y={y}^{2}{e}^{x}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)={e}^{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-{y}^{-1}={e}^{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-z={e}^{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+z=-{e}^{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=1,\\,Q(x)=-{e}^{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1)\\,\\text{d}x} \\\\  & ={e}^{x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{x}$ yields\n\n$$\n\\begin{aligned}{e}^{x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+z) & ={e}^{x}\\cdot (-{e}^{x}) \\\\ {e}^{x}\\cdot \\frac{\\text{d}z}{\\text{d}x}+z{e}^{x} & =-{e}^{2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{x}) & =-{e}^{2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{x})\\,\\text{d}x & =-\\int {e}^{2x}\\,\\text{d}x \\\\ z{e}^{x} & =-\\frac{1}{2}{e}^{2x}+{C}_{1} \\\\ z & =\\frac{C-{e}^{2x}}{2{e}^{x}},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-{e}^{2x}}{2{e}^{x}}\\,\u21d2\\,y=\\frac{2{e}^{x}}{C-{e}^{2x}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fc35d6c6-ae8d-5c7e-bccb-3a29e87dc724",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5ee9194f-917a-50a1-a828-6025f075d5af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2{e}^{x}}{C-{e}^{2x}}"
+            },
+            {
+              ":answer/id": "11d9c814-a5cf-58fc-bf9d-ef50ebd176ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{C-{e}^{x}}{2{e}^{x}}"
+            },
+            {
+              ":answer/id": "c0784632-0c57-51f0-ad5f-7a6406163b68",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{C-{e}^{2x}}{2{e}^{x}}"
+            },
+            {
+              ":answer/id": "e9f2f3fb-7e04-5888-8fc8-5fc4eaf3bb95",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{e}^{x}}{C-2{e}^{x}}"
+            },
+            {
+              ":answer/id": "3d12866f-ffe9-5602-af78-70646f4cb7a8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2x{e}^{x}}{C-2{e}^{2x}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5ee9194f-917a-50a1-a828-6025f075d5af"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-106073",
+      "profile": "observed:q-106073",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "ad742d4e-8bb3-5b2d-a572-286f9bbe2b5a",
+      "source_math_academy_id": "q-106073",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "de52a33b-48f9-5e58-a4a0-5975ddfc18ea",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+xy=x{y}^{2}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=x,\\,q(x)=x,\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}+x{y}^{-1}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}+xz=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-xz=-x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-x,\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-x)\\,\\text{d}x} \\\\  & ={e}^{-{x}^{2}/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-{x}^{2}/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-{x}^{2}/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-xz) & ={e}^{-{x}^{2}/2}\\cdot (-x) \\\\ {e}^{-{x}^{2}/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-xz{e}^{-{x}^{2}/2} & =-x{e}^{-{x}^{2}/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2}) & =-x{e}^{-{x}^{2}/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2})\\,\\text{d}x & =-\\int x{e}^{-{x}^{2}/2}\\,\\text{d}x \\\\ z{e}^{-{x}^{2}/2} & ={e}^{-{x}^{2}/2}+C \\\\ z & =1+C{e}^{{x}^{2}/2}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=1+C{e}^{{x}^{2}/2}\\,\u21d2\\,y=\\frac{1}{1+C{e}^{{x}^{2}/2}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cea245c2-45bd-59de-a1b8-3543fc608736",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d2a4e717-595b-58a0-b5c0-81dc4b6876e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{{x}^{2}}}"
+            },
+            {
+              ":answer/id": "9ed4c265-15e2-573d-a2d6-138753c52894",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{{x}^{2}/2}}"
+            },
+            {
+              ":answer/id": "35216814-3be6-5740-bf1c-0cb9d44ffd34",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{x}{1+C{x}^{2}}"
+            },
+            {
+              ":answer/id": "16625dfc-aacd-552b-885f-e3b190302c99",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{-{x}^{2}}}"
+            },
+            {
+              ":answer/id": "e12f1504-e114-5587-be11-aa78388e92b3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{e}^{{x}^{2}/2}}{C+x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9ed4c265-15e2-573d-a2d6-138753c52894"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109026",
+      "profile": "observed:q-109026",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "589d9965-97b7-5fc2-a133-6802310284c2",
+      "source_math_academy_id": "q-109026",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "02fa0827-3925-510d-a49f-1732f7b82c67",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3{x}^{2}y={x}^{2}{y}^{-4}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-3{x}^{2},\\,q(x)={x}^{2},\\,n=-4.\n$$\n\nFirst, we multiply the differential equation by ${y}^{4},$ and we get\n\n$$\n{y}^{4}\\frac{dy}{dx}-3{x}^{2}{y}^{5}={x}^{2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{5}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=5{y}^{4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{4}\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}-3{x}^{2}z={x}^{2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z=5{x}^{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-15{x}^{2},\\,Q(x)=5{x}^{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-15{x}^{2})\\,\\text{d}x} \\\\  & ={e}^{-5{x}^{3}}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-5{x}^{3}}$ yields\n\n$$\n\\begin{aligned}{e}^{-5{x}^{3}}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z) & ={e}^{-5{x}^{3}}\\cdot (5{x}^{2}) \\\\ {e}^{-5{x}^{3}}\\cdot \\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z{e}^{-5{x}^{3}} & =5{x}^{2}{e}^{-5{x}^{3}} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}}) & =5{x}^{2}{e}^{-5{x}^{3}}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}})\\,\\text{d}x & =\\int 5{x}^{2}{e}^{-5{x}^{3}}\\,\\text{d}x \\\\ z{e}^{-5{x}^{3}} & =-\\frac{{e}^{-5{x}^{3}}}{3}+{C}_{1} \\\\ z & =\\frac{C{e}^{5{x}^{3}}-1}{3},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{5}.$ This results in\n\n$$\n\\begin{aligned}{y}^{5}=\\frac{C{e}^{5{x}^{3}}-1}{3}\\,\u21d2\\,y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6cf17ebc-7275-5ddb-af42-26f913390241",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fd211d31-f429-5e06-b189-d498a853daa0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[3]{\\frac{C{e}^{3{x}^{2}}-1}{2}}"
+            },
+            {
+              ":answer/id": "d7115ea2-81ac-5946-9839-806a7c779723",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[3]{\\frac{C-{e}^{3{x}^{2}}}{x}}"
+            },
+            {
+              ":answer/id": "9a717be2-4dbc-54ff-98aa-624bba673ad2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}"
+            },
+            {
+              ":answer/id": "b387dd83-9ec1-5095-a25c-d9a69df3435a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C{e}^{x}-1}{3}}"
+            },
+            {
+              ":answer/id": "4a62e469-b914-5229-8cfb-fbb7fe56a1c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C-{e}^{5{x}^{3}}}{{x}^{2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9a717be2-4dbc-54ff-98aa-624bba673ad2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109027",
+      "profile": "observed:q-109027",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "dc20c4d3-6f46-5d1b-920a-dfd533b0b1fc",
+      "source_math_academy_id": "q-109027",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "1fdea111-dce8-5234-ac33-909d0097f9d8",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+y=-x{y}^{3}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=1,\\,q(x)=-x,\\,n=3.\n$$\n\nFirst, we divide the differential equation by ${y}^{3},$ and we get\n\n$$\n{y}^{-3}\\frac{dy}{dx}+{y}^{-2}=-x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-2{y}^{-3}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3}\\frac{\\text{d}y}{\\text{d}x}=-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}+z=-x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-2z=2x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-2,\\,Q(x)=2x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-2)\\,\\text{d}x} \\\\  & ={e}^{-2x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-2x}$ yields\n\n$$\n\\begin{aligned}{e}^{-2x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-2z) & ={e}^{-2x}\\cdot (2x) \\\\ {e}^{-2x}\\cdot \\frac{\\text{d}z}{\\text{d}x}-2z{e}^{-2x} & =2x{e}^{-2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x}) & =2x{e}^{-2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x})\\,\\text{d}x & =\\int 2x{e}^{-2x}\\,\\text{d}x \\\\ z{e}^{-2x} & =-\\frac{1}{2}{e}^{-2x}(2x+1)+{C}_{1} \\\\ z & =\\frac{C{e}^{2x}-2x-1}{2},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-2}=\\frac{C{e}^{2x}-2x-1}{2}\\,\u21d2\\,y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4cf23dbd-3588-51f1-9030-e087ed555048",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "17bf3fa6-566f-581c-b43b-e028f3c2ef90",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2}{C{e}^{x}-2x}"
+            },
+            {
+              ":answer/id": "2a2e71ab-a7d7-5f65-9696-628c81fdb0bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}"
+            },
+            {
+              ":answer/id": "281cc905-d152-5cab-9cb4-01f175aa076a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{2x}{C+{e}^{2x}}}"
+            },
+            {
+              ":answer/id": "cb41fbe4-cd4f-58a8-aece-fc3870aaf5fb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2x+1}{C-{e}^{2x}}"
+            },
+            {
+              ":answer/id": "75f9b330-58ca-593a-bf9c-2cf2b44b9d0c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{x}-1}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a2e71ab-a7d7-5f65-9696-628c81fdb0bf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109028",
+      "profile": "observed:q-109028",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "58944fcc-b27a-50b8-9784-20e0e51f15da",
+      "source_math_academy_id": "q-109028",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "f8e70dcc-47b6-5e52-8ccd-6e2faf29fb5f",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y=\\sqrt{y}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)=1,\\,n=\\frac{1}{2}.\n$$\n\nFirst, we divide the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{-1/2}\\frac{dy}{dx}-{y}^{1/2}=1.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{2}{y}^{-1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-1/2}\\frac{\\text{d}y}{\\text{d}x}=2\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n2\\,\\frac{\\text{d}z}{\\text{d}x}-z=1\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z=\\frac{1}{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-\\frac{1}{2},\\,Q(x)=\\frac{1}{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-1/2)\\,\\text{d}x} \\\\  & ={e}^{-x/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-x/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-x/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z) & ={e}^{-x/2}\\cdot (\\frac{1}{2}) \\\\ {e}^{-x/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z{e}^{-x/2} & =\\frac{1}{2}{e}^{-x/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2}) & =\\frac{1}{2}{e}^{-x/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2})\\,\\text{d}x & =\\int \\frac{1}{2}{e}^{-x/2}\\,\\text{d}x \\\\ z{e}^{-x/2} & =-{e}^{-x/2}+{C}_{1} \\\\ z & =C{e}^{x/2}-1,\\end{aligned}\n$$\n\nwhere $C={C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{1/2}=C{e}^{x/2}-1\\,\u21d2\\,y={(C{e}^{x/2}-1)}^{2}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "26089530-17c9-5bfc-b5d5-74665d90283e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a139da22-e84c-5a36-8cc3-bd4fee8f4fb3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{x}{C{e}^{x/2}-1})}^{2}"
+            },
+            {
+              ":answer/id": "c6dd7fb0-55cf-59fd-bae2-0df147c3e8c9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(C{e}^{x/2}-1)}^{2}"
+            },
+            {
+              ":answer/id": "b34f8823-18de-50c1-8914-7b33ad991871",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{C{e}^{2x}+x+1}{2}}"
+            },
+            {
+              ":answer/id": "6448447c-8f24-50ed-b03b-800ddbdfa59f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{{e}^{2x}+C}{2}}"
+            },
+            {
+              ":answer/id": "a78d3678-94b8-55ee-8d53-1abe0c3d3b17",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={({e}^{x/2}-2x+C)}^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c6dd7fb0-55cf-59fd-bae2-0df147c3e8c9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109029",
+      "profile": "observed:q-109029",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "f2cab3ea-07f6-5b6d-87cc-2af665f5707a",
+      "source_math_academy_id": "q-109029",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "c21516d2-956b-5883-bf40-73ab2885a35f",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x}=\\sqrt{x}\\,{y}^{2}.\n$$",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=\\sqrt{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{x}{y}^{-1}=\\sqrt{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=\\sqrt{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-\\sqrt{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-\\sqrt{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-\\sqrt{x}) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-x\\sqrt{x} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =\\int -{x}^{3/2}\\,\\text{d}x \\\\ xz & =-\\frac{2{x}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{x}^{5/2}}{5x},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{x}^{5/2}}{5x}\\,\u21d2\\,y=\\frac{5x}{C-2{x}^{5/2}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "02ff38a1-6068-5447-a5a5-b31871c51a7a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d3b8b57e-c490-5459-aef1-05dd9ecc673a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5x}{C+{x}^{3/2}}"
+            },
+            {
+              ":answer/id": "13df8f24-a001-5b60-b8dd-a16130bbc7cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{2}}{C-5{x}^{5/2}}"
+            },
+            {
+              ":answer/id": "45d2584e-9aeb-5fc0-a726-fe7869a047bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5x}{C-2{x}^{5/2}}"
+            },
+            {
+              ":answer/id": "4bf33953-6b4e-5f38-ac82-254e8a3f2abf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2x}{C-{x}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "891c7fac-8c6f-5682-9a14-a25f1ab8515c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{x}{C+{x}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "45d2584e-9aeb-5fc0-a726-fe7869a047bf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "c0b7d1ae-3b10-5823-821c-f9d8cbbfb8f2",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\nx\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4}.\n$$",
+      ":question/worked-solution": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}x\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4} \\\\ \\frac{\\text{d}y}{\\text{d}x}+\\frac{y}{x} & =x{y}^{3/4}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)=x,\\,n=\\frac{3}{4}.\n$$\n\nNow, we divide the differential equation by ${y}^{3/4},$ and we get\n\n$$\n{y}^{-3/4}\\frac{dy}{dx}+{x}^{-1}{y}^{1/4}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/4}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{4}{y}^{-3/4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3/4}\\frac{\\text{d}y}{\\text{d}x}=4\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n4\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z=\\frac{x}{4}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{4x},\\,Q(x)=\\frac{x}{4}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/4x)\\,\\text{d}x} \\\\  & ={e}^{(1/4)\\operatorname{ln}\u2061x} \\\\  & ={x}^{1/4}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{1/4}$ yields\n\n$$\n\\begin{aligned}{x}^{1/4}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z) & ={x}^{1/4}\\cdot (\\frac{x}{4}) \\\\ {x}^{1/4}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-3/4}z & =\\frac{{x}^{5/4}}{4} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4}) & =\\frac{{x}^{5/4}}{4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4})\\,\\text{d}x & =\\int \\frac{{x}^{5/4}}{4}\\,\\text{d}x \\\\ z{x}^{1/4} & =\\frac{1}{9}{x}^{9/4}+{C}_{1} \\\\ z & =\\frac{{x}^{9/4}+C}{9{x}^{1/4}},\\end{aligned}\n$$\n\nwhere $C=9{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/4}.$ This results in\n\n$$\n{y}^{1/4}=\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\,\u21d2\\,y={(\\frac{{x}^{9/4}+C}{9{x}^{1/4}})}^{4}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9a84cb25-fdd5-58c3-81ca-ff85e22992b4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "61926ef4-36db-51eb-8e96-83b595a3cac4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{{x}^{5/4}+C}{5{x}^{1/4}})}^{4}"
+            },
+            {
+              ":answer/id": "7d72b93f-942b-5c15-8e9e-436e8c778278",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{C{x}^{1/2}-2}{4{x}^{1/2}})}^{2}"
+            },
+            {
+              ":answer/id": "8211adf2-eaea-5939-ac55-42b70ae34282",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{1/4}+C}{4{x}^{9/4}}"
+            },
+            {
+              ":answer/id": "291be4eb-b12a-5151-9968-74ca939d0068",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{{x}^{9/4}+C}{9{x}^{1/4}})}^{4}"
+            },
+            {
+              ":answer/id": "e2bb0cf6-853b-50fb-9f73-ef3e6c481515",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{4{x}^{5/4}+C}{3{x}^{1/4}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "291be4eb-b12a-5151-9968-74ca939d0068"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109170",
+      "profile": "observed:q-109170",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "ad4ebdc1-705f-579a-b327-9d9638977692",
+      "source_math_academy_id": "q-109170",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "5c657d67-bf2b-5a98-958f-60a6e9adeab0",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}+2xy}{{x}^{2}}.\n$$",
+      ":question/worked-solution": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}+2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{x}^{2}}+\\frac{2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x}-2{x}^{-1}y & ={x}^{-2}{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-2{x}^{-1},\\,q(x)={x}^{-2},\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-2{x}^{-1}{y}^{-1}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-2{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z=-{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{2}{x},\\,Q(x)=-\\frac{1}{{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (2/x)\\,\\text{d}x} \\\\  & ={e}^{2\\operatorname{ln}\u2061x} \\\\  & ={x}^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{2}$ yields\n\n$$\n\\begin{aligned}{x}^{2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z) & ={x}^{2}\\cdot (-{x}^{-2}) \\\\ {x}^{2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+2xz & =-1 \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{2}z) & =-1.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{2}z)\\,\\text{d}x & =-\\int 1\\,\\text{d}x \\\\ {x}^{2}z & =-x+C \\\\ z & =\\frac{C-x}{{x}^{2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-x}{{x}^{2}}\\,\u21d2\\,y=\\frac{{x}^{2}}{C-x}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c2e033ae-10f9-58cc-b7a6-8880b903747e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "baaf3b0b-d4dd-5cdc-b826-dac105e5bcd9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{2}}{C-x}"
+            },
+            {
+              ":answer/id": "dac21856-d69a-573f-a4b3-189f9bb8aeca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{x+C}{{x}^{3}}"
+            },
+            {
+              ":answer/id": "e9b802c5-13d8-562a-9c29-faa9e9409a2f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{C-x}{2{x}^{2}}"
+            },
+            {
+              ":answer/id": "67137b04-f796-585b-8e1c-05ad347a1af9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{2}}{Cx+2}"
+            },
+            {
+              ":answer/id": "030e3e67-b880-5a8f-9a03-af8d389fc068",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2{x}^{2}}{C-4x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "baaf3b0b-d4dd-5cdc-b826-dac105e5bcd9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109172",
+      "profile": "observed:q-109172",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "6a2e7c3e-5114-54f0-aa4a-d1c840050f5f",
+      "source_math_academy_id": "q-109172",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "d807753d-45bb-5e2d-95bd-44bf5438ece8",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\sqrt{y}}-xy.\n$$",
+      ":question/worked-solution": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={y}^{-1/2}-xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}+xy & ={y}^{-1/2} \\\\ \\frac{dy}{dx}+{x}^{-1}y & ={x}^{-2}{y}^{-1/2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)={x}^{-2},\\,n=-\\frac{1}{2}.\n$$\n\nNow, we multiply the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{1/2}\\frac{dy}{dx}+{x}^{-1}{y}^{3/2}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{3/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{3}{2}{y}^{1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{1/2}\\frac{\\text{d}y}{\\text{d}x}=\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z=\\frac{3}{2}{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{3}{2x},\\,Q(x)=\\frac{3}{2{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (3/2x)\\,\\text{d}x} \\\\  & ={e}^{(3/2)\\operatorname{ln}\u2061x} \\\\  & ={x}^{3/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{3/2}$ yields\n\n$$\n\\begin{aligned}{x}^{3/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z) & ={x}^{3/2}\\cdot (\\frac{3}{2}{x}^{-2}) \\\\ {x}^{3/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{1/2}z & =\\frac{3}{2}{x}^{-1/2} \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z) & =\\frac{3}{2}{x}^{-1/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z)\\,\\text{d}x & =\\int \\frac{3}{2}{x}^{-1/2}\\,\\text{d}x \\\\ {x}^{3/2}z & =3{x}^{1/2}+C \\\\ z & =\\frac{3\\sqrt{x}+C}{{x}^{3/2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{3/2}.$ This results in\n\n$$\n{y}^{3/2}=\\frac{3\\sqrt{x}+C}{{x}^{3/2}}\\,\u21d2\\,y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bc0ffa35-5f70-5d79-bbe1-5083fb96cfe2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2ca5f4cb-f02a-5ff5-9744-8b3fd2f7436d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=2{x}^{2/3}-Cx"
+            },
+            {
+              ":answer/id": "3760c255-0302-5c16-b122-a5c37dd17e52",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}"
+            },
+            {
+              ":answer/id": "a6b6acf3-6497-5e31-b971-4a979f225416",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(3+Cx)}^{2/3}}{{x}^{2}}"
+            },
+            {
+              ":answer/id": "71d6abc7-e036-5320-84a7-8a5b0c559058",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=3\\sqrt{x}+C{x}^{2/3}"
+            },
+            {
+              ":answer/id": "8b96ce0a-80d8-5518-8879-d163204e5f7a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{\\sqrt{x}+C}{x})}^{2/3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3760c255-0302-5c16-b122-a5c37dd17e52"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109177",
+      "profile": "observed:q-109177",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "7c7c063b-3c69-5ffc-9eea-18aa3a923ee9",
+      "source_math_academy_id": "q-109177",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "8ecedff6-93e0-5527-870d-aaca619c1f52",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}={x}^{3}{y}^{2}+xy.\n$$",
+      ":question/worked-solution": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={x}^{3}{y}^{2}+xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}-xy & ={x}^{3}{y}^{2} \\\\ \\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x} & =x{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=x,\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{{y}^{-1}}{x}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-x\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-x) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-{x}^{2} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =-\\int {x}^{2}\\,\\text{d}x \\\\ xz & =-\\frac{{x}^{3}}{3}+{C}_{1} \\\\ z & =\\frac{C-{x}^{3}}{3x},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-{x}^{3}}{3x}\\,\u21d2\\,y=\\frac{3x}{C-{x}^{3}}\\,.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "07f6d483-11eb-586a-8507-3e98f06aedd6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4bc86aef-d1f7-5946-991a-03f36501cc51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{3}}{C-x}"
+            },
+            {
+              ":answer/id": "39b04611-9a22-5f8b-b183-0886145148db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{3x}{C-{x}^{3}}"
+            },
+            {
+              ":answer/id": "e92f6d79-1f87-51ed-916a-bb265e8b27cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{3{x}^{2}}{C+2{x}^{3}}"
+            },
+            {
+              ":answer/id": "7a4ea470-76cd-59e7-9e76-8348b596243e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{x}^{3}+C}{{x}^{2}}"
+            },
+            {
+              ":answer/id": "abb866d9-f0af-5647-a58c-dc46b336702f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{x}{C-{x}^{2}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "39b04611-9a22-5f8b-b183-0886145148db"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-coefficient-roles-2",
+      "template": "q-109158",
+      "profile": "observed:q-109158",
+      "parameters": {
+        "shift": 0
+      },
+      "seed": 731,
+      "source_question_id": "8cbfb9b8-f301-5858-97fc-1b90fa72d9ae",
+      "source_math_academy_id": "q-109158",
+      "source_basis": 2280,
+      "evidence_only": true,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  }
+]
