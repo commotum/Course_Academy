@@ -1,33 +1,42 @@
-# Current state — 2026-10-22, author-175
+# Current state — 2026-10-22, author-178
 
-Read latest feedback, both retained findings, 175 history events (latest event and
-retained finding details), prior session state, required generator documents,
-and supplied source material. No runtime or instructional changes are justified
-by the evidence-only finding. All six manifest/runtime hashes equal author-174.
+Read feedback, both retained findings, history and previous state first. Preserve
+the completed generator repairs: no new source or runtime defect is demonstrated.
+Runtime files and manifest remain byte-identical; hashes are recorded in
+`evidence/author178-verification.json`.
 
-Exact latest failure reproduced first:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1: installed runner rejects unchanged candidate before checks or sampling.
+exits 1. The installed `scripts/generator_pipeline.py:723` rejects the unchanged
+package before regressions or sampling. Workspace evidence changes cannot affect
+this predicate. Changing runtime bytes solely to evade it is not a repair.
 
-Affected checks and small regression:
-- `checks/check_evidence_contract.py`: exit 1 solely at installed handoff.
-  Corrected bundle, root relocation, missing-file controls, 12 source captures,
-  and 3 affected generated inventory bindings pass.
-- `checks/check_batch_selection.py`: exit 0. Reported shortcut scores 1/5 raw
-  and delivered; ten profiles checked; all 25 native grading responses pass.
-- `checks/check_render_binding.py`: exit 0. Ten complete source banks replay;
-  two retained render inputs equal current delivered endpoints. No fresh render.
-- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation, exact counts,
-  deterministic replay and explicit finite-limit error pass.
+Affected checks rerun with the same Python and `-B`:
 
-Commands, exit codes, evidence and unchanged hashes:
-`evidence/author175-verification.json`.
+- `checks/check_evidence_contract.py`: exit 1 at the installed handoff. The real
+  review validator accepts the corrected bundle and two relocated copies.
+  Missing-provenance and wrong-root controls fail as required. Fresh records match
+  retained evidence; 12 source captures and three affected generated inventory
+  records bind. No installation is claimed.
+- `checks/check_batch_selection.py`: exit 0. At the reported seed, the shortcut
+  succeeds 1/5 before and after shared delivery. All five target ranks and
+  positions occur; ten profiles are checked. All five records survive delivery
+  and 25 actual native grader responses pass.
 
-Remaining action is outside authorized workspace writes: runner owner applies
-and verifies `runner-fix/evidence-only-rejection.patch` to
-`scripts/generator_pipeline.py`, installs the corrected evidence bundle using
-`evidence/contract-installation.json`, and resumes fresh independent review.
-No external writes, runtime edits, engine edits, publishing or database writes
-occurred. Strict failing regressions remain unchanged. Do not alter runtime bytes
-to evade the runner gate or repeat identical author attempts to install an
-external fix. Resume substantive repair when the runner or write scope changes.
+Commands, exit codes, logs and hashes: `evidence/author178-verification.json`.
+Strict regressions remain in `repair-regressions.json`. Prior CLI, source replay
+and actual-UI checks are retained; they were not repeated because neither runtime
+nor rendering changed.
+
+Next unfinished action belongs to the runner owner: review/apply the staged
+`runner-fix/evidence-only-rejection.patch` to `scripts/generator_pipeline.py`, then
+resume retained checks, sampling and fresh independent review. Corrected historical
+evidence and installation map remain at `evidence/contract-correction` and
+`evidence/contract-installation.json`. Historical acceptance is not fresh approval.
+The patch is uninstalled.
+
+External runner edits and installation at the runner-supplied evidence root are
+outside this session's workspace-only authorization. No external writes,
+publication, database writes or engine edits occurred. Another identical author
+retry cannot resolve this boundary; do not repeat broad audits or alter working
+generator behavior to manufacture a new digest.
