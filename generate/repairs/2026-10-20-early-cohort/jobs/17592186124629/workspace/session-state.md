@@ -16,3 +16,11 @@ Completed: package and evidence are ready for independent review. No unfinished 
 - Added source-backed finite-selection account before implementation. Changed only batch ordering and version 2.0.1: defer repeated subsets by ordered concepts/response shape, ignoring incidental dimensions; later passes retain the full finite domain.
 - Exact strict regression now passes (one det/col/pivot member in the requested five). Relocation passes on Python 3.13.5.
 - Added check_batch_selection.py and registered the retained finding alongside the earlier relocation regression. Next: finish affected domain/delivery/native checks, render and visually inspect changed batch, then record final results.
+
+2026-10-21 targeted validation complete:
+- PY -B check_batch_selection.py: PASS; exact strict regression, four small sample seeds, 15 unchanged source replay banks, 73 first-pass records across all 13 concept/response families, all eligible subsets and varying correct counts/positions, 606/606 full-domain preservation.
+- Actual delivery: accepted reported batch 5/5 and decision prefix 73/73; visible probes pass before/after. Native grader: 68 responses, 28 accepted, 40 rejected, no unexpected outcomes.
+- PY -B check_inventory.py: PASS; only 16 original sources, no generated inventory. affected-inventory.json empty with verified scope.
+- Shared render_preview.py: PASS, all five changed-batch screenshots visually inspected; no clipping or stale solutions.
+- Evidence/commands and README updated; old completed repairs preserved. New evidence is evidence/batch-repair/; runtime manifest remains package.json with exactly four files, Python 3.13.5, no third-party packages.
+- No database writes, publication, engine changes or edits outside workspace. Ready for independent review. Live learner-specific selection remains untested. No unfinished author step.
