@@ -127,7 +127,8 @@ def main():
   assert q[':question/problem']==src[':question/problem'] and q[':question/worked-solution']==src[':question/worked-solution']
   for a,b in zip(src[':question/answer-fields'],q[':question/answer-fields']):
    assert a[':answer-field/key']==b[':answer-field/key']
-   assert [v[':answer/value'] for v in a[':answer-field/choices']]==[v[':answer/value'] for v in b[':answer-field/choices']]
+   expected=[('II only' if t=='q-142367' and v[':answer/value']=='lI only' else v[':answer/value']) for v in a[':answer-field/choices']]
+   assert expected==[v[':answer/value'] for v in b[':answer-field/choices']]
    assert a[':answer-field/correct'][':answer/value']==correct(b)
   replays.append(r);replay_report.append({'source':t,'complete_bank':True,'choice_count':sum(len(f[':answer-field/choices']) for f in q[':question/answer-fields']),'exact_prompt_and_solution':True})
  records=[]
@@ -143,7 +144,8 @@ def main():
     observed={inspect(x)[0] for x in rows}
     expected={tuple(bool(bits&(1<<j)) for j in range(3)) for bits in range(0 if none else 1,8)}
     if source[':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/radio'):
-     expected={tuple(label in a[':answer/value'].split(' only')[0].split(' and ') for label in LABELS) for a in source[':question/answer-fields'][0][':answer-field/choices']}
+     values=[('II only' if t=='q-142367' and a[':answer/value']=='lI only' else a[':answer/value']) for a in source[':question/answer-fields'][0][':answer-field/choices']]
+     expected={tuple(label in value.split(' only')[0].split(' and ') for label in LABELS) for value in values}
     assert observed==expected
     if 'det' in r['generation']['parameters']:assert {bool(x['generation']['parameters']['det']) for x in rows}=={True,False}
     break

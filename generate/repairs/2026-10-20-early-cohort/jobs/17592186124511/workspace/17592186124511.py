@@ -17,10 +17,9 @@ HERE = Path(__file__).with_suffix('')
 S = json.loads((HERE/'source-current.json').read_text())
 KP_ID = 17592186124511
 KP_UUID = S['record'][':knowledge-point/id']
-VERSION = 'imt-2.0.0'
+VERSION = 'imt-2.1.0'
 SOURCES = {q[':question/math-academy-id']:q for q in S['record'][':knowledge-point/questions']}
-EXCLUDED = {'q-34936':'Missing correct answer and worked solution in supplied source.',
-            'q-142367':'Malformed radio distractor lI only; ambiguous label retained as evidence and excluded.'}
+EXCLUDED = {'q-34936':'Missing correct answer and worked solution in supplied source.'}
 TEMPLATES = tuple(t for t in SOURCES if t not in EXCLUDED)
 MATRIX = re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
 SPEC = {
@@ -31,7 +30,12 @@ SPEC = {
  'q-141201':('rank',4,0), 'q-34929':('vector',4,1),
  'q-141198':('det',5,0), 'q-141196':('nullspace',4,2),
  'q-142472':('det',3,0), 'q-142473':('det',4,0), 'q-141197':('col',5,0),
+ 'q-142367':('vector',4,1),
 }
+
+def source_choice(t,value):
+ # Preserve the captured bank, correcting this documented Roman-numeral typo.
+ return 'II only' if t=='q-142367' and value=='lI only' else value
 
 def digest(obj):
  return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -160,6 +164,7 @@ CLAIMS = {
  'q-142472':('not-invertible','rank-n','n-pivots'),
  'q-142473':('invertible','not-col-full','nullzero'),
  'q-141197':('invertible','rank-n','nullity-nonzero'),
+ 'q-142367':('nullity-nonzero','invertible','col-full'),
 }
 def compute_truths(t,p):
  kind,_,_=SPEC[t];n=p['n'];rank=nullity=None
@@ -250,11 +255,11 @@ def generate(difficulty='moderate',seed=0,template=None,parameters=None,replay=F
   if p!=original(t):raise ValueError('Replay requires original parameters')
   ds=[]
   for f in source[':question/answer-fields']:
-   ds.append((f[':answer-field/key'],[a[':answer/value'] for a in f[':answer-field/choices']],f[':answer-field/correct'][':answer/value'],f[':answer-field/type'][':db/ident']))
+   ds.append((f[':answer-field/key'],[source_choice(t,a[':answer/value']) for a in f[':answer-field/choices']],source_choice(t,f[':answer-field/correct'][':answer/value']),f[':answer-field/type'][':db/ident']))
   return _record(t,p,seed,source[':question/problem'],source[':question/worked-solution'],ds,True)
  isradio=source[':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/radio')
  hasnone=any(f[':answer-field/key']=='None of the above' for f in source[':question/answer-fields'])
- bank=[a[':answer/value'] for a in source[':question/answer-fields'][0][':answer-field/choices']] if isradio else None
+ bank=[source_choice(t,a[':answer/value']) for a in source[':question/answer-fields'][0][':answer-field/choices']] if isradio else None
  if parameters is None:
   # Choose decision assignment before compatible givens and statement relations.
   if isradio:
@@ -327,15 +332,28 @@ def generate(difficulty='moderate',seed=0,template=None,parameters=None,replay=F
  solution+='Therefore, the correct answer is '+displayed_target+'.'
  return _record(t,p,seed,prompt,solution,ds,False)
 
-def batch(difficulty,count,seed):
+def _batch_records(difficulty,count,seed,order):
  if difficulty!='moderate':raise ValueError('Unsupported difficulty: '+difficulty)
  if count<1:raise ValueError('count must be positive')
- found=[];used=set();order=list(TEMPLATES);random.Random(seed).shuffle(order)
+ found=[];used=set();checkbox_counts={}
  for offset in range(max(200,50*count)):
-  r=generate(difficulty,seed+offset,order[offset%len(order)]);fp=r['generation']['mathematical_fingerprint']
-  if fp not in used:found.append(r);used.add(fp)
+  # Rejection resamples the same profile, preserving source-family reachability.
+  r=generate(difficulty,seed+offset,order[len(found)%len(order)]);fp=r['generation']['mathematical_fingerprint']
+  if fp in used:continue
+  fs=r['question'][':question/answer-fields']
+  if fs[0][':answer-field/type'].endswith('/checkbox'):
+   group=len(fs)
+   selected=sum(next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])=='true' for f in fs)
+   seen=checkbox_counts.setdefault(group,set())
+   if selected in seen:continue
+   seen.add(selected)
+   if seen=={1,2,3}:seen.clear()
+  found.append(r);used.add(fp)
   if len(found)==count:return found
  raise ValueError('Finite sampling capability: '+str(len(found))+' distinct tasks found; requested '+str(count))
+def batch(difficulty,count,seed):
+ order=list(TEMPLATES);random.Random(seed).shuffle(order)
+ return _batch_records(difficulty,count,seed,order)
 def markdown(r):
  q=r['question'];text=q[':question/problem']+'\n\n'
  for f in q[':question/answer-fields']:

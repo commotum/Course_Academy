@@ -1,6 +1,127 @@
 {
-  "code": "legacy_packaging_or_sampling",
-  "error": "Undeclared/unresolved runtime import: scripts",
-  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
-  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124511/repair-history.json"
+  "verdict": "revise",
+  "summary": "Two demonstrated failures: an unjustifiably excluded source profile and a shortcut in the exact delivered batch. Full report: result.json. Package unchanged.",
+  "source_analysis": {
+    "skill": "Infer invertibility from supplied matrix evidence, evaluate three theorem claims, and select the true subset.",
+    "reasoning_steps": [
+      "Interpret the determinant, rank, column space, homogeneous witness, or parametrized nullspace.",
+      "Infer the justified invertibility, rank, and nullity consequences.",
+      "Evaluate each claim and submit the corresponding subset."
+    ],
+    "invariants": [
+      "Square matrices, three claims, moderate theorem-inference workload.",
+      "A nonzero homogeneous witness establishes singularity without determining exact nullity.",
+      "Preserve complete source answer banks, documenting supported corrections."
+    ],
+    "permitted_variations": [
+      "Dimensions, coefficients, coordinate positions, and determinant status.",
+      "Claim polarity, numerical comparisons, true-statement identities, and qualifying counts."
+    ],
+    "source_refs": [
+      "Tutorial 555ca00c-d37e-5c67-a658-69b087390920, Introduction",
+      "266a9a4e-cb11-5e4a-a2ac-c2e734966372 / e-5424",
+      "9fbccd10-1c43-51a4-ad8b-36063e11427d / q-142367"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "excluded-source-case.json",
+        "failing-regressions.json"
+      ],
+      "details": "Fifteen complete cases replay correctly. Complete source q-142367 is excluded over a correctable distractor typo."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-review.json",
+        "postdelivery-analysis.json"
+      ],
+      "details": "Independent exact-arithmetic checks passed for fresh samples, source replays, runner records, controlled pairs, and boundaries."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "excluded-source-case.json"
+      ],
+      "details": "Supported profiles vary decisions meaningfully, but excluding q-142367 suppresses a legitimate source profile."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Inspected variations preserve the source method, prerequisites, response contract, and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-report.json",
+        "postdelivery-native-report.json"
+      ],
+      "details": "Actual native grader passed 2,935 raw and 2,722 delivered acceptance/rejection checks."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve actual-UI previews passed; representative screenshots and all controlled pairs were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "historical-failure.json",
+        "retained-runtime-results.json",
+        "package-after.json"
+      ],
+      "details": "Relocated runtime and exact dependency versions passed. Retained import guard fails the historical closure and passes current code. Package bytes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "batch-content-shortcut.json",
+        "delivery-batch/delivery.json",
+        "selection-analysis.json",
+        "failing-regressions.json"
+      ],
+      "details": "Both delivered three-option checkbox items are solved by selecting only the invertibility statement, ignoring the givens. Success: 2/2 versus a 1/7 random-subset baseline. Larger controls disprove a universal generator shortcut."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "q-142367 has a complete prompt, unambiguous I-only key, and worked solution, but the generator excludes it because one incorrect choice reads lI only.",
+      "source_refs": [
+        "9fbccd10-1c43-51a4-ad8b-36063e11427d / q-142367"
+      ],
+      "reproduction": "Run the job Python on regression.py source. generate(template=\"q-142367\", replay=True) raises ValueError: Unsupported template.",
+      "requested_change": "Restore this profile and its complete bank; document the supported lI only \u2192 II only typo correction and retain the strict replay regression."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact delivered batch's two three-option checkbox questions both have the invertibility statement as their sole true claim. Selecting that statement bypasses the required inference.",
+      "source_refs": [
+        "8dad0d98-37c5-5af9-9c0a-4f0fabec2bcc / q-141200",
+        "4927fd87-c83e-52d3-b9bb-877110a8c514 / q-142474",
+        "generate/principles.md: meaningful variety after delivery filtering"
+      ],
+      "reproduction": "Run the job Python on regression.py batch. Minimal pair: runner-batch.json records 0 and 1, seeds 4126872122 and 4126872123. Both survive delivery filtering.",
+      "requested_change": "Revise batch selection so this recurring subgroup contains a counterexample to the cue, then test actual delivery survivors. Preserve the generator's broader decision support."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124511/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
 }

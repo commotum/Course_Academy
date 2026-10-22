@@ -12,7 +12,7 @@ assert masks[0]==masks[3] and masks[4]==masks[5]
 selected={}
 for r in records:
  v.inspect(r);selected.setdefault(r['generation']['template'],r)
-assert len(selected)==15
+assert set(selected)==set(v.g.TEMPLATES)
 v.save('postdelivery-native-input.json',[v.native(r,'delivered-'+t) for t,r in selected.items()]+[v.native(r,'delivered-counterfactual-'+str(i)) for i,r in enumerate(pairs)])
 # Observable presentation cues, including positions after checkbox shuffling.
 summary={}
