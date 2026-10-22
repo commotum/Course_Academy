@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Identifying a Triangular Matrix; local draft, math basis1356, no DB operations.
 
-Easy: one complete matrix among five, six observed complete banks (2/3-square).
-Moderate: subset of three labeled matrices, two observed complete text banks.
+Easy: one complete matrix among five, eight observed complete banks (2/3-square).
+Moderate: subset of three labeled matrices, four checkbox banks and one text bank.
 Hard: authored subset of five 4-square matrices; same zero-support test only.
-Normal subset tasks use whole-matrix checkbox fields. Easy retains its single-matrix radio choice. Raw profiles raw:q-N preserve duplicate/missing refs.
+Normal subset tasks use whole-matrix checkbox fields. Easy retains its single-matrix radio choice. Raw profiles raw:q-N replay all current complete source banks.
 Source masks replace complete matrices and actual nonzero witnesses, not literals.
-Normal source-profile generation retains the original solution stage/prose masks.
+Normal generation derives source solution stages from current matrix membership.
 
 Finite support catalogs are sampled without a claimed infinite numeric diversity.
 Diagonal entries, nonzero signs/magnitudes, labels and option order are incidental
@@ -20,6 +20,7 @@ from copy import deepcopy
 from functools import lru_cache
 import hashlib
 import itertools
+import math
 import json
 from pathlib import Path
 import random
@@ -31,11 +32,11 @@ import sympy as sp
 KP_ID=17592186119772
 KP_UUID='b55b50a0-034f-57c0-8a61-883cfb0412dc'
 TITLE='Identifying a Triangular Matrix'
-VERSION='triangular-identification-2'
+VERSION='triangular-identification-role-v4'
 ROOT=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((ROOT/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SNAPSHOT['record'][':knowledge-point/questions']}
-MATRIX_RE=re.compile(r'([A-E])=\[\\begin\{aligned\}(.*?)\\end\{aligned\}\]',re.S)
+MATRIX_RE=re.compile(r'([A-E])\s*=\s*(?:\[\\begin\{aligned\}(.*?)\\end\{aligned\}\]|\\begin\{bmatrix\}(.*?)\\end\{bmatrix\})',re.S)
 WITNESS_RE=re.compile(r'\{([a-e])\}_\{([1-4])([1-4])\} & =(-?\d+)\\ne 0')
 LEVELS=('easy','moderate','hard')
 TEMPLATES={'easy':'single_matrix','moderate':'three_matrix_subset','hard':'five_matrix_subset'}
@@ -45,7 +46,8 @@ def parse_matrices(text):
     """Read displayed integer arrays, independent of generation metadata."""
     result={}
     for m in MATRIX_RE.finditer(text):
-        matrix=[[int(x.strip()) for x in row.split('&')] for row in m[2].split(r'\\')]
+        body=m[2] if m[2] is not None else m[3]
+        matrix=[[int(x.strip()) if re.fullmatch(r'-?\d+',x.strip()) else float(x.strip()) for x in row.split('&')] for row in body.split(r'\\')]
         if m[1] in result and result[m[1]]!=matrix:
             raise ValueError('Inconsistent repeated displayed matrix')
         result[m[1]]=matrix
@@ -85,7 +87,7 @@ def recipe(source_id):
     level=q[':question/difficulty'][':db/ident'].rsplit('/',1)[1]
     criterion='upper' if 'upper triangular' in q[':question/problem'] else 'lower'
     fields=q[':question/answer-fields']
-    matrices=parse_matrices(q[':question/problem']+'\n'+q[':question/worked-solution'])
+    matrices=parse_matrices(q[':question/problem']+'\n'+q[':question/worked-solution']+'\n'+'\n'.join(f.get(':answer-field/key','') for f in fields))
     if level=='easy':
         matrices={}
         for a in fields[-1][':answer-field/choices']:
@@ -101,7 +103,8 @@ def recipe(source_id):
                        sum(mat[i][j]!=0 for i,j in coordinates(len(mat),criterion=='upper'))]
     return {'source_id':source_id,'level':level,'criterion':criterion,'matrices':matrices,
             'preferred':preferred,'counts':counts,'problem_mask':mask(q[':question/problem']),
-            'solution_mask':mask(q[':question/worked-solution'])}
+            'solution_mask':mask(q[':question/worked-solution']),
+            'field_type':enum(fields[0][':answer-field/type'])}
 
 
 def uid(text):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+':'+text))
@@ -142,35 +145,27 @@ def validate_parameters(level,p,r=None,hard_profile=None):
         if n not in ((4,) if level=='hard' else (2,3,4) if level=='moderate' else (2,3)):
             raise ValueError('level dimension bound')
         if any(len(row)!=n for row in mat):raise ValueError('square matrices only')
-        if any(type(v) is not int or abs(v)>11 for row in mat for v in row):raise ValueError('integer entries in [-11,11]')
-        if r:
-            if n!=len(r['matrices'][label]):raise ValueError('source-profile dimension')
-            observed=r['counts'][label]
-            got=[sum(mat[i][j]!=0 for i,j in coordinates(n,criterion=='lower')),
-                 sum(mat[i][j]!=0 for i,j in coordinates(n,criterion=='upper'))]
-            if got!=observed:raise ValueError('complete profile support counts must be preserved')
+        if any(type(v) not in (int,float) or not math.isfinite(v) or abs(v)>11 for row in mat for v in row):
+            raise ValueError('finite numeric entries in [-11,11]')
+        if r and n!=len(r['matrices'][label]):raise ValueError('source-profile dimension')
+        # Membership is a mathematical role, never the source label's counts.
     objects=[json.dumps(x) for x in matrices.values()]
     if len(set(objects))!=len(objects):raise ValueError('duplicate complete matrices')
     good=tuple(label for label in labels if qualifies(matrices[label],criterion))
     if level=='easy' and len(good)!=1:raise ValueError('exactly one qualifying easy choice required')
     if level=='moderate' and len(good) not in (1,2):raise ValueError('source subset workload')
     if level=='hard':
-        expected=('A','B') if hard_profile=='hard_two' else ('A','B','C')
-        if good!=expected:raise ValueError('hard profile qualifying subset')
-        # One diagonal matrix demonstrates inclusive membership; the others have
-        # 3 allowed nonzeros. Every foil has 3 allowed + one forbidden nonzero.
-        for label,mat in matrices.items():
-            allowed=sum(mat[i][j]!=0 for i,j in coordinates(4,criterion=='upper'))
-            bad=len(forbidden(mat,criterion))
-            counts=(allowed,bad)
-            expect=(0,0) if label=='A' else (3,0) if label in good else (3,1)
-            if counts!=expect:raise ValueError('hard fixed workload support counts')
+        if len(good)!=(2 if hard_profile=='hard_two' else 3):raise ValueError('hard qualifying count')
+        counts=[(sum(mat[i][j]!=0 for i,j in coordinates(4,criterion=='upper')),len(forbidden(mat,criterion)))
+                for mat in matrices.values()]
+        expected=[(0,0)]+[(3,0)]*(len(good)-1)+[(3,1)]*(5-len(good))
+        if sorted(counts)!=sorted(expected):raise ValueError('hard workload support counts')
     return good
 
 
 def source_bank(r):
     f=SOURCES[r['source_id']][':question/answer-fields'][-1]
-    return [subset(a[':answer/value']) for a in f[':answer-field/choices']] if r['level']=='moderate' else []
+    return [subset(a[':answer/value']) for a in f[':answer-field/choices']] if r['field_type']==':answer-field.type/radio' and r['level']=='moderate' else []
 
 
 def hard_bank(profile):
@@ -182,19 +177,24 @@ def hard_bank(profile):
 
 
 def candidate_support(rng,level,r=None,profile=None):
+    # Decide membership first, independently of labeled dimensions and values.
     criterion=rng.choice(('upper','lower'))
-    matrices={}
     labels='ABCDE' if level in ('easy','hard') else 'ABC'
-    good=('A','B') if profile=='hard_two' else ('A','B','C')
+    count=1 if level=='easy' else rng.choice((1,2)) if level=='moderate' else 2 if profile=='hard_two' else 3
+    good=set(rng.sample(list(labels),count))
+    diagonal=rng.choice(sorted(good)) if level=='hard' else None
+    matrices={}
+    max_bad=max(c[0] for c in r['counts'].values()) if r else 1
+    max_allowed=max(c[1] for c in r['counts'].values()) if r else 3
     for label in labels:
         n=4 if level=='hard' else len(r['matrices'][label])
+        capacity=n*(n-1)//2
+        bad_count=0 if label in good else rng.randint(1,min(max_bad,capacity))
+        allowed_count=rng.randint(0,min(max_allowed,capacity)) if r else 0 if label==diagonal else 3
         mat=[[0]*n for _ in range(n)]
-        bad_count,allowed_count=r['counts'][label] if r else (0,0) if label=='A' else (0,3) if label in good else (1,3)
         for side,count in ((criterion=='lower',bad_count),(criterion=='upper',allowed_count)):
             for i,j in rng.sample(coordinates(n,side),count):mat[i][j]=1
-        # Distinct diagonal entries are presentation only; support catalog stores
-        # representative values so duplicate same-support foils aren't identical.
-        for i in range(n):mat[i][i]=labels.index(label)+1
+        for i in range(n):mat[i][i]=rng.randint(-11,11)
         matrices[label]=mat
     return {'criterion':criterion,'matrices':matrices}
 
@@ -221,12 +221,17 @@ def catalog(profile):
     return tuple(result.values())
 
 
-def fill_values(base,rng):
+def fill_values(base,rng,decimals=False):
     p=deepcopy(base)
     for mat in p['matrices'].values():
         for i,row in enumerate(mat):
             for j,value in enumerate(row):
                 row[j]=rng.randint(-11,11) if i==j else rng.choice([x for x in range(-11,12) if x]) if value else 0
+    if decimals:
+        for mat in p['matrices'].values():
+            for row in mat:
+                for j,value in enumerate(row):
+                    if value and rng.randrange(3)==0:row[j]=rng.choice((-987,-89,-65,65,89,987))/100
     return p
 
 
@@ -261,164 +266,131 @@ def hard_solution(p,good,witness):
 def enum(value):return value[':db/ident'] if isinstance(value,dict) else value
 
 
-def _generate_radio_evidence(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def present(label,mat):
+    return label+r'=\begin{bmatrix}'+r' \\ '.join(' & '.join(str(v) for v in row) for row in mat)+r'\end{bmatrix}'
+
+
+def prose_labels(labels):
+    labels=['$'+x+'$' for x in sorted(labels)]
+    return labels[0] if len(labels)==1 else ' and '.join(labels) if len(labels)==2 else ', '.join(labels[:-1])+', and '+labels[-1]
+
+
+def concrete_solution(level,p,good,witness):
+    criterion=p['criterion'];side='below' if criterion=='upper' else 'above'
+    matrices=p['matrices'];bad=[x for x in sorted(matrices) if x not in good]
+    if level=='easy':
+        label=good[0]
+        foils='\n\n'.join('$$\n'+present(x,matrices[x])+'\n$$' for x in bad)
+        return ("Notice that $"+label+"$ is a matrix for which all entries *"+side+"* the diagonal are $0$'s:\n\n$$\n"+
+                present(label,matrices[label])+"\n$$\n\nHence, it is "+('an ' if criterion=='upper' else 'a ')+criterion+
+                " triangular matrix. \n\nBy contrast, matrices "+prose_labels(bad)+" each have at least one non-zero entry "+side+
+                " the diagonal:\n\n"+foils+"\n\nSo, they are not "+criterion+" triangular matrices.")
+    good_start=('The matrix ' if len(good)==1 else 'The matrices ')+prose_labels(good)
+    bad_start=('The matrix ' if len(bad)==1 else 'The matrices ')+prose_labels(bad)
+    rows=[]
+    for label in bad:
+        i,j=witness[label]
+        rows.append('{'+label.lower()+'}_{'+str(i+1)+str(j+1)+'} & ='+str(matrices[label][i][j])+r'\ne 0')
+    return (good_start+(' is '+('an ' if criterion=='upper' else 'a ') if len(good)==1 else ' are ')+criterion+
+            ' triangular '+('matrix' if len(good)==1 else 'matrices')+' since all the entries '+side+' the main diagonal are zeros.\n\n'+
+            bad_start+(' is *not* '+('an ' if criterion=='upper' else 'a ') if len(bad)==1 else ' are *not* ')+criterion+
+            ' triangular '+('matrix' if len(bad)==1 else 'matrices')+' since '+('it has' if len(bad)==1 else 'they each have')+
+            ' a non-zero element '+side+' the main diagonal: \n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$')
+
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in LEVELS:raise ValueError('difficulty easy|moderate|hard')
     if template not in (None,TEMPLATES[level]):raise ValueError('unknown template for level')
-    if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('original radio layout required')
     rng=random.Random(seed)
     available=[sid for sid in SOURCES if recipe(sid)['level']==level] if level!='hard' else ['hard_two','hard_three']
     profile=profile or rng.choice(available)
     raw=profile.startswith('raw:');base_profile=profile[4:] if raw else profile
     if base_profile not in available:raise ValueError('profile/level mismatch')
     r=recipe(base_profile) if level!='hard' else None
-    if raw and parameters is None:
-        # No source payload return: this is only the parameter sampler's anchor.
-        parameters={'criterion':r['criterion'],'matrices':deepcopy(r['matrices'])}
-    if parameters is not None:
-        p=deepcopy(parameters)
+    expected=r['field_type'] if r else ':answer-field.type/checkbox'
+    if field_type not in (None,expected,expected.rsplit('/',1)[1]):raise ValueError('source response contract requires '+expected)
+    if parameters is not None:p=deepcopy(parameters)
+    elif raw:p={'criterion':r['criterion'],'matrices':deepcopy(r['matrices'])}
     else:
-        # Profile selected first; reject the complete numerical instance on a
-        # collision. Never replace an individual foil from a fallback pool.
         for attempt in range(100):
-            p=fill_values(rng.choice(catalog(base_profile)),rng)
+            p=fill_values(candidate_support(rng,level,r,base_profile),rng,base_profile=='q-42111')
             try:
-                validate_parameters(level,p,r,base_profile)
-                break
-            except ValueError:
-                continue
-        else:
-            raise ValueError('no valid whole instance in 100 attempts')
+                validate_parameters(level,p,r,base_profile);break
+            except ValueError:continue
+        else:raise ValueError('no valid whole instance in 100 attempts')
     good=validate_parameters(level,p,r,base_profile)
     witness=witnesses(p['matrices'],p['criterion'],r['preferred'] if r else None)
-    if r:
-        prompt=render_mask(r['problem_mask'],p,r,witness)
-        solution=render_mask(r['solution_mask'],p,r,witness)
-        original_fields=SOURCES[base_profile][':question/answer-fields']
-        chosen_fields=original_fields if raw else original_fields[-1:]
-        fields=[]
-        for f in chosen_fields:
-            values=[]
-            for a in f[':answer-field/choices']:
-                value=matrix_tex(a[':answer/value'][0],p['matrices'][a[':answer/value'][0]]) if level=='easy' else a[':answer/value']
-                values.append((value,enum(a[':answer/type'])))
-            correct=matrix_tex(good[0],p['matrices'][good[0]]) if level=='easy' else next(v for v,t in values if tuple(subset(v))==good)
-            fields.append({'values':values,'key':f.get(':answer-field/key'),'key_present':':answer-field/key' in f,
-                           'correct':correct,'correct_present':':answer-field/correct' in f})
+    source_anchor=bool(r) and p=={'criterion':r['criterion'],'matrices':r['matrices']}
+    criterion=p['criterion']
+    if source_anchor:
+        prompt=SOURCES[base_profile][':question/problem']
+        solution=SOURCES[base_profile][':question/worked-solution']
     else:
-        prompt='Which of the following matrices are '+p['criterion']+' triangular matrices?\n\n$'+r',\,'.join(matrix_tex(label,m) for label,m in p['matrices'].items())+'.$'
-        solution=hard_solution(p,good,witness)
-        bank=hard_bank(base_profile)
-        values=[(subset_tex(s),':answer.type/text') for s in bank]
-        fields=[{'values':values,'key':'selection','key_present':True,'correct':subset_tex(good),'correct_present':True}]
+        prompt='Which of the following is '+('an ' if criterion=='upper' else 'a ')+criterion+' triangular matrix?' if level=='easy' else 'Which of the following matrices are '+criterion+' triangular matrices?'
+        if expected==':answer-field.type/checkbox':prompt+='\n\nSelect all that apply.'
+        elif level!='easy':prompt+='\n\n'+'\n\n'.join('$$\n'+present(x,mat)+'\n$$' for x,mat in sorted(p['matrices'].items()))
+        solution=concrete_solution(level,p,good,witness)
+    # Source anchors keep exact text; served multi-matrix displays are split for UI width.
     if not raw:
-        # The conditional upper/lower mask also changes the English article.
-        prompt=prompt.replace('a upper triangular','an upper triangular').replace('an lower triangular','a lower triangular')
-        solution=solution.replace('a upper triangular','an upper triangular').replace('an lower triangular','a lower triangular')
-    for f in fields:
-        if len(f['values'])!=5 or len({v for v,t in f['values']})!=5:raise ValueError('complete five-choice bank collision')
-        if sum(v==f['correct'] for v,t in f['values'])!=1:raise ValueError('ambiguous bank')
-    bank=source_bank(r) if r else hard_bank(base_profile)
-    fingerprint=task_fingerprint(level,p,bank,witness)
-    # Content identity is actual displayed content + layout + all owned banks;
-    # profile aliases/seed/unused source metadata cannot inflate question identity.
-    identity=digest([VERSION,level,prompt,solution,fields])
+        def split_display(match):
+            found=list(MATRIX_RE.finditer(match[1]))
+            if len(found)<2:return match[0]
+            return '\n\n'.join('$$\n'+present(m[1],p['matrices'][m[1]])+'\n$$' for m in found)
+        prompt=re.sub(r'\$\$(.*?)\$\$',split_display,prompt,flags=re.S)
+        solution=re.sub(r'\$\$(.*?)\$\$',split_display,solution,flags=re.S)
+        if level=='moderate' and expected==':answer-field.type/radio':
+            prompt=prompt.split('\n\n')[0]+'\n\n'+'\n\n'.join('$$\n'+present(x,mat)+'\n$$' for x,mat in sorted(p['matrices'].items()))
+    specifications=[]
+    if expected==':answer-field.type/checkbox':
+        order=[next(iter(parse_matrices(f[':answer-field/key']))) for f in SOURCES[base_profile][':question/answer-fields']] if source_anchor else sorted(p['matrices'])
+        if not raw:rng.shuffle(order)
+        for label in order:
+            key=next(f[':answer-field/key'] for f in SOURCES[base_profile][':question/answer-fields'] if label in parse_matrices(f[':answer-field/key'])) if source_anchor else '$'+present(label,p['matrices'][label])+'$'
+            specifications.append((key,[('false',':answer.type/text'),('true',':answer.type/text')],str(label in good).lower()))
+    elif level=='easy':
+        original=SOURCES[base_profile][':question/answer-fields'][0]
+        values=[(a[':answer/value'],enum(a[':answer/type'])) for a in original[':answer-field/choices']] if source_anchor else [(present(label,mat),':answer.type/math') for label,mat in sorted(p['matrices'].items())]
+        correct=next(v for v,t in values if next(iter(parse_matrices(v)))==good[0])
+        specifications=[(original.get(':answer-field/key','selection'),values,correct)]
+    else:
+        if source_anchor:
+            f=SOURCES[base_profile][':question/answer-fields'][0]
+            values=[(a[':answer/value'],enum(a[':answer/type'])) for a in f[':answer-field/choices']]
+        else:
+            # Complete source-shaped bank: two singletons and all three pairs.
+            omitted=rng.choice([x for x in 'ABC' if good!=(x,)])
+            bank=[(x,) for x in 'ABC' if x!=omitted]+list(itertools.combinations('ABC',2))
+            values=[(subset_tex(labels),':answer.type/text') for labels in bank]
+        correct=next(v for v,t in values if tuple(subset(v))==good)
+        specifications=[('selection',values,correct)]
+    fingerprint=task_fingerprint(level,p,[],witness)
+    identity=digest([VERSION,level,prompt,solution,specifications])
     question={':question/id':uid(identity),':question/problem':prompt,':question/worked-solution':solution,
               ':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[]}
-    if raw:
-        original=SOURCES[base_profile]
-        if ':question/difficulty' not in original:question.pop(':question/difficulty')
-        if ':question/math-academy-id' in original:question[':question/math-academy-id']=original[':question/math-academy-id']
-    for i,f in enumerate(fields):
-        field_id=uid(identity+':field:'+str(i))
-        answers=[{':answer/id':uid(field_id+':answer:'+v+':'+t),':answer/type':t,':answer/value':v} for v,t in f['values']]
-        correct_id=next(a[':answer/id'] for a in answers if a[':answer/value']==f['correct'])
+    if raw:question[':question/math-academy-id']=base_profile
+    for index,(key,values,correct) in enumerate(specifications):
+        fid=uid(identity+':field:'+str(index));answers=[]
+        for value,kind in values:answers.append({':answer/id':uid(fid+':'+kind+':'+value),':answer/type':kind,':answer/value':value})
+        cid=next(a[':answer/id'] for a in answers if a[':answer/value']==correct)
         rng.shuffle(answers)
-        output={':answer-field/id':field_id,':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers}
-        if f['key_present']:output[':answer-field/key']=f['key']
-        if f['correct_present']:output[':answer-field/correct']=[':answer/id',correct_id]
-        question[':question/answer-fields'].append(output)
+        question[':question/answer-fields'].append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':expected,
+                                                    ':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]})
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,
             'generation':{'version':VERSION,'seed':seed,'template':TEMPLATES[level],'profile':profile,'parameters':p,
                           'mathematical_fingerprint':fingerprint,'content_identity':identity,
-                          'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},
-                          'source_ids':[base_profile] if r else [],'authored_extension':not bool(r),
-                          'support_extension':bool(r) and (p['criterion']!=r['criterion'] or any(
-                              support(p['matrices'][label])!=support(mat) for label,mat in r['matrices'].items())),
-                          'evidence_only':raw,
-                          'eligible_for_learning':not raw,'witnesses':{k:[i+1,j+1,p['matrices'][k][i][j]] for k,(i,j) in witness.items()},
+                          'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'source_ids':[base_profile] if r else [],
+                          'authored_extension':not bool(r),'support_extension':not source_anchor,'evidence_only':raw,
+                          'eligible_for_learning':not raw,'response_layout':expected.rsplit('/',1)[1],
+                          'witnesses':{k:[i+1,j+1,p['matrices'][k][i][j]] for k,(i,j) in witness.items()},
                           'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none'}}
 
 
-
-CHECKBOX_VERSION='triangular-identification-checkbox-v3'
-
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
-    raw=bool(profile and profile.startswith('raw:'))
-    expected='radio' if raw or level=='easy' else 'checkbox'
-    if field_type not in (None,expected,':answer-field.type/'+expected):
-        raise ValueError('This presentation requires '+expected+' fields')
-    record=_generate_radio_evidence(level,seed,template,None,parameters,profile)
-    if raw:return record
-    record['generation']['version']=CHECKBOX_VERSION
-    p=record['generation']['parameters'];matrices=p['matrices'];criterion=p['criterion']
-    good={label for label,mat in matrices.items() if qualifies(mat,criterion)}
-    if not good:raise ValueError('Normal checkbox questions must have at least one correct selection')
-    q=record['question']
-    # Keep matrix names for the worked explanation, but place each whole matrix
-    # beside its control. Original source layouts remain evidence-only.
-    def present(label,mat):
-        return label+r'=\begin{bmatrix}'+r' \\ '.join(' & '.join(str(v) for v in row) for row in mat)+r'\end{bmatrix}'
-    def normalized(text):
-        def display(match):
-            body=match[1];matches=list(MATRIX_RE.finditer(body))
-            if len(matches)>1:
-                remainder=MATRIX_RE.sub('',body)
-                if re.sub(r'\\[,;! ]|[,.;\s]','',remainder):
-                    raise ValueError('Unexpected prose in a multi-matrix display')
-                return '\n\n'.join('$$\n'+present(m[1],matrices[m[1]])+'\n$$' for m in matches)
-            return match[0]
-        text=re.sub(r'\$\$(.*?)\$\$',display,text,flags=re.S)
-        return MATRIX_RE.sub(lambda m:present(m[1],matrices[m[1]]),text)
-    q[':question/problem']=normalized(q[':question/problem'])
-    q[':question/worked-solution']=normalized(q[':question/worked-solution'])
-    new_id=lambda label:str(uuid.uuid5(uuid.UUID(KP_UUID),CHECKBOX_VERSION+':'+label))
-    if level=='easy':
-        field=q[':question/answer-fields'][0]
-        correct=next(a for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])
-        correct_value=normalized(correct[':answer/value'])
-        for answer in field[':answer-field/choices']:answer[':answer/value']=normalized(answer[':answer/value'])
-        payload={k:v for k,v in q.items() if k not in (':question/id',':question/answer-fields')}
-        payload['radio_bank']=sorted((a[':answer/type'],a[':answer/value']) for a in field[':answer-field/choices'])
-        payload['field_key']=field[':answer-field/key'];payload['correct_value']=correct_value
-        fingerprint=digest(payload);qid=new_id(fingerprint);fid=new_id(qid+':field:'+field[':answer-field/key'])
-        q[':question/id']=qid;field[':answer-field/id']=fid
-        for answer in field[':answer-field/choices']:answer[':answer/id']=new_id(fid+':'+answer[':answer/type']+':'+answer[':answer/value'])
-        field[':answer-field/correct']=[':answer/id',next(a[':answer/id'] for a in field[':answer-field/choices'] if a[':answer/value']==correct_value)]
-        record['generation'].update(content_identity=fingerprint,response_layout='whole-matrix-radio')
-        return record
-    q[':question/problem']='Which of the following matrices are '+criterion+' triangular matrices?\n\nSelect all that apply.'
-    objects=[('$'+present(label,mat)+'$',label in good) for label,mat in sorted(matrices.items())]
-    payload={k:v for k,v in q.items() if k not in (':question/id',':question/answer-fields')}
-    payload['checkbox_objects']=objects
-    fingerprint=digest(payload)
-    new_id=lambda label:str(uuid.uuid5(uuid.UUID(KP_UUID),CHECKBOX_VERSION+':'+label))
-    qid=new_id(fingerprint);q[':question/id']=qid;fields=[]
-    for key,correct in objects:
-        fid=new_id(qid+':field:'+key)
-        answers=[{':answer/id':new_id(fid+':'+value),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')]
-        fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[int(correct)][':answer/id']]})
-    q[':question/answer-fields']=fields
-    record['generation']['content_identity']=fingerprint
-    record['generation']['response_layout']='whole-matrix-checkboxes'
-    return record
-
-# EASY: observed one-matrix selection with five entire matrix options. Each wrong
-# object retains its source's forbidden/allowed support counts, n=2/3, no algebra.
+# EASY: observed one-matrix selection with five entire matrix options. Qualification and support assignments vary at fixed labeled sizes, n=2/3, no algebra.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('easy',seed,template,field_type,parameters,profile)
 
 # MODERATE: three complete matrix checkbox options, one or two true.
-# Profile-specific dimensions/counts preserve workload, including a diagonal case.
+# Profile-specific dimensions preserve workload; response types follow current source.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('moderate',seed,template,field_type,parameters,profile)
 

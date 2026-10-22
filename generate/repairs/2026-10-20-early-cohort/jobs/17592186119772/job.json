@@ -6,11 +6,11 @@
     "existing_entrypoint": null,
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 0,
+  "stage": "generate",
+  "attempt": 1,
   "seed": 1311091129,
   "created": 1792672127.3740976,
-  "updated": 1792672128.1481829,
+  "updated": 1792672718.7709486,
   "source_hash": "96d19341f1375cc8bb96bf885723dda62c2c56c4a958746a5a88763677015758",
   "inventory_hash": "1fb894322f0cde77b0fd2ebc242f77fdf43f99fe902ee960221ecffb06ddff63",
   "manifest": "package.json",
@@ -20,5 +20,161 @@
   "batch_hash": "464b036b59bf06168c696fcfb3b495cfb6761a94999dc75046c6d25525c378ee",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119772/runtime-0",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "assets": {}
+  "assets": {},
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119772/review-0-policy-2-51f6015bc2a9aef6",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "fb753efc267ce78b44ac34a30c6c4e4f2bb799e8188a57d724ff51c9eea9912a",
+      "batch_hash": "464b036b59bf06168c696fcfb3b495cfb6761a94999dc75046c6d25525c378ee",
+      "source_hash": "96d19341f1375cc8bb96bf885723dda62c2c56c4a958746a5a88763677015758",
+      "inventory_hash": "1fb894322f0cde77b0fd2ebc242f77fdf43f99fe902ee960221ecffb06ddff63",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
+    }
+  },
+  "needs_repair": true,
+  "error": {
+    "verdict": "revise",
+    "summary": "The exact delivered batch is answered by always choosing D (5/5). Matrix sizes alone predict answers across all 72 independently sampled easy questions. Five current source families are missing. Package files remained unchanged.",
+    "source_analysis": {
+      "skill": "Identify triangular matrices by checking every entry strictly above or below the main diagonal.",
+      "reasoning_steps": [
+        "Read the requested upper/lower orientation.",
+        "Inspect every entry on the forbidden side.",
+        "Select exactly the matrices whose inspected entries are all zero."
+      ],
+      "invariants": [
+        "Matrices are square.",
+        "Easy questions have five choices and exactly one qualifying matrix.",
+        "Diagonal and unconstrained-side entries do not determine qualification."
+      ],
+      "permitted_variations": [
+        "Change qualifying labels and positions.",
+        "Vary dimensions, zero patterns, values and target orientation within source workload.",
+        "Derive answers and explanations from the resulting matrices."
+      ],
+      "source_refs": [
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739, Introduction",
+        "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+        "e2e910d3-5a56-5ffe-990b-2c75157e1876"
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "failed",
+        "evidence_paths": [
+          "source-replay.json",
+          "source-replay-records.json"
+        ],
+        "details": "Eight of thirteen source cases replay; five profiles are missing, including two easy banks."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "math-results.json",
+          "counterfactuals.json"
+        ],
+        "details": "Independent exact checks found no mathematical errors in 88 fresh records and the five-record batch."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "shortcut-delivered-control.json",
+          "minimal-failing-case.json"
+        ],
+        "details": "Labeled matrix dimensions predict 72/72 easy answers. A valid reassignment of the qualifying label is rejected."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "scope-results.json"
+        ],
+        "details": "Requested easy outputs preserve the observed matrix sizes, selection workload and zero-side inspection method."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-input-final.json",
+          "grader-report-final.json"
+        ],
+        "details": "Native grader: 34 accepted and 91 rejected responses, with no unresolved checks."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "render-counterfactual/rendering.json",
+          "visual-inspection.json"
+        ],
+        "details": "Nine actual-UI render cases passed; representative screenshots were visually inspected."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "runtime-results.json",
+          "package-before.json",
+          "package-after.json"
+        ],
+        "details": "Exact dependencies, deterministic replay and relocation passed. Package hashes remained unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "shortcut-delivered-batch.json",
+          "delivery-control/delivery.json",
+          "delivery-batch/delivery.json",
+          "selection-results.json",
+          "affected-inventory.json",
+          "generated-records.json",
+          "inventory-audit.json"
+        ],
+        "details": "Shortcuts survive delivery filtering. Three stored generated records also exhibit a dimension-based shortcut; exact authored content was reconstructed with captured identity bindings explicitly preserved. Live selection configuration and histories were unavailable."
+      }
+    },
+    "findings": [
+      {
+        "kind": "decision_shortcut",
+        "description": "Each easy profile fixes qualifying status and labeled dimensions. Six recognizable dimension signatures predict every sampled answer without inspecting entries: 72/72 after delivery.",
+        "source_refs": [
+          "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+          "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739"
+        ],
+        "reproduction": "Run strict_regressions.py with the job Python. minimal-failing-case.json specifies q-126354, seed 20261022: swapping equally sized A/E matrices makes A the sole valid answer, but generation raises 'complete profile support counts must be preserved'.",
+        "requested_change": "Remove source-label bindings from the family-wide construction rules. Vary eligible qualifying roles independently of dimension signatures, derive explanations and keys from membership, and retain the failing role-swap regression."
+      },
+      {
+        "kind": "decision_shortcut",
+        "description": "All five surviving runner batch records use q-126352 and have correct label D. Always choosing D succeeds 5/5.",
+        "source_refs": [
+          "e2e910d3-5a56-5ffe-990b-2c75157e1876"
+        ],
+        "reproduction": "Inspect delivery-batch/accepted.json and shortcut-delivered-batch.json. strict_regressions.py fails batch_not_answered_by_one_label.",
+        "requested_change": "Replace the batch after correcting construction and verify the exact surviving batch against fixed-label shortcuts."
+      },
+      {
+        "kind": "source_fidelity",
+        "description": "Current profiles q-42111, q-126346, q-68743, q-68748 and q-42141 are omitted; q-68743 and q-68748 are easy complete banks.",
+        "source_refs": [
+          "5028fbd4-ee30-5a81-83e7-13be078fa1c6",
+          "55bf6bb8-fc59-5bd1-a9cb-d12ca64021ed",
+          "39f938c0-efcb-5d8b-9b9f-266e88925e56",
+          "40b938cb-f23c-5d0f-a251-58ee4d72d0a4",
+          "64b1b919-c94a-54de-9b3d-b841120bf12f"
+        ],
+        "reproduction": "generate_easy(seed=19673, profile='raw:q-68743') raises profile/level mismatch. source-replay.json records all thirteen attempts.",
+        "requested_change": "Restore the omitted families from the supplied current source, including complete banks and their response contracts."
+      }
+    ]
+  },
+  "last_rejected_package": "fb753efc267ce78b44ac34a30c6c4e4f2bb799e8188a57d724ff51c9eea9912a",
+  "last_rejected_source": "96d19341f1375cc8bb96bf885723dda62c2c56c4a958746a5a88763677015758",
+  "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+  "author_running": true
 }
