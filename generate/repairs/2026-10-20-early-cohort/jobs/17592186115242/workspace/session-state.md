@@ -1,33 +1,28 @@
 # Current state
 
-Author-340 verification: evidence/author-340/commands.json, results.json and
-outcome.md. Read feedback and all five retained findings through attempt 339.
-No new generator construction failure or changed source evidence is reported.
-Runtime, manifest, captured source and inventory hashes remain unchanged.
+Author-343: read feedback and five retained findings through attempt 342.
+Source, inventory, runtime and manifest still match retained bindings. No new
+construction defect is demonstrated.
 
-First check: job Python -B checks/batch_regressions.py --finding inventory.
-Exit 1: five reproduced historical stored records retain the sign-extremum
-shortcut; the retained possible-history witness succeeds 64/64. All generated
-inventory records tested; original source identities excluded from remediation.
+Latest failure reproduced first:
+job Python -B checks/batch_regressions.py --finding inventory
+Exit 1: five historical banks retain the sign-extremum shortcut; the possible
+learner-history witness succeeds 64/64. No generated inventory remains untested.
 
-Then: job Python -B checks/recheck_status.py --output evidence/author-340.
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass:
-17 complete source banks and canonical system replay, fractional bare-k and
-zero-root cases, sign-group contrasts, three finite batches with 14/14 shared
-delivery survivors, relevant and irrelevant counterfactuals. Native grader
-accepts 7 correct and rejects 28 wrong choices. Deterministic relocation and
-exact dependencies pass. Existing five-record replacement proposal verified,
-unapplied. Strict regressions are unchanged.
+Verification:
+job Python -B checks/recheck_status.py --output evidence/author-343
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass: 17 source banks, 14/14 delivered records, controlled
+counterfactuals, native grading (7 accepted/28 rejected), pins and relocation.
+Staged replacement proposal verified and unapplied. Both retained actual-UI
+screenshots and source tutorial flowchart visually inspected.
 
-Visually inspected both retained actual-UI screenshots in evidence/repair-3/render
-and the source tutorial flowchart. No presentation changes warrant rerendering.
+Evidence: evidence/author-343/commands.json, results.json, outcome.md.
+Status: unsupported for the historical selectable-pool requirement. Runtime,
+database, engine, publication and images unchanged; strict regressions retained.
 
-Status: unsupported. Next unfinished action is external inventory remediation
-of the five identities in affected-inventory.json, using the already staged
-proposal at evidence/repair-3/inventory-repair-proposal.json, followed by a fresh
-capture and strict recheck. Database changes are prohibited in this job. A
-workspace generator edit cannot retire stored candidates. No database,
-publication, image, engine or runtime-package changes were made.
-
-On continuation, inspect for changed inventory or feedback before repeating
-identical validation. Preserve the candidate, source scope and failing test.
+Next unfinished action: separate inventory remediation of the five identities in
+affected-inventory.json, using evidence/repair-3/inventory-repair-proposal.json,
+then fresh capture and strict recheck. Database changes are prohibited here.
+Before another pass, inspect for changed feedback/inventory. Unchanged captured
+stored banks cannot be repaired by editing or repeatedly checking this package.

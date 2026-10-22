@@ -19,8 +19,8 @@ KP_ID = 17592186124511
 KP_UUID = S['record'][':knowledge-point/id']
 VERSION = 'imt-2.0.0'
 SOURCES = {q[':question/math-academy-id']:q for q in S['record'][':knowledge-point/questions']}
-EXCLUDED = {'q-34936':'Unrated, absent canonical answer and solution.',
-            'q-142367':'Malformed radio label lI only; intended subset is unresolved. Preserved but excluded.'}
+EXCLUDED = {'q-34936':'Missing correct answer and worked solution in supplied source.',
+            'q-142367':'Malformed radio distractor lI only; ambiguous label retained as evidence and excluded.'}
 TEMPLATES = tuple(t for t in SOURCES if t not in EXCLUDED)
 MATRIX = re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
 SPEC = {
@@ -182,7 +182,8 @@ def _field(qid,key,values,correct,kind):
          ':answer-field/correct':[':answer/id',ident(fid,'answer:'+correct)]}
 
 def _record(t,p,seed,prompt,solution,definitions,replay):
- qid=ident(KP_UUID,VERSION+':'+digest([prompt,solution,definitions]))
+ canonical_fields=sorted((key,sorted(values),correct,kind) for key,values,correct,kind in definitions)
+ qid=ident(KP_UUID,VERSION+':'+digest([prompt,solution,canonical_fields]))
  fs=[_field(qid,*d) for d in definitions]
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,
     ':question/difficulty':':question.difficulty/moderate',':question/answer-fields':fs}
@@ -281,6 +282,7 @@ def generate(difficulty='moderate',seed=0,template=None,parameters=None,replay=F
   a=sp.Matrix(p['matrix'])
   if a.shape!=(n,k) or a.rank()!=k or p['n']!=n:raise ValueError('Invalid nonzero independent vector data')
   if any(type(v) is not int or not -4<=v<=4 for row in p['matrix'] for v in row):raise ValueError('Coefficient outside domain')
+ if kind=='det' and (type(p['det']) is not int or not -4<=p['det']<=4):raise ValueError('Determinant outside domain')
  inv,rank,nullity=_facts(t,p);n=p['n'];claims=p['claims'];ds=[]
  target=correct_subset(mask) if any(mask) else 'None of the above'
  if isradio and target not in bank:raise ValueError('Subset absent from complete source bank')

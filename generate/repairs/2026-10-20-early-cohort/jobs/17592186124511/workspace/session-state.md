@@ -1,0 +1,7 @@
+# Session state
+
+Implemented: preserved the supplied candidate and old evidence; reproduced the repository-only policy import failure in an isolated directory (`evidence/initial-failure.json`). Bundled `generator_policy.py`, declared exact dependencies and runtime files. Updated source replay to supplied basis 5437 (15 complete profiles, two documented exclusions). Repaired fixed truth subsets by selecting decisions before compatible claims/givens. Fixed five-question batch reachability, checkbox conclusions, None placement and a stray question mark found in visual inspection.
+
+Validation milestone: `python checks/check_content.py` passes 15 full source banks and 340 targeted variants with controlled determinant/claim changes and irrelevant determinant/vector changes. Shared native grader passed 819 accepted and 1254 rejected choices, zero unresolved. `check_delivery.py` accepted 327 of 340 (13 duplicates); `checks/check_content.py --accepted evidence/delivery/accepted.json` passes post-filter checks. Six actual UI previews passed; inspected source replay, generated checkbox/radio, singular/nonsingular determinants and selected None. Relocation check passes five records using only manifest files.
+
+Next unfinished step: after the final identity canonicalization and exact dependency declaration, refresh evidence bindings, test public five-question batches and delivery-surviving counterfactuals, then write the concise final evidence account. No services, database writes, publication, engine edits or other-job edits were performed.
