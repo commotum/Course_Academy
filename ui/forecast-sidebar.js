@@ -43,14 +43,11 @@ function outcome(estimate, hasGoal = true) {
 }
 
 // Historical replay can take several seconds. Keep both the input read and
-// calculation off the UI thread; terminating a replaced read cancels its work.
-function readSidebarForecast(signal) {
+// calculation off the UI thread, including while another page is loading.
+function readSidebarForecast() {
   return new Promise((resolve, reject) => {
-    if (signal.aborted) { reject(new Error('Forecast cancelled.')); return; }
     const worker = new Worker('/ui/forecast-worker.js', { type: 'module' });
-    const close = () => { worker.terminate(); signal.removeEventListener('abort', abort); };
-    const abort = () => { close(); reject(new Error('Forecast cancelled.')); };
-    signal.addEventListener('abort', abort, { once: true });
+    const close = () => worker.terminate();
     worker.onmessage = event => {
       close();
       if (event.data.error) reject(new Error(event.data.error));
@@ -67,7 +64,7 @@ function sharedForecastRead() {
   // A page transition must not discard an expensive calculation. New sidebar
   // instances share this read, and its result survives navigation in storage.
   const read = { day };
-  read.promise = readSidebarForecast(new AbortController().signal).then(forecast => {
+  read.promise = readSidebarForecast().then(forecast => {
     saveForecast(forecast); return forecast;
   }).finally(() => { if (pendingForecast === read) pendingForecast = null; });
   pendingForecast = read;
@@ -128,7 +125,8 @@ export function createForecastSidebar({ signal } = {}) {
       // flight. Finish that read, then fetch the newer snapshot once.
       if (Number.isFinite(basis) && forecast.basis < basis) forecast = await sharedForecastRead();
       if (current !== revision || signal?.aborted || !overall.isConnected) return;
-      const goal = goalAtStart === goalRevision ? dailyXpGoal : latestGoal;
+      const goal = goalAtStart !== goalRevision ? latestGoal
+        : forecast.basis > basis ? undefined : dailyXpGoal;
       model = goal === undefined ? forecast : withForecastGoal(forecast, goal);
       saveForecast(model);
       render();

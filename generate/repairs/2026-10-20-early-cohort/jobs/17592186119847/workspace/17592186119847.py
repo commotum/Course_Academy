@@ -46,8 +46,8 @@ def fingerprint(text):
 
 def valid(p,level,profile):
     m,n,c=p['rows'],p['columns'],p['count'];r=n-c if level=='moderate' else c
-    bank=recipes(profile,p)
-    return 3<=m<=15 and 3<=n<=15 and 1<=c<=12 and 1<=r<=min(m,n,12) and (1<=c<n if level=='moderate' else c==r) and len(set(bank))==5 and min(bank)>=0 and bank.count(r)==1
+    # Distractor recipes are presentation data, never feasibility constraints.
+    return 3<=m<=15 and 3<=n<=15 and 1<=c<=12 and 1<=r<=min(m,n,12) and (1<=c<n if level=='moderate' else c==r)
 
 @lru_cache(maxsize=None)
 def catalog(difficulty):
@@ -78,7 +78,16 @@ def choose_parameters(difficulty,rng,task=None,profile=None):
 def variant_bank(profile,p,rng):
     """Sign variation of source-profile distractor distances, then UI order."""
     rank=p['count'] if p['kind']=='pivot' else p['columns']-p['count']
-    distances=[abs(v-rank) for v in recipes(profile,p) if v!=rank]
+    original=recipes(profile,p)
+    distances=[abs(v-rank) for v in original if v!=rank]
+    if len(set(original))!=5 or min(original)<0:
+        # A recipe may coincide with rank/another recipe at valid parameters.
+        # Preserve usable distances and fill missing distractors, not matrices.
+        distances=list(dict.fromkeys(distances))
+        distance=1
+        while len(distances)<4:
+            if distance not in distances:distances.append(distance)
+            distance+=1
     # Enumerate the at most 16 assignments, so no probabilistic exhaustion.
     banks=[]
     for mask in range(16):
@@ -124,7 +133,9 @@ def generate(difficulty='easy',seed=0,*,parameters=None,bank_profile=None):
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),'value:'+str(v))),':answer/type':':answer.type/math',':answer/value':str(v)} for v in bank]
     correct=next(a[':answer/id'] for a in answers if a[':answer/value']==str(r))
     q={':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Determining the Rank of a Matrix Given the Number of Pivot Columns'},'question':q,'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':difficulty+'-rank-count','bank_profile':profile,'parameters':p,'parameter_fingerprint':fingerprint(problem),'dependencies':{'sympy':sp.__version__},'domain':'dimensions 3..15; positive rank <=12; non-pivot count positive; feasible rank <= min(rows,columns)','source_question':profile,'source_replay':replay,'bank_extension':'source' if replay else 'independent signed source distances'}}
+    original=recipes(profile,p)
+    extension='independent signed source distances' if len(set(original))==5 and min(original)>=0 else 'collision-completed signed source distances'
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Determining the Rank of a Matrix Given the Number of Pivot Columns'},'question':q,'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':difficulty+'-rank-count','bank_profile':profile,'parameters':p,'parameter_fingerprint':fingerprint(problem),'dependencies':{'sympy':sp.__version__},'domain':'dimensions 3..15; positive rank <=12; non-pivot count positive; feasible rank <= min(rows,columns)','source_question':profile,'source_replay':replay,'bank_extension':'source' if replay else extension}}
 
 def batch(difficulty,count=1,seed=0):
     tasks=catalog(difficulty)

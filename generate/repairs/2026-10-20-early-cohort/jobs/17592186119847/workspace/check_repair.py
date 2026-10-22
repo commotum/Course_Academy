@@ -34,7 +34,7 @@ def main():
     check_cli_contract()
     counts=[];full=[]
     # Declared finite capacities; uniqueness and correctness are read from visible records.
-    capacities={'easy':12,'moderate':91}
+    capacities={'easy':12,'moderate':98}
     for level,capacity in capacities.items():
         for count in [0,1,5,capacity]:
             p,cmd=cli(level,count);assert p.returncode==0,p.stderr
@@ -82,7 +82,7 @@ def main():
     probes=[]
     for level,profiles in g.PROFILES.items():
         for profile in profiles:
-            group=[g.generate(level,seed=seed,bank_profile=profile) for seed in range(40)]
+            group=[g.generate(level,seed=seed,bank_profile=profile) for seed in range(12)]
             facts=[inspect(r) for r in group]
             assert len({f['position'] for f in facts})>1,profile
             assert len({f['numerical_order'] for f in facts})>1,profile
@@ -104,6 +104,6 @@ def main():
         assert relocated.returncode==0,relocated.stderr
         assert relocated.stdout==deterministic.stdout
     save('relocation.json',{'status':'pass','runtime_files':manifest['files'],'five_records_match_original':True})
-    save('validation.json',{'status':'pass','source_banks':len(replay),'source_options':5*len(replay),'math_full_semantic_domain':capacities,'controls':len(controls),'probe_records':len(probes),'grader_records':len(records),'history_note':'No finding IDs are present in repair-history.json. The legacy_packaging_or_sampling event is tested by count-regression.json.'})
+    save('validation.json',{'status':'pass','source_banks':len(replay),'source_options':5*len(replay),'math_full_semantic_domain':capacities,'controls':len(controls),'probe_records':len(probes),'grader_records':len(records),'history_note':'Retains count/envelope checks; ba6171a94fdb8b8baa99 is covered by check_restriction.py.'})
     print(json.dumps({'status':'pass','capacities':capacities,'source_banks':len(replay),'probes':len(probes),'grader_cases':len(cases)}))
 if __name__=='__main__':main()

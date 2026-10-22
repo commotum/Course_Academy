@@ -242,3 +242,9 @@ test('unavailable storage preserves memory caching and restricted old scopes are
   assert.equal(old.calls, 1);
   assert.equal(old.times().length, 8);
 });
+
+test('a newer forecast snapshot keeps its goal when the statistics response was older', async () => {
+  const f = fixture(); f.data = withForecastGoal({ ...f.data, basis: 2 }, 450);
+  await f.view.refresh({ basis: 1, dailyXpGoal: 240 });
+  assert.deepEqual(f.headers(), ['XP/day', '120', '450']);
+});
