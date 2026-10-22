@@ -1,0 +1,10 @@
+The candidate's completed repairs remain intact. Four current-generator regressions pass. Source replay covers all 17 complete practice banks and the canonical system. Three CLI batches retain the tested sign-group, numeric-rank and position contrasts after shared delivery filtering (14 accepted records). Controlled coefficient/residual changes and native grading pass: 7 correct choices accepted, 28 wrong choices rejected. Dependency and relocated-package checks pass.
+
+The first test reproduced finding 591f580cadb749294588: all five captured historical generated questions still admit the sign-only extremum shortcut. Archived replay matches stored prompts, solutions, complete banks, keys and identities. No captured generated inventory is untested. The possible-history selection witness has 64/64 shortcut successes; this is not a claim about every learner history.
+
+Source, inventory and runtime hashes match retained evidence, so the old counterexample still applies. The five-replacement proposal is verified and unapplied. The finding requests separate inventory remediation; this task expressly prohibits database changes. Runtime changes cannot rewrite stored banks. Substituting a proposed pool would hide the failure. The strict check remains failing; author result is unsupported.
+
+Initial command: /home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory (exit 1; affected 5; selection successes 64/64).
+Aggregate command: /home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-432 (exit 1 for that inventory finding only). Subcommands and outcomes are in commands.json; aggregate checks in results.json.
+
+Reinspected retained actual-UI evidence/repair-3/render/question-001.png: prompt, five choices, matrices, elimination and conclusion are legible without clipping or unresolved math. Reinspected the source lesson classification flowchart. Rendering evidence is retained because runtime is unchanged. No publication, database, source, engine, runtime package or other-job changes.
