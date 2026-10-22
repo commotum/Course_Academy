@@ -1,26 +1,16 @@
-# Current repair result — author-250
+# Current repair result — author-253
 
-The exact latest failure reproduces. The installed runner rejects the unchanged
-package before regressions or sampling. Its identity gate is in
-`scripts/generator_pipeline.py:723`, outside this job's authorized write scope.
-No source-supported generator change addresses that evidence-only handoff failure.
+The exact latest failure reproduces in the installed runner's unchanged-package
+gate, before regressions or sampling. The necessary rule change is in
+`scripts/generator_pipeline.py:723`, outside the authorized workspace. Retained
+finding 9b8cb52352b8ca3e790e explicitly requests evidence-only correction and
+preservation of the runtime; no generator change is warranted by that finding.
 
-Preserved the repaired runtime and manifest byte for byte. Fresh targeted checks
-pass for the exact shortcut seed before and after shared delivery (1/5 hits),
-25 native grading submissions, relocated CLI/count/determinism/finite-limit
-behavior, ten complete source-bank replays and current UI record binding.
-Both retained actual-UI screenshots were reinspected and remain readable.
-The historical 5/5 shortcut still fails as the required negative control.
+Fresh evidence validation and negative controls pass. The repaired batch passes
+independent visible-record checks before and after shared delivery, exercises all
+five target roles, and passes 25 native grading checks. Runtime hashes are unchanged.
+The strict evidence/handoff regression still fails. The runner proposal remains
+staged, not installed; status remains unsupported under the current write boundary.
 
-The corrected evidence bundle passes the actual review validator, relocation,
-wrong-root and missing-provenance controls. The registered evidence regression
-still fails at the installed runner handoff; it has not been weakened.
-
-Commands, exit codes and runtime hashes:
-[evidence/current-author-verification.json](evidence/current-author-verification.json).
-The existing proposed external correction remains staged at
-[runner-fix/evidence-only-rejection.patch](runner-fix/evidence-only-rejection.patch).
-Applying it and installing the corrected bundle at the runner's evidence root
-remain unfinished. No database, publication, engine, external runner or other-job
-writes were made. Status remains unsupported because the strict retained handoff
-regression fails, despite the supported easy generator passing its targeted checks.
+Commands and results: `evidence/author253-verification.json`.
+Earlier unaffected checks: `evidence/current-author-verification.json`.

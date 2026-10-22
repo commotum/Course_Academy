@@ -1,10 +1,11 @@
-# Current state — author 1223
+# Current state — author 1228
 
-Preserved completed generator repairs, source analysis, replay/rendering evidence, affected-inventory evidence, staged report correction, and both strict regression declarations. No runtime changes, external writes, image publication, or database changes.
+Preserved repaired runtime, package manifest, instructional account, inventory evidence, and both strict regression declarations. No engine, database, external evidence, or publication changes.
 
-Commands and results: `evidence/author-1223/results.json`.
-- Latest failure reproduced first: `checks/check_report_installation.py` exits 1. Required external report still triggers `decision_variation has an unresolved decision shortcut`; local correction validation and 26 current-record replays pass.
-- `checks/test_role_exchange.py --output evidence/author-1223/role` exits 0: exact reorder, exponent transfer, boundaries, delivery filtering, 30 native-grader expectations, and conditional shortcut checks pass. Both resonant positions survive delivery.
-- `checks/verify_retained_state.py` exits 0: 55 handoff artifact hashes, unchanged runtime/source, and eight independently parsed mathematical cases pass.
+Commands and results: `evidence/author-1228/results.json`.
+- Reproduced latest failure first: default `checks/check_report_installation.py` exits 1. Required prior-review report still raises `decision_variation has an unresolved decision shortcut`. Local correction validates and 26 complete visible records replay against current generator.
+- `checks/test_role_exchange.py --output evidence/author-1228/role` exits 0. Exact reorder, resonance transfer, signed boundaries, delivery, cue groups and 30 native-grader expectations pass. Delivered mixed cases cover first-position resonance 19 times and second-position resonance 17 times.
+- `checks/verify_retained_state.py` exits 0: 55 staged artifacts, runtime and source hashes unchanged; eight unaffected mathematical cases pass.
+- Visually inspected retained actual-UI screenshot `evidence/corrected-review/render-regression/question-002.png`. Unchanged runtime/source supports reuse of earlier source replay and rendering evidence.
 
-Unfinished finding: 645672a4cd3f9bf609ca. Runner installation of the existing validated staged correction at the external destination in `evidence/review-installation-handoff.json` is required, followed by the unchanged strict regression and fresh independent review. This write is outside the authorized workspace. The strict check remains failing; status unsupported. No generator authoring is requested by this finding. Repeating unchanged workspace-only passes cannot close the external installation requirement.
+Unfinished finding 645672a4cd3f9bf609ca requires installation outside this workspace. User scope and filesystem permissions prohibit that write. The checksummed correction and runner steps already exist in `evidence/review-installation-handoff.json`. Keep the strict regression failing until an authorized runner installs the correction at the required destination, reruns it, and obtains independent review. Another unchanged workspace-only author retry cannot resolve the external requirement. Status unsupported; source-supported generator coverage retained.
