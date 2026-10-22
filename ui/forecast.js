@@ -4,6 +4,8 @@ import { projectTargetScope, assignTargetCourses, targetSelectors, TARGET_COURSE
 import { buildTargetCalendar, normalizeTargetWeekSelection, targetCalendarDay } from './target-weeks.js';
 
 const DAY = 86400000;
+export const FORECAST_GROWTH_START = '2026-10-04';
+export const FORECAST_GROWTH_HALF_LIFE_DAYS = 28;
 const positive = n => Number.isFinite(n) && n > 0;
 const scalar = v => v?.$uuid ?? v?.$instant ?? v;
 const terminal = state => state === 'completed' || state === 'failed';
@@ -173,7 +175,10 @@ const growthFields = new Set(['topic/id', 'topic/title', 'topic/next', 'course/i
   'learner/assignments', 'activity/course', 'activity/due', 'activity/steps',
   'step/content', 'multistep/steps', 'assigned-problem/content', 'assigned-problem/topic-coverage']);
 const emptyCategories = () => Object.fromEntries(['target', 'queue', 'prerequisite'].map(key => [key, { topics: 0, baseXp: 0 }]));
-const emptyGrowth = () => ({ topics: 0, baseXp: 0, estimatedTopics: [], unknownCosts: 0, unknownTopics: [], categories: emptyCategories() });
+const emptyGrowth = () => ({ topics: 0, baseXp: 0, weightedTopics: 0, weightedBaseXp: 0,
+  estimatedTopics: [], unknownCosts: 0, unknownTopics: [],
+  categories: Object.fromEntries(Object.entries(emptyCategories()).map(([key, value]) => [key,
+    { ...value, weightedTopics: 0, weightedBaseXp: 0 }])) });
 
 const civilClock = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23',
   year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
@@ -187,10 +192,6 @@ function dayStartsAt(day) {
   for (let i = 0; i < 3; i++) at += day * DAY - civilMilliseconds(at);
   return at;
 }
-function calendarExposure(start, end) {
-  return Math.max(0, (civilMilliseconds(end) - civilMilliseconds(start)) / DAY);
-}
-
 // Date admission is applied to the viewer's selected roots, before expanding
 // prerequisites. A prerequisite inherits the earliest date of any needing root.
 export function topicDueDays(snapshot, scope, options, datedOnly = false) {
@@ -272,10 +273,10 @@ export function historicalGrowth(inputs, options, currentScope, now) {
   const snapshot = forecastGraph(currentFacts, learner), price = topicPrices(currentFacts, learner, inputs.lessonBases);
   const knownAt = preparationKnownAt(inputs, currentFacts, learner, currentScope.graph);
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
-  const total = emptyGrowth(), modeledTasks = new Set(), introductions = new Map();
-  let previous = null, previousDue = new Set(), observedFrom = null, invalid = null, indexedGraph;
-  // Review/lesson preparation creates steps too. Only assignment-owned
-  // containment can change the Targets calendar or course associations.
+  const total = emptyGrowth(), modeledTasks = new Set();
+  let previous = null, indexedGraph, historyReason = null;
+  // Retained graph membership is used only to recognize completed lessons that
+  // left the Queue. It is not an additional source of forecast workload growth.
   const containment = new Set(['activity/steps', 'step/content', 'multistep/steps', 'assigned-problem/content']);
   const possibleChildren = new Map(), assignments = new Set();
   for (const event of inputs.history) for (const [e, a, v] of event.changes) {
@@ -297,96 +298,72 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       && terminal((inputs.enums[v] || '').split('/').at(-1))).map(([task]) => task);
     f.apply(event.changes);
     if (event.changes.some(([, a]) => ['topic/id', 'topic/title', 'topic/next'].includes(a))) indexedGraph = undefined;
-    // Task completion can remove its queue root in the same transaction. Its
-    // lesson still belongs to the scope it was in immediately before finishing.
     for (const task of completed) {
       const topic = f.get(f.get(task, 'learner-task/activity'), 'activity/scope');
       if (previous?.nodeIds.has(topic)) modeledTasks.add(task);
     }
     if (!event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
     if (!f.get(learner, 'learner/id') || !f.ids('topic/id').length) continue;
-    let scope, snapshot;
     try {
-      snapshot = forecastGraph(f, learner);
-      scope = projectTargetScope(snapshot, options, indexedGraph); indexedGraph = scope.graph;
-    } catch (error) { invalid = error.message; continue; }
-    for (const task of completed) if (scope.nodeIds.has(f.get(f.get(task, 'learner-task/activity'), 'activity/scope'))) modeledTasks.add(task);
-    const activation = topicDueDays(snapshot, scope, options), today = targetCalendarDay(at);
-    const due = new Set([...scope.nodeIds].filter(topic => activation.get(topic) <= today));
-    if (previous === null) {
-      // Undated opening inventory has no known arrival date. Scheduled
-      // historical work is accounted for below using the assignment dates.
-      if (!scope.nodeIds.size) continue;
-      previous = scope; previousDue = due; observedFrom = at;
-      for (const topic of due) if (activation.get(topic) === -Infinity) introductions.set(topic, { at, opening: true });
-      continue;
-    }
-    const additions = [...due].filter(topic => !previousDue.has(topic));
-    const historicalPrice = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
-    for (const topic of additions) {
-      if (activation.get(topic) !== -Infinity || introductions.has(topic)) continue;
-      const cost = (knownAt.get(topic) ?? Infinity) <= at ? {} : historicalPrice(topic);
-      introductions.set(topic, { at, ...cost, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
-    }
-    previous = scope; previousDue = due;
-  }
-  const scheduled = topicDueDays(snapshot, currentScope, options, true), today = targetCalendarDay(now);
-  // Course history is dated by the assignments themselves, including past
-  // assignments imported later. Their import dates are not academic arrivals.
-  for (const [topic, day] of scheduled) {
-    if (day > today) continue;
-    const at = dayStartsAt(day), existing = introductions.get(topic);
-    observedFrom = observedFrom === null ? at : Math.min(observedFrom, at);
-    if (existing && existing.at <= at) continue;
-    const cost = (knownAt.get(topic) ?? Infinity) <= at ? {} : price(topic);
-    introductions.set(topic, { at, ...cost, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
-  }
-  for (const [topic, entry] of introductions) {
-    if (entry.opening || entry.at > now || (knownAt.get(topic) ?? Infinity) <= entry.at) continue;
-    const category = entry.category;
-    for (const item of [total, courses[entry.course]]) {
-      item.topics++; item.categories[category].topics++;
-      if (positive(entry.baseXp)) { item.baseXp += entry.baseXp; item.categories[category].baseXp += entry.baseXp; }
-      else { item.unknownCosts++; item.unknownTopics.push({ topicId: topic, reason: entry.reason }); }
-      if (entry.fallback) item.estimatedTopics.push({ topicId: topic, baseXp: entry.baseXp, source: entry.source,
-        sampleSize: entry.sampleSize, knowledgePointCount: entry.knowledgePointCount, reason: entry.reason });
+      previous = projectTargetScope(forecastGraph(f, learner), options, indexedGraph);
+      indexedGraph = previous.graph;
+    } catch (error) { historyReason = error.message; continue; }
+    for (const task of completed) {
+      const topic = f.get(f.get(task, 'learner-task/activity'), 'activity/scope');
+      if (previous.nodeIds.has(topic)) modeledTasks.add(task);
     }
   }
-  if (observedFrom === null) invalid ||= 'No reliable course dates or opening inventory in retained history.';
   if (previous && (previous.nodeIds.size !== currentScope.nodeIds.size || [...previous.nodeIds].some(id => !currentScope.nodeIds.has(id))
     || [...previous.tracks].some(([id, course]) => currentScope.tracks.get(id) !== course))) {
-    invalid = 'Retained history does not reproduce the current filtered graph.';
+    historyReason = 'Retained history does not reproduce the current filtered graph.';
   }
-  const observedDays = observedFrom === null ? 0 : calendarExposure(observedFrom, now);
-  const summarize = (item, from = observedFrom) => {
-    const exposure = from === null ? 0 : calendarExposure(from, now);
-    const usable = !invalid && exposure > 0;
-    return { ...item, isLowerBound: item.unknownCosts > 0,
-      observedFrom: from === null ? null : new Date(from).toISOString(), observedDays: exposure,
-      baseXpPerDay: usable ? item.baseXp / exposure : null,
-      baseXpPerWeek: usable ? 7 * item.baseXp / exposure : null,
-      topicsPerWeek: usable ? 7 * item.topics / exposure : null,
-      categories: Object.fromEntries(Object.entries(item.categories).map(([key, value]) => [key, { ...value,
-        topicsPerWeek: usable ? value.topics * 7 / exposure : null,
-        baseXpPerWeek: usable ? value.baseXp * 7 / exposure : null }])),
-    };
-  };
-  // A common full-history exposure keeps the portfolio rate invariant when
-  // the graph moves an existing topic between reporting tracks.
-  const byCourse = Object.fromEntries(Object.entries(courses).map(([code, value]) => [code, summarize(value)]));
-  const aggregate = summarize(total);
-  const rateSum = key => Object.values(byCourse).every(c => c[key] !== null)
-    ? Object.values(byCourse).reduce((sum, c) => sum + c[key], 0) : null;
-  for (const key of ['baseXpPerDay', 'baseXpPerWeek', 'topicsPerWeek']) aggregate[key] = rateSum(key);
-  for (const category of Object.keys(aggregate.categories)) for (const key of ['topicsPerWeek', 'baseXpPerWeek']) {
-    const values = Object.values(byCourse).map(c => c.categories[category][key]);
-    aggregate.categories[category][key] = values.every(v => v !== null) ? values.reduce((sum, v) => sum + v, 0) : null;
-  }
-  return { clock: 'historical-assignment-due-dates-and-standing-entry',
-    observedFrom: observedFrom === null ? null : new Date(observedFrom).toISOString(), observedThrough: new Date(now).toISOString(),
-    observedDays, reason: invalid || (observedDays > 0 ? null : 'No elapsed growth observation period.'),
-    total: aggregate, courses: byCourse, modeledTasks };
 
+  const startDay = Date.parse(FORECAST_GROWTH_START + 'T00:00:00Z') / DAY;
+  const today = targetCalendarDay(now), observedDays = Math.max(0, today - startDay);
+  // Keep the agreed elapsed-day convention: Oct 4 -> Oct 21 is 17 daily
+  // intervals. Their endpoint weights include zero-growth days and use civil
+  // dates, so DST and the clock time of this read cannot change today's rate.
+  const decay = Math.LN2 / FORECAST_GROWTH_HALF_LIFE_DAYS;
+  const weightSum = observedDays ? -Math.expm1(-decay * observedDays) / -Math.expm1(-decay) : 0;
+  // Earliest due dates are computed using ALL assignments, including those
+  // before the window. Old prerequisites cannot re-enter as new growth later.
+  const scheduled = topicDueDays(snapshot, currentScope, options, true);
+  for (const [topic, day] of scheduled) {
+    if (day < startDay || day > today || (knownAt.get(topic) ?? Infinity) <= dayStartsAt(day)) continue;
+    const cost = price(topic), weight = Math.exp(-decay * (today - day));
+    const course = currentScope.tracks.get(topic), category = currentScope.categories.get(topic);
+    for (const item of [total, courses[course]]) {
+      item.topics++; item.weightedTopics += weight;
+      item.categories[category].topics++; item.categories[category].weightedTopics += weight;
+      if (positive(cost.baseXp)) {
+        item.baseXp += cost.baseXp; item.weightedBaseXp += cost.baseXp * weight;
+        item.categories[category].baseXp += cost.baseXp;
+        item.categories[category].weightedBaseXp += cost.baseXp * weight;
+      } else {
+        item.unknownCosts++; item.unknownTopics.push({ topicId: topic, reason: cost.reason });
+      }
+      if (cost.fallback) item.estimatedTopics.push({ topicId: topic, ...cost });
+    }
+  }
+  const usable = weightSum > 0;
+  const observedFrom = new Date(dayStartsAt(startDay)).toISOString();
+  const summarize = item => ({ ...item, isLowerBound: item.unknownCosts > 0,
+    observedFrom, observedDays,
+    baseXpPerDay: usable ? item.weightedBaseXp / weightSum : null,
+    baseXpPerWeek: usable ? 7 * item.weightedBaseXp / weightSum : null,
+    topicsPerWeek: usable ? 7 * item.weightedTopics / weightSum : null,
+    unweightedBaseXpPerDay: observedDays ? item.baseXp / observedDays : null,
+    categories: Object.fromEntries(Object.entries(item.categories).map(([key, value]) => [key, { ...value,
+      topicsPerWeek: usable ? 7 * value.weightedTopics / weightSum : null,
+      baseXpPerWeek: usable ? 7 * value.weightedBaseXp / weightSum : null }])),
+  });
+  const byCourse = Object.fromEntries(Object.entries(courses).map(([code, value]) => [code, summarize(value)]));
+  return { clock: 'assignment-due-dates', method: 'exponential-daily',
+    windowStart: FORECAST_GROWTH_START, halfLifeDays: FORECAST_GROWTH_HALF_LIFE_DAYS, weightSum,
+    observedFrom, observedThrough: new Date(now).toISOString(),
+    throughDate: new Date(today * DAY).toISOString().slice(0, 10), observedDays,
+    reason: usable ? null : 'No elapsed days in the forecast growth window.', historyReason,
+    total: summarize(total), courses: byCourse, modeledTasks };
 }
 
 export function completionEstimate(initialWork, dailyDemand, pace, now, remainingTopics = 1) {
@@ -529,6 +506,7 @@ export function calculateForecast(inputs, options = {}) {
   const warnings = [];
   if (values.some(c => c.unknownCosts.length)) warnings.push('Some unfinished lessons have no usable estimate.');
   if (growth.reason) warnings.push(growth.reason);
+  if (growth.historyReason) warnings.push(growth.historyReason);
   if (growth.total.unknownCosts) warnings.push(`Historical growth is a lower bound: ${growth.total.unknownCosts} topics have no usable XP estimate.`);
   const estimated = new Set([...growth.total.estimatedTopics, ...values.flatMap(c => c.estimatedTopics)].map(item => item.topicId));
   if (estimated.size) warnings.push(`${estimated.size} ${estimated.size === 1 ? 'lesson uses' : 'lessons use'} fallback XP estimates.`);

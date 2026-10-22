@@ -90,12 +90,21 @@ test('goal equal to observed earned average gives the same date; adjusting the g
   assert.ok(b.goalPace.days < a.goalPace.days);
 });
 
-test('historical growth excludes opening inventory and counts the marginal depth-two closure through now', () => {
-  const result = calculateForecast(fixture().inputs());
+test('growth uses October 4 onward, with 28-day exponential weights and zero-growth days', () => {
+  const inputs = fixture().inputs();
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(10));
+  const result = calculateForecast(inputs);
   assert.equal(result.growth.total.topics, 2);
-  assert.equal(result.growth.total.baseXp, 20);
-  assert.equal(result.growth.observedDays, 20);
-  assert.equal(result.growth.total.baseXpPerWeek, 7);
+  assert.equal(result.growth.total.baseXp, 30);
+  assert.equal(result.growth.observedDays, 17);
+  assert.equal(result.growth.windowStart, '2026-10-04');
+  assert.equal(result.growth.halfLifeDays, 28);
+  const weights = Array.from({ length: 17 }, (_, age) => 2 ** (-age / 28)).reduce((a, b) => a + b, 0);
+  close(result.growth.weightSum, weights);
+  close(result.growth.total.baseXpPerDay, 30 * 2 ** (-11 / 28) / weights);
+  close(result.growth.total.unweightedBaseXpPerDay, 30 / 17);
+  close(result.growth.total.baseXpPerWeek, 7 * result.growth.total.baseXpPerDay);
   assert.equal(result.growth.total.categories.target.topics, 1);
   assert.equal(result.growth.total.categories.prerequisite.topics, 1);
   assert.equal(result.growth.total.categories.queue.topics, 0);
@@ -103,6 +112,8 @@ test('historical growth excludes opening inventory and counts the marginal depth
 
 test('native numeric transaction instants produce the same historical growth as ISO dates', () => {
   const inputs = fixture().inputs();
+  addAssignment(inputs, 0, 6000, 133, at(5));
+  addAssignment(inputs, 1, 6100, 135, at(10));
   const original = calculateForecast(inputs);
   for (const event of inputs.history) event.at = Date.parse(event.at);
   assert.deepEqual(calculateForecast(inputs).growth, original.growth);
@@ -125,9 +136,12 @@ test('queue/target overlap and prerequisite promotion add no work; course transf
   const x = fixture();
   x.event(19, [[1, 'learner/queue', 135, true], [1, 'learner/targets', 134, true]]);
   x.event(20, [[6, 'module/topics', 135, false], [8, 'module/topics', 135, true]]);
-  const result = calculateForecast(x.inputs());
+  const inputs = x.inputs();
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(10), 4);
+  const result = calculateForecast(inputs);
   assert.equal(result.growth.total.topics, 2);
-  assert.equal(result.growth.total.baseXp, 20);
+  assert.equal(result.growth.total.baseXp, 30);
   assert.equal(result.inventory.selectedTopics, 5);
   assert.equal(result.courses.find(c => c.code === '341').remainingTopics, 1);
   close(result.courses.reduce((sum, c) => sum + c.initialWorkBaseXp, 0), result.initialWorkBaseXp);
@@ -222,16 +236,19 @@ test('completion handles zero backlog, insufficient capacity and missing values 
   close(completionEstimate(100, 10, 20, at(21)).days, 10);
 });
 
-test('growth never observes future changes and incomplete history is reported', () => {
+test('growth ignores future changes and uses assignment dates even without retained list history', () => {
   const x = fixture();
   const inputs = x.inputs();
+  addAssignment(inputs, 0, 6000, 133, at(5));
+  addAssignment(inputs, 1, 6100, 135, at(10));
   inputs.history.push({ t: 100, at: iso(22), changes: [[1, 'learner/targets', 130, true]] });
-  assert.equal(calculateForecast(inputs).growth.total.baseXp, 20);
+  const original = calculateForecast(inputs);
+  assert.equal(original.growth.total.baseXp, 70);
   inputs.history = [];
   const result = calculateForecast(inputs);
-  assert.equal(result.growth.total.baseXpPerDay, null);
-  assert.equal(result.currentPace.status, 'unavailable');
-  assert.match(result.growth.reason, /opening inventory/);
+  assert.equal(result.growth.total.baseXp, 70);
+  close(result.growth.total.baseXpPerDay, original.growth.total.baseXpPerDay);
+  assert.equal(result.growth.reason, null);
 });
 
 test('calendar windows use seven completed dates across DST and reuse the saved Targets filters', () => {
@@ -278,13 +295,13 @@ function addAssignment(inputs, index, id, topic, due, course = 2) {
   inputs.records = recordsOf(facts);
 }
 
-function scheduledFixture() {
+function scheduledFixture(pastDue = new Date(2026, 8, 20, 23).getTime()) {
   const inputs = fixture().inputs();
   // Keep the historical successful lesson, but on a topic outside today's
   // unfinished assignment. It must not erase the current preparation backlog.
   inputs.history[2].changes.find(([id, a]) => id === 3000 && a === 'learner-task/activity')[2] = 1130;
   inputs.history[0].changes.find(([id, a]) => id === 2000 && a === 'activity/scope')[2] = 130;
-  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 20, 23).getTime());
+  addAssignment(inputs, 0, 6000, 133, pastDue);
   addAssignment(inputs, 1, 6100, 135, at(22, 23));
   return inputs;
 }
@@ -314,14 +331,15 @@ test('future OHW prices and later deadlines do not alter the extrapolated catch-
   assert.ok(updated.inventory.futureLessonBaseXp > original.inventory.futureLessonBaseXp);
 });
 
-test('historical growth uses the full past course dates even when assignments were imported afterward', () => {
-  const r = calculateForecast(scheduledFixture());
-  assert.equal(r.growth.observedFrom, new Date(2026, 8, 20, 0).toISOString());
-  assert.equal(r.growth.observedDays, 31.5);
-  assert.equal(r.growth.total.baseXp, 30);
-  assert.equal(r.growth.total.topics, 3);
-  close(r.growth.total.baseXpPerDay, 30 / 31.5);
-  close(r.growth.total.baseXpPerWeek, 7 * 30 / 31.5);
+test('pre-window assignments remain backlog and prevent their prerequisites being counted again later', () => {
+  const inputs = scheduledFixture();
+  addAssignment(inputs, 1, 6200, 133, at(10));
+  const r = calculateForecast(inputs);
+  assert.equal(r.growth.observedFrom, new Date(2026, 9, 4, 0).toISOString());
+  assert.equal(r.growth.observedDays, 17);
+  assert.equal(r.growth.total.baseXp, 0);
+  assert.equal(r.growth.total.topics, 0);
+  assert.equal(r.inventory.remainingLessonBaseXp, 30);
   close(r.courses.reduce((sum, c) => sum + c.growth.baseXpPerDay, 0), r.growth.total.baseXpPerDay);
 });
 
@@ -371,7 +389,7 @@ test('Queue remains current when its topic supports an assignment due in the fut
 });
 
 test('incomplete old lesson content uses a labeled median estimate in historical growth', () => {
-  const inputs = scheduledFixture();
+  const inputs = scheduledFixture(at(5));
   // Topic 131 was required historically, but its successful review satisfies it
   // today. Its missing old price must not invalidate the priced current backlog.
   inputs.history[0].changes.find(([id, a]) => id === 2000 && a === 'activity/scope')[2] = 131;
@@ -384,7 +402,7 @@ test('incomplete old lesson content uses a labeled median estimate in historical
   assert.equal(r.growth.total.estimatedTopics[0].topicId, 131);
   assert.equal(r.growth.total.estimatedTopics[0].baseXp, 10);
   assert.equal(r.growth.total.estimatedTopics[0].source, 'lesson-median');
-  close(r.growth.total.baseXpPerDay, 30 / 31.5);
+  close(r.growth.total.unweightedBaseXpPerDay, 30 / 17);
   assert.equal(r.goalPace.status, 'estimated');
   assert.equal(r.goalPace.optimistic, false);
   assert.equal(r.goalPace.usesFallbackEstimates, true);
@@ -427,19 +445,26 @@ test('already learned prerequisites add zero growth, before applying missing-pri
   x.event(10, [[1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
     'progress/topic': 134, 'progress/learned': true,
   }), [1134, 'activity/expected-seconds', 600, false]]);
-  const r = calculateForecast(x.inputs());
+  const inputs = x.inputs();
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(11));
+  const r = calculateForecast(inputs);
   assert.equal(r.growth.total.topics, 1); // Only root 135; prerequisite 134 is already known at entry.
   assert.equal(r.growth.total.baseXp, 10);
   assert.deepEqual(r.growth.total.estimatedTopics, []);
   assert.deepEqual(r.growth.total.unknownTopics, []);
 });
 
-test('a target already learned when added contributes no growth, including at the same timestamp', () => {
+test('a target already learned when due contributes no growth, including at the same timestamp', () => {
   const x = fixture({ tasks: false });
   x.event(10, [[1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
     'progress/topic': 135, 'progress/learned': true,
   }), [1135, 'activity/expected-seconds', 600, false]]);
-  const r = calculateForecast(x.inputs());
+  const inputs = x.inputs();
+  inputs.history.at(-1).at = iso(10, 0);
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(10));
+  const r = calculateForecast(inputs);
   assert.equal(r.growth.total.topics, 0);
   assert.equal(r.growth.total.baseXp, 0);
   assert.deepEqual(r.growth.total.estimatedTopics, []);
@@ -449,6 +474,8 @@ test('a target already learned when added contributes no growth, including at th
 test('without any reliable peer prices the forecast reports unknown costs rather than inventing a median', () => {
   const x = fixture({ tasks: false });
   const inputs = x.inputs();
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(10));
   for (const record of Object.values(inputs.records)) delete record['activity/expected-seconds'];
   for (const event of inputs.history) event.changes = event.changes.filter(([, attr]) => attr !== 'activity/expected-seconds');
   const r = calculateForecast(inputs);
@@ -457,4 +484,37 @@ test('without any reliable peer prices the forecast reports unknown costs rather
   assert.equal(r.growth.total.unknownCosts, 2);
   assert.equal(r.growth.total.isLowerBound, true);
   assert.equal(r.currentPace.status, 'unavailable');
+});
+
+test('twenty-eight civil days halves an addition weight across DST', () => {
+  const inputs = fixture({ tasks: false }).inputs();
+  addAssignment(inputs, 0, 6000, 133, at(21));
+  addAssignment(inputs, 1, 6100, 135, new Date(2026, 11, 1).getTime());
+  const original = calculateForecast(inputs);
+  assert.equal(original.growth.total.baseXp, 30);
+  close(original.growth.total.weightedBaseXp, 30);
+  inputs.capturedAt = new Date(2026, 10, 18, 12).toISOString();
+  const later = calculateForecast(inputs);
+  assert.equal(later.growth.total.baseXp, 30);
+  close(later.growth.total.weightedBaseXp, 15);
+});
+
+test('clock time within today does not change the daily growth rate', () => {
+  const inputs = scheduledFixture(at(5));
+  inputs.capturedAt = iso(21, 1);
+  const morning = calculateForecast(inputs).growth;
+  inputs.capturedAt = iso(21, 23);
+  const evening = calculateForecast(inputs).growth;
+  close(morning.total.baseXpPerDay, evening.total.baseXpPerDay);
+  assert.equal(morning.observedDays, evening.observedDays);
+});
+
+test('a growth window without elapsed days does not invent a rate', () => {
+  const inputs = fixture({ tasks: false }).inputs();
+  inputs.capturedAt = iso(4);
+  const r = calculateForecast(inputs);
+  assert.equal(r.growth.observedDays, 0);
+  assert.equal(r.growth.weightSum, 0);
+  assert.equal(r.growth.total.baseXpPerDay, null);
+  assert.match(r.growth.reason, /No elapsed days/);
 });

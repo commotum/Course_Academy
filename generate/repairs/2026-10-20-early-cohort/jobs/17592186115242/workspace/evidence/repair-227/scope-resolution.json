@@ -1,0 +1,43 @@
+{
+  "status": "unsupported",
+  "unresolved_finding": "591f580cadb749294588",
+  "latest_failure_reproduced_first": true,
+  "reproduction_command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "-B",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/workspace/checks/batch_regressions.py",
+    "--finding",
+    "inventory"
+  ],
+  "reproduction_exit_code": 1,
+  "witness": {
+    "finding": "591f580cadb749294588",
+    "passed": false,
+    "affected": 5,
+    "selection_successes": 64,
+    "draws": 64
+  },
+  "cause": "Five captured historical v2 answer banks are stored learner-selection candidates. The selector reads stored entities; the Python entrypoint is not called to construct their answer banks.",
+  "selector_reference": "/home/jake/Developer/Course_Academy/engine/rust/question_selection.rs:125-195",
+  "current_generator_findings_passed": 4,
+  "source_banks_replayed": 17,
+  "delivered_records_checked": 14,
+  "native_accepted": 7,
+  "native_rejected": 28,
+  "runtime_source_inventory_manifest_unchanged": true,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "replacement_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "affected_evidence_paths_verified_relative_to": "author-227",
+  "visual_review": {
+    "retained_screenshot": "evidence/repair-3/render/question-002.png",
+    "reinspected": true,
+    "observation": "System, five choices, row operations and full solution readable without observed clipping. Source classification flowchart inspected. Runtime unchanged; retained actual-UI rendering reused."
+  },
+  "required_resolution": "Separately authorized inventory remediation must retire or replace these five generated records and provide a fresh inventory capture. Preserve source questions and historical learner responses, then rerun the strict check.",
+  "scope": "Workspace evidence only. No runtime changes, database writes, publication, engine edits, or other-job changes.",
+  "limits": [
+    "64/64 is a witness under one possible new-seen learner history, not a population success estimate.",
+    "The verified replacement proposal is not the captured selectable pool."
+  ]
+}

@@ -6,7 +6,7 @@ Use **base XP** for work: 1 base XP is 1 estimated minute. Use actual active min
 
 ## 1. Today's backlog
 
-Reuse the Targets graph's final topic sets and course allocation: course/Queue/week filters, unassigned targets, prerequisite depth **2**, and displayed layers **L30+**. Each topic already appears once in one track.
+Match the Targets graph's final topic sets and course allocation: course/Queue/week filters, unassigned targets, prerequisite depth **2**, and displayed layers **L30+**. Each topic already appears once in one track. The forecast owns its projection; the graph page owns its filtering and placement code and does not import forecast modules.
 
 Within those selections, an assignment target becomes current on its **local due date**, including everything due today even if its deadline time is later today. Queue and targets without an applicable dated assignment are standing work and remain current. Prerequisites inherit the earliest date of a root that needs them. There is no current-week approximation.
 
@@ -21,19 +21,26 @@ For each lesson's price, use a saved attempt's base first (prefer the active att
 
 ## 2. Average daily workload growth
 
-Use the **full available historical course record through today**, not only the latest seven or 28 days. Assignment due dates establish when course work became required, including past assignments imported later. Recorded target/queue history supplies standing-list additions. Future due dates never enter the historical numerator or denominator.
+Estimate growth from **assignment due dates from October 4, 2026 through today**, with an exponential **28-day half-life**. Future assignment dates never enter the historical numerator or denominator. The half-life is a weighting rule, not a trailing 28-day cutoff: retain every observation since October 4, with older dates receiving less weight.
 
-Map that history through the same graph selection, layer cutoff, prerequisite depth and course tracks. Count each physical topic at its earliest introduction, rather than counting it again for another assignment, a queue/target overlap, prerequisite promotion, or course-track transfer. Exclude work already known at or before its historical introduction, before applying any fallback XP estimate; do not exclude historical work merely because it has been learned by today. Undated opening inventory has no known arrival date and is not treated as a new arrival.
+Use all available assignment dates, including those before October 4, to find when each physical topic was first required. Apply the same graph selection, layer cutoff, prerequisite depth and course tracks. Count it once, excluding repeats across assignments, targets, Queue, prerequisite paths or tracks. Topics first required before October 4 stay out of the growth sample even if later assignments need them again. Exclude topics already known at or before their first due date, before pricing them; topics learned afterward still count as historical additions. Current mappings/graph supply the prerequisite and track projection.
 
 ```text
-g_c = newly required lesson base XP introduced historically in track c
-      / observed calendar-day exposure through now
+X_c(day) = new lesson base XP first required on that date in track c
+age      = civil days from the observation date to today
+weight   = 2^(-age / 28)
+N        = elapsed civil days since October 4
+W        = sum of 2^(-age / 28), for age = 0 through N-1
+
+g_c = sum of weighted X_c(day) from October 4 through today / W
 
 g = sum_c g_c
 average weekly growth_c = 7 * g_c
 ```
 
-Use one common full-history observation period for additive course rates. Show its start/end and include observed zero-growth days. Report topic counts and XP by target, queue, and prerequisite-only category, with target taking precedence over queue. Current mappings/graph supply the prerequisite and track projection of historical assignment dates.
+Use one common window and weight denominator for additive course rates. Include zero-growth dates. Preserve the agreed elapsed-day convention: October 4 to October 21 is 17 daily intervals. Expose raw topic/XP totals, the unweighted daily XP rate, weighted rate, start/end and half-life. Report target, Queue and prerequisite-only categories, with target taking precedence over Queue.
+
+Standing Queue and undated targets remain in today's backlog. Their manual membership changes are not assignment-driven future growth. Retained graph membership history is still used to recognize completed lessons that left the Queue, so they do not become unrelated recurring overhead. Work from weeks 0–1 remains in today's unfinished backlog even though those weeks are excluded from the growth-rate window.
 
 **Project this average forward. Do not additionally insert individual future assignments on their due dates.** That would mix two demand models and could count the same growth twice. Moving a future OHW deadline farther into the future does not change the projection while it remains outside historical observations and today's backlog.
 
@@ -93,13 +100,13 @@ Allocate review/other overhead to course tracks where attributable and split glo
 
 | Values | Existing source |
 |---|---|
-| Topic scope, tracks and prerequisite closure | `learner/targets`, `learner/queue`, `topic/next`, curriculum membership, linked assignments and mapped topic coverage; shared Targets graph code. |
+| Topic scope, tracks and prerequisite closure | `learner/targets`, `learner/queue`, `topic/next`, curriculum membership, linked assignments and mapped topic coverage; independent forecast projection matching the Targets rules. |
 | Current versus future work and full course dates | `learner/assignments`, `activity/due`, `activity/course`, nested assignment topic coverage. Use the assignment's local calendar date, not its import date. |
 | Remaining lesson state and historical known-before evidence | Progress learned/legacy repetitions, completed lesson/review evidence and original completion dates, using engine preparation semantics and prerequisite ancestry. |
 | Lesson bases | `learner-task/xp-base` for an existing attempt; otherwise existing `base_xp::activity_base` and `activity/expected-seconds`/content estimator. Forecast-only fallback uses `topic/knowledge-points` counts and directly priced peer lessons. |
 | Pace, retries, quizzes, reviews and goal conversion | Owned tasks, activity type/topic, `learner-task/status`, `learner-task/xp-base`, `learner-task/xp-earned`, original `learner-task/finished-at` or dated terminal history. |
 | Actual active minutes | Existing task-item timing/status intervals, working-ended cutoff and reliably dated saved durations; never add item time to the parent aggregate. |
-| Standing additions | Retained target/queue membership and graph-association history; unknown initial import dates are not invented historical arrivals. |
+| Historical scope of completed lessons | Retained target/queue membership and graph-association history; used for activity overhead attribution, not as a second arrival stream. |
 | Goal | Existing `learner/daily-xp-goal`; no new stored counters or forecast attributes. |
 
-[ui/forecast.js](ui/forecast.js) exports `readForecast()` and `withForecastGoal(forecast, earnedXpGoal)` for immediate goal previews. The read-only `/api/forecast-inputs?dayStarts=...` endpoint supplies evidence. [ui/target-scope.js](ui/target-scope.js) shares graph selection and placement. The output includes both dates, today's remaining XP, future-only inventory separately, measured pace, historical growth/coverage and overhead estimates. These are average-based planning estimates, not exact future schedules or exam-readiness guarantees.
+[ui/forecast.js](ui/forecast.js) exports `readForecast()` and `withForecastGoal(forecast, earnedXpGoal)` for immediate goal previews. The read-only `/api/forecast-inputs?dayStarts=...` endpoint supplies evidence. [ui/target-scope.js](ui/target-scope.js) belongs to the forecast; the graph page keeps its own code. The output includes both dates, today's remaining XP, future-only inventory separately, measured pace, historical growth/coverage and overhead estimates. These are average-based planning estimates, not exact future schedules or exam-readiness guarantees.
