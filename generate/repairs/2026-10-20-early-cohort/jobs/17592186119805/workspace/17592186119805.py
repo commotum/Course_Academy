@@ -119,19 +119,18 @@ def sample_parameters(sid,rng):
         multipliers=[rng.choice((-2,-1,1,2) if abs(s.p)<=6 else (-1,1)) for _ in range(n)]
         u=[int(c*s.q*m) for m in multipliers]
         a=[int(-s.p*m) for m in multipliers]
-        if chosen=='No solution':a[rng.randrange(n)]+=rng.choice((-1,1))
+        # Zero coordinates remain eligible in every dimension. If only one nonzero
+        # component survives, a contradiction must be placed in the zero component.
+        zero=rng.randrange(n) if rng.randrange(3)==0 else None
+        if zero is not None:a[zero]=0;u[zero]=0
+        if chosen=='No solution':
+            mismatch=zero if n==2 and zero is not None else rng.randrange(n)
+            a[mismatch]+=rng.choice((-1,1))
     else:
         a=[rng.randint(-4,4) for _ in range(n)]
         u=[rng.randint(-4,4) for _ in range(n)]
         if sum(x!=0 for x in u)<2:u[rng.randrange(n)]=rng.choice((-3,-2,2,3))
         if not any(u):u[0]=1
-    # Coordinate-zero cases occur independently of bank role and consistency.
-    if moderate and n>2 and rng.randrange(3)==0:
-        i=rng.randrange(n)
-        # Keep an actual contradiction if this happened to be the mismatched row.
-        r=[-c*x for x in a];consistent=all(s*y==x for x,y in zip(r,u))
-        j=next((j for j,(x,y) in enumerate(zip(r,u)) if s*y!=x),None)
-        if consistent or i!=j:a[i]=0;u[i]=0
     rng.shuffle(bank)
     return {'a':a,'u':u,'c':c,'s':None if moderate else str(s),'letter':rng.choice('h j k l m q t'.split()),'bank':bank}
 
