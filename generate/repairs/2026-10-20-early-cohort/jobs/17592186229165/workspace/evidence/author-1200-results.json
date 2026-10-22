@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py"
+      ],
+      "exit_code": 0,
+      "seconds": 4.4,
+      "log": "evidence/author-1200-role-regression.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.63,
+      "log": "evidence/author-1200-retained-regression.log"
+    }
+  ],
+  "strict_report_check": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "checks/check_report_installation.py"
+    ],
+    "status": "failed",
+    "log": "evidence/author-1200-latest-failure.log",
+    "failure": "decision_variation has an unresolved decision shortcut",
+    "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+    "current_records_replayed": 26,
+    "staged_correction": "validated; does not close required external installation"
+  },
+  "runtime_changes": false,
+  "finding_status": {
+    "efa97df560cec8fee6e1": "passed",
+    "645672a4cd3f9bf609ca": "unresolved: required external installation forbidden by workspace-only scope"
+  },
+  "next_action": "Runner installs checksum-bound staged artifacts at the required prior-review destination, reruns the strict regression, and obtains independent review. Do not repeat unchanged workspace-only author attempts."
+}

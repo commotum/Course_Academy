@@ -1,36 +1,35 @@
-# Current state — 2026-10-22, author-233
+# Current state — 2026-10-22, author-235
 
-Read feedback and repair history (two findings, 233 events). Preserved runtime,
-manifest, instructional account, all completed repairs and strict regressions.
-No new generator defect or instructional change was demonstrated.
+Read feedback and full repair history (two findings, 235 events). Preserved the
+runtime, manifest, instructional specification and completed repairs.
 
-Reproduced latest failure first:
+First reproduced the exact latest failure:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. The installed runner rejects the unchanged package before regressions,
-sampling or evidence validation. Confirmed the unconditional three-identity gate
-in `scripts/generator_pipeline.py`, lines 720–727. This is the defective rule;
-changing runtime bytes without an instructional defect would merely evade it.
+exits 1. Actual installed runner calls `repair` before regressions or sampling:
+“Candidate is byte-identical to the rejected package.”
 
-Fresh affected checks and results: `evidence/current-author-verification.json`.
+Commands, log paths, exit codes, hashes and separate claims are recorded in
+`evidence/current-author-verification.json`.
 
-- Evidence bundle validates at its root and two relocated roots. Missing-file and
-  wrong-root controls fail. Three affected generated inventory records bind to
-  reproduced complete records. Registered evidence check remains exit 1 solely
-  because the installed runner handoff fails.
-- Exact shortcut seed 4258185931: 1/5 raw and delivered; five ranks and positions;
-  ten profiles checked; all five records survive delivery; 25 native grades pass.
-- Historical shortcut control still fails at 5/5, as required.
-- Relocated deterministic CLI passes 0/1/5 counts and rejects finite-limit overflow.
-- Ten complete source banks / 50 choices replay. Two actual-UI screenshots bind
-  to unchanged delivered endpoints and were visually inspected: readable matrices,
-  choices and elimination stages, without clipping or exposed TeX.
-- Runtime hashes unchanged. Prior full checks retained; no unrelated large rerun.
+Affected checks rerun:
+- Historical shortcut remains a strict failing negative control (5/5).
+- Current shortcut/delivery check passes: 1/5 raw and delivered; all five answer
+  ranks/positions and ten retained profiles; 25 native grades pass.
+- Corrected evidence bundle passes the real validator, including relocation and
+  missing-provenance/wrong-root negative controls. Its registered regression
+  exits 1 because the installed runner handoff remains failing.
+- Relocated CLI counts/determinism/finite limit and source/render binding pass:
+  ten complete source banks / 50 choices. Both retained actual-UI screenshots
+  were visually inspected and remain bound to current delivered endpoints.
+- Manifest dependency versions and both retained finding registrations checked.
+  Runtime and manifest bytes unchanged. Earlier broad validation retained.
 
-Unfinished action: apply `runner-fix/evidence-only-rejection.patch` to the external
-runner, then rerun the strict registered check and obtain fresh independent review.
-The patch target is outside the authorized workspace. The corrected evidence
-bundle is `evidence/contract-correction`, with copy map
-`evidence/contract-installation.json`; its external installation is runner-owned.
-No external runner, engine, evidence-root, database, publication or other-job writes
-occurred. The easy mathematical band is supported; end-to-end handoff remains
-unsupported while the strict current-runner regression fails.
+Remaining action: the runner owner must resolve the evidence-only rejection gate
+at `scripts/generator_pipeline.py:720-727`. A concrete, previously tested proposal
+is retained at `runner-fix/evidence-only-rejection.patch`; it is not installed.
+The authorized workspace excludes that target. No workspace runtime edit repairs
+that runner rule, and altering runtime bytes solely to evade it is not a fix.
+
+No database, publication, engine, runner, other-job or external evidence-root
+writes occurred. Status remains unsupported for end-to-end handoff; easy source
+support and the completed generator repairs remain preserved.

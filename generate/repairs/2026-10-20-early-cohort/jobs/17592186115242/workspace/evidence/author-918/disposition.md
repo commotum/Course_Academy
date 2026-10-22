@@ -1,0 +1,11 @@
+Preserved existing repairs; no runtime changes.
+
+First reproduction: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`, exit 1. Five captured historical records retain the shortcut; the retained possible learner-history witness scores 64/64. This does not predict every learner history.
+
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-918`, exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass. Seventeen source banks replay, 14 delivered records preserve the tested contrasts, relevant and irrelevant counterfactuals pass, native grading accepts 7 correct and rejects 28 wrong responses, relocation and exact dependency checks pass. Source, inventory, manifest and runtime hashes match protected evidence. The five staged replacement records and their identity mapping still verify; they remain unapplied.
+
+Reused the existing actual-UI render because runtime and replacement records are unchanged. Visually inspected evidence/repair-3/render/question-001.png: system, five choices, augmented matrices, row operation and contradiction conclusion are readable and consistent. Also inspected the source classification flowchart. No new renderer execution is claimed.
+
+All five generated inventory records were audited; no generated inventory items remain untested. affected-inventory.json retains exact stored identities and references complete records at ../workspace/evidence/generated-records.json relative to the requested author-918 evidence root. Original source questions are preserved. The declared inventory regression remains strict and failing.
+
+Status unsupported. The unmet criterion is remediation of the captured selectable historical pool, not support for this mathematical skill. Workspace generator edits cannot change stored banks. Applying evidence/repair-3/inventory-repair-proposal.json requires the separate remediation workflow named in the review, followed by fresh inventory capture and the strict regression. The user prohibits database changes and publication here. No engine, database, publication or external-file edits were performed.

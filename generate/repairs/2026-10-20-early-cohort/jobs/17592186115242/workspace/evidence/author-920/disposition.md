@@ -1,0 +1,13 @@
+Preserved the repaired runtime, instructional account, and all five executable finding checks. Current feedback demonstrates no new construction failure.
+
+Instructional scope remains elimination, calculating the singular parameter, and interpreting contradiction or redundancy. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe reduces to `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates an interior correct choice. The existing instructional-account.md defines supported variations and workload. No implementation change is justified by an unchanged stored-pool failure.
+
+First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`, exit 1: five affected records and 64/64 shortcut successes in the possible-history witness. This conditional witness does not describe every learner history.
+
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-920`, exit 1 solely for finding 591f580cadb749294588. See commands.json and results.json. Four generator regressions pass; 17 complete source banks replay; 14 delivered records retain contrasts after shared filtering. Relevant and irrelevant counterfactuals pass. Native grading accepts 7 correct choices and rejects 28 wrong ones. Exact dependencies, relocation, protected hashes, and staged replacement mappings verify.
+
+Reused unchanged rendering evidence and visually inspected evidence/repair-3/render/question-001.png: equations, choices, augmented matrices, elimination and conclusion are readable and agree. Also inspected the source classification flowchart. No fresh rendering run is claimed.
+
+All five generated inventory records were reproduced and matched to captured identities, generation metadata, prompts, solutions, complete banks and keys. No generated inventory remains untested. affected-inventory.json evidence paths resolve relative to the requested author-920 evidence root to workspace/evidence/generated-records.json. Source questions remain separate.
+
+Status unsupported. Finding 591f580cadb749294588 explicitly requests separate inventory remediation. Its verified proposal is evidence/repair-3/inventory-repair-proposal.json. Applying it and recapturing inventory are required before the strict pool check can pass; changing this generator cannot alter stored banks. Database changes and publication are prohibited here. No runtime, engine, source, inventory, publication, or external-file changes were performed.
