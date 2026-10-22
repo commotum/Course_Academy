@@ -1,5 +1,20 @@
 # Instructional account (before repair)
 
+## Author-41 continuation, before validation
+
+The exact latest installed-runner failure reproduces before retained checks or
+sampling. The only remaining independent finding is the evidence-root defect
+9b8cb52352b8ca3e790e; it requests preserving the runtime. No instructional
+change is justified. Source questions 9752715d-a11c-5d27-95dc-d20bec1117cb and
+dc5530a8-d7bb-5ee6-b842-11178cec4e06, with tutorial
+2112d3af-1fb0-5a70-ab99-59931db99930's pivot normalization, elimination, and
+second-pivot normalization passages, still support the existing five-radio easy
+family and optional back substitution. Preserve all completed source-bank and
+decision-role repairs. Revalidate the evidence contract, exact shortcut batch,
+small relocated CLI sample, and source/render binding. Keep the strict installed
+handoff failure. The proposed runner fix remains outside the authorized write
+scope; changing generator bytes to evade its identity test would not repair it.
+
 ## Author-32: strict current-handoff regression (before edits)
 
 The current generator and source are unchanged. Source q-73439
