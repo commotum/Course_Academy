@@ -1,13 +1,13 @@
-# Verification result — author 874
+# Verification result — author 878
 
-Preserved completed generator repairs and every retained regression. Latest feedback and all five history findings were read; no new generator defect is reported.
+Read feedback, all five retained findings and latest history event. Preserved the existing runtime and instructional specification.
 
 First test: job Python -B checks/batch_regressions.py --finding inventory.
-Exit 1: five historical banks and 64/64 possible-history shortcut successes.
+Exit 1: all five historical banks reproduce the shortcut; possible-history witness 64/64.
 
-Recheck: job Python -B checks/recheck_status.py --output evidence/author-874.
-Exit 1 overall. Four current-generator regressions, 17 complete source banks and canonical replay, shared delivery (14 records), 35 native grading checks, relocation, dependency pins, protected hashes and staged replacement mappings pass. Visually inspected retained actual-UI screenshot. Runtime unchanged.
+Verification: job Python -B checks/recheck_status.py --output evidence/author-878.
+Exit 1 overall. Four generator regressions, 17 source-bank replays, 14 delivered records, 35 native grading checks, relocation, dependency pins, protected hashes and staged replacement mappings pass. Visually inspected unchanged actual-UI screenshot. No runtime, engine, source, database or publication changes.
 
-Evidence: evidence/author-874/commands.json, results.json, disposition.md.
+Evidence: evidence/author-878/commands.json, results.json, disposition.md.
 
-Unfinished: separately remediate the five stored generated identities in affected-inventory.json, then recapture inventory and run the strict inventory regression. The complete unapplied proposal remains evidence/repair-3/inventory-repair-proposal.json. This session prohibits database writes and publication; keep the strict failure and report unsupported. Do not rerun unchanged generator checks in another pass unless new evidence or changed captured inventory warrants it.
+Next unfinished step: separate inventory remediation for the five records in affected-inventory.json, then fresh capture and strict regression. Complete unapplied proposal: evidence/repair-3/inventory-repair-proposal.json. This job prohibits database changes and publication. Do not repeat unchanged author checks as a substitute for this external step or waive the strict failure.

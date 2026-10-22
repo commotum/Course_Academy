@@ -1,0 +1,62 @@
+{
+  "attempt": 196,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "evidence": "evidence/current-handoff-regression.json",
+      "result": "Exact latest failure reproduced first. Installed runner calls repair before retained regressions or sampling."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "evidence": "evidence/evidence-contract-validation.json",
+      "result": "Evidence bundle passes real validator, relocation, historical failure and current-record checks. Strict installed handoff fails."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "evidence": "evidence/batch-selection-regression.json",
+      "result": "Historical seed 4258185931: shortcut 1/5 raw and delivered; 5/5 survive delivery; 10 profiles; native 5 accepted and 20 rejected."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_cli_contract.py",
+      "exit_code": 0,
+      "evidence": "evidence/cli-contract.json",
+      "result": "Relocated runtime; exact counts 0/1/5; determinism; explicit finite limit; runtime unchanged."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "evidence": "evidence/current-render-binding.json",
+      "result": "10 complete source banks/50 choices replay. Two retained actual-UI inputs equal delivered endpoints."
+    }
+  ],
+  "runtime_unchanged": true,
+  "runtime_hashes": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "claims": {
+    "fidelity": "10 complete source banks freshly replayed; 2 incomplete source captures remain unsupported.",
+    "correctness_and_grading": "Independent visible-record checks and 25 native responses pass.",
+    "decision_variation": "Reported strategy scores 1/5 before and after shared delivery; target roles retained.",
+    "rendering": "Existing screenshot evidence/author8-render/question-001.png visually reinspected; readable matrices, choices and solution. No fresh rendering claimed.",
+    "handoff": "Fails strictly; unsupported result."
+  },
+  "root_cause": {
+    "file": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "line": 723,
+    "rule": "Sample-stage unchanged package/source/engine gate rejects an evidence-only repair before executing regressions and sampling.",
+    "observed_calls": [
+      "repair"
+    ]
+  },
+  "available_correction": "runner-fix/evidence-only-rejection.patch (pre-existing, uninstalled; prior offline verification retained, not rerun)",
+  "next_required_action": "Runner owner must resolve the evidence-only sample gate outside this workspace, then execute strict regression and fresh independent review. Another unchanged authoring retry cannot install that fix.",
+  "scope": "Only workspace evidence/state writes. No runtime, manifest, runner, engine, database, publication or other-job changes."
+}

@@ -1,38 +1,32 @@
-# Current state — 2026-10-22, author-192
+# Current state — 2026-10-22, author-196
 
-Preserved every runtime file and the manifest byte for byte. Read feedback and
-repair history; reproduced the exact latest failure first using the installed
-runner's actual sample-stage control flow. No runtime change is justified by
-that evidence-only failure.
+Read latest feedback, retained findings and history before verification. Reproduced
+the installed handoff failure first. Runtime and manifest hashes equal author-195.
+No new source or generator defect was demonstrated; existing instructional account
+and completed repairs remain applicable. No runtime implementation changes.
 
-Fresh commands, logs, runtime hashes and results:
-`evidence/author192-verification.json`. Commands used the supplied Python with
-`-B` from this workspace.
+Commands, exit codes, separate claims and hashes: `evidence/author196-verification.json`.
 
-- `checks/check_current_handoff.py`: exit 1; installed runner rejects the
-  unchanged package before retained regressions or sampling.
-- `checks/check_evidence_contract.py`: exit 1 solely at that installed handoff.
-  Real evidence validation, relocated bundle, missing-provenance negative
-  controls, current batch binding and three affected inventory records pass.
-- `checks/check_batch_selection.py`: exit 0. Reported seed 4258185931 scores
-  1/5 raw and delivered. Ten profiles retain target-role coverage; actual
-  delivery filtering accepts all five records. Native grading passes all 25
-  responses (5 accepted, 20 rejected).
-- `checks/check_render_binding.py`: exit 0. Ten complete source banks / 50
-  choices replay. Existing actual-UI render inputs match fresh delivered
-  endpoints. No fresh rendering or visual inspection was claimed this turn.
+- Installed handoff: exit 1, calls only `repair`, before regressions or sampling.
+- Evidence contract: exit 1 solely at strict installed handoff; real bundle/root,
+  relocation, historical negative controls, current-record and inventory bindings pass.
+- Batch regression: exit 0; historical seed 4258185931 shortcut 1/5 raw/delivered;
+  five accepted; ten profiles; native grader 5 accepted and 20 rejected.
+- CLI: exit 0; relocated runtime, exact counts, deterministic output, finite limit.
+- Source/render binding: exit 0; ten complete source banks/50 choices; two UI
+  inputs equal current delivered endpoints. Existing first screenshot visually
+  reinspected; no new rendering claimed.
 
-Both independent findings remain executable in `repair-regressions.json`.
-Existing relocated CLI verification remains in
-`evidence/author191-verification.json`; unchanged CLI code was not retested.
-No publication, database, engine, external runner or other job edits occurred.
+Both retained finding IDs remain executable in `repair-regressions.json`; the
+unresolved handoff regression remains failing. Content checks passing do not
+establish a completed handoff.
 
-Unfinished step: correct the unconditional unchanged-package rejection at
-`/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py:723` so a
-validated evidence-only correction can reach retained regressions, sampling and
-fresh independent review. This file is outside authorized writes. The existing
-proposal `runner-fix/evidence-only-rejection.patch` remains uninstalled; repeating
-its temporary-checkout tests cannot resolve the installed failure. Keep the
-strict regression failing until the actual runner is repaired. Do not change
-generator bytes merely to evade the gate or consume historical acceptance as
-new approval. No additional in-workspace implementation step is identified.
+Unfinished action is outside the permitted workspace:
+`scripts/generator_pipeline.py:723` rejects unchanged runtime even for an
+evidence-only correction. The pre-existing concrete proposal at
+`runner-fix/evidence-only-rejection.patch` remains uninstalled. The runner owner
+must resolve that gate, then rerun strict handoff and fresh independent review.
+Do not alter runtime bytes merely to evade it, weaken the failure, install copied
+historical acceptance, or repeat another unchanged authoring/validation cycle.
+
+No database, image publication, external runner, engine or other-job writes.

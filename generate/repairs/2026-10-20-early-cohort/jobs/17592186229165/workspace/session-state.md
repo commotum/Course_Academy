@@ -1,9 +1,13 @@
-# Current state — author 1143
+# Current state — author 1147
 
-Read feedback and both retained findings from the full history (1,143 events). Reproduced the latest strict failure first with `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`: required external report still has an unresolved decision shortcut. Local staged correction passes actual contract/schema and replays 26 current records. No external installation attempted; workspace-only authorization remains in force.
+Read feedback and both retained findings from repair-history.json before running checks. No new generator defect is reported. Preserved runtime package and strict regression declarations.
 
-`checks/test_role_exchange.py --output evidence/author-1143/role` exits 0: exact retained reorder/role-transfer cases, mixed sampling, shared delivery filtering and native grading pass. Before and after delivery: 19 first-resonant, 17 second-resonant, five both-nonresonant cases. Native checks: 11 accepted, 19 rejected as expected. `checks/verify_retained_state.py` exits 0: 55 staged artifacts, unchanged runtime/source, eight unaffected independent math cases. Reinspected existing `evidence/corrected-review/render-regression/question-002.png`; no clipping observed. Source replay/inventory evidence retained. No runtime or regression-declaration change was justified.
+Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1. Required prior-review report still fails the actual contract with `decision_variation has an unresolved decision shortcut`. The staged correction passes schema/contract validation and 26 current-generator record replays. No external installation was attempted because the destination is outside the user-authorized workspace.
 
-Evidence: `evidence/author-1143/results.json`, `commands.json`, `latest-failure.log`, `report-results.json`, `report-staged-validation.json`, `role/results.json`.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1147/role` exits 0: controlled reorder/role transfer, independent visible math, conditional shortcut probes, shared delivery filtering and all 30 native-grader expectations pass. Delivered roles: 19 first-resonant, 17 second-resonant, five both-nonresonant.
 
-Unfinished: finding 645672a4cd3f9bf609ca explicitly requests installation of the staged correction at the external prior-review destination. Use existing `evidence/review-installation-handoff.json` in an authorized runner, then run the unchanged strict check and independent review. This workspace-only session cannot complete that step. Preserve the repaired generator and failing regression. Further unchanged workspace-only retries cannot resolve an external report. Status unsupported.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: 55 handoff artifact checksums, unchanged runtime/source, and eight unaffected mathematical cases pass. Prior source replay, inventory and rendering evidence retained without repeating unaffected checks.
+
+Evidence: `evidence/author-1147/commands.json`, `results.json`, `latest-failure.log`, `report-results.json`, `report-staged-validation.json`, `role/results.json`, `retained-regression.log`.
+
+Unfinished finding 645672a4cd3f9bf609ca requires runner installation at the original prior-review destination, strict validation and fresh independent review. Checksummed handoff remains `evidence/review-installation-handoff.json`. Workspace-only author retries cannot perform this action. Status unsupported; no runtime, database, engine, publication or external-file changes.
