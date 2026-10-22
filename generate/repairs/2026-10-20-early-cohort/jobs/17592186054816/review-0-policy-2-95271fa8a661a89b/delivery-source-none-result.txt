@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py", line 95, in <module>
+    main()
+    ~~~~^^
+  File "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py", line 84, in main
+    report = audit(data['input'], data['inventory'], data['source'], args.difficulty,
+                   args.output, args.asset_root or args.input.resolve().parent, args.math_root)
+  File "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py", line 55, in audit
+    accepted, duplicates = prepare_records(records, source['kp_id'], kp_uuid,
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        inventory['fingerprints'], staged, asset_root, localizer=localize)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/scripts/generator_publish.py", line 254, in prepare_records
+    localized['question'] = stable_identities(localized['question'], kp_uuid)
+                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/scripts/generator_publish.py", line 227, in stable_identities
+    validate_question(question)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/scripts/generator_publish.py", line 222, in validate_question
+    raise ValueError('Generated checkbox questions require at least one correct selectable option')
+ValueError: Generated checkbox questions require at least one correct selectable option
