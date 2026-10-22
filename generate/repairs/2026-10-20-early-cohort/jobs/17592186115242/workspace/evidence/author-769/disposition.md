@@ -1,0 +1,11 @@
+# Author 769 disposition
+
+Status: unsupported. No runtime change is warranted by the unchanged counterexample.
+
+Read latest feedback, all five retained findings, the latest history event, session state, instructional account, supplied source questions and complete banks/solutions, and required generator guidance. The first executed test was `checks/batch_regressions.py --finding inventory`; exit 1 reproduced five affected historical records and 64/64 sign-extremum successes for the retained possible-history scenario. This is not a claim about every learner history.
+
+Ran job Python with `-B checks/recheck_status.py --output evidence/author-769`. It exited 1 solely for retained finding 591f580cadb749294588. All four current-generator findings pass: family-wide bank shortcut, missing q-74691 source profile, zero-root rejection, and finite-batch shortcut. Seventeen source banks replay. Fourteen records survive shared delivery with the tested within-sign contrasts intact. The native grader accepts 7 correct choices and rejects 28 wrong choices. Exact dependencies, relocated CLI, source/inventory/runtime hashes, and five staged replacement mappings verify. Re-inspected retained actual-UI screenshot `evidence/repair-3/render/question-001.png`; equations, options, matrices, and solution are readable. Runtime and render inputs are unchanged, so no duplicate rendering was needed.
+
+The current generator cannot rewrite immutable historical banks. The native selector reads the captured stored candidates independently of the generator. The required remaining action is the separate inventory-remediation workflow identified by the reviewer: remove only the five affected generated identities from future selection, publish independently reviewed replacements, then recapture inventory and rerun the strict check. This session explicitly prohibits database changes and publication. Keep the strict failure and original source questions intact. Existing proposal `evidence/repair-3/inventory-repair-proposal.json` remains unapplied; it is not evidence that the stored pool is fixed.
+
+No database content, published images, engine files, source captures, or other jobs were changed. No grading capability is implicated. Do not rerun this unchanged author pass as a substitute for the external remediation step.
