@@ -21,6 +21,11 @@ def main():
  records=[g.generate('easy',seed) for seed in range(81031,81061)]
  extras=[g.generate(level,seed) for level in ('moderate','hard') for seed in (81031,81032)]
  assert shortcut(records[0]['question'])!=key(records[0]['question'])
+ old=json.loads((EVIDENCE/'before-minimal-failure.json').read_text())['record']
+ exact=g.generate('easy',81031,parameters=old['generation']['parameters'])
+ result=visible_math(exact);assert shortcut(exact['question'])!=result['truth']
+ save('exact-counterexample-repaired.json',{'original_parameters':old['generation']['parameters'],'record':exact,'math':result,'reported_shortcut_still_selects_key':False})
+ save('grader-counterexample-input.json',[{'label':'reported seed and original physical parameters','record':exact,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==result['truth'] else 'rejected','purpose':'retained physical counterexample'} for a in exact['question'][':question/answer-fields'][0][':answer-field/choices']]}])
  # Fixed bank, five eligible targets: changes to rate, initial mass, or concentration.
  bank={'c':['.01','.02'],'q0':[3,7],'r':[20,25]};controlled=[];role_rows=[]
  corners=((0,0,0),(0,1,1),(1,0,1),(1,1,0),(1,1,1))
@@ -37,12 +42,23 @@ def main():
   if context==next(iter(g.CONTEXTS)):reference=correct_values
   assert correct_values==reference
   role_rows.append({'context':context,'identical_visible_bank':True,'distinct_correct_values':5,'any_bank_only_selector_max_correct':1,'total':5})
+  if context==next(iter(g.CONTEXTS)):
+   changed=[]
+   for label,first in [('flow',3),('initial_mass',2),('concentration',1)]:
+    before=params(rs[first]['question']);after=params(rs[4]['question'])
+    assert sum(a!=b for a,b in zip(before,after))==1
+    changed.append({'changed_coordinate':label,'before_id':rs[first]['question'][':question/id'],'after_id':rs[4]['question'][':question/id'],'before_parameters':list(map(str,before)),'after_parameters':list(map(str,after)),'correct_value_changed':correct_values[first]!=correct_values[4],'visible_bank_preserved':True})
+   save('counterfactual-results.json',{'pairs':changed,'irrelevant_context_changes_preserve_all_five_answers':True,'passed':True})
   controlled.extend(rs)
  # Each coordinate repeats and all options satisfy some valid same-scope IVP.
  # These independent visible counts catch reintroducing any single privileged coordinate.
  all_easy=records+controlled
  for rec in all_easy:
   triples=[ex(a[':answer/value']) for a in rec['question'][':question/answer-fields'][0][':answer-field/choices']]
+  V,q0,c,rate,time=params(rec['question'])
+  for e,a,k in triples:
+   assert V*k in (10,12,15,20,25,30,40,50) and 1/k in (10,12,14,15,16,20,24,25,30,35,40,50,60,70,80)
+   assert (e+a).q==1 and 1<=e+a<=25 and 1<=100*e/V<=6 and (100*e/V).q==1
   for coord in (lambda e,a,k:e,lambda e,a,k:e+a,lambda e,a,k:k):
    counts=collections.Counter(coord(*x) for x in triples);assert sorted(counts.values())==[2,3]
   assert shortcut(rec['question']) is None

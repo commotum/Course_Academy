@@ -76,7 +76,7 @@ test('base throughput includes failed lessons, reviews and quizzes; the earned g
   assert.ok(result.goalPace.days < result.currentPace.days);
   assert.equal(result.inventory.selectedTopics, 5);
   assert.equal(result.inventory.remainingTopics, 2);
-  assert.equal(result.inventory.remainingLessonBaseXp, 20);
+  assert.equal(result.inventory.remainingLessonBaseXp, 30); // Failed attempt's frozen 20 + unstarted 10.
 });
 
 test('goal equal to observed earned average gives the same date; adjusting the goal changes only goal pace', () => {
@@ -157,13 +157,17 @@ test('a completed queued lesson remains modeled work when completion removes its
   assert.equal(calculateForecast(inputs).pace.otherBaseXp, 0);
 });
 
-test('active lessons use frozen bases, and missing lesson estimates remain outstanding', () => {
+test('saved attempts take precedence over catalog prices; conflicting active attempts remain outstanding', () => {
   const x = fixture();
   x.event(19, [[1, 'learner/activity', 4000, true], ...changesFor(4000, {
     'learner-task/activity': 1135, 'learner-task/status': 23, 'learner-task/xp-base': 37,
   })]);
-  assert.equal(calculateForecast(x.inputs()).inventory.remainingLessonBaseXp, 47);
+  assert.equal(calculateForecast(x.inputs()).inventory.remainingLessonBaseXp, 57);
   x.event(20, [[1134, 'activity/expected-seconds', 600, false]]);
+  assert.equal(calculateForecast(x.inputs()).inventory.remainingLessonBaseXp, 57);
+  x.event(20, [[1, 'learner/activity', 4001, true], ...changesFor(4001, {
+    'learner-task/activity': 1135, 'learner-task/status': 23, 'learner-task/xp-base': 31,
+  })]);
   const result = calculateForecast(x.inputs());
   assert.equal(result.inventory.unknownCosts.length, 1);
   assert.equal(result.inventory.remainingTopics, 2);
@@ -291,7 +295,7 @@ test('catch-up starts with work due today, not every preloaded future assignment
   assert.equal(r.inventory.remainingTopics, 3); // Past-due root and depth-two ancestry.
   assert.equal(r.inventory.remainingLessonBaseXp, 30);
   assert.equal(r.inventory.futureRemainingTopics, 2);
-  assert.equal(r.inventory.futureLessonBaseXp, 20);
+  assert.equal(r.inventory.futureLessonBaseXp, 30); // Saved failed attempt 20, plus 10.
 });
 
 test('future OHW prices and later deadlines do not alter the extrapolated catch-up estimate', () => {
@@ -330,7 +334,7 @@ test('the cutoff is the exact local due date, including today, without a current
   const r = calculateForecast(inputs);
   assert.equal(r.inventory.dueThrough, '2026-10-21');
   assert.equal(r.inventory.remainingLessonBaseXp, 30); // Today at 11 PM is included.
-  assert.equal(r.inventory.futureLessonBaseXp, 20); // Tomorrow, in the same week, is excluded.
+  assert.equal(r.inventory.futureLessonBaseXp, 30); // Tomorrow, in the same week, is excluded.
 });
 
 test('already caught up today stays caught up even with assignments tomorrow', () => {
@@ -349,7 +353,7 @@ test('historical coursework is counted if learned after it became due, but not i
   const after = fixture().inputs();
   addAssignment(after, 0, 6000, 133, at(5));
   addAssignment(after, 1, 6100, 135, at(22));
-  assert.equal(calculateForecast(after).growth.total.baseXp, 30);
+  assert.equal(calculateForecast(after).growth.total.baseXp, 40); // Saved completed base 20 + two lessons at 10.
   const before = fixture().inputs();
   addAssignment(before, 0, 6000, 133, at(20));
   addAssignment(before, 1, 6100, 135, at(22));
@@ -363,10 +367,10 @@ test('Queue remains current when its topic supports an assignment due in the fut
   const r = calculateForecast(inputs);
   assert.equal(r.inventory.remainingTopics, 5);
   assert.equal(r.inventory.futureRemainingTopics, 0);
-  assert.equal(r.inventory.remainingLessonBaseXp, 50);
+  assert.equal(r.inventory.remainingLessonBaseXp, 60);
 });
 
-test('unpriced historical work is exposed as a lower-bound growth rate, not silently zero or a blanket failure', () => {
+test('incomplete old lesson content uses a labeled median estimate in historical growth', () => {
   const inputs = scheduledFixture();
   // Topic 131 was required historically, but its successful review satisfies it
   // today. Its missing old price must not invalidate the priced current backlog.
@@ -375,11 +379,82 @@ test('unpriced historical work is exposed as a lower-bound growth rate, not sile
   delete inputs.records[1131]['activity/expected-seconds'];
   const r = calculateForecast(inputs, { dailyXpGoal: 500 });
   assert.equal(r.inventory.unknownCosts.length, 0);
-  assert.equal(r.growth.total.unknownCosts, 1);
-  assert.equal(r.growth.total.isLowerBound, true);
-  assert.equal(r.growth.total.unknownTopics[0].topicId, 131);
-  close(r.growth.total.baseXpPerDay, 20 / 31.5);
+  assert.equal(r.growth.total.unknownCosts, 0);
+  assert.equal(r.growth.total.isLowerBound, false);
+  assert.equal(r.growth.total.estimatedTopics[0].topicId, 131);
+  assert.equal(r.growth.total.estimatedTopics[0].baseXp, 10);
+  assert.equal(r.growth.total.estimatedTopics[0].source, 'lesson-median');
+  close(r.growth.total.baseXpPerDay, 30 / 31.5);
   assert.equal(r.goalPace.status, 'estimated');
-  assert.equal(r.goalPace.optimistic, true);
-  assert.match(r.warnings.join(' '), /lower bound/);
+  assert.equal(r.goalPace.optimistic, false);
+  assert.equal(r.goalPace.usesFallbackEstimates, true);
+  assert.match(r.warnings.join(' '), /1 lesson uses fallback XP estimates/);
+});
+
+test('fallback matches KP count before using the global median, without changing source prices or pace', () => {
+  const x = fixture();
+  x.event(19, [
+    ...changesFor(130, { 'topic/knowledge-points': [500, 501, 502] }),
+    ...changesFor(132, { 'topic/knowledge-points': [503, 504, 505] }),
+    ...changesFor(135, { 'topic/knowledge-points': [506, 507, 508] }),
+    [1130, 'activity/expected-seconds', 600, false], [1130, 'activity/expected-seconds', 720, true],
+    [1132, 'activity/expected-seconds', 600, false], [1132, 'activity/expected-seconds', 1080, true],
+    [1135, 'activity/expected-seconds', 600, false],
+  ]);
+  const inputs = x.inputs();
+  inputs.lessonBases[1135] = { baseXp: null, reason: 'answer fields required' };
+  const before = structuredClone(inputs), r = calculateForecast(inputs);
+  const estimate = r.inventory.estimatedTopics.find(item => item.topicId === 135);
+  assert.equal(estimate.baseXp, 15); // Median of 12 and 18; global median is 10.
+  assert.equal(estimate.source, 'kp-count-median');
+  assert.equal(estimate.sampleSize, 2);
+  assert.equal(estimate.reason, 'answer fields required');
+  assert.equal(r.inventory.remainingLessonBaseXp, 35);
+  assert.equal(r.pace.baseXp, 60);
+  assert.deepEqual(inputs, before);
+});
+
+test('a usable content estimate wins over the median and is not labeled as fallback', () => {
+  const x = fixture(); x.event(19, [[1135, 'activity/expected-seconds', 600, false]]);
+  const inputs = x.inputs(); inputs.lessonBases[1135] = { baseXp: 23 };
+  const r = calculateForecast(inputs);
+  assert.equal(r.inventory.remainingLessonBaseXp, 43);
+  assert.deepEqual(r.inventory.estimatedTopics, []);
+});
+
+test('already learned prerequisites add zero growth, before applying missing-price fallback', () => {
+  const x = fixture({ tasks: false });
+  x.event(10, [[1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
+    'progress/topic': 134, 'progress/learned': true,
+  }), [1134, 'activity/expected-seconds', 600, false]]);
+  const r = calculateForecast(x.inputs());
+  assert.equal(r.growth.total.topics, 1); // Only root 135; prerequisite 134 is already known at entry.
+  assert.equal(r.growth.total.baseXp, 10);
+  assert.deepEqual(r.growth.total.estimatedTopics, []);
+  assert.deepEqual(r.growth.total.unknownTopics, []);
+});
+
+test('a target already learned when added contributes no growth, including at the same timestamp', () => {
+  const x = fixture({ tasks: false });
+  x.event(10, [[1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
+    'progress/topic': 135, 'progress/learned': true,
+  }), [1135, 'activity/expected-seconds', 600, false]]);
+  const r = calculateForecast(x.inputs());
+  assert.equal(r.growth.total.topics, 0);
+  assert.equal(r.growth.total.baseXp, 0);
+  assert.deepEqual(r.growth.total.estimatedTopics, []);
+  assert.equal(r.inventory.remainingTopics, 0);
+});
+
+test('without any reliable peer prices the forecast reports unknown costs rather than inventing a median', () => {
+  const x = fixture({ tasks: false });
+  const inputs = x.inputs();
+  for (const record of Object.values(inputs.records)) delete record['activity/expected-seconds'];
+  for (const event of inputs.history) event.changes = event.changes.filter(([, attr]) => attr !== 'activity/expected-seconds');
+  const r = calculateForecast(inputs);
+  assert.equal(r.inventory.unknownCosts.length, 5);
+  assert.deepEqual(r.inventory.estimatedTopics, []);
+  assert.equal(r.growth.total.unknownCosts, 2);
+  assert.equal(r.growth.total.isLowerBound, true);
+  assert.equal(r.currentPace.status, 'unavailable');
 });

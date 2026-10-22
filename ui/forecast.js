@@ -105,31 +105,66 @@ export function knownPreparationTopics(f, learner) {
 }
 
 function topicPrices(f, learner, estimates) {
-  const lessons = new Map(), active = new Map();
+  const lessons = new Map(), active = new Map(), finished = new Map();
   for (const id of f.ids('activity/type')) if (f.kind(id, 'activity/type') === 'lesson') {
     const topic = f.get(id, 'activity/scope');
     if (!lessons.has(topic)) lessons.set(topic, []);
     lessons.get(topic).push(id);
   }
   for (const task of f.values(learner, 'learner/activity')) {
-    if (terminal(f.kind(task, 'learner-task/status'))) continue;
     const activity = f.get(task, 'learner-task/activity'), base = f.get(task, 'learner-task/xp-base');
     if (f.kind(activity, 'activity/type') === 'lesson' && positive(base)) {
       const topic = f.get(activity, 'activity/scope');
+      if (terminal(f.kind(task, 'learner-task/status'))) {
+        const at = f.get(task, 'learner-task/finished-at') ?? 0, previous = finished.get(topic);
+        if (!previous || at > previous.at || (at === previous.at && task > previous.task)) finished.set(topic, { at, task, baseXp: base });
+        continue;
+      }
       if (!active.has(topic)) active.set(topic, []);
       active.get(topic).push(base);
     }
   }
-  return topic => {
-    if (active.get(topic)?.length === 1) return { baseXp: active.get(topic)[0] };
+  const direct = topic => {
+    if (active.get(topic)?.length === 1) return { baseXp: active.get(topic)[0], source: 'saved-attempt' };
     if (active.get(topic)?.length > 1) return { baseXp: null, reason: 'Multiple unfinished lesson attempts.' };
+    if (finished.has(topic)) return { baseXp: finished.get(topic).baseXp, source: 'saved-attempt' };
     const choices = lessons.get(topic) || [];
     if (choices.length !== 1) return { baseXp: null, reason: choices.length ? 'Multiple lesson definitions.' : 'No lesson definition.' };
     const seconds = f.get(choices[0], 'activity/expected-seconds');
     if (seconds !== undefined) return positive(seconds)
-      ? { baseXp: Math.max(1, Math.floor(seconds / 60 + .5)) }
+      ? { baseXp: Math.max(1, Math.floor(seconds / 60 + .5)), source: 'stored-duration' }
       : { baseXp: null, reason: 'Invalid lesson duration.' };
-    return estimates[choices[0]] || { baseXp: null, reason: 'No lesson estimate at this historical state.' };
+    return { ...(estimates[choices[0]] || { baseXp: null, reason: 'No lesson estimate at this historical state.' }), source: 'content-estimate' };
+  };
+  const kpCount = topic => new Set(f.values(topic, 'topic/knowledge-points')).size;
+  let peers;
+  const median = values => {
+    const middle = Math.floor(values.length / 2);
+    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
+  };
+  return topic => {
+    const cost = direct(topic);
+    if (positive(cost.baseXp) || active.get(topic)?.length > 1) return cost;
+    // Forecast estimates never change lesson content, stored prices or XP awards.
+    // Only directly priced topics are peers; fallbacks never feed other fallbacks.
+    if (!peers) {
+      peers = new Map([[0, []]]);
+      for (const id of f.ids('topic/id')) {
+        const base = direct(id).baseXp;
+        if (!positive(base)) continue;
+        peers.get(0).push(base);
+        const count = kpCount(id);
+        if (!count) continue;
+        if (!peers.has(count)) peers.set(count, []);
+        peers.get(count).push(base);
+      }
+      for (const values of peers.values()) values.sort((a, b) => a - b);
+    }
+    const count = kpCount(topic), matched = count > 0 && peers.get(count)?.length;
+    const values = peers.get(matched ? count : 0);
+    if (!values.length) return cost;
+    return { baseXp: median(values), source: matched ? 'kp-count-median' : 'lesson-median',
+      fallback: true, sampleSize: values.length, knowledgePointCount: count, reason: cost.reason };
   };
 }
 
@@ -138,7 +173,7 @@ const growthFields = new Set(['topic/id', 'topic/title', 'topic/next', 'course/i
   'learner/assignments', 'activity/course', 'activity/due', 'activity/steps',
   'step/content', 'multistep/steps', 'assigned-problem/content', 'assigned-problem/topic-coverage']);
 const emptyCategories = () => Object.fromEntries(['target', 'queue', 'prerequisite'].map(key => [key, { topics: 0, baseXp: 0 }]));
-const emptyGrowth = () => ({ topics: 0, baseXp: 0, unknownCosts: 0, unknownTopics: [], categories: emptyCategories() });
+const emptyGrowth = () => ({ topics: 0, baseXp: 0, estimatedTopics: [], unknownCosts: 0, unknownTopics: [], categories: emptyCategories() });
 
 const civilClock = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23',
   year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
@@ -233,6 +268,9 @@ function preparationKnownAt(inputs, facts, learner, graph) {
 
 export function historicalGrowth(inputs, options, currentScope, now) {
   const f = new ForecastFacts({}, inputs.enums), learner = inputs.learnerId;
+  const currentFacts = new ForecastFacts(inputs.records, inputs.enums);
+  const snapshot = forecastGraph(currentFacts, learner), price = topicPrices(currentFacts, learner, inputs.lessonBases);
+  const knownAt = preparationKnownAt(inputs, currentFacts, learner, currentScope.graph);
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
   const total = emptyGrowth(), modeledTasks = new Set(), introductions = new Map();
   let previous = null, previousDue = new Set(), observedFrom = null, invalid = null, indexedGraph;
@@ -284,16 +322,14 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       continue;
     }
     const additions = [...due].filter(topic => !previousDue.has(topic));
-    const price = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
+    const historicalPrice = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
     for (const topic of additions) {
       if (activation.get(topic) !== -Infinity || introductions.has(topic)) continue;
-      const cost = price(topic);
-      introductions.set(topic, { at, baseXp: cost.baseXp, reason: cost.reason, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
+      const cost = (knownAt.get(topic) ?? Infinity) <= at ? {} : historicalPrice(topic);
+      introductions.set(topic, { at, ...cost, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
     }
     previous = scope; previousDue = due;
   }
-  const currentFacts = new ForecastFacts(inputs.records, inputs.enums);
-  const snapshot = forecastGraph(currentFacts, learner), price = topicPrices(currentFacts, learner, inputs.lessonBases);
   const scheduled = topicDueDays(snapshot, currentScope, options, true), today = targetCalendarDay(now);
   // Course history is dated by the assignments themselves, including past
   // assignments imported later. Their import dates are not academic arrivals.
@@ -302,17 +338,18 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     const at = dayStartsAt(day), existing = introductions.get(topic);
     observedFrom = observedFrom === null ? at : Math.min(observedFrom, at);
     if (existing && existing.at <= at) continue;
-    const cost = price(topic);
-    introductions.set(topic, { at, baseXp: cost.baseXp, reason: cost.reason, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
+    const cost = (knownAt.get(topic) ?? Infinity) <= at ? {} : price(topic);
+    introductions.set(topic, { at, ...cost, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
   }
-  const knownAt = preparationKnownAt(inputs, currentFacts, learner, currentScope.graph);
   for (const [topic, entry] of introductions) {
-    if (entry.opening || entry.at > now || (knownAt.get(topic) ?? Infinity) < entry.at) continue;
+    if (entry.opening || entry.at > now || (knownAt.get(topic) ?? Infinity) <= entry.at) continue;
     const category = entry.category;
     for (const item of [total, courses[entry.course]]) {
       item.topics++; item.categories[category].topics++;
       if (positive(entry.baseXp)) { item.baseXp += entry.baseXp; item.categories[category].baseXp += entry.baseXp; }
       else { item.unknownCosts++; item.unknownTopics.push({ topicId: topic, reason: entry.reason }); }
+      if (entry.fallback) item.estimatedTopics.push({ topicId: topic, baseXp: entry.baseXp, source: entry.source,
+        sampleSize: entry.sampleSize, knowledgePointCount: entry.knowledgePointCount, reason: entry.reason });
     }
   }
   if (observedFrom === null) invalid ||= 'No reliable course dates or opening inventory in retained history.';
@@ -368,6 +405,7 @@ function scenario(forecast, pace) {
     Date.parse(forecast.capturedAt), forecast.inventory.remainingTopics);
   result.growthIsLowerBound = forecast.growth.total.isLowerBound;
   result.optimistic = result.status === 'estimated' && result.growthIsLowerBound;
+  result.usesFallbackEstimates = forecast.inventory.estimatedTopics.length > 0 || forecast.growth.total.estimatedTopics.length > 0;
   if (result.days === null) return { ...result, workload: null };
   const T = result.days, d = forecast.pace.observedDays, o = forecast.overhead;
   const lessonAttemptBaseXp = T === 0 ? 0 : o.retryFactor * (forecast.inventory.remainingLessonBaseXp + forecast.growth.total.baseXpPerDay * T);
@@ -401,12 +439,13 @@ export function calculateForecast(inputs, options = {}) {
   const price = topicPrices(f, learner, inputs.lessonBases);
   const activation = topicDueDays(graph, scope, scopeOptions), today = targetCalendarDay(now);
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, { code, selectedTopics: 0, remainingTopics: 0,
-    remainingLessonBaseXp: 0, unknownCosts: [], futureRemainingTopics: 0, futureLessonBaseXp: 0,
-    futureUnknownCosts: [], categories: emptyCategories() }]));
+    remainingLessonBaseXp: 0, estimatedTopics: [], unknownCosts: [], futureRemainingTopics: 0, futureLessonBaseXp: 0,
+    futureEstimatedTopics: [], futureUnknownCosts: [], categories: emptyCategories() }]));
   for (const topic of scope.nodeIds) {
     const course = courses[scope.tracks.get(topic)]; course.selectedTopics++;
     if (known.has(topic)) continue;
     const cost = price(topic), day = activation.get(topic), category = course.categories[scope.categories.get(topic)];
+    if (cost.fallback) course[day > today ? 'futureEstimatedTopics' : 'estimatedTopics'].push({ topicId: topic, ...cost });
     if (day > today) {
       course.futureRemainingTopics++;
       if (positive(cost.baseXp)) course.futureLessonBaseXp += cost.baseXp;
@@ -491,6 +530,8 @@ export function calculateForecast(inputs, options = {}) {
   if (values.some(c => c.unknownCosts.length)) warnings.push('Some unfinished lessons have no usable estimate.');
   if (growth.reason) warnings.push(growth.reason);
   if (growth.total.unknownCosts) warnings.push(`Historical growth is a lower bound: ${growth.total.unknownCosts} topics have no usable XP estimate.`);
+  const estimated = new Set([...growth.total.estimatedTopics, ...values.flatMap(c => c.estimatedTopics)].map(item => item.topicId));
+  if (estimated.size) warnings.push(`${estimated.size} ${estimated.size === 1 ? 'lesson uses' : 'lessons use'} fallback XP estimates.`);
   if (retry === null) warnings.push('No successful dated lessons available to estimate retries.');
   if (totals.missingBases) warnings.push('Recent finished attempts are missing base XP.');
   if (totals.missingTiming) warnings.push('Some recent attempts have incomplete recorded time.');
@@ -499,8 +540,10 @@ export function calculateForecast(inputs, options = {}) {
   const forecast = { basis: inputs.basis, capturedAt: inputs.capturedAt, scope: scopeOptions,
     inventory: { selectedTopics: scope.nodeIds.size, roots: scope.roots.size, remainingTopics,
       remainingLessonBaseXp: sum('remainingLessonBaseXp'), unknownCosts: values.flatMap(c => c.unknownCosts),
+      estimatedTopics: values.flatMap(c => c.estimatedTopics),
       dueThrough: new Date(today * DAY).toISOString().slice(0, 10), futureRemainingTopics: sum('futureRemainingTopics'),
-      futureLessonBaseXp: sum('futureLessonBaseXp'), futureUnknownCosts: values.flatMap(c => c.futureUnknownCosts) },
+      futureLessonBaseXp: sum('futureLessonBaseXp'), futureEstimatedTopics: values.flatMap(c => c.futureEstimatedTopics),
+      futureUnknownCosts: values.flatMap(c => c.futureUnknownCosts) },
     pace: { observedFrom: new Date(start).toISOString(), observedThrough: new Date(end).toISOString(), observedDays: d,
       ...totals, workingMinutes, baseXpPerDay: pace, activeMinutesPerDay: d ? workingMinutes / d : null,
       baseXpPerActiveMinute: positive(workingMinutes) && !totals.missingTiming && !totals.missingBases ? totals.baseXp / workingMinutes : null,

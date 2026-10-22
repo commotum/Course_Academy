@@ -17,11 +17,13 @@ L   = sum_c L_c
 
 Use existing engine preparation evidence to exclude satisfied lessons. Count unfinished lessons at full base initially; prefer an existing attempt's frozen base. Keep future-only lessons separate from `L`. Known future OHW is not today's backlog.
 
+For each lesson's price, use a saved attempt's base first (prefer the active attempt, otherwise the latest finished attempt), then stored estimated duration, then the existing content estimator. If those cannot supply XP, use the median of directly priced lessons with the same knowledge-point count; if no such peers exist, use the overall lesson median. Record the fallback source, sample size and affected topic. Fallbacks never become samples for other fallback estimates. This is forecast-only: do not change lesson content, stored prices or XP awards. With no usable peer prices at all, retain an explicit unknown cost.
+
 ## 2. Average daily workload growth
 
 Use the **full available historical course record through today**, not only the latest seven or 28 days. Assignment due dates establish when course work became required, including past assignments imported later. Recorded target/queue history supplies standing-list additions. Future due dates never enter the historical numerator or denominator.
 
-Map that history through the same graph selection, layer cutoff, prerequisite depth and course tracks. Count each physical topic at its earliest introduction, rather than counting it again for another assignment, a queue/target overlap, prerequisite promotion, or course-track transfer. Exclude work already known before its historical introduction; do not exclude historical work merely because it has been learned by today. Undated opening inventory has no known arrival date and is not treated as a new arrival.
+Map that history through the same graph selection, layer cutoff, prerequisite depth and course tracks. Count each physical topic at its earliest introduction, rather than counting it again for another assignment, a queue/target overlap, prerequisite promotion, or course-track transfer. Exclude work already known at or before its historical introduction, before applying any fallback XP estimate; do not exclude historical work merely because it has been learned by today. Undated opening inventory has no known arrival date and is not treated as a new arrival.
 
 ```text
 g_c = newly required lesson base XP introduced historically in track c
@@ -83,7 +85,7 @@ T_goal    = B / (s_goal - k)
 catch-up date = now + T days
 ```
 
-These are the first intersections of the average cumulative curves. If today's backlog is already satisfied, return caught up now even if more assignments are due tomorrow. For positive backlog, a pace at or below `k` does not catch up under the assumed averages. Unknown costs in today's backlog prevent a full-backlog date. Missing historical prices are listed explicitly: their known subtotal gives a lower-bound growth rate, and any date derived from it is labeled optimistic. Both scenarios use the same workload, growth and overhead assumptions.
+These are the first intersections of the average cumulative curves. If today's backlog is already satisfied, return caught up now even if more assignments are due tomorrow. For positive backlog, a pace at or below `k` does not catch up under the assumed averages. Include fallback lesson prices in both inventory and growth, with a simple label such as “3 lessons use fallback XP estimates.” Only costs still unknown after the fallback prevent a full-backlog date; unresolved historical costs give a labeled lower-bound growth rate and an optimistic date. Both scenarios use the same workload, growth and overhead assumptions.
 
 Allocate review/other overhead to course tracks where attributable and split global overhead by observed non-quiz shares. Course `B_c` and `k_c` use the same formulas with `L_c`, `g_c`, and `r_c`; they sum to the overall values. Use one shared study budget, not the full daily pace independently for each course.
 
@@ -94,7 +96,7 @@ Allocate review/other overhead to course tracks where attributable and split glo
 | Topic scope, tracks and prerequisite closure | `learner/targets`, `learner/queue`, `topic/next`, curriculum membership, linked assignments and mapped topic coverage; shared Targets graph code. |
 | Current versus future work and full course dates | `learner/assignments`, `activity/due`, `activity/course`, nested assignment topic coverage. Use the assignment's local calendar date, not its import date. |
 | Remaining lesson state and historical known-before evidence | Progress learned/legacy repetitions, completed lesson/review evidence and original completion dates, using engine preparation semantics and prerequisite ancestry. |
-| Lesson bases | `learner-task/xp-base` for an existing attempt; otherwise existing `base_xp::activity_base` and `activity/expected-seconds`/content estimator. |
+| Lesson bases | `learner-task/xp-base` for an existing attempt; otherwise existing `base_xp::activity_base` and `activity/expected-seconds`/content estimator. Forecast-only fallback uses `topic/knowledge-points` counts and directly priced peer lessons. |
 | Pace, retries, quizzes, reviews and goal conversion | Owned tasks, activity type/topic, `learner-task/status`, `learner-task/xp-base`, `learner-task/xp-earned`, original `learner-task/finished-at` or dated terminal history. |
 | Actual active minutes | Existing task-item timing/status intervals, working-ended cutoff and reliably dated saved durations; never add item time to the parent aggregate. |
 | Standing additions | Retained target/queue membership and graph-association history; unknown initial import dates are not invented historical arrivals. |

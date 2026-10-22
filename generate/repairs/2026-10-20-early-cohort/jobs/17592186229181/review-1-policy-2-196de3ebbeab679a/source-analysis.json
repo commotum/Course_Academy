@@ -1,0 +1,68 @@
+{
+  "skill": "Constructing and Solving a Dilution Model: Inflow Equals Outflow",
+  "learner_operation": "Infer nutrient entry cr and mixed outflow rQ/V, form and solve Q\u2032=cr-rQ/V with Q(0)=Q0, then select the matching expression; moderate cases also evaluate at t and round.",
+  "reasoning_steps": [
+    "Constant volume follows from equal positive inflow and outflow.",
+    "Multiply concentration by flow for mass entry; divide current amount by volume for concentration at exit.",
+    "Solve constant-coefficient first-order linear ODE: Q(t)=cV+(Q0-cV)exp(-rt/V).",
+    "Apply initial condition; select one of five mathematical radio options, optionally evaluate and round to two decimals."
+  ],
+  "response_contract": "All ten captured questions use a single five-choice math radio bank. Canonical example lacks answer fields. Easy cases request an expression; moderate cases an evaluated amount.",
+  "difficulty": "Requested easy: expression identification with small rational/decimal coefficients, fixed volume; no variable-volume or overflow stages.",
+  "invariants": [
+    "Equal positive inflow/outflow r and constant positive V; complete mixing.",
+    "Positive incoming concentration: tutorial explicitly contrasts this lesson with clean-water dilution.",
+    "Initial mass nonnegative; correct expression must satisfy both ODE and initial value.",
+    "Keep expression identification vs numerical evaluation aligned with supported difficulty.",
+    "Preserve five-choice radio response and complementary plus constant-particular solution method."
+  ],
+  "permitted_variations": [
+    "V, r, concentration, initial mass and contextual nouns may vary consistently.",
+    "The sign of Q0-cV is incidental: both increasing and decreasing approaches preserve the method (decreasing numerical source 8f9ca797-1282-5c7a-958a-6e7a8b023c5c).",
+    "Eligible correct expression position, distractor coefficients, sign, rate and asymptote assignments may vary; do not always attach correctness to a recognizable bank layout.",
+    "Source easy banks include two distinct profiles: incorrect-rate/sign/initial-mass distractors, and common-rate alternatives all satisfying the initial condition. These require distinguishing rate and/or asymptote, not just initial value.",
+    "For numeric cases, positive evaluation time may vary; unit/context changes are irrelevant if numeric parameters fixed."
+  ],
+  "source_refs": [
+    "6b62d830-be21-5734-8a12-115b6a5136bf",
+    "872cac41-3a52-503a-bac8-64cc582ee5f1",
+    "0b497833-a441-5b14-bcbb-b0d828ec78fc",
+    "3ea5d5e7-af5c-553a-9742-7d54f2384984",
+    "55a40904-7261-506e-bb45-5a9e0fad5627",
+    "e940f8bd-b1c9-5052-8127-7c721b39ac69",
+    "36b5068a-10fd-5970-abe3-44c13a56330c",
+    "8f9ca797-1282-5c7a-958a-6e7a8b023c5c",
+    "23f15773-7029-5dc4-9ea6-d17c6a8daaa9",
+    "554f59f6-c41f-55e2-8f84-8c2aab7670ec",
+    "63623e2d-9a1a-53b1-a242-66f71be1ef8a",
+    "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698: Step 1 concentration times flow; Step 2 volume remains constant; Step 3 initial value problem",
+    "canonical 6b62d830-be21-5734-8a12-115b6a5136bf: Step 4 complementary plus constant particular solution, then Q(0)=7"
+  ],
+  "gaps": [
+    "0b497833-a441-5b14-bcbb-b0d828ec78fc has no captured correct link, solution or difficulty: independent formula gives 11.45 kg, present in its bank; this is inference, not captured key.",
+    "Canonical example has no captured answer bank.",
+    "No images in source."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229181/review-0-policy-2-93d9391d3687b946/source-analysis.json",
+    "source_hash": "ad1f38de8941a2ebd50cb9df452cbcbd2a32d2f2b576c7cd45ae8ea5f9715072",
+    "verification": "Confirmed all ten question IDs, complete banks, equal flow and concentration data, canonical Step 4 and tutorial passages against current captured original material before inspecting author package."
+  },
+  "confirmed_lesson_passages": [
+    {
+      "reference": "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698",
+      "passage": "In the previous lesson, we focused on dilution problems in which the incoming solution contained none of the substance being modeled. In those cases, the rate at which the substance entered the container was zero.\n\nIn many practical situations, however, the incoming solution *does* contain some amount of the substance. When this happens,\n\n- the rate of entry is no longer zero, and\n\n- the resulting differential equation takes the form of a first-order linear differential equation.\n\nFor example, suppose a storage tank initially holds $6"
+    },
+    {
+      "reference": "tutorial Step 1",
+      "passage": "The rate of chlorine entering is the concentration times the flow rate:"
+    },
+    {
+      "reference": "canonical 6b62d830-be21-5734-8a12-115b6a5136bf Step 4",
+      "passage": "This is a first-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions."
+    }
+  ]
+}

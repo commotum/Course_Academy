@@ -1,29 +1,30 @@
-# Current repair state — pass 151
+# Current repair state — pass 155
 
-Read current feedback and all five retained findings; history has 151 earlier
-attempts. Reused completed repairs and original source analysis. Rechecked the
-lesson, canonical example and all 17 complete source questions. No new runtime
-construction failure is demonstrated.
+Preserved the existing candidate, all source families, completed repairs, strict
+regressions and staged inventory replacements. Read feedback and all five history
+findings. No new current-generator defect is demonstrated.
 
-First reproduction:
+First command:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical v2 banks retain the sign-only extremum shortcut.
-The 64/64 selection witness is a possible learner history, not observed history.
+Exit 1: five reproduced historical banks retain the sign-only extremum shortcut.
+The 64/64 selection witness is a possible learner history, not observed usage.
 
 Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-151`
-Exit 1 solely for 591f580cadb749294588. Four generator regressions pass:
-17 source banks, zero-root/fractional-bare cases, counterfactuals and 14 records
-across three batches after shared delivery. Native grading: 7 accepted and
-28 rejected, no unexpected outcomes. Relocation and dependency checks pass.
-Retained actual-UI screenshot visually reinspected. Staged replacement mapping
-and current evidence-root-relative inventory paths verified.
-Runtime, manifest, source and inventory remain unchanged. No publication or
-database change was performed. Evidence: `evidence/repair-151/`.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-155`
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass:
+17 complete source banks; fractional-bare and zero-root cases; controlled
+counterfactuals; 14 delivered records in three batches; 35 native grader checks
+(7 accepted, 28 rejected). Relocation and exact dependencies pass. Runtime,
+manifest, source and inventory hashes match retained evidence. Staged replacement
+mapping and evidence paths relative to author-155 were verified. Reinspected
+unchanged actual-UI screenshot evidence/repair-3/render/question-001.png.
 
-Next required step: separate inventory remediation using
-`evidence/repair-3/inventory-repair-proposal.json`, fresh capture, then strict
-revalidation. This task expressly prohibits that database change. Keep the
-regression failing; do not replace captured records with proposed records.
-Unchanged retries cannot repair this stored-pool finding. Preserve the runtime
-unless new evidence demonstrates a current-generator defect.
+No runtime, database, engine, publication or other-job changes. No test weakened.
+Evidence: evidence/repair-155/commands.json, results.json and scope-resolution.json.
+
+The only unresolved action is outside this author session's authorization:
+separate inventory remediation using the already verified proposal at
+`evidence/repair-3/inventory-repair-proposal.json`, followed by fresh capture and
+the strict regression. Do not repeat an identical author pass without changed
+inventory or a newly demonstrated runtime defect. A generator edit cannot alter
+stored question banks. Status remains unsupported, not a passing delivery claim.
