@@ -1,0 +1,284 @@
+{
+  "skill": "Infer rank from a column-space basis or nullity from a parametric null space, identify the column count, then use rank + nullity = n to find the complementary dimension.",
+  "reasoning_steps": [
+    "Easy: read n from m by n and count r vectors in an asserted column-space basis; compute n-r.",
+    "Moderate: count vector components n; separate parameter coefficient vectors and establish their independence to find nullity d; compute n-d.",
+    "Select the resulting nonnegative integer from the complete five-choice radio bank."
+  ],
+  "response_contract": "All 15 target questions have one selection radio field, five distinct math-valued integer choices, and one correct answer. Canonical example has no captured answer field.",
+  "difficulty": "Requested easy corresponds to the column-space-basis family; moderate parametric-null-space cases are separately supported source cases.",
+  "invariants": [
+    "Rank-nullity uses column count, not row count.",
+    "A column-space basis cardinality r must satisfy 0 <= r <= min(m,n).",
+    "A null-space parameterization has dimension equal to coefficient-matrix rank, not necessarily the number of written parameters.",
+    "The solution must explain the inferred dimension before substitution and subtraction.",
+    "No need to row-reduce A, prove invertibility, or construct A."
+  ],
+  "permitted_variations": [
+    "Vary m, n, and basis cardinality independently subject to feasibility; both m=r and m>r are source-supported.",
+    "Vary the numeric complementary dimension, distractor values and correct option position; the source answer or option position is incidental.",
+    "Within moderate, vary coefficient values, parameter names and support positions while preserving short transparent independence and comparable size.",
+    "Changing m with n,r fixed is irrelevant to the easy answer; changing n or r changes the answer. Changing independent coefficient values without changing dimension preserves the moderate answer."
+  ],
+  "essential_vs_incidental": "The easy target nullity and moderate target rank are justified by the two inverse inference methods and observed difficulty split. Particular dimensions, parameter names, locations of zero entries, choice positions and bank profiles are incidental; fixing any of these needs additional justification.",
+  "source_refs": [
+    "source.json material.lessons activity 45b54b13-346d-538c-876e-285764d59813, tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: \"number of pivot columns plus ... non-pivot columns ... total number of columns\" and \"rank(A) + nullity(A) = n\".",
+    "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: \"n=4, since this is the number of components\"; displayed decomposition into x_2 and x_3 coefficient vectors.",
+    "canonical 10cc01a6-af19-5340-9743-ade4d5e252dc: n=5, basis size 3, nullity 2.",
+    "67b28820-a085-5f18-884d-33b6d40e4f35",
+    "a160f7a5-3a4d-5809-8834-75195b7301e7",
+    "a8591660-5b8e-5e5d-b7c5-293cb529794e",
+    "c5556444-b76f-5774-b94f-93b8f2189ca9",
+    "7d182fc6-16c7-589f-980f-eb790356faa5",
+    "5fad5527-7b65-5529-b82c-0602148a162d",
+    "98e375b6-3e6d-5b62-8ce3-1cf16ed1d92d",
+    "0131f756-450c-5ffd-bd43-d0c24b54342a",
+    "4a3cbd65-d830-59dc-8511-5f72908033d3",
+    "64b1d8f8-0962-5304-966e-2b0899590d0f",
+    "900f650b-6d73-5995-901b-d7a17074a6aa",
+    "5e7c8be1-d271-506d-bfc9-fbf1881a88d8",
+    "94febb74-e81c-5137-a80c-9d7fa83538e0",
+    "7663d433-7983-5195-82f9-f8b3b6b0d6aa",
+    "1b45e803-c138-5bcf-9207-424394814f56"
+  ],
+  "source_cases": [
+    {
+      "id": "67b28820-a085-5f18-884d-33b6d40e4f35",
+      "ma_id": "q-35306",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\{\\begin{bmatrix}2{x}_{2} \\\\ {x}_{2} \\\\ {x}_{3} \\\\ {x}_{2}+{x}_{3}\\end{bmatrix}\\,|\\,\\,{x}_{2},{x}_{3}\\in R\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{2}\\begin{bmatrix}2 \\\\ 1 \\\\ 0 \\\\ 1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ 0 \\\\ 1 \\\\ 1\\end{bmatrix}\\,|\\,\\,{x}_{2},{x}_{3}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=2.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =4 \\\\ \\text{rank}(A) & =4-2 \\\\  & =2.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "1",
+        "5",
+        "2",
+        "4",
+        "3"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "a160f7a5-3a4d-5809-8834-75195b7301e7",
+      "ma_id": "q-35433",
+      "problem": "Let $A$ be a $3\\times 6$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=6,$ and since $B$ is formed by $3$ vectors, $\\text{rank}(A)=3.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 3+\\text{nullity}(A) & =6 \\\\ \\text{nullity}(A) & =6-3 \\\\ \\text{dim(Null}(A)) & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "0",
+        "2",
+        "4",
+        "1",
+        "3"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "a8591660-5b8e-5e5d-b7c5-293cb529794e",
+      "ma_id": "q-141230",
+      "problem": "Let $A$ be a $5\\times 7$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3},{b}_{4}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=7,$ and since $B$ is formed by $4$ vectors, $\\text{rank}(A)=4.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 4+\\text{nullity}(A) & =7 \\\\ \\text{nullity}(A) & =7-4 \\\\ \\text{dim(Null}(A)) & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "1",
+        "3",
+        "2",
+        "4",
+        "0"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "c5556444-b76f-5774-b94f-93b8f2189ca9",
+      "ma_id": "q-142486",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\left\\{\\begin{bmatrix}{x}_{1} \\\\ {x}_{2}-{x}_{1} \\\\ {x}_{3} \\\\ {x}_{1}-{x}_{3}\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\right\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\left\\{{x}_{1}\\begin{bmatrix}1 \\\\ -1 \\\\ 0 \\\\ 1\\end{bmatrix}+{x}_{2}\\begin{bmatrix}0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ 0 \\\\ 1 \\\\ -1\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\right\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=3.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =4 \\\\ \\text{rank}(A) & =4-3 \\\\  & =1.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "3",
+        "4",
+        "1",
+        "2",
+        "0"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "7d182fc6-16c7-589f-980f-eb790356faa5",
+      "ma_id": "q-142487",
+      "problem": "Let $A$ be a $6\\times 8$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3},{b}_{4},{b}_{5}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=8,$ and since $B$ is formed by $5$ vectors, $\\text{rank}(A)=5.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 5+\\text{nullity}(A) & =8 \\\\ \\text{nullity}(A) & =8-5 \\\\ \\text{dim(Null}(A)) & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "6",
+        "5",
+        "3",
+        "2",
+        "4"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "5fad5527-7b65-5529-b82c-0602148a162d",
+      "ma_id": "q-35305",
+      "problem": "Let $A$ be a $3\\times 5$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ and since $B$ is formed by $3$ vectors, $\\text{rank}(A)=3.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 3+\\text{nullity}(A) & =5 \\\\ \\text{nullity}(A) & =5-3 \\\\ \\text{dim(Null}(A)) & =2.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "4",
+        "3",
+        "2",
+        "0",
+        "1"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "98e375b6-3e6d-5b62-8ce3-1cf16ed1d92d",
+      "ma_id": "q-35434",
+      "problem": "Find $\\text{rank}(A)$ given that\n\n$$\n\\text{Null}(A)=\\left\\{\\begin{bmatrix}{x}_{1}+2{x}_{2} \\\\ {x}_{2}-{x}_{3} \\\\ -3{x}_{1}+{x}_{3} \\\\ {x}_{1}+{x}_{2}+{x}_{3}\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\right\\}.\n$$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\left\\{{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ -3 \\\\ 1\\end{bmatrix}+{x}_{2}\\begin{bmatrix}2 \\\\ 1 \\\\ 0 \\\\ 1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ -1 \\\\ 1 \\\\ 1\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\right\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=3.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =4 \\\\ \\text{rank}(A) & =4-3 \\\\  & =1.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "5",
+        "1",
+        "4",
+        "3",
+        "2"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "0131f756-450c-5ffd-bd43-d0c24b54342a",
+      "ma_id": "q-79352",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\{\\begin{bmatrix}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3} \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ 0 \\\\ 1 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=3.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =4 \\\\ \\text{rank}(A) & =4-3 \\\\  & =1.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "4",
+        "2",
+        "1",
+        "3",
+        "0"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "4a3cbd65-d830-59dc-8511-5f72908033d3",
+      "ma_id": "q-142485",
+      "problem": "Let $A$ be a $4\\times 5$ matrix. If $B=\\{{b}_{1},{b}_{2}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ and since $B$ is formed by $2$ vectors, $\\text{rank}(A)=2.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 2+\\text{nullity}(A) & =5 \\\\ \\text{nullity}(A) & =5-2 \\\\ \\text{dim(Null}(A)) & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "6",
+        "1",
+        "4",
+        "3",
+        "5"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "64b1d8f8-0962-5304-966e-2b0899590d0f",
+      "ma_id": "q-139982",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\{\\begin{bmatrix}{x}_{1} \\\\ -{x}_{2} \\\\ {x}_{2}+{x}_{3} \\\\ {x}_{2}\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}0 \\\\ -1 \\\\ 1 \\\\ 1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ 0 \\\\ 1 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=3.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =4 \\\\ \\text{rank}(A) & =4-3 \\\\  & =1.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "1",
+        "3",
+        "4",
+        "0",
+        "2"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "900f650b-6d73-5995-901b-d7a17074a6aa",
+      "ma_id": "q-141232",
+      "problem": "Let $A$ be a $6\\times 10$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3},{b}_{4}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=10,$ and since $B$ is formed by $4$ vectors, $\\text{rank}(A)=4.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 4+\\text{nullity}(A) & =10 \\\\ \\text{nullity}(A) & =10-4 \\\\ \\text{dim(Null}(A)) & =6.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "0",
+        "4",
+        "2",
+        "6",
+        "10"
+      ],
+      "correct": "6"
+    },
+    {
+      "id": "5e7c8be1-d271-506d-bfc9-fbf1881a88d8",
+      "ma_id": "q-142489",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\{\\begin{bmatrix}{x}_{1} \\\\ 0 \\\\ {x}_{1}+{x}_{2} \\\\ 0 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2}\\in R\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=2.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =5 \\\\ \\text{rank}(A) & =5-2 \\\\  & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "4",
+        "2",
+        "3",
+        "1",
+        "5"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "94febb74-e81c-5137-a80c-9d7fa83538e0",
+      "ma_id": "q-141229",
+      "problem": "Let $A$ be a $4\\times 5$ matrix. If $B=\\{{b}_{1},{b}_{2},{b}_{3}\\}$ is a basis of $\\text{Col}(A)$, find $\\text{dim(Null}(A)).$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ and since $B$ is formed by $3$ vectors, $\\text{rank}(A)=3.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 3+\\text{nullity}(A) & =5 \\\\ \\text{nullity}(A) & =5-3 \\\\ \\text{dim(Null}(A)) & =2.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/easy",
+      "bank": [
+        "5",
+        "1",
+        "3",
+        "4",
+        "2"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "7663d433-7983-5195-82f9-f8b3b6b0d6aa",
+      "ma_id": "q-79350",
+      "problem": "Find $\\text{rank}(A)$ given that\n\n$$\n\\text{Null}(A)=\\{\\begin{bmatrix}-{x}_{1}+{x}_{2} \\\\ {x}_{2}-{x}_{3} \\\\ {x}_{1}+{x}_{3} \\\\ 0 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}.\n$$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{1}\\begin{bmatrix}-1 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}1 \\\\ 1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}+{x}_{3}\\begin{bmatrix}0 \\\\ -1 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2},{x}_{3}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=3.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =5 \\\\ \\text{rank}(A) & =5-3 \\\\  & =2.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "3",
+        "4",
+        "1",
+        "0",
+        "2"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "1b45e803-c138-5bcf-9207-424394814f56",
+      "ma_id": "q-79351",
+      "problem": "Find $\\text{rank}(A)$ given that $\\text{Null}(A)=\\{\\begin{bmatrix}{x}_{1}+{x}_{2} \\\\ {x}_{1}-{x}_{2} \\\\ 0 \\\\ {x}_{1} \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2}\\in R\\}.$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, since \n\n$$\n\\text{Null}(A)=\\{{x}_{1}\\begin{bmatrix}1 \\\\ 1 \\\\ 0 \\\\ 1 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}1 \\\\ -1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}\\,|\\,\\,{x}_{1},{x}_{2}\\in R\\}\n$$\n\nwe conclude that $\\text{nullity}(A)=2.$\n\nTherefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =5 \\\\ \\text{rank}(A) & =5-2 \\\\  & =3.\\end{aligned}\n$$",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "1",
+        "3",
+        "2",
+        "0",
+        "4"
+      ],
+      "correct": "3"
+    }
+  ],
+  "evidence_gaps": [
+    "No target question depends on an image. Prerequisite image contents are outside the target replay contract. Canonical example has no captured bank."
+  ],
+  "inference_notes": [
+    "Variation permissions and feasibility constraints are independent mathematical/pedagogical inferences from the cited source, not author claims."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-0-policy-2-7c4a527c23b0b64b/source-analysis.json",
+    "confirmed": "All 15 problem/solution/bank passages checked exactly against current source; lesson rank-nullity passage read directly. Source hash matched by runner."
+  }
+}

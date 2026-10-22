@@ -20,3 +20,12 @@ Before repair, the review's reproduction script was copied into `checks/original
 The native grader checks all five alternatives on 18 independently solved records (18 accepted, 72 rejected). UI uses the unmodified application, with five batch members, two repaired five-component source examples and a four-component three-parameter display. The renderer initially used its default limit of six; it was rerun with the explicit limit of eight so both layouts and all requested representatives are covered. Screenshots were visually inspected; results are saved in `visual-inspection.json`.
 
 No database writes, publication, image publication or service calls occurred. Shared tools run read-only; generated evidence and relocation files remain under the workspace.
+
+Additional bounded checks after visual inspection:
+
+```
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_scroll.py
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/summarize.py
+```
+
+`check_scroll.py` reuses the shared renderer and adds only scroll geometry observations on the two long three-vector solutions. `summarize.py` reads saved evidence, records actual UI positions and runtime hashes, and writes `final-validation.json`; it does not regenerate or modify the runtime package.
