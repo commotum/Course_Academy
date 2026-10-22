@@ -1,0 +1,32 @@
+# 5. Plot Extraction
+
+Analyze the plot sets belonging to each extracted question template, preserving their order and roles in the prompt, answer choices, and worked solution. Include geometric and other mathematical diagrams, even when they have no coordinate axes.
+
+1. Describe each plot specifically: representation type, objects and shapes, layout, colors, line styles, labels, marked features, guides, arrows, spatial relationships, and the mathematical idea illustrated; do not generalize yet.
+2. Write one brief generalized description of the plot set's shared visual pattern and instructional purpose.
+3. List every plot's components: background, coordinate systems and scales, curves or shapes, text and mathematical values, markers, annotations, styling, and placement, including their connections to the question and answer.
+4. Extract one reusable plot specification, identifying fixed, variable, optional, and conditional components and how they must change with the question's parameters.
+
+Include mathematical content embedded in plots. Distinguish meaningful geometry, scale, position, and color from incidental styling; preserve relationships needed to solve the question. Record source asset references, placement, dimensions, and any unreadable details rather than guessing.
+
+Identify assets that can be reused unchanged and plots that must be generated for each variant. Carry forward or revise the template's **none**, **light**, **moderate**, or **heavy** plot rating using the extracted evidence.
+
+Keep labels, plotted values, correct answers, and solution plots tied to the same mathematical parameters. Attach the plot specification and source examples to the extracted template, then return to [Template Generator](6-template-generator.md).
+
+Distinguish the diagram's required relationships from the source instance's particular selected objects and locations. Vary only the geometric or relational slots defined by Template Extraction, preserving their instructional roles and workload. Derive highlighted or queried objects, label assignments, and associated table entries from the same sampled targets. Preserve topology, orientation, or placement when it is part of the method; do not invent diagram variations independently to add visual variety.
+# 7. Plot Generator
+
+Use the plot specification from [Plot Extraction](5-plot-extraction.md) when [Template Generator](6-template-generator.md) needs new plots. Implement shared Python rendering functions in the knowledge point's script. Generate plots programmatically through Matplotlib or TikZ only.
+
+1. Use Matplotlib by default; choose TikZ when the extracted diagram needs specialized geometric constructions, label placement, or mathematical typesetting.
+2. Implement the reusable background, coordinate systems, shapes, curves, styling, markers, and annotations, with optional components controlled by the template.
+3. Accept the question's sampled parameters and computed mathematical data, deriving positions, labels, scales, and plotted values from that same instance.
+4. Render the required prompt, answer-choice, and worked-solution plots, using each choice's own mathematical data where choices are plots.
+5. Save assets with reproducible names and return their paths and placement roles to the template generator.
+6. Compare rendered variants with source examples, checking mathematical accuracy, visible labels, bounds, scale, clipping, overlap, and readability at the intended display size.
+
+Use a helper such as `render_plots(instance, output_dir)` that returns an asset map for the prompt, choices, and solution. Reuse unchanged assets. Plot rendering must not independently resample question parameters or change the correct answer; convert exact values to numerical coordinates only when rendering requires it.
+
+For TikZ, have Python fill a reusable TikZ template with the same instance data and compile it into a plot asset. Keep both renderers behind the same helper interface and record the selected renderer with each plot template. Do not implement a direct SVG renderer.
+
+Preserve meaningful geometry and instructional cues, including whether figures are drawn to scale. Keep correct and distractor plots consistent in presentation. Record rendering settings and dependency versions with the instance, and return completed assets to [Template Generator](6-template-generator.md) for assembly and validation.
