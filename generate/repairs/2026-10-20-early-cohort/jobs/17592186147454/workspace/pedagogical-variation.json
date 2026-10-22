@@ -1,0 +1,1047 @@
+{
+  "learner_operation": "Normalize the ODE; identify p,q,n; divide by y^n and use z=y^(1-n); solve the linear equation with an integrating factor; recover the nonzero real family and select its equation.",
+  "fixed_features": [
+    {
+      "feature": "Bernoulli exponent and coefficient function types within each source profile",
+      "justification": "These fix the substitution, real inverse and elementary integration technique; see tutorial 238cafad-c43b-5970-af70-5ce0cab5442c and instructional-account.md."
+    },
+    {
+      "feature": "One five-choice radio field, exactly one key",
+      "justification": "Every complete captured practice bank uses this response contract. A fixed correct-choice count is intrinsic to radio selection."
+    },
+    {
+      "feature": "Hard profiles require normalization before substitution",
+      "justification": "Retains the observed distinction between moderate standard-form prompts and hard nonstandard equations."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Qualifying general-solution formula",
+      "eligible_variation": "All five neighboring-equation formulas can qualify with the bank held fixed. The selected coefficient pair changes the displayed ODE, key and worked solution.",
+      "observed": "All five roles verified independently in all ten profiles, before and after shared delivery filtering."
+    },
+    {
+      "role": "Forcing sign/coefficient and integrating-factor exponent",
+      "eligible_variation": "a has three positive values; b has six signed nonzero values. These change homogeneous and particular terms without adding integration methods.",
+      "observed": "The controlled/boundary tests cover every a value and every b value in every profile. Autonomous q-109029 is selected 4/24 times in the small ordinary sample."
+    },
+    {
+      "role": "Answer position",
+      "eligible_variation": "Author order and actual UI order vary independently of the fixed source position.",
+      "observed": "Controlled authored keys have multiple positions per profile. Seven actual UI previews cover positions 1 through 5."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source replay",
+      "sample_refs": [
+        "evidence/source-replays.json",
+        "evidence/source-replay-results.json"
+      ],
+      "result": "10 complete banks, 50/50 choices, original keys and worked stages matched after TeX sizing normalization. q-106074 remains a documented incomplete erroneous bank."
+    },
+    {
+      "case": "Fixed-bank controlled cases",
+      "sample_refs": [
+        "evidence/controlled-records.json",
+        "evidence/regression-math.json",
+        "evidence/delivery-summary.json",
+        "evidence/shortcut-results.json"
+      ],
+      "result": "Every option qualifies in turn within each of 10 fixed banks; all 50 assignments survive actual delivery filtering. Seven coefficient-defined semantic equations per profile, ignoring seeds, UUIDs, banks and coordinate shifts."
+    },
+    {
+      "case": "Ordinary sampling and final batch",
+      "sample_refs": [
+        "evidence/ordinary-records.json",
+        "evidence/batch.json",
+        "evidence/delivery-batch/accepted.json"
+      ],
+      "result": "24 ordinary moderate records plus a five-record CLI batch. Final batch has five accepted records and no duplicates. All six complete moderate families remain eligible in ordinary generation."
+    },
+    {
+      "case": "Stored generated inventory",
+      "sample_refs": [
+        "affected-inventory.json",
+        "evidence/generated-records.json",
+        "evidence/inventory-results.json"
+      ],
+      "result": "All one captured generated member reproduced and affected. Eleven original source questions are not relabeled generated."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change selected (a,b) within one fixed bank, holding profile and coordinate shift fixed",
+      "expected": "Each formula can be the correct solution; prompt and worked stages must change and the previous choice must be rejected under its new field-owned identity.",
+      "observed": "All 50 controlled records have the unique independently residual-verified key; complete native grader banks pass. All five assignments per profile survive delivery.",
+      "status": "passed",
+      "justification": "The selected equation coefficients determine the integrating factor and particular integral, not the visible bank identity.",
+      "sample_refs": [
+        "evidence/controlled-records.json",
+        "evidence/regression-math.json",
+        "evidence/grader-report.json",
+        "evidence/delivery-summary.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-109154 q_scale=1 -> 2 with p,n,shift fixed",
+      "expected": "The particular term changes; the original solution is no longer valid for the changed equation.",
+      "observed": "Both formerly rejected API coefficient cases now generate and pass independent math/native checks. Fixed-bank target 0->1 is the corresponding same-bank b=1->2 change; rendered previews 2 and 3 show the changed equation and answer.",
+      "status": "passed",
+      "justification": "Multiplying q by 2 preserves the Bernoulli substitution and power-rule integration workload.",
+      "sample_refs": [
+        "evidence/coefficient-counterfactual.json",
+        "evidence/controlled-records.json",
+        "evidence/grader-report.json",
+        "evidence/render/question-002.png",
+        "evidence/render/question-003.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Seed 98301 -> 73429 with the entire q-109154 instance fixed",
+      "expected": "Question, choice values and key unchanged",
+      "observed": "Entire question object is equal, including the worked solution and field-owned identities.",
+      "status": "passed",
+      "justification": "Seed is generation metadata once all mathematical and bank parameters are specified.",
+      "sample_refs": [
+        "evidence/regression-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-106073 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-106073 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-106073 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-106073 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-106073 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-106073 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109026 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109026 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109026 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109026 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109026 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109026 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109027 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109027 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109027 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109027 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109027 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109027 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109028 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109028 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109028 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109028 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109028 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109028 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109029 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109029 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109029 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109029 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109029 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109029 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109154 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109154 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109154 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109154 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109154 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109154 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109158 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109158 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109158 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109158 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109158 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109158 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109170 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109170 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109170 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109170 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109170 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109170 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109172 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109172 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109172 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109172 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109172 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109172 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109177 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109177 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109177 before_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "q-109177 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "shortest_formula",
+      "subgroup": "q-109177 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    },
+    {
+      "cue": "longest_formula",
+      "subgroup": "q-109177 after_filtering",
+      "scope": "within_template",
+      "strategy": "Choose the same indicated formula from the unchanged visible bank without reading the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every visible formula is keyed once in this fixed-bank controlled set, so bank-only cues succeed once out of five.",
+      "sample_refs": [
+        "evidence/shortcut-results.json",
+        "evidence/controlled-records.json"
+      ]
+    }
+  ],
+  "delivery_stages": {
+    "generator": "Every eligible coefficient pair has a nonresonant elementary integral; production samples five distinct pairs and independently chooses one target. There is no math rejection loop that removes role cases. CLI resamples duplicate full instances, up to 1000 seed attempts.",
+    "shared_filter": "check_delivery.py exercised on moderate, hard and the final five-record batch using supplied source and captured inventory. All controlled assignments survive.",
+    "learner_selection": "Read-only Rust selection model with explicit synthetic entity IDs confirms all five role cases have positive draw support in a positive-weight band before history exclusions. Actual histories and weights are unavailable; no prediction of future selected tasks is claimed.",
+    "sample_refs": [
+      "evidence/delivery-summary.json",
+      "evidence/selection-results.json",
+      "evidence/delivery-batch/delivery.json"
+    ]
+  },
+  "limitations": [
+    "Source q-106074 lacks a captured key/solution and has no mathematically valid supplied choice; it remains unresolved. No easy source supports an easy band.",
+    "No live learner history or live inventory queries. Captured inventory basis and synthetic selection limitations are explicit.",
+    "Controlled bank-only tests do not exhaust all conceivable human strategies. Mathematically verifying a candidate by substitution/differentiation is valid work, not an incidental cue."
+  ],
+  "claims": {
+    "fidelity": "10 complete source banks replayed, 50 choices preserved",
+    "correctness": "Independent visible-math differential residuals verify keys and reject all distractors in the tested records",
+    "grading": "Actual native learner grader exercised for each authored choice; final exact cases included",
+    "decision_variation": "All five formula roles exercised in every recognizable source profile and survive delivery; not inferred from aggregate answer balance",
+    "rendering": "Seven actual UI previews inspected; long displays corrected and final images checked"
+  },
+  "evidence": [
+    "instructional-account.md",
+    "repair-regressions.json",
+    "repair_check.py",
+    "validate_repair.py",
+    "shortcut_check.py",
+    "inventory_check.py",
+    "evidence/commands.md"
+  ]
+}

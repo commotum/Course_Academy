@@ -1,0 +1,15 @@
+# Author 381 result
+
+Status: unsupported. Finding `591f580cadb749294588` remains demonstrated in five captured stored questions. All four current-generator regressions pass. Preserve the completed implementation, executable regressions, original source identities, and staged replacement proposal.
+
+Instructional scope remains the existing account: eliminate x, solve for the parameter that zeros the remaining y coefficient, and distinguish a false residual equation from a redundant one. Canonical example `f2c7cfd3-da43-5208-bd0e-21692357fabe` obtains `(k+4)y=-5`; tutorial `e0c85152-daea-5a87-a3ba-81870558c7a2` defines inconsistency as no solutions and dependence as infinitely many solutions. Source `534e2a93-e71a-5475-894e-dfd5ca99a3a6` places its correct value inside the bank, supporting the completed repair of the extreme-option cue. The existing five-choice radio contract, difficulty bounds, role variation and zero-root support remain appropriate. No new construction defect is demonstrated, so no runtime edit is justified by this feedback.
+
+First executed `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`: exit 1, five affected records and 64/64 successes in the retained possible-history shortcut witness. Then executed `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-381`: exit 1 solely for that inventory finding. Exact subprocess commands and outputs are in `commands.json`.
+
+Verification covers all 17 source banks, valid zero roots, independent printed-math checks, relevant and irrelevant counterfactuals, and within-sign-group numeric-rank/display-position contrasts before and after shared delivery filtering (three small batches, 14 accepted records). Native grading accepts 7 correct choices and rejects 28 wrong choices. Exact installed dependencies and deterministic execution after relocation pass. Protected runtime, manifest, source and inventory hashes remain unchanged; the five staged replacement mappings remain verified and unapplied.
+
+Reused the unchanged actual UI rendering at `evidence/repair-3/render/rendering.json` and visually inspected `question-002.png`: prompt, five choices, elimination matrices and conclusion are readable and agree. Also inspected the source classification flowchart. No new renderer run was needed because the runtime and rendered records are unchanged.
+
+`affected-inventory.json` lists all five demonstrated historical defects; its evidence paths resolve relative to the supplied author-381 evidence root to `evidence/generated-records.json`. All non-source inventory records were tested; none are untested. The source evidence is unchanged and the old counterexample still applies.
+
+The review requests a separate inventory-remediation workflow for these stored records. This job prohibits database changes; editing the generator cannot alter their stored answer banks or selector eligibility. Keep the strict failure until that workflow remediates the pool and supplies a fresh capture. Nothing was published; no database, engine, or other job was changed.

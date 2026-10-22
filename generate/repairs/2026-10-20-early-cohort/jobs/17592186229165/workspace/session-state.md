@@ -1,12 +1,12 @@
-# Current state — author 504
+# Current state — author 508
 
-Read feedback and both retained findings; history has 504 events through attempt 503. No new generator defect or source change is reported. Preserved the repaired runtime, instructional account, strict regressions, staged correction and historical inventory evidence.
+Read feedback and both retained findings; history contains 508 events through attempt 507. The latest finding explicitly requests evidence installation, with no generator authoring. Preserved the repaired runtime, instructional account, strict regressions, staged correction and historical inventory evidence.
 
 Commands (job Python):
 
-- `checks/check_report_installation.py > evidence/report-repair/author-504-reproduction.log 2>&1` — exit 1. Required external report still fails with `decision_variation has an unresolved decision shortcut`. Local contract/schema validation and 26 current-generator record replays pass.
-- `checks/test_role_exchange.py > evidence/author-504-role-regression.log 2>&1` — exit 0. Retained reorder/transfer counterexamples, conditional shortcut probes, delivery filtering and 30 native grading checks pass.
-- `checks/verify_retained_state.py > evidence/author-504-retained-state.log 2>&1` — exit 0. All 55 staged artifacts and runtime/source hashes verified; eight independent mathematical cases pass. Prior source replay, inventory, relocation and actual-UI rendering evidence retained because runtime is unchanged.
+- `checks/check_report_installation.py > evidence/report-repair/author-508-reproduction.log 2>&1` — exit 1. Required external report still fails with `decision_variation has an unresolved decision shortcut`. Local contract/schema validation and 26 current-generator record replays pass.
+- `checks/test_role_exchange.py > evidence/author-508-role-regression.log 2>&1` — exit 0. Retained reorder/transfer counterexamples, conditional shortcut probes, delivery filtering and 30 native-grader checks pass.
+- `checks/verify_retained_state.py > evidence/author-508-retained-state.log 2>&1` — exit 0. All 55 staged artifacts and runtime/source hashes verified; eight independent mathematical cases pass. Prior source replay, inventory, relocation and actual-UI rendering evidence retained because runtime is unchanged.
 
 Results: `evidence/current-validation.json`. No runtime, engine, database, publication or external-file changes. No new independent approval claimed.
 
