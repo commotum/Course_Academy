@@ -1,0 +1,7 @@
+Preserved completed generator repairs. The latest strict inventory command was run first and exited 1: all five historical banks remain affected, with 64/64 successes in the retained possible-history witness.
+
+The retained recheck exited 1 only for finding 591f580cadb749294588. Four current-generator regressions pass, including 17 complete practice-bank replays, zero-root and bare-parameter support, finite selection and shared delivery on 14 records. Native grading accepted 7 correct choices and rejected 28 incorrect choices; relocation and protected hashes passed. The existing five-record replacement mapping verifies. Both unchanged repair-3 screenshots were visually inspected.
+
+The reviewed requested change for the remaining finding is the separate inventory-remediation workflow. The supplied inventory still contains the exact old banks. No runtime change can alter those captured or stored records. Database edits and publication are explicitly prohibited; no such action was attempted. The strict failure remains intact and staged replacements remain unapplied. No new generator defect was demonstrated. Status remains unsupported for the delivered-distribution claim.
+
+Next unfinished action: separately authorized inventory remediation using evidence/repair-3/inventory-repair-proposal.json, followed by a fresh inventory capture and strict regression. Do not repeat unchanged verification loops.

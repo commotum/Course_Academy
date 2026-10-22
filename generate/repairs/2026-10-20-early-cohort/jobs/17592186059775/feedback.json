@@ -3,17 +3,17 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved completed repairs. Delivery, shortcut and 25 native grading checks pass; corrected evidence validates. Runner handoff still fails.",
+    "summary": "Preserved completed repairs. Source replay, delivery, shortcut, CLI and 25 native grading checks pass. Runner handoff still fails.",
     "evidence_paths": [
       "evidence/current-author-verification.json",
       "evidence/current-handoff-regression.json",
       "evidence/evidence-contract-validation.json",
-      "evidence/batch-selection-regression.json",
       "repair-regressions.json",
+      "runner-fix/evidence-only-rejection.patch",
       "session-state.md"
     ],
     "limitations": [
-      "scripts/generator_pipeline.py:723 rejects the unchanged package before checking the evidence-only correction. Fixing that runner rule and installing corrected evidence require writes outside the authorized workspace. The staged runner patch remains uninstalled."
+      "scripts/generator_pipeline.py:723 rejects the unchanged runtime before evaluating the evidence-only correction. Applying the staged runner fix and installing corrected evidence require writes outside the authorized workspace."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
