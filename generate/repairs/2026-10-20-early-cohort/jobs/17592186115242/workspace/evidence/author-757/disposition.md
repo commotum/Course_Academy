@@ -1,0 +1,9 @@
+Current generator repairs are preserved and verified. The strict historical-inventory regression remains failing for finding 591f580cadb749294588: all five captured v2 records retain the sign/extremum shortcut, with 64/64 successes in the retained possible-history selection scenario. This is not a newly demonstrated generator construction failure.
+
+The finding explicitly requests the separate inventory-remediation workflow. A workspace-only runtime change cannot alter those stored answer banks or their selection eligibility. The task prohibits database changes. Captured inventory, source questions, publication state, and the strict acceptance test were not changed. The existing reviewed replacement proposal remains unapplied; no new equivalent proposal or runtime patch is justified.
+
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-757` exits 1 solely for the historical-inventory finding. All four current-generator findings pass; 17 complete source banks replay; 14 delivered records retain tested contrasts; native grading accepts 7 correct and rejects 28 wrong choices; relocation, dependencies and protected hashes pass. These claims do not establish a repaired historical or live selectable pool.
+
+Reused unchanged actual-UI rendering evidence and visually inspected `evidence/repair-3/render/question-002.png`: equations, five choices, augmented matrices, row operation and conclusion are legible and agree on k=12. Inspected the original tutorial flowchart; it defines the same consistency/dependence distinctions and requires no generated diagram.
+
+Next state-changing step is separately authorized remediation of the five historical records followed by fresh inventory capture and the same strict check. This task cannot perform that step. Final status remains unsupported; no acceptance criterion was weakened.
