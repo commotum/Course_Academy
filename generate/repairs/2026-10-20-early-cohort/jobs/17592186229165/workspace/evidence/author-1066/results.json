@@ -1,0 +1,36 @@
+{
+  "status": "unsupported",
+  "checks": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/check_report_installation.py"
+      ],
+      "exit_code": 1,
+      "log": "latest-failure.log",
+      "scope": "Exact strict latest failure reproduced before other checks; required prior-review report still stale."
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py",
+        "--output",
+        "evidence/author-1066/role"
+      ],
+      "exit_code": 0,
+      "log": "role.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
+      "exit_code": 0,
+      "log": "retained-state.log"
+    }
+  ],
+  "runtime_edits": false,
+  "strict_regressions_weakened": false,
+  "blocker": "Required prior-review report is outside workspace-only authorization; staged correction passes but strict required destination is stale.",
+  "handoff": "evidence/review-installation-handoff.json"
+}
