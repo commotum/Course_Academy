@@ -1,0 +1,9 @@
+# Author-557 outcome
+
+The current generator's four retained regressions pass. Seventeen complete source banks replay, all 14 tested records survive shared delivery with their conditional contrasts, native grading accepts 7 correct choices and rejects 28 incorrect choices, and relocation passes. The five staged replacements still match the repaired generator and their reviewed mapping.
+
+Finding 591f580cadb749294588 remains reproduced: all five captured historical generated records have the sign-only extremum shortcut; the retained possible learner-history selection witness succeeds 64/64 times. All non-source captured inventory was tested. This is a strict failing acceptance check, not an untested pool or a claim about every learner history.
+
+Commands and exit codes are in commands.json; results.json names every retained finding. The first executed test was `checks/batch_regressions.py --finding inventory` (exit 1), followed by `checks/recheck_status.py --output evidence/author-557` (exit 1 only for historical inventory). Source/runtime/inventory hashes and the unchanged replacement proposal are verified by that script. The source flowchart and unchanged actual-UI screenshot `evidence/repair-3/render/question-002.png` were visually inspected.
+
+The unresolved root cause is the previously published banks stored as selector candidates. The selector does not call this Python package to reconstruct them. No further generator edit can resolve that persisted state. The requested separate inventory-remediation workflow is outside this task's prohibition on database changes and publication. Preserve the strict test and proposed mapping; do not replace captured evidence with a hypothetical remediated pool. No runtime, database, engine, source, inventory, publication or other-job changes were made. Status remains unsupported until independent remediation and fresh inventory capture.

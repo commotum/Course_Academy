@@ -1,0 +1,167 @@
+{
+  "verdict": "revise",
+  "summary": "The delivered batch is answerable by always choosing D (5/5). Across independently sampled easy questions, labeled matrix sizes alone identify the correct answer (72/72), and legitimate role reassignment is rejected. Five current source families are missing. Mathematics, native grading, rendering and packaging checks passed. Package files were unchanged.",
+  "source_analysis": {
+    "skill": "Identify upper or lower triangular square matrices by checking every entry on the specified side of the main diagonal.",
+    "reasoning_steps": [
+      "Read whether upper or lower triangular is requested.",
+      "For each square candidate inspect entries below (upper target) or above (lower target) the main diagonal.",
+      "Qualify exactly when every inspected entry is zero; a single nonzero entry disproves qualification.",
+      "Select the sole qualifying matrix for easy radio questions, or all qualifying matrices for moderate checkbox/subset questions. Explain zeros or provide a nonzero witness."
+    ],
+    "invariants": [
+      "Square matrices; definition uses all entries strictly on one side of the diagonal.",
+      "Any diagonal entry and any entry on the unconstrained side may be zero or nonzero, with either sign.",
+      "Easy radio banks must have exactly one qualifying matrix.",
+      "Preserve target orientation, bank completeness, field type, and explanation method on source replay."
+    ],
+    "permitted_variations": [
+      "Upper/lower target; transpose offers a controlled matched change.",
+      "Qualifying label and displayed position may change independently of values and size.",
+      "Move or add nonzero violating entries on the forbidden side; vary unconstrained and diagonal entries without changing classification.",
+      "Allow diagonal/zero matrices to qualify for either target, as directly supported by moderate source examples and lesson definition.",
+      "Vary square sizes within source difficulty, sparse/dense allowed-side patterns, integer values/signs, and distractor types.",
+      "For moderate families vary which eligible labels qualify and the number selected when the response bank can represent it."
+    ],
+    "source_refs": [
+      "1a1fe1df-e314-527e-a884-f0c092b97472",
+      "91c8b870-01b8-5cdd-a0e6-31fdbbd32f0e",
+      "addfb264-5013-5ace-a74a-d9286a8c951b",
+      "e2e910d3-5a56-5ffe-990b-2c75157e1876",
+      "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+      "3f081148-4183-50c8-903b-3014f5de1d45",
+      "7c5c71ff-a77d-5a86-8573-305cd57f3d0f",
+      "9af406e1-4ead-558e-9219-f0bb53a377fc",
+      "39f938c0-efcb-5d8b-9b9f-266e88925e56",
+      "40b938cb-f23c-5d0f-a251-58ee4d72d0a4",
+      "5028fbd4-ee30-5a81-83e7-13be078fa1c6",
+      "55bf6bb8-fc59-5bd1-a9cb-d12ca64021ed",
+      "64b1b919-c94a-54de-9b3d-b841120bf12f",
+      "d7c263d4-5d0a-52cd-b876-cfa3bd3171e0",
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739 (2983), Introduction"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "Eight current source cases replay at source parameters, including complete easy banks and two current checkbox contracts. Five profiles reject with profile/level mismatch: q-42111, q-126346, q-68743, q-68748 and q-42141. The embedded snapshot is basis 1356; original review source/inventory is basis 5453. Canonical example has no captured bank and is not claimed as complete replay."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactuals.json",
+        "source-replay.json"
+      ],
+      "details": "Independent Fraction-based parsing of visible matrices found no answer or witness errors in 88 independent records plus the exact five-record batch. Source-parameter replays and applicable transpose/diagonal counterfactuals also agree with the zero-side definition. This does not establish sufficient variation."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "shortcut-raw.json",
+        "shortcut-delivered-control.json",
+        "shortcut-delivered-batch.json",
+        "minimal-failing-case.json",
+        "strict-regression-report.json"
+      ],
+      "details": "Every easy profile fixes the qualifying label and each labeled matrix dimension/support count. Six recognizable size signatures identify the correct label without entry inspection: 72/72 independent samples, including every supported easy profile. The exact batch is narrower still: q-126352 and correct D for all five. A valid same-size A/E role swap is rejected."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "All 77 sampled/requested easy records preserve five 2x2/3x3 integer candidates, exactly-one radio selection, and the source zero-side inspection method. No new computation or prerequisite is required. Authored hard output is outside this requested-easy certification."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-report-final.json"
+      ],
+      "details": "Actual native learning::grade_field checked every bank choice on source replays, applicable counterfactuals, exact raw/delivered batch and reconstructed historical instances: 34 accepted, 91 rejected, no unresolved checks. These are selection fields; free-entry equivalence is inapplicable. The rejected role-swap produces no after-record to grade."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Unmodified UI rendered the five exact batch records and applicable counterfactual records; all nine render cases passed. Representative screenshots were visually inspected for readable matrices, target wording, controls and worked solutions. No mathematical rendering errors, missing glyphs or broken images were observed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "relocated-records.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact declared Python 3.13.5 and SymPy 1.14.0 match installed versions. Manifest-only relocated package produces identical replay output with pure JSON stdout and no generated asset dependency. Invalid shapes/out-of-bound values are rejected; deterministic replay passed. Package file hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "shortcut-delivered-control.json",
+        "shortcut-delivered-batch.json",
+        "delivery-control/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "inventory-audit.json"
+      ],
+      "details": "Dimension-only conditional prediction survives actual difficulty filtering, normalization and deduplication: 72/72 control and 5/5 batch records survive. Always D also succeeds 5/5 on the exact batch. Whole-instance resampling and within-easy learner selection cannot remove a cue valid for each remaining generated record. Three captured generated moderate records have an analogous size-based selection action and were reconstructed exactly in authored content, with captured identity bindings explicitly retained. Live policy weights/history were not captured; selection conclusions are conditional on the eligible generated easy pool."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The easy generator fixes answer-bearing roles by source profile. The labeled dimension tuple alone determines the qualifying label: (2,3,3,2,3)->C; (2,3,2,3,3)->D; (2,2,2,2,2)->E; (3,3,3,2,2)->A; (2,2,3,2,3)->A; (3,3,2,2,3)->B. This succeeds on all 72 fresh easy records after delivery, versus 1/5 random-choice baseline. Entry values, target reversal and option shuffles do not defeat it. The validator also rejects legitimate reassignment of the qualifying role. Three captured generated moderate records exhibit an analogous dimension-only action; affected-inventory.json lists their exact captured IDs and reconstruction provenance.",
+      "source_refs": [
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739 (2983), Introduction: any number including 0 is permitted on the diagonal and unconstrained side",
+        "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+        "91c8b870-01b8-5cdd-a0e6-31fdbbd32f0e",
+        "e2e910d3-5a56-5ffe-990b-2c75157e1876"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python strict_regressions.py. Minimal case is saved in minimal-failing-case.json: easy q-126354, seed 20261022, criterion upper, A=[[5,1],[0,5]], B=[[2,0],[1,2]], C=[[3,1],[1,3]], D=[[4,1],[1,4]], E=[[1,0],[1,1]]. A is the sole upper-triangular candidate, but generation raises ValueError: complete profile support counts must be preserved. review.py reproduces the six-profile dimension-only strategy using seeds 2026102200+100*profile_index+k.",
+      "requested_change": "Change the family-wide construction rule that binds dimensions/support counts and qualifying status to source labels. Sample eligible answer-bearing roles independently of recognizable source signatures, then derive keys, prompts and explanations from matrix membership. Accept the valid same-size role-swap counterexample and retain strict regression tests. Do not remove source families or merely shuffle option order."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact runner batch contains five q-126352 questions, all with correct label D. Always selecting D answers 5/5, without inspecting any matrix. All five survive captured-inventory and within-batch deduplication. This batch-selection defect remains even though larger samples include other labels.",
+      "source_refs": [
+        "e2e910d3-5a56-5ffe-990b-2c75157e1876",
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739 (2983), Introduction"
+      ],
+      "reproduction": "Read delivery-batch/accepted.json; all five have generation.profile=q-126352 and independently classified correct label D. shortcut-delivered-batch.json retains the records/measurements; strict_regressions.py fails batch_not_answered_by_one_label. Native grader-report-final.json verifies every delivered choice, including D acceptance and every distractor rejection.",
+      "requested_change": "Replace this batch after correcting construction, and test the exact surviving batch for fixed-label/template shortcuts. Larger control-set balance cannot waive an all-D delivered pool."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package omits five current source families. Two are requested-easy complete banks: q-68743 and q-68748. The other missing profiles are q-42111 (zero and decimal matrices), q-126346 and q-42141 (subset radio). Calling their raw replay profiles raises profile/level mismatch. This is a stale source/domain omission, not absent source evidence.",
+      "source_refs": [
+        "5028fbd4-ee30-5a81-83e7-13be078fa1c6",
+        "55bf6bb8-fc59-5bd1-a9cb-d12ca64021ed",
+        "39f938c0-efcb-5d8b-9b9f-266e88925e56",
+        "40b938cb-f23c-5d0f-a251-58ee4d72d0a4",
+        "64b1b919-c94a-54de-9b3d-b841120bf12f"
+      ],
+      "reproduction": "source-replay.json records all 13 current source attempts. For a minimal easy failure call generate_easy(seed=19673,profile=\"raw:q-68743\"); strict_regressions.py retains failing q-68743 and q-68748 acceptance tests.",
+      "requested_change": "Use the supplied current original source to restore the omitted supported families, with complete source-parameter banks and response contracts. Preserve their instructional cases, including zero/diagonal membership; do not narrow the source set to the older embedded snapshot."
+    }
+  ]
+}
