@@ -1,43 +1,28 @@
 {
   "verdict": "revise",
-  "summary": "Revise batch selection: a delivered two-question subgroup always includes A, allowing A\u2019s rank inspection to be skipped. Mathematics, grading, source replay, rendering and packaging checks passed; package unchanged.",
+  "summary": "The delivered batch contains a conditional shortcut: both repeated rank-3 questions qualify A, so learners can skip inspecting A. The other seven checks passed. Package files remain unchanged.",
   "source_analysis": {
-    "skill": "Identify matrices of a specified rank by inspection, using the dimension bound and visible independent pivot structure.",
+    "skill": "Identify matrices with a specified rank by inspecting dimensions and independent pivots.",
     "reasoning_steps": [
-      "Use rank <= min(rows,columns).",
-      "Inspect triangular/echelon or visibly dependent rows to count independent pivots; nonzero-row counting applies to echelon form, not arbitrary matrices.",
-      "Compare each rank with the target and choose the supplied subset or matrix."
+      "Reject matrices with fewer than the requested number of rows or columns.",
+      "Inspect remaining matrices for independent pivots.",
+      "Select the qualifying matrix or subset using the supplied answer controls."
     ],
     "invariants": [
-      "Rank definition and dimension bound.",
-      "Small integer matrices with immediately interpretable triangular, echelon, transposed triangular, zero-row or simple proportional-row structure.",
-      "Complete source banks and answer-field types must replay.",
-      "Prompt, correct choices, and explanation must derive from the same matrices and target."
+      "Rank cannot exceed either matrix dimension.",
+      "Rank equals the pivot count in row echelon form.",
+      "Prompts, answers and solutions must follow the same matrices.",
+      "Eligible winning labels are incidental source assignments."
     ],
     "permitted_variations": [
-      "Change nonzero pivot magnitudes and harmless off-pivot entries while preserving rank structure.",
-      "Change which labels satisfy the rank rule, and order of labels/options.",
-      "Vary target among source-supported ranks with appropriate dimensions and workload.",
-      "Vary zero-row locations, eligible matrix shapes, and correct subsets when permitted by the response contract; source-example winning labels are incidental.",
-      "Retain rank-deficient matrices with sufficient dimensions so dimension alone is not a universal substitute for pivot inspection."
+      "Change eligible qualifying labels and subsets.",
+      "Change visible pivot structures while retaining inspection difficulty.",
+      "Vary harmless coefficients, labels and option order."
     ],
     "source_refs": [
-      "086b96e1-65a9-5422-b3cf-ae3404b4fecb (q-34807)",
-      "31c6aee5-e5bc-5348-b2d3-adfb215a74ea (q-35270)",
-      "8b3d88d7-df58-5328-a9cc-5e2d9def75f0 (q-139958)",
-      "8230baf6-e783-5c70-959c-7919b97ad93d (q-34824)",
-      "43599508-ddd2-50d6-b640-692e29bcfb0e (q-35283)",
-      "dd0a8556-8fd1-5889-877c-134aa2f397c4 (q-79561)",
-      "7de7e9fe-a671-5464-bba9-92a57599131b (q-79568)",
-      "8c046845-0154-54e8-9266-c14fc31a0fbc (q-79560)",
-      "cf208166-634c-5dd4-a095-ee064f03b9e3 (q-79559)",
-      "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
-      "24667748-1ede-5c69-935d-390617c82265 (q-34823)",
-      "40416466-6f14-55d5-9447-7df7a23e7f2a (q-79562)",
       "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
-      "tutorial c062d466-946c-526b-aba8-0a0895671218 / 4151: rank is the number of pivot columns, equivalently non-zero rows in corresponding row echelon form.",
-      "tutorial 6318f9cd-930b-5b7b-acc7-c27b5b241825 / 3519: rank is dimension of column space; example reduces dependent third row to zero.",
-      "lesson 9bad4bff-0bb7-5ce9-89c2-cbdc3bbadd77 steps 19980 then 19981 distinguish inspection from row reduction."
+      "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
+      "Tutorial c062d466-946c-526b-aba8-0a0895671218 (4151): rank counts pivots in row echelon form."
     ],
     "evidence_paths": [
       "source-analysis.json",
@@ -48,12 +33,11 @@
     "source_replay": {
       "status": "passed",
       "evidence_paths": [
-        "source-analysis.json",
         "source-replay.json",
         "source-replay-summary.json",
         "replays.json"
       ],
-      "details": "All ten complete source profiles replay:15 fields/54 choices. Two incomplete captures and canonical missing bank are explicitly limited; no missing solution was invented."
+      "details": "Ten complete source profiles replayed: 15 fields and 54 choices. Missing keys, solutions and canonical bank evidence are explicitly documented."
     },
     "math": {
       "status": "passed",
@@ -62,27 +46,25 @@
         "math-results.json",
         "counterfactual-results.json"
       ],
-      "details": "Independent Fraction elimination from visible matrices checks69 records and solution rank assertions; zero wrong answers found."
+      "details": "Independent exact elimination checked 69 records; no incorrect answers or tested solution rank assertions were found."
     },
     "variety": {
       "status": "passed",
       "evidence_paths": [
         "catalog.json",
-        "fresh.json",
         "coverage-results.json",
         "delivery-catalog/delivery.json",
         "delivery-fresh/delivery.json"
       ],
-      "details": "Finite39 presentations/24 structural classes span all ten complete source profiles and source-supported target ranks. Rank-role changes are meaningful. Exact delivered conditional shortcut is assessed separately under decision_variation."
+      "details": "The finite catalog contains meaningful rank-role changes across ten complete profiles. The delivered batch's conditional defect is assessed separately."
     },
     "scope": {
       "status": "passed",
       "evidence_paths": [
         "source-analysis.json",
-        "scope-results.json",
-        "source-replay.json"
+        "scope-results.json"
       ],
-      "details": "Small integer inspection workloads and radio/checkbox contracts retained. Explicit None has source-family support. Unsupported incomplete source evidence disclosed."
+      "details": "Source-backed inspection workloads and response contracts are retained."
     },
     "grading": {
       "status": "passed",
@@ -92,7 +74,7 @@
         "shortcut-grader-input.json",
         "shortcut-grader-results.json"
       ],
-      "details": "Native grade_field checks101 valid and275 wrong choices with no unresolved outcomes. Extra shortcut probes:6 accepted/2 rejected as independently expected. Controlled pairs include all alternatives. No free-entry fields apply."
+      "details": "Native grading matched 376 general acceptance/rejection expectations and eight additional shortcut probes."
     },
     "rendering": {
       "status": "passed",
@@ -100,20 +82,18 @@
         "render-inspection.json",
         "render/rendering.json",
         "render-more/rendering.json",
-        "render-more/question-010.png",
-        "render-more/question-011.png"
+        "rendered-position-probe.json"
       ],
-      "details": "Actual unmodified UI:18 renders, including all five runner records and relevant/irrelevant pairs. Automated reports and screenshots inspected."
+      "details": "Eighteen actual-UI renders were inspected, including every runner record and both counterfactual types."
     },
     "packaging": {
       "status": "passed",
       "evidence_paths": [
         "packaging-results.json",
         "relocation-sample.json",
-        "package-final.json",
-        "relocated/evidence/runtime-regression.json"
+        "package-final.json"
       ],
-      "details": "Declared-only relocated CLI deterministic; exact Python3.13.5/SymPy1.14.0 match manifest. Count/difficulty/subset boundaries reject correctly. Retained import check passes current package and fails restored import scripts fixture. No preflight file exists. Package unchanged."
+      "details": "Declared-only relocation and deterministic replay passed. Installed dependency versions match. The retained import regression passes current code and rejects its restored failing fixture."
     },
     "decision_variation": {
       "status": "failed",
@@ -121,27 +101,25 @@
         "pedagogical-variation.json",
         "minimal-failing-batch.json",
         "batch-regression.json",
-        "coverage-results.json",
         "shortcut-grader-results.json",
         "learner-selection.json",
         "inventory-review.json",
         "affected-inventory.json"
       ],
-      "details": "Delivered q-139965 subgroup (rank3; shapes2x4/3x4/5x5; B excluded) always qualifies A. Hardcode A and inspect only C succeeds2/2 after delivery, versus4/6 catalog controls. Generator supports counterexamples, but the actual batch omits them."
+      "details": "All five runner records survive delivery filtering. In the repeated rank-3 subgroup with B excluded, hardcoding A and inspecting only C succeeds 2/2. Same-subgroup catalog controls defeat this strategy in two of six cases."
     }
   },
   "findings": [
     {
       "kind": "decision_shortcut",
-      "description": "Batch-selection defect: both delivered members of the recognizable q-139965 subgroup with B dimension-excluded make A qualify. Answers are A-only and A+C-only. Hardcoding A and inspecting only C bypasses one of the two eligible-matrix rank decisions in every delivered subgroup member (2/2 native-grader successes). This is not a universal generator defect: same-subgroup catalog controls succeed only4/6.",
+      "description": "The delivered subgroup with target rank 3, matrix shapes 2\u00d74/3\u00d74/5\u00d75, and B dimension-excluded always qualifies A. Its answers are A-only and A+C-only. Learners can hardcode A and inspect only C, bypassing one required rank decision. This is a batch-selection defect; the larger generator contains counterexamples.",
       "source_refs": [
         "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
         "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
-        "tutorial c062d466-946c-526b-aba8-0a0895671218 (4151): rank is pivot-column count in row echelon form",
-        "generate/principles.md section2: vary eligible answer-bearing relationships; inspect recognizable subgroups after delivery"
+        "generate/principles.md, section 2"
       ],
-      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B check_batch_decisions.py --input batch.json --report batch-regression.json (expected exit1). Minimal retained records:30778945-23df-50b0-95ba-a8bed6b6d058, q-139965 seed0 parameters matches[A], assignment[C,A,B], scale2; b47f067d-9b6e-563f-be93-6367ac2f712e, matches[A,C], assignment[A,C,B], scale2. Both remain in delivery-batch/accepted.json. Run python -B audit_delivery.py then native check-engine shortcut-grader-input.json shortcut-grader-results.json; both batch shortcuts are accepted.",
-      "requested_change": "Change the batch selection rule to assess eligible-label truth variation within recognizable profile/dimension-exclusion subgroups after filtering. Revise this batch to include a same-subgroup case where A does not qualify (for example existing C-only q-139965), so label identity cannot replace A inspection. Retain the source family, complete compatible banks and strict failing regression; do not rely on aggregate catalog balance or add only scalar/sign variants."
+      "reproduction": "Run `python3 -B check_batch_decisions.py --input batch.json --report batch-regression.json`; it exits 1. Minimal records are 30778945-23df-50b0-95ba-a8bed6b6d058 (seed 0; matches [A], assignment [C,A,B], scale 2) and b47f067d-9b6e-563f-be93-6367ac2f712e (seed 0; matches [A,C], assignment [A,C,B], scale 2). Both shortcut responses are accepted by the native grader; complete records are retained in minimal-failing-batch.json.",
+      "requested_change": "Change batch selection to check eligible-label variation within recognizable profile and dimension-exclusion subgroups after filtering. Include an existing same-subgroup C-only case so A must be inspected. Retain the source family, compatible answer banks and failing regression."
     }
   ]
 }

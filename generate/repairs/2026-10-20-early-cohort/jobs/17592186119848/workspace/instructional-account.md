@@ -81,3 +81,34 @@ pure relabelings never inflate capacity. This finite package can be exhausted
 by future inventory or learner history; live history and reservations are not
 available for offline verification. No database, image publication or engine
 changes are part of this repair.
+
+## Targeted batch repair, 2026-10-21
+
+Finding `6900891930e4bdc756fa` was reproduced with the review's exact batch:
+two rank-3 items with B dimension-excluded both qualify A. The catalog had
+counterexamples, but a shuffled prefix did not retain them. Tutorial 4151
+(`c062d466-946c-526b-aba8-0a0895671218`) makes pivot inspection decisive;
+neither that passage nor q-139965 (`27db2f89-f211-5a22-8370-a36f3eeeed25`)
+justifies making an eligible label qualify by identity. The canonical e-5417
+(`a6a3db41-6033-537a-bc9d-03fde02dc869`) explicitly inspects both eligible
+matrices after the dimension exclusion.
+
+Before altering implementation: retain the same catalog, source replays, banks,
+rank adjustments and finite semantic capacity. Select the profile workload as
+before, but keep its repeated items in one recognizable subgroup (profile,
+target, shape multiset, excluded labels, field layout and bank). Choose a
+compatible subset of distinct semantic instances in which every eligible label
+both qualifies and fails whenever that subgroup repeats. Singletons supply no
+evidence of conditional coverage. Prefer existing selected records so completed
+repairs and unrelated questions remain intact. This is a sampling constraint,
+not a new mathematical family or a numerical balance quota: each repeated
+eligible decision must actually require reading its pivot evidence. Check
+answer positions and counts separately; singleton-only pairs are legitimate
+rank decisions, while the complete catalog retains the pair-answer cases.
+
+The exact old records remain failing negative controls. Test the current
+five-record seed-0 batch, small alternate seeded batches and full capacity,
+then run the actual delivery filter and repeat visible-matrix shortcut probes.
+Native grading must reject the hardcoded-A strategy on a delivered C-only
+case. Inspect the captured inventory without relabeling original sources as
+generated. This repair changes no mathematical or instructional workload.
