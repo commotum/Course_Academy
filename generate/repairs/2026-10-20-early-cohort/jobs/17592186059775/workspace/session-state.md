@@ -1,35 +1,34 @@
-# Current state — 2026-10-22, author-56
+# Current state — 2026-10-22, author-59
 
-Read feedback, repair history, prior state and required generator/validation docs.
-Preserved runtime, package manifest, completed repairs and strict regressions.
-No new source or generator defect is demonstrated; no runtime edit is warranted.
+Latest feedback and all 59 retained history events read. Exact latest failure reproduced first:
+`checks/check_current_handoff.py` exits 1; installed runner rejects the unchanged
+package before regressions or sampling. The evidence-only retained finding
+9b8cb52352b8ca3e790e requires preserving that package. No newly demonstrated
+runtime defect; all six manifest/runtime hashes remain unchanged.
 
-Latest failure reproduced first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed `scripts/generator_pipeline.py` rejects the byte-identical
-candidate before retained regressions or sampling. Finding 9b8cb52352b8ca3e790e
-requires an evidence-only correction while preserving runtime.
+All registered regressions rerun with the supplied Python. `check_all.py` exits 0:
+CLI, independent mathematics, delivery and inventory checks pass, including
+50 native responses (10 accepts, 40 rejects), five delivered records, and three
+reproduced affected historical generated records. Original sources remain separate.
+`check_evidence_contract.py` validates the actual bundle,
+two relocated roots, negative controls, 12 source captures and three affected
+generated inventory records; overall exit 1 preserves the actual-runner failure.
+`check_batch_selection.py` exits 0: ten profiles, five delivered records,
+shortcut 1/5 raw/delivered, native grader 5 accepts and 20 rejects.
+`check_render_binding.py` exits 0: ten complete source banks / 50 choices,
+two retained actual-UI renders equal fresh delivered endpoints. Both screenshots
+visually re-inspected: readable matrices, controls and worked operations.
+Commands, exit codes, runtime hashes and log paths:
+`evidence/author59-verification.json`. The evidence finding remains unresolved:
+its registered regression exits 1 solely at the installed-runner handoff.
 
-Affected checks rerun:
-- `checks/check_evidence_contract.py`: bundle validates at its actual root and two
-  relocated roots; missing-provenance and wrong-root controls reject. Overall exit
-  1 preserves the actual runner failure.
-- `checks/check_batch_selection.py`: exit 0; ten source profiles retain all target
-  ranks; five records survive shared delivery; shortcut scores 1/5 raw/delivered;
-  25 native grades pass (5 accepted, 20 rejected).
-Commands/results: `evidence/author56-verification.json`. Unchanged source replay,
-CLI and inspected UI evidence remain available; these were not rerun unnecessarily.
-The staged runner patch also passes all 23 offline control-flow cases in
-`checks/check_runner_handoff.py`; it remains uninstalled. Its passing proposal
-check does not resolve the strict installed-runner failure.
+No runtime, manifest, regression, source, or proposed patch changes. No broad
+retesting or rerendering of unchanged cases. No publication or database writes.
 
-Unfinished action is external: apply the reviewable runner correction at
-`runner-fix/evidence-only-rejection.patch` to `scripts/generator_pipeline.py`, then
-run the strict handoff and retained regressions before fresh independent review.
-The proposed patch is NOT installed. Its target is outside authorized writes.
-The evidence bundle is `evidence/contract-correction`, with relative-root mapping
-in `evidence/contract-installation.json`. No publication or database writes.
-
-Further author-only retries with identical authorization cannot install this fix.
-Do not change generator bytes merely to evade the runner hash gate, weaken its
-strict failing regression, or present historical review acceptance as new approval.
+Unfinished action remains outside authorized writes: the runner owner must
+review/apply `runner-fix/evidence-only-rejection.patch` to
+`/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py`, then rerun
+strict handoff and retained regressions before fresh independent review. The
+proposed patch is uninstalled; its existing offline verification is not evidence
+of an installed fix. Do not change runtime bytes merely to evade the hash gate,
+weaken strict regressions, or treat historical accepted evidence as new approval.
