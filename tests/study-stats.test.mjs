@@ -21,6 +21,7 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
   let now = at.getTime(), timerId = 0;
   f.setNow = date => { now = date.getTime(); };
   const context = vm.createContext({ document, window: new EventTarget(), Intl, Number, AbortController, crypto,
+    createForecastSidebar: () => ({ cards: [], refresh() {}, updateGoal() {} }),
     Date: class extends Date { constructor(...args) { super(...(args.length ? args : [now])); } static now() { return now; } },
     setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
     clearTimeout: id => f.timers.delete(id),

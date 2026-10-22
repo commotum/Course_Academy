@@ -404,6 +404,18 @@ export function withForecastGoal(forecast, dailyEarnedXpGoal) {
     goalPace: scenario(forecast, goalBaseXpPerDay) };
 }
 
+// Keep one shared budget: every course receives exactly one third, even
+// after another course catches up. Each track retains its own work/demand.
+export function courseCompletionEstimates(forecast) {
+  const split = pace => Number.isFinite(pace) ? pace / TARGET_COURSE_CODES.length : null;
+  return forecast.courses.map(course => ({ ...course,
+    currentPace: completionEstimate(course.initialWorkBaseXp, course.dailyDemandBaseXp,
+      split(forecast.pace.baseXpPerDay), Date.parse(forecast.capturedAt), course.remainingTopics),
+    goalPace: completionEstimate(course.initialWorkBaseXp, course.dailyDemandBaseXp,
+      split(forecast.pace.goalBaseXpPerDay), Date.parse(forecast.capturedAt), course.remainingTopics),
+  }));
+}
+
 export function calculateForecast(inputs, options = {}) {
   const now = Date.parse(inputs.capturedAt);
   if (!Number.isFinite(now)) throw new Error('Forecast capture date is required.');

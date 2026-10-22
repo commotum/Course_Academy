@@ -1,0 +1,59 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/workspace",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/review-0-policy-2-903865075bf272e6/regression_test.py --package . --output evidence/before-regressions.json",
+      "exit_code": 1,
+      "stage": "before repair; exact review reproduction"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/review-0-policy-2-903865075bf272e6/regression_test.py --package . --output evidence/after-retained-regressions.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/validate_repair.py",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/fresh-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/source/inventory.json --difficulty easy --output evidence/delivery-fresh --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/batch.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/source/inventory.json --difficulty easy --output evidence/delivery-batch --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-report.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/validate_repair.py --input evidence/delivery-fresh/accepted.json --report delivery-shortcuts.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/validate_repair.py --input evidence/delivery-batch/accepted.json --report batch-shortcuts.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/selection_and_package.py",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/boundaries.py",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence/boundary-grader-input.json evidence/boundary-grader-report.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/render-records.json --output evidence/render --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python 17592186119806.py --difficulty easy --profile q-105158 --count 1 --seed 48291 --format json > evidence/restored-profile-cli.json",
+      "exit_code": 0
+    }
+  ],
+  "visual_inspection": "All four evidence/render/question-*.png inspected directly."
+}

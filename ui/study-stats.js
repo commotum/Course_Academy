@@ -1,4 +1,5 @@
 import { readRequest } from './requests.js';
+import { createForecastSidebar } from './forecast-sidebar.js';
 
 const changeKey = 'course-academy.daily-xp-goal-changed';
 let releaseSidebar = () => {};
@@ -25,10 +26,12 @@ export function createStudySidebar() {
   const weekCard = node('section', 'study-stat-card');
   todayCard.append(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', 'Loading your progress…'));
   weekCard.append(node('h2', 'stat-heading', 'This week'));
-  sidebar.append(todayCard, weekCard);
+  const forecast = createForecastSidebar({ signal: events.signal });
+  sidebar.append(todayCard, weekCard, ...forecast.cards);
   let generation = 0, midnightTimer;
   releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
-  async function load() {
+  async function load({ refreshForecast = true } = {}) {
+    if (refreshForecast) void forecast.refresh();
     const revision = ++generation;
     const boundaries = lastSevenDays();
     try {
@@ -110,7 +113,14 @@ export function createStudySidebar() {
     weekCard.append(chart, dayDetails, node('p', 'stat-note', `${number(today.workingSeconds / 60)} min working time today`));
   }
   window.addEventListener('storage', event => { if (event.key === changeKey && sidebar.isConnected) void load(); }, { signal: events.signal });
-  window.addEventListener('course-academy:daily-xp-goal-changed', () => { if (sidebar.isConnected) void load(); }, { signal: events.signal });
+  window.addEventListener('course-academy:daily-xp-goal-changed', event => {
+    if (!sidebar.isConnected) return;
+    forecast.updateGoal(event.detail.dailyXpGoal);
+    void load({ refreshForecast: false });
+  }, { signal: events.signal });
+  window.addEventListener('storage', event => {
+    if (event.key?.startsWith('course-academy.graph-target-') && sidebar.isConnected) void forecast.refresh();
+  }, { signal: events.signal });
   window.addEventListener('pageshow', () => { if (sidebar.isConnected) void load(); }, { signal: events.signal });
   document.addEventListener('visibilitychange', () => { if (!document.hidden && sidebar.isConnected) void load(); }, { signal: events.signal });
   void load();

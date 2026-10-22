@@ -26,7 +26,7 @@ class UIAssets(unittest.TestCase):
         return request.send_bytes.call_args.args
 
     def test_graph_and_forecast_module_dependencies_are_served_as_javascript(self):
-        pending = ["/ui/Math-Academy-Graph-Explorer.html", "/ui/forecast.js"]
+        pending = ["/ui/Math-Academy-Graph-Explorer.html", "/ui/forecast.js", "/ui/study-stats.js"]
         visited = set()
         while pending:
             path = pending.pop()
@@ -47,6 +47,7 @@ class UIAssets(unittest.TestCase):
         self.assertIn("/ui/target-scope.js", visited)
         self.assertIn("/ui/target-weeks.js", visited)
         self.assertIn("/ui/requests.js", visited)
+        self.assertIn("/ui/forecast-sidebar.js", visited)
 
     def test_non_asset_files_remain_private(self):
         for path in ["/ui/../scripts/serve_graph_explorer.py", "/ui/../course-academy-forecast-prd.md"]:

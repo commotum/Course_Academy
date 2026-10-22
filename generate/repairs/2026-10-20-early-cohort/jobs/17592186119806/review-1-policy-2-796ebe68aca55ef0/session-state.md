@@ -1,0 +1,1 @@
+Independent review.py complete: source replay (14 complete banks), exact prompt/solution math, all eligible targets, fresh seeds, historical witness recomputation, strict current regressions, copied author preflight, runtime/replay/relocation/boundaries, inventory verified. Delivery, native grader, actual UI render and final decision report remain. Original package untouched.
