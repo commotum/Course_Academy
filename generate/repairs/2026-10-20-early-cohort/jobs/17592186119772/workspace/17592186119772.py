@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Identifying a Triangular Matrix; local draft, math basis1356, no DB operations.
+"""Identifying a Triangular Matrix; source basis5453, no DB operations.
 
 Easy: one complete matrix among five, eight observed complete banks (2/3-square).
 Moderate: subset of three labeled matrices, four checkbox banks and one text bank.
 Hard: authored subset of five 4-square matrices; same zero-support test only.
-Normal subset tasks use whole-matrix checkbox fields. Easy retains its single-matrix radio choice. Raw profiles raw:q-N replay all current complete source banks.
-Source masks replace complete matrices and actual nonzero witnesses, not literals.
+The source response contract is retained for each profile. Easy uses matrix radios. Raw profiles raw:q-N replay all current complete source banks.
+All matrices, keys and nonzero witnesses derive from a shared instance.
 Normal generation derives source solution stages from current matrix membership.
 
-Finite support catalogs are sampled without a claimed infinite numeric diversity.
+Roles are sampled before compatible support patterns and incidental numeric values.
 Diagonal entries, nonzero signs/magnitudes, labels and option order are incidental
 and excluded from semantic task fingerprints. Different complete displayed banks
 remain distinct content identities. No renderer is needed for native TeX arrays.
-See the adjacent evidence folder for exact domains, source repairs and validation.
+See instructional-account.md and evidence/ for domains and repair validation.
 """
 from __future__ import annotations
 import argparse
@@ -163,19 +163,6 @@ def validate_parameters(level,p,r=None,hard_profile=None):
     return good
 
 
-def source_bank(r):
-    f=SOURCES[r['source_id']][':question/answer-fields'][-1]
-    return [subset(a[':answer/value']) for a in f[':answer-field/choices']] if r['field_type']==':answer-field.type/radio' and r['level']=='moderate' else []
-
-
-def hard_bank(profile):
-    # Whole fixed profile chosen before parameters. Errors omit a qualifying
-    # matrix or include a foil by overlooking its forbidden-side nonzero.
-    if profile=='hard_two':return [('A','B'),('A',),('A','C'),('A','B','D'),('A','B','E')]
-    if profile=='hard_three':return [('A','B','C'),('A','B'),('B','C'),('A','B','C','D'),('A','C','E')]
-    raise ValueError('unknown hard bank')
-
-
 def candidate_support(rng,level,r=None,profile=None):
     # Decide membership first, independently of labeled dimensions and values.
     criterion=rng.choice(('upper','lower'))
@@ -199,28 +186,6 @@ def candidate_support(rng,level,r=None,profile=None):
     return {'criterion':criterion,'matrices':matrices}
 
 
-@lru_cache(None)
-def catalog(profile):
-    """Finite explicit support catalog; no numeric-sign/diagonal count inflation.
-
-    Deterministic 256 candidate support assignments per observed complete profile,
-    384 per authored hard profile, deduplicated under whole assessed-bank identity.
-    This finite catalog is the default sampling domain, not an estimate of every
-    mathematically possible bank. Explicit input accepts the documented full bounds.
-    """
-    r=recipe(profile) if profile.startswith('q-') else None
-    level=r['level'] if r else 'hard';bank=source_bank(r) if r else hard_bank(profile)
-    result={}
-    for k in range(256 if r else 384):
-        p=candidate_support(random.Random(profile+':'+str(k)),level,r,profile)
-        try:validate_parameters(level,p,r,profile)
-        except ValueError:continue
-        witness=witnesses(p['matrices'],p['criterion'],r['preferred'] if r else None)
-        fingerprint=task_fingerprint(level,p,bank,witness)
-        result.setdefault(fingerprint,p)
-    return tuple(result.values())
-
-
 def fill_values(base,rng,decimals=False):
     p=deepcopy(base)
     for mat in p['matrices'].values():
@@ -233,34 +198,6 @@ def fill_values(base,rng,decimals=False):
                 for j,value in enumerate(row):
                     if value and rng.randrange(3)==0:row[j]=rng.choice((-987,-89,-65,65,89,987))/100
     return p
-
-
-def render_mask(mask,p,r,witness):
-    def matrix(m):return matrix_tex(m[1],p['matrices'][m[1]])
-    text=re.sub(r'@@matrix:([A-E])@@',matrix,mask)
-    def proof(m):
-        label=m[1];i,j=witness[label]
-        return '{'+label.lower()+'}_{'+str(i+1)+str(j+1)+'} & ='+str(p['matrices'][label][i][j])+r'\ne 0'
-    text=re.sub(r'@@witness:([A-E])@@',proof,text)
-    if p['criterion']!=r['criterion']:
-        text=text.replace(r['criterion']+' triangular','@@criterion@@ triangular')
-        text=text.replace('below','@@side@@') if r['criterion']=='upper' else text.replace('above','@@side@@')
-        text=text.replace('@@criterion@@',p['criterion']).replace('@@side@@','below' if p['criterion']=='upper' else 'above')
-    return text
-
-
-def hard_solution(p,good,witness):
-    criterion=p['criterion'];side='below' if criterion=='upper' else 'above'
-    good_prose=', '.join('$'+x+'$' for x in good[:-1])+' and $'+good[-1]+'$'
-    bad=[x for x in p['matrices'] if x not in good]
-    bad_prose=' and '.join('$'+x+'$' for x in bad)
-    rows=[]
-    for label in bad:
-        i,j=witness[label]
-        rows.append('{'+label.lower()+'}_{'+str(i+1)+str(j+1)+'} & ='+str(p['matrices'][label][i][j])+r'\ne 0')
-    return ('The matrices '+good_prose+' are '+criterion+' triangular matrices since all the entries '+side+' the main diagonal are zeros.\n\n'
-            'The matrices '+bad_prose+' are *not* '+criterion+' triangular matrices since they each have a non-zero element '+side+' the main diagonal: \n\n$$\n'+
-            r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$')
 
 
 def enum(value):return value[':db/ident'] if isinstance(value,dict) else value
@@ -394,7 +331,7 @@ def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=N
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('moderate',seed,template,field_type,parameters,profile)
 
-# HARD: authored five 4x4 matrices, inclusive diagonal + two/three correct subset.
+# HARD: authored five 4x4 matrices, inclusive diagonal within two/three correct.
 # Each foil differs through one forbidden-side entry; no operations/statements.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('hard',seed,template,field_type,parameters,profile)

@@ -1,11 +1,30 @@
-# Author-560 verification, 2026-10-22
+# Author-563 verification, 2026-10-22
 
-Preserved existing generator repairs and strict regression declarations. Read latest feedback, retained history findings, supplied lesson and all 17 source banks. No new runtime construction defect is demonstrated.
+Preserved the repaired runtime, manifest, instructional account and strict checks.
+Read current feedback and all retained findings; the latest event reports the
+same stored-inventory failure. No new construction defect or source change.
 
-First command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exits 1: five historical records, retained possible-history witness 64/64 shortcut successes.
+First command:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five affected stored banks; 64/64 sign-extremum successes in the retained
+possible-history witness. Complete archived records match captured inventory.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-560` exits 1 solely for finding 591f580cadb749294588. Four current-generator findings pass, including 17 complete source banks, zero roots, counterfactuals and 14 records through shared delivery. Native grading accepts 7 correct and rejects 28 incorrect choices. Protected hashes, relocation, dependency pins and five staged replacement mappings verify. All captured non-source inventory was tested. Inspected retained UI screenshot evidence/repair-3/render/question-002.png and source flowchart.
+Then:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-563`
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass; 17 source banks replay, 14 delivered records preserve contrast,
+native grading accepts 7 and rejects 28, package relocation passes, and five
+staged replacement mappings verify. Protected runtime/source/inventory hashes
+remain unchanged. Commands and results are saved in evidence/author-563.
+Retained actual-UI screenshot evidence/repair-3/render/question-001.png was
+visually inspected: prompt, choices, elimination matrices and solution are
+legible and consistent. No runtime change warrants another equivalent render.
 
-Evidence: evidence/author-560/commands.json, results.json and outcome.md. Runtime, manifest, database, publication, source and engine remain unchanged. No other job edited.
-
-Next unfinished step: separately remediate the five stored records using the reviewed proposal evidence/repair-3/inventory-repair-proposal.json, recapture inventory and rerun the strict check. Database changes/publication are prohibited here; status remains unsupported for the selectable-pool claim. Do not weaken this regression or replace the repaired runtime with an older draft.
+Next unfinished step: the separate inventory-remediation workflow must review
+and apply evidence/repair-3/inventory-repair-proposal.json, preserve original
+source questions and learner state, capture fresh inventory, then rerun the
+strict check. This author task prohibits database changes and publication.
+Workspace generator edits cannot change the stored selectable banks. Keep the
+strict regression failing; do not replace captured inventory with proposed data.
+Status remains unsupported for the selectable-pool requirement. No other job,
+database, engine, or publication state was changed.
