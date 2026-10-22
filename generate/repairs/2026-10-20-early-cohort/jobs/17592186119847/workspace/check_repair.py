@@ -1,5 +1,6 @@
 """Offline regressions: inspect visible records; never contact a service or database."""
 import collections, importlib.util, json, os, re, shutil, subprocess, sys, tempfile
+from check_cli_contract import decode, main as check_cli_contract
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
 E=HERE/'evidence'; E.mkdir(exist_ok=True)
@@ -30,13 +31,14 @@ def cli(level,count,seed=0,entry=None,cwd=None):
     return p,cmd
 
 def main():
+    check_cli_contract()
     counts=[];full=[]
     # Declared finite capacities; uniqueness and correctness are read from visible records.
     capacities={'easy':12,'moderate':91}
     for level,capacity in capacities.items():
         for count in [0,1,5,capacity]:
             p,cmd=cli(level,count);assert p.returncode==0,p.stderr
-            rs=json.loads(p.stdout)['instances'];assert len(rs)==count
+            rs=decode(p.stdout);assert isinstance(rs,list) and len(rs)==count
             facts=[inspect(r) for r in rs];assert len({f['semantic'] for f in facts})==count
             counts.append({'command':cmd,'requested':count,'returned':len(rs),'distinct_semantic':len(facts)})
             if count==capacity:full+=rs

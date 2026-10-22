@@ -149,4 +149,4 @@ if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=SUPPORTED_LEVELS,default='easy');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=('json','markdown'),default='json');a=ap.parse_args()
     try:rs=batch(a.difficulty,a.count,a.seed)
     except ValueError as error:ap.error(str(error))
-    print(json.dumps({'instances':rs},indent=2) if a.format=='json' else '\n\n'.join(map(markdown,rs)))
+    print(json.dumps({'records':rs},indent=2) if a.format=='json' else '\n\n'.join(map(markdown,rs)))
