@@ -1,0 +1,1005 @@
+{
+  "learner_operation": "Identify the column count rather than row count, interpret dim(Null(A)) as nullity, subtract the given rank or nullity from columns, and choose the resulting integer.",
+  "fixed_features": [
+    {
+      "feature": "rank plus nullity equals columns",
+      "justification": "The assessed theorem, explicitly stated in tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc."
+    },
+    {
+      "feature": "single scalar radio response",
+      "justification": "Every target question has this response contract; related basis and true-statement questions are distinct knowledge points."
+    },
+    {
+      "feature": "Five distinct nonnegative integer radio choices and small integer arithmetic",
+      "justification": "All 14 target source questions use that response contract; 2..12 dimensions preserve one-step easy subtraction."
+    },
+    {
+      "feature": "Every normal offered value is feasible under the displayed matrix size",
+      "justification": "Authored distractor policy keeps dimension-feasibility elimination from identifying the answer without using the given dimension. It does not fix the correct bank role; explicit boundary/source replay remains supported."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Requested rank or nullity",
+      "eligible_variation": "Either quantity may be missing; the other is supplied.",
+      "observed": "Both targets occur before and after delivery; actual batch has 4 rank and 1 nullity."
+    },
+    {
+      "role": "Numerical complement n minus given",
+      "eligible_variation": "Vary feasible column count and given dimension, including zero/full-rank boundaries.",
+      "observed": "Relevant given and column changes move the answer as required; row-only changes preserve it."
+    },
+    {
+      "role": "Correct numerical role within a recognizable bank",
+      "eligible_variation": "Any offered feasible value may be correct; source-example assignments are incidental.",
+      "observed": "All five roles tested for each of 14 profiles, with bank and shape held fixed; all five appear in every surviving target/gap subgroup. Old consecutive rank shortcut falls from 16/16 to 5/16 on retained seeds."
+    },
+    {
+      "role": "Source bank profiles",
+      "eligible_variation": "Every complete supported source bank must replay without dropping source cases.",
+      "observed": "All 14 target sources replay exact prompts, complete banks, keys and solutions. Canonical example has no supplied bank; its numerical parameters and solution stages are reproduced."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All supported source banks and retained counterexamples",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-example.json",
+        "regression-comparison.json"
+      ],
+      "result": "All 14 replay; both prior defects strictly reproduced on old executable and no longer reproduced on current package."
+    },
+    {
+      "case": "Every profile, five answer-bearing roles",
+      "sample_refs": [
+        "coverage.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "delivery-counterfactual/accepted.json"
+      ],
+      "result": "70 same-bank controlled witnesses, five per 14 profiles. Role coverage survives normalization/deduplication; two redundant explicit target/base cases are removed from 80 total paired records."
+    },
+    {
+      "case": "Fresh ordinary sampling and delivery",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json"
+      ],
+      "result": "100 fresh seeds plus 70 role witnesses: 170 ->166 after 4 duplicates; both targets, tall/wide/square shapes, and all five roles per recognizable bank signature survive."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "grader-report.json"
+      ],
+      "result": "5 ->5. Sorted answer roles [1,3,4,4,0]; no tested surface action answers all five. Old lookup gets 1/5. All five records are mathematically correct and all choice responses pass native grading."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For each profile, hold entire bank, target, rows and columns fixed; change supplied dimension to make each of five offered values correct.",
+      "expected": "All five correct roles occur, with prompt, explanation and real learner grade following n minus given.",
+      "observed": "All 14 profile groups pass all five roles; complete native raw and normalized banks tested, all rendered prompts/solutions checked.",
+      "status": "passed",
+      "justification": "The theorem relates the supplied dimension to the numerical complement; source assignments of correct bank position are incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-dependency-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "At m=10,n=9, change given 3 ->4; separately change columns 9 ->10 with given 3. Test both targets.",
+      "expected": "Answer 6 ->5 when given increases; answer 6 ->7 when columns increase.",
+      "observed": "Responses, substitutions, rendered notation and native choice outcomes follow each change.",
+      "status": "passed",
+      "justification": "Tutorial explicitly says rank+nullity equals column count.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "render-dependency-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "At m=10,n=9,given=3, swap requested rank/nullity and supplied nullity/rank.",
+      "expected": "Numerical answer remains 6 by symmetry while prompt and explanation roles swap.",
+      "observed": "Both targets and explanations change coherently; native grader accepts 6 and rejects four wrong options in each case.",
+      "status": "passed",
+      "justification": "Both directions occur in source a05d1874-f484-5b03-a7ba-b2697b84a74b and 245a8171-aeb5-5caf-950d-44cbb3c0aece.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-dependency-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold n=9,given=3,target,profile and seed fixed; rows 10 ->12.",
+      "expected": "Answer remains 6; bank, solution and grader behavior are preserved for both feasible shapes.",
+      "observed": "Both targets retain bank/answer/solution; rendered row count changes and actual native grade remains correct.",
+      "status": "passed",
+      "justification": "Tutorial applies rank+nullity=n to matrices not necessarily square; rows only constrain feasibility.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "render-dependency-results.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "old_target_gap_lookup",
+      "subgroup": "raw_control",
+      "scope": "overall",
+      "strategy": "Use the prior target/gap lookup numerical order statistic, ignoring columns and given.",
+      "correct": 30,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_second_largest",
+      "subgroup": "raw_control",
+      "scope": "overall",
+      "strategy": "Choose the second-largest offered integer.",
+      "correct": 30,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_largest",
+      "subgroup": "raw_control",
+      "scope": "overall",
+      "strategy": "Choose the largest offered integer.",
+      "correct": 28,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_smallest",
+      "subgroup": "raw_control",
+      "scope": "overall",
+      "strategy": "Choose the smallest offered integer.",
+      "correct": 34,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_first_stored",
+      "subgroup": "raw_control",
+      "scope": "overall",
+      "strategy": "Choose the first stored answer option; UI separately shuffles its display.",
+      "correct": 43,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "old_target_gap_lookup",
+      "subgroup": "delivered_control",
+      "scope": "overall",
+      "strategy": "Use the prior target/gap lookup numerical order statistic, ignoring columns and given.",
+      "correct": 30,
+      "total": 166,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_second_largest",
+      "subgroup": "delivered_control",
+      "scope": "overall",
+      "strategy": "Choose the second-largest offered integer.",
+      "correct": 29,
+      "total": 166,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_largest",
+      "subgroup": "delivered_control",
+      "scope": "overall",
+      "strategy": "Choose the largest offered integer.",
+      "correct": 28,
+      "total": 166,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_smallest",
+      "subgroup": "delivered_control",
+      "scope": "overall",
+      "strategy": "Choose the smallest offered integer.",
+      "correct": 33,
+      "total": 166,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_first_stored",
+      "subgroup": "delivered_control",
+      "scope": "overall",
+      "strategy": "Choose the first stored answer option; UI separately shuffles its display.",
+      "correct": 42,
+      "total": 166,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "old_target_gap_lookup",
+      "subgroup": "raw_batch",
+      "scope": "overall",
+      "strategy": "Use the prior target/gap lookup numerical order statistic, ignoring columns and given.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_second_largest",
+      "subgroup": "raw_batch",
+      "scope": "overall",
+      "strategy": "Choose the second-largest offered integer.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_largest",
+      "subgroup": "raw_batch",
+      "scope": "overall",
+      "strategy": "Choose the largest offered integer.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_smallest",
+      "subgroup": "raw_batch",
+      "scope": "overall",
+      "strategy": "Choose the smallest offered integer.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_first_stored",
+      "subgroup": "raw_batch",
+      "scope": "overall",
+      "strategy": "Choose the first stored answer option; UI separately shuffles its display.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "old_target_gap_lookup",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Use the prior target/gap lookup numerical order statistic, ignoring columns and given.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_second_largest",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Choose the second-largest offered integer.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_largest",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Choose the largest offered integer.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_smallest",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Choose the smallest offered integer.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "choose_first_stored",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Choose the first stored answer option; UI separately shuffles its display.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. No tested action answers this whole set; small batch fluctuations do not establish a deterministic shortcut. The generator draws the correct bank role independently of dimensions. Stored order is shuffled again by UI, so that probe only tests the serialized-order cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 1, 2))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('rank', (1, 1, 2, 2))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('rank', (1, 1, 1, 2))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 1, 5))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 2, 1))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('rank', (1, 1, 1, 1))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 1,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (2, 2, 2, 2))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 1, 1))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('rank', (2, 1, 1, 3))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 6,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 2, 2))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('rank', (1, 1, 2, 3))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 2, 1, 3))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 1, 1, 6))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Visible target and numerical bank gaps",
+      "subgroup": "('nullity', (1, 3, 1, 1))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the original fixed sorted-role lookup within this recognizable bank signature.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 guessing; all five correct sorted roles occur in this surviving subgroup. The old rule has explicit counterexamples. Unequal finite counts are not a proof of independence; the role-independent construction and controlled pairs supply the dependency evidence.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "delivery-shortcut-results.json",
+        "shortcut-rules.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-34833 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-34931 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-141220 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-141225 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-141228 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-142480 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-79353 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-142483 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-142484 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-142481 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-139981 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-141221 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-142482 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Same target, bank, matrix size and recognizable profile",
+      "subgroup": "q-141190 controlled same-bank witnesses",
+      "scope": "within_template",
+      "strategy": "Choose the original source numerical order statistic for every held-bank member.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5, the uniform guessing baseline: all five offered values become correct while only the relevant supplied dimension changes. Rendered prompt, explanation and real native grade follow that change.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Matrix-size bounds only",
+      "subgroup": "ordinary 170 controls",
+      "scope": "overall",
+      "strategy": "Select the sole dimension-feasible offered value; abstain if multiple survive.",
+      "correct": 0,
+      "total": 170,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 uniform guessing. This unique-survivor action answers 0/170: every ordinary control offers five feasible targets, so size feasibility alone eliminates none.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "delivery-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Column count and supplied dimension",
+      "subgroup": "delivered five-question batch",
+      "scope": "overall",
+      "strategy": "Compute n minus supplied rank/nullity and choose that integer.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "100% versus 1/5 guessing is the target skill stated in tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc, not an incidental cue. All five native choice banks were tested.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Actual ordinary role-first construction; no resampling loop",
+      "Explicit input rejection and boundary feasibility",
+      "Requested easy difficulty and actual prepare_records validation/normalization/stable identity",
+      "Captured-inventory and within-batch deduplication at basis 5446",
+      "Native grader on raw and normalized paired records and exact batch",
+      "Question selection: fresh/history exclusions, positive-easy hash draw, no-policy fallback and zero-easy exclusion"
+    ],
+    "sample_refs": [
+      "rejection-and-replay.json",
+      "boundary-tests.json",
+      "independent-samples.json",
+      "runner-batch.json",
+      "delivery-control/delivery.json",
+      "delivery-control/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-counterfactual/delivery.json",
+      "delivery-shortcut-results.json",
+      "learner-selection.json",
+      "inventory-audit.json"
+    ],
+    "result": "Control 170 ->166, exact batch 5 ->5, controlled records 80 ->78. Every delivered recognizable control signature retains five answer roles. Captured inventory contains 14 originals and no generated items. Conditional selection analysis uses actual all-easy rules; no claim of real learner policy/history or future ID prediction."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of every possible shortcut. Source-size/profile domains are finite and justified by the one-step skill, not by a diversity quota.",
+    "No live database or future inventory was inspected; publication preparation does not exist. Actual shared filtering is read-only against captured basis 5446.",
+    "Actual learner policy, history, task prefix and future generated entity IDs were not supplied. Conditional selection includes all-fresh/source-seen/prefix examples and zero/no-policy branches; per-learner balance is not guaranteed.",
+    "Canonical example has no source answer bank. Related basis, row-reduction and true-statement knowledge points are context and prerequisites, outside this generator.",
+    "Normal construction keeps all five choices feasible and therefore may exclude very small dimensions where five distinct nonnegative targets are impossible. Explicit feasible boundary cases remain supported; no engine limitation is concealed."
+  ]
+}

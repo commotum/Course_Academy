@@ -1,0 +1,7 @@
+The existing generator repairs are preserved. Four retained generator regressions pass, including source replay and delivery-stage variation. Native grading accepts seven correct choices and rejects 28 incorrect choices. Runtime and captured-input hashes match retained evidence, so existing visual verification remains applicable.
+
+Finding 591f580cadb749294588 still fails: all five captured historical generated records reproduce the sign-only extremum shortcut. None of the captured generated inventory is untested. Their complete reproduced records are in evidence/generated-records.json; affected-inventory.json identifies their stored question/entity identities. Its evidence paths resolve relative to the supplied author-437 evidence root.
+
+The construction repairs and unapplied replacement mapping already exist. Applying that mapping requires the separate inventory-remediation workflow and fresh capture; database changes and publication are prohibited here. No further generator defect is demonstrated, and altering the current generator cannot mutate stored banks. No runtime, database, source, engine, publication or other-job edits were made. The strict regression remains failing; status is unsupported.
+
+Current commands and results: evidence/author-437/commands.json and results.json. Reusable replacement proposal: evidence/repair-3/inventory-repair-proposal.json. Reusable visual evidence: evidence/repair-3/render/rendering.json. Stop repeating unchanged checks until the captured pool or authorized scope changes.

@@ -1,0 +1,14 @@
+# Author-436 result
+
+Reproduced the latest failure first with the job Python:
+`python -B checks/batch_regressions.py --finding inventory` exits 1, reproducing all five stored generated records and the retained 64/64 sign-extremum successes under a possible learner history. This is a conditional witness, not a forecast of every learner history.
+
+Ran `python -B checks/recheck_status.py --output evidence/author-436` (job Python). It exits 1 solely for finding 591f580cadb749294588. The four current-generator regressions pass: family-wide bank construction, all 17 complete practice banks and canonical replay, valid zero roots, and finite batch selection. Fourteen CLI records preserve the tested sign-group contrasts through shared delivery filtering. Independent printed-system checks and relevant/irrelevant counterfactuals pass. The native grader accepts 7 correct choices and rejects 28 wrong choices. Exact dependencies, relocated execution, protected runtime/source/inventory hashes and the unapplied five-record replacement mapping pass. Full commands and results are saved alongside this account.
+
+Read the feedback, all five retained findings and latest history event, supplied complete source questions and lesson context, required generation and validation documents, and existing instructional account. No new generator construction failure is demonstrated. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 supports an interior correct bank value. The repaired generator retains these learner operations and all source families.
+
+Reinspected the retained actual-UI screenshot `evidence/repair-3/render/question-001.png`: the system, five choices, elimination matrices and conclusion are readable and agree. Inspected the source tutorial flowchart. Runtime/input hashes are unchanged, so the retained render remains applicable; no redundant rendering was run.
+
+The remaining design defect belongs to five stored v2 answer banks. The latest review explicitly requires separate inventory remediation. This task prohibits database changes; modifying this package cannot change those stored candidates. Preserve the strict failing regression and do not substitute a proposed pool for the captured pool. `affected-inventory.json` identifies all five reproduced generated records, with evidence paths relative to the requested author-436 evidence root. No captured generated inventory is untested. The verified, unapplied proposal remains `evidence/repair-3/inventory-repair-proposal.json`.
+
+Status: unsupported for the required delivered-pool claim. Separate inventory remediation and a fresh capture are necessary before that claim can pass. No runtime package, source, engine, database, publication, or other-job changes were made. All writes remained in this workspace.

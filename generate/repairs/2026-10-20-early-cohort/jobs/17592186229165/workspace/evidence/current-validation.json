@@ -1,39 +1,39 @@
 {
-  "author_attempt": 588,
-  "status": "blocked_by_required_external_installation",
+  "attempt": 591,
+  "status": "unsupported",
   "runtime_changed": false,
-  "commands": [
+  "checks": [
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
-      "exit_code": 1,
-      "log": "evidence/report-repair/author-588-reproduction.log"
+      "status": "failed",
+      "finding": "645672a4cd3f9bf609ca",
+      "log": "evidence/report-repair/author-591-reproduction.log",
+      "error": "decision_variation has an unresolved decision shortcut",
+      "required_evidence_root": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+      "staged_schema": "passed",
+      "staged_current_record_replays": 26
     },
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py",
-      "exit_code": 0,
-      "log": "evidence/current-role-regression.log"
+      "status": "passed",
+      "finding": "efa97df560cec8fee6e1",
+      "log": "evidence/current-role-regression.log",
+      "results": "evidence/role-regression/results.json",
+      "delivered_positions": {
+        "1": 19,
+        "2": 17,
+        "none": 5
+      },
+      "grader_expectations": 30
     },
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
-      "exit_code": 0,
-      "log": "evidence/current-retained-state.log"
+      "status": "passed",
+      "log": "evidence/current-retained-state.log",
+      "handoff_artifacts_verified": 55,
+      "small_unaffected_math_sample_passed": 8
     }
   ],
-  "findings": {
-    "efa97df560cec8fee6e1": "repaired; strict regression passed",
-    "645672a4cd3f9bf609ca": "unresolved; required external report remains stale"
-  },
-  "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
-  "required_destination_error": "decision_variation has an unresolved decision shortcut",
-  "local_correction_records_replayed": 26,
-  "post_delivery_positions": {
-    "1": 19,
-    "2": 17,
-    "none": 5
-  },
-  "grader_expectations": 30,
-  "small_unaffected_math_sample_passed": 8,
-  "source_and_runtime": "unchanged; 55 handoff artifact hashes verified",
-  "scope": "No external writes, publication, database changes, engine edits, runtime edits, or weakened regression checks.",
-  "next_action": "Runner must install the existing staged correction using evidence/review-installation-handoff.json, rerun the strict report regression, then obtain fresh independent review. A workspace-only author retry cannot perform that installation."
+  "next_required_action": "Authorized runner installs existing staged correction using evidence/review-installation-handoff.json at the required external report root, then runs the unchanged strict regression and fresh independent review.",
+  "scope": "Workspace evidence updated only. No runtime, engine, database, publication, or external report changes. Existing source replay and visual evidence retained; no new rendering claim."
 }
