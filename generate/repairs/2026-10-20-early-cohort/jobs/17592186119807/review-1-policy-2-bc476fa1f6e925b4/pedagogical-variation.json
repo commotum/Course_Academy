@@ -1,0 +1,714 @@
+{
+  "learner_operation": "Solve for two scalar coefficients in a linear combination of two three-dimensional vectors, check all three component equations, and select the coefficient sum or No solution.",
+  "fixed_features": [
+    {
+      "feature": "Target x1+x2",
+      "justification": "Every captured task and canonical example asks the sum; different target operations would change the response task."
+    },
+    {
+      "feature": "3 components, 2 coefficients",
+      "justification": "This is the observed checking-consistency workload; next lesson separately covers three coefficients."
+    },
+    {
+      "feature": "Source coefficient columns and elementary elimination/substitution route",
+      "justification": "Conservative retained method at moderate difficulty. These columns no longer determine consistency or correct numeric rank, as controlled cases demonstrate."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target membership in coefficient span",
+      "eligible_variation": "Change a target component while retaining coefficient columns, allowing either consistency result within every recognizable template.",
+      "observed": "All 14 controlled profiles support both branches; exact q-34568 counterexample now supported."
+    },
+    {
+      "role": "Coefficient sum and correct numeric rank",
+      "eligible_variation": "Translate candidate coefficients and change gaps/rank independently; sum and bank must follow.",
+      "observed": "All four numeric ranks observed at fixed evidence for each profile; translations -2 and2 and fractional source arithmetic verified."
+    },
+    {
+      "role": "Vector names and numeric-bank sign pattern",
+      "eligible_variation": "Incidental names and choice signs must not predict consistency.",
+      "observed": "Label correlation repaired in controls. Exact delivered batch retains a perfect conditional sign cue on 3 members."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "14 full source banks and ordered worked methods",
+      "sample_refs": [
+        "source-records.json",
+        "source-replay.json"
+      ],
+      "result": "Pass with supported q-105163 arithmetic correction; canonical has no captured answer field, independently verifies sum -10."
+    },
+    {
+      "case": "Both consistency branches and all four numeric ranks per recognizable coefficient profile",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Observed before/after shared filtering; no per-template fixed branch or rank remains in the controlled set."
+    },
+    {
+      "case": "Actual five-item runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All5 survive. Two numeric answers, three No solution. Nonpositive option subgroup is 3/3 No solution; both other items have positive-only numeric banks."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-34568, seed509, t0/rank2/gaps[1,2,3], residual -2 ->0: d=(3,4,5) ->(3,4,7).",
+      "expected": "No solution ->2; coefficients (1,1) unchanged, final displayed equality and actual accepted radio option change.",
+      "observed": "Correct relation in prompt, solution (7=5 ->7=7), renderer and native grader; all five responses tested for each.",
+      "status": "passed",
+      "justification": "Canonical c/d consistent example and q-34568 contradiction show membership is essential, labels incidental. Banks are held fixed; both branches have the identical positive numeric choices1,2,4,7.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json",
+        "solution-math-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed509 ->510 holding explicit q-34568 parameters fixed.",
+      "expected": "Prompt, solution and correct value2 preserved; reordered options still grade correctly.",
+      "observed": "Prompt/solution/truth identical, options reorder; native grading and UI show correct sum2 in both.",
+      "status": "passed",
+      "justification": "The source assesses vector equations; incidental radio order cannot alter the sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "numeric order",
+      "subgroup": "raw",
+      "scope": "overall",
+      "strategy": "Choose second-largest numeric option.",
+      "correct": 42,
+      "total": 180,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "42/180; baseline 0.2 is uniform selection among five choices. Repaired numeric rank varies; this old strategy has counterexamples.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "c/d vector labels",
+      "subgroup": "raw c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution.",
+      "correct": 22,
+      "total": 42,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "22/42; baseline 0.2 is uniform selection among five choices. Single-member batch subgroup alone is not treated as a defect; full controls contain both outcomes.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-105163",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-105164",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-105165",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-105166",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-105167",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-34054",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-34242",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-34568",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 7,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73950",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73951",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73952",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73954",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73957",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "raw q-73981",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "signs of numeric answer choices",
+      "subgroup": "raw contains a nonpositive numeric option",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution without reading vectors.",
+      "correct": 53,
+      "total": 109,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "53/109; baseline 0.2 is uniform selection among five choices. The sign cue is not universal in the generator.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "numeric order",
+      "subgroup": "post-filter",
+      "scope": "overall",
+      "strategy": "Choose second-largest numeric option.",
+      "correct": 42,
+      "total": 178,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "42/178; baseline 0.2 is uniform selection among five choices. Repaired numeric rank varies; this old strategy has counterexamples.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "c/d vector labels",
+      "subgroup": "post-filter c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution.",
+      "correct": 22,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "22/40; baseline 0.2 is uniform selection among five choices. Single-member batch subgroup alone is not treated as a defect; full controls contain both outcomes.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-105163",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-105164",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-105165",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-105166",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-105167",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-34054",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-34242",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/15; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-34568",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 7,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/13; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73950",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73951",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73952",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73954",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73957",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "post-filter q-73981",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "signs of numeric answer choices",
+      "subgroup": "post-filter contains a nonpositive numeric option",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution without reading vectors.",
+      "correct": 53,
+      "total": 109,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "53/109; baseline 0.2 is uniform selection among five choices. The sign cue is not universal in the generator.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric order",
+      "subgroup": "exact batch",
+      "scope": "overall",
+      "strategy": "Choose second-largest numeric option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline 0.2 is uniform selection among five choices. Repaired numeric rank varies; this old strategy has counterexamples.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "c/d vector labels",
+      "subgroup": "exact batch c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline 0.2 is uniform selection among five choices. Single-member batch subgroup alone is not treated as a defect; full controls contain both outcomes.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "exact batch q-105165",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "exact batch q-105166",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "exact batch q-34568",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "exact batch q-73954",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient-matrix signature",
+      "subgroup": "exact batch q-73981",
+      "scope": "within_template",
+      "strategy": "Choose No solution.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline 0.2 is uniform selection among five choices. Full controlled set supports both branches in each template; a one-member subgroup is not independently diagnostic.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "signs of numeric answer choices",
+      "subgroup": "exact batch contains a nonpositive numeric option",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution without reading vectors.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "3/3; baseline 0.2 is uniform selection among five choices. Exact batch: all three such items reject consistency, while both all-positive banks are consistent. This is a finite-pool shortcut; larger controls defeat it.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator slot validation and semantic-fingerprint retry trace",
+      "requested difficulty",
+      "publisher normalization/identity checks",
+      "captured-inventory and within-batch deduplication",
+      "difficulty-first learner selection and history exclusion rules",
+      "actual UI choice reordering",
+      "native learner grading"
+    ],
+    "sample_refs": [
+      "resampling-records.json",
+      "resampling-results.json",
+      "delivery/delivery.json",
+      "delivery/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "grader-report.json",
+      "render-all/rendering.json"
+    ],
+    "result": "Independent180-record raw set filters to178; both branches and ranks remain in each controlled profile. Exact batch5 filters to5 and retains sign shortcut. Positive-weight moderate selection keeps all5 eligible; cue remains correct on any selected nonpositive-bank item."
+  },
+  "limitations": [
+    "Captured inventory basis5400 contains14 originals only; no affected generated stored instances demonstrated. Later writes may change deduplication.",
+    "No learner history, configured weights or eventual entity IDs supplied. Selection analysis is conditional on eligible fresh moderate records; synthetic-ID traces faithfully reproduce within-band draw rules.",
+    "Runner top-level batch seed absent; each saved runner item replays from its complete generation metadata. Generator retry code and a fresh requested-size trace were examined.",
+    "Finite probe results do not prove absence of every shortcut. Sign finding is specific to the exact batch, not a universal generator defect.",
+    "Canonical example has no captured answer field; exercise banks supply radio contract. Original distractor misconception intent is not supplied."
+  ]
+}
