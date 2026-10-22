@@ -1,0 +1,11 @@
+Current candidate preserved. The first executed test reproduced finding 591f580cadb749294588: five stored v2 records, 64/64 sign-extremum successes in the retained possible-history scenario. The source, inventory, runtime and manifest match the protected hashes. No new generator construction failure is reported by the latest feedback.
+
+The existing instructional account remains applicable: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires eliminating x to obtain (k+4)y=-5; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates an interior correct option. The current five-choice easy construction and batch selection retain the required calculation and varying numeric roles. Changing the generator cannot alter answer banks already stored in the captured pool.
+
+Ran job-python -B checks/recheck_status.py --output evidence/author-426. Exit 1 is solely the retained historical-pool failure. All four current-generator findings pass: 17 source banks plus canonical replay, independent printed math, zero roots, 14 records with contrasts before/after shared delivery, controlled counterfactuals, 7 native acceptances and 28 rejections, dependency checks, deterministic replay and relocation. The existing five-item replacement proposal remains verified and unapplied.
+
+Reused bound actual-UI rendering at evidence/repair-3/render/rendering.json; visually reinspected question-001.png. Equations, five choices, augmented matrices, elimination and conclusion are legible with no clipping. No runtime or UI change required a duplicate render.
+
+All five executable finding declarations remain in repair-regressions.json. affected-inventory.json identifies all five reproduced generated inventory records; none of the captured generated inventory remains untested. Its evidence paths resolve from the requested author-426 evidence root to workspace/evidence/generated-records.json. No database, publication, source, engine or other-job edits were made.
+
+Status unsupported: separate inventory remediation and fresh capture are still required by finding 591f580cadb749294588. The user prohibits database changes in this task. The strict check remains failing; the replacement proposal is not claimed as applied remediation.
