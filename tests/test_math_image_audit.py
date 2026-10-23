@@ -16,6 +16,16 @@ FORMULA = '<svg width="2ex" height="1ex"><g><g data-mml-node="math"><path data-c
 
 
 class MathImageAuditTests(unittest.TestCase):
+    def test_math_evidence_is_not_lost_after_the_provenance_example_limit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); digest = 'a' * 64
+            evidence = root / 'assets.json'
+            rows = [{'tag':'img','html':f'<img src="diagram-{i}.png">','sha256':digest} for i in range(6)]
+            rows.append({'tag':'svg','html':FORMULA,'sha256':digest})
+            evidence.write_text(json.dumps(rows))
+            index, _ = audit.capture_index([evidence], {digest})
+            self.assertIn('math-svg', {r['kind'] for r in index[digest]})
+
     def test_formula_signatures_do_not_flag_a_diagram_just_for_having_math_labels(self):
         self.assertEqual(audit.svg_kind(FORMULA)[0], "math-svg")
         self.assertEqual(audit.svg_kind('<svg width="300" height="100"><path d="M0 0 L5 5"/></svg>')[0], "non-math-svg")

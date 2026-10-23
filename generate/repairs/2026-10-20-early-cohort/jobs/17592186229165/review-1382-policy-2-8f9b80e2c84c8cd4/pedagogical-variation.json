@@ -1,0 +1,327 @@
+{
+  "learner_operation": "Compare each forcing rate with the supplied complementary exponent, choose ordinary or x-multiplied exponential trial, solve its coefficient, impose y(0), and enter an explicit equivalent solution.",
+  "fixed_features": [
+    {
+      "feature": "One blank, supplied complementary solution, initial point 0",
+      "justification": "All source IVPs and canonical d2382def-85b2-5002-9614-692f272355c8 isolate this same simple initial-constant step."
+    },
+    {
+      "feature": "Easy is one nonresonant term; moderate one resonant term",
+      "justification": "All rated sources fix these branches at their respective levels. Fixing this family does not fix the coefficients or full answer."
+    },
+    {
+      "feature": "Two distinct exponential rates at hard",
+      "justification": "Same-lesson examples 5e56989a-feb1-590a-8684-9442dee1b1cb and 1ea06d66-de30-514a-817f-8749abb4ab25 support two coefficient decisions without a new ODE method."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which mixed term requires x multiplication",
+      "eligible_variation": "Either term may share h. Position, coefficient sign and rate ordering are incidental.",
+      "observed": "{'total': 24, 'resonant_position_1': 12, 'A_negative': 10, 'h_negative': 13, 'first_rate_equal_h': 12, 'h_positive': 11, 'resonant_position_2': 12, 'A_positive': 14, 'first_rate_above_h': 6, 'first_rate_below_h': 6}; both positions survive all examined stages."
+    },
+    {
+      "role": "Complementary coefficient A",
+      "eligible_variation": "Positive, negative, fractional or zero as v and particular coefficients vary.",
+      "observed": "{'total': 5, 'resonant_position_0': 5, 'A_positive': 2, 'h_positive': 2, 'first_rate_below_h': 2, 'h_negative': 3, 'first_rate_above_h': 3, 'A_negative': 3}; controlled cancellation included."
+    },
+    {
+      "role": "Forcing coefficient and rate",
+      "eligible_variation": "Signed small integers and either nonresonant rate ordering; answer coefficient derived from f/(k-h).",
+      "observed": "{'total': 10, 'resonant_position_0': 10, 'A_negative': 5, 'h_negative': 3, 'first_rate_above_h': 6, 'h_positive': 7, 'first_rate_below_h': 4, 'A_positive': 4, 'A_zero': 1}"
+    }
+  ],
+  "coverage": [
+    {
+      "case": "batch_raw",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 5, 'resonant_position_0': 5, 'A_positive': 2, 'h_positive': 2, 'first_rate_below_h': 2, 'h_negative': 3, 'first_rate_above_h': 3, 'A_negative': 3}"
+    },
+    {
+      "case": "batch_delivered",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 5, 'resonant_position_0': 5, 'A_positive': 2, 'h_positive': 2, 'first_rate_below_h': 2, 'h_negative': 3, 'first_rate_above_h': 3, 'A_negative': 3}"
+    },
+    {
+      "case": "easy_raw",
+      "sample_refs": [
+        "independent-easy.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 12, 'resonant_position_0': 12, 'A_negative': 7, 'h_negative': 3, 'first_rate_above_h': 8, 'h_positive': 9, 'first_rate_below_h': 4, 'A_positive': 4, 'A_zero': 1}"
+    },
+    {
+      "case": "easy_delivered",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 10, 'resonant_position_0': 10, 'A_negative': 5, 'h_negative': 3, 'first_rate_above_h': 6, 'h_positive': 7, 'first_rate_below_h': 4, 'A_positive': 4, 'A_zero': 1}"
+    },
+    {
+      "case": "hard_raw",
+      "sample_refs": [
+        "hard-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 37, 'resonant_position_1': 16, 'A_negative': 16, 'h_positive': 18, 'first_rate_equal_h': 16, 'resonant_position_2': 19, 'first_rate_above_h': 10, 'A_positive': 17, 'first_rate_below_h': 11, 'A_zero': 4, 'h_negative': 19, 'resonant_position_0': 2}"
+    },
+    {
+      "case": "hard_delivered",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 37, 'resonant_position_1': 16, 'A_negative': 16, 'h_positive': 18, 'first_rate_equal_h': 16, 'resonant_position_2': 19, 'first_rate_above_h': 10, 'A_positive': 17, 'first_rate_below_h': 11, 'A_zero': 4, 'h_negative': 19, 'resonant_position_0': 2}"
+    },
+    {
+      "case": "fresh_mixed",
+      "sample_refs": [
+        "hard-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 24, 'resonant_position_1': 12, 'A_negative': 10, 'h_negative': 13, 'first_rate_equal_h': 12, 'h_positive': 11, 'resonant_position_2': 12, 'A_positive': 14, 'first_rate_above_h': 6, 'first_rate_below_h': 6}"
+    },
+    {
+      "case": "historical_generated",
+      "sample_refs": [
+        "generated-records.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 5, 'resonant_position_1': 4, 'A_positive': 4, 'h_positive': 2, 'first_rate_equal_h': 4, 'resonant_position_0': 1, 'h_negative': 3, 'first_rate_below_h': 1, 'A_negative': 1}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold forcing e^x+e^(2x) and v=0 fixed; change only h=1 to h=2.",
+      "expected": "Resonance transfers from first to second; response changes from (x-1)e^x+e^(2x) to -e^x+(x+1)e^(2x).",
+      "observed": "Both admitted. Prompt, trial, product-rule rows, equations, explanation and final response track h; native grader rejects old response on transfer and accepts the independently factored new response. Both rendered.",
+      "status": "passed",
+      "justification": "Tutorial e6655774-c9ab-58c6-bfec-5013b08b7918 defines overlap as the operative evidence, independent of position.",
+      "sample_refs": [
+        "hard-controlled-records.json",
+        "controlled-results.json",
+        "hard-math-results.json",
+        "grader-input.json",
+        "grader-delivered-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Swap both forcing components, preserving coefficients, h and v; include signed boundary and A=0 pairs.",
+      "expected": "Same IVP and response; trial, derivative and explanation follow the resonant term to its new position.",
+      "observed": "All four reorder pairs admitted with equivalent independent solutions. Both minimum-case orders accept the same native response; rendered prompts and worked stages show the changed position.",
+      "status": "passed",
+      "justification": "Forcing addition is commutative. The specific first position in lesson example 1ea06d66-de30-514a-817f-8749abb4ab25 is incidental.",
+      "sample_refs": [
+        "hard-controlled-records.json",
+        "controlled-results.json",
+        "hard-math-results.json",
+        "grader-input.json",
+        "grader-delivered-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "For h=2,k=3,f=4 change initial v=1 to v=4.",
+      "expected": "A changes from -3 to 0 and solution reduces to 4e^(3x).",
+      "observed": "ODE and initial residuals zero; rendered prompt and solution show changed initial value and cancellation; original key rejected on changed instance.",
+      "status": "passed",
+      "justification": "Canonical IVP initial-constant reasoning and edaf01e0-f315-5b89-a42e-b20571efeafe support cancellation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-delivered-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold easy parameters fixed and change compact presentation profile, or seed only.",
+      "expected": "Equivalent answer and same native acceptance.",
+      "observed": "Independent solutions and native acceptance unchanged; compact solution rendered with source-supported condensed coefficient rows. Seed-only prompt unchanged.",
+      "status": "passed",
+      "justification": "Source q-332906 and q-332903 show compact/grouped layouts for the same method; seed has no mathematical role.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-input.json",
+        "grader-delivered-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Last forcing position; all_fresh_mixed",
+      "subgroup": "fresh mixed all_fresh_mixed",
+      "scope": "within_template",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 12,
+      "total": 24,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 12/24. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; h_sign:negative",
+      "subgroup": "fresh mixed h_sign:negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 6,
+      "total": 13,
+      "baseline": 0.5384615384615384,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 6/13. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; rate_order:ascending",
+      "subgroup": "fresh mixed rate_order:ascending",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 7,
+      "total": 13,
+      "baseline": 0.5384615384615384,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 7/13. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; first_coefficient_sign:negative",
+      "subgroup": "fresh mixed first_coefficient_sign:negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 5/10. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; h_sign:positive",
+      "subgroup": "fresh mixed h_sign:positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5454545454545454,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 6/11. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; rate_order:descending",
+      "subgroup": "fresh mixed rate_order:descending",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.5454545454545454,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 5/11. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position; first_coefficient_sign:positive",
+      "subgroup": "fresh mixed first_coefficient_sign:positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use an ordinary exponential trial for the second term without comparing its exponent with h.",
+      "correct": 7,
+      "total": 14,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 7/14. Baseline is the best constant binary role guess within this subgroup. Both trial roles occur here; position/sign/order supplies no perfect action rule. Exponent equality itself is the intended mathematical test.",
+      "sample_refs": [
+        "hard-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Single nonresonant easy IVP",
+      "subgroup": "Exact runner batch after delivery",
+      "scope": "within_template",
+      "strategy": "Always use ordinary exponential trial, then solve its coefficient and initial constant.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Binary uninformed trial guess baseline 0.5. All rated easy sources fix nonresonance; this supplies neither scalar coefficient nor full solution and is a justified easy scope.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "math-results.json"
+      ]
+    },
+    {
+      "cue": "Given initial value v and complementary rate h",
+      "subgroup": "Exact runner batch",
+      "scope": "overall",
+      "strategy": "Copy v*exp(h*x) as the complete answer, omitting forcing.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 for this strategy because nonzero forcing rules out the homogeneous-only response; measured 0/5. Five keys have differing rates and rational coefficients, not sign-only variants.",
+      "sample_refs": [
+        "runner-batch.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Direct valid mixed-role sampling and explicit generator guards; no rejection/resampling loop",
+      "Shared publisher prepare_records validation and normalization",
+      "Requested-difficulty filtering",
+      "Within-batch and captured-inventory deduplication",
+      "Read-only difficulty-first, uniform-within-band learner selection with history removal"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "construction-review.json",
+      "delivery-batch/delivery.json",
+      "delivery-hard/delivery.json",
+      "delivery-independent/delivery.json",
+      "delivery-stored/delivery.json",
+      "coverage-results.json",
+      "selection-results.json"
+    ],
+    "result": "Requested batch 5 -> 5, independent easy 8 -> 8, focused hard 41 -> 41. Both mixed positions preserved. Stored 5 -> 0 on resubmission (deduplicated). Prospective selection reaches both repaired positions; historical-only pool retains prior limitation."
+  },
+  "limitations": [
+    "Finite fresh sample is not proof against all shortcuts.",
+    "Original capture lacks key/solution/difficulty for two unrated practice questions; unknown source evidence is not invented.",
+    "Four historical mixed records are retired and excluded from eligible selection; affected-inventory.json is empty after verification, with historical evidence retained.",
+    "No live publication, database writes, learner histories or policy state used. Prospective entity ordering is a faithful conditional uniform-within-band analysis."
+  ]
+}

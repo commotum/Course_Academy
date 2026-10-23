@@ -1,0 +1,1 @@
+Source/replay/math/retained regressions passed. Runner batch 5/5 and fresh easy 24/24 survive delivery at inventory basis 5575. Five archived weak records replayed; all retired, none eligible. Native grader 43 acceptances and 172 rejections passed. UI first six records passed; remaining counterfactual and source cases rendering now. Final decision/selection report pending.

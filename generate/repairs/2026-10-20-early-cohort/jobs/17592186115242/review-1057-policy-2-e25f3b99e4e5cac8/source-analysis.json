@@ -1,0 +1,81 @@
+{
+  "skill": "Determine the single parameter value making a two-equation linear system inconsistent or consistent dependent, using elimination and the zero-row criterion.",
+  "learner_operation": "Eliminate x (possibly swap rows); set the remaining affine y coefficient to zero; inspect the residual constant to distinguish contradiction from a redundant equation, then choose the resulting k.",
+  "reasoning_steps": [
+    "Form the augmented matrix preserving all signs and constants.",
+    "Use a nonzero pivot to eliminate x, obtaining (alpha*k+beta)y=delta.",
+    "Solve alpha*k+beta=0 and verify delta is nonzero for inconsistency or zero for dependence.",
+    "Select one of five math-valued radio answers; the canonical example has no captured answer field."
+  ],
+  "invariants": [
+    "Two equations in x,y; a single affine parameter in a y coefficient; nonzero x pivot; unique parameter answer.",
+    "Worked elimination and interpretation of 0=delta must agree with the prompt and answer.",
+    "The bank is five distinct k assignments with exactly one correct choice.",
+    "No source question is labelled easy: easy must be a conservative subset of moderate inconsistency cases, not an unsupported new operation."
+  ],
+  "permitted_variations": [
+    "Integer coefficients, signs, nonzero row multiplier, constants and affine k coefficient/offset within comparable arithmetic workload.",
+    "The value and sign of k, answer position, and distractor values are incidental assignments eligible to change.",
+    "For dependence vary proportional constants; for inconsistency vary a nonzero residual. Holding coefficient data fixed while changing constants within the same residual class should preserve k.",
+    "Relevant coefficient changes must move k as determined by elimination; prompt target may vary with matching residual class within the observed difficulty families."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Two variables and one unique parameter answer",
+      "justification": "The observed elimination leaves one affine coefficient. A unique singular parameter fits the five-choice assignment response. Asking for independent systems would generally require all other k values and a different response contract."
+    },
+    {
+      "feature": "Inconsistency in the simpler band, dependence in the hard band",
+      "justification": "The authored easy simplification isolates a contradiction after one integer elimination. Hard source solutions additionally interpret a redundant equation and free variable, often with swaps/fractional arithmetic. Keeping these reasoning workloads within their source bands is an instructional constraint; it does not fix the numerical root, answer rank or position."
+    }
+  ],
+  "source_refs": [
+    "f2c7cfd3-da43-5208-bd0e-21692357fabe",
+    "2a9a3feb-6c16-50e8-885d-ee5cd242ab95",
+    "84cf8820-fa64-5d50-9d9c-d3a9404788a4",
+    "7d3ed27b-d876-58c6-8a51-55f4b36743e6",
+    "0e7e4e8f-70c3-5d1c-92c5-d1d6f120ba7c",
+    "5288d9bb-0110-5357-979f-882b0ee060b3",
+    "49ba50cf-14b7-5be4-8660-2e096dc4c172",
+    "87026642-3a4d-5af1-8cd6-01d366fc76fa",
+    "534e2a93-e71a-5475-894e-dfd5ca99a3a6",
+    "f5f8dda9-f72e-566e-91bc-44ecdce08b8e",
+    "a0c28bd7-70de-59aa-93c9-933cbaca4593",
+    "bdfa86e8-f2dc-5d19-9144-98ae43ab2ede",
+    "db41cb50-724f-5af7-85df-697ff3307e10",
+    "2b1df7fe-03a7-50e4-93e7-ab9ba910308e",
+    "6deb5ca1-ae5b-5721-895d-6efa8ac5fdfb",
+    "db005b4e-86cd-5194-b2fd-10ca4ee59c03",
+    "7409a043-b196-5341-8318-5b111a0c527e",
+    "113efc76-e9d2-549d-b33e-b8de028f7ba5",
+    "tutorial e0c85152-daea-5a87-a3ba-81870558c7a2: consistent iff at least one solution; independent iff unique; dependent iff infinitely many",
+    "canonical e-4712: R2:=R2-2R1 gives (k+4)y=-5 and k=-4",
+    "generate/principles.md sections 1-3"
+  ],
+  "source_corrections": [
+    {
+      "id": "db41cb50-724f-5af7-85df-697ff3307e10",
+      "issue": "Solution changes the RHS of x+ky=-2 to +2; preserve -2."
+    },
+    {
+      "id": "db005b4e-86cd-5194-b2fd-10ca4ee59c03",
+      "issue": "Initial displayed matrix RHS and corresponding equation contain typos; prompt x+2y=3 is authoritative and k=5 is correct."
+    },
+    {
+      "id": "113efc76-e9d2-549d-b33e-b8de028f7ba5",
+      "issue": "Final surviving equation changes -2y to +2y; preserve -2y."
+    }
+  ],
+  "gaps": [
+    "No easy-labelled source instances."
+  ],
+  "evidence_paths": [
+    "source-analysis.json",
+    "source-cases.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/review-1-policy-2-4ad31bffc4aded8a/source-analysis.json",
+    "confirmation": "Source IDs, canonical elimination, source solution corrections and lesson passages reconfirmed against unchanged source; runner matched source hash and policy."
+  },
+  "image_confirmation": "Visually inspected lesson flowchart: no solution -> inconsistent; solution -> consistent; unique -> independent; not unique -> dependent. Saved lesson-classification.png."
+}

@@ -1,0 +1,1 @@
+Fresh replay/math/CLI/delivery/native grading complete. Current batch defeats retained shortcut (1/5); historical control fails (5/5). Inventory basis 5574 has one eligible moderate legacy median shortcut and two retired easy records. Await actual UI refresh and final evidence validation.

@@ -1,4 +1,4 @@
-"""Retire demonstrated, unserved generated defects without detaching their KP.
+"""Retire demonstrated generated defects without detaching their KP.
 
 Never retract question/answer entities, source questions, or learner history.
 Uses the existing guarded preview/submission transport and exact-request recovery.
@@ -8,6 +8,8 @@ import uuid
 
 from generator_publish import GeneratorCommitter, StaleBasis, digest, dumps, loads, kw, file_lock
 from inventory_jobs import save
+
+POOL_REPAIR_POLICY_VERSION = 2
 
 
 def generated_proof(row, evidence_root):
@@ -30,9 +32,11 @@ def generated_proof(row, evidence_root):
 
 def eligible(question):
     if question.get(':question/math-academy-id'):return False,'original_source'
-    if question.get(':task-item/_content'):return False,'already_served'
     if question.get(':knowledge-point/_canonical-example'):return False,'canonical_example'
     if question.get(':question/retired'):return False,'already_retired'
+    # Retirement excludes future practice only. Saved task-items, question
+    # content, answers, bank membership and grading remain unchanged, including
+    # a question already served to another learner or kept in a saved task.
     return True,None
 
 
@@ -89,7 +93,7 @@ def repair_pool(publisher, kp, reports, directory):
                         removed.append(eid);retired_before[eid]=question.get(':question/retired')
                     else:
                         protected.append({'question':eid,'reason':why})
-                        if why not in ('already_served','already_retired'):unresolved.append({'question':eid,'reason':why+' requires a separate content repair'})
+                        if why!='already_retired':unresolved.append({'question':eid,'reason':why+' requires a separate content repair'})
                 if not removed:
                     result={'retired':[],'already_absent':already_absent,'duplicate_reports':duplicate_reports,
                             'unresolved':unresolved,'protected':protected,'basis':basis};save(directory/'verification.json',result);return result
@@ -106,7 +110,7 @@ def repair_pool(publisher, kp, reports, directory):
                 pending=committer.save_request(batch,snapshot,digest(batch))
             try:receipt=committer.submit(pending)
             except StaleBasis:
-                committer.retire(pending,'rejected_stale_basis',{'reason':'Concurrent learner/database change; recheck unused status'})
+                committer.retire(pending,'rejected_stale_basis',{'reason':'Concurrent learner/database change; recheck retirement eligibility'})
                 continue
             proof=committer.verify_receipt(pending,receipt);after=receipt[':edb/db-after-t']
             rows=client.query('[:find ?q :in $ ?kp [?q ...] :where [?kp :knowledge-point/questions ?q]]',[int(kp),removed],directory,'membership-readback',after)

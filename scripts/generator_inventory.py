@@ -30,7 +30,7 @@ def repair_inventory(pipeline, evidence=None):
             if (row['finding']['kind']=='inventory' and row.get('source_hash')==pipeline.state.get('source_hash')
                     and row.get('review_directory')):
                 roots.add(Path(row['review_directory']).resolve())
-    from generator_pool_repair import generated_proof, repair_pool
+    from generator_pool_repair import POOL_REPAIR_POLICY_VERSION, generated_proof, repair_pool
     reports=[];inputs={}
     for root in sorted(roots):
         if root.parent!=pipeline.directory or not root.name.startswith('review-'):
@@ -46,7 +46,8 @@ def repair_inventory(pipeline, evidence=None):
                 **({'unproved_claim':row} if not proved else {})}
             inputs[digest(identity)]=identity
     if not reports:return None
-    key=digest([inputs[key] for key in sorted(inputs)])
+    key=digest({'policy_version':POOL_REPAIR_POLICY_VERSION,
+                'claims':[inputs[key] for key in sorted(inputs)]})
     previous=pipeline.state.get('pool_repair',{})
     if pipeline.state.get('pool_repair_input')==key and not previous.get('unresolved'):
         return {**previous,'inventory_changed':False}
@@ -75,7 +76,8 @@ def repair_inventory(pipeline, evidence=None):
     if not changed:
         save(inventory_path,before)
         inventory=before
-    result={**result,'inventory_changed':changed,'baseline':str(baseline),
+    result={**result,'policy_version':POOL_REPAIR_POLICY_VERSION,
+            'inventory_changed':changed,'baseline':str(baseline),
             'fresh_inventory':str(fresh),'reports':[str(p) for p in reports],
             'inventory_sha256':digest(inventory)}
     save(directory/'review-handoff.json',result)

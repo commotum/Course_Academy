@@ -664,7 +664,7 @@ class Pipeline:
         self.remember_repair(reason)
         save(self.directory / 'feedback.json', {**reason,
             'repair_history_file': str(self.directory / 'repair-history.json'),
-            'instruction': 'Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.'})
+            'instruction': 'Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. If the required action belongs outside the author workspace, return blocked with the exact required action; do not repeat unchanged checks.'})
         if self.is_refill or self.state.get('review_after_publication'):
             self.persist(stage='unsupported', needs_repair=True, error=reason)
         else:

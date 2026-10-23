@@ -1,0 +1,43 @@
+--- prior
++++ current
+@@ -68,11 +68,13 @@
+   if not (1<=abs(p['k2'])<=6 and 1<=abs(p['f2'])<=12 and abs(p['f'])<=12 and abs(p['v'])<=8):raise ValueError('Hard workload bounds')
+   if p['k']==p['k2']:raise ValueError('Hard requires two distinct components')
+   if t=='two_nonresonant' and p['h'] in (p['k'],p['k2']):raise ValueError('Both exponents must be nonresonant')
+-  if t=='mixed' and not (p['k']==p['h'] and p['k2']!=p['h']):raise ValueError('Mixed requires first component resonant, second nonresonant')
++  if t=='mixed' and sum(k==p['h'] for k in (p['k'],p['k2']))!=1:raise ValueError('Mixed requires exactly one resonant component')
+ def sample(level,t,r):
++ resonant_position=r.randrange(2) if t=='mixed' else None
+  h=r.choice([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);k=h if t in ('resonant','mixed') else r.choice([z for z in range(-6,7) if z and z!=h])
+  p=dict(h=h,k=k,f=r.choice([z for z in range(-12,13) if z]),v=r.randint(-8,8))
+  if level=='hard':p.update(k2=r.choice([z for z in range(-6,7) if z and z not in (h,k)]),f2=r.choice([z for z in range(-12,13) if z]))
++ if resonant_position==1:p['k'],p['k2']=p['k2'],p['k']
+  return p
+ 
+ def components(p):
+@@ -121,11 +123,13 @@
+  eq='{y}^{′}'+op('y')+'='+forcing
+  prompt='Consider the following initial value problem:\n\n'+block(eq+r',\,y(0)='+str(p['v']))+'\n\nGiven that the differential equation \n\n'+block(eq)+'\n\nhas the complementary solution ${y}_{c}=A'+bh+',$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}'
+  terms=[coef(c,('x' if k==h else '')+exp(k)) for (k,f),c in zip(pairs,cs)];particular=summands(terms);general=summands(['A'+bh,*terms]);answer=summands([coef(A,bh),*terms])
+- explanation='We examine both exponential forcing terms. '+('The first exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not.' if t=='mixed' else 'Neither exponential is a term in the complementary solution.')+' We assume a particular solution of the form'
++ resonant_index=next((i for i,(k,f) in enumerate(pairs) if k==h),None)
++ explanation='We examine both exponential forcing terms. '+('The '+('first' if resonant_index==0 else 'second')+' exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not.' if t=='mixed' else 'Neither exponential is a term in the complementary solution.')+' We assume a particular solution of the form'
+  pieces=[OPEN,'To find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by',block('{y}_{c}^{′}'+op('{y}_{c}')+'=0.'),'Solving this equation, we find that the complementary solution is',block('{y}_{c}=A'+bh),'where $A$ is an arbitrary constant.','We now need to find the particular solution ${y}_{p}(x).$',explanation,block('{y}_{p}='+trial+','),r'where $\alpha $ and $\beta $ are constants that are to be determined.']
+  if t=='mixed':
+-  k=p['k'];a=alphas[0];b=exp(k);second=dparts[1]
+-  rows=[('{y}_{p}^{′}','('+trial+')^{′}'),('',summands([a+'(x'+b+')^{′}',second])),('',summands([a+'('+b+signed(k,'x'+b)+')',second])),('',deriv+'.')]
++  formal=[a+'(x'+exp(k)+')^{′}' if k==h else d for (k,f),a,d in zip(pairs,alphas,dparts)]
++  product=[a+'('+exp(k)+signed(k,'x'+exp(k))+')' if k==h else d for (k,f),a,d in zip(pairs,alphas,dparts)]
++  rows=[('{y}_{p}^{′}','('+trial+')^{′}'),('',summands(formal)),('',summands(product)),('',deriv+'.')]
+  else:rows=[('{y}_{p}^{′}','('+trial+')^{′}'),('',deriv+'.')]
+  pieces+=['We calculate the first derivative of ${y}_{p}$'+(' using the product rule for differentiation:' if t=='mixed' else ':'),block(aligned(rows)),r'To find the values of $\alpha $ and $\beta,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:']
+  # Separate distribution, cancellation and coefficient stages retain mathematical structure.
+@@ -133,7 +137,7 @@
+  for (k,f),a in zip(pairs,alphas):
+   if k==h:distributed.append('(1'+signed(k,'x')+signed(-h,'x')+')'+a+exp(k));reduced.append(a+exp(k))
+   else:distributed.append('('+str(k)+signed(-h,'')+')'+a+exp(k));reduced.append(coef(k-h,a+exp(k)))
+- pieces+=[block(aligned([('('+deriv+')'+op('('+trial+')'),forcing),('+'.join(distributed),forcing),(summands(reduced),forcing)])),'Equating coefficients of the two distinct exponentials gives',block(coef(1 if pairs[0][0]==h else pairs[0][0]-h, r'\alpha ' )+'='+str(pairs[0][1])+r',\qquad '+coef(pairs[1][0]-h,r'\beta ')+'='+str(pairs[1][1])+'.'),'So, we have',block(r'\alpha ='+tex(cs[0])+r',\qquad \beta ='+tex(cs[1])+'.'),'Therefore, the particular solution ${y}_{p}(x)$ is',block('{y}_{p}(x)='+particular+'.'),'Now, since the general solution is given by',block('y(x)={y}_{c}(x)+{y}_{p}(x),'),'the general solution in our case is',block('y='+general+'.'),'We can find the constant $A$ using the initial conditions.','Substituting $y(0)='+str(p['v'])+'$ into the general solution gives',block(aligned([('A'+''.join('+0' if k==h else signed(c,'') for (k,f),c in zip(pairs,cs)),str(p['v'])),('A',tex(A)+'.')])),'Therefore, the solution to the initial value problem is',block('y='+answer+'.')]
++ pieces+=[block(aligned([('('+deriv+')'+op('('+trial+')'),forcing),('+'.join(distributed),forcing),(summands(reduced),forcing)])),'Equating coefficients of the two distinct exponentials gives',block(coef(1 if pairs[0][0]==h else pairs[0][0]-h, r'\alpha ' )+'='+str(pairs[0][1])+r',\qquad '+coef(1 if pairs[1][0]==h else pairs[1][0]-h,r'\beta ')+'='+str(pairs[1][1])+'.'),'So, we have',block(r'\alpha ='+tex(cs[0])+r',\qquad \beta ='+tex(cs[1])+'.'),'Therefore, the particular solution ${y}_{p}(x)$ is',block('{y}_{p}(x)='+particular+'.'),'Now, since the general solution is given by',block('y(x)={y}_{c}(x)+{y}_{p}(x),'),'the general solution in our case is',block('y='+general+'.'),'We can find the constant $A$ using the initial conditions.','Substituting $y(0)='+str(p['v'])+'$ into the general solution gives',block(aligned([('A'+''.join('+0' if k==h else signed(c,'') for (k,f),c in zip(pairs,cs)),str(p['v'])),('A',tex(A)+'.')])),'Therefore, the solution to the initial value problem is',block('y='+answer+'.')]
+  return prompt,'\n\n'.join(pieces),answer
+ 
+ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
