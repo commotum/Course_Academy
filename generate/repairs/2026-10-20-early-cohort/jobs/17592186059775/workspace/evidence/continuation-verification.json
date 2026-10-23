@@ -1,57 +1,47 @@
 {
-  "exact_latest_failure": {
-    "command": [
-      "/home/jake/Developer/Course_Academy/.venv/bin/python",
-      "-B",
-      "checks/check_current_handoff.py"
-    ],
-    "exit_code": 1,
-    "report": "evidence/current-handoff-regression.json"
-  },
+  "attempt": "author-299",
   "checks": [
     {
-      "finding": "legacy_packaging_or_sampling",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_all.py"
       ],
       "exit_code": 0,
-      "log": "evidence/continuation-legacy_packaging_or_sampling.log"
+      "log": "evidence/continuation-check_all.log",
+      "seconds": 30.53
     },
     {
-      "finding": "9e827407d5429a1f8827",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_batch_selection.py"
       ],
       "exit_code": 0,
-      "log": "evidence/continuation-9e827407d5429a1f8827.log"
+      "log": "evidence/continuation-check_batch_selection.log",
+      "seconds": 12.77
     },
     {
-      "finding": "9b8cb52352b8ca3e790e",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "log": "evidence/continuation-9b8cb52352b8ca3e790e.log"
+      "log": "evidence/continuation-check_evidence_contract.log",
+      "seconds": 2.37
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_render_binding.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/continuation-check_render_binding.log",
+      "seconds": 0.43
     }
   ],
-  "render_binding": {
-    "command": [
-      "/home/jake/Developer/Course_Academy/.venv/bin/python",
-      "-B",
-      "checks/check_render_binding.py"
-    ],
-    "exit_code": 0,
-    "log": "evidence/continuation-render-binding.log",
-    "report": "evidence/current-render-binding.json",
-    "visually_inspected": "evidence/author8-render/question-001.png",
-    "visual_observation": "Given augmented matrix, five radio matrices, selected key and worked row operations are readable; retained render matches freshly delivered unchanged records."
-  },
   "runtime_unchanged": true,
   "runtime_hashes": {
     "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
@@ -61,7 +51,8 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "runner_patch_installed": false,
-  "outcome": "unsupported: installed runner rejects unchanged runtime before retained checks or sampling; external runner change is outside authorized writes",
-  "scope": "Only workspace evidence and session-state updated. Runtime, package, engine, external runner, database and published images unchanged."
+  "latest_failure_reproduced_first": "evidence/current-handoff-regression.json",
+  "limitations": [
+    "Installed runner rejects byte-identical runtime before sampling; required external runner repair is outside the authorized workspace."
+  ]
 }

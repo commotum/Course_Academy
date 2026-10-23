@@ -1,41 +1,37 @@
-# Current state — 2026-10-22, author-298
+# Current state — 2026-10-22, author-300
 
-Preserved the existing generator, package and completed repairs. Read feedback,
-all retained findings and the latest history event; reused source analysis and
-checked the supplied lesson, canonical example, all 12 questions, and prerequisites.
-No instructional or runtime change is justified by the evidence-only finding.
+Preserved the generator, manifest, completed repairs and strict regressions.
+Read latest feedback, both retained findings, all 300 history events and the
+existing source/instructional analysis. No new generator defect is demonstrated.
 
 Reproduced the exact latest failure first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. The installed runner at scripts/generator_pipeline.py:723–727 rejects
-runtime byte identity before regressions or sampling. The retained evidence-only
-finding requires preserving those bytes. This is an external orchestration defect,
-not missing source support or a generator construction failure.
+exits 1. Installed scripts/generator_pipeline.py rejects the byte-identical
+runtime before regressions or sampling, while the retained evidence-only finding
+requires preserving that runtime.
 
-Ran the three registered regressions once and source/render binding. Commands,
-exit codes, logs and runtime hashes: `evidence/continuation-verification.json`.
+Commands, exit codes, logs and unchanged runtime hashes:
+`evidence/author300-verification.json`.
 
-- `check_all.py`: PASS (relocated CLI, source replay, independent math, actual
-  native grader, shared delivery filter, captured inventory).
-- `check_batch_selection.py`: PASS (reported seed 4258185931, controlled target
-  changes, within-template shortcut checks, delivery and native grading).
-- `check_evidence_contract.py`: FAIL only on strict installed-runner handoff.
-  Bundle validation, relocation and negative controls pass.
-- `check_render_binding.py`: PASS. Reinspected retained actual-UI screenshot
-  `evidence/author8-render/question-001.png`; matrices and operations are readable.
-  Runtime/render inputs are unchanged, so no redundant rendering was run.
+- Registered legacy CLI/source/math/grading/delivery/inventory check: PASS.
+- Registered shortcut finding 9e827407d5429a1f8827: PASS, including reported
+  seed 4258185931, controlled changes, native grading and shared delivery.
+- Registered evidence finding 9b8cb52352b8ca3e790e: FAIL only at installed
+  runner handoff. Actual evidence bundle, relocation and negative controls PASS.
+- Source/render binding: PASS, 10 complete source banks. Reinspected retained
+  actual-UI screenshot evidence/author8-render/question-001.png; supplied matrix,
+  five choices and row-operation solution are readable. Runtime and inputs
+  remain bound to that rendering; no unnecessary rerender was performed.
 
-All declared runtime files and package.json remain unchanged. Strict failing
-regressions remain registered. No database, publication, engine, external runner
-or other-job writes occurred.
+No runtime/package, external runner, engine, database, publication or other-job
+writes occurred. Only workspace verification evidence and status were updated.
 
 ## Next unfinished step
 
-The runner owner must resolve its byte-identity rejection for evidence-only
-repairs. Existing concrete proposal: `runner-fix/evidence-only-rejection.patch`.
-Applying it to scripts/generator_pipeline.py lies outside this workspace and is
-not authorized. The corrected evidence bundle remains staged under
-`evidence/contract-correction`, with `evidence/contract-installation.json`.
-After the external correction, rerun the strict installed handoff and registered
-regressions before fresh independent review. Do not change package bytes merely
-to evade the gate or describe an uninstalled proposal as fixed.
+Runner owner must resolve the evidence-only repair's byte-identity rejection.
+The concrete staged proposal runner-fix/evidence-only-rejection.patch targets
+scripts/generator_pipeline.py outside authorized writes and remains uninstalled.
+The corrected relative evidence bundle is evidence/contract-correction, with its
+copy map in evidence/contract-installation.json. After external correction,
+rerun the installed handoff and registered regressions before independent review.
+Do not alter runtime bytes to evade the gate or claim staged changes are installed.
