@@ -1,0 +1,39 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "evidence": "evidence/author-1269/latest-failure.log",
+      "finding": "645672a4cd3f9bf609ca"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1269/role",
+      "exit_code": 0,
+      "evidence": "evidence/author-1269/role/results.json",
+      "finding": "efa97df560cec8fee6e1"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "evidence": "evidence/author-1269/retained-state.json"
+    }
+  ],
+  "demonstrated_root_cause": "decision_variation has an unresolved decision shortcut",
+  "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+  "local_corrected_evidence": "evidence/corrected-review",
+  "local_actual_contract_validation": "passed",
+  "current_generator_records_replayed": 26,
+  "role_coverage_after_delivery": {
+    "1": 19,
+    "2": 17,
+    "none": 5
+  },
+  "remaining_requirement": "Runner must install the saved correction at the original prior-review destination outside the authorized workspace, rerun the default strict regression, and obtain fresh independent review.",
+  "handoff": "evidence/review-installation-handoff.json",
+  "reused_evidence_reason": "Runtime and source hashes are unchanged. Retained source replay, inventory, relocation, selection and actual UI rendering evidence remain applicable. No generator authoring is requested by the unresolved finding.",
+  "retry_condition": "Do not repeat unchanged workspace-only author retries: the retained failing requirement is an external evidence installation, not a generator construction defect.",
+  "database_or_publication_changes": false,
+  "external_writes": false
+}

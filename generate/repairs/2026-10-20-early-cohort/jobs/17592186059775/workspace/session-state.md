@@ -1,35 +1,45 @@
-# Current state — 2026-10-22, author-280
+# Current state — 2026-10-22, author-283
 
-Read feedback, both retained findings, latest history event, prior state,
-source evidence, instructional account and required generation guidance.
-Preserved the completed runtime repairs and report-only correction.
+Read feedback and repair history first (two retained findings; 283 history events).
+Preserved completed runtime repairs, manifest, instructional account, corrected
+evidence bundle, and strict regression criteria. No source or generator defect
+was newly demonstrated. No runtime edits were justified by the evidence-only
+finding 9b8cb52352b8ca3e790e, which explicitly requires runtime preservation.
 
-Reproduced latest failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Actual installed sample-stage control flow rejects the byte-identical
-package before retained regressions or sampling. The evidence-only finding
-explicitly requests preserving runtime. The gate is outside authorized writes.
+Latest failure reproduced first with the job Python:
+`python -B checks/check_current_handoff.py` exits 1. Actual installed
+`scripts/generator_pipeline.py:723-727` rejects the unchanged package before
+regressions or sampling. Read that code directly; this is an unconditional
+package/source/engine identity gate, without an evidence-only exception.
 
-Executed every registered regression once, plus source/render binding:
-- `checks/check_all.py`: exit 0 (CLI relocation/count, source replay,
-  independent mathematics, actual native grader, delivery and inventory).
-- `checks/check_batch_selection.py`: exit 0 (retained seed, controlled role
-  changes, within-family shortcut probes, actual delivery and native grading).
-- `checks/check_evidence_contract.py`: exit 1. Evidence bundle, relocation,
-  missing-provenance and wrong-root controls pass; installed handoff fails.
-- `checks/check_render_binding.py`: exit 0 (10 complete source banks,
-  50 choices, existing actual UI renders bind to delivered records).
-Visually inspected `evidence/author8-render/question-001.png`: readable prompt,
-five matrix choices and full row-operation solution. No rendering change exists.
-Exact commands, logs, exit codes and unchanged runtime hashes:
-`evidence/author280-verification.json`.
+Affected checks rerun with the job Python and `-B`:
+- `checks/check_evidence_contract.py`: exit 1. Real evidence validation, missing
+  provenance and wrong-root negative controls, and relocation pass. Strict
+  installed-runner handoff still fails; no acceptance criterion was weakened.
+- `checks/check_batch_selection.py`: exit 0. Exact seed, controlled target changes,
+  within-family probes, actual delivery filtering, and 25 native responses pass.
+  Reported cue succeeds 1/5 before and after filtering.
+- `checks/check_cli_contract.py`: exit 0. Relocation, deterministic CLI and counts.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks and two
+  retained actual-UI records remain bound to fresh delivered endpoints.
 
-No runtime, manifest, engine, database, publication, other-job or external runner
-changes. Installed Python 3.13.5 / SymPy 1.14.0 match manifest declarations.
+Inspected `evidence/author8-render/question-001.png`: readable prompt, five
+matrix choices, and complete worked row operations. Runtime unchanged, so no
+interchangeable rerender was needed. Exact commands, results, logs, and unchanged
+runtime hashes: `evidence/author283-verification.json`.
 
-Unfinished: runner owner must review/install the existing
-`runner-fix/evidence-only-rejection.patch` in `scripts/generator_pipeline.py`,
-then rerun installed handoff and route to fresh independent review. The external
-patch remains uninstalled. Do not weaken the failing regression or alter runtime
-bytes merely to evade the gate. Repeated identical author retries cannot resolve
-this workspace boundary; the exact remaining failure is preserved, not approved.
+No external, engine, database, publication, or other-job edits occurred.
+
+## Unfinished external step
+
+The runner owner must review/install `runner-fix/evidence-only-rejection.patch`
+under `scripts/generator_pipeline.py`, then run retained strict regressions,
+sampling and fresh independent review. The corrected self-contained bundle is
+`evidence/contract-correction`; its destination is runner-supplied. Both runner
+modification and installation at the supplied author evidence root lie outside
+the authorized workspace. The patch is staged, not installed.
+
+Another identical author retry cannot resolve that external gate. Do not change
+runtime bytes merely to evade it, relabel a staged patch as installed, weaken
+regressions, or claim unsupported source mathematics. The current unsupported
+result reports the unresolved handoff, not a lack of source-supported questions.

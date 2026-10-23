@@ -1,0 +1,15 @@
+# Author 970 disposition
+
+The first test reproduced finding 591f580cadb749294588: all five captured historical generated records retain the sign-only extremum shortcut. The retained possible learner-history witness succeeds on 64/64 selections. This is a possible-history counterexample, not a claim about every learner history.
+
+The root construction repairs already exist: authored banks choose the correct numeric role before sampling coefficients, source q-74691 supports fractional elimination with bare k, collision fallback preserves zero roots, and easy batch selection requires contrasting coefficient decisions and bank roles within both sign groups. No new runtime defect was demonstrated. Preserve these repairs and the complete source scope.
+
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-970` (exit 1). Its commands.json records every subprocess and outcome. All four current-generator finding checks pass; the inventory finding fails. All 17 complete source practice banks replay, 14 records survive shared delivery with the tested contrasts preserved, and the real native grader accepts 7 correct and rejects 28 wrong responses. Dependency versions and relocated execution pass. The five staged replacement records and their one-to-one mapping verify; they remain unapplied. No generated inventory records are untested.
+
+Reinspected the retained actual-UI screenshot `evidence/repair-3/render/question-001.png`: prompt, five radio choices, augmented matrix, elimination, residual system and conclusion are readable with no visible clipping. Reused existing rendering because runtime and source hashes match the validated package; no interchangeable render was produced.
+
+The source lesson defines inconsistency as no solutions (tutorial e0c85152-daea-5a87-a3ba-81870558c7a2). Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to `(k+4)y=-5`; source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates an interior correct choice. The instructional account remains applicable. Source and inventory hashes are unchanged, so the old counterexample still applies.
+
+Status remains unsupported for the delivered selectable-pool requirement. The review explicitly assigns the five historical records to a separate inventory-remediation workflow. Applying the existing proposal and recapturing the resulting inventory are external steps forbidden by the instruction against database changes. A workspace generator edit cannot change stored answer banks read by the selector. Keep the strict inventory regression failing; do not substitute hypothetical replacements for captured records or weaken the acceptance criterion.
+
+Preserved runtime, manifest, source, database, engine and publication state. Updated only local evidence and session state. The concrete review handoff is `evidence/repair-3/inventory-repair-proposal.json`, with complete reproduced historical records in `evidence/generated-records.json` and exact affected identities in `affected-inventory.json`.
