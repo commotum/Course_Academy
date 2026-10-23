@@ -1,6 +1,7 @@
 """Exercise independent report repair and real generator repairs end to end."""
 import json
 from pathlib import Path
+import textwrap
 import unittest
 from unittest.mock import patch
 
@@ -176,6 +177,75 @@ class GeneratorReportFlowTests(unittest.TestCase):
             question = record["question"]
             number = int(question[":question/problem"].split()[1])
             self.assertEqual(int(question[":question/answer-fields"][0][":answer-field/choices"][0][":answer/value"]), number * number)
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_batch_repair_checks_current_generator_before_runner_replaces_rejected_batch(self):
+        class BatchRepair(ReportSession):
+            def __init__(self):
+                super().__init__()
+                self.reviewed_prompts = []
+
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                workspace = Path(context['workspace'])
+                if role == 'author':
+                    if len([r for r, _ in self.calls if r == 'author']) == 1:
+                        generator = workspace / 'generator.py'
+                        generator.write_text(generator.read_text().replace(
+                            'random.Random(args.seed).sample(range(2, 99), args.count)', '[2] * args.count'))
+                    else:
+                        # The author repairs package code. Its regression can
+                        # check the prospective batch without editing samples.
+                        script = textwrap.dedent('''\
+                            import json, os, subprocess, sys, tempfile
+                            from pathlib import Path
+                            old = json.loads(Path(BATCH_FILE).read_text())
+                            with tempfile.TemporaryDirectory() as output:
+                                result = subprocess.run(
+                                    [sys.executable, '-E', '-s', '-B', 'generator.py',
+                                     '--difficulty', BAND, '--count', str(COUNT),
+                                     '--seed', str(SEED), '--format', 'json'],
+                                    env={**os.environ, 'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR': output},
+                                    capture_output=True, text=True, check=True)
+                            prospective = json.loads(result.stdout)
+                            prompts = lambda rows: [r['question'][':question/problem'] for r in rows]
+                            assert len(set(prompts(old))) == 1, 'Saved rejected batch changed prematurely'
+                            assert len(set(prompts(prospective))) == COUNT, 'Batch-selection defect remains'
+                            Path('prospective-batch.json').write_text(json.dumps({
+                                'seed': SEED, 'old': prompts(old), 'fixed': prompts(prospective)}))
+                        ''')
+                        bindings = {'BATCH_FILE': context['batch_file'], 'BAND': context['requested_difficulty'],
+                                    'COUNT': context['count'], 'SEED': context['sample_seed']}
+                        (workspace / 'batch_regression.py').write_text(
+                            '\n'.join(f'{key} = {value!r}' for key, value in bindings.items()) + '\n' + script)
+                        findings = json.loads(Path(context['repair_history_file']).read_text())['findings']
+                        (workspace / 'repair-regressions.json').write_text(json.dumps({'findings': [
+                            {'id': row['id'], 'script': 'batch_regression.py'} for row in findings]}))
+                else:
+                    rows = json.loads(Path(context['batch_file']).read_text())
+                    prompts = [row['question'][':question/problem'] for row in rows]
+                    self.reviewed_prompts.append(prompts)
+                    if len(set(prompts)) != len(prompts):
+                        result.update(verdict='revise', findings=[{
+                            'kind': 'restriction', 'description': 'Batch selection repeats one question.',
+                            'source_refs': ['fixture-source-1'], 'reproduction': f'seed={context["sample_seed"]}: all prompts match.',
+                            'requested_change': 'Repair generator sampling to select distinct questions in each finite batch.'}])
+                        result['checks']['variety']['status'] = 'failed'
+                return result
+
+        session = BatchRepair()
+        state = self.pipeline(session).run()
+        self.assertEqual(state['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'author', 'review'])
+        evidence = json.loads((self.job / 'workspace/prospective-batch.json').read_text())
+        self.assertEqual(evidence['seed'], state['seed'])
+        self.assertEqual(evidence['old'], session.reviewed_prompts[0])
+        self.assertEqual(evidence['fixed'], session.reviewed_prompts[1])
+        self.assertEqual(len(set(evidence['old'])), 1)
+        self.assertEqual(len(set(evidence['fixed'])), self.request['count'])
+        self.assertTrue(json.loads((self.job / 'repair-preflight.json').read_text())['passed'])
+        publication = json.loads((self.job / 'publication/request.json').read_text())
+        self.assertEqual([row['question'][':question/problem'] for row in publication['records']], evidence['fixed'])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
 

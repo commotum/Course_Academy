@@ -361,6 +361,7 @@ class Pipeline:
                 'package_root': str((self.directory / 'workspace' / self.state.get('manifest', 'package.json')).parent),
                 'manifest_file': str(self.directory / 'workspace' / self.state.get('manifest', 'package.json')),
                 'requested_difficulty': self.state.get('effective_difficulty', request['difficulty']), 'count': request['count'],
+                'sample_seed': self.state['seed'],
                 'knowledge_point': request['kp'], 'python': python_executable(self.root, self.environment),
                 'review_policy_version': REVIEW_POLICY_VERSION, 'review_binding': self.review_binding(),
                 'math_root': self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math'),
