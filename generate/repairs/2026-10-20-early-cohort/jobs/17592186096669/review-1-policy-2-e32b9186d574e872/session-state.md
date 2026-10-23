@@ -1,0 +1,1 @@
+Source reverified before package inspection. All 12 complete source banks replay. Independent exact math passes 60 normal, 60 controlled, 5 batch, 2 boundary and 3 counterfactual records. Prior two failures reproduced on old package; exact shortcut defeated on current. Native grader and rendering inputs ready. Inventory: 13 original sources, zero generated.

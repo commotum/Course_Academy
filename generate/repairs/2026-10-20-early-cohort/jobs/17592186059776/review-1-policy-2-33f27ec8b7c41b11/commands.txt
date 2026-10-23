@@ -1,0 +1,19 @@
+Run from evidence_root. Python = /home/jake/Developer/Course_Academy/.venv/bin/python; repo = /home/jake/Developer/Course_Academy.
+python audit.py > audit.log 2>&1
+python baseline/reproduce-shortcut.py ../review-0-policy-2-b8c258069e86f407/relocated/17592186059776.py > baseline/independent.log 2>&1  # expected exit 1
+python baseline/check-author-regression.py > baseline/author.log 2>&1  # expected exit 1
+python reproduce-shortcut.py > shortcut-regression.log 2>&1
+python check-author-regression.py > author-regression.log 2>&1
+repo/generate/runs/current/check-engine native-input.json native-results.json > native.log 2>&1
+python repo/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math
+python repo/generate/pipeline/check_delivery.py --input control.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-control --math-root /media/jake/SSD/EDB/math
+python delivery-analysis.py > delivery-analysis.log 2>&1
+python decision-probes.py > decision-probes.log 2>&1
+repo/generate/runs/current/check-engine focused-native-input.json focused-native-results.json > focused-native.log 2>&1
+python reproduce-batch-shortcut.py > batch-shortcut.log 2>&1  # expected exit 1: current finite pool fails
+repo/generate/runs/current/check-engine delivered-native-input.json delivered-native-results.json > delivered-native.log 2>&1
+python repo/generate/pipeline/render_preview.py --input render-input.json --output render --math-root /media/jake/SSD/EDB/math
+python repo/generate/pipeline/render_preview.py --input focused-counterfactual-records.json --output render-focused --math-root /media/jake/SSD/EDB/math
+python repo/generate/pipeline/render_preview.py --input batch-shortcut-records.json --output render-shortcut --math-root /media/jake/SSD/EDB/math
+python3 write-report.py
+Fresh independent seeds: 67241 (profile cases), 846209 (40-record easy control and relocation), 737837 (focused counterfactuals). Retained seed 31817. Exact runner batch seed 3334594587.
