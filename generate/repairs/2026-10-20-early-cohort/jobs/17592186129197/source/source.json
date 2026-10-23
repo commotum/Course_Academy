@@ -1,0 +1,1479 @@
+{
+  "database": "math",
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "basis": 5582,
+  "kp_id": 17592186129197,
+  "material": {
+    "kp": {
+      ":db/id": 17592186129197,
+      ":knowledge-point/canonical-example": {
+        ":db/id": 17592186129015,
+        ":question/id": "9de92581-00d5-5343-90be-3b5527bfab49",
+        ":question/math-academy-id": "e-7283",
+        ":question/problem": "Using the change of variables \n\n$$\nu =3x-2y, \\quad v=x+y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(3x-2y)^2 - y - x = 0$ and the line $x+y=4.$",
+        ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/1e/1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = 3x-2y, \\qquad v=x+y\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/e1/e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nSubstituting $3x-2y = u$ and $x+y = v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(3x-2y)^{2}-y-x=0\\,\u27f9\\,{u}^{2}-v=0\\,\u27f9\\,v={u}^{2},\\end{aligned}\n$$\n\nwhile substituting $x + y = v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y+x=4\\,\u27f9\\,v=4.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2} \\\\ v &=4\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 2 \\\\ v &=4.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 2, 4).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: -2 \\leq u \\leq 2, \\, u^2 \\leq v \\leq 4\\big\\},\n$$\n\nas shown below.\n\n![](images/0a/0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}3 & -2 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = (5)^{-1} = \\dfrac 15.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}\\frac{1}{5}\\text{d}u\\text{d}v \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[{\\int }_{{u}^{2}}^{4}\\,dv]du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[v]_{{u}^{2}}^{4}\\,du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{1}{5}\\cdot 2{\\int }_{0}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{2}{5}{[4u-\\frac{{u}^{3}}{3}]}_{0}^{2} \\\\  & =\\frac{2}{5}(8-\\frac{8}{3}) \\\\  & =\\frac{2}{5}\\left(\\frac{16}{3}\\right) \\\\  & =\\frac{32}{15}\\end{aligned}\n$$"
+      },
+      ":knowledge-point/id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+      ":knowledge-point/key-prerequisites": [
+        {
+          ":db/id": 17592186049032,
+          ":topic/id": "d4ff589f-1af0-5477-b78d-91f6dfb7f322",
+          ":topic/knowledge-points": [
+            {
+              ":db/id": 17592186198362
+            },
+            {
+              ":db/id": 17592186198363
+            },
+            {
+              ":db/id": 17592186198376
+            }
+          ],
+          ":topic/math-academy-id": 4134,
+          ":topic/next": [
+            {
+              ":db/id": 17592186050705
+            }
+          ],
+          ":topic/title": "Transformations of Regions Between Curves"
+        },
+        {
+          ":db/id": 17592186049997,
+          ":topic/difficulty": 1.1044540289337517,
+          ":topic/encompasses": [
+            {
+              ":db/id": 17592186428676,
+              ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [1]; waits [1]. Separate account estimates: foundations=1/2 (1/2); multivariable=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 2151->1930. All account evidence retained in the prepared import's selected-relationships.json.",
+              ":encompassing/topic": {
+                ":db/id": 17592186048942
+              },
+              ":encompassing/weight": 0.5
+            },
+            {
+              ":db/id": 17592186428677,
+              ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 2151->1992. All account evidence retained in the prepared import's selected-relationships.json.",
+              ":encompassing/topic": {
+                ":db/id": 17592186050207
+              },
+              ":encompassing/weight": 0.5
+            },
+            {
+              ":db/id": 17592186428678,
+              ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account multivariable: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [1]; waits [1]. Separate account estimates: multivariable=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/multivariable-frequency-estimates.json, pair 2151->2000. All account evidence retained in the prepared import's selected-relationships.json.",
+              ":encompassing/topic": {
+                ":db/id": 17592186050546
+              },
+              ":encompassing/weight": 0.5
+            }
+          ],
+          ":topic/id": "24e61144-3626-5d23-b2e6-a33ee94f32f3",
+          ":topic/knowledge-points": [
+            {
+              ":db/id": 17592186133833
+            },
+            {
+              ":db/id": 17592186133834
+            },
+            {
+              ":db/id": 17592186133835
+            },
+            {
+              ":db/id": 17592186133836
+            }
+          ],
+          ":topic/math-academy-id": 2151,
+          ":topic/next": [
+            {
+              ":db/id": 17592186049084
+            },
+            {
+              ":db/id": 17592186050264
+            },
+            {
+              ":db/id": 17592186050705
+            }
+          ],
+          ":topic/title": "Double Integrals Over Type I Regions"
+        }
+      ],
+      ":knowledge-point/questions": [
+        {
+          ":db/id": 17592186129643,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "176c442b-d740-5c8e-bae2-04e05f97f2e3",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\sqrt{2}",
+                  ":db/id": 17592186127344
+                },
+                {
+                  ":answer/id": "9315f9a2-e02a-52a0-9b61-22998fdd4b41",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{3}",
+                  ":db/id": 17592186127340
+                },
+                {
+                  ":answer/id": "a2493839-f867-5e6b-86ab-21e93542af83",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "1",
+                  ":db/id": 17592186127341
+                },
+                {
+                  ":answer/id": "aaf23205-9937-580f-9487-67df5e047e7e",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2",
+                  ":db/id": 17592186127342
+                },
+                {
+                  ":answer/id": "fbba71af-ed9d-5b0d-9f28-8c1f36bd3fcd",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{4}{3}",
+                  ":db/id": 17592186127343
+                }
+              ],
+              ":answer-field/id": "3868bc82-87b4-5f23-bdbc-a27b10c54df7",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186127339
+            }
+          ],
+          ":question/id": "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+          ":question/math-academy-id": "q-38374",
+          ":question/problem": "Using the change of variables\n\n$u = x - y, v = y$,\ncalculate the area of the finite region $D$ bounded by the curve $(x - y)^{2} - y = 0$ and the line $y = 1$."
+        },
+        {
+          ":db/id": 17592186129878,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "3395c3cb-8544-536c-a34a-982908787158",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{2}",
+                  ":db/id": 17592186373309
+                },
+                {
+                  ":answer/id": "4deced36-0d95-50f5-af94-23b1383c8b33",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{3}",
+                  ":db/id": 17592186373308
+                },
+                {
+                  ":answer/id": "55a5789a-60d9-53af-abe8-31a45948a5e0",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{3}",
+                  ":db/id": 17592186373310
+                },
+                {
+                  ":answer/id": "c5bf893e-8435-5b7e-b5c4-19722cff781d",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{3}{20}",
+                  ":db/id": 17592186373307
+                },
+                {
+                  ":answer/id": "fcf7e1f1-fcf9-543c-97ee-b919265bfc35",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{10}",
+                  ":db/id": 17592186373306
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "c5bf893e-8435-5b7e-b5c4-19722cff781d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{3}{20}",
+                ":db/id": 17592186373307
+              },
+              ":answer-field/id": "a50d9972-aaca-5f8a-98d1-1ba9d85277f9",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186373305
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "5371e22a-fae1-5a1c-87b6-2b32ed156fc8",
+          ":question/math-academy-id": "q-82874",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x+y,\\,v=x-y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x+y)^{4}-x+y=0$ and  the line $y=0.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+y,\\,v=x-y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=u$ and $x-y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{4}-x+y=0\\,\u27f9\\,(x+y)^{4}-(x-y)=0\\,\u27f9\\,v={u}^{4},\\end{aligned}\n$$\n\nNow, \n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}x+y &=u \\\\ x-y &=v\\end{aligned}\\right.\\,\u27f9\\,y=\\frac{u-v}{2}.\\end{aligned}\n$$\n\nSubstituting this value into the equation of the given line yields:\n\n$$\n\\begin{aligned}y=0\\, & \u27f9\\,\\frac{u-v}{2}=0\\,\u27f9\\,v=u\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{4} \\\\ v &=u\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}{u}^{3}(u-1) &=0 \\\\ v &=u.\\end{aligned}\\right.\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(0,0)$ and $(1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,{u}^{4}\\le v\\le u\\}.\n$$\n\n![](images/1e/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png)\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ 1 & -1\\end{vmatrix} \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-2)^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[{\\int }_{{u}^{4}}^{u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[v]_{{u}^{4}}^{u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}(u-{u}^{4})du \\\\  & =\\frac{1}{2}{[\\frac{{u}^{2}}{2}-\\frac{{u}^{5}}{5}]}_{0}^{1} \\\\  & =\\frac{1}{2}(\\frac{1}{2}-\\frac{1}{5}) \\\\  & =\\frac{1}{2}\\left(\\frac{3}{10}\\right) \\\\  & =\\frac{3}{20}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186371906,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "222f9a03-a010-5d70-a31b-68c15b8ab921",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "4\\operatorname{ln}\u20614-\\frac{3}{4}",
+                  ":db/id": 17592186371911
+                },
+                {
+                  ":answer/id": "33a307a4-5e3d-5e26-9870-e4654bb643c2",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\operatorname{ln}\u20614-\\frac{3}{2}",
+                  ":db/id": 17592186371908
+                },
+                {
+                  ":answer/id": "6ae05fa3-0d0d-5167-94c2-8ea479a334e8",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\operatorname{ln}\u20614-3",
+                  ":db/id": 17592186371910
+                },
+                {
+                  ":answer/id": "86cdb592-c0ee-5680-989f-fa4c9b6fb697",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\operatorname{ln}\u20614-\\frac{3}{2}",
+                  ":db/id": 17592186371912
+                },
+                {
+                  ":answer/id": "9175a99b-56d0-595b-86db-511244542711",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\operatorname{ln}\u20614-\\frac{3}{4}",
+                  ":db/id": 17592186371909
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "9175a99b-56d0-595b-86db-511244542711",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\operatorname{ln}\u20614-\\frac{3}{4}",
+                ":db/id": 17592186371909
+              },
+              ":answer-field/id": "579f73d3-5ee3-5e3b-9cb0-45b6635a75cb",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186371907
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "f411b679-c6ae-56bb-9f50-ac0896593964",
+          ":question/math-academy-id": "q-160885",
+          ":question/problem": "Using the change of variables \n\n$$\nu=y+2x,\\,v=y-2x,\n$$\n\ncalculate the area of the finite region $D$ bounded by the lines $y+2x=1,$ $y-2x=1$ and the curve ${y}^{2}-4{x}^{2}=4.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=y+2x,\\,v=y-2x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $y+2x=u$ into the equation of the first line, we get\n\n$$\n\\begin{aligned}y+2x=1\\,\u27f9\\,u=1,\\end{aligned}\n$$\n\nwhile substituting $y-2x=v$ into the equation of the second line, we obtain\n\n$$\n\\begin{aligned}y-2x=1\\,\u27f9\\,v=1.\\end{aligned}\n$$\n\nSubstituting $u=y+2x$ and $v=y-2x$ into the equation of curve, we get\n\n$$\n\\begin{aligned}{y}^{2}-4{x}^{2}=4\\,\u27f9\\,(y+2x)(y-2x)=4,\\,\u27f9\\,uv=4.\\end{aligned}\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}uv &=4 \\\\ u &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=1 \\\\ v &=4.\\end{aligned}\\right.\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}uv &=4 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=4 \\\\ v &=1.\\end{aligned}\\right.\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(1,1),$ $(1,4)$ and $(4,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,1\\le u\\le 4,\\,1\\le v\\le \\frac{4}{u}\\}.\n$$\n\n![](images/30/30fff9564451baadff3cae48dbfb91dc08fc8591e596e7cd2f65d8cfc6c9c5a6.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 1 \\\\ -2 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =4.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(4)^{-1}=\\frac{1}{4}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|\\frac{1}{4}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{4}{\\int }_{1}^{4}[{\\int }_{1}^{4/u}\\,dv]du \\\\  & =\\frac{1}{4}{\\int }_{1}^{4}[v]_{1}^{4/u}\\,du \\\\  & =\\frac{1}{4}{\\int }_{1}^{4}(\\frac{4}{u}-1)du \\\\  & =\\frac{1}{4}{[4\\operatorname{ln}\u2061u-u]}_{1}^{4} \\\\  & =\\frac{1}{4}(4\\operatorname{ln}\u20614-4+1) \\\\  & =\\frac{1}{4}(4\\operatorname{ln}\u20614-3) \\\\  & =\\operatorname{ln}\u20614-\\frac{3}{4}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186373311,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "29ff210b-32a3-59a3-9402-2b61a8d6a02a",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{\\sqrt{2}}{3}",
+                  ":db/id": 17592186373317
+                },
+                {
+                  ":answer/id": "36c18b51-d2d9-5561-b308-2fdc610bb877",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8}{3}",
+                  ":db/id": 17592186373315
+                },
+                {
+                  ":answer/id": "8232f0ab-a3f1-5a06-a6cb-8418ed7a1099",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8\\sqrt{2}}{3}",
+                  ":db/id": 17592186373314
+                },
+                {
+                  ":answer/id": "88c8bbb9-1718-53bf-8d76-f55389c1603f",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2\\sqrt{2}}{3}",
+                  ":db/id": 17592186373316
+                },
+                {
+                  ":answer/id": "9e834b2d-26ec-5a0b-b024-653762ca7f8f",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{3}",
+                  ":db/id": 17592186373313
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "8232f0ab-a3f1-5a06-a6cb-8418ed7a1099",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{8\\sqrt{2}}{3}",
+                ":db/id": 17592186373314
+              },
+              ":answer-field/id": "4e5a6329-2104-5c1b-84f2-ccc6d5d0b453",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186373312
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "db42860a-5849-59fe-9226-d7cef72a335f",
+          ":question/math-academy-id": "q-82878",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x-y,\\,v=y+1,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x-y)^{2}+y=2$ and the line $y=0.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-y,\\,v=y+1\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x-y=u$ and $y=v+1$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x-y)^{2}+y=2\\,\u27f9\\,(y+1)=3-(x-y)^{2}\\,\u27f9\\,v=3-{u}^{2},\\end{aligned}\n$$\n\n \n\nwhile substituting $y=v-1$ into the equation of the line, we obtain\n\n$$\n\\begin{aligned}y=0\\,\u27f9\\,v=1.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=3-{u}^{2} \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm \\sqrt{2} \\\\ v &=1.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{2},1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394={(u,v)\\,:\\,-\\sqrt{2}\\le u\\le \\sqrt{2},\\,1\\le v\\le 3-{u}^{2}.}.\n$$\n\n![](images/9c/9cec7ff29557aa14cd19309e9180482a44091e7ef215205285822674e7bc25b0.png)\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}\\text{d}u\\text{d}v \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[{\\int }_{1}^{3-{u}^{2}}\\,dv]du \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[v]_{1}^{3-{u}^{2}}\\,du \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}(3-{u}^{2}-1)\\,du \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}(2-{u}^{2})\\,du \\\\  & ={[2u-\\frac{{u}^{3}}{3}]}_{-\\sqrt{2}}^{\\sqrt{2}} \\\\  & =(2\\sqrt{2}-\\frac{2\\sqrt{2}}{3})-(-2\\sqrt{2}+\\frac{2\\sqrt{2}}{3}) \\\\  & =\\frac{8\\sqrt{2}}{3}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186373332,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "19278225-d301-581a-a354-aa480305af42",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{3}",
+                  ":db/id": 17592186373338
+                },
+                {
+                  ":answer/id": "2b3d1083-137d-51cd-af77-24049d080386",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{4}{3}",
+                  ":db/id": 17592186373337
+                },
+                {
+                  ":answer/id": "3e39adcf-f9fe-5dd8-8121-889b47f3e44f",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{3}",
+                  ":db/id": 17592186373334
+                },
+                {
+                  ":answer/id": "50017198-4384-5924-9339-b114ae17f28f",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2",
+                  ":db/id": 17592186373336
+                },
+                {
+                  ":answer/id": "eddeac90-01c0-5833-a667-85aceff8ed1b",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "10",
+                  ":db/id": 17592186373335
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "2b3d1083-137d-51cd-af77-24049d080386",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{4}{3}",
+                ":db/id": 17592186373337
+              },
+              ":answer-field/id": "d0492151-0ea1-564c-95ed-c1870ce912b6",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186373333
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "851a883c-83e2-57d3-b805-41682b65a2ea",
+          ":question/math-academy-id": "q-83943",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x-2y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $y-(x-2y)^{2}=2$ and the line $y=3.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-2y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x-2y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}y-(x-2y)^{2}=2\\,\u27f9\\,v-{u}^{2}=2\\,\u27f9\\,v={u}^{2}+2,\\end{aligned}\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y=3\\,\u27f9\\,v=3.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2}+2 \\\\ v &=3\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 1 \\\\ v &=3.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 1,3).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,{u}^{2}+2\\le v\\le 3\\}.\n$$\n\n![](images/ca/ca755cd11609e7c704adb37eb867ff8cc48bc5fc44b29cd777269be5791d9160.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -2 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{-1}^{1}[{\\int }_{{u}^{2}+2}^{3}\\,dv]du \\\\  & ={\\int }_{-1}^{1}[v]_{{u}^{2}+2}^{3}\\,du \\\\  & ={\\int }_{-1}^{1}(3-({u}^{2}+2))\\,du \\\\  & ={\\int }_{-1}^{1}(1-{u}^{2})\\,du \\\\  & ={[u-\\frac{{u}^{3}}{3}]}_{-1}^{1} \\\\  & =2-\\frac{2}{3} \\\\  & =\\frac{4}{3}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186373339,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "0ed3876d-8c80-5bc3-9185-9669f13f9f35",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{32}{3}",
+                  ":db/id": 17592186373343
+                },
+                {
+                  ":answer/id": "639ae9f3-3123-5bb0-aa7c-f883873eebe0",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "-\\frac{16}{3}",
+                  ":db/id": 17592186373344
+                },
+                {
+                  ":answer/id": "8823d84a-4e7a-5110-b70c-63b3e1900363",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{47}{3}",
+                  ":db/id": 17592186373345
+                },
+                {
+                  ":answer/id": "b76d7d05-c899-566f-a267-b260f4f22494",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "-\\frac{32}{3}",
+                  ":db/id": 17592186373341
+                },
+                {
+                  ":answer/id": "e610ef2b-0037-56d0-bead-5ff13607271a",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{16}{3}",
+                  ":db/id": 17592186373342
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "0ed3876d-8c80-5bc3-9185-9669f13f9f35",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{32}{3}",
+                ":db/id": 17592186373343
+              },
+              ":answer-field/id": "b3452f16-065c-5d3f-b342-bf97b568f3a2",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186373340
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "672b45e6-0aa1-59c9-9e64-dd97d59af187",
+          ":question/math-academy-id": "q-83947",
+          ":question/problem": "Using the change of variables \n\n$$\nu=y+3x,\\,v=x,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(y+3x)^{2}-x=3$ and the line $x=1.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=y+3x,\\,v=x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $y+3x=u$ and $x=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(y+3x)^{2}-x=3\\,\u27f9\\,{u}^{2}-v=3\\,\u27f9\\,v={u}^{2}-3,\\end{aligned}\n$$\n\nwhile substituting $x=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}x=1\\,\u27f9\\,v=1.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2}-3 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 2 \\\\ v &=1.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 2,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-2\\le u\\le 2,\\,{u}^{2}-3\\le v\\le 1\\}.\n$$\n\n![](images/26/2687f0cc14eb0b476ea5f4ba7272e7f248bb7dcb276a0e2b0c39e551501b011d.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}3 & 1 \\\\ 1 & 0\\end{vmatrix} \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-1)^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{-2}^{2}[{\\int }_{{u}^{2}-3}^{1}\\,dv]du \\\\  & ={\\int }_{-2}^{2}[v]_{{u}^{2}-3}^{1}\\,du \\\\  & ={\\int }_{-2}^{2}(1-({u}^{2}-3))\\,du \\\\  & ={\\int }_{-2}^{2}(4-{u}^{2})\\,du \\\\  & ={[4u-\\frac{{u}^{3}}{3}]}_{-2}^{2} \\\\  & =16-\\frac{16}{3} \\\\  & =\\frac{32}{3}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186411866,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "5ea71a81-55b2-5821-a85d-2c2b860ef761",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\operatorname{ln}\u20612-1",
+                  ":db/id": 17592186411729
+                },
+                {
+                  ":answer/id": "68da978e-5392-5c13-80d0-e709f72c6da6",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\operatorname{ln}\u20612-\\frac{1}{2}",
+                  ":db/id": 17592186411734
+                },
+                {
+                  ":answer/id": "6e0953bd-cd3e-5daf-9baa-978871a2e773",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\operatorname{ln}\u20612-2",
+                  ":db/id": 17592186411737
+                },
+                {
+                  ":answer/id": "98fb62ce-1156-5b60-96a5-36d7a22956c9",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\operatorname{ln}\u20612-3",
+                  ":db/id": 17592186411759
+                },
+                {
+                  ":answer/id": "a31dfc4c-cfac-5c12-8881-aa0d90cb5c66",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\operatorname{ln}\u20612-\\frac{3}{2}",
+                  ":db/id": 17592186411764
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "68da978e-5392-5c13-80d0-e709f72c6da6",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\operatorname{ln}\u20612-\\frac{1}{2}",
+                ":db/id": 17592186411734
+              },
+              ":answer-field/id": "4e959dbb-ec9c-5316-8bef-b8459b6fb499",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186411827
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "8fec53f8-0962-53b9-8a63-104c832ed68f",
+          ":question/math-academy-id": "q-160710",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x-y,\\,v=x+y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the lines $x+y=1,$ $x-y=1$ and the curve ${x}^{2}-{y}^{2}=2.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-y,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=v$ into the equation of the first line, we get\n\n$$\n\\begin{aligned}x+y=1\\,\u27f9\\,v=1,\\end{aligned}\n$$\n\nwhile substituting $x-y=u$ into the equation of the second line, we obtain\n\n$$\n\\begin{aligned}x-y=1\\,\u27f9\\,u=1.\\end{aligned}\n$$\n\nSubstituting $x+y=v$ and $x-y=u$ into the equation of curve, we get\n\n$$\n\\begin{aligned}{x}^{2}-{y}^{2}=2\\,\u27f9\\,(x-y)(x+y)=2,\\,\u27f9\\,uv=2.\\end{aligned}\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}uv &=2 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=2 \\\\ v &=1.\\end{aligned}\\right.\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}uv &=2 \\\\ u &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=1 \\\\ v &=2.\\end{aligned}\\right.\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(1,1),$ $(1,2)$ and $(2,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le \\frac{2}{u}\\}.\n$$\n\n![](images/4c/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(2)^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[{\\int }_{1}^{2/u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}[v]_{1}^{2/u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}(\\frac{2}{u}-1)du \\\\  & =\\frac{1}{2}{[2\\operatorname{ln}\u2061u-u]}_{1}^{2} \\\\  & =\\frac{1}{2}(2\\operatorname{ln}\u20612-2+1) \\\\  & =\\frac{1}{2}(2\\operatorname{ln}\u20612-1) \\\\  & =\\operatorname{ln}\u20612-\\frac{1}{2}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186492015,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "26ffbc26-848e-5d04-abcc-6404b93bc783",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{4\\sqrt{2}}{3}",
+                  ":db/id": 17592186491534
+                },
+                {
+                  ":answer/id": "51513ac6-c10d-5428-81d7-fc0f9ff5e5a4",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{3}",
+                  ":db/id": 17592186491608
+                },
+                {
+                  ":answer/id": "8d66c296-5953-5fbe-8ee0-08a430a0fe71",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{6}",
+                  ":db/id": 17592186491694
+                },
+                {
+                  ":answer/id": "ab6be4c3-4f0a-5a3d-9787-10ec2aa91cac",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{\\sqrt{2}}{3}",
+                  ":db/id": 17592186491751
+                },
+                {
+                  ":answer/id": "df621dfa-555c-59a4-b00c-5eb1cda1d6b9",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\sqrt{2}",
+                  ":db/id": 17592186491834
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "26ffbc26-848e-5d04-abcc-6404b93bc783",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{4\\sqrt{2}}{3}",
+                ":db/id": 17592186491534
+              },
+              ":answer-field/id": "9c1d39b3-e468-5801-801a-6497da6d4261",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186491946
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "57f9fe20-2df7-5d01-bf45-354e1e66779e",
+          ":question/math-academy-id": "q-38132",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x+2y,\\,v=x,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x+2y)^{2}-x-1=0$ and the line $x=1.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+2y,\\,v=x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+2y=u$ and $x=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+2y)^{2}-x-1=0\\,\u27f9\\,{u}^{2}-v-1=0\\,\u27f9\\,v={u}^{2}-1,\\end{aligned}\n$$\n\nwhile substituting $x=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}x=1\\,\u27f9\\,v=1.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2}-1 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm \\sqrt{2} \\\\ v &=1.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{2},1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-\\sqrt{2}\\le u\\le \\sqrt{2},\\,{u}^{2}-1\\le v\\le 1\\}.\n$$\n\n![](images/0c/0c598c1c0d09fb26175cad17106bc4529165da619f35a5882ead0ba133d05c2c.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 2 \\\\ 1 & 0\\end{vmatrix} \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}={(-2)}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[{\\int }_{{u}^{2}-1}^{1}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[v]_{{u}^{2}-1}^{1}\\,du \\\\  & =\\frac{1}{2}{\\int }_{-\\sqrt{2}}^{\\sqrt{2}}(1-({u}^{2}-1))du \\\\  & =\\frac{1}{2}{\\int }_{-\\sqrt{2}}^{\\sqrt{2}}(2-{u}^{2})du \\\\  & =\\frac{1}{2}{[2u-\\frac{{u}^{3}}{3}]}_{-\\sqrt{2}}^{\\sqrt{2}} \\\\  & =\\frac{1}{2}((2\\sqrt{2}-\\frac{2\\sqrt{2}}{3})-(-2\\sqrt{2}+\\frac{2\\sqrt{2}}{3})) \\\\  & =2\\sqrt{2}-\\frac{2\\sqrt{2}}{3} \\\\  & =\\frac{4\\sqrt{2}}{3}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186492060,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "0e9418b6-f97a-56c0-a5f8-cb663c2070de",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8}{5}",
+                  ":db/id": 17592186491482
+                },
+                {
+                  ":answer/id": "1e609f4f-6be3-5c74-b9cf-1200ed558b19",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "-\\frac{8}{5}",
+                  ":db/id": 17592186491517
+                },
+                {
+                  ":answer/id": "234a9c24-6945-5264-98b6-b6c065eb22c7",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "-\\frac{4}{5}",
+                  ":db/id": 17592186491527
+                },
+                {
+                  ":answer/id": "74cdbe9e-bfc8-55b1-addc-c01619e14194",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{5}",
+                  ":db/id": 17592186491661
+                },
+                {
+                  ":answer/id": "ba55a64c-3c7e-522a-800b-186dd45e7f5e",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{12}{5}",
+                  ":db/id": 17592186491774
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "0e9418b6-f97a-56c0-a5f8-cb663c2070de",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{8}{5}",
+                ":db/id": 17592186491482
+              },
+              ":answer-field/id": "462ba4b0-a9c1-5d72-894e-ca9fc93df274",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186491908
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "cfee0347-870f-5cb0-bd74-a4488b93243b",
+          ":question/math-academy-id": "q-83944",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x-y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $y+(x-y)^{4}=3$ and the line $y=2.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x-y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x-y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}y+(x-y)^{4}=3\\,\u27f9\\,v+{u}^{4}=3\\,\u27f9\\,v=3-{u}^{4},\\end{aligned}\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y=2\\,\u27f9\\,v=2.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=3-{u}^{4} \\\\ v &=2\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 1 \\\\ v &=2.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 1,2).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,2\\le v\\le 3-{u}^{4}\\}.\n$$\n\n![](images/81/81ff220903cbe53cebf5e8f8b704e2a316be6092e1f14e527a7321e8f61bffb8.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{-1}^{1}[{\\int }_{2}^{3-{u}^{4}}\\,dv]du \\\\  & ={\\int }_{-1}^{1}[v]_{2}^{3-{u}^{4}}\\,du \\\\  & ={\\int }_{-1}^{1}((3-{u}^{4})-2)\\,du \\\\  & ={\\int }_{-1}^{1}(1-{u}^{4}))\\,du \\\\  & ={[u-\\frac{{u}^{5}}{5}]}_{-1}^{1} \\\\  & =2-\\frac{2}{5} \\\\  & =\\frac{8}{5}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186499479,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "17418eda-e303-583e-abb8-8163f34cf65c",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{5}{12}",
+                  ":db/id": 17592186498779
+                },
+                {
+                  ":answer/id": "3b1f2bf6-1e84-5da8-8223-f7a8617abe63",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{12}",
+                  ":db/id": 17592186498865
+                },
+                {
+                  ":answer/id": "aaa17f5a-3932-5a85-be4a-9e7f8aca50c3",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{3}",
+                  ":db/id": 17592186499103
+                },
+                {
+                  ":answer/id": "af9d5967-0e62-5e9c-80be-bb9563606efe",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{6}",
+                  ":db/id": 17592186499116
+                },
+                {
+                  ":answer/id": "e507ffc4-50dc-56ba-8db0-2ce573a2305a",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{4}",
+                  ":db/id": 17592186499248
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "3b1f2bf6-1e84-5da8-8223-f7a8617abe63",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{1}{12}",
+                ":db/id": 17592186498865
+              },
+              ":answer-field/id": "06575685-8b6e-5313-b708-d919a2eb705b",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186499310
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "5e32ec93-9a95-5b63-b1e8-8733a4d5c7af",
+          ":question/math-academy-id": "q-82910",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x+y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curves $(x+y)^{3}-y=0$ and $(x+y)^{2}-y=0.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{3}-y=0\\,\u27f9\\,{u}^{3}-v=0\\,\u27f9\\,v={u}^{3},\\end{aligned}\n$$\n\nwhile substituting $x+y=u$ and $y=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}(x+y)^{2}-y=0\\,\u27f9\\,{u}^{2}-v=0\\,\u27f9\\,v={u}^{2}.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{3} \\\\ v &={u}^{2}\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}{u}^{2}(u-1) &=0 \\\\ v &=u.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(0,0)$ and $(1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation \n\n$$\n\u0394=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,{u}^{3}\\le v\\le {u}^{2}\\}.\n$$\n\n![](images/a8/a8d2549c665a918cc8d69c69136fcb49e654ebb9aa5e53611155798e791b36a9.png)\n\n   \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}[{\\int }_{{u}^{3}}^{{u}^{2}}\\,dv]du \\\\  & ={\\int }_{0}^{1}v{|}_{{u}^{3}}^{{u}^{2}}\\,du \\\\  & ={\\int }_{0}^{1}({u}^{2}-{u}^{3})du \\\\  & ={[\\frac{{u}^{3}}{3}-\\frac{{u}^{4}}{4}]}_{0}^{1} \\\\  & =\\frac{1}{3}-\\frac{1}{4} \\\\  & =\\frac{1}{12}.\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186617785,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "0c3499da-8cb4-5ab0-a38d-17c492370352",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2}{5}",
+                  ":db/id": 17592186617271
+                },
+                {
+                  ":answer/id": "37a24197-bb49-5fe3-a439-8f6029051397",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{9}{10}",
+                  ":db/id": 17592186617359
+                },
+                {
+                  ":answer/id": "96fc41e0-a931-5299-b320-b819e37f0217",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{3}{10}",
+                  ":db/id": 17592186617495
+                },
+                {
+                  ":answer/id": "b25b03a9-a2ae-57cb-b586-005c3f77e077",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8}{5}",
+                  ":db/id": 17592186617538
+                },
+                {
+                  ":answer/id": "c1b930f2-dfcf-561d-ae99-0a7886f9b79d",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{1}{5}",
+                  ":db/id": 17592186617573
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "b25b03a9-a2ae-57cb-b586-005c3f77e077",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{8}{5}",
+                ":db/id": 17592186617538
+              },
+              ":answer-field/id": "c77127a0-b9dc-5211-b535-33dd262efdbe",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186617743
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "1b4091f0-4a95-54e5-98db-b30b1df1c475",
+          ":question/math-academy-id": "q-82909",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x+2y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x+2y)^{4}-y=0$ and  the line $y=1.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+2y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+2y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+2y)^{4}-y &=0\\,\u27f9\\,{u}^{4}-v=0\\,\u27f9\\,v={u}^{4},\\end{aligned}\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y &=1\\,\u27f9\\,v=1.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\left\\{\\begin{aligned}v &={u}^{4} \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 1 \\\\ v &=1.\\end{aligned}\\right.\n$$\n\nSo, the intersection points are $(\\pm 1,1).$ \n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,{u}^{4}\\le v\\le 1\\}.\n$$\n\n![](images/21/21a418b848dc981a9490ca72038a077205d79cf152b00581c5bc6eb7f48269a9.png)\n\n   \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 2 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{-1}^{1}[{\\int }_{{u}^{4}}^{1}\\,dv]du \\\\  & ={\\int }_{-1}^{1}v{|}_{{u}^{4}}^{1}\\,du \\\\  & ={\\int }_{-1}^{1}(1-{u}^{4})du \\\\  & ={[u-\\frac{{u}^{5}}{5}]}_{-1}^{1} \\\\  & =2-\\frac{2}{5} \\\\  & =\\frac{8}{5}\\end{aligned}\n$$"
+        },
+        {
+          ":db/id": 17592186617844,
+          ":question/answer-fields": [
+            {
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "33a47eb6-f2b7-5aaf-a621-372f14930b43",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8\\sqrt{2}}{5}",
+                  ":db/id": 17592186617345
+                },
+                {
+                  ":answer/id": "39323b63-908b-5c81-8b6f-ec673db43da5",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "2\\sqrt{2}",
+                  ":db/id": 17592186617360
+                },
+                {
+                  ":answer/id": "50ac51ca-22b4-5df2-a421-fe1f447842c7",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\sqrt{2}",
+                  ":db/id": 17592186617400
+                },
+                {
+                  ":answer/id": "7a88fc97-d0b3-5fd9-844f-1a1e361f132d",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{2\\sqrt{2}}{5}",
+                  ":db/id": 17592186617449
+                },
+                {
+                  ":answer/id": "8caa5414-b802-5170-9c8c-9a050cd7c154",
+                  ":answer/type": {
+                    ":db/ident": ":answer.type/math"
+                  },
+                  ":answer/value": "\\frac{8\\sqrt{2}}{3}",
+                  ":db/id": 17592186617481
+                }
+              ],
+              ":answer-field/correct": {
+                ":answer/id": "8caa5414-b802-5170-9c8c-9a050cd7c154",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "\\frac{8\\sqrt{2}}{3}",
+                ":db/id": 17592186617481
+              },
+              ":answer-field/id": "6a99a52c-e996-5a20-bc4b-efc83eee630b",
+              ":answer-field/key": "selection",
+              ":answer-field/type": {
+                ":db/ident": ":answer-field.type/radio"
+              },
+              ":db/id": 17592186617704
+            }
+          ],
+          ":question/difficulty": {
+            ":db/ident": ":question.difficulty/hard"
+          },
+          ":question/id": "b4c23fa9-f154-5b24-977d-0b5df3576acf",
+          ":question/math-academy-id": "q-38372",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x+y,\\,v=x,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x+y)^{2}-x=0$ and the line $x=2.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+y,\\,v=x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=u$ and $x=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{2}-x &=0\\,\u27f9\\,{u}^{2}-v=0\\,\u27f9\\,v={u}^{2},\\end{aligned}\n$$\n\n  \n\nwhile substituting $x=v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}x &=2\\,\u27f9\\,v=2.\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system: \n\n$$\n\\left\\{\\begin{aligned}v &={u}^{2} \\\\ v &=2\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm \\sqrt{2} \\\\ v &=2.\\end{aligned}\\right.\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{2},2).$ \n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-\\sqrt{2}\\le u\\le \\sqrt{2},\\,{u}^{2}\\le v\\le 2\\}.\n$$\n\n \n\n![](images/34/349486642eca07c8f1a619cb567dcb578c39a5ff024067a0910301039f3ae1d9.png)\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ 1 & 0\\end{vmatrix} \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-1)^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[{\\int }_{{u}^{2}}^{2}\\,dv]du \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}[v]_{{u}^{2}}^{2}\\,du \\\\  & ={\\int }_{-\\sqrt{2}}^{\\sqrt{2}}(2-{u}^{2})\\,du \\\\  & ={[2u-\\frac{{u}^{3}}{3}]}_{-\\sqrt{2}}^{\\sqrt{2}} \\\\  & =4\\sqrt{2}-\\frac{4\\sqrt{2}}{3} \\\\  & =\\frac{8\\sqrt{2}}{3}\\end{aligned}\n$$"
+        }
+      ],
+      ":knowledge-point/title": "Finding an Area by Transforming to a Type I Region"
+    },
+    "topics": [
+      {
+        ":db/id": 17592186050705,
+        ":topic/id": "6047b0c9-9ae0-5fc8-9179-8ce5172d5c9d",
+        ":topic/knowledge-points": [
+          {
+            ":db/id": 17592186129197,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186129015,
+              ":question/id": "9de92581-00d5-5343-90be-3b5527bfab49",
+              ":question/math-academy-id": "e-7283",
+              ":question/problem": "Using the change of variables \n\n$$\nu =3x-2y, \\quad v=x+y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(3x-2y)^2 - y - x = 0$ and the line $x+y=4.$",
+              ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/1e/1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = 3x-2y, \\qquad v=x+y\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/e1/e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nSubstituting $3x-2y = u$ and $x+y = v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(3x-2y)^{2}-y-x=0\\,\u27f9\\,{u}^{2}-v=0\\,\u27f9\\,v={u}^{2},\\end{aligned}\n$$\n\nwhile substituting $x + y = v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y+x=4\\,\u27f9\\,v=4.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2} \\\\ v &=4\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 2 \\\\ v &=4.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 2, 4).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: -2 \\leq u \\leq 2, \\, u^2 \\leq v \\leq 4\\big\\},\n$$\n\nas shown below.\n\n![](images/0a/0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}3 & -2 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = (5)^{-1} = \\dfrac 15.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}\\frac{1}{5}\\text{d}u\\text{d}v \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[{\\int }_{{u}^{2}}^{4}\\,dv]du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[v]_{{u}^{2}}^{4}\\,du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{1}{5}\\cdot 2{\\int }_{0}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{2}{5}{[4u-\\frac{{u}^{3}}{3}]}_{0}^{2} \\\\  & =\\frac{2}{5}(8-\\frac{8}{3}) \\\\  & =\\frac{2}{5}\\left(\\frac{16}{3}\\right) \\\\  & =\\frac{32}{15}\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+            ":knowledge-point/title": "Finding an Area by Transforming to a Type I Region"
+          },
+          {
+            ":db/id": 17592186129261,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186128836,
+              ":question/id": "418bea54-7fb3-5013-b91c-355a45af08e6",
+              ":question/math-academy-id": "e-11151",
+              ":question/problem": "Using the change of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy,\n$$\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the curves\n\n$$\nx = {y^2}, \\qquad x=\\dfrac{y^2}3, \\qquad y=\\dfrac2x, \\qquad y=\\dfrac4x.\n$$",
+              ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/d4/d408e7580bef6b1127da124a78df019bca51a55c58968da262540cd45c1658d0.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/e6/e61d4153ecfb2fb176c06f67efb13af205b9b43b0ce4791627fcde979d96610e.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u= \\dfrac{y^2}{x}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & x={y}^{2} & \u27f9\\, & \\frac{{y}^{2}}{x}=1 & \u27f9\\, & u=1 \\\\  & x=\\frac{{y}^{2}}{3} & \u27f9\\, & \\frac{{y}^{2}}{x}=3 & \u27f9\\, & u=3\\end{aligned}\n$$\n\nAnd we substitute $v = xy$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & y=\\frac{2}{x} & \u27f9\\, & xy=2 & \u27f9\\, & v=2 \\\\  & y=\\frac{4}{x} & \u27f9\\, & xy=4 & \u27f9\\, & v=4\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 1 \\leq u \\leq 3, \\quad 2 \\leq v \\leq 4\\big\\}\n$$\n\n![](images/12/1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{{y}^{2}}{{x}^{2}} & \\frac{2y}{x} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3{y}^{2}}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = -\\dfrac{x}{3y^2} = -\\dfrac{1}{3u}.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{3u}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}{\\int }_{2}^{4}\\frac{1}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}\\frac{1}{u}\\,\\text{d}u{\\int }_{2}^{4}\\,\\text{d}v \\\\  & =\\frac{1}{3}\\cdot (\\operatorname{ln}\u20613-\\operatorname{ln}\u20611)\\cdot (4-2) \\\\  & =\\frac{2}{3}\\operatorname{ln}\u20613.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "87fa627d-b1ee-5f28-a910-da260acc566c",
+            ":knowledge-point/title": "Mapping an Area to a Rectangular Region: Transformations Given"
+          },
+          {
+            ":db/id": 17592186129262,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186128837,
+              ":question/id": "acd76e31-5c7e-5577-a402-f003b3c2e1bc",
+              ":question/math-academy-id": "e-11154",
+              ":question/problem": "Use a change of variables to calculate the area of the finite region $D$ in the first quadrant bounded by the following curves.\n\n$$\ne^y = \\dfrac{5}{e^x}, \\qquad e^y=\\dfrac{10}{e^x}, \\qquad e^x=e^y, \\qquad e^x=2e^y\n$$",
+              ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/19/19b9f2d7264c469970af73dfbf18a5c0e0519c27d64c0510e18cbaa3a4ab6e15.svg)\n\nWe'll assume this transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v,\n$$\n\n  \n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$\n\nTo compute the required area, we proceed in five steps:\n\n**Step 1**: Find a suitable change of variables.\n\nNotice that we can rewrite the equations of our curves as follows:\n\n$$\ne^{x+y} = 5, \\qquad e^{x+y}=10, \\qquad e^{x-y} = 1, \\qquad e^{x-y} = 2\n$$\n\nThis suggests the following change of variables:\n\n$$\nu = e^{x+y}, \\qquad v = e^{x-y}\n$$\n\nThis change of variables gives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/9b/9bad7ad4d2533434edd0086075c47409c346836960b959d1a54708ff9511e484.svg)\n\n**Step 2**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u=e^{x+y}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & {e}^{x+y}=5\\,\u27f9\\,u=5 \\\\  & {e}^{x+y}=10\\,\u27f9\\,u=10\\end{aligned}\n$$\n\nAnd we substitute $v =e^{x-y}$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & {e}^{x-y}=1\\,\u27f9\\,v=1 \\\\  & {e}^{x-y}=2\\,\u27f9\\,v=2\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 5 \\leq u \\leq 10, \\quad 1 \\leq v \\leq 2\\big\\}\n$$\n\n![](images/10/105745a82e8f67b086f526b0166e3b442d3eaf02e4df69314ed9d3ffd5fca071.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}{e}^{x+y} & {e}^{x+y} \\\\ {e}^{x-y} & -{e}^{x-y}\\end{aligned}| \\\\  & =-{e}^{2x}-{e}^{2x} \\\\  & =-2{e}^{2x}.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} =  -\\dfrac{1}{2}e^{-2x}=-\\dfrac{1}{2uv}.\n$$\n\nNote that $\\dfrac{\\partial (u, v)}{\\partial (x, y)}\\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 5**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{2uv}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\u222c}_{\u0394}\\frac{1}{uv}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{5}^{10}\\frac{1}{u}\\,\\text{d}u{\\int }_{1}^{2}\\frac{1}{v}\\,\\text{d}v \\\\  & =\\frac{1}{2}\\cdot (\\operatorname{ln}\u206110-\\operatorname{ln}\u20615)\\cdot (\\operatorname{ln}\u20612-\\operatorname{ln}\u20611) \\\\  & =\\frac{1}{2}(\\operatorname{ln}\u20612)^{2}\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "c444d700-8c19-5712-8cf5-99555938b0c5",
+            ":knowledge-point/title": "Mapping an Area to a Rectangular Region: Transformations Not Given"
+          }
+        ],
+        ":topic/math-academy-id": 1998,
+        ":topic/next": [
+          {
+            ":db/id": 17592186050482
+          }
+        ],
+        ":topic/title": "Computing Areas Using a Change of Variables"
+      }
+    ],
+    "lessons": [
+      {
+        ":activity/expected-seconds": 1140.0,
+        ":activity/first-step": {
+          ":db/id": 17592186130232
+        },
+        ":activity/id": "e92aac25-8e3c-5b47-9748-65ca8bc64600",
+        ":activity/scope": {
+          ":db/id": 17592186050705
+        },
+        ":activity/steps": [
+          {
+            ":db/id": 17592186130083,
+            ":step/content": {
+              ":db/id": 17592186129197,
+              ":knowledge-point/canonical-example": {
+                ":db/id": 17592186129015,
+                ":question/id": "9de92581-00d5-5343-90be-3b5527bfab49",
+                ":question/math-academy-id": "e-7283",
+                ":question/problem": "Using the change of variables \n\n$$\nu =3x-2y, \\quad v=x+y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(3x-2y)^2 - y - x = 0$ and the line $x+y=4.$",
+                ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/1e/1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = 3x-2y, \\qquad v=x+y\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/e1/e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nSubstituting $3x-2y = u$ and $x+y = v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(3x-2y)^{2}-y-x=0\\,\u27f9\\,{u}^{2}-v=0\\,\u27f9\\,v={u}^{2},\\end{aligned}\n$$\n\nwhile substituting $x + y = v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y+x=4\\,\u27f9\\,v=4.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &={u}^{2} \\\\ v &=4\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 2 \\\\ v &=4.\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 2, 4).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: -2 \\leq u \\leq 2, \\, u^2 \\leq v \\leq 4\\big\\},\n$$\n\nas shown below.\n\n![](images/0a/0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}3 & -2 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = (5)^{-1} = \\dfrac 15.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}\\frac{1}{5}\\text{d}u\\text{d}v \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[{\\int }_{{u}^{2}}^{4}\\,dv]du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}[v]_{{u}^{2}}^{4}\\,du \\\\  & =\\frac{1}{5}{\\int }_{-2}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{1}{5}\\cdot 2{\\int }_{0}^{2}(4-{u}^{2})\\,du \\\\  & =\\frac{2}{5}{[4u-\\frac{{u}^{3}}{3}]}_{0}^{2} \\\\  & =\\frac{2}{5}(8-\\frac{8}{3}) \\\\  & =\\frac{2}{5}\\left(\\frac{16}{3}\\right) \\\\  & =\\frac{32}{15}\\end{aligned}\n$$"
+              },
+              ":knowledge-point/id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+              ":knowledge-point/key-prerequisites": [
+                {
+                  ":db/id": 17592186049032
+                },
+                {
+                  ":db/id": 17592186049997
+                }
+              ],
+              ":knowledge-point/title": "Finding an Area by Transforming to a Type I Region"
+            },
+            ":step/id": "32924515-5345-5bd8-8b6e-d8d617640311",
+            ":step/math-academy-id": 26975
+          },
+          {
+            ":db/id": 17592186130199,
+            ":step/content": {
+              ":db/id": 17592186130454,
+              ":tutorial/content": "![](images/8f/8f2d689080add393fad398d45d992e595996a12c3eca60c1c97e9a3e14720ed1.png)\n\n \n\nConsider the finite region $D$ in the first quadrant (shown above) bounded by the lines\n\n$$\n{\\color{blue}{3y-x}} = 3, \\qquad {\\color{blue}{3y-x}} = 6, \\qquad {\\color{red}{2x+y}}=4, \\qquad {\\color{red}{2x+y}}=6.\n$$\n\nThe area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/11/11190d5d00f5f17be1349af2493735eb8dccbf9360c1ae4dfe771c04abf04179.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nLooking at the lines that bound our region, we consider the following change of variables:\n\n$$\nu = {\\color{blue}{3y-x}}, \\qquad v = {\\color{red}{2x+y}}\n$$\n\nNote that this change of variables gives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/93/935c384a1c327786445c184e4a928e4d976f36a81c4e4edad23ef932e476b743.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u=3y-x$ into the equations of the first and second lines:\n\n$$\n\\begin{aligned} & 3y-x=3 & \u27f9\\, & u=3 \\\\  & 3y-x=6 & \u27f9\\, & u=6\\end{aligned}\n$$\n\nAnd we substitute $v = 2x+y$ into the equations of the third and fourth lines:\n\n$$\n\\begin{aligned} & 2x+y=4 & \u27f9\\, & v=4 \\\\  & 2x+y=6 & \u27f9\\, & v=6\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 3 \\leq u \\leq 6, \\quad 4 \\leq v \\leq 6\\big\\}\n$$\n\n![](images/0d/0d55142f7713f3a9bfb93d1b1a383683af397a6edcd7c56a4338f25ab16b83a2.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nOur transformation $\\mathbf T^{-1}$ is\n\n$$\nu = 3y-x, \\qquad v = 2x+y.\n$$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 3 \\\\ 2 & \\text{\u00a0}\\text{\u00a0}1\\end{aligned}| \\\\  & =-7.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = -\\dfrac17.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{7}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{7}{\u222c}_{\u0394}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{7}\\cdot \\text{Area}(\u0394) \\\\  & =\\frac{1}{7}\\cdot (6-3)\\cdot (6-4) \\\\  & =\\frac{1}{7}\\cdot 3\\cdot 2 \\\\  & =\\frac{6}{7}\\end{aligned}\n$$",
+              ":tutorial/id": "0b502c14-a087-54fa-8a4d-3bda73b991ca",
+              ":tutorial/math-academy-id": 7037,
+              ":tutorial/title": "A Worked Example"
+            },
+            ":step/id": "5cd583ad-9fe0-5183-8354-e66c520bd7ad",
+            ":step/math-academy-id": 42405,
+            ":step/next": {
+              ":db/id": 17592186130200
+            }
+          },
+          {
+            ":db/id": 17592186130200,
+            ":step/content": {
+              ":db/id": 17592186129261,
+              ":knowledge-point/canonical-example": {
+                ":db/id": 17592186128836,
+                ":question/id": "418bea54-7fb3-5013-b91c-355a45af08e6",
+                ":question/math-academy-id": "e-11151",
+                ":question/problem": "Using the change of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy,\n$$\n\ncalculate the area of the finite region $D$ in the first quadrant bounded by the curves\n\n$$\nx = {y^2}, \\qquad x=\\dfrac{y^2}3, \\qquad y=\\dfrac2x, \\qquad y=\\dfrac4x.\n$$",
+                ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/d4/d408e7580bef6b1127da124a78df019bca51a55c58968da262540cd45c1658d0.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$  \n\nNote that the changes of variables\n\n$$\nu = \\dfrac{y^2}{x}, \\qquad v= xy\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/e6/e61d4153ecfb2fb176c06f67efb13af205b9b43b0ce4791627fcde979d96610e.svg)\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u= \\dfrac{y^2}{x}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & x={y}^{2} & \u27f9\\, & \\frac{{y}^{2}}{x}=1 & \u27f9\\, & u=1 \\\\  & x=\\frac{{y}^{2}}{3} & \u27f9\\, & \\frac{{y}^{2}}{x}=3 & \u27f9\\, & u=3\\end{aligned}\n$$\n\nAnd we substitute $v = xy$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & y=\\frac{2}{x} & \u27f9\\, & xy=2 & \u27f9\\, & v=2 \\\\  & y=\\frac{4}{x} & \u27f9\\, & xy=4 & \u27f9\\, & v=4\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 1 \\leq u \\leq 3, \\quad 2 \\leq v \\leq 4\\big\\}\n$$\n\n![](images/12/1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{{y}^{2}}{{x}^{2}} & \\frac{2y}{x} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3{y}^{2}}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = -\\dfrac{x}{3y^2} = -\\dfrac{1}{3u}.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{3u}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}{\\int }_{2}^{4}\\frac{1}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{3}\\frac{1}{u}\\,\\text{d}u{\\int }_{2}^{4}\\,\\text{d}v \\\\  & =\\frac{1}{3}\\cdot (\\operatorname{ln}\u20613-\\operatorname{ln}\u20611)\\cdot (4-2) \\\\  & =\\frac{2}{3}\\operatorname{ln}\u20613.\\end{aligned}\n$$"
+              },
+              ":knowledge-point/id": "87fa627d-b1ee-5f28-a910-da260acc566c",
+              ":knowledge-point/key-prerequisites": [
+                {
+                  ":db/id": 17592186048251
+                },
+                {
+                  ":db/id": 17592186050207
+                },
+                {
+                  ":db/id": 17592186050546
+                }
+              ],
+              ":knowledge-point/title": "Mapping an Area to a Rectangular Region: Transformations Given"
+            },
+            ":step/id": "51476dcf-0d6d-5530-9345-e9f13c6e0c72",
+            ":step/math-academy-id": 42406,
+            ":step/next": {
+              ":db/id": 17592186130201
+            }
+          },
+          {
+            ":db/id": 17592186130201,
+            ":step/content": {
+              ":db/id": 17592186129262,
+              ":knowledge-point/canonical-example": {
+                ":db/id": 17592186128837,
+                ":question/id": "acd76e31-5c7e-5577-a402-f003b3c2e1bc",
+                ":question/math-academy-id": "e-11154",
+                ":question/problem": "Use a change of variables to calculate the area of the finite region $D$ in the first quadrant bounded by the following curves.\n\n$$\ne^y = \\dfrac{5}{e^x}, \\qquad e^y=\\dfrac{10}{e^x}, \\qquad e^x=e^y, \\qquad e^x=2e^y\n$$",
+                ":question/worked-solution": "The area of the required region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y.\n$$\n\nLet's define a transformation $\\mathbf T$ as follows: \n\n![](images/19/19b9f2d7264c469970af73dfbf18a5c0e0519c27d64c0510e18cbaa3a4ab6e15.svg)\n\nWe'll assume this transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n\\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v,\n$$\n\n  \n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$\n\nTo compute the required area, we proceed in five steps:\n\n**Step 1**: Find a suitable change of variables.\n\nNotice that we can rewrite the equations of our curves as follows:\n\n$$\ne^{x+y} = 5, \\qquad e^{x+y}=10, \\qquad e^{x-y} = 1, \\qquad e^{x-y} = 2\n$$\n\nThis suggests the following change of variables:\n\n$$\nu = e^{x+y}, \\qquad v = e^{x-y}\n$$\n\nThis change of variables gives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/9b/9bad7ad4d2533434edd0086075c47409c346836960b959d1a54708ff9511e484.svg)\n\n**Step 2**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nWe substitute $u=e^{x+y}$ into the equations of the first and second curves:\n\n$$\n\\begin{aligned} & {e}^{x+y}=5\\,\u27f9\\,u=5 \\\\  & {e}^{x+y}=10\\,\u27f9\\,u=10\\end{aligned}\n$$\n\nAnd we substitute $v =e^{x-y}$ into the equations of the third and fourth curves:\n\n$$\n\\begin{aligned} & {e}^{x-y}=1\\,\u27f9\\,v=1 \\\\  & {e}^{x-y}=2\\,\u27f9\\,v=2\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 5 \\leq u \\leq 10, \\quad 1 \\leq v \\leq 2\\big\\}\n$$\n\n![](images/10/105745a82e8f67b086f526b0166e3b442d3eaf02e4df69314ed9d3ffd5fca071.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}{e}^{x+y} & {e}^{x+y} \\\\ {e}^{x-y} & -{e}^{x-y}\\end{aligned}| \\\\  & =-{e}^{2x}-{e}^{2x} \\\\  & =-2{e}^{2x}.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} =  -\\dfrac{1}{2}e^{-2x}=-\\dfrac{1}{2uv}.\n$$\n\nNote that $\\dfrac{\\partial (u, v)}{\\partial (x, y)}\\neq 0$ everywhere inside $\\Delta.$  In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 5**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{\u222c}_{D}\\text{d}x\\text{d}y & ={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|-\\frac{1}{2uv}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\u222c}_{\u0394}\\frac{1}{uv}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{5}^{10}\\frac{1}{u}\\,\\text{d}u{\\int }_{1}^{2}\\frac{1}{v}\\,\\text{d}v \\\\  & =\\frac{1}{2}\\cdot (\\operatorname{ln}\u206110-\\operatorname{ln}\u20615)\\cdot (\\operatorname{ln}\u20612-\\operatorname{ln}\u20611) \\\\  & =\\frac{1}{2}(\\operatorname{ln}\u20612)^{2}\\end{aligned}\n$$"
+              },
+              ":knowledge-point/id": "c444d700-8c19-5712-8cf5-99555938b0c5",
+              ":knowledge-point/title": "Mapping an Area to a Rectangular Region: Transformations Not Given"
+            },
+            ":step/id": "5e3d0649-15dd-5adf-828b-27ae3bc49e74",
+            ":step/math-academy-id": 42417,
+            ":step/next": {
+              ":db/id": 17592186130083
+            }
+          },
+          {
+            ":db/id": 17592186130232,
+            ":step/content": {
+              ":db/id": 17592186130464,
+              ":tutorial/content": "Given a real interval $D = (a,b)\\subset \\mathbb R,$ the length of this interval can be represented by the integral\n\n$$\n\\textrm{Length}(D) = \\int_a^b \\,\\textrm d x\n$$\n\nwhich we can also write as\n\n$$\n\\textrm{Length}(D) = \\int\\limits_D \\,\\textrm d x.\n$$\n\nSuppose we define an invertible function $u = u(x).$ By the change of variables formula, the length of our interval can also be expressed as\n\n$$\n\\textrm{Length}(D) = \\int\\limits_{\\Delta} \\dfrac{\\textrm d x}{\\textrm d u}\\, \\textrm d u.\n$$\n\nNote the following:\n\n- Whenever we perform a change of variables, the domain of integration changes, too. This new integration domain is denoted $\\Delta.$  More technically, $\\Delta$ is the *image* of the $D$ under the action of $u(x).$\n\n- If we think of $\\dfrac{\\textrm d x}{\\textrm d u}$ as a fraction, the $\\textrm d u$'s in our length formula appear to \"cancel out,\" leaving only the original $\\textrm d x.$ This makes the change of variables formula easy to remember.\n\nSo, to summarize,\n\n$$\n\\textrm{Length}(D) = \\int\\limits_D \\,\\textrm d x = \\int\\limits_{\\Delta} \\dfrac{\\textrm d x}{\\textrm d u}\\, \\textrm d u.\n$$\n\nSince the length of our interval is simply $b-a,$ it's doubtful that we'll ever use this formula in practice! However, it does indicate how we might use a change of variables to find the *area* of a complex region in two-dimensional space. Let's explore this idea in more detail.",
+              ":tutorial/id": "11fb8887-a8b0-514d-b23a-0cc6931ba17b",
+              ":tutorial/math-academy-id": 7682,
+              ":tutorial/title": "Introduction"
+            },
+            ":step/id": "f59c81ad-5b44-5523-9aeb-a14b98235004",
+            ":step/math-academy-id": 44616,
+            ":step/next": {
+              ":db/id": 17592186130233
+            }
+          },
+          {
+            ":db/id": 17592186130233,
+            ":step/content": {
+              ":db/id": 17592186130465,
+              ":tutorial/content": "![](images/6e/6ee5a19bf58db28574dc82aa3e6adcfd59015777bc503e66b9b9fd427278dcbf.png)\n\n \n\nConsider the region $D$ in the $xy$-plane shown above. The area of this region is given by\n\n$$\n\\iint\\limits_{D} \\mathrm d x\\textrm d y\n$$\n\nwhere we'll use the convention $\\textrm d A =  \\mathrm d x\\textrm d y$ when referring to integration with respect to the Cartesian coordinates $x$ and $y.$\n\nThis region looks pretty complicated. In such cases, it's often easier to find an invertible transformation $\\mathbf T$ (i.e., change of variables) whose inverse maps the region $D$ to simpler, preferably rectangular, region $\\Delta$ in the $uv$-plane. \n\n![](images/66/668b8a0dae060c7929b92c6abe3601b0ede0b8444d92f33f4a8b5627410a4447.png)\n\n \n\nSo, rather than computing the required area by integrating with respect to $x$ and $y,$ we can instead perform the transformation and integrate with respect to $u$ and $v.$ \n\nTo carry out this process, we apply the **change of variables formula**\n\n$$\n\\textrm{Area}(D) = \\iint\\limits_{D} \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf T.$ \n\nNotice that this formula is analogous to the one we saw earlier for computing the length of an interval. In particular:\n\n- If we consider the Jacobian as a kind of fraction, the $\\partial(u,v)$ and $\\textrm d u\\textrm d v$ parts appear to \"cancel out,\" similar to the previous formula.\n\n- Note that $\\mathbf T$ could be orientation-reversing. We take the absolute value of the Jacobian to ensure that $D$ and $\\Delta$ have the same orientation.\n\nFinally, note that the change of variables formula assumes that $\\mathbf T$ is a $C^1$ transformation and has no critical points in the interior of $\\Delta.$\n\nOften, the most challenging part is finding a suitable change of variables. The main idea is to get a nice rectangular shape with sides parallel to the axes in the $uv$-plane. In other words, we require a change of variables that reduces the equations of our curves to something like the following:\n\n$$\nu = \\textrm{const}_1, \\quad\nu = \\textrm{const}_2, \\quad\nv = \\textrm{const}_3, \\quad\nv = \\textrm{const}_4\n$$\n\n \n\nLet's look at a concrete example of computing an area using the change of variables formula.",
+              ":tutorial/id": "d5fba407-4d6f-55e7-a93a-4f1e6fe6369f",
+              ":tutorial/math-academy-id": 7683,
+              ":tutorial/title": "The Change of Variables Formula"
+            },
+            ":step/id": "4aa36004-91ee-5911-b639-83ff0faef28a",
+            ":step/math-academy-id": 44617,
+            ":step/next": {
+              ":db/id": 17592186130199
+            }
+          }
+        ],
+        ":activity/title": "Computing Areas Using a Change of Variables",
+        ":activity/type": {
+          ":db/ident": ":activity.type/lesson"
+        },
+        ":db/id": 17592186129343
+      }
+    ],
+    "prerequisites": [
+      {
+        ":db/id": 17592186049032,
+        ":topic/id": "d4ff589f-1af0-5477-b78d-91f6dfb7f322",
+        ":topic/knowledge-points": [
+          {
+            ":db/id": 17592186198362,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186198236,
+              ":question/id": "6d2cd5bf-899f-5b81-9512-ee98489d17ac",
+              ":question/math-academy-id": "e-7322",
+              ":question/problem": "Consider the region $D,$ given by\n\n$$\nD = \\big\\{ (x,y) \\: : \\: 2 \\leq \\sqrt{xy} \\leq 4, \\: 2x \\leq y \\leq 3x \\big\\}\n$$\n\nand the transformation $\\mathbf T,$ given by\n\n$$\n\\mathbf{T}:(u,v) \\to (x(u,v),y(u,v)),\n$$\n\nwhere $u=\\dfrac{y}{x}$ and $v=xy.$ Find the representation of $\\mathbf{T}^{-1}(D)$ in the $uv$-plane.",
+              ":question/worked-solution": "Notice that $\\mathbf{T}^{-1}(D)$ is the image of $D$ under the action of the transformation $\\mathbf{T}^{-1}.$ \n\nLet's find the image of $\\mathbf{T}^{-1}(D)$ in the $uv$-plane. To do that, we write the region $D$ in terms of $u$ and $v,$ as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(D) & =\\{(u,v)\\,:\\,2\\le \\sqrt{xy}\\le 4,\\,2x\\le y\\le 3x\\} \\\\  & =\\{(u,v)\\,:\\,{2}^{2}\\le (\\sqrt{xy})^{2}\\le {4}^{2},\\,2\\le \\frac{y}{x}\\le 3\\} \\\\  & =\\{(u,v)\\,:\\,4\\le xy\\le 16,\\,2\\le \\frac{y}{x}\\le 3\\} \\\\  & =\\{(u,v)\\,:\\,4\\le v\\le 16,\\,2\\le u\\le 3\\} \\\\  & =\\{(u,v)\\,:\\,2\\le u\\le 3,\\,4\\le v\\le 16\\}\\end{aligned}\n$$\n\nNotice that since $2 \\leq \\sqrt{xy}\\leq 4,$ we must have $x \\neq 0.$ Therefore, $u=\\dfrac{y}{x}$ is well-defined."
+            },
+            ":knowledge-point/id": "a6d98056-016e-520b-b752-d6a529f2c02d",
+            ":knowledge-point/title": "Finding a Rectangular Preimage Given a Transformation"
+          },
+          {
+            ":db/id": 17592186198363,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186198237,
+              ":question/id": "c78f087b-f0e5-58e6-a7a1-92a78c85c4d9",
+              ":question/math-academy-id": "e-7323",
+              ":question/problem": "Let $D$ be the finite region bounded by the curve \n$(x+y)^2 + y = 3$ and the line $y=-1.$\nConsider the transformation $\\mathbf T,$ given by\n\n$$\n\\mathbf{T}:(u,v) \\to (x(u,v),y(u,v)),\n$$\n\nwhere $u=x+y$ and $v=y.$ Find the representation of $\\mathbf{T}^{-1}(D)$ in the $uv$-plane.",
+              ":question/worked-solution": "First, notice that we are given that  \n\n![](images/0d/0da1f765ddb2f8e38296bb80b4e44e1f1489bad06273ee639df1dadca43c35e5.svg)\n\nSubstituting $x+y = u$ and $y = v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{2}+y=3\\,\u27f9\\,{u}^{2}+v=3\\,\u27f9\\,v=3-{u}^{2},\\end{aligned}\n$$\n\nwhile substituting $y = v$ into the equation of the second curve, we obtain\n\n$$\n\\begin{aligned}y=-1\\,\u27f9\\,v=-1.\\end{aligned}\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=3-{u}^{2} \\\\ v &=-1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=\\pm 2 \\\\ v &=-1\\end{aligned}\\right.\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 2, -1).$\n\n![](images/84/84c624aab456b9a090c9c4e6d23c82d8e1f69425050b6f3ee9d4afd18e3f0cec.png)\n\nAs a result, our domain in the $uv$-plane has the type I representation \n\n$$\n\\mathbf{T}^{-1}(D)  = \\big\\{ (u,v) \\: : \\: -2 \\leq u \\leq 2, \\quad  -1 \\leq v \\leq 3-u^2 \\big\\}.\n$$"
+            },
+            ":knowledge-point/id": "9156e571-2fe9-5347-95da-c1c97de1a3c9",
+            ":knowledge-point/title": "Finding a Transformation That Maps a Region Onto a Type I Region"
+          },
+          {
+            ":db/id": 17592186198376,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186198018,
+              ":question/id": "87c2cf96-8772-5b28-b6d8-a5616b38543f",
+              ":question/math-academy-id": "e-12337",
+              ":question/problem": "Consider the finite region $D$ enclosed in the first quadrant of the $xy$-plane between the curves\n\n$$\ny=x, \\qquad\ny=7x, \\qquad\nx=\\dfrac{3}{y^2}, \\qquad\nx=\\dfrac{5}{y^2}.\n$$\n\nA transformation $\\mathbf{T},$ where\n\n$$\n\\mathbf{T}:(u,v) \\to (x(u,v),y(u,v)),\n$$\n\nmaps a rectangular region $\\Delta$ with sides parallel to the $u$- and $v$-axes from the $uv$-plane onto $D$ in the $xy$-plane. Given that\n\n$$\n\\mathbf{T} : (u,v) \\to \\Big(\\sqrt[3]{\\dfrac{v}{u^2}}, \\: \\bbox[5pt, white, border: 1pt solid black]{\\phantom{AA}} \\, \\Big),\n$$\n\nwhat could be the missing expression?",
+              ":question/worked-solution": "We would like to find a rectangular region of the form\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,a\\le u\\le b,\\,\\,c\\le v\\le d\\} \\\\  & =\\{(u,v)\\,:\\,a\\le u(x,y)\\le b,\\,\\,c\\le v(x,y)\\le d\\},\\end{aligned}\n$$\n\nwhere the equations of the left, right, bottom, and top sides are\n\n$$\n{\\color{blue}u(x,y)} = a, \\qquad \n{\\color{blue}u(x,y)} = b, \\qquad\n{\\color{red}v(x,y)} = c, \\qquad \n{\\color{red}v(x,y)} = d.\n$$\n\nWith that in mind, let's analyze the boundary of our region $D.$ \n\nRewriting the equations \n\n$$\ny=x, \\qquad\ny=7x, \\qquad\nx=\\dfrac{3}{y^2}, \\qquad\nx=\\dfrac{5}{y^2}\n$$\n\nby moving both variables $x$ and $y$ to the left-hand side, we obtain\n\n$$\n\\begin{aligned}\\frac{y}{x}=1,\\,\\frac{y}{x}=7,\\,x{y}^{2}=3,\\,x{y}^{2}=5.\\end{aligned}\n$$\n\nTherefore, if we put $u(x,y)={\\color{blue}\\dfrac{y}{x}}$ and $v(x,y)={\\color{red}xy^2},$ we can define the transformation $\\mathbf{T}^{-1}$ as\n\n$$\n\\mathbf{T}^{-1} : (x,y) \\to \\left( \\, {\\color{blue}\\dfrac{y}{x}}\\,, \\: \\bbox[2pt, white, border: 1pt solid black]{\\color{red}xy^2} \\right).\n$$\n\nTo find $\\mathbf{T},$ we should express $x$ and $y$ in terms of $u$ and $v.$ Recall that we have\n\n$$\n\\left\\{\\begin{aligned}u &=\\frac{y}{x} \\\\ v &=x{y}^{2}.\\end{aligned}\\right.\n$$\n\nFrom the first equation, $y=ux.$ Substituting this into the second equation, we get \n\n$$\nv = u^2x^3\n\\qquad\\Longrightarrow\\qquad\nx^3 = \\dfrac{v}{u^2} \n\\qquad\\Longrightarrow\\qquad\nx = \\sqrt[3]{\\dfrac{v}{u^2}}.\n$$\n\nFinally, substituting $x = \\sqrt[3]{\\dfrac{v}{u^2}}$ back into $y=ux,$ we obtain\n\n$$\ny =u\\sqrt[3]{\\dfrac{v}{u^2}} = \\sqrt[3]{uv}.\n$$\n\nTherefore, the transformation $\\mathbf{T}$ can be given by\n\n$$\n\\mathbf{T} : (u,v) \\to \\left(\\sqrt[3]{\\dfrac{v}{u^2}}, \\, \\bbox[2pt, white, border: 1pt solid black]{ \\sqrt[3]{uv}} \\right).\n$$"
+            },
+            ":knowledge-point/id": "de3fa2fa-304c-583a-8c73-a5ff1db972e2",
+            ":knowledge-point/title": "Finding a Transformation That Maps a Rectangular Region Onto a Given One"
+          }
+        ],
+        ":topic/math-academy-id": 4134,
+        ":topic/next": [
+          {
+            ":db/id": 17592186050705
+          }
+        ],
+        ":topic/title": "Transformations of Regions Between Curves"
+      },
+      {
+        ":db/id": 17592186049997,
+        ":topic/difficulty": 1.1044540289337517,
+        ":topic/encompasses": [
+          {
+            ":db/id": 17592186428676,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [1]; waits [1]. Separate account estimates: foundations=1/2 (1/2); multivariable=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 2151->1930. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186048942
+            },
+            ":encompassing/weight": 0.5
+          },
+          {
+            ":db/id": 17592186428677,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 2151->1992. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050207
+            },
+            ":encompassing/weight": 0.5
+          },
+          {
+            ":db/id": 17592186428678,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account multivariable: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [1]; waits [1]. Separate account estimates: multivariable=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/multivariable-frequency-estimates.json, pair 2151->2000. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050546
+            },
+            ":encompassing/weight": 0.5
+          }
+        ],
+        ":topic/id": "24e61144-3626-5d23-b2e6-a33ee94f32f3",
+        ":topic/knowledge-points": [
+          {
+            ":db/id": 17592186133833,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133648,
+              ":question/id": "51467bae-f181-53ba-adf2-1218dc16275f",
+              ":question/math-academy-id": "e-7024",
+              ":question/problem": "Consider the finite region $D$ in the $xy$-plane enclosed by the lines $x=0,$ $y=0,$ and the curve $y=\\sqrt{4 - x^2}.$ What is $\\displaystyle \\iint\\limits_D (x+y)\\,\\mathrm{d}A$ expressed as a repeated integral?",
+              ":question/worked-solution": "First, let's represent $D$ as a type I region. To determine the lower and upper functions, we draw a vertical arrow through the region, as usual.\n\n![](images/3d/3d67d73d3ede011d6c2fe4bc9e160aa3c2af522bff6cddfcc7c351c97418e764.png)\n\nAs a result, we get\n\n$$\nD = \\big\\{ (x,y) \\: : \\: 0 \\leq x  \\leq 2, \\quad 0 \\leq y \\leq \\sqrt{4-x^2} \\big\\}.\n$$\n\nTherefore, we can express the integral as follows:\n\n$$\n\\begin{aligned}{\u222c}_{D}(x+y)\\,dA & ={\\int }_{0}^{2}{\\int }_{0}^{\\sqrt{4-{x}^{2}}}(x+y)\\,dy\\,dx\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "2e891363-fea2-5de4-9bbb-67fddb077200",
+            ":knowledge-point/title": "Representing a Double Integral as a Repeated Integral When the Limits are Given"
+          },
+          {
+            ":db/id": 17592186133834,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133649,
+              ":question/id": "7f443df5-1c26-5af4-9541-e83522126197",
+              ":question/math-academy-id": "e-7025",
+              ":question/problem": "If $D$ is the finite region in the first quadrant enclosed by the curves $y=3x$ and $y=x^3,$ then what is $\\displaystyle \\iint\\limits_{D} f\\left( {x,y} \\right) \\, \\mathrm{d}A$ expressed as a repeated integral?",
+              ":question/worked-solution": "First, let's sketch our region.\n\n![](images/f8/f8a5fd7fc3e98d7f08b5ea48636e5de4a1a45b7a94fbe9e968789afcfe3a582c.png)\n\nNow, let's represent $D$ as a type I region. \n\n- To determine the $x$-limits, we need to find the $x$-coordinates of the points at which the curves intersect. So, we set the following equation and solve it for $x\\mathbin{:}$\n\n$$\n\\begin{aligned}{x}^{3} & =3x \\\\ {x}^{3}-3x & =0 \\\\ x({x}^{2}-3) & =0\\end{aligned}\n$$\n\nSo, $x$-limits are $0 \\le x \\le \\sqrt{3}.$ Note that we disregarded the solution $x=-\\sqrt 3$ since $x\\geq 0$ in our region.\n\n- To determine the lower and upper functions, we draw a vertical arrow through the region, as usual.\n\n![](images/23/232f885d2230694bf62f81f5987cd2b3a12a49430d90d2cae4712c552587a48c.png)\n\nAs a result, we get\n\n$$\nD = \\left\\{ (x,y) \\: : \\: 0 \\leq x  \\leq \\sqrt{3}, \\quad x^3 \\leq y \\leq 3x \\right\\}.\n$$\n\nTherefore, we can express the integral as follows:\n\n$$\n\\begin{aligned}{\u222c}_{D}f(x,y)\\,dA & ={\\int }_{0}^{\\sqrt{3}}{\\int }_{{x}^{3}}^{3x}f(x,y)\\text{\u00a0}dy\\,dx \\\\  & ={\\int }_{0}^{\\sqrt{3}}[{\\int }_{{x}^{3}}^{3x}f(x,y)\\text{\u00a0}dy]dx\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "853b2770-5057-50aa-9c15-7426cf4cc6a4",
+            ":knowledge-point/title": "Representing a Double Integral as a Repeated Integral When the Limits are Not Given"
+          },
+          {
+            ":db/id": 17592186133835,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133650,
+              ":question/id": "b151be22-91a1-5303-b86d-4f9ba748f000",
+              ":question/math-academy-id": "e-7026",
+              ":question/problem": "Calculate $\\displaystyle \\int_0^1 \\int_0^x x^2y \\,\\textrm{d}y \\,\\textrm{d}x.$",
+              ":question/worked-solution": "The integral is defined over a type I region.\n\nFirst, we evaluate the inner integral by integrating with respect to $y$, treating $x$ as a constant:\n\n$$\n\\begin{aligned}{\\int }_{0}^{1}{\\int }_{0}^{x}{x}^{2}y\\,\\text{d}y\\,\\text{d}x & ={\\int }_{0}^{1}{x}^{2}[{\\int }_{0}^{x}y\\,\\text{d}y]\\,\\text{d}x \\\\  & ={\\int }_{0}^{1}{x}^{2}{[\\frac{{y}^{2}}{2}]}_{0}^{x}\\,dx \\\\  & ={\\int }_{0}^{1}{x}^{2}(\\frac{{x}^{2}}{2}-0)\\,dx \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}{x}^{4}\\,dx\\end{aligned}\n$$\n\nThen, we integrate with respect to $x\\mathbin{:}$\n\n$$\n\\begin{aligned}\\frac{1}{2}{\\int }_{0}^{1}{x}^{4}\\,dx & =\\frac{1}{2}{[\\frac{{x}^{5}}{5}]}_{0}^{1} \\\\  & =\\frac{1}{2}(\\frac{1}{5}-0) \\\\  & =\\frac{1}{10}\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "a28c4320-e2dd-5195-81ac-b910c2328691",
+            ":knowledge-point/title": "Evaluating a Repeated Integral Defined Over a Type I Region"
+          },
+          {
+            ":db/id": 17592186133836,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186133651,
+              ":question/id": "24dd94c8-2821-5614-9ccf-43c3656267f4",
+              ":question/math-academy-id": "e-7027",
+              ":question/problem": "Evaluate the double integral $\\displaystyle \\iint \\limits_{D} xy\\,\\mathrm{d}A,\\:$\nwhere $D$ is the finite region below the $x$-axis enclosed by the circle $x^2 + y^2 = 4.$",
+              ":question/worked-solution": "Since $y \\leq 0,$ we obtain\n\n$$\nx^2 + y^2 = 4\n\\qquad\\Longrightarrow\\qquad\ny = -\\sqrt{4-x^2}.\n$$\n\nLet's sketch our region.\n\n![](images/31/31e7bb281a36a3676730de0883d7abd5445093713de1bbd41899cce50a7e0e48.png)\n\nNotice that $D$ is a type I region.\n\n- We already know the intersection of the circle with the line $y=0.$\nSo, the $x$-limits are \n$-2 \\le x \\le 2.$\n\n- To determine the lower and upper functions, we draw a vertical arrow through the region.\n\n![](images/2a/2a84d17b83fb1e2036c6edc0a71c5c10a58bf893c33bbf38662ebb417aab3164.png)\n\nAs a result, the integral is defined over the following type I region: \n\n$$\nD = \\Big\\{ (x,y) \\: : \\: -2 \\leq x \\leq 2, \\quad -\\sqrt{4-x^2} \\leq y \\leq 0 \\Big\\}\n$$\n\nSo, we can express the integral as follows:\n\n$$\n\\iint \\limits_{D} xy\\,\\mathrm{d}A = \\int_{-2}^2 \\int_{-\\sqrt{4-x^2}}^{0} xy\\,\\mathrm{d}y \\: \\mathrm{d}x\n$$\n\nFirst, we evaluate the inner integral by integrating with respect to $y$, treating $x$ as a constant:\n\n$$\n\\begin{aligned}{\\int }_{-2}^{2}{\\int }_{-\\sqrt{4-{x}^{2}}}^{0}xy\\,dy\\,dx & ={\\int }_{-2}^{2}x[{\\int }_{-\\sqrt{4-{x}^{2}}}^{0}y\\,dy]dx \\\\  & ={\\int }_{-2}^{2}x{[\\frac{{y}^{2}}{2}]}_{-\\sqrt{4-{x}^{2}}}^{0}\\,dx \\\\  & =\\frac{1}{2}{\\int }_{-2}^{2}x(0-(-\\sqrt{4-{x}^{2}})^{2})\\,dx \\\\  & =\\frac{1}{2}{\\int }_{-2}^{2}x(-(4-{x}^{2}))\\,dx \\\\  & =\\frac{1}{2}{\\int }_{-2}^{2}x({x}^{2}-4)\\,dx \\\\  & =\\frac{1}{2}{\\int }_{-2}^{2}({x}^{3}-4x)\\,dx\\end{aligned}\n$$\n\nThen, we integrate with respect to $x\\mathbin{:}$\n\n$$\n\\begin{aligned}\\frac{1}{2}{\\int }_{-2}^{2}({x}^{3}-4x)\\,dx & =\\frac{1}{2}{[\\frac{{x}^{4}}{4}-2{x}^{2}]}_{-2}^{2} \\\\  & =\\frac{1}{2}((4-8)-(4-8)) \\\\  & =\\frac{1}{2}\\cdot 0 \\\\  & =0\\end{aligned}\n$$"
+            },
+            ":knowledge-point/id": "69f6b2a7-7a3a-5c2c-90db-5aa321784048",
+            ":knowledge-point/title": "Calculating a Double Integral Defined Over a Type I Region"
+          }
+        ],
+        ":topic/math-academy-id": 2151,
+        ":topic/next": [
+          {
+            ":db/id": 17592186049084
+          },
+          {
+            ":db/id": 17592186050264
+          },
+          {
+            ":db/id": 17592186050705
+          }
+        ],
+        ":topic/title": "Double Integrals Over Type I Regions"
+      }
+    ],
+    "images": [
+      {
+        "source": "images/0a/0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa.png",
+        "path": "/media/jake/SSD/EDB/math/images/0a/0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa.png",
+        "sha256": "0a3d0211dfbe18e5737b62e8b61cf9308af2735ef827d14bae7b5dbfffaa4faa",
+        "bytes": 10360
+      },
+      {
+        "source": "images/0c/0c598c1c0d09fb26175cad17106bc4529165da619f35a5882ead0ba133d05c2c.png",
+        "path": "/media/jake/SSD/EDB/math/images/0c/0c598c1c0d09fb26175cad17106bc4529165da619f35a5882ead0ba133d05c2c.png",
+        "sha256": "0c598c1c0d09fb26175cad17106bc4529165da619f35a5882ead0ba133d05c2c",
+        "bytes": 9448
+      },
+      {
+        "source": "images/0d/0d55142f7713f3a9bfb93d1b1a383683af397a6edcd7c56a4338f25ab16b83a2.png",
+        "path": "/media/jake/SSD/EDB/math/images/0d/0d55142f7713f3a9bfb93d1b1a383683af397a6edcd7c56a4338f25ab16b83a2.png",
+        "sha256": "0d55142f7713f3a9bfb93d1b1a383683af397a6edcd7c56a4338f25ab16b83a2",
+        "bytes": 1763
+      },
+      {
+        "source": "images/0d/0da1f765ddb2f8e38296bb80b4e44e1f1489bad06273ee639df1dadca43c35e5.svg",
+        "path": "/media/jake/SSD/EDB/math/images/0d/0da1f765ddb2f8e38296bb80b4e44e1f1489bad06273ee639df1dadca43c35e5.svg",
+        "sha256": "0da1f765ddb2f8e38296bb80b4e44e1f1489bad06273ee639df1dadca43c35e5",
+        "bytes": 7985
+      },
+      {
+        "source": "images/10/105745a82e8f67b086f526b0166e3b442d3eaf02e4df69314ed9d3ffd5fca071.png",
+        "path": "/media/jake/SSD/EDB/math/images/10/105745a82e8f67b086f526b0166e3b442d3eaf02e4df69314ed9d3ffd5fca071.png",
+        "sha256": "105745a82e8f67b086f526b0166e3b442d3eaf02e4df69314ed9d3ffd5fca071",
+        "bytes": 1870
+      },
+      {
+        "source": "images/11/11190d5d00f5f17be1349af2493735eb8dccbf9360c1ae4dfe771c04abf04179.svg",
+        "path": "/media/jake/SSD/EDB/math/images/11/11190d5d00f5f17be1349af2493735eb8dccbf9360c1ae4dfe771c04abf04179.svg",
+        "sha256": "11190d5d00f5f17be1349af2493735eb8dccbf9360c1ae4dfe771c04abf04179",
+        "bytes": 10091
+      },
+      {
+        "source": "images/12/1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7.png",
+        "path": "/media/jake/SSD/EDB/math/images/12/1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7.png",
+        "sha256": "1207d8cdb8afd7c55d712caca043edfe9f0d0395343a6cbd329cf5861ec3bce7",
+        "bytes": 1811
+      },
+      {
+        "source": "images/19/19b9f2d7264c469970af73dfbf18a5c0e0519c27d64c0510e18cbaa3a4ab6e15.svg",
+        "path": "/media/jake/SSD/EDB/math/images/19/19b9f2d7264c469970af73dfbf18a5c0e0519c27d64c0510e18cbaa3a4ab6e15.svg",
+        "sha256": "19b9f2d7264c469970af73dfbf18a5c0e0519c27d64c0510e18cbaa3a4ab6e15",
+        "bytes": 10093
+      },
+      {
+        "source": "images/1e/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png",
+        "path": "/media/jake/SSD/EDB/math/images/1e/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png",
+        "sha256": "1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c",
+        "bytes": 10401
+      },
+      {
+        "source": "images/1e/1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3.svg",
+        "path": "/media/jake/SSD/EDB/math/images/1e/1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3.svg",
+        "sha256": "1efa09fa657f5c016d251adfd8db31d473bf901b07efea0c0f40c4ef161cc8f3",
+        "bytes": 10093
+      },
+      {
+        "source": "images/21/21a418b848dc981a9490ca72038a077205d79cf152b00581c5bc6eb7f48269a9.png",
+        "path": "/media/jake/SSD/EDB/math/images/21/21a418b848dc981a9490ca72038a077205d79cf152b00581c5bc6eb7f48269a9.png",
+        "sha256": "21a418b848dc981a9490ca72038a077205d79cf152b00581c5bc6eb7f48269a9",
+        "bytes": 9138
+      },
+      {
+        "source": "images/23/232f885d2230694bf62f81f5987cd2b3a12a49430d90d2cae4712c552587a48c.png",
+        "path": "/media/jake/SSD/EDB/math/images/23/232f885d2230694bf62f81f5987cd2b3a12a49430d90d2cae4712c552587a48c.png",
+        "sha256": "232f885d2230694bf62f81f5987cd2b3a12a49430d90d2cae4712c552587a48c",
+        "bytes": 9112
+      },
+      {
+        "source": "images/26/2687f0cc14eb0b476ea5f4ba7272e7f248bb7dcb276a0e2b0c39e551501b011d.png",
+        "path": "/media/jake/SSD/EDB/math/images/26/2687f0cc14eb0b476ea5f4ba7272e7f248bb7dcb276a0e2b0c39e551501b011d.png",
+        "sha256": "2687f0cc14eb0b476ea5f4ba7272e7f248bb7dcb276a0e2b0c39e551501b011d",
+        "bytes": 9979
+      },
+      {
+        "source": "images/2a/2a84d17b83fb1e2036c6edc0a71c5c10a58bf893c33bbf38662ebb417aab3164.png",
+        "path": "/media/jake/SSD/EDB/math/images/2a/2a84d17b83fb1e2036c6edc0a71c5c10a58bf893c33bbf38662ebb417aab3164.png",
+        "sha256": "2a84d17b83fb1e2036c6edc0a71c5c10a58bf893c33bbf38662ebb417aab3164",
+        "bytes": 4252
+      },
+      {
+        "source": "images/30/30fff9564451baadff3cae48dbfb91dc08fc8591e596e7cd2f65d8cfc6c9c5a6.png",
+        "path": "/media/jake/SSD/EDB/math/images/30/30fff9564451baadff3cae48dbfb91dc08fc8591e596e7cd2f65d8cfc6c9c5a6.png",
+        "sha256": "30fff9564451baadff3cae48dbfb91dc08fc8591e596e7cd2f65d8cfc6c9c5a6",
+        "bytes": 3100
+      },
+      {
+        "source": "images/31/31e7bb281a36a3676730de0883d7abd5445093713de1bbd41899cce50a7e0e48.png",
+        "path": "/media/jake/SSD/EDB/math/images/31/31e7bb281a36a3676730de0883d7abd5445093713de1bbd41899cce50a7e0e48.png",
+        "sha256": "31e7bb281a36a3676730de0883d7abd5445093713de1bbd41899cce50a7e0e48",
+        "bytes": 4104
+      },
+      {
+        "source": "images/34/349486642eca07c8f1a619cb567dcb578c39a5ff024067a0910301039f3ae1d9.png",
+        "path": "/media/jake/SSD/EDB/math/images/34/349486642eca07c8f1a619cb567dcb578c39a5ff024067a0910301039f3ae1d9.png",
+        "sha256": "349486642eca07c8f1a619cb567dcb578c39a5ff024067a0910301039f3ae1d9",
+        "bytes": 8841
+      },
+      {
+        "source": "images/3d/3d67d73d3ede011d6c2fe4bc9e160aa3c2af522bff6cddfcc7c351c97418e764.png",
+        "path": "/media/jake/SSD/EDB/math/images/3d/3d67d73d3ede011d6c2fe4bc9e160aa3c2af522bff6cddfcc7c351c97418e764.png",
+        "sha256": "3d67d73d3ede011d6c2fe4bc9e160aa3c2af522bff6cddfcc7c351c97418e764",
+        "bytes": 3649
+      },
+      {
+        "source": "images/4c/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png",
+        "path": "/media/jake/SSD/EDB/math/images/4c/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png",
+        "sha256": "4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437",
+        "bytes": 2610
+      },
+      {
+        "source": "images/66/668b8a0dae060c7929b92c6abe3601b0ede0b8444d92f33f4a8b5627410a4447.png",
+        "path": "/media/jake/SSD/EDB/math/images/66/668b8a0dae060c7929b92c6abe3601b0ede0b8444d92f33f4a8b5627410a4447.png",
+        "sha256": "668b8a0dae060c7929b92c6abe3601b0ede0b8444d92f33f4a8b5627410a4447",
+        "bytes": 4394
+      },
+      {
+        "source": "images/6e/6ee5a19bf58db28574dc82aa3e6adcfd59015777bc503e66b9b9fd427278dcbf.png",
+        "path": "/media/jake/SSD/EDB/math/images/6e/6ee5a19bf58db28574dc82aa3e6adcfd59015777bc503e66b9b9fd427278dcbf.png",
+        "sha256": "6ee5a19bf58db28574dc82aa3e6adcfd59015777bc503e66b9b9fd427278dcbf",
+        "bytes": 2660
+      },
+      {
+        "source": "images/81/81ff220903cbe53cebf5e8f8b704e2a316be6092e1f14e527a7321e8f61bffb8.png",
+        "path": "/media/jake/SSD/EDB/math/images/81/81ff220903cbe53cebf5e8f8b704e2a316be6092e1f14e527a7321e8f61bffb8.png",
+        "sha256": "81ff220903cbe53cebf5e8f8b704e2a316be6092e1f14e527a7321e8f61bffb8",
+        "bytes": 4499
+      },
+      {
+        "source": "images/84/84c624aab456b9a090c9c4e6d23c82d8e1f69425050b6f3ee9d4afd18e3f0cec.png",
+        "path": "/media/jake/SSD/EDB/math/images/84/84c624aab456b9a090c9c4e6d23c82d8e1f69425050b6f3ee9d4afd18e3f0cec.png",
+        "sha256": "84c624aab456b9a090c9c4e6d23c82d8e1f69425050b6f3ee9d4afd18e3f0cec",
+        "bytes": 9645
+      },
+      {
+        "source": "images/8f/8f2d689080add393fad398d45d992e595996a12c3eca60c1c97e9a3e14720ed1.png",
+        "path": "/media/jake/SSD/EDB/math/images/8f/8f2d689080add393fad398d45d992e595996a12c3eca60c1c97e9a3e14720ed1.png",
+        "sha256": "8f2d689080add393fad398d45d992e595996a12c3eca60c1c97e9a3e14720ed1",
+        "bytes": 5677
+      },
+      {
+        "source": "images/93/935c384a1c327786445c184e4a928e4d976f36a81c4e4edad23ef932e476b743.svg",
+        "path": "/media/jake/SSD/EDB/math/images/93/935c384a1c327786445c184e4a928e4d976f36a81c4e4edad23ef932e476b743.svg",
+        "sha256": "935c384a1c327786445c184e4a928e4d976f36a81c4e4edad23ef932e476b743",
+        "bytes": 10961
+      },
+      {
+        "source": "images/9b/9bad7ad4d2533434edd0086075c47409c346836960b959d1a54708ff9511e484.svg",
+        "path": "/media/jake/SSD/EDB/math/images/9b/9bad7ad4d2533434edd0086075c47409c346836960b959d1a54708ff9511e484.svg",
+        "sha256": "9bad7ad4d2533434edd0086075c47409c346836960b959d1a54708ff9511e484",
+        "bytes": 10963
+      },
+      {
+        "source": "images/9c/9cec7ff29557aa14cd19309e9180482a44091e7ef215205285822674e7bc25b0.png",
+        "path": "/media/jake/SSD/EDB/math/images/9c/9cec7ff29557aa14cd19309e9180482a44091e7ef215205285822674e7bc25b0.png",
+        "sha256": "9cec7ff29557aa14cd19309e9180482a44091e7ef215205285822674e7bc25b0",
+        "bytes": 9658
+      },
+      {
+        "source": "images/a8/a8d2549c665a918cc8d69c69136fcb49e654ebb9aa5e53611155798e791b36a9.png",
+        "path": "/media/jake/SSD/EDB/math/images/a8/a8d2549c665a918cc8d69c69136fcb49e654ebb9aa5e53611155798e791b36a9.png",
+        "sha256": "a8d2549c665a918cc8d69c69136fcb49e654ebb9aa5e53611155798e791b36a9",
+        "bytes": 10899
+      },
+      {
+        "source": "images/ca/ca755cd11609e7c704adb37eb867ff8cc48bc5fc44b29cd777269be5791d9160.png",
+        "path": "/media/jake/SSD/EDB/math/images/ca/ca755cd11609e7c704adb37eb867ff8cc48bc5fc44b29cd777269be5791d9160.png",
+        "sha256": "ca755cd11609e7c704adb37eb867ff8cc48bc5fc44b29cd777269be5791d9160",
+        "bytes": 4024
+      },
+      {
+        "source": "images/d4/d408e7580bef6b1127da124a78df019bca51a55c58968da262540cd45c1658d0.svg",
+        "path": "/media/jake/SSD/EDB/math/images/d4/d408e7580bef6b1127da124a78df019bca51a55c58968da262540cd45c1658d0.svg",
+        "sha256": "d408e7580bef6b1127da124a78df019bca51a55c58968da262540cd45c1658d0",
+        "bytes": 10092
+      },
+      {
+        "source": "images/e1/e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20.svg",
+        "path": "/media/jake/SSD/EDB/math/images/e1/e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20.svg",
+        "sha256": "e1236dd6d81a7cb3217fa4b64989220dcfde67d04a5252eef02f2f3ce0b33c20",
+        "bytes": 10963
+      },
+      {
+        "source": "images/e6/e61d4153ecfb2fb176c06f67efb13af205b9b43b0ce4791627fcde979d96610e.svg",
+        "path": "/media/jake/SSD/EDB/math/images/e6/e61d4153ecfb2fb176c06f67efb13af205b9b43b0ce4791627fcde979d96610e.svg",
+        "sha256": "e61d4153ecfb2fb176c06f67efb13af205b9b43b0ce4791627fcde979d96610e",
+        "bytes": 10963
+      },
+      {
+        "source": "images/f8/f8a5fd7fc3e98d7f08b5ea48636e5de4a1a45b7a94fbe9e968789afcfe3a582c.png",
+        "path": "/media/jake/SSD/EDB/math/images/f8/f8a5fd7fc3e98d7f08b5ea48636e5de4a1a45b7a94fbe9e968789afcfe3a582c.png",
+        "sha256": "f8a5fd7fc3e98d7f08b5ea48636e5de4a1a45b7a94fbe9e968789afcfe3a582c",
+        "bytes": 8334
+      }
+    ]
+  },
+  "source_sha256": "6f4515097c8794f934a828fc7efcc6a860273f6d7e7f57cb90c1ad60929aaf1e",
+  "registered_generator": {
+    ":db/id": 17592186558928,
+    ":question-generator/id": "a6b8529c-da18-54ee-93d4-7fc40bcebd9b",
+    ":question-generator/script": "generate/scratch/17592186129197.py"
+  },
+  "available_difficulties": [
+    "easy",
+    "moderate",
+    "hard"
+  ]
+}

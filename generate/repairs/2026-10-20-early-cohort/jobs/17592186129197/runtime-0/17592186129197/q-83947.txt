@@ -1,0 +1,105 @@
+Using the change of variables 
+
+$$
+u=y+3x,\,v=x,
+$$
+
+calculate the area of the finite region $D$ bounded by the curve $(y+3x)^{2}-x=3$ and the line $x=1.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['-\\frac{32}{3}', '\\frac{16}{3}', '\\frac{32}{3}', '-\\frac{16}{3}', '\\frac{47}{3}']
+Correct ref: {':answer/id': '0ed3876d-8c80-5bc3-9185-9669f13f9f35', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\frac{32}{3}', ':db/id': 17592186373343}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=y+3x,\,v=x
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $y+3x=u$ and $x=v$ into the equation of the first curve, we get
+
+$$
+\begin{aligned}(y+3x)^{2}-x=3\,⟹\,{u}^{2}-v=3\,⟹\,v={u}^{2}-3,\end{aligned}
+$$
+
+while substituting $x=v$ into the equation of the second curve, we obtain
+
+$$
+\begin{aligned}x=1\,⟹\,v=1.\end{aligned}
+$$
+
+To find the intersections of the curves in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}v={u}^{2}-3 \\ v=1\end{aligned}\,⟹\,{\begin{aligned}u=\pm 2 \\ v=1.\end{aligned}\end{aligned}
+$$
+
+So, the intersection points are $(\pm 2,1).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ={(u,v)\,:\,-2\le u\le 2,\,{u}^{2}-3\le v\le 1}.
+$$
+
+![](images/26/2687f0cc14eb0b476ea5f4ba7272e7f248bb7dcb276a0e2b0c39e551501b011d.png)
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}3 & 1 \\ 1 & 0\end{aligned}| \\  & =-1.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(-1)^{-1}=-1.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}|-1|\text{d}u\text{d}v \\  & ={\int }_{-2}^{2}[{\int }_{{u}^{2}-3}^{1}\,dv]du \\  & ={\int }_{-2}^{2}[v]_{{u}^{2}-3}^{1}\,du \\  & ={\int }_{-2}^{2}(1-({u}^{2}-3))\,du \\  & ={\int }_{-2}^{2}(4-{u}^{2})\,du \\  & ={[4u-\frac{{u}^{3}}{3}]}_{-2}^{2} \\  & =16-\frac{16}{3} \\  & =\frac{32}{3}\end{aligned}
+$$

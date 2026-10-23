@@ -1,0 +1,123 @@
+Using the change of variables 
+
+$$
+u=x-y,\,v=x+y,
+$$
+
+calculate the area of the finite region $D$ bounded by the lines $x+y=1,$ $x-y=1$ and the curve ${x}^{2}-{y}^{2}=2.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['\\operatorname{ln}\u20612-1', '\\operatorname{ln}\u20612-\\frac{1}{2}', '2\\operatorname{ln}\u20612-2', '\\operatorname{ln}\u20612-3', '2\\operatorname{ln}\u20612-\\frac{3}{2}']
+Correct ref: {':answer/id': '68da978e-5392-5c13-80d0-e709f72c6da6', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\operatorname{ln}\u20612-\\frac{1}{2}', ':db/id': 17592186411734}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=x-y,\,v=x+y
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $x+y=v$ into the equation of the first line, we get
+
+$$
+\begin{aligned}x+y=1\,⟹\,v=1,\end{aligned}
+$$
+
+while substituting $x-y=u$ into the equation of the second line, we obtain
+
+$$
+\begin{aligned}x-y=1\,⟹\,u=1.\end{aligned}
+$$
+
+Substituting $x+y=v$ and $x-y=u$ into the equation of curve, we get
+
+$$
+\begin{aligned}{x}^{2}-{y}^{2}=2\,⟹\,(x-y)(x+y)=2,\,⟹\,uv=2.\end{aligned}
+$$
+
+The intersection point of the two lines in the $uv$-plane is $(1,1).$
+
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}\{\begin{aligned}uv=2 \\ v=1\end{aligned}\,⟹\,\{\begin{aligned}u=2 \\ v=1.\end{aligned}\end{aligned}
+$$
+
+ 
+
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}\{\begin{aligned}uv=2 \\ u=1\end{aligned}\,⟹\,\{\begin{aligned}u=1 \\ v=2.\end{aligned}\end{aligned}
+$$
+
+ 
+
+So, the intersection points are $(1,1),$ $(1,2)$ and $(2,1).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ=\{(u,v)\,:\,1\le u\le 2,\,1\le v\le \frac{2}{u}\}.
+$$
+
+![](images/4c/4c151e7fc8d150b9c8def69d609446b77424c2703decd9c8c55866cff2ae7437.png)
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}1 & -1 \\ 1 & \text{ }\text{ }1\end{aligned}| \\  & =2.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(2)^{-1}=\frac{1}{2}.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}|\frac{1}{2}|\,\text{d}u\text{d}v \\  & =\frac{1}{2}{\int }_{1}^{2}[{\int }_{1}^{2/u}\,dv]du \\  & =\frac{1}{2}{\int }_{1}^{2}[v]_{1}^{2/u}\,du \\  & =\frac{1}{2}{\int }_{1}^{2}(\frac{2}{u}-1)du \\  & =\frac{1}{2}{[2\operatorname{ln}⁡u-u]}_{1}^{2} \\  & =\frac{1}{2}(2\operatorname{ln}⁡2-2+1) \\  & =\frac{1}{2}(2\operatorname{ln}⁡2-1) \\  & =\operatorname{ln}⁡2-\frac{1}{2}\end{aligned}
+$$

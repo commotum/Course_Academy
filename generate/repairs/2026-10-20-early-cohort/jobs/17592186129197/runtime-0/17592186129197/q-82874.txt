@@ -1,0 +1,120 @@
+Using the change of variables 
+
+$$
+u=x+y,\,v=x-y,
+$$
+
+calculate the area of the finite region $D$ bounded by the curve $(x+y)^{4}-x+y=0$ and  the line $y=0.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['\\frac{1}{3}', '\\frac{1}{2}', '\\frac{1}{10}', '\\frac{3}{20}', '\\frac{2}{3}']
+Correct ref: ABSENT
+Field 1: selection
+['\\frac{1}{10}', '\\frac{3}{20}', '\\frac{2}{3}', '\\frac{1}{2}', '\\frac{1}{3}']
+Correct ref: {':answer/id': 'c5bf893e-8435-5b7e-b5c4-19722cff781d', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\frac{3}{20}', ':db/id': 17592186373307}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=x+y,\,v=x-y
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $x+y=u$ and $x-y=v$ into the equation of the first curve, we get
+
+$$
+\begin{aligned}(x+y)^{4}-x+y=0\,⟹\,(x+y)^{4}-(x-y)=0\,⟹\,v={u}^{4},\end{aligned}
+$$
+
+Now, 
+
+$$
+\begin{aligned}{\begin{aligned}x+y=u \\ x-y=v\end{aligned}\,⟹\,y=\frac{u-v}{2}.\end{aligned}
+$$
+
+Substituting this value into the equation of the given line yields:
+
+$$
+\begin{aligned}y=0\, & ⟹\,\frac{u-v}{2}=0\,⟹\,v=u\end{aligned}
+$$
+
+ 
+
+To find the intersections of the curves in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}v={u}^{4} \\ v=u\end{aligned}\,⟹\,{\begin{aligned}{u}^{3}(u-1)=0 \\ v=u.\end{aligned}\end{aligned}
+$$
+
+ 
+
+So, the intersection points are $(0,0)$ and $(1,1).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ={(u,v)\,:\,0\le u\le 1,\,{u}^{4}\le v\le u}.
+$$
+
+![](images/1e/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png)
+
+ 
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}1 & 1 \\ 1 & -1\end{aligned}| \\  & =-2.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(-2)^{-1}=-\frac{1}{2}.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}|-\frac{1}{2}|\,\text{d}u\text{d}v \\  & =\frac{1}{2}{\int }_{0}^{1}[{\int }_{{u}^{4}}^{u}\,dv]du \\  & =\frac{1}{2}{\int }_{0}^{1}[v]_{{u}^{4}}^{u}\,du \\  & =\frac{1}{2}{\int }_{0}^{1}(u-{u}^{4})du \\  & =\frac{1}{2}{[\frac{{u}^{2}}{2}-\frac{{u}^{5}}{5}]}_{0}^{1} \\  & =\frac{1}{2}(\frac{1}{2}-\frac{1}{5}) \\  & =\frac{1}{2}(\frac{3}{10}) \\  & =\frac{3}{20}\end{aligned}
+$$
