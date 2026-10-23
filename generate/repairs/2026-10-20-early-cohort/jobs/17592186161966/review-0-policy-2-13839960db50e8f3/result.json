@@ -1,0 +1,142 @@
+{
+  "verdict": "revise",
+  "summary": "A choice-only shortcut solves three generator profiles, including two of the five delivered batch questions. Two rated source profiles are also missing. Package files were not changed.",
+  "source_analysis": {
+    "skill": "Infer two missing additive column operations that zero the nonpivot entries of one row in a 4x4 matrix.",
+    "reasoning_steps": [
+      "Identify the unchanged source column and the row reduced to zeros.",
+      "Calculate each missing multiplier using k = -a_ri/a_rp.",
+      "Select the correct operation pair and verify the matrix transformation."
+    ],
+    "invariants": [
+      "Three additive operations use the same unchanged source column.",
+      "One operation is supplied and two are missing.",
+      "One radio choice contains the correct operation pair.",
+      "Displayed intermediate matrices must follow the stated operations."
+    ],
+    "permitted_variations": [
+      "Pivot row and column, supplied operation, multiplier signs and magnitudes, and nonpivot entries.",
+      "Distractor relationships and displayed positions may vary; their source-example assignments are not essential constraints."
+    ],
+    "source_refs": [
+      "cbf8e85c-ffa6-55b9-a087-2a5272f10f25",
+      "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+      "2ce8c9c4-6db5-5686-9935-94470a40d94f",
+      "0caa2d92-c312-53e1-9069-1f7c037c78ef",
+      "3848739a-fbe2-5165-96e8-1543cf1c6383",
+      "6a7661d7-492c-5a50-9552-67599c715cea",
+      "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: adding a multiple of one column to another",
+      "Lesson step cdb6468b-12bc-5624-9941-9d18a55ef6f9: make entries beside the pivot equal to zero"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-inputs.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replays.json",
+        "unrated-source-bank.json"
+      ],
+      "details": "Ten rated banks and the canonical backbone replay correctly. Current moderate profiles q-130617 and q-130630 are absent. The separately verified unrated profile remains explicitly excluded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "role-boundary-results.json"
+      ],
+      "details": "Independent exact arithmetic verified 120 fresh samples, all five batch records, controlled changes, supported source replays and all 48 row/pivot/given-role combinations."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "source-replay.json",
+        "rejection-summary.json"
+      ],
+      "details": "Numerical values and operation roles vary, but two rated source bank profiles are omitted."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "samples.json",
+        "math-results.json"
+      ],
+      "details": "Observed output preserves the source operation type, matrix size, response contract and reasoning workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-grading.json"
+      ],
+      "details": "Actual native grader: 129 accepted choices, 516 rejected choices, zero unresolved. Relevant and irrelevant controlled changes behaved correctly. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render/question-002.png",
+        "render/question-004.png",
+        "render/question-005.png",
+        "render/question-006.png",
+        "render-scroll/question-002-scroll-1.png"
+      ],
+      "details": "Six actual-UI previews passed; representative screenshots were inspected. Wide mathematics requires working horizontal scrolling, including the solution chain. Desktop viewport only."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-cli.json"
+      ],
+      "details": "Exact dependency versions match. Deterministic replay, relocation, CLI execution, declared files and invalid-input rejection passed. Repair history and preflight files are absent."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-shortcut.json",
+        "shortcut-results.json",
+        "delivery-stage-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-samples/delivery.json",
+        "selection-analysis.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "The bank-only shortcut succeeds on 36/36 matching fresh samples and 2/2 matching batch records. All samples survive delivery filtering; UI shuffling preserves the cue. Selection analysis records explicit history and policy limits. Captured inventory basis 5579 contains 13 original sources and no historical generated records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "For q-130619, q-130627 and q-130624, four choices share an ordered absolute multiplier pair and one swaps those magnitudes. If the singleton is (u,v), selecting (-v,-u) identifies the correct answer without inspecting either matrix. This also affects two surviving records in the exact runner batch.",
+      "source_refs": [
+        "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+        "2ce8c9c4-6db5-5686-9935-94470a40d94f",
+        "0caa2d92-c312-53e1-9069-1f7c037c78ef"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce.py --case shortcut. The strict regression fails. Seed 1118318699, profile q-130619 produces coefficient pairs (-3,2), (-3,-2), (2,3), (3,2), (3,-2). Singleton (2,3) predicts correct (-3,-2). Complete delivered record: minimal-shortcut.json.",
+      "requested_change": "Change the family-wide distractor construction so the singleton does not encode the correct pair through an invariant negative swap. Preserve source replay and the intended column-operation task. Verify alternative bank relationships within each recognizable subgroup, then regenerate and review the candidate batch."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The embedded source snapshot omits current moderate questions q-130617 and q-130630. Neither complete bank can be replayed; both incorrectly raise 'Unrated source profile excluded'.",
+      "source_refs": [
+        "3848739a-fbe2-5165-96e8-1543cf1c6383",
+        "6a7661d7-492c-5a50-9552-67599c715cea"
+      ],
+      "reproduction": "Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce.py --case sources. It fails on q-130617. review.py independently tests both original parameter sets, retained in source-replay.json.",
+      "requested_change": "Reconcile the embedded inventory with the supplied rated source questions. Add complete replay support and justified sampling for both missing profiles, including q-130617's nonunit pivot example."
+    }
+  ]
+}

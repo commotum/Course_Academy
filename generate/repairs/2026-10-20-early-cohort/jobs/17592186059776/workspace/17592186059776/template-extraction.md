@@ -1,5 +1,7 @@
 # Gaussian elimination of a 2 by 2 system
 
+Repair note (runtime 1.1.0): the affine distractor-bank generalization below is historical and is superseded for non-source instances by ../instructional-account.md. Source descriptions and complete original banks remain authoritative for replay.
+
 Captured at basis 2478. All ten source practice records, their exact Markdown, complete choice values and keys are retained in source.json. The canonical example is context only.
 
 ## Backbone and slots

@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -3,8 +3,9 @@
+ Bounded policy: translate the two unknowns by integer offsets h,k in -3..3.
+ For EVERY displayed row (a,b,c), substitute c+a*h+b*k. This changes both
+ right-hand sides without changing elimination coefficients or difficulty.
+-Choice errors are transported by the same invertible affine map; their
+-psychological interpretation is deliberately not inferred from sparse banks.
++Source banks replay at h=k=0. Other instances use competing elimination
++constants with independently sampled correct rank and internally consistent
++back substitution, preventing source-bank numerical ranks from leaking keys.
+ """
+ import argparse
+ import hashlib
+@@ -19,7 +20,7 @@
+ KP_ID = 17592186059776
+ KP_UUID = '07abc1cc-5794-51a6-bad4-40565eae52be'
+ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'gaussian-elimination-generator-v1'))
+-VERSION = '1.0.0'
++VERSION = '1.1.0'
+ SUPPORTED_LEVELS = ('easy', 'moderate')
+ HERE = Path(__file__).with_suffix('')
+ SOURCE = json.loads((HERE / 'source.json').read_text())
+@@ -130,6 +131,29 @@
+     old = CASES[sid]
+     f = old[':question/answer-fields'][0]
+     correct_index = [a[':answer/id'] for a in f[':answer-field/choices']].index(f[':answer-field/correct'][':answer/id'])
++    if p != [0, 0]:
++        # Bank roles vary within each coefficient family and explicit parameter
++        # path, even when a caller reuses one seed across a batch of systems.
++        bank_rng = random.Random(json.dumps([seed, sid, p, 'competing-constants']))
++        rank = bank_rng.randrange(5)
++        final = translate(matrices(old[':question/worked-solution'])[-1], *p)
++        # Preserve the solution's number form in every pair. In the fractional
++        # coefficient solve profile, unit y steps would make only the correct
++        # x (or a small subset) integral, leaking an unintended number-form cue.
++        step = int(final[0, 1].q) if 'and then solve' in problem else 1
++        candidates = []
++        for i in range(5):
++            candidate = final.copy()
++            candidate[1, 2] += step*(i - rank)
++            value = 'M∼' + matrix(candidate)
++            if 'and then solve' in problem:
++                y = candidate[1, 2]
++                x = candidate[0, 2] - candidate[0, 1]*y
++                value = '$$\n' + value + ',\n$$\n$\\,x=' + latex(x) + '$ and $y=' + latex(y) + '$'
++            candidates.append((value, i == rank))
++        bank_rng.shuffle(candidates)
++        values = [value for value, _ in candidates]
++        correct_index = next(i for i, (_, correct) in enumerate(candidates) if correct)
+     if len(set(values)) != 5:
+         raise ValueError('Colliding bank')
+     qid = str(uuid.uuid5(uuid.UUID(GENERATOR_UUID), json.dumps([problem, values], ensure_ascii=False)))

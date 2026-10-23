@@ -1,0 +1,56 @@
+{
+  "controlled": {
+    "before": 60,
+    "after": 60,
+    "groups": 12,
+    "every_fixed_bank_correct_indices": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "max_bank_only_success_per_group": "1/5"
+  },
+  "normal": {
+    "before": 60,
+    "after": 60,
+    "before_positions": {
+      "3": 12,
+      "1": 36,
+      "0": 12
+    },
+    "after_positions": {
+      "3": 12,
+      "1": 36,
+      "0": 12
+    },
+    "semantic_systems": 60
+  },
+  "batch": {
+    "before": 5,
+    "after": 5,
+    "before_positions": {
+      "3": 3,
+      "2": 1,
+      "1": 1
+    },
+    "after_positions": {
+      "3": 3,
+      "2": 1,
+      "1": 1
+    },
+    "semantic_systems": 5
+  },
+  "selection": {
+    "inspection": "engine/rust/question_selection.rs::seen_before_task/select",
+    "facts": [
+      "Seen questions and current prefix are excluded upstream; rated band selection then uses configured weights and hash choice.",
+      "All candidates here are easy; a positive easy weight allows selection. No configured distribution chooses first sorted candidate.",
+      "Selection does not inspect coordinate signs, equality or role assignments."
+    ],
+    "limits": [
+      "Live learner history and policy were not supplied. Arbitrary history exclusions may remove tested counterfactual partners; no claim of per-learner balance or universal shortcut absence."
+    ]
+  }
+}

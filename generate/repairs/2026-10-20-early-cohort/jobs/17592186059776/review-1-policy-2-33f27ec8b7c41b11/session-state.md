@@ -1,0 +1,1 @@
+Source replay 10/10 and independent math 105/105 passed. Original shortcut reproduced on baseline (24/24; exit 1), current regression passes (9/24). Author retained check also baseline fails/current passes. Native grading and read-only delivery passed; UI render running. Remaining: decision probes, controlled first-equation-fixed pair, screenshots, final evidence.
