@@ -1,0 +1,9 @@
+Status: unsupported. Finding 591f580cadb749294588 still fails on five captured historical generated questions. The retained possible new-seen history yields 64/64 sign-extremum shortcut successes; this is not a claim about every learner history. All generated inventory records were tested.
+
+The other four retained findings pass, as do 17 complete source-bank replays, shared delivery on 14 records, 35 native grading checks (7 accepted, 28 rejected), pinned dependencies and relocated seeded execution. The staged five-replacement proposal verifies and remains unapplied. Exact commands and exit codes are in commands.json; results.json separates the passing generator checks from the inventory failure.
+
+Original lesson, canonical and practice content confirm elimination followed by residual interpretation: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe derives (k+4)y=-5; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 puts the correct answer inside the numerical bank. The existing instructional-account.md and completed runtime repairs remain supported. No new generator construction defect is demonstrated by the latest feedback.
+
+Runtime, manifest, captured source/inventory, engine and publication state were preserved. Strict regressions were not weakened. The retained UI screenshot evidence/repair-3/render/question-001.png and source flowchart were visually inspected; unchanged output was not rendered again.
+
+Required external action: separately remediate the five historical records using evidence/repair-3/inventory-repair-proposal.json, then recapture inventory and rerun the strict inventory check. Database changes are prohibited in this author task. No proposed replacement was substituted for captured inventory. affected-inventory.json evidence paths resolve relative to the supplied author-963 evidence root.

@@ -1,25 +1,9 @@
-# Current state: author 960
+# Current state: author 963
 
-Latest failure reproduced first with job Python:
-`-B checks/batch_regressions.py --finding inventory`.
-Five historical banks remain affected; the retained possible-history witness
-has 64/64 shortcut successes. See evidence/author-960/initial-reproduction.log.
+Latest failure reproduced first: job Python `-B checks/batch_regressions.py --finding inventory` exits 1 for five historical records; retained possible-history witness has 64/64 shortcut successes.
 
-`-B checks/recheck_status.py --output evidence/author-960` exits 1 solely for
-finding 591f580cadb749294588. Four generator regressions, 17 complete source-bank
-replays, shared delivery checks on 14 records, 35 native grading checks,
-dependencies and relocation pass. Five staged replacements verify and remain
-unapplied. All five generated inventory records were tested. Affected-inventory
-paths resolve from the supplied author-960 evidence root.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-963` exits 1 solely for finding 591f580cadb749294588. Four generator regressions, 17 source-bank replays, shared delivery on 14 records, 35 native grading checks, dependencies and relocation pass. Five staged replacements verify and remain unapplied. No generated inventory items remain untested.
 
-Read feedback, retained findings, source material and required documentation.
-Preserved runtime repairs, manifest and strict regressions. Retained actual-UI
-screenshot 001 and source flowchart visually inspected; no fresh render needed
-for unchanged runtime/records. No database, publication, engine or other-job edits.
+Read latest feedback, all retained findings, original lesson and practice content, required docs and prior state. Preserved runtime, manifest, instructional account and strict regressions. Visually inspected retained actual-UI screenshot 001 and source flowchart. No database, publication, engine or other-job edits.
 
-Current commands, results and disposition: evidence/author-960. Status unsupported
-for the historical selectable-pool criterion. Required next action: separate
-inventory remediation using evidence/repair-3/inventory-repair-proposal.json,
-then fresh inventory capture and strict recheck. Database changes are prohibited
-here. Do not repeat generator-only repairs against unchanged inventory, weaken
-the regression, or substitute proposed replacements for captured records.
+Commands/results/disposition: evidence/author-963. Status unsupported for historical selectable-pool criterion. Next unfinished step requires the separate inventory-remediation workflow with evidence/repair-3/inventory-repair-proposal.json, then fresh captured inventory and strict recheck. Current task prohibits database changes. Another generator-only change cannot retire already stored questions; do not weaken the check or substitute proposed replacements for capture.
