@@ -1,0 +1,116 @@
+{
+  "verdict": "accepted",
+  "summary": "The canonical cubic-term restriction is resolved. All eight checks passed, including the exact five-record batch. Package files remained unchanged; no affected stored record was demonstrated.",
+  "source_analysis": {
+    "skill": "Differentiate polynomial powers using the chain rule, with slope evaluation and tangent construction in higher-difficulty families.",
+    "reasoning_steps": [
+      "Identify the inner polynomial and outer power.",
+      "Differentiate both and multiply.",
+      "For point questions, evaluate the derivative; for tangents, apply point-slope form."
+    ],
+    "invariants": [
+      "Preserve source-supported operations, response contracts and difficulty.",
+      "Derive prompts, answers and solutions from the same parameters.",
+      "Accept algebraically equivalent blank responses."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs, powers, evaluation points and answer positions.",
+      "Support both quartic-plus-linear and quartic-plus-cubic inner polynomials.",
+      "Reorder terms or choices without changing mathematical correctness."
+    ],
+    "source_refs": [
+      "19bf8d06-cbcc-547b-b882-ac89cd39fd1a",
+      "b551e489-4c37-53ea-831b-8f3ca007450b",
+      "f0bd56a8-5c99-5166-be8e-4185bfb62ed5",
+      "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate the outer function, multiply by the inner derivative, then substitute."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reuse-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "repair-regression-results.json",
+        "author-old.log",
+        "author-current.log"
+      ],
+      "details": "Twelve practice banks replay with documented source corrections. Canonical e-181 now reproduces correctly. The retained regression fails on the old package and passes on the revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "revision_checks.py",
+        "math-results.json",
+        "solution-results.json",
+        "boundary-results.json"
+      ],
+      "details": "79 independent exact checks and 36 quartic solution checks passed, including both degrees and coefficient/power boundaries."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "degree-rank-results.json",
+        "samples-independent.json",
+        "changed-files.json"
+      ],
+      "details": "Fresh quartic samples include 11 linear and 13 cubic second terms. Both groups vary coefficient ranks, outer ranks and answer positions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "batch.json"
+      ],
+      "details": "The cubic term is source-supported. The requested easy batch retains affine inner functions and its original workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "reused/grader-results.json"
+      ],
+      "details": "Native grading passed 47 acceptance and 94 rejection checks, including equivalent blank expressions and reordered choices."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Nine actual-UI renders passed. Five screenshots were inspected, covering the degree-change pair, reordered choices, blank control and signed boundary."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime.json",
+        "commands.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact dependencies, deterministic replay and relocation passed. Recursive package hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-quartic/delivery.json",
+        "inventory-inspection.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes propagate correctly. No tested surface rule solves either degree subgroup or the exact radio batch. All five batch records survive delivery. Selection conclusions remain limited to captured inventory and documented policy/history rules."
+    }
+  },
+  "findings": []
+}
