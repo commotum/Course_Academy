@@ -1,38 +1,38 @@
-# Current state — 2026-10-22, author-322
+# Current state — 2026-10-22, author-324
 
-Read current feedback and both retained findings; history has 322 events.
-Reproduced the latest failure first with:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`.
-It exits 1: the installed runner rejects the unchanged package before retained
-regressions or sampling. Latest independent finding 9b8cb52352b8ca3e790e explicitly
-requires an evidence-only correction and preserved runtime.
+Read feedback, both retained findings and all 324 history-event classifications.
+Reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1 at the installed runner's unchanged-package gate, before retained checks
+or sampling. Confirmed the actual gate in scripts/generator_pipeline.py:723-727.
 
-Targeted verification commands, exit codes, logs and unchanged runtime hashes:
+No implementation change is warranted by retained finding 9b8cb52352b8ca3e790e:
+it explicitly requires evidence-only correction and preservation of the package.
+The existing instructional account and staged runner correction remain intact.
+
+Current commands, exit codes, logs and unchanged runtime hashes:
 `evidence/current-author-verification.json`.
 
-- Evidence bundle passes real-validator path checks, missing-provenance and
-  wrong-root negative controls, and relocation. Registered evidence check exits
-  1 because the strict installed-runner handoff remains failing.
-- Batch regression passes: reported shortcut succeeds 1/5 before and after shared
-  delivery; all five target ranks/positions, ten profiles and 25 native responses
-  pass. No supported semantic instances were removed.
-- Relocated CLI count, deterministic replay and finite-limit checks pass.
-- Ten complete source banks (50 choices) and two actual-UI records bind to current
-  delivery. Reinspected question-001.png; readable matrices and no clipping.
+- `checks/check_evidence_contract.py`: exits 1. Real bundle validation, relocation,
+  wrong-root and missing-provenance controls pass; installed handoff fails.
+- `checks/check_batch_selection.py`: passes; reported shortcut scores 1/5 raw and
+  delivered, ten profiles retain target roles, 25 native responses pass.
+- `checks/check_cli_contract.py`: passes relocation, counts, determinism and limit.
+- `checks/check_render_binding.py`: passes ten complete source banks (50 choices)
+  and binds two retained actual-UI renders to freshly delivered records.
+- Reinspected evidence/author8-render/question-001.png: readable, no clipping.
 
 All declared runtime files and manifest remain unchanged. No engine, database,
-publication, service or other-job changes. Unchanged source/math/inventory/render
-analysis is retained; no new rendering or unrelated large sampling was needed.
+publication, service, or other-job writes. Reused completed source/math/inventory
+analysis and rendering rather than repeating unrelated checks.
 
-Unfinished: installed runner must permit this evidence-only correction to reach
-retained checks, sampling and fresh independent review without demanding unrelated
-runtime changes. `runner-fix/evidence-only-rejection.patch` remains staged, not
-installed; its target is outside the permitted workspace. The corrected bundle is
-already usable at its workspace root. The staged fresh-review route does not
-require installing the historical accepted review as new approval. This clarifies
-earlier reports that treated historical-evidence installation as mandatory.
+Unfinished: the runner must permit the retained evidence-only correction to reach
+regressions, sampling and fresh independent review without unrelated runtime edits.
+`runner-fix/evidence-only-rejection.patch` is concrete and remains uninstalled;
+its target scripts/generator_pipeline.py is outside the permitted workspace.
+The corrected evidence bundle validates at evidence/contract-correction itself.
+Historical acceptance must not substitute for fresh review.
 
-Status remains unsupported because the strict handoff fails. Do not alter package
-bytes merely to evade that gate or weaken the retained regression. Further
-identical author retries cannot apply an external runner correction within these
-write restrictions.
+Status: unsupported because the strict handoff remains failing. Do not change
+package bytes to evade the gate or weaken the retained regression. Identical
+author retries cannot apply the external correction under these write limits.
