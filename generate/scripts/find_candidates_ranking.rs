@@ -56,6 +56,34 @@ fn refs(records: &BTreeMap<u64, Record>, entity: u64, attr: &str) -> Vec<u64> {
     }
 }
 
+/// Reuse Study's bounded scope without loading any question banks. Discovery
+/// still keeps separate review, assessment and explicit generation demand.
+pub(super) fn bounded_lesson_scope(db: &DatabaseValue, learner: u64) -> Result<Option<BTreeSet<u64>>> {
+    let Some(mode) = db.schema().resolve_ident(&Keyword::new("learner", "self-directed")) else {
+        return Ok(None);
+    };
+    if !db.values(learner, mode)?.contains(&Value::Bool(true)) {
+        return Ok(None);
+    }
+    let mut records = BTreeMap::new();
+    for name in ["topic/id", "topic/next"] {
+        let (ns, attr) = name.split_once('/').unwrap();
+        let attribute = db.schema().resolve_ident(&Keyword::new(ns, attr)).ok_or("curriculum attribute missing")?;
+        for d in db.collect_datoms_with_prefix(&IndexPrefix::Aevt { attribute, entity:None, value:None })? {
+            insert(db, &mut records, &d)?;
+        }
+    }
+    for d in db.collect_datoms_with_prefix(&IndexPrefix::Eavt { entity:learner, attribute:None, value:None })? {
+        let name = db.schema().attribute(d.attribute)?.ident.qualified_name();
+        if matches!(name.as_str(), "learner/queue" | "learner/targets") {
+            insert(db, &mut records, &d)?;
+        }
+    }
+    records.entry(learner).or_default();
+    let snapshot = EntitySnapshot::new(records, db.basis_t())?;
+    Ok(Some(learning::study_lesson_scope(&snapshot, learner)?))
+}
+
 /// Distinct selected goals supported by a topic, including a selected topic
 /// itself. Topic edges and KP key prerequisites both carry support; repeated
 /// selection memberships and multiple graph paths never increase the count.
@@ -230,6 +258,12 @@ pub(super) fn annotate(
         .map_err(|e| format!("ranking projection: {e}"))?;
     let at = DateTime::<Utc>::from_timestamp_millis(now).ok_or("invalid ranking time")?;
     let priorities = learning::inventory_priorities(&s, learner, at)?;
+    let scoped_lessons = if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
+        let learned = learning::learned_topics(&s, learner)?;
+        Some(learning::study_lesson_scope(&s, learner)?.difference(&learned).copied().collect::<BTreeSet<_>>())
+    } else {
+        None
+    };
     let unavailable = learning::unavailable_questions(&s, learner)?;
     let queued: BTreeSet<_> = s.refs(learner, "learner/queue")?.into_iter().collect();
     let targeted: BTreeSet<_> = s.refs(learner, "learner/targets")?.into_iter().collect();
@@ -470,6 +504,7 @@ pub(super) fn annotate(
         {
             demand("lesson", relevance);
         }
+        let mut protected_lesson = false;
         for trigger in t["triggers"].as_array().unwrap() {
             let reason = trigger["reason"].as_str().unwrap();
             if matches!(reason, "learner/queue" | "learner/targets") {
@@ -491,10 +526,17 @@ pub(super) fn annotate(
                         .and_then(Json::as_f64)
                         .is_some_and(|n| n >= 12000.0);
             }
+            protected_lesson |= immediate && trigger["activity_type"] == "lesson";
             demand(
                 trigger["activity_type"].as_str().unwrap(),
                 if immediate { 0 } else { relevance.min(3) },
             );
+        }
+        // A stale unlocked task or imported low retention must not recreate
+        // ordinary first-learning demand outside the current Study curriculum.
+        // Saved attempts, repairs and explicit --topic requests retain demand.
+        if scoped_lessons.as_ref().is_some_and(|scope| !scope.contains(&topic)) && !protected_lesson {
+            demands.remove("lesson");
         }
         t["activity_demands"] = json!(demands.into_iter().map(|(activity_type, relevance_tier)|
             json!({"activity_type":activity_type, "relevance_tier":relevance_tier})).collect::<Vec<_>>());

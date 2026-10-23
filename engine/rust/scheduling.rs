@@ -243,7 +243,26 @@ impl Lifecycle {
 pub fn filter_candidates(
     s: &EntitySnapshot,
     l: u64,
+    plan: Vec<learning::PlannedActivity>,
+) -> Result<Vec<learning::PlannedActivity>> {
+    filter_candidates_with_lesson_order(s, l, plan, false)
+}
+
+/// Target/queue study uses a soft layer preference and lesson interleaving.
+/// Course planning and explicit Study Now retain their existing selection rules.
+pub(crate) fn filter_self_directed_candidates(
+    s: &EntitySnapshot,
+    l: u64,
+    plan: Vec<learning::PlannedActivity>,
+) -> Result<Vec<learning::PlannedActivity>> {
+    filter_candidates_with_lesson_order(s, l, plan, true)
+}
+
+fn filter_candidates_with_lesson_order(
+    s: &EntitySnapshot,
+    l: u64,
     mut plan: Vec<learning::PlannedActivity>,
+    interleave_lessons: bool,
 ) -> Result<Vec<learning::PlannedActivity>> {
     let mut unique: Vec<learning::PlannedActivity> = vec![];
     let mut positions: BTreeMap<u64, usize> = BTreeMap::new();
@@ -281,6 +300,11 @@ pub fn filter_candidates(
             )
             .unwrap_or(false)
     });
+    // Unavailable lessons never establish a layer frontier or consume one of
+    // the diversity choices. Later usable lessons remain eligible immediately.
+    if interleave_lessons {
+        diversify_lessons(s, l, &h, &mut plan)?;
+    }
     let mut required = BTreeSet::new();
     for p in &plan {
         if p.priority >= 12000.0 {
@@ -382,6 +406,89 @@ pub fn filter_candidates(
     plan.sort_by_key(|candidate| !retake_activities.contains(&candidate.activity));
     diversify_reviews(s, l, &mut plan)?;
     Ok(plan)
+}
+
+/// Reorder only ordinary new lesson slots. Layer preference is a score, never
+/// an eligibility gate: a graph-distance bonus of at most six can mix nearby
+/// layers while keeping distant later layers behind available earlier work.
+/// Recent completions seed the first choice, so returning to Study also varies
+/// the next lesson rather than only varying the other cards on the same page.
+fn diversify_lessons(
+    s: &EntitySnapshot,
+    learner: u64,
+    history: &Lifecycle,
+    plan: &mut [learning::PlannedActivity],
+) -> Result<()> {
+    const DISTANCE_CAP: usize = 6;
+    let mut ordinary: BTreeSet<_> = plan.iter()
+        .filter(|p| p.priority < 5000.0
+            && retrieval::kind(s, p.activity).ok().as_deref() == Some("lesson"))
+        .map(|p| p.activity).collect();
+    for task in s.refs(learner, "learner/activity")? {
+        if !matches!(state(s, task)?.as_str(), "locked" | "unlocked" | "started" | "paused") {
+            continue;
+        }
+        if matches!(state(s, task)?.as_str(), "started" | "paused")
+            || !s.refs(task, "learner-task/remediation-for")?.is_empty()
+            || s.optional_ref(task, "learner-task/retake-of")?.is_some()
+        {
+            ordinary.remove(&s.reference(task, "learner-task/activity")?);
+        }
+    }
+    let slots: Vec<_> = (0..plan.len())
+        .filter(|&i| ordinary.contains(&plan[i].activity)).collect();
+    if slots.len() < 2 {
+        return Ok(());
+    }
+    let layers = learning::topic_layers(s)?;
+    let graph = s.topic_neighbors()?;
+    let mut nearest: BTreeMap<_, _> = slots.iter()
+        .map(|&i| (plan[i].topic, DISTANCE_CAP)).collect();
+    let update_distances = |sources: Vec<u64>, nearest: &mut BTreeMap<u64, usize>| {
+        let mut distances = BTreeMap::new();
+        let mut pending = VecDeque::new();
+        for topic in sources {
+            if distances.insert(topic, 0usize).is_none() {
+                pending.push_back(topic);
+            }
+        }
+        while let Some(topic) = pending.pop_front() {
+            let distance = distances[&topic];
+            if let Some(value) = nearest.get_mut(&topic) {
+                *value = (*value).min(distance);
+            }
+            if distance + 1 >= DISTANCE_CAP {
+                continue;
+            }
+            for &neighbor in graph.get(&topic).into_iter().flatten() {
+                if let std::collections::btree_map::Entry::Vacant(entry) = distances.entry(neighbor) {
+                    entry.insert(distance + 1);
+                    pending.push_back(neighbor);
+                }
+            }
+        }
+    };
+    let recent = history.finished.iter().rev()
+        .filter(|f| f.passed && matches!(f.kind.as_str(), "lesson" | "review"))
+        .filter_map(|f| f.topic).take(3).collect();
+    update_distances(recent, &mut nearest);
+    // Rank lesson slots even when reviews precede the visible prefix, because
+    // the three-review break below may promote the first lesson onto the page.
+    for (chosen, &slot) in slots.iter().take(STUDY_QUEUE_LIMIT).enumerate() {
+        let best = slots[chosen..].iter().copied().max_by(|&a, &b| {
+            let score = |i: usize| nearest[&plan[i].topic] as i64 - layers[&plan[i].topic] as i64;
+            score(a).cmp(&score(b))
+                .then_with(|| layers[&plan[b].topic].cmp(&layers[&plan[a].topic]))
+                .then_with(|| plan[a].priority.total_cmp(&plan[b].priority))
+                .then_with(|| plan[b].topic.cmp(&plan[a].topic))
+                .then_with(|| plan[b].activity.cmp(&plan[a].activity))
+        }).unwrap();
+        plan.swap(slot, best);
+        if chosen + 1 < slots.len().min(STUDY_QUEUE_LIMIT) {
+            update_distances(vec![plan[slot].topic], &mut nearest);
+        }
+    }
+    Ok(())
 }
 
 /// Select within equal-priority ordinary review slots only. Required work,
@@ -721,5 +828,105 @@ mod tests {
             plan.iter().take(5).map(|p| p.activity).collect::<Vec<_>>(),
             [200, 201, 202, 203, 204]
         );
+    }
+
+    fn lesson_fixture() -> (EntitySnapshot, Vec<learning::PlannedActivity>) {
+        let (mut s, mut plan) = fixture();
+        for candidate in &mut plan {
+            s.entities.get_mut(&candidate.activity).unwrap().insert("activity/type".into(), json!(13));
+            candidate.priority = 1.0;
+            candidate.reason = "Selected lesson".into();
+        }
+        (s, plan)
+    }
+
+    fn recent_topic(topic: u64) -> Lifecycle {
+        Lifecycle {
+            finished: vec![Finished {
+                task: 0, activity: 0, topic: Some(topic), kind: "lesson".into(),
+                passed: true, at: DateTime::from_timestamp(1_000, 0).unwrap(),
+            }],
+            ..Lifecycle::default()
+        }
+    }
+
+    #[test]
+    fn lesson_variety_prefers_early_layers_then_interleaves_across_the_full_pool() {
+        let (s, mut plan) = lesson_fixture();
+        plan.reverse();
+        let selected = filter_self_directed_candidates(&s, 1, plan.clone()).unwrap();
+        assert_eq!(selected.iter().take(5).map(|p| p.topic).collect::<Vec<_>>(),
+            [100, 106, 101, 107, 102]);
+        assert_eq!(selected.iter().map(|p| p.activity).collect::<BTreeSet<_>>(),
+            plan.iter().map(|p| p.activity).collect());
+        let again = filter_self_directed_candidates(&s, 1, selected.clone()).unwrap();
+        assert_eq!(again.iter().take(5).map(|p| p.topic).collect::<Vec<_>>(),
+            selected.iter().take(5).map(|p| p.topic).collect::<Vec<_>>());
+        // The ordinary course/manual path never invokes the new lesson order.
+        assert_eq!(filter_candidates(&s, 1, plan.clone()).unwrap().iter().map(|p| p.topic).collect::<Vec<_>>(),
+            plan.iter().map(|p| p.topic).collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn lesson_variety_uses_recent_study_to_mix_layers_without_large_jumps() {
+        let (s, plan) = lesson_fixture();
+        let history = recent_topic(900); // Adjacent to the earliest lesson 100.
+        let mut selected: Vec<_> = plan.iter().filter(|p| [100, 107, 105].contains(&p.topic)).cloned().collect();
+        diversify_lessons(&s, 1, &history, &mut selected).unwrap();
+        assert_eq!(selected.iter().map(|p| p.topic).collect::<Vec<_>>(), [107, 100, 105]);
+        let layers = learning::topic_layers(&s).unwrap();
+        assert!(layers[&107] > layers[&100], "variety may serve a later layer first");
+        assert!(layers[&105] > layers[&107] + 6, "the distant lesson remains behind earlier work");
+        let mut no_history: Vec<_> = plan.iter().filter(|p| [100, 107, 105].contains(&p.topic)).cloned().collect();
+        diversify_lessons(&s, 1, &Lifecycle::default(), &mut no_history).unwrap();
+        assert_eq!(no_history[0].topic, 100);
+    }
+
+    #[test]
+    fn lesson_variety_preserves_nonlesson_and_saved_remediation_slots() {
+        let (mut s, mut plan) = lesson_fixture();
+        s.entities.get_mut(&200).unwrap().insert("activity/type".into(), json!(10));
+        s.entities.get_mut(&201).unwrap().insert("activity/type".into(), json!(14));
+        s.entities.get_mut(&302).unwrap().insert("learner-task/status".into(), json!(12));
+        s.entities.get_mut(&303).unwrap().insert("learner-task/remediation-for".into(), json!([300]));
+        s.entities.get_mut(&304).unwrap().insert("learner-task/retake-of".into(), json!(300));
+        plan[5].priority = 12000.0;
+        let before = plan.clone();
+        diversify_lessons(&s, 1, &recent_topic(106), &mut plan).unwrap();
+        for slot in 0..6 {
+            assert_eq!(plan[slot].activity, before[slot].activity);
+            assert_eq!(plan[slot].priority, before[slot].priority);
+        }
+        assert_eq!(plan.iter().map(|p| p.activity).collect::<BTreeSet<_>>(),
+            before.iter().map(|p| p.activity).collect());
+    }
+
+    #[test]
+    fn unavailable_lessons_are_removed_before_layer_and_variety_selection() {
+        let (mut s, plan) = lesson_fixture();
+        // Both earliest roots have empty banks. Their descendants still fill
+        // the lesson slots; no earliest-layer group can become a barrier.
+        s.entities.insert(950, json!({"knowledge-point/id":"empty", "knowledge-point/questions":[]})
+            .as_object().unwrap().clone());
+        for topic in [100, 106] {
+            s.entities.get_mut(&topic).unwrap().insert("topic/knowledge-points".into(), json!([950]));
+        }
+        let selected = filter_self_directed_candidates(&s, 1, plan).unwrap();
+        assert_eq!(selected.iter().take(2).map(|p| p.topic).collect::<Vec<_>>(), [101, 107]);
+        assert_eq!(selected.len(), 6);
+        assert!(selected.iter().all(|p| ![100, 106].contains(&p.topic)));
+    }
+
+    #[test]
+    fn lesson_variety_ranks_beyond_review_cards_for_the_next_lesson_offer() {
+        let (mut s, mut plan) = lesson_fixture();
+        for candidate in plan.iter_mut().take(5) {
+            s.entities.get_mut(&candidate.activity).unwrap().insert("activity/type".into(), json!(10));
+            candidate.priority = 6000.0;
+        }
+        let first_five: Vec<_> = plan.iter().take(5).map(|p| p.activity).collect();
+        diversify_lessons(&s, 1, &Lifecycle::default(), &mut plan).unwrap();
+        assert_eq!(plan.iter().take(5).map(|p| p.activity).collect::<Vec<_>>(), first_five);
+        assert_eq!(plan[5].topic, 106);
     }
 }

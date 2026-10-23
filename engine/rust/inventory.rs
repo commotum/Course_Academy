@@ -10,14 +10,28 @@ pub fn triggers(
     at: DateTime<Utc>,
 ) -> Result<BTreeMap<u64, BTreeSet<&'static str>>> {
     let mut triggers: BTreeMap<u64, BTreeSet<&str>> = BTreeMap::new();
-    for attr in ["learner/queue", "learner/targets"] {
-        for topic in s.refs(l, attr)? {
+    let scoped_lessons = if s.entity(l)?.get("learner/self-directed") == Some(&json!(true)) {
+        let learned = learning::learned_topics(s, l)?;
+        Some(learning::study_lesson_scope(s, l)?.difference(&learned).copied().collect::<BTreeSet<_>>())
+    } else {
+        None
+    };
+    if let Some(topics) = &scoped_lessons {
+        // Missing banks must still request supply; readiness only filters offers.
+        for &topic in topics {
             triggers.entry(topic).or_default().insert("lesson");
+        }
+    } else {
+        for attr in ["learner/queue", "learner/targets"] {
+            for topic in s.refs(l, attr)? {
+                triggers.entry(topic).or_default().insert("lesson");
+            }
         }
     }
     for task in s.refs(l, "learner/activity")? {
+        let state = scheduling::state(s, task)?;
         if !matches!(
-            scheduling::state(s, task)?.as_str(),
+            state.as_str(),
             "unlocked" | "started" | "paused"
         ) {
             continue;
@@ -25,6 +39,12 @@ pub fn triggers(
         let activity = s.reference(task, "learner-task/activity")?;
         let kind = crate::retrieval::kind(s, activity)?;
         if let Some(topic) = s.optional_ref(activity, "activity/scope")? {
+            if kind == "lesson" && state == "unlocked"
+                && scoped_lessons.as_ref().is_some_and(|scope| !scope.contains(&topic))
+                && s.refs(task, "learner-task/remediation-for")?.is_empty()
+            {
+                continue;
+            }
             if matches!(kind.as_str(), "lesson" | "review") {
                 triggers
                     .entry(topic)
@@ -91,7 +111,12 @@ pub fn requests(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Val
                 .or_insert(p);
         }
     }
-    if let Some(course) = s.optional_ref(l, "learner/course")? {
+    if s.entity(l)?.get("learner/self-directed") == Some(&json!(true)) {
+        for (topic, priority) in learning::inventory_priorities(s, l, at)? {
+            priorities.entry(topic).and_modify(|p| *p = p.max(priority.priority))
+                .or_insert(priority.priority);
+        }
+    } else if let Some(course) = s.optional_ref(l, "learner/course")? {
         for candidate in learning::plan_candidates_with_supply(s, l, course, at, 0, false)? {
             priorities.insert(candidate.topic, candidate.priority);
         }
@@ -329,6 +354,52 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn scoped_lesson_demand_includes_empty_banks_without_expanding_or_blocking_other_work() -> Result<()> {
+        let mut s = crate::learning::tests::fixture();
+        for topic in 500..=535 {
+            s.entities.insert(topic, json!({"topic/id":format!("topic-{topic}"),
+                "topic/next":if topic < 535 {vec![topic+1]} else {vec![]}}).as_object().unwrap().clone());
+        }
+        for topic in 700..=704 {
+            s.entities.insert(topic, json!({"topic/id":format!("topic-{topic}")}).as_object().unwrap().clone());
+        }
+        s.entities.insert(900, json!({"knowledge-point/id":"key-only",
+            "knowledge-point/key-prerequisites":[704]}).as_object().unwrap().clone());
+        s.entities.get_mut(&533).unwrap().insert("topic/knowledge-points".into(),json!([900]));
+        s.entities.insert(1200,json!({"db/ident":"learner-task.status/unlocked"}).as_object().unwrap().clone());
+        s.entities.insert(1201,json!({"db/ident":"activity.type/review"}).as_object().unwrap().clone());
+        s.entities.insert(800,json!({"progress/topic":532,"progress/learned":true}).as_object().unwrap().clone());
+        let mut tasks = vec![];
+        for (topic, status, kind, repair) in [
+            (700,"unlocked","lesson",false), (701,"paused","lesson",false),
+            (702,"unlocked","review",false), (703,"unlocked","lesson",true),
+        ] {
+            let task = 2000+topic;
+            let activity = 3000+topic;
+            tasks.push(task);
+            s.entities.insert(activity,json!({"activity/type":format!("activity.type/{kind}"),
+                "activity/scope":topic}).as_object().unwrap().clone());
+            s.entities.insert(task,json!({"learner-task/activity":activity,
+                "learner-task/status":format!("learner-task.status/{status}"),
+                "learner-task/remediation-for":if repair {vec![9999]} else {vec![]}}).as_object().unwrap().clone());
+        }
+        s.entities.insert(9999,json!({}).as_object().unwrap().clone());
+        s.entities.get_mut(&1).unwrap().extend(json!({"learner/self-directed":true,
+            "learner/targets":[533],"learner/queue":[535],
+            "learner/knowledge-profile":[800],"learner/activity":tasks}).as_object().unwrap().clone());
+        s = EntitySnapshot::new(s.entities.into(),s.basis_t)?;
+        let demands = triggers(&s,1,Utc::now())?;
+        assert_eq!(demands.keys().copied().collect::<BTreeSet<_>>(),
+            BTreeSet::from([531,533,534,535,701,702,703]));
+        assert_eq!(demands[&531],BTreeSet::from(["lesson"]));
+        assert_eq!(demands[&702],BTreeSet::from(["review"]));
+        assert!(!demands.contains_key(&530),"depth-three preparation stays outside demand");
+        assert!(!demands.contains_key(&532),"learned topics do not request new lessons");
+        assert!(!demands.contains_key(&704),"hidden KP prerequisites do not widen graph scope");
+        Ok(())
+    }
 
     #[test]
     fn lesson_admission_uses_total_supply_while_replenishment_still_checks_bands() -> Result<()> {

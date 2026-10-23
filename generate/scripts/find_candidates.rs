@@ -304,24 +304,30 @@ fn urgency_groups(
             .or_default()
             .insert((5, "studied".into()));
     }
-    // Reach unmet prerequisites of both queue entries and targets. An
-    // operationally ready prerequisite closes its branch; imported mastery
-    // never removes the selected topic itself from fresh-lesson demand.
-    let mut visited = selected.clone();
-    let mut frontier = selected;
-    while !frontier.is_empty() {
-        let next: BTreeSet<_> = direct_neighbors(db, &frontier, true)?
-            .into_iter()
-            .filter(|t| !ready.contains(t) && !visited.contains(t))
-            .collect();
-        for &topic in &next {
+    if let Some(scope) = find_candidates_ranking::bounded_lesson_scope(db, learner)? {
+        // Ordinary self-directed preparation matches the visible depth-two
+        // graph scope, regardless of prerequisite mastery or current stock.
+        for topic in scope.difference(&selected).filter(|topic| !studied.contains(topic)) {
             groups
-                .entry(topic)
+                .entry(*topic)
                 .or_default()
                 .insert((2, "selected-prerequisite".into()));
         }
-        visited.extend(next.iter().copied());
-        frontier = next;
+    } else {
+        // Course mode retains its operational prerequisite preparation.
+        let mut visited = selected.clone();
+        let mut frontier = selected;
+        while !frontier.is_empty() {
+            let next: BTreeSet<_> = direct_neighbors(db, &frontier, true)?
+                .into_iter()
+                .filter(|t| !ready.contains(t) && !visited.contains(t))
+                .collect();
+            for &topic in &next {
+                groups.entry(topic).or_default().insert((2, "selected-prerequisite".into()));
+            }
+            visited.extend(next.iter().copied());
+            frontier = next;
+        }
     }
     if !descendants_of.is_empty() {
         for topic in direct_neighbors(db, &descendants_of, false)? {

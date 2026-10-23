@@ -862,13 +862,12 @@ pub fn plan_candidates(
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum StudyScope {
     Targets,
-    TargetPreparation,
     Course,
     Queue,
     Topic(u64),
 }
 impl StudyScope {
-    fn explicit(self) -> bool { matches!(self, Self::Queue | Self::Topic(_)) }
+    fn explicit(self) -> bool { matches!(self, Self::Topic(_)) }
 }
 
 /// Zero-based global prerequisite layers, matching the graph's L01… badges.
@@ -948,12 +947,9 @@ fn filter_study_layers(
     Ok(result)
 }
 
-/// Study has two independent sources. Explicit selections may cross courses
-/// and bypass the engine's mastery/prerequisite gates, but never content checks.
-/// Self-directed study also prepares targets up to historically known topics.
-/// Engine suggestions rotate eligible lessons across modules. Both modes keep
-/// ongoing work first; explicit requests then use global layer and priority.
-/// A cardinality-many queue is a set, not a user-defined ordering.
+/// Self-directed lessons use the fixed target/queue depth-two scope without
+/// prerequisite mastery gates. Course mode keeps its operational readiness and
+/// module rotation. Both modes preserve ongoing work and content checks.
 pub fn study_candidates(
     s: &EntitySnapshot,
     learner: u64,
@@ -1009,17 +1005,7 @@ fn queue_candidates_in_scope(
     at: DateTime<Utc>,
     selection: StudyScope,
 ) -> Result<Vec<PlannedActivity>> {
-    let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, false, selection)?;
-    if selection == StudyScope::Queue {
-        let explicit: BTreeSet<_> = plan.iter().map(|candidate| candidate.activity).collect();
-        // Only learner/targets supplies roots for automatic preparation.
-        // Queue-only topics are direct lesson requests, not prerequisite roots.
-        plan.extend(
-            plan_candidates_in_scope(s, learner, course, at, 2, true, StudyScope::TargetPreparation)?
-                .into_iter()
-                .filter(|candidate| !explicit.contains(&candidate.activity)),
-        );
-    }
+    let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, true, selection)?;
     if !plan.is_empty() {
         let layers = topic_layers(s)?;
         plan.sort_by(|a, b| {
@@ -1049,7 +1035,7 @@ fn queue_candidates_in_scope(
                 }
             })
     });
-    crate::scheduling::filter_candidates(s, learner, filter_study_layers(s, plan)?)
+    crate::scheduling::filter_self_directed_candidates(s, learner, filter_study_layers(s, plan)?)
 }
 
 /// Engine eligibility is independent of explicit queue membership and mode.
@@ -1193,15 +1179,10 @@ fn topic_prerequisites(s: &EntitySnapshot) -> Result<BTreeMap<u64, BTreeSet<u64>
     Ok(prerequisites)
 }
 
-/// Historical study bounds target preparation independently of current FIRe
-/// retention. A known downstream topic also covers its prerequisite ancestry;
-/// this is a planning inference, never a write to the learner's mastery record.
-fn known_topic_ancestry(
-    s: &EntitySnapshot,
-    learner: u64,
-    prerequisites: &BTreeMap<u64, BTreeSet<u64>>,
-) -> Result<BTreeSet<u64>> {
-    let mut pending = vec![];
+/// Topics actually learned, without inferring mastery of their ancestors.
+/// An explicit false flag takes precedence over historical repetition counts.
+pub fn learned_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    let mut learned = BTreeSet::new();
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let record = s.entity(progress)?;
         let repetitions = record.get("progress/repetitions").and_then(Value::as_f64).unwrap_or(0.0);
@@ -1211,7 +1192,7 @@ fn known_topic_ancestry(
         if record.get("progress/learned") == Some(&json!(true))
             || (!record.contains_key("progress/learned") && repetitions > 0.0)
         {
-            pending.push(s.reference(progress, "progress/topic")?);
+            learned.insert(s.reference(progress, "progress/topic")?);
         }
     }
     for task in s.refs(learner, "learner/activity")? {
@@ -1223,10 +1204,22 @@ fn known_topic_ancestry(
             "activity.type/lesson" | "activity.type/review")
         {
             if let Some(topic) = s.optional_ref(activity, "activity/scope")? {
-                pending.push(topic);
+                learned.insert(topic);
             }
         }
     }
+    Ok(learned)
+}
+
+/// Historical study bounds target preparation independently of current FIRe
+/// retention. A known downstream topic also covers its prerequisite ancestry;
+/// this is a planning inference, never a write to the learner's mastery record.
+fn known_topic_ancestry(
+    s: &EntitySnapshot,
+    learner: u64,
+    prerequisites: &BTreeMap<u64, BTreeSet<u64>>,
+) -> Result<BTreeSet<u64>> {
+    let mut pending: Vec<_> = learned_topics(s, learner)?.into_iter().collect();
     let mut known = BTreeSet::new();
     while let Some(topic) = pending.pop() {
         if known.insert(topic) {
@@ -1307,6 +1300,66 @@ fn target_support(
             if let Some(due) = due {
                 entry.due = Some(entry.due.map_or(due, |previous| previous.min(due)));
             }
+        }
+    }
+    Ok(support)
+}
+
+pub const STUDY_PREREQUISITE_DEPTH: usize = 2;
+
+/// The graph's default target/queue scope. Mastery and question supply do not
+/// alter this boundary; they only affect which lessons can be offered within it.
+pub fn study_lesson_scope(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    Ok(bounded_lesson_support(s, learner, &BTreeSet::new())?.into_keys().collect())
+}
+
+fn bounded_lesson_support(
+    s: &EntitySnapshot, learner: u64, learned: &BTreeSet<u64>,
+) -> Result<BTreeMap<u64, TargetSupport>> {
+    let layers = topic_layers(s)?;
+    let mut roots: BTreeMap<u64, Option<DateTime<Utc>>> = BTreeMap::new();
+    for attr in ["learner/targets", "learner/queue"] {
+        for topic in s.refs(learner, attr)? {
+            let layer = layers.get(&topic).ok_or("Study selections must reference topics")?;
+            if layer + 1 >= MIN_STUDY_LAYER { roots.insert(topic, None); }
+        }
+    }
+    for assignment in s.refs(learner, "learner/assignments")? {
+        if ident(s, assignment, "activity/type")? != "activity.type/assignment" {
+            return Err("learner/assignments must reference assignment activities".into());
+        }
+        let due = s.entity(assignment)?.get("activity/due")
+            .map(crate::schema::parse_instant).transpose()?;
+        for topic in assignment_targets(s, assignment)? {
+            if let (Some(entry), Some(due)) = (roots.get_mut(&topic), due) {
+                *entry = Some(entry.map_or(due, |previous| previous.min(due)));
+            }
+        }
+    }
+    let mut support: BTreeMap<u64, TargetSupport> = BTreeMap::new();
+    for (root, due) in roots {
+        let mut distances = BTreeMap::from([(root, 0)]);
+        let mut pending = VecDeque::from([root]);
+        while let Some(topic) = pending.pop_front() {
+            let distance = distances[&topic];
+            if distance == STUDY_PREREQUISITE_DEPTH { continue; }
+            // Use topic/next only, matching the visible graph. KP prerequisites
+            // neither enlarge the scope nor veto entry to a scoped lesson.
+            for prerequisite in s.owners(topic, "topic/next")? {
+                if layers[&prerequisite] + 1 < MIN_STUDY_LAYER { continue; }
+                if let std::collections::btree_map::Entry::Vacant(entry) = distances.entry(prerequisite) {
+                    entry.insert(distance + 1);
+                    pending.push_back(prerequisite);
+                }
+            }
+        }
+        let remaining = distances.keys().filter(|topic| !learned.contains(topic)).count();
+        for (topic, distance) in distances {
+            let entry = support.entry(topic).or_default();
+            entry.targets.insert(root);
+            entry.remaining = Some(entry.remaining.map_or(remaining, |n| n.min(remaining)));
+            entry.distance = Some(entry.distance.map_or(distance, |n| n.min(distance)));
+            if let Some(due) = due { entry.due = Some(entry.due.map_or(due, |d| d.min(due))); }
         }
     }
     Ok(support)
@@ -1409,7 +1462,11 @@ pub fn inventory_priorities(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>)
                 .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
         }
     }
-    let support = target_support(s, learner, &prerequisites, &ready)?;
+    let support = if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
+        bounded_lesson_support(s, learner, &learned_topics(s, learner)?)?
+    } else {
+        target_support(s, learner, &prerequisites, &ready)?
+    };
     let mut ongoing = BTreeSet::new();
     for task in s.refs(learner, "learner/activity")? {
         if matches!(ident(s, task, "learner-task/status")?.as_str(),
@@ -1467,7 +1524,7 @@ fn plan_candidates_in_scope(
             }
             scope.insert(topic);
         }
-    } else if selection != StudyScope::TargetPreparation {
+    } else if selection != StudyScope::Queue {
         for unit in s.refs(course, "course/units")? {
             for module in s.refs(unit, "unit/modules")? {
                 scope.extend(s.refs(module, "module/topics")?);
@@ -1503,7 +1560,7 @@ fn plan_candidates_in_scope(
             return Err("invalid imported repetition position".into());
         }
         repetitions.insert(topic, reps);
-        if selection.explicit() || selection == StudyScope::TargetPreparation {
+        if selection.explicit() || selection == StudyScope::Queue {
             continue;
         }
         // A complete local state explicitly records whether learning has been
@@ -1519,12 +1576,11 @@ fn plan_candidates_in_scope(
             ready.insert(topic);
         }
     }
-    let prerequisites = topic_prerequisites(s)?;
-    if selection == StudyScope::TargetPreparation {
-        ready = known_topic_ancestry(s, learner, &prerequisites)?;
-        practiced = ready.clone();
-    }
-    let support = if matches!(selection, StudyScope::Targets | StudyScope::TargetPreparation) {
+    let prerequisites = if selection == StudyScope::Queue { BTreeMap::new() } else { topic_prerequisites(s)? };
+    let support = if selection == StudyScope::Queue {
+        practiced = learned_topics(s, learner)?;
+        bounded_lesson_support(s, learner, &practiced)?
+    } else if selection == StudyScope::Targets {
         target_support(s, learner, &prerequisites, &ready)?
     } else {
         BTreeMap::new()
@@ -1600,7 +1656,7 @@ fn plan_candidates_in_scope(
             continue;
         }
         if (exclude_practiced && practiced.contains(&topic))
-            || (!selection.explicit()
+            || (!selection.explicit() && selection != StudyScope::Queue
                 && prerequisites
                     .get(&topic)
                     .is_some_and(|required| !required.is_subset(&ready)))
@@ -3147,7 +3203,8 @@ pub(crate) mod tests {
                 overridden.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(true));
                 overridden.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([topic]));
                 let expected = queue_candidates(&overridden, 1, 2, at).unwrap();
-                assert_eq!(serde_json::to_value(direct).unwrap(), serde_json::to_value(expected).unwrap());
+                assert_eq!(direct.iter().map(|p|p.activity).collect::<Vec<_>>(),
+                    expected.iter().filter(|p|p.topic == topic).map(|p|p.activity).collect::<Vec<_>>());
                 assert_eq!(s.entities, before);
             }
         }
@@ -3230,273 +3287,96 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn self_directed_queue_orders_global_layer_then_priority_and_resumes_first() {
-        let mut s = study_planning_fixture(&[]);
-        let foundation = planning_lesson(&mut s, 80, &[82]);
-        let practiced_root = planning_lesson(&mut s, 81, &[]);
-        let later = planning_lesson(&mut s, 82, &[]);
-        // A prerequisite outside the queue still contributes to the global rank.
-        planning_lesson(&mut s, 83, &[80]);
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([82, 80, 81]));
-        put(
-            &mut s.entities,
-            600,
-            json!({"progress/topic":81,"progress/repetitions":3.0}),
-        );
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/knowledge-profile".into(), json!([600]));
-        let ids = |s: &EntitySnapshot| {
-            study_candidates(s, 1, 5, planning_time())
-                .unwrap()
-                .iter()
-                .map(|p| p.activity)
-                .collect::<Vec<_>>()
-        };
-        // The practiced root outranks practiced_root later layers despite its lower score.
-        assert_eq!(ids(&s), [practiced_root, foundation, later]);
-        s.entities
-            .get_mut(&83)
-            .unwrap()
-            .insert("topic/next".into(), json!([]));
-        assert_eq!(ids(&s), [foundation, practiced_root, later]);
-        put(
-            &mut s.entities,
-            601,
-            json!({"learner-task/activity":later,"learner-task/status":"learner-task.status/paused"}),
-        );
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/activity".into(), json!([601]));
-        assert_eq!(ids(&s), [later, foundation, practiced_root]);
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/self-directed".into(), json!(false));
-        assert_eq!(
-            queue_candidates(&s, 1, 5, planning_time()).unwrap()[0].activity,
-            later
-        );
-    }
-
-    #[test]
-    fn study_queue_is_explicit_cross_course_and_does_not_fall_back_to_course_work() {
-        let mut s = study_planning_fixture(&[90]);
-        let queued = planning_lesson(&mut s, 80, &[]);
-        planning_lesson(&mut s, 81, &[80]); // Unlearned prerequisite.
-        planning_lesson(&mut s, 90, &[]);
-        // A known target adds no automatic lesson; explicit queue overrides
-        // still permit cross-course work with an unlearned prerequisite.
-        put(&mut s.entities, 600, json!({"progress/topic":90,"progress/repetitions":1.0}));
-        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600]));
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([80]));
-        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
-        assert_eq!(
-            plan.iter().map(|p| p.activity).collect::<Vec<_>>(),
-            [queued]
-        );
-        assert_eq!(plan[0].reason, "Selected for your queue");
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([]));
-        assert!(
-            study_candidates(&s, 1, 5, planning_time())
-                .unwrap()
-                .is_empty()
-        );
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/activity".into(), json!([9]));
-        assert_eq!(
-            study_candidates(&s, 1, 5, planning_time())
-                .unwrap()
-                .iter()
-                .map(|p| p.activity)
-                .collect::<Vec<_>>(),
-            [20]
-        );
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([3]));
-        assert_eq!(
-            study_candidates(&s, 1, 5, planning_time()).unwrap()[0].activity,
-            20
-        );
-        assert_eq!(
-            study_candidates(&s, 1, 5, planning_time()).unwrap()[0].reason,
-            "Continue your lesson"
-        );
-    }
-
-    #[test]
-    fn study_targets_prepare_unknown_frontier_and_stop_at_overdue_study() {
-        let at = planning_time();
-        let mut s = study_planning_fixture(&[90]);
-        let basic = planning_lesson(&mut s, 80, &[81]);
-        let studied = planning_lesson(&mut s, 81, &[82]);
-        let prerequisite = planning_lesson(&mut s, 82, &[90]);
-        let target = planning_lesson(&mut s, 90, &[]);
-        let queued = planning_lesson(&mut s, 83, &[]);
-        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([83]));
-        put(&mut s.entities, 600, json!({"progress/topic":81,"progress/learned":true,
-            "progress/policy":2,"progress/repetitions":1.0,"progress/memory":0.01,
-            "progress/memory-at":at,"progress/interval-days":1.0,
-            "progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,
-            "progress/assessment-mass":0.0,"progress/practice-mass":0.0}));
-        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600]));
-        assert!(!progress_ready(&s.entities[&600], Some(0.5), at).unwrap());
+    fn study_scope_expands_both_selection_sets_exactly_two_graph_edges() {
+        let mut s = study_planning_fixture(&[83]);
+        for topic in 80..84 { planning_lesson(&mut s, topic, &if topic < 83 { vec![topic+1] } else { vec![] }); }
+        for topic in 90..94 { planning_lesson(&mut s, topic, &if topic < 93 { vec![topic+1] } else { vec![] }); }
+        planning_lesson(&mut s, 99, &[]); // Unrelated available course work.
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([93]));
         let before = s.entities.clone();
-        let plan = study_candidates(&s, 1, 5, at).unwrap();
-        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [queued, prerequisite]);
-        assert!(plan.iter().all(|p| ![basic, studied, target, 20].contains(&p.activity)));
-        assert_eq!(plan[1].target_topics, [90]);
-        assert_eq!(plan[1].reason, "Prerequisite for a study target");
-        assert_eq!(s.entities, before, "inferred knowledge must not be persisted");
-
-        put(&mut s.entities, 601, json!({"progress/topic":82,"progress/repetitions":1.0}));
-        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600,601]));
-        let plan = study_candidates(&s, 1, 5, at).unwrap();
-        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [queued, target]);
-        assert_eq!(plan[1].reason, "One of your study targets");
-    }
-
-    #[test]
-    fn study_targets_skip_basic_ancestors_proven_by_another_known_branch() {
-        let mut s = study_planning_fixture(&[90]);
-        let basic = planning_lesson(&mut s, 80, &[81]);
-        let known_downstream = planning_lesson(&mut s, 81, &[]);
-        let missing = planning_lesson(&mut s, 82, &[90]);
-        planning_lesson(&mut s, 90, &[]);
-        put(&mut s.entities, 900, json!({"knowledge-point/id":id(900),
-            "knowledge-point/key-prerequisites":[80]}));
-        s.entities.get_mut(&82).unwrap().insert("topic/knowledge-points".into(), json!([900]));
-        // This branch was completed locally even though its profile is absent.
-        put(&mut s.entities, 600, json!({"learner-task/activity":known_downstream,
-            "learner-task/status":"learner-task.status/completed"}));
-        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!([600]));
-        // Supply checks are covered separately; inspect the prerequisite frontier.
-        let plan = plan_candidates_in_scope(&s,1,5,planning_time(),0,true,StudyScope::TargetPreparation).unwrap();
-        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [missing]);
-        assert!(plan.iter().all(|p|p.activity != basic));
-        let known = known_topic_ancestry(&s,1,&topic_prerequisites(&s).unwrap()).unwrap();
-        assert!(known.contains(&80));
-        assert!(known.contains(&81));
-        assert!(!known.contains(&82), "known prerequisites do not imply known descendants");
-    }
-
-    #[test]
-    fn study_queue_only_topics_do_not_expand_prerequisites_but_targets_still_do() {
-        let mut s = study_planning_fixture(&[90]);
-        let queue_prerequisite = planning_lesson(&mut s, 80, &[81]);
-        let queued = planning_lesson(&mut s, 81, &[]);
-        let target_prerequisite = planning_lesson(&mut s, 82, &[90]);
-        let target = planning_lesson(&mut s, 90, &[]);
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([81]));
-
-        let before = s.entities.clone();
-        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
-        assert_eq!(
-            plan.iter().map(|p| p.activity).collect::<BTreeSet<_>>(),
-            BTreeSet::from([queued, target_prerequisite])
-        );
-        assert!(
-            plan.iter()
-                .all(|p| ![queue_prerequisite, target].contains(&p.activity))
-        );
-        assert!(
-            plan.iter()
-                .find(|p| p.activity == queued)
-                .unwrap()
-                .target_topics
-                .is_empty()
-        );
-        assert_eq!(
-            plan.iter()
-                .find(|p| p.activity == target_prerequisite)
-                .unwrap()
-                .target_topics,
-            [90]
-        );
-        let inventory = inventory_priorities(&s, 1, planning_time()).unwrap();
-        assert_eq!(inventory[&80].target_count, 0);
-        assert_eq!(inventory[&82].target_count, 1);
+        let scope = BTreeSet::from([81,82,83,91,92,93]);
+        assert_eq!(study_lesson_scope(&s,1).unwrap(), scope);
+        let plan = study_candidates(&s,1,5,planning_time()).unwrap();
+        assert_eq!(plan.iter().map(|p|p.topic).collect::<BTreeSet<_>>(), scope);
+        assert!(plan.iter().all(|p| p.nearest_target_steps.unwrap() <= 2));
         assert_eq!(s.entities, before);
-
-        // Removing a queued topic does not change the independent target path.
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([]));
-        assert_eq!(
-            study_candidates(&s, 1, 5, planning_time())
-                .unwrap()
-                .iter()
-                .map(|p| p.activity)
-                .collect::<Vec<_>>(),
-            [target_prerequisite]
-        );
-
-        // A prerequisite may be requested explicitly without expanding the
-        // downstream queued topic into another automatic prerequisite root.
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([80, 81]));
-        assert_eq!(
-            study_candidates(&s, 1, 5, planning_time())
-                .unwrap()
-                .iter()
-                .map(|p| p.activity)
-                .collect::<BTreeSet<_>>(),
-            BTreeSet::from([queue_prerequisite, queued, target_prerequisite])
-        );
-
-        // Membership in both lists still permits preparation through targets.
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/queue".into(), json!([81]));
-        s.entities
-            .get_mut(&1)
-            .unwrap()
-            .insert("learner/targets".into(), json!([81, 90]));
-        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
-        assert_eq!(
-            plan.iter()
-                .find(|p| p.activity == queue_prerequisite)
-                .unwrap()
-                .target_topics,
-            [81]
-        );
+        // Removing one source only removes its own branch; an empty selection
+        // never falls back to unrelated course lessons or deeper prerequisites.
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([]));
+        assert_eq!(study_lesson_scope(&s,1).unwrap(),BTreeSet::from([81,82,83]));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(),json!([]));
+        assert!(study_candidates(&s,1,5,planning_time()).unwrap().is_empty());
     }
 
     #[test]
-    fn study_targets_keep_manual_queue_and_direct_topic_overrides() {
-        let mut s = study_planning_fixture(&[81]);
-        let basic = planning_lesson(&mut s,80,&[81]);
-        let known = planning_lesson(&mut s,81,&[]);
-        put(&mut s.entities,600,json!({"progress/topic":81,"progress/repetitions":2.0}));
-        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([600]));
-        assert!(study_candidates(&s,1,5,planning_time()).unwrap().is_empty());
-        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([80,81]));
+    fn scoped_lessons_bypass_unknown_graph_and_skill_prerequisites() {
+        let mut s = study_planning_fixture(&[83]);
+        for topic in 80..84 { planning_lesson(&mut s,topic,&if topic<83 {vec![topic+1]} else {vec![]}); }
+        planning_lesson(&mut s,99,&[]);
+        put(&mut s.entities,900,json!({"knowledge-point/id":id(900),
+            "knowledge-point/key-prerequisites":[99]}));
+        s.entities.get_mut(&81).unwrap().insert("topic/knowledge-points".into(),json!([900]));
+        // Ignore supply in this test so it isolates mastery from content checks.
+        let plan=plan_candidates_in_scope(&s,1,5,planning_time(),0,true,StudyScope::Queue).unwrap();
+        assert_eq!(plan.iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82,83]));
+        assert!(!study_lesson_scope(&s,1).unwrap().contains(&99));
+        // Course mode keeps its independent prerequisite gate.
+        s.entities.get_mut(&7).unwrap().insert("module/topics".into(),json!([81,82,83]));
+        assert!(engine_candidates(&s,1,5,planning_time()).unwrap().is_empty());
+    }
+
+    #[test]
+    fn scoped_lessons_use_actual_learning_not_ancestor_inference_or_faded_bands() {
+        let mut s=study_planning_fixture(&[83]);
+        for topic in 80..84 {planning_lesson(&mut s,topic,&if topic<83 {vec![topic+1]} else {vec![]});}
+        put(&mut s.entities,600,json!({"progress/topic":83,"progress/learned":true,"progress/repetitions":0.5}));
+        put(&mut s.entities,601,json!({"progress/topic":82,"progress/learned":false,"progress/repetitions":0.5}));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([600,601]));
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([83]));
         let plan=study_candidates(&s,1,5,planning_time()).unwrap();
-        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(),[basic,known]);
-        assert!(plan.iter().all(|p|p.reason=="Selected for your queue"));
-        assert_eq!(selected_topic_candidates(&s,1,5,81,planning_time()).unwrap()[0].activity,known);
+        assert_eq!(plan.iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82]));
+        // Explicit Study Now keeps its manual override, outside automatic lessons.
+        assert_eq!(selected_topic_candidates(&s,1,5,83,planning_time()).unwrap()[0].topic,83);
+        // Completing a descendant also does not silently mark its ancestors learned.
+        put(&mut s.entities,602,json!({"learner-task/activity":10083,"learner-task/status":"learner-task.status/completed"}));
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(),json!([602]));
+        assert!(!learned_topics(&s,1).unwrap().contains(&81));
+        assert_eq!(study_candidates(&s,1,5,planning_time()).unwrap().iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82]));
+    }
+
+    #[test]
+    fn shortages_skip_only_the_unavailable_lessons_and_replenishment_rejoins() {
+        let mut s=study_planning_fixture(&[82,83]);
+        planning_lesson(&mut s,80,&[82]);
+        planning_lesson(&mut s,81,&[83]);
+        planning_lesson(&mut s,82,&[]);
+        planning_lesson(&mut s,83,&[]);
+        // Both earlier topics have real banks below the five-question minimum.
+        for (topic,kp) in [(80,900),(81,901)] {
+            put(&mut s.entities,kp,json!({"knowledge-point/id":id(kp),"knowledge-point/questions":[]}));
+            s.entities.get_mut(&topic).unwrap().insert("topic/knowledge-points".into(),json!([kp]));
+        }
+        let topics=|s:&EntitySnapshot| study_candidates(s,1,5,planning_time()).unwrap().iter().map(|p|p.topic).collect::<BTreeSet<_>>();
+        assert_eq!(topics(&s),BTreeSet::from([82,83]));
+        for q in 24000..24005 {
+            let mut question=s.entities[&100].clone();
+            question.insert("question/id".into(),json!(id(q)));
+            s.entities.insert(q,question);
+        }
+        s.entities.get_mut(&900).unwrap().insert("knowledge-point/questions".into(),json!([24000,24001,24002,24003,24004]));
+        assert_eq!(topics(&s),BTreeSet::from([80,82,83]));
+    }
+
+    #[test]
+    fn bounded_inventory_priorities_include_queue_prerequisites_without_supply() {
+        let mut s=study_planning_fixture(&[83]);
+        for topic in 80..84 {planning_lesson(&mut s,topic,&if topic<83 {vec![topic+1]} else {vec![]});}
+        planning_lesson(&mut s,90,&[91]);
+        planning_lesson(&mut s,91,&[]);
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([91]));
+        let priorities=inventory_priorities(&s,1,planning_time()).unwrap();
+        assert_eq!(priorities[&80].target_count,0);
+        for topic in [81,82,83,90,91] {assert_eq!(priorities[&topic].target_count,1);}
     }
 
     #[test]
