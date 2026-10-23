@@ -1,0 +1,125 @@
+{
+  "command": [
+    "reproduce_source_gap.py",
+    "--package",
+    "../review-0-policy-2-81a000b338586d94/relocated",
+    "--output",
+    "original-failure.json"
+  ],
+  "tests": [
+    {
+      "case": "source q-70887",
+      "kwargs": {
+        "profile": "raw-q-70887",
+        "parameters": {
+          "n": 1,
+          "d": 4,
+          "k": 0
+        }
+      },
+      "passed": false,
+      "error": "Unknown profile"
+    },
+    {
+      "case": "unit-fraction normal practice",
+      "kwargs": {
+        "parameters": {
+          "n": 1,
+          "d": 4,
+          "k": 0
+        }
+      },
+      "passed": false,
+      "error": "Template/field/profile outside level"
+    },
+    {
+      "case": "source q-70889 via existing Euler family",
+      "kwargs": {
+        "profile": "euler",
+        "parameters": {
+          "n": 6,
+          "d": 1,
+          "k": 1
+        }
+      },
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186096613,
+          "id": "a71301e9-bc7f-53b9-900e-c3bd37f96b03",
+          "title": "Differentiating the Product of a Constant and the Natural Logarithm Function"
+        },
+        "question": {
+          ":question/problem": "Given that $y=6e\\ln x$, find $\\frac{\\text{d}y}{\\text{d}x}.$",
+          ":question/worked-solution": "The derivative of the natural logarithm is the reciprocal function:\n\n$$\n\\frac{\\text{d}}{\\text{d}x}(\\ln x)=\\frac{1}{x}\n$$\n\nWe apply our formula and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}}{\\text{d}x}(6e\\ln x) \\\\  & =6e\\cdot \\frac{\\text{d}}{\\text{d}x}(\\ln x) \\\\  & =6e\\cdot \\frac{1}{x} \\\\  & =\\frac{6e}{x}.\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/id": "a5e1606b-a4f6-591b-bae9-941250e7e121",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "c6fe9471-e121-5342-8814-13c580b67842",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "25b8cb95-23bd-536a-822f-a6fb01b7f355",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{6}{ex}"
+                },
+                {
+                  ":answer/id": "6d39e067-c93a-5829-a672-d6942295d84b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{6e}{x}"
+                },
+                {
+                  ":answer/id": "7c62c935-f076-50b0-86e3-5b341cc625a1",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "6+\\frac{e}{x}"
+                },
+                {
+                  ":answer/id": "0681470a-dd03-54d9-9864-756aef324864",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e}{6x}"
+                },
+                {
+                  ":answer/id": "6a42f347-9860-54a6-bbe3-462c0d677a5c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "e+\\frac{6}{x}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "6d39e067-c93a-5829-a672-d6942295d84b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "constant-ln-2.0",
+          "seed": 917,
+          "template": "radio-dot",
+          "bank_profile": "euler",
+          "parameters": {
+            "n": 6,
+            "d": 1,
+            "k": 1
+          },
+          "raw_source_replay": false,
+          "source_id": "q-101600",
+          "source_basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "domain": "x>0",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "authored_level": false,
+          "math_fingerprint": "cde200778ec368ec4389f9be84d4a3e4c78f8640e0fd0fa5295f670bf39c69f7",
+          "content_fingerprint": "16391cfd0d97637d01b0ef4ade1185b62724eb343aef7164220d4bdb9971033a",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "plot_rating": "none"
+        }
+      },
+      "passed": true
+    }
+  ]
+}

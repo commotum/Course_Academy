@@ -16,7 +16,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts/question_capture'))
 from database import Database
 from edn import dumps, loads, kw
-from historical_context import historical_task_type
 
 DEFAULT_OUT = ROOT / 'reference/edb-math/repairs/2026-10-22-multistep-context'
 SOURCE = ':agent/gpt-6.1-sol-high'
@@ -182,7 +181,7 @@ def main():
         tasks = discover(ROOT/'reference/mathacademy/progress-history-2026-10-04')
         contexts = json.loads((out/'reviewed-contexts.json').read_text())['contexts']
         basis = db.basis()
-        assert db.query('[:find ?e :in $ ?ident :where [?e :db/ident ?ident]]', [[kw(SOURCE)][0]], out, 'source', basis)
+        assert db.query('[:find ?e :in $ ?ident :where [?e :db/ident ?ident]]', [kw(SOURCE)], out, 'source', basis)
         questions = read_questions(db, tasks, out, 'questions-before', basis)
         forms, summary = forms_for(tasks, questions, contexts)
         tx.write_text(dumps(forms)+'\n')

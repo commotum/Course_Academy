@@ -47,6 +47,23 @@
       "source_hash": "540fec25a99d2f4d5427cd82fe22dd6a97c8a69a9799431b10d67c8a6da619dc",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-0-policy-2-fd6037e892fe96a5",
       "attempt": 0
+    },
+    {
+      "id": "34e5515d1b3374bbde8b",
+      "finding": {
+        "kind": "grading",
+        "description": "Symbolic matrix-entry blanks reject valid comma-separated indices. The delivered batch accepts c_{22} but rejects c_{2,2}, although both identify its highlighted row-2, column-2 entry. The indexed-symbol parser treats the comma as a different formal symbol instead of recognizing equivalent matrix coordinates.",
+        "source_refs": [
+          "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
+          "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
+          "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B regression_index_notation.py delivery-batch/accepted.json. Exit 1: question 28fafdc9-ac27-5ed6-b1c5-a0f69b1f3e16, field 0, c_{2,2} expected accepted, got rejected (Ok(false)). Generation seed: 3782988953; runner batch seed: 3782988951, count 5, easy. Complete record and strict expectations: comma-strict-input.json.",
+        "requested_change": "Support equivalence between compact and comma-separated matrix indices across symbolic blanks. Preserve rejection of wrong rows, columns, labels and entry values. Retain the strict candidate-record regression; do not remove the family or restrict learners to compact notation."
+      },
+      "source_hash": "540fec25a99d2f4d5427cd82fe22dd6a97c8a69a9799431b10d67c8a6da619dc",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-1-policy-2-51ba951d744c2d08",
+      "attempt": 1
     }
   ],
   "events": [
@@ -195,6 +212,136 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-0-policy-2-fd6037e892fe96a5"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "adc7c8a2095f5c2805e94cbc4bf67e04453e634f27662c12441d82693bcc762e",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The prior source and shortcut defects are repaired, but valid comma-separated matrix indices fail native grading in the delivered batch. Package unchanged; no generated stored-pool defect demonstrated.",
+        "source_analysis": {
+          "skill": "Locate a highlighted matrix entry and express its one-based row and column in index notation.",
+          "reasoning_steps": [
+            "Locate the highlighted cell.",
+            "Count its row from the top and column from the left.",
+            "Select or enter the indexed symbol, or enter the two indices separately."
+          ],
+          "invariants": [
+            "One identifiable highlighted cell.",
+            "The first index denotes row; the second denotes column.",
+            "Matrix label, answer and explanation agree.",
+            "Preserve the source-supported response families."
+          ],
+          "permitted_variations": [
+            "Vary highlighted positions, small matrix dimensions and labels.",
+            "Vary correct-choice roles within recognizable answer banks.",
+            "Change incidental entry values while preserving coordinate answers."
+          ],
+          "source_refs": [
+            "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
+            "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: indices range over valid rows and columns.",
+            "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
+            "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
+            "7e0025f5-b24a-57c0-a91e-70e60e6e725f (q-139629)"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "source-comparison.json",
+              "source-replays.json"
+            ],
+            "details": "All nine source cases reproduce matrices and complete banks. The missing q-139629 highlight is restored from its matching keys and solution."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "independent-math.json"
+            ],
+            "details": "205 records independently checked against visible coordinates, keys and solution values; no mathematical errors found."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "samples.json",
+              "boundaries.json",
+              "fresh-batches.json",
+              "delivery-analysis.json"
+            ],
+            "details": "All four templates, five radio profiles and 55 coordinate boundaries exercised, including every 4\u00d74 position."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "independent-math.json"
+            ],
+            "details": "Reviewed easy outputs preserve visual row/column indexing and source response workloads."
+          },
+          "grading": {
+            "status": "failed",
+            "evidence_paths": [
+              "native-report.json",
+              "prior-strict-current-report.json",
+              "pair-grader-report.json",
+              "comma-strict-input.json",
+              "comma-strict-execution.json",
+              "regression_index_notation.py"
+            ],
+            "details": "Prior strict regressions, 399 additional checks and 51 counterfactual checks pass. However, the delivered batch rejects c_{2,2} for the highlighted (2,2) entry."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-inspection.json",
+              "render/question-002.png",
+              "render/question-014.png"
+            ],
+            "details": "23 actual-UI cases pass rendering diagnostics. Inspected screenshots show readable highlights, controls, notation and solutions."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "relocation.json",
+              "package-integrity.json"
+            ],
+            "details": "Exact dependency versions, deterministic CLI replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "passed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "variation-validation.json",
+              "delivery-analysis.json",
+              "selection-analysis.json",
+              "rendered-batch-positions.json",
+              "pair-grader-report.json"
+            ],
+            "details": "The prior bank-shape shortcut now has counterexamples. Controlled tests cover every bank role; relevant and irrelevant changes behave correctly. All five batch records survive filtering, with contrasting radio targets."
+          }
+        },
+        "findings": [
+          {
+            "kind": "grading",
+            "description": "Symbolic matrix-entry blanks reject valid comma-separated indices. The delivered batch accepts c_{22} but rejects c_{2,2}, although both identify its highlighted row-2, column-2 entry. The indexed-symbol parser treats the comma as a different formal symbol instead of recognizing equivalent matrix coordinates.",
+            "source_refs": [
+              "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
+              "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
+              "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9"
+            ],
+            "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B regression_index_notation.py delivery-batch/accepted.json. Exit 1: question 28fafdc9-ac27-5ed6-b1c5-a0f69b1f3e16, field 0, c_{2,2} expected accepted, got rejected (Ok(false)). Generation seed: 3782988953; runner batch seed: 3782988951, count 5, easy. Complete record and strict expectations: comma-strict-input.json.",
+            "requested_change": "Support equivalence between compact and comma-separated matrix indices across symbolic blanks. Preserve rejection of wrong rows, columns, labels and entry values. Retain the strict candidate-record regression; do not remove the family or restrict learners to compact notation."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-1-policy-2-51ba951d744c2d08"
     }
   ]
 }

@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186100990.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 1,
+  "stage": "generate",
+  "attempt": 2,
   "seed": 3782988951,
   "created": 1792736149.1786985,
-  "updated": 1792737714.955131,
+  "updated": 1792738478.8998356,
   "source_hash": "540fec25a99d2f4d5427cd82fe22dd6a97c8a69a9799431b10d67c8a6da619dc",
   "inventory_hash": "56727a44fad66ae86f9add2b90c60089435bf33d35d5a0fc72b55ffe9885ac10",
   "manifest": "package.json",
@@ -31,25 +31,26 @@
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-1-policy-2-51ba951d744c2d08"
   ],
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-0-policy-2-fd6037e892fe96a5",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-1-policy-2-51ba951d744c2d08",
     "binding": {
       "policy_version": 2,
-      "package_hash": "69cebb18f8962922617b4d5f50da2d906826342c84b21bfe24ed9773812d5669",
-      "batch_hash": "5c99a12110704f3bd457edfd75fdc1cd1d3d4a82e13140229cfd78e34fe4aa53",
+      "package_hash": "adc7c8a2095f5c2805e94cbc4bf67e04453e634f27662c12441d82693bcc762e",
+      "batch_hash": "36e626ad08702201b4b97265e395d3728d857a6025f5f98736f0314fca3ce415",
       "source_hash": "540fec25a99d2f4d5427cd82fe22dd6a97c8a69a9799431b10d67c8a6da619dc",
       "inventory_hash": "56727a44fad66ae86f9add2b90c60089435bf33d35d5a0fc72b55ffe9885ac10",
       "assets": {},
       "effective_difficulty": "easy",
-      "engine_hash": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202"
+      "engine_hash": "e9af2789d8246982c03340dff9813321f822dd584d74dd3ff74af4df18513653"
     }
   },
   "progress_failures": {
-    "394dacbc45cba0820ba40954ee556c816039dfa47f5c3bda517d9849e9627588": 1
+    "394dacbc45cba0820ba40954ee556c816039dfa47f5c3bda517d9849e9627588": 1,
+    "7a98f4dc6e29b881dd197c4317bae8e72c8443b428cf8457c5b6b38d5d0e3671": 1
   },
   "needs_repair": true,
   "error": {
     "verdict": "revise",
-    "summary": "Three demonstrated failures: a choice-only shortcut, excluded symbolic blanks that the native grader cannot grade, and missing source coverage. Package unchanged. No stored generated-record defect demonstrated.",
+    "summary": "The prior source and shortcut defects are repaired, but valid comma-separated matrix indices fail native grading in the delivered batch. Package unchanged; no generated stored-pool defect demonstrated.",
     "source_analysis": {
       "skill": "Locate a highlighted matrix entry and express its one-based row and column in index notation.",
       "reasoning_steps": [
@@ -59,19 +60,18 @@
       ],
       "invariants": [
         "One identifiable highlighted cell.",
-        "The first subscript denotes row; the second denotes column.",
-        "Matrix labels, correct answers and explanations agree.",
-        "Preserve radio, symbolic-blank and two-index response families."
+        "The first index denotes row; the second denotes column.",
+        "Matrix label, answer and explanation agree.",
+        "Preserve the source-supported response families."
       ],
       "permitted_variations": [
-        "Vary highlighted positions, small matrix dimensions, labels and integer values.",
-        "Vary correct-choice roles within recognizable answer arrangements.",
-        "Changing incidental entry values preserves the coordinate answer."
+        "Vary highlighted positions, small matrix dimensions and labels.",
+        "Vary correct-choice roles within recognizable answer banks.",
+        "Change incidental entry values while preserving coordinate answers."
       ],
       "source_refs": [
         "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
-        "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: indices range over all valid rows and columns.",
-        "9fd0e65a-fdf4-5ff0-b32a-cc8e1d649563 (q-13498)",
+        "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: indices range over valid rows and columns.",
         "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
         "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
         "7e0025f5-b24a-57c0-a91e-70e60e6e725f (q-139629)"
@@ -82,58 +82,60 @@
     },
     "checks": {
       "source_replay": {
-        "status": "failed",
+        "status": "passed",
         "evidence_paths": [
           "source-replay-results.json",
-          "source-replays.json",
-          "additional-math.json"
+          "source-comparison.json",
+          "source-replays.json"
         ],
-        "details": "Eight source cases reproduce complete banks and matrices. q-139629 returns Unknown evidence profile."
+        "details": "All nine source cases reproduce matrices and complete banks. The missing q-139629 highlight is restored from its matching keys and solution."
       },
       "math": {
         "status": "passed",
         "evidence_paths": [
-          "math-results.json",
-          "additional-math.json"
+          "independent-math.json"
         ],
-        "details": "184 records checked independently from displayed coordinates and solution values; no mathematical errors found."
+        "details": "205 records independently checked against visible coordinates, keys and solution values; no mathematical errors found."
       },
       "variety": {
-        "status": "failed",
+        "status": "passed",
         "evidence_paths": [
           "samples.json",
-          "delivery-analysis.json",
-          "source-replay-results.json"
+          "boundaries.json",
+          "fresh-batches.json",
+          "delivery-analysis.json"
         ],
-        "details": "All five radio profiles appear, but symbolic blanks and the observed 4\u00d74 source shape are excluded. Fixed bank offsets constrain answer roles."
+        "details": "All four templates, five radio profiles and 55 coordinate boundaries exercised, including every 4\u00d74 position."
       },
       "scope": {
         "status": "passed",
         "evidence_paths": [
           "source-analysis.json",
-          "math-results.json",
-          "counterfactual-records.json"
+          "independent-math.json"
         ],
-        "details": "Tested easy outputs preserve short visual indexing tasks without additional operations or prerequisites."
+        "details": "Reviewed easy outputs preserve visual row/column indexing and source response workloads."
       },
       "grading": {
         "status": "failed",
         "evidence_paths": [
-          "grader-supported-report.json",
-          "grader-symbolic-strict.json",
-          "grader-symbolic-strict-execution.json",
-          "grader-symbolic-diagnostic-report.json"
+          "native-report.json",
+          "prior-strict-current-report.json",
+          "pair-grader-report.json",
+          "comma-strict-input.json",
+          "comma-strict-execution.json",
+          "regression_index_notation.py"
         ],
-        "details": "Supported responses pass 45 acceptance and 82 rejection checks. Correct symbolic entries, including {b}_{11} and b_{11}, return unresolved."
+        "details": "Prior strict regressions, 399 additional checks and 51 counterfactual checks pass. However, the delivered batch rejects c_{2,2} for the highlighted (2,2) entry."
       },
       "rendering": {
         "status": "passed",
         "evidence_paths": [
+          "render/rendering.json",
           "render-inspection.json",
-          "render-all/rendering.json",
-          "render-all/question-017.png"
+          "render/question-002.png",
+          "render/question-014.png"
         ],
-        "details": "19 actual-UI cases render without reported errors. Representative screenshots show readable highlights, controls, notation and solutions."
+        "details": "23 actual-UI cases pass rendering diagnostics. Inspected screenshots show readable highlights, controls, notation and solutions."
       },
       "packaging": {
         "status": "passed",
@@ -142,54 +144,37 @@
           "relocation.json",
           "package-integrity.json"
         ],
-        "details": "Exact dependency versions match. Deterministic replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
+        "details": "Exact dependency versions, deterministic CLI replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
       },
       "decision_variation": {
-        "status": "failed",
+        "status": "passed",
         "evidence_paths": [
           "pedagogical-variation.json",
-          "shortcut-regression-samples.json",
-          "shortcut-regression-batch.json",
+          "variation-validation.json",
           "delivery-analysis.json",
-          "selection-analysis.json"
+          "selection-analysis.json",
+          "rendered-batch-positions.json",
+          "pair-grader-report.json"
         ],
-        "details": "The recognizable q-13498 answer-bank shape predicts the answer without reading the matrix: 28/28 fresh cases and the matching delivered batch item. All five batch records survive delivery."
+        "details": "The prior bank-shape shortcut now has counterexamples. Controlled tests cover every bank role; relevant and irrelevant changes behave correctly. All five batch records survive filtering, with contrasting radio targets."
       }
     },
     "findings": [
       {
-        "kind": "decision_shortcut",
-        "description": "Within the q-13498 bank shape, choosing the middle column among choices with the smallest row always gives the answer. This bypasses locating the highlighted cell.",
-        "source_refs": [
-          "9fd0e65a-fdf4-5ff0-b32a-cc8e1d649563 (q-13498)",
-          "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9"
-        ],
-        "reproduction": "From evidence_root: python3 regression_shortcut.py batch.json shortcut-regression-batch.json exits 1. Seed 3782988955 offers c13,c12,c22,c11,c21; the rule selects correct c12 without inspecting the matrix. The same regression succeeds on 28/28 matching fresh examples.",
-        "requested_change": "Change BANKS/bank/eligible_positions construction to vary correct roles within recognizable option arrangements while retaining exact source replay. Option shuffling and entry-value changes cannot repair this cue. Retain the candidate-records regression and regenerate the batch through the repaired package."
-      },
-      {
         "kind": "grading",
-        "description": "Symbolic blanks are excluded from default practice because the native grader cannot parse their correct indexed-symbol answers.",
+        "description": "Symbolic matrix-entry blanks reject valid comma-separated indices. The delivered batch accepts c_{22} but rejects c_{2,2}, although both identify its highlighted row-2, column-2 entry. The indexed-symbol parser treats the comma as a different formal symbol instead of recognizing equivalent matrix coordinates.",
         "source_refs": [
           "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
-          "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)"
+          "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
+          "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9"
         ],
-        "reproduction": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-symbolic-strict.json grader-symbolic-strict-report.json exits 1: {b}_{11} expected accepted, got unresolved (unconsumed mathematical notation). The complete source-replay record uses seed 73.",
-        "requested_change": "Retain strict valid-notation acceptance and wrong-index rejection tests. Report indexed-symbol parsing/equivalence as a required engine capability; engine edits are unauthorized in this job. Do not remove the family or restrict valid notation as a workaround."
-      },
-      {
-        "kind": "source_fidelity",
-        "description": "Source q-139629 and its observed 4\u00d74 easy matrix family are unsupported. Its missing highlight is recoverable from the matching (3,1) answer keys and solution.",
-        "source_refs": [
-          "7e0025f5-b24a-57c0-a91e-70e60e6e725f (q-139629)"
-        ],
-        "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python -B ../workspace/17592186100990.py --difficulty easy --profile completed:q-139629 --seed 73 --format json returns Unknown evidence profile. See source-replay-results.json.",
-        "requested_change": "Add the source profile, document restoring its highlight at row 3 column 1, reproduce both numeric fields and the solution, and support legitimate highlighted positions in the observed 4\u00d74 easy family."
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B regression_index_notation.py delivery-batch/accepted.json. Exit 1: question 28fafdc9-ac27-5ed6-b1c5-a0f69b1f3e16, field 0, c_{2,2} expected accepted, got rejected (Ok(false)). Generation seed: 3782988953; runner batch seed: 3782988951, count 5, easy. Complete record and strict expectations: comma-strict-input.json.",
+        "requested_change": "Support equivalence between compact and comma-separated matrix indices across symbolic blanks. Preserve rejection of wrong rows, columns, labels and entry values. Retain the strict candidate-record regression; do not remove the family or restrict learners to compact notation."
       }
     ]
   },
-  "last_rejected_package": "69cebb18f8962922617b4d5f50da2d906826342c84b21bfe24ed9773812d5669",
+  "last_rejected_package": "adc7c8a2095f5c2805e94cbc4bf67e04453e634f27662c12441d82693bcc762e",
   "last_rejected_source": "540fec25a99d2f4d5427cd82fe22dd6a97c8a69a9799431b10d67c8a6da619dc",
-  "last_rejected_engine": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202",
-  "author_running": false
+  "last_rejected_engine": "e9af2789d8246982c03340dff9813321f822dd584d74dd3ff74af4df18513653",
+  "author_running": true
 }
