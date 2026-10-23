@@ -1,4 +1,4 @@
-# Author-302 result
+# Author-303 result
 
 Preserved completed generator repairs. Fresh CLI/source/math/native-grading,
 delivery/inventory and shortcut regressions pass. The corrected evidence bundle
@@ -6,7 +6,7 @@ passes path validation and relocation controls. The registered evidence regressi
 remains nonzero because the installed runner rejects unchanged runtime before
 sampling, conflicting with the retained evidence-only preservation requirement.
 
-Commands and results: `evidence/author302-verification.json`.
+Commands and results: `evidence/author303-verification.json`.
 Strict failure: `evidence/current-handoff-regression.json`.
 Corrected bundle: `evidence/contract-correction`.
 Staged external fix: `runner-fix/evidence-only-rejection.patch`.
