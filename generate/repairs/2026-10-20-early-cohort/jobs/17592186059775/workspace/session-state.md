@@ -1,38 +1,41 @@
-# Current state — 2026-10-22, author-312
+# Current state — 2026-10-22, author-314
 
-No implementation changes. Preserved runtime, manifest and strict registered
-regressions. Read latest feedback and both retained findings, prior state,
-required guidance, source questions, canonical example, lessons and prerequisite
-context. Existing instructional account remains applicable; no new generator
-defect was demonstrated.
+Preserved every runtime file, manifest, completed repair and strict regression.
+Read feedback and both retained findings; latest history has 314 events. No
+new generator defect is demonstrated. Before validation, wrote
+`evidence/author314-instructional-continuation.md`.
 
-Reproduced latest failure first:
+Exact latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1 before regressions or sampling. The current byte-identical-package gate
-conflicts with the evidence-only finding's explicit runtime-preservation request.
+exits 1: installed scripts/generator_pipeline.py rejects the unchanged runtime
+before retained checks or sampling. The evidence-only finding explicitly asks
+that runtime be preserved.
 
-Fresh verification: `evidence/author312-verification.json` contains exact commands,
-exit codes, log paths and unchanged runtime hashes.
+Fresh commands, exit codes, runtime hashes and results:
+`evidence/author314-verification.json`.
 
-- Batch-selection regression: PASS; exact seed 4258185931 has 1/5 shortcut hits
-  raw and delivered, all five target ranks/positions, 25 native grader checks.
-- Evidence-contract regression: FAIL solely at strict installed handoff. The
-  83-file bundle validates after relocation; historical missing-provenance and
-  wrong-root controls reject; current records and three affected stored generated
-  records remain bound. No external installation was attempted.
-- CLI contract: PASS; relocated runtime, deterministic exact counts and finite
-  limits.
-- Source/render binding: PASS; ten complete banks and two unchanged rendered
-  endpoints match. Visually inspected question-001.png: readable and unclipped.
+- check_batch_selection.py PASS: seed 4258185931 shortcut hits 1/5 raw and
+  delivered; five target ranks and positions; 25 native responses checked.
+- check_evidence_contract.py FAIL solely at installed handoff: corrected 83-file
+  bundle passes relocation/path checks and rejects missing provenance/wrong root;
+  historical 5/5 shortcut and three stored generated records remain reproduced.
+- check_cli_contract.py PASS: relocated runtime, exact deterministic counts and
+  explicit finite limits.
+- check_render_binding.py PASS: ten complete source banks / 50 choices and two
+  retained UI records match current delivery. Inspected question-001.png; readable.
 
-No package, engine, database, publication, external runner or other-job edits.
-No checks weakened. Avoid repeating identical author validation without an
-external state change.
+No runtime, engine, database, publication, external runner or other-job edits.
+Unchanged broad tests and render generation were reused; no scope narrowing or
+acceptance criteria weakening.
 
 ## Next unfinished step
 
-The runner owner must review/apply `runner-fix/evidence-only-rejection.patch`
-to `scripts/generator_pipeline.py` outside the authorized workspace, then rerun
-`checks/check_current_handoff.py` and retained regressions before independent
-review. The patch remains uninstalled; offline proposal checks do not establish
-an installed repair. External evidence installation is also runner-owned.
+Runner owner must resolve evidence-only unchanged-package handling in
+`/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py`. The concrete
+correction is staged in `runner-fix/evidence-only-rejection.patch` and remains
+uninstalled. That target and evidence installation are outside authorized writes.
+After the external correction, rerun current handoff and registered regressions,
+then obtain fresh independent review. Additional author retries with unchanged
+permissions cannot apply that correction; altering package identity alone would
+not repair the cause. Status remains unsupported because a strict required check
+is unresolved.
