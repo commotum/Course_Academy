@@ -1,1 +1,1 @@
-Fresh replay/math/CLI/delivery/native grading complete. Current batch defeats retained shortcut (1/5); historical control fails (5/5). Inventory basis 5577 has all three generated legacy defects retired. Await actual UI refresh and final evidence validation.
+Complete: accepted. All eight checks pass. Refreshed basis 5577 retires all three demonstrated generated legacy defects; strict former-eligibility control still fails. Exact current batch and native grading pass; 11 actual-UI renders checked; evidence paths validated; package unchanged. Result: result.json.

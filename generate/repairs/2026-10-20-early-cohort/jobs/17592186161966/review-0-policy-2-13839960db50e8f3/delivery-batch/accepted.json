@@ -1,0 +1,492 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "f9617388-8982-5e34-9cc5-8e7aa511d545",
+      ":question/problem": "$$\nA=\\begin{bmatrix}-2 & 2 & -10 & 10 \\\\ 1 & 6 & 3 & 3 \\\\ -5 & 5 & -9 & -1 \\\\ 9 & 5 & 1 & 7\\end{bmatrix},\\,B=\\begin{bmatrix}-2 & 0 & 0 & 0 \\\\ 1 & 7 & -2 & 8 \\\\ -5 & 0 & 16 & -26 \\\\ 9 & 14 & -44 & 52\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{2}:=\\ldots$\n- $C_{3}:=\\ldots$\n- $C_{4}:=C_{4}+5C_{1}$\n\neach of the form $C_i:=C_i+kC_{1},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 1 other than $a_{11}=-2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}-2 & 2 & -10 & 10 \\\\ 1 & 6 & 3 & 3 \\\\ -5 & 5 & -9 & -1 \\\\ 9 & 5 & 1 & 7\\end{bmatrix}\n\\xrightarrow{C_{2}:=C_{2}+C_{1}}\\begin{bmatrix}-2 & 0 & -10 & 10 \\\\ 1 & 7 & 3 & 3 \\\\ -5 & 0 & -9 & -1 \\\\ 9 & 14 & 1 & 7\\end{bmatrix}\n\\xrightarrow{C_{3}:=C_{3}-5C_{1}}\\begin{bmatrix}-2 & 0 & 0 & 10 \\\\ 1 & 7 & -2 & 3 \\\\ -5 & 0 & 16 & -1 \\\\ 9 & 14 & -44 & 7\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}+5C_{1}}\\begin{bmatrix}-2 & 0 & 0 & 0 \\\\ 1 & 7 & -2 & 8 \\\\ -5 & 0 & 16 & -26 \\\\ 9 & 14 & -44 & 52\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{2}:=C_{2}+C_{1}$ and $C_{3}:=C_{3}-5C_{1}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "aec1dd2e-9f02-566e-a4ba-d5c39dd60572",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c70014d2-ee95-5ab5-ab9d-0e1dc0dc4c32",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-2C_{1}$ and $C_{3}:=C_{3}-4C_{1}$"
+            },
+            {
+              ":answer/id": "5e37fe95-c57b-5373-a0b8-bde8167f591b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-C_{1}$ and $C_{3}:=C_{3}-5C_{1}$"
+            },
+            {
+              ":answer/id": "d3085031-81a0-5de2-84c6-0ed0fb6356ac",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-C_{1}$ and $C_{3}:=C_{3}+5C_{1}$"
+            },
+            {
+              ":answer/id": "d6d9eed2-f695-5689-aca7-b385df8b1483",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+3C_{1}$ and $C_{3}:=C_{3}-5C_{1}$"
+            },
+            {
+              ":answer/id": "dfe2aae2-b4bc-51ba-874b-4ced841ca275",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+C_{1}$ and $C_{3}:=C_{3}-5C_{1}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "dfe2aae2-b4bc-51ba-874b-4ced841ca275"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 1118318698,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-42563",
+      "parameters": {
+        "A": [
+          [
+            -2,
+            2,
+            -10,
+            10
+          ],
+          [
+            1,
+            6,
+            3,
+            3
+          ],
+          [
+            -5,
+            5,
+            -9,
+            -1
+          ],
+          [
+            9,
+            5,
+            1,
+            7
+          ]
+        ],
+        "row": 0,
+        "pivot": 0,
+        "given": 3,
+        "ks": [
+          0,
+          1,
+          -5,
+          5
+        ]
+      },
+      "parameter_fingerprint": "2770724bc8954250f0c9c9518fc56e5faf014abd6a1db3f9d39df34c92dae529",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "af6cb090-d573-53bd-858a-5531e9930760",
+      ":question/problem": "$$\nA=\\begin{bmatrix}9 & -7 & 4 & 7 \\\\ -6 & -5 & -9 & 8 \\\\ -2 & 4 & 3 & -8 \\\\ -2 & 1 & 3 & 2\\end{bmatrix},\\,B=\\begin{bmatrix}-5 & -7 & 25 & 21 \\\\ -16 & -5 & 6 & 18 \\\\ 6 & 4 & -9 & -16 \\\\ 0 & 1 & 0 & 0\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{1}:=C_{1}+2C_{2}$\n- $C_{3}:=\\ldots$\n- $C_{4}:=\\ldots$\n\neach of the form $C_i:=C_i+kC_{2},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 4 other than $a_{42}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}9 & -7 & 4 & 7 \\\\ -6 & -5 & -9 & 8 \\\\ -2 & 4 & 3 & -8 \\\\ -2 & 1 & 3 & 2\\end{bmatrix}\n\\xrightarrow{C_{1}:=C_{1}+2C_{2}}\\begin{bmatrix}-5 & -7 & 4 & 7 \\\\ -16 & -5 & -9 & 8 \\\\ 6 & 4 & 3 & -8 \\\\ 0 & 1 & 3 & 2\\end{bmatrix}\n\\xrightarrow{C_{3}:=C_{3}-3C_{2}}\\begin{bmatrix}-5 & -7 & 25 & 7 \\\\ -16 & -5 & 6 & 8 \\\\ 6 & 4 & -9 & -8 \\\\ 0 & 1 & 0 & 2\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}-2C_{2}}\\begin{bmatrix}-5 & -7 & 25 & 21 \\\\ -16 & -5 & 6 & 18 \\\\ 6 & 4 & -9 & -16 \\\\ 0 & 1 & 0 & 0\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{3}:=C_{3}-3C_{2}$ and $C_{4}:=C_{4}-2C_{2}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "73adbd29-66c7-537f-ac22-a07809be53e9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e96c627d-8cfe-5b10-995b-8a8cf3448d92",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{3}:=C_{3}-3C_{2}$ and $C_{4}:=C_{4}+2C_{2}$"
+            },
+            {
+              ":answer/id": "1c82c881-ef27-5784-b54b-6a60f3a28d33",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{3}:=C_{3}-3C_{2}$ and $C_{4}:=C_{4}-2C_{2}$"
+            },
+            {
+              ":answer/id": "487dfe03-fb7b-5a06-92e8-747a0d6059a1",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{3}:=C_{3}+2C_{2}$ and $C_{4}:=C_{4}+3C_{2}$"
+            },
+            {
+              ":answer/id": "e94f0196-efbb-53b6-a810-ea6e4418d65a",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{3}:=C_{3}+3C_{2}$ and $C_{4}:=C_{4}+2C_{2}$"
+            },
+            {
+              ":answer/id": "0bb8fdee-6d5c-550e-9ec0-d0d4916ca560",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{3}:=C_{3}+3C_{2}$ and $C_{4}:=C_{4}-2C_{2}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1c82c881-ef27-5784-b54b-6a60f3a28d33"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 1118318699,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-130619",
+      "parameters": {
+        "A": [
+          [
+            9,
+            -7,
+            4,
+            7
+          ],
+          [
+            -6,
+            -5,
+            -9,
+            8
+          ],
+          [
+            -2,
+            4,
+            3,
+            -8
+          ],
+          [
+            -2,
+            1,
+            3,
+            2
+          ]
+        ],
+        "row": 3,
+        "pivot": 1,
+        "given": 0,
+        "ks": [
+          2,
+          0,
+          -3,
+          -2
+        ]
+      },
+      "parameter_fingerprint": "aac1525af13e282ab1fdfb23cda389ff3eb166690bb7f4ad9dba91da9cf54429",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "f6383186-1035-5250-a8b1-805518121510",
+      ":question/problem": "$$\nA=\\begin{bmatrix}-1 & -5 & -3 & -1 \\\\ -4 & 5 & -4 & 3 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -9 & -8 & 4\\end{bmatrix},\\,B=\\begin{bmatrix}-1 & 0 & 0 & 0 \\\\ -4 & 25 & 8 & 7 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -44 & -29 & -3\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{2}:=\\ldots$\n- $C_{3}:=\\ldots$\n- $C_{4}:=C_{4}-C_{1}$\n\neach of the form $C_i:=C_i+kC_{1},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 1 other than $a_{11}=-1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}-1 & -5 & -3 & -1 \\\\ -4 & 5 & -4 & 3 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -9 & -8 & 4\\end{bmatrix}\n\\xrightarrow{C_{2}:=C_{2}-5C_{1}}\\begin{bmatrix}-1 & 0 & -3 & -1 \\\\ -4 & 25 & -4 & 3 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -44 & -8 & 4\\end{bmatrix}\n\\xrightarrow{C_{3}:=C_{3}-3C_{1}}\\begin{bmatrix}-1 & 0 & 0 & -1 \\\\ -4 & 25 & 8 & 3 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -44 & -29 & 4\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}-C_{1}}\\begin{bmatrix}-1 & 0 & 0 & 0 \\\\ -4 & 25 & 8 & 7 \\\\ 0 & -6 & -8 & 7 \\\\ 7 & -44 & -29 & -3\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{2}:=C_{2}-5C_{1}$ and $C_{3}:=C_{3}-3C_{1}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3a9981ea-5667-51d0-bc3e-50dedb023c3a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "96ebf442-ff36-5092-a4ba-5e8d59e22c50",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+3C_{1}$ and $C_{3}:=C_{3}+5C_{1}$"
+            },
+            {
+              ":answer/id": "e9a8c5e5-48cb-59e7-ad92-7fd13c4e0045",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+5C_{1}$ and $C_{3}:=C_{3}-3C_{1}$"
+            },
+            {
+              ":answer/id": "4cdcd4cd-1939-5721-8a63-3e1df1da24c5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+5C_{1}$ and $C_{3}:=C_{3}+3C_{1}$"
+            },
+            {
+              ":answer/id": "e496eea6-5106-5322-a40d-b1a9f3430bd4",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-5C_{1}$ and $C_{3}:=C_{3}-3C_{1}$"
+            },
+            {
+              ":answer/id": "91068f2d-ee0e-5d7a-8e79-930769d548b5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-5C_{1}$ and $C_{3}:=C_{3}+3C_{1}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e496eea6-5106-5322-a40d-b1a9f3430bd4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 1118318700,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-130627",
+      "parameters": {
+        "A": [
+          [
+            -1,
+            -5,
+            -3,
+            -1
+          ],
+          [
+            -4,
+            5,
+            -4,
+            3
+          ],
+          [
+            0,
+            -6,
+            -8,
+            7
+          ],
+          [
+            7,
+            -9,
+            -8,
+            4
+          ]
+        ],
+        "row": 0,
+        "pivot": 0,
+        "given": 3,
+        "ks": [
+          0,
+          -5,
+          -3,
+          -1
+        ]
+      },
+      "parameter_fingerprint": "7a5a13464c1f191c662386b825f5ede77a03e1c491f1fb3bdb966c752c1791d2",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "538a1c93-e5cf-596a-86c8-7164d48477fc",
+      ":question/problem": "$$\nA=\\begin{bmatrix}7 & -3 & 4 & 5 \\\\ -10 & 10 & -2 & 4 \\\\ -4 & 7 & 5 & 3 \\\\ -7 & -5 & 1 & 8\\end{bmatrix},\\,B=\\begin{bmatrix}-13 & 17 & 4 & 13 \\\\ 0 & 0 & -2 & 0 \\\\ -29 & 32 & 5 & 13 \\\\ -12 & 0 & 1 & 10\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{1}:=\\ldots$\n- $C_{2}:=C_{2}+5C_{3}$\n- $C_{4}:=\\ldots$\n\neach of the form $C_i:=C_i+kC_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 2 other than $a_{23}=-2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}7 & -3 & 4 & 5 \\\\ -10 & 10 & -2 & 4 \\\\ -4 & 7 & 5 & 3 \\\\ -7 & -5 & 1 & 8\\end{bmatrix}\n\\xrightarrow{C_{1}:=C_{1}-5C_{3}}\\begin{bmatrix}-13 & -3 & 4 & 5 \\\\ 0 & 10 & -2 & 4 \\\\ -29 & 7 & 5 & 3 \\\\ -12 & -5 & 1 & 8\\end{bmatrix}\n\\xrightarrow{C_{2}:=C_{2}+5C_{3}}\\begin{bmatrix}-13 & 17 & 4 & 5 \\\\ 0 & 0 & -2 & 4 \\\\ -29 & 32 & 5 & 3 \\\\ -12 & 0 & 1 & 8\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}+2C_{3}}\\begin{bmatrix}-13 & 17 & 4 & 13 \\\\ 0 & 0 & -2 & 0 \\\\ -29 & 32 & 5 & 13 \\\\ -12 & 0 & 1 & 10\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{1}:=C_{1}-5C_{3}$ and $C_{4}:=C_{4}+2C_{3}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7ef00a1a-d643-5695-b0e4-16f7feb07107",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "92ad8814-d6d6-5d65-9248-89c417ae911d",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{1}:=C_{1}-5C_{3}$ and $C_{4}:=C_{4}+C_{3}$"
+            },
+            {
+              ":answer/id": "2e0df1d0-08c7-504f-82e6-61984bff6e37",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{1}:=C_{1}-5C_{3}$ and $C_{4}:=C_{4}+2C_{3}$"
+            },
+            {
+              ":answer/id": "d1019a10-f0a7-593b-85b8-9667f87c8487",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{1}:=C_{1}+2C_{3}$ and $C_{4}:=C_{4}-5C_{3}$"
+            },
+            {
+              ":answer/id": "9b3bfc0b-f99b-5b60-95ee-83e2ff6a49cb",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{1}:=C_{1}-5C_{3}$ and $C_{4}:=C_{4}-2C_{3}$"
+            },
+            {
+              ":answer/id": "c45d6288-b403-5bc2-9ff8-621474c72102",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{1}:=C_{1}+5C_{3}$ and $C_{4}:=C_{4}+2C_{3}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2e0df1d0-08c7-504f-82e6-61984bff6e37"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 1118318701,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-42929",
+      "parameters": {
+        "A": [
+          [
+            7,
+            -3,
+            4,
+            5
+          ],
+          [
+            -10,
+            10,
+            -2,
+            4
+          ],
+          [
+            -4,
+            7,
+            5,
+            3
+          ],
+          [
+            -7,
+            -5,
+            1,
+            8
+          ]
+        ],
+        "row": 1,
+        "pivot": 2,
+        "given": 1,
+        "ks": [
+          -5,
+          5,
+          0,
+          2
+        ]
+      },
+      "parameter_fingerprint": "d207777a8e77dc4950eaf4ac088b8fb208067948bec74a8df6ddf16f6f6260e0",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "aaa1c025-3837-5ca5-972a-3fe16178f457",
+      ":question/problem": "$$\nA=\\begin{bmatrix}2 & 8 & -4 & 6 \\\\ 9 & -7 & -9 & 1 \\\\ 4 & -8 & 0 & 5 \\\\ 1 & -9 & 0 & -1\\end{bmatrix},\\,B=\\begin{bmatrix}2 & 0 & 0 & 0 \\\\ 9 & -43 & 9 & -26 \\\\ 4 & -24 & 8 & -7 \\\\ 1 & -13 & 2 & -4\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{2}:=\\ldots$\n- $C_{3}:=\\ldots$\n- $C_{4}:=C_{4}-3C_{1}$\n\neach of the form $C_i:=C_i+kC_{1},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 1 other than $a_{11}=2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}2 & 8 & -4 & 6 \\\\ 9 & -7 & -9 & 1 \\\\ 4 & -8 & 0 & 5 \\\\ 1 & -9 & 0 & -1\\end{bmatrix}\n\\xrightarrow{C_{2}:=C_{2}-4C_{1}}\\begin{bmatrix}2 & 0 & -4 & 6 \\\\ 9 & -43 & -9 & 1 \\\\ 4 & -24 & 0 & 5 \\\\ 1 & -13 & 0 & -1\\end{bmatrix}\n\\xrightarrow{C_{3}:=C_{3}+2C_{1}}\\begin{bmatrix}2 & 0 & 0 & 6 \\\\ 9 & -43 & 9 & 1 \\\\ 4 & -24 & 8 & 5 \\\\ 1 & -13 & 2 & -1\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}-3C_{1}}\\begin{bmatrix}2 & 0 & 0 & 0 \\\\ 9 & -43 & 9 & -26 \\\\ 4 & -24 & 8 & -7 \\\\ 1 & -13 & 2 & -4\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{2}:=C_{2}-4C_{1}$ and $C_{3}:=C_{3}+2C_{1}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "db005f6d-5e18-51e0-b1ed-23e6af05144c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "23c2c729-1979-5513-922c-5de239991260",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-4C_{1}$ and $C_{3}:=C_{3}+2C_{1}$"
+            },
+            {
+              ":answer/id": "d8a824bd-05e8-5d86-91a3-e990ad931b80",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+2C_{1}$ and $C_{3}:=C_{3}-4C_{1}$"
+            },
+            {
+              ":answer/id": "c2e5b980-2cd6-5f9e-ac4a-a3e1ac5a77d3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+4C_{1}$ and $C_{3}:=C_{3}-2C_{1}$"
+            },
+            {
+              ":answer/id": "3bf18223-22dd-5760-8bcb-ef272350e13f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-2C_{1}$ and $C_{3}:=C_{3}+4C_{1}$"
+            },
+            {
+              ":answer/id": "33502d97-57d0-5e01-ac0a-fa6d837a6d4d",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-4C_{1}$ and $C_{3}:=C_{3}-2C_{1}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "23c2c729-1979-5513-922c-5de239991260"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 1118318702,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-91210",
+      "parameters": {
+        "A": [
+          [
+            2,
+            8,
+            -4,
+            6
+          ],
+          [
+            9,
+            -7,
+            -9,
+            1
+          ],
+          [
+            4,
+            -8,
+            0,
+            5
+          ],
+          [
+            1,
+            -9,
+            0,
+            -1
+          ]
+        ],
+        "row": 0,
+        "pivot": 0,
+        "given": 3,
+        "ks": [
+          0,
+          -4,
+          2,
+          -3
+        ]
+      },
+      "parameter_fingerprint": "79d3857fa52c0b5469f5bbbbf1b166529b4a96329b080df9cd470e80e4795206",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    },
+    "assets": {}
+  }
+]

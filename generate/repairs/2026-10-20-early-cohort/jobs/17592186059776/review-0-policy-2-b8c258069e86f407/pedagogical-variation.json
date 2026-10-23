@@ -1,0 +1,281 @@
+{
+  "learner_operation": "Form the augmented matrix of a nonsingular 2x2 system, normalize the first pivot, eliminate the lower-left entry, normalize the second pivot, and when requested back-substitute.",
+  "fixed_features": [
+    {
+      "feature": "Two variables, two nonsingular equations with nonzero first pivot",
+      "justification": "All source cases and tutorial 2112d3af-1fb0-5a70-ab99-59931db99930 teach forward elimination without row swaps."
+    },
+    {
+      "feature": "Unit pivots and upper-right first-row coefficient retained",
+      "justification": "Lesson ee4b134d-2908-5930-86bb-32537e0d8347 explains the standard method and easier back substitution; arbitrary REF is not the requested route."
+    },
+    {
+      "feature": "Five radio options and target-dependent matrix-only or matrix-plus-pair response",
+      "justification": "All ten original banks use this contract."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct bottom-right value and its rank among distractors",
+      "eligible_variation": "Solution values, signs and distractor relative ranks may vary independently while exactly one complete choice satisfies the equations.",
+      "observed": "Values change but all ten coefficient signatures and source bank shapes are fixed. Nine tested families have a unique correct y rank fixed across six cases; q-10522 has duplicate y values."
+    },
+    {
+      "role": "Correct option position",
+      "eligible_variation": "Any displayed position",
+      "observed": "Authored indices are fixed per family but actual UI hashes choice IDs into a new order; no delivered fixed-index finding."
+    },
+    {
+      "role": "REF-only versus solve endpoint",
+      "eligible_variation": "Both supported by source; corresponding prompt, option form and explanation must agree.",
+      "observed": "Five easy profiles and five moderate profiles retained, with source-specific target fixed. No unsupported swap of field contracts requested."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every source bank and difficulty",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "All ten source banks replay after presentation normalization. Six parameter cases per profile include four corners, source zero offsets and [1,2]. Correct matrices and solution stages verified independently."
+    },
+    {
+      "case": "Delivered easy practice",
+      "sample_refs": [
+        "control.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "Control: 45 shuffled candidates -> 40 distinct solution vectors -> 39 delivery survivors. All five profiles and negative/zero/positive y remain. Requested batch: 5 -> 5, four profiles, 4/5 rank shortcut success."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-73544: hold coefficients and h=1 fixed; change k=0 to k=1.",
+      "expected": "Equations and solution change from (x,y)=(0,-2) to (0,-1); rendered solution and native key must agree.",
+      "observed": "Prompts change from RHS (8,14) to (4,7); correct matrices and pairs update, all five choices grade correctly before and after. Both visually inspected. The incidental second-smallest rule persists.",
+      "status": "passed",
+      "justification": "The constant column is relevant evidence for elimination; affine translation changes y while x remains fixed. Correct coupling does not certify pedagogical variety.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse the complete choice array for the k=0 instance without altering mathematical values or key.",
+      "expected": "Same correct mathematical response, prompt and explanation despite changed layout.",
+      "observed": "Native grading accepts the same UUID and rejects all alternatives. UI screenshots show a different ordering but the same correct matrix and pair.",
+      "status": "passed",
+      "justification": "Option order is incidental to the mathematical criterion and is already shuffled by actual UI choiceOrder.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "native-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-10522",
+      "scope": "within_template",
+      "strategy": "Choose unique second-smallest bottom-right entry",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6: this particular rank rule does not solve q-10522. Uniform five-choice baseline is 0.2. No claim that this family is shortcut-free.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 3",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 4",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 5",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 2",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 3",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 2",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 2",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 2",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank of option bottom-right entry, conditional on fixed prompt coefficients",
+      "subgroup": "q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the option whose bottom-right entry has ascending rank 2",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Fixed coefficient signature identifies the family; common +k shift preserves the source rank in every translated bank. This compares options without performing elimination. Uniform five-choice baseline is 0.2; UI permutation does not alter numerical rank.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Second-smallest bottom-right entry",
+      "subgroup": "exact requested batch after delivery filtering",
+      "scope": "overall",
+      "strategy": "Choose the unique second-smallest bottom-right entry",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Four of five survivors answered without elimination; the fifth is q-10522. Baseline is uniform random selection among five options. This is a batch exposure to the family defect, not a claim that all five succumb to this rule.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator validation and finite shuffled candidate enumeration",
+      "solution-fingerprint deduplication in sampler",
+      "requested difficulty",
+      "shared publisher normalization and inventory/batch deduplication",
+      "captured inventory eligibility",
+      "same-band weighted learner selection rule and controlled history-prefix fixture",
+      "actual UI option reordering"
+    ],
+    "sample_refs": [
+      "sampler-attempts.json",
+      "delivery-analysis.json",
+      "delivery-batch/delivery.json",
+      "delivery-control/delivery.json",
+      "inventory-review.json",
+      "render/rendering.json"
+    ],
+    "result": "Conditional rank shortcuts survive every examined stage. Actual published records are not created; selection fixtures reproduce the easy-band algorithm with synthetic stable entity ordering. Unknown live learner histories or policy weights limit schedule predictions, not the rank invariant."
+  },
+  "limitations": [
+    "Only captured inventory basis 5576 was used; it contains ten original questions and no generated records, verified in inventory-review.json.",
+    "No actual future learner schedule or postpublication entity IDs are known; selection is inspected and reproduced under explicit fixtures.",
+    "Finite tests do not rule out all other shortcuts. The demonstrated rank invariant is algebraic: each option lower row is (0,1,c), so the author always replaces c by c+k.",
+    "No free-entry fields exist; native grading tests all radio alternatives. Canonical example supplies context, not a captured answer bank."
+  ]
+}

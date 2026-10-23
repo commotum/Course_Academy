@@ -1,0 +1,2179 @@
+[
+  {
+    "source_id": "q-42563",
+    "db_id": 17592186162555,
+    "original_parameters": {
+      "A": [
+        [
+          5,
+          0,
+          2,
+          7
+        ],
+        [
+          1,
+          -7,
+          -4,
+          -6
+        ],
+        [
+          -1,
+          3,
+          1,
+          2
+        ],
+        [
+          2,
+          7,
+          2,
+          3
+        ]
+      ],
+      "row": 2,
+      "pivot": 2,
+      "given": 0,
+      "ks": [
+        1,
+        -3,
+        0,
+        -2
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}5 & 0 & 2 & 7 \\\\ 1 & -7 & -4 & -6 \\\\ -1 & 3 & 1 & 2 \\\\ 2 & 7 & 2 & 3\\end{bmatrix},\\,B=\\begin{bmatrix}7 & -6 & 2 & 3 \\\\ -3 & 5 & -4 & 2 \\\\ 0 & 0 & 1 & 0 \\\\ 4 & 1 & 2 & -1\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\nI. ${C}_{1}:={C}_{1}+{C}_{3}$\nII. ${C}_{2}:=\u2026$\nIII. ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{33}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}5 & 0 & 2 & 7 \\\\ 1 & -7 & -4 & -6 \\\\ -1 & 3 & 1 & 2 \\\\ 2 & 7 & 2 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}+{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}7 & 0 & 2 & 7 \\\\ -3 & -7 & -4 & -6 \\\\ 0 & 3 & 1 & 2 \\\\ 4 & 7 & 2 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-3{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}7 & -6 & 2 & 7 \\\\ -3 & 5 & -4 & -6 \\\\ 0 & 0 & 1 & 2 \\\\ 4 & 1 & 2 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}-2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}7 & -6 & 2 & 3 \\\\ -3 & 5 & -4 & 2 \\\\ 0 & 0 & 1 & 0 \\\\ 4 & 1 & 2 & -1\\end{bmatrix} \\\\  & =B\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{2}:={C}_{2}-3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}.$",
+    "profile": "q-42563",
+    "fields": [
+      {
+        "id": "f0b9949a-1e16-59bc-84b5-22fee2765678",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": null,
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "$C_{2}:=C_{2} + 2C_{3}$ and $C_{4}:=C_{4} - C_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                -1
+              ]
+            ],
+            "recipe": [
+              "-a - 1",
+              "b + 1"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "$C_{2}:=C_{2} + 3C_{3}$ and $C_{4}:=C_{4} - 2C_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "$C_{2}:=C_{2} + 3C_{3}$ and $C_{4}:=C_{4} + 2C_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                3,
+                2,
+                2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "$C_{2}:=C_{2} - C_{3}$ and $C_{4}:=C_{4} - 2C_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -1
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a + 2",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "$C_{2}:=C_{2} - 3C_{3}$ and $C_{4}:=C_{4} - 2C_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -3
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      },
+      {
+        "id": "21b43853-c32f-5465-8d87-0bae0b61fc32",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "c0d52c6b-6d27-5e70-9d2f-67cd54be5121",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{2}:={C}_{2}-3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}$",
+          ":db/id": 17592186402840
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{2}:={C}_{2}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                -1
+              ]
+            ],
+            "recipe": [
+              "-a - 1",
+              "b + 1"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{2}:={C}_{2}+3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{2}:={C}_{2}+3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                3,
+                2,
+                2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{2}:={C}_{2}-{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -1
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a + 2",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{2}:={C}_{2}-3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -3
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-91208",
+    "db_id": 17592186162574,
+    "original_parameters": {
+      "A": [
+        [
+          5,
+          2,
+          -3,
+          -1
+        ],
+        [
+          1,
+          4,
+          3,
+          3
+        ],
+        [
+          4,
+          -2,
+          -6,
+          -4
+        ],
+        [
+          1,
+          0,
+          4,
+          -2
+        ]
+      ],
+      "row": 0,
+      "pivot": 3,
+      "given": 1,
+      "ks": [
+        5,
+        2,
+        -3,
+        0
+      ]
+    },
+    "difficulty": null,
+    "prompt": "$A = \\begin{bmatrix}5 & 2 & -3 & -1 \\\\ 1 & 4 & 3 & 3 \\\\ 4 & -2 & -6 & -4 \\\\ 1 & 0 & 4 & -2\\end{bmatrix}, B = \\begin{bmatrix}0 & 0 & 0 & -1 \\\\ 16 & 10 & -6 & 3 \\\\ -16 & -10 & 6 & -4 \\\\ -9 & -4 & 10 & -2\\end{bmatrix}$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n1. $C_{1}:=\u2026$\n2. $C_{2}:=C_{2} + 2C_{4}$\n3. $C_{3}:=\u2026$\n\neach of the form $C_{i}:=C_{i} + kC_{4}$, the matrix $A$ can be transformed into the matrix $B$. What are the missing elementary column operations?",
+    "solution": null,
+    "profile": "q-91208",
+    "fields": [
+      {
+        "id": "8fd571ca-3c1d-5127-9033-d39e92e39f85",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": null,
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "$C_{1}:=C_{1} + 5C_{4}$ and $C_{3}:=C_{3} - 3C_{4}$",
+            "exact_operation_objects": [
+              [
+                0,
+                3,
+                5
+              ],
+              [
+                2,
+                3,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": 5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "$C_{1}:=C_{1} + 5C_{4}$ and $C_{3}:=C_{3} - 2C_{4}$",
+            "exact_operation_objects": [
+              [
+                0,
+                3,
+                5
+              ],
+              [
+                2,
+                3,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b + 1"
+            ],
+            "original_a": 5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "$C_{1}:=C_{1} + 5C_{4}$ and $C_{3}:=C_{3} + 3C_{4}$",
+            "exact_operation_objects": [
+              [
+                0,
+                3,
+                5
+              ],
+              [
+                2,
+                3,
+                3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": 5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "$C_{1}:=C_{1} - 5C_{4}$ and $C_{3}:=C_{3} + 3C_{4}$",
+            "exact_operation_objects": [
+              [
+                0,
+                3,
+                -5
+              ],
+              [
+                2,
+                3,
+                3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": 5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "$C_{1}:=C_{1} + 3C_{4}$ and $C_{3}:=C_{3} - 5C_{4}$",
+            "exact_operation_objects": [
+              [
+                0,
+                3,
+                3
+              ],
+              [
+                2,
+                3,
+                -5
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": 5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-130619",
+    "db_id": 17592186265942,
+    "original_parameters": {
+      "A": [
+        [
+          5,
+          0,
+          0,
+          7
+        ],
+        [
+          -8,
+          2,
+          4,
+          8
+        ],
+        [
+          5,
+          -1,
+          3,
+          -2
+        ],
+        [
+          2,
+          0,
+          4,
+          1
+        ]
+      ],
+      "row": 2,
+      "pivot": 1,
+      "given": 0,
+      "ks": [
+        5,
+        0,
+        3,
+        -2
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ -8 & 2 & 4 & 8 \\\\ 5 & -1 & 3 & -2 \\\\ 2 & 0 & 4 & 1\\end{bmatrix},\\,B=\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ 2 & 2 & 10 & 4 \\\\ 0 & -1 & 0 & 0 \\\\ 2 & 0 & 4 & 1\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:={C}_{1}+5{C}_{2}$\n- ${C}_{3}:=\u2026$\n- ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{2},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{32}=-1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ -8 & 2 & 4 & 8 \\\\ 5 & -1 & 3 & -2 \\\\ 2 & 0 & 4 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}+5{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ 2 & 2 & 4 & 8 \\\\ 0 & -1 & 3 & -2 \\\\ 2 & 0 & 4 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{3}: &={C}_{3}+3{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ 2 & 2 & 10 & 8 \\\\ 0 & -1 & 0 & -2 \\\\ 2 & 0 & 4 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}-2{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}5 & 0 & 0 & 7 \\\\ 2 & 2 & 10 & 4 \\\\ 0 & -1 & 0 & 0 \\\\ 2 & 0 & 4 & 1\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{3}:={C}_{3}+3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}.$",
+    "profile": "q-130619",
+    "fields": [
+      {
+        "id": "d17f9a7b-19fb-5cab-8d7e-d16a2c848a1b",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "98298916-b807-5084-8cb2-677770aed2b4",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{3}:={C}_{3}+3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}$",
+          ":db/id": 17592186264307
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{3}:={C}_{3}+3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                2,
+                1,
+                3
+              ],
+              [
+                3,
+                1,
+                2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": 3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{3}:={C}_{3}+3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                2,
+                1,
+                3
+              ],
+              [
+                3,
+                1,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": 3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{3}:={C}_{3}+2{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-3{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                2,
+                1,
+                2
+              ],
+              [
+                3,
+                1,
+                -3
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": 3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{3}:={C}_{3}-3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                2,
+                1,
+                -3
+              ],
+              [
+                3,
+                1,
+                2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": 3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{3}:={C}_{3}-3{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                2,
+                1,
+                -3
+              ],
+              [
+                3,
+                1,
+                -2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": 3,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-130627",
+    "db_id": 17592186265946,
+    "original_parameters": {
+      "A": [
+        [
+          7,
+          5,
+          6,
+          -9
+        ],
+        [
+          6,
+          4,
+          2,
+          -6
+        ],
+        [
+          -7,
+          2,
+          -3,
+          6
+        ],
+        [
+          5,
+          6,
+          1,
+          8
+        ]
+      ],
+      "row": 1,
+      "pivot": 2,
+      "given": 0,
+      "ks": [
+        -3,
+        -2,
+        0,
+        3
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}7 & 5 & 6 & -9 \\\\ 6 & 4 & 2 & -6 \\\\ -7 & 2 & -3 & 6 \\\\ 5 & 6 & 1 & 8\\end{bmatrix},\\,B=\\begin{bmatrix}-11 & -7 & 6 & 9 \\\\ 0 & 0 & 2 & 0 \\\\ 2 & 8 & -3 & -3 \\\\ 2 & 4 & 1 & 11\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:={C}_{1}-3{C}_{3}$\n- ${C}_{2}:=\u2026$\n- ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{23}=2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}7 & 5 & 6 & -9 \\\\ 6 & 4 & 2 & -6 \\\\ -7 & 2 & -3 & 6 \\\\ 5 & 6 & 1 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-3{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-11 & 5 & 6 & -9 \\\\ 0 & 4 & 2 & -6 \\\\ 2 & 2 & -3 & 6 \\\\ 2 & 6 & 1 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-11 & -7 & 6 & -9 \\\\ 0 & 0 & 2 & -6 \\\\ 2 & 8 & -3 & 6 \\\\ 2 & 4 & 1 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}+3{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-11 & -7 & 6 & 9 \\\\ 0 & 0 & 2 & 0 \\\\ 2 & 8 & -3 & -3 \\\\ 2 & 4 & 1 & 11\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{2}:={C}_{2}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{3}.$",
+    "profile": "q-130627",
+    "fields": [
+      {
+        "id": "3d91c8d4-2174-557a-bacf-309af204fdc1",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "aefa64aa-83e0-5872-9f90-8e5806976abf",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{2}:={C}_{2}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{3}$",
+          ":db/id": 17592186264508
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{2}:={C}_{2}-3{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -3
+              ],
+              [
+                3,
+                2,
+                2
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": -2,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{2}:={C}_{2}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{2}:={C}_{2}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                -3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{2}:={C}_{2}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{2}:={C}_{2}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                1,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-42929",
+    "db_id": 17592186329696,
+    "original_parameters": {
+      "A": [
+        [
+          -1,
+          2,
+          2,
+          3
+        ],
+        [
+          1,
+          3,
+          1,
+          -2
+        ],
+        [
+          3,
+          1,
+          4,
+          -2
+        ],
+        [
+          4,
+          -2,
+          -3,
+          -4
+        ]
+      ],
+      "row": 1,
+      "pivot": 2,
+      "given": 3,
+      "ks": [
+        -1,
+        -3,
+        0,
+        2
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}-1 & 2 & 2 & 3 \\\\ 1 & 3 & 1 & -2 \\\\ 3 & 1 & 4 & -2 \\\\ 4 & -2 & -3 & -4\\end{bmatrix},\\,B=\\begin{bmatrix}-3 & -4 & 2 & 7 \\\\ 0 & 0 & 1 & 0 \\\\ -1 & -11 & 4 & 6 \\\\ 7 & 7 & -3 & -10\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:=\u2026$\n- ${C}_{2}:=\u2026$\n- ${C}_{4}:={C}_{4}+2{C}_{3}$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{23}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}-1 & 2 & 2 & 3 \\\\ 1 & 3 & 1 & -2 \\\\ 3 & 1 & 4 & -2 \\\\ 4 & -2 & -3 & -4\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & 2 & 2 & 3 \\\\ 0 & 3 & 1 & -2 \\\\ -1 & 1 & 4 & -2 \\\\ 7 & -2 & -3 & -4\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-3{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & -4 & 2 & 3 \\\\ 0 & 0 & 1 & -2 \\\\ -1 & -11 & 4 & -2 \\\\ 7 & 7 & -3 & -4\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}+2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & -4 & 2 & 7 \\\\ 0 & 0 & 1 & 0 \\\\ -1 & -11 & 4 & 6 \\\\ 7 & 7 & -3 & -10\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{1}:={C}_{1}-{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-3{C}_{3}.$",
+    "profile": "q-42929",
+    "fields": [
+      {
+        "id": "feb07ef5-4074-5551-8b93-4c0478ad8dd8",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "275d76f3-272b-5c13-a01e-6d33a3b3de0d",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{1}:={C}_{1}-{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-3{C}_{3}$",
+          ":db/id": 17592186327272
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{1}:={C}_{1}-{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -1
+              ],
+              [
+                1,
+                2,
+                -1
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-1"
+            ],
+            "original_a": -1,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{1}:={C}_{1}-{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -1
+              ],
+              [
+                1,
+                2,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -1,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{1}:={C}_{1}-3{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -3
+              ],
+              [
+                1,
+                2,
+                -1
+              ]
+            ],
+            "recipe": [
+              "b",
+              "a"
+            ],
+            "original_a": -1,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{1}:={C}_{1}-{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}+3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -1
+              ],
+              [
+                1,
+                2,
+                3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -1,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{1}:={C}_{1}+{C}_{3}\\,$ and $\\,{C}_{2}:={C}_{2}-3{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                1,
+                2,
+                -3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -1,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-91210",
+    "db_id": 17592186357509,
+    "original_parameters": {
+      "A": [
+        [
+          1,
+          4,
+          7,
+          7
+        ],
+        [
+          -7,
+          -4,
+          2,
+          -1
+        ],
+        [
+          4,
+          1,
+          3,
+          2
+        ],
+        [
+          1,
+          5,
+          1,
+          8
+        ]
+      ],
+      "row": 2,
+      "pivot": 1,
+      "given": 2,
+      "ks": [
+        -4,
+        0,
+        -3,
+        -2
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}1 & 4 & 7 & 7 \\\\ -7 & -4 & 2 & -1 \\\\ 4 & 1 & 3 & 2 \\\\ 1 & 5 & 1 & 8\\end{bmatrix},\\,B=\\begin{bmatrix}-15 & 4 & -5 & -1 \\\\ 9 & -4 & 14 & 7 \\\\ 0 & 1 & 0 & 0 \\\\ -19 & 5 & -14 & -2\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:=\u2026$\n- ${C}_{3}:={C}_{3}-3{C}_{2}$\n- ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{2},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{32}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}1 & 4 & 7 & 7 \\\\ 7 & -4 & 2 & -1 \\\\ 4 & 1 & 3 & 2 \\\\ 1 & 5 & 1 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-4{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-15 & 4 & 7 & 7 \\\\ 9 & -4 & 2 & -1 \\\\ 0 & 1 & 3 & 2 \\\\ -19 & 5 & 1 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{3}: &={C}_{3}-3{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-15 & 4 & -5 & 7 \\\\ 9 & -4 & 14 & -1 \\\\ 0 & 1 & 0 & 2 \\\\ -19 & 5 & -14 & 8\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}-2{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-15 & 4 & -5 & -1 \\\\ 9 & -4 & 14 & 7 \\\\ 0 & 1 & 0 & 0 \\\\ -19 & 5 & -14 & -2\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{1}:={C}_{1}-4{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}.$",
+    "profile": "q-91210",
+    "fields": [
+      {
+        "id": "8d7d3cf5-3d91-5674-87ba-619a7f9da605",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "0f77ad80-791e-5792-abe3-b96701e1064f",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{1}:={C}_{1}-4{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}$",
+          ":db/id": 17592186354807
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{1}:={C}_{1}-4{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -4
+              ],
+              [
+                3,
+                1,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -4,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}-4{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -2
+              ],
+              [
+                3,
+                1,
+                -4
+              ]
+            ],
+            "recipe": [
+              "b",
+              "a"
+            ],
+            "original_a": -4,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{1}:={C}_{1}+4{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                4
+              ],
+              [
+                3,
+                1,
+                2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -4,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{1}:={C}_{1}+2{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                2
+              ],
+              [
+                3,
+                1,
+                4
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": -4,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{1}:={C}_{1}-4{C}_{2}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -4
+              ],
+              [
+                3,
+                1,
+                2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -4,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-91211",
+    "db_id": 17592186357510,
+    "original_parameters": {
+      "A": [
+        [
+          1,
+          1,
+          6,
+          1
+        ],
+        [
+          8,
+          1,
+          2,
+          5
+        ],
+        [
+          0,
+          9,
+          -5,
+          4
+        ],
+        [
+          4,
+          5,
+          3,
+          1
+        ]
+      ],
+      "row": 3,
+      "pivot": 3,
+      "given": 0,
+      "ks": [
+        -4,
+        -5,
+        -3,
+        0
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 8 & 1 & 2 & 5 \\\\ 0 & 9 & -5 & 4 \\\\ 4 & 5 & 3 & 1\\end{bmatrix},\\,B=\\begin{bmatrix}-3 & -4 & 3 & 1 \\\\ -12 & -24 & -13 & 5 \\\\ -16 & -11 & -17 & 4 \\\\ 0 & 0 & 0 & 1\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:={C}_{1}-4{C}_{4}$\n- ${C}_{2}:=\u2026$\n- ${C}_{3}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{4},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left of ${a}_{44}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 8 & 1 & 2 & 5 \\\\ 0 & 9 & -5 & 4 \\\\ 4 & 5 & 3 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-4{C}_{4}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & 1 & 6 & 1 \\\\ -12 & 1 & 2 & 5 \\\\ -16 & 9 & -5 & 4 \\\\ 0 & 5 & 3 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-5{C}_{4}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & -4 & 6 & 1 \\\\ -12 & -24 & 2 & 5 \\\\ -16 & -11 & -5 & 4 \\\\ 0 & 0 & 3 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{3}: &={C}_{3}-3{C}_{4}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}-3 & -4 & 3 & 1 \\\\ -12 & -24 & -13 & 5 \\\\ -16 & -11 & -17 & 4 \\\\ 0 & 0 & 0 & 1\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{2}:={C}_{2}-5{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}-3{C}_{4}.$",
+    "profile": "q-91211",
+    "fields": [
+      {
+        "id": "4fd89c08-cc65-58ef-8bce-1a909ae67947",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "74315517-f13f-503a-b328-262b249c0d24",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{2}:={C}_{2}-5{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}-3{C}_{4}$",
+          ":db/id": 17592186355686
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{2}:={C}_{2}+3{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}+5{C}_{4}$",
+            "exact_operation_objects": [
+              [
+                1,
+                3,
+                3
+              ],
+              [
+                2,
+                3,
+                5
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": -5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{2}:={C}_{2}+5{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}+3{C}_{4}$",
+            "exact_operation_objects": [
+              [
+                1,
+                3,
+                5
+              ],
+              [
+                2,
+                3,
+                3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{2}:={C}_{2}-5{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}-3{C}_{4}$",
+            "exact_operation_objects": [
+              [
+                1,
+                3,
+                -5
+              ],
+              [
+                2,
+                3,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{2}:={C}_{2}-3{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}-5{C}_{4}$",
+            "exact_operation_objects": [
+              [
+                1,
+                3,
+                -3
+              ],
+              [
+                2,
+                3,
+                -5
+              ]
+            ],
+            "recipe": [
+              "b",
+              "a"
+            ],
+            "original_a": -5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{2}:={C}_{2}-5{C}_{4}\\,$ and $\\,{C}_{3}:={C}_{3}+3{C}_{4}$",
+            "exact_operation_objects": [
+              [
+                1,
+                3,
+                -5
+              ],
+              [
+                2,
+                3,
+                3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -5,
+            "original_b": -3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-91214",
+    "db_id": 17592186357511,
+    "original_parameters": {
+      "A": [
+        [
+          1,
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          7,
+          3,
+          9
+        ],
+        [
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          2,
+          1,
+          1,
+          7
+        ]
+      ],
+      "row": 3,
+      "pivot": 2,
+      "given": 1,
+      "ks": [
+        -2,
+        -1,
+        0,
+        -7
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ 1 & 7 & 3 & 9 \\\\ 2 & 3 & 0 & 1 \\\\ 2 & 1 & 1 & 7\\end{bmatrix},\\,B=\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ -5 & 4 & 3 & -12 \\\\ 2 & 3 & 0 & 1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\n- ${C}_{1}:=\u2026$\n- ${C}_{2}:={C}_{2}-{C}_{3}$\n- ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{43}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ 1 & 7 & 3 & 9 \\\\ 2 & 3 & 0 & 1 \\\\ 2 & 1 & 1 & 7\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ -5 & 7 & 3 & 9 \\\\ 2 & 3 & 0 & 1 \\\\ 0 & 1 & 1 & 7\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ -5 & 4 & 3 & 9 \\\\ 2 & 3 & 0 & 1 \\\\ 0 & 0 & 1 & 7\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}-7{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 0 & 2 \\\\ -5 & 4 & 3 & -12 \\\\ 2 & 3 & 0 & 1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-7{C}_{3}.$",
+    "profile": "q-91214",
+    "fields": [
+      {
+        "id": "b439dc7a-fba4-5c3c-8d49-584df3ca4181",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "30ba6213-39ae-5a81-9962-30d6ff7c4850",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-7{C}_{3}$",
+          ":db/id": 17592186355087
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-7{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                -7
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": -7,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                -1
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-1"
+            ],
+            "original_a": -2,
+            "original_b": -7,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{1}:={C}_{1}-7{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -7
+              ],
+              [
+                3,
+                2,
+                -2
+              ]
+            ],
+            "recipe": [
+              "b",
+              "a"
+            ],
+            "original_a": -2,
+            "original_b": -7,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+7{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                7
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": -7,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{1}:={C}_{1}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+7{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                7
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": -7,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-130624",
+    "db_id": 17592186400492,
+    "original_parameters": {
+      "A": [
+        [
+          -4,
+          4,
+          -2,
+          8
+        ],
+        [
+          -6,
+          9,
+          -3,
+          7
+        ],
+        [
+          4,
+          2,
+          1,
+          -8
+        ],
+        [
+          5,
+          4,
+          3,
+          3
+        ]
+      ],
+      "row": 0,
+      "pivot": 2,
+      "given": 1,
+      "ks": [
+        -2,
+        2,
+        0,
+        4
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}-4 & 4 & -2 & 8 \\\\ -6 & 9 & -3 & 7 \\\\ 4 & 2 & 1 & -8 \\\\ 5 & 4 & 3 & 3\\end{bmatrix},\\,B=\\begin{bmatrix}0 & 0 & -2 & 0 \\\\ 0 & 3 & -3 & -5 \\\\ 2 & 4 & 1 & -4 \\\\ -1 & 10 & 3 & 15\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\nI. ${C}_{1}:=\u2026$\nII. ${C}_{2}:={C}_{2}+2{C}_{3}$\nIII. ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{3},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{13}=-2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}-4 & 4 & -2 & 8 \\\\ -6 & 9 & -3 & 7 \\\\ 4 & 2 & 1 & -8 \\\\ 5 & 4 & 3 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 4 & -2 & 8 \\\\ 0 & 9 & -3 & 7 \\\\ 2 & 2 & 1 & -8 \\\\ -1 & 4 & 3 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}+2{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 0 & -2 & 8 \\\\ 0 & 3 & -3 & 7 \\\\ 2 & 4 & 1 & -8 \\\\ -1 & 10 & 3 & 3\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}+4{C}_{3}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 0 & -2 & 0 \\\\ 0 & 3 & -3 & -5 \\\\ 2 & 4 & 1 & -4 \\\\ -1 & 10 & 3 & 15\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{3}.$",
+    "profile": "q-130624",
+    "fields": [
+      {
+        "id": "ac253d7f-a67e-5b99-a224-411e8693cccc",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "31db26cf-0604-5eff-9a4a-9453ac889e0e",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{3}$",
+          ":db/id": 17592186400498
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{1}:={C}_{1}-4{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+2{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -4
+              ],
+              [
+                3,
+                2,
+                2
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": -2,
+            "original_b": 4,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{1}:={C}_{1}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-4{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                -4
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": 4,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{1}:={C}_{1}+2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                3,
+                2,
+                4
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": 4,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}-4{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                -4
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": 4,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{3}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{3}$",
+            "exact_operation_objects": [
+              [
+                0,
+                2,
+                -2
+              ],
+              [
+                3,
+                2,
+                4
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": 4,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-42562",
+    "db_id": 17592186402828,
+    "original_parameters": {
+      "A": [
+        [
+          2,
+          8,
+          6,
+          -2
+        ],
+        [
+          1,
+          4,
+          5,
+          -3
+        ],
+        [
+          -2,
+          -5,
+          -3,
+          8
+        ],
+        [
+          -1,
+          -1,
+          -4,
+          1
+        ]
+      ],
+      "row": 1,
+      "pivot": 0,
+      "given": 2,
+      "ks": [
+        0,
+        -4,
+        -5,
+        3
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}2 & 8 & 6 & -2 \\\\ 1 & 4 & 5 & -3 \\\\ -2 & -5 & -3 & 8 \\\\ -1 & -1 & -4 & 1\\end{bmatrix},\\,B=\\begin{bmatrix}2 & 0 & -4 & 4 \\\\ 1 & 0 & 0 & 0 \\\\ -2 & 3 & 7 & 2 \\\\ -1 & 3 & 1 & -2\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\nI. ${C}_{2}:=\u2026$\nII. ${C}_{3}:={C}_{3}-5{C}_{1}$\nIII. ${C}_{4}:=\u2026$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{1},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the right of ${a}_{21}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}2 & 8 & 6 & -2 \\\\ 1 & 4 & 5 & -3 \\\\ -2 & -5 & -3 & 8 \\\\ -1 & -1 & -4 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{2}: &={C}_{2}-4{C}_{1}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}2 & 0 & 6 & -2 \\\\ 1 & 0 & 5 & -3 \\\\ -2 & 3 & -3 & 8 \\\\ -1 & 3 & -4 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{3}: &={C}_{3}-5{C}_{1}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}2 & 0 & -4 & -2 \\\\ 1 & 0 & 0 & -3 \\\\ -2 & 3 & 7 & 8 \\\\ -1 & 3 & 1 & 1\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}+3{C}_{1}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}2 & 0 & -4 & 4 \\\\ 1 & 0 & 0 & 0 \\\\ -2 & 3 & 7 & 2 \\\\ -1 & 3 & 1 & -2\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{2}:={C}_{2}-4{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{1}.$",
+    "profile": "q-42562",
+    "fields": [
+      {
+        "id": "e2400bde-d5f2-5b5e-81f0-94f5fae33cb4",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "f950a42d-a540-5921-9a3d-d668bd318fcd",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{2}:={C}_{2}-4{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{1}$",
+          ":db/id": 17592186402830
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{2}:={C}_{2}-4{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{1}$",
+            "exact_operation_objects": [
+              [
+                1,
+                0,
+                -4
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -4,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{2}:={C}_{2}-3{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+4{C}_{1}$",
+            "exact_operation_objects": [
+              [
+                1,
+                0,
+                -3
+              ],
+              [
+                3,
+                0,
+                4
+              ]
+            ],
+            "recipe": [
+              "-b",
+              "-a"
+            ],
+            "original_a": -4,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{2}:={C}_{2}-2{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{1}$",
+            "exact_operation_objects": [
+              [
+                1,
+                0,
+                -2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ],
+            "recipe": [
+              "a + 2",
+              "b"
+            ],
+            "original_a": -4,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{2}:={C}_{2}+4{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}+3{C}_{1}$",
+            "exact_operation_objects": [
+              [
+                1,
+                0,
+                4
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "b"
+            ],
+            "original_a": -4,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{2}:={C}_{2}-4{C}_{1}\\,$ and $\\,{C}_{4}:={C}_{4}-3{C}_{1}$",
+            "exact_operation_objects": [
+              [
+                1,
+                0,
+                -4
+              ],
+              [
+                3,
+                0,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "-b"
+            ],
+            "original_a": -4,
+            "original_b": 3,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "q-91212",
+    "db_id": 17592186404537,
+    "original_parameters": {
+      "A": [
+        [
+          2,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          8,
+          0,
+          4
+        ],
+        [
+          6,
+          9,
+          1,
+          3
+        ],
+        [
+          -6,
+          -1,
+          1,
+          -6
+        ]
+      ],
+      "row": 0,
+      "pivot": 1,
+      "given": 3,
+      "ks": [
+        -2,
+        0,
+        -2,
+        -3
+      ]
+    },
+    "difficulty": {
+      ":db/id": 17592186045487,
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    "prompt": "$$\nA=\\begin{bmatrix}2 & 1 & 2 & 3 \\\\ 0 & 8 & 0 & 4 \\\\ 6 & 9 & 1 & 3 \\\\ -6 & -1 & 1 & -6\\end{bmatrix},\\,B=\\begin{bmatrix}0 & 1 & 0 & 0 \\\\ -16 & 8 & -16 & -20 \\\\ -12 & 9 & -17 & -24 \\\\ -4 & -1 & 3 & -3\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations \n\nI. ${C}_{1}:=\u2026$\nII. ${C}_{3}:=\u2026$\nIII. ${C}_{4}:={C}_{4}-3{C}_{2}$\n\neach of the form ${C}_{i}:={C}_{i}+k{C}_{2},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+    "solution": "To transform $A$ into $B,$ we need to make entries to the left and to the right of ${a}_{12}=1$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}2 & 1 & 2 & 3 \\\\ 0 & 8 & 0 & 4 \\\\ 6 & 9 & 1 & 3 \\\\ -6 & -1 & 1 & -6\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{1}: &={C}_{1}-2{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 1 & 2 & 3 \\\\ -16 & 8 & 0 & 4 \\\\ -12 & 9 & 1 & 3 \\\\ -4 & -1 & 1 & -6\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{3}: &={C}_{3}-2{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 1 & 0 & 3 \\\\ -16 & 8 & -16 & 4 \\\\ -12 & 9 & -17 & 3 \\\\ -4 & -1 & 3 & -6\\end{bmatrix} &  & \\,\\begin{aligned}{C}_{4}: &={C}_{4}-3{C}_{2}\\end{aligned} \\\\  & \u223c\\begin{bmatrix}0 & 1 & 0 & 0 \\\\ -16 & 8 & -16 & -20 \\\\ -12 & 9 & -17 & -24 \\\\ -4 & -1 & 3 & -3\\end{bmatrix} \\\\  & =B.\\end{aligned}\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$\\,$ ${C}_{1}:={C}_{1}-2{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}-2{C}_{2}.$",
+    "profile": "q-91212",
+    "fields": [
+      {
+        "id": "3e62e048-fd08-5b04-8d22-e746ab71041b",
+        "key": "selection",
+        "type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        "correct": {
+          ":answer/id": "49b5e613-99b1-573d-91c5-9e3ef4f411b6",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "${C}_{1}:={C}_{1}-2{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}-2{C}_{2}$",
+          ":db/id": 17592186404541
+        },
+        "choices": [
+          {
+            "source_index": 0,
+            "source_value": "${C}_{1}:={C}_{1}-{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}-{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                2,
+                1,
+                -1
+              ]
+            ],
+            "recipe": [
+              "-1",
+              "-1"
+            ],
+            "original_a": -2,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 1,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}-3{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -2
+              ],
+              [
+                2,
+                1,
+                -3
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b - 1"
+            ],
+            "original_a": -2,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 2,
+            "source_value": "${C}_{1}:={C}_{1}-2{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}-2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                -2
+              ],
+              [
+                2,
+                1,
+                -2
+              ]
+            ],
+            "recipe": [
+              "a",
+              "b"
+            ],
+            "original_a": -2,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 3,
+            "source_value": "${C}_{1}:={C}_{1}+2{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}+2{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                2
+              ],
+              [
+                2,
+                1,
+                2
+              ]
+            ],
+            "recipe": [
+              "-a",
+              "-b"
+            ],
+            "original_a": -2,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          },
+          {
+            "source_index": 4,
+            "source_value": "${C}_{1}:={C}_{1}+{C}_{2}\\,$ and $\\,{C}_{3}:={C}_{3}+{C}_{2}$",
+            "exact_operation_objects": [
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                2,
+                1,
+                1
+              ]
+            ],
+            "recipe": [
+              "1",
+              "1"
+            ],
+            "original_a": -2,
+            "original_b": -2,
+            "reproduces_complete_value": true,
+            "interpretation": "Observed sign/swap/unit/affine expression; no misconception inferred"
+          }
+        ]
+      }
+    ]
+  }
+]

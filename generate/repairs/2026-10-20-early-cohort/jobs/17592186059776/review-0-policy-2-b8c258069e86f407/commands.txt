@@ -1,0 +1,14 @@
+Run from evidence_root. All commands are database-free and write review artifacts only here.
+
+/home/jake/Developer/Course_Academy/.venv/bin/python audit.py > audit-summary.json
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine native-input.json native-results.json
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input control.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-control --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/.venv/bin/python delivery-analysis.py
+/home/jake/Developer/Course_Academy/.venv/bin/python reproduce-shortcut.py > shortcut-regression.log 2>&1
+The preceding regression MUST currently exit 1. It reproduced 24/24 successes for the bypass and fails acceptance; it is not a passing author check.
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-input.json --output render --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-counterfactual-input.json --output render-counterfactual --math-root /media/jake/SSD/EDB/math --limit 4
+python3 write-report.py
+
+Independent seeds: 31817 for explicit source/boundary parameters; 918273 for 40-record control batch. Exact runner batch copied intact to batch.json. Counterfactual parameters are q-73544 [1,0] and [1,1], plus a reversed answer bank.

@@ -1,1 +1,1 @@
-Independent source analysis completed and verified before package inspection. Source: 13 radio questions plus canonical example; one incomplete source reconstructed mathematically.
+Source analysis complete before author inspection. Independent source replay: 11 supported, q-20450 missing, q-20451 incomplete. Exact math checked for 33 samples, 5 batch records, and 3 counterfactual records. Native grading and actual UI render inputs saved. Inventory basis 5578 has 13 original sources, zero generated records. Package hashes saved.

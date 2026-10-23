@@ -1,0 +1,117 @@
+{
+  "verdict": "revise",
+  "summary": "A numerical-rank shortcut bypasses elimination in four easy families and answers 4/5 delivered batch questions. Package unchanged. Full report: result.json.",
+  "source_analysis": {
+    "skill": "Convert a nonsingular 2\u00d72 system to an augmented matrix, perform standard Gaussian elimination, and back-substitute when requested.",
+    "reasoning_steps": [
+      "Form the augmented matrix.",
+      "Normalize the first pivot, eliminate the lower-left entry, and normalize the second pivot.",
+      "For solve prompts, back-substitute and select the complete matrix-and-solution response."
+    ],
+    "invariants": [
+      "Preserve the two-variable system, arithmetic difficulty, standard elimination procedure, and source-specific response endpoint.",
+      "Each five-choice radio bank must contain exactly one correct complete response."
+    ],
+    "permitted_variations": [
+      "Vary manageable coefficients, constants, solution signs and values.",
+      "Vary distractor relationships and correct numerical ranks; source-example ranks are incidental."
+    ],
+    "source_refs": [
+      "4e51e1e1-f4ea-594e-af90-cfd7caef02c6",
+      "08ec22c2-8cd9-5dca-af3f-944499fe851c",
+      "13eff08d-2b22-5094-8876-818462babb6f",
+      "0d942c9d-ca2d-5916-825d-4a4ac9478a87",
+      "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: Steps 1\u20133 and back substitution.",
+      "Tutorial ee4b134d-2908-5930-86bb-32537e0d8347: REF is not unique; unit pivots simplify back substitution."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All ten source prompts, solutions, complete banks and keys replay after presentation normalization."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "Exact arithmetic independently verified 105 records, their solution matrices and unique correct choices."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "shortcut-results.json",
+        "delivery-analysis.json"
+      ],
+      "details": "Affine bank translation preserves answer-bearing numerical ranks within recognizable coefficient patterns."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "math-results.json",
+        "packaging-results.json"
+      ],
+      "details": "Observed variants preserve source arithmetic structure, elimination stages and response contracts."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-results.json"
+      ],
+      "details": "Native grader accepted 108 correct responses and rejected 432 incorrect alternatives, including controlled counterfactuals."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendered all five batch questions and controlled examples. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "relocated-output.json"
+      ],
+      "details": "Exact dependencies, relocation, deterministic replay and invalid-input rejection passed. Package files remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-reproduction-records.json",
+        "shortcut-reproduction-results.json",
+        "shortcut-regression.log",
+        "delivery-analysis.json"
+      ],
+      "details": "Choosing the unique second-smallest bottom-right entry succeeds in 24/24 focused easy-family probes and 4/5 delivered batch questions. UI shuffling does not remove this shortcut."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Templates q-73544, q-73551, q-73554 and q-73555 always place the correct bottom-right matrix entry second in ascending numerical order. Translating every bank entry by the same k preserves this relationship, allowing selection without Gaussian elimination. The defect survives delivery filtering and UI reordering.",
+      "source_refs": [
+        "4e51e1e1-f4ea-594e-af90-cfd7caef02c6",
+        "08ec22c2-8cd9-5dca-af3f-944499fe851c",
+        "13eff08d-2b22-5094-8876-818462babb6f",
+        "0d942c9d-ca2d-5916-825d-4a4ac9478a87"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-shortcut.py from evidence_root; its strict regression exits 1. Exact batch example: q-73544, parameters [2,3], question f5818069-0bf8-5e09-b9f7-f37c5428cd72. The system is 2x\u22124y=\u22122, 4x\u22127y=\u22123. Sorted bottom-right choices are [\u22121,1,2,5,7]; selecting the second-smallest gives the correct response (x,y)=(1,1).",
+      "requested_change": "Change bank construction so recognizable families do not fix the correct numerical rank. Preserve source replay, supported profiles, response contracts and difficulty. Shuffling options alone is insufficient. Rerun the retained regression and conditional shortcut probes, then regenerate and review the exact batch. No database repair is requested: the captured inventory contains only original source questions."
+    }
+  ]
+}

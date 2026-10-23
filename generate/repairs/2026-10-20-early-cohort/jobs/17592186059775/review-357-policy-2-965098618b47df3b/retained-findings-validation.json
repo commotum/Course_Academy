@@ -1,0 +1,125 @@
+{
+  "all_retained_findings": [
+    {
+      "id": "9e827407d5429a1f8827",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "At seed 4258185931, choose the second-largest candidate lower-right value when input a11=1; otherwise choose the smallest. This answers all five delivered questions. Within q-73439, scales 2, 4 and 5 all select the minimum value, succeeding 3/3 versus a 1/5 guessing baseline. The finding concerns this exact batch, not every generator output.",
+        "source_refs": [
+          "9752715d-a11c-5d27-95dc-d20bec1117cb",
+          "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+          "8ad44012-c8dc-51b0-90ac-8e2b89d003b4"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py. It reproduces current batch('easy',5,4258185931), reports 5/5 and exits 1. Repeat with --input delivery-batch/accepted.json. Minimal repeated-role pair: ['q-73439',2,0] and ['q-73439',4,0]. The first input is [[3,9,12],[2,7,6]], with correct REF [[1,3,4],[0,1,-2]] and solution x=10,y=-2.",
+        "requested_change": "Revise batch selection so repeated scaled members of a recognizable coefficient family do not preserve a fixed answer rank or this pivot/rank cue. Use the supported target roles, regenerate the five-item batch, and rerun the retained strict test on its actual delivered records. Preserve source families and the response contract."
+      },
+      "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-2-policy-2-4ea3e9df01325020",
+      "attempt": 2
+    },
+    {
+      "id": "9b8cb52352b8ca3e790e",
+      "finding": {
+        "kind": "evidence",
+        "description": "The previous response used evidence paths relative to contract-repair instead of evidence_root. The named missing-provenance error was reproduced. A corrected, validated bundle exists, but installation at the required root remains blocked by filesystem permissions.",
+        "source_refs": [
+          "9752715d-a11c-5d27-95dc-d20bec1117cb",
+          "dc5530a8-d7bb-5ee6-b842-11178cec4e06"
+        ],
+        "reproduction": "Run python3 -B correct_evidence.py from evidence_root/contract-repair-2. path-validation.json records successful bundle and root-relative report validation. Validating contract-repair/result.json against evidence_root reproduces the missing correction-provenance.json error.",
+        "requested_change": "Have the runner install the complete contract-repair-2 evidence bundle at evidence_root, using accepted-review.json as result.json, then validate against that root. This is a report-only correction: do not invoke generator authoring, modify the package, publish assets, or write the database."
+      },
+      "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93",
+      "attempt": 3
+    },
+    {
+      "id": "8e9376e2f7d18b077048",
+      "finding": {
+        "kind": "inventory",
+        "description": "Question f98461ac-7c48-536e-aa56-fcc53a0bd592 (entity 17592186528070) remains selectable at inventory basis 5574. Choosing the median candidate lower-right value answers it without elimination. All three permitted scales of its legacy q-1060 family preserve that rank. The two retired easy legacy records are excluded from the repair list.",
+        "source_refs": [
+          "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+          "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: normalize, eliminate, normalize"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_inventory_shortcut.py; expected exit 1. Archived parameters: legacy.generate(\"moderate\",59775,\"q-1060\",[\"q-1060\",3]). Input [[-1,2,3],[5,6,24]]; candidate lower-right values 27/16,33/16,39/16,45/16,51/16; keyed median 39/16. Complete reproduced record and metadata are in generated-records.json.",
+        "requested_change": "Runner-owned pool repair: retire or replace the eligible record in affected-inventory.json so selectable legacy practice no longer preserves the fixed-median answer rule. Preserve retired history and original source questions, refresh inventory, and independently verify eligibility. No current generator change or author database write is requested."
+      },
+      "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-5595bf9a345705ea",
+      "attempt": 357
+    }
+  ],
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "9e827407d5429a1f8827"
+    ],
+    "checks": [
+      {
+        "script": "checks/check_batch_selection.py",
+        "args": [],
+        "sha256": "5c4596695f9955b70d6c70a4234e94d9c95647f3257eb831cb9cc566e9988cca",
+        "exit_code": 0,
+        "stdout": "{\"input_count\": 5, \"duplicate_count\": 0, \"accepted_count\": 5, \"inventory_basis\": 5577, \"report\": \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/evidence/delivery-batch-repair/delivery.json\"}\nNative grading: 5 accepted, 20 rejected, 0 explicitly unresolved; no database operations.\n{\"passed\": true, \"raw\": {\"correct\": 1, \"total\": 5, \"random_baseline\": 0.2}, \"delivered\": {\"correct\": 1, \"total\": 5, \"random_baseline\": 0.2}, \"profiles_checked\": 10, \"native_responses\": 25}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "executed_controls": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_batch_selection.py",
+        "--input",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-965098618b47df3b/runner-batch.json"
+      ],
+      "exit_code": 0,
+      "log": "author-current.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_batch_selection.py",
+        "--input",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-965098618b47df3b/previous-runner-batch.json"
+      ],
+      "exit_code": 1,
+      "log": "author-historical.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/evidence/legacy/17592186059775.py",
+        "--format",
+        "json"
+      ],
+      "exit_code": 2,
+      "stderr": "usage: 17592186059775.py [-h] [--difficulty DIFFICULTY] [--seed SEED]\n                         [--count COUNT]\n17592186059775.py: error: unrecognized arguments: --format json\n"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-965098618b47df3b/reproduce_inventory_shortcut.py"
+      ],
+      "exit_code": 0,
+      "log": "inventory-strict.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-965098618b47df3b/reproduce_inventory_shortcut.py",
+        "--historical-control"
+      ],
+      "exit_code": 1,
+      "log": "inventory-control.log"
+    }
+  ],
+  "evidence_issue": "Prior wrong-root/missing-provenance failure is a report contract defect, not a generator defect. This review is authored directly at evidence_root and validated below. Author installation/handoff checks are not executed because they write workspace evidence and concern runner handoff; no generator repair is requested for this old report issue.",
+  "inventory_resolution": "All three reproduced legacy records are retired at basis 5577. The strict eligible-defect predicate fails when the former eligibility is restored in a labeled control and passes on actual captured inventory."
+}
