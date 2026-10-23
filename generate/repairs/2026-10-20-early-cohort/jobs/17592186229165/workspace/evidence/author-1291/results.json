@@ -1,0 +1,27 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "log": "latest-failure.log",
+      "result": "report-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1291/role",
+      "exit_code": 0,
+      "log": "role.log",
+      "result": "role/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "result": "retained-state.json"
+    }
+  ],
+  "unresolved_finding": "645672a4cd3f9bf609ca",
+  "reason": "Required prior-review report remains stale outside the authorized workspace. Staged correction passes schema, actual review validation, and 26 current-generator record replays. Strict default regression remains failing. No external installation attempted.",
+  "next_action": "Runner installs the checksum-verified artifacts listed in evidence/review-installation-handoff.json at its required destination, then reruns the strict check and independent review.",
+  "scope": "No runtime changes, database writes, engine changes, publication, or files outside this workspace."
+}

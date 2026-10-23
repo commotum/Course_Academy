@@ -1,0 +1,39 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/check_report_installation.py"
+      ],
+      "exit_code": 1,
+      "log": "latest-failure.log",
+      "result": "report-results.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py",
+        "--output",
+        "evidence/author-1290/role"
+      ],
+      "exit_code": 0,
+      "log": "role-regression.log",
+      "result": "role/results.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
+      "exit_code": 0,
+      "log": "retained-regression.log"
+    }
+  ],
+  "remaining_finding": "645672a4cd3f9bf609ca",
+  "required_action": "Runner installs the staged correction at the required prior-review destination and reruns the strict check before fresh independent review.",
+  "authorization_limit": "All writes restricted to workspace. Required prior-review destination is outside it.",
+  "handoff": "evidence/review-installation-handoff.json",
+  "historical_inventory": "Four stored mixed questions remain documented; no database content changed."
+}

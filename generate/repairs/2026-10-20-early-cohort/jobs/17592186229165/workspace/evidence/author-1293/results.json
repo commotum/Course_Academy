@@ -1,0 +1,44 @@
+{
+  "status": "blocked",
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "evidence": "latest-failure.log",
+      "error": "decision_variation has an unresolved decision shortcut"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1293/role",
+      "exit_code": 0,
+      "evidence": "role/results.json",
+      "pre_delivery": {
+        "1": 19,
+        "2": 17,
+        "none": 5
+      },
+      "post_delivery": {
+        "1": 19,
+        "2": 17,
+        "none": 5
+      },
+      "native_accepted": 11,
+      "native_rejected": 19
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "evidence": "retained-state.log"
+    }
+  ],
+  "staged_report_validation": {
+    "status": "passed",
+    "visible_records_replayed": 26
+  },
+  "rendering": {
+    "retained_actual_ui_screenshot_inspected": "evidence/corrected-review/render-regression/question-002.png",
+    "result": "Legible prompt, blank and complete worked solution; no runtime change requires rerendering."
+  },
+  "next_required_action": "Runner installs the staged corrected report at the required prior-review destination, reruns the strict check, then obtains fresh independent review.",
+  "authorization_limit": "Required destination is outside the workspace. No external write attempted."
+}
