@@ -33,6 +33,22 @@
       "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93",
       "attempt": 3
+    },
+    {
+      "id": "8e9376e2f7d18b077048",
+      "finding": {
+        "kind": "inventory",
+        "description": "Question f98461ac-7c48-536e-aa56-fcc53a0bd592 (entity 17592186528070) remains selectable at inventory basis 5574. Choosing the median candidate lower-right value answers it without elimination. All three permitted scales of its legacy q-1060 family preserve that rank. The two retired easy legacy records are excluded from the repair list.",
+        "source_refs": [
+          "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+          "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: normalize, eliminate, normalize"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_inventory_shortcut.py; expected exit 1. Archived parameters: legacy.generate(\"moderate\",59775,\"q-1060\",[\"q-1060\",3]). Input [[-1,2,3],[5,6,24]]; candidate lower-right values 27/16,33/16,39/16,45/16,51/16; keyed median 39/16. Complete reproduced record and metadata are in generated-records.json.",
+        "requested_change": "Runner-owned pool repair: retire or replace the eligible record in affected-inventory.json so selectable legacy practice no longer preserves the fixed-median answer rule. Preserve retired history and original source questions, refresh inventory, and independently verify eligibility. No current generator change or author database write is requested."
+      },
+      "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-5595bf9a345705ea",
+      "attempt": 357
     }
   ],
   "events": [
@@ -8933,6 +8949,142 @@
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93"
+    },
+    {
+      "attempt": 357,
+      "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+      "reason": {
+        "verdict": "revise",
+        "summary": "One selectable stored moderate question retains a median-answer shortcut. Current generator and exact batch checks pass; the remaining repair belongs to the stored pool. Package files are unchanged.",
+        "source_analysis": {
+          "skill": "Reduce a nonsingular 2\u00d72 augmented matrix using Gaussian elimination, optionally followed by back substitution.",
+          "reasoning_steps": [
+            "Normalize the first pivot.",
+            "Eliminate the lower-left entry.",
+            "Normalize the second pivot.",
+            "Optionally back-substitute and select the matching answer."
+          ],
+          "invariants": [
+            "Nonzero first pivot and nonsingular coefficient matrix.",
+            "Five radio choices.",
+            "Preserve the source arithmetic workload and forward-elimination stages."
+          ],
+          "permitted_variations": [
+            "Vary coefficients, constants and solutions within supported arithmetic.",
+            "Vary which candidate qualifies and its position.",
+            "Update prompts, explanations and keys consistently."
+          ],
+          "source_refs": [
+            "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+            "canonical 0a9e6824-677a-5fae-9867-1701e7d8378f",
+            "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: three elimination steps",
+            "tutorial ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-confirmation.json",
+            "reuse-provenance.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replays.json",
+              "source-replay-results.json",
+              "fresh-source-replay.json"
+            ],
+            "details": "Ten complete banks replay exactly. Two incomplete source captures and supported source corrections remain documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "fresh-math.json",
+              "fresh-records.json",
+              "math-results.json",
+              "review_helpers.py"
+            ],
+            "details": "Independent exact-arithmetic checks passed for 21 fresh records and their delivered variants; unchanged broader evidence reused."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "normal-catalog-records.json",
+              "construction-regression.json",
+              "delivery-selection.json"
+            ],
+            "details": "Current catalog retains ten profiles and five target ranks. All five batch records survive delivery and cover all ranks."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "fresh-records.json",
+              "independent-records.json"
+            ],
+            "details": "Current variations preserve the source operations, representations, response contract and arithmetic scope."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "fresh-grader-input.json",
+              "fresh-grader-results.json",
+              "fresh-grader.log"
+            ],
+            "details": "Native grader passed 225 submissions: 45 accepted and 180 rejected. Free-entry equivalence is inapplicable to these radio fields."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "fresh-render-records.json",
+              "fresh-render/rendering.json",
+              "fresh-render-inspection.json",
+              "fresh-ui-order.json"
+            ],
+            "details": "Eleven actual-UI renders passed. Inspected screenshots show readable notation, controls, solutions and consistent counterfactual updates."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "fresh-packaging.json",
+              "boundary-rejections.json",
+              "fresh-commands.json",
+              "retained-findings-validation.json",
+              "package-unchanged.json"
+            ],
+            "details": "Dependencies, relocation, deterministic counts and boundary rejection passed. All 1,416 package files remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "delivery-selection.json",
+              "strict-current.log",
+              "strict-delivered.log",
+              "strict-historical.log",
+              "inventory-strict-results.json",
+              "affected-inventory.json",
+              "generated-records.json",
+              "schema-validation.json",
+              "evidence-validation.json"
+            ],
+            "details": "Current batch defeats the retained shortcut (1/5 versus historical 5/5). One eligible stored moderate record still exhibits a family-wide median-answer shortcut."
+          }
+        },
+        "findings": [
+          {
+            "kind": "inventory",
+            "description": "Question f98461ac-7c48-536e-aa56-fcc53a0bd592 (entity 17592186528070) remains selectable at inventory basis 5574. Choosing the median candidate lower-right value answers it without elimination. All three permitted scales of its legacy q-1060 family preserve that rank. The two retired easy legacy records are excluded from the repair list.",
+            "source_refs": [
+              "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+              "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: normalize, eliminate, normalize"
+            ],
+            "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_inventory_shortcut.py; expected exit 1. Archived parameters: legacy.generate(\"moderate\",59775,\"q-1060\",[\"q-1060\",3]). Input [[-1,2,3],[5,6,24]]; candidate lower-right values 27/16,33/16,39/16,45/16,51/16; keyed median 39/16. Complete reproduced record and metadata are in generated-records.json.",
+            "requested_change": "Runner-owned pool repair: retire or replace the eligible record in affected-inventory.json so selectable legacy practice no longer preserves the fixed-median answer rule. Preserve retired history and original source questions, refresh inventory, and independently verify eligibility. No current generator change or author database write is requested."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-357-policy-2-5595bf9a345705ea"
     }
   ]
 }

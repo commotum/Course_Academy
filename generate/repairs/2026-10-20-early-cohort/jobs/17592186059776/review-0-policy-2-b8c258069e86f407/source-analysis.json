@@ -1,0 +1,47 @@
+{
+  "skill": "Form the augmented matrix of a nonsingular 2x2 system, normalize the first pivot, eliminate the lower-left entry, normalize the second pivot, and when requested back-substitute.",
+  "reasoning_steps": [
+    "Translate both equations to augmented rows in x,y order.",
+    "Divide row 1 by its nonzero first coefficient.",
+    "Subtract the appropriate multiple of row 1 from row 2.",
+    "Divide row 2 by the remaining nonzero pivot.",
+    "For solve prompts, infer y and back-substitute for x; select the complete correct matrix/solution choice."
+  ],
+  "response_contract": "All ten supplied questions use one radio field with five choices. Five easy cases have integer normalized first rows; five moderate cases include fractional rows or original fractional coefficients. REF-only and REF-plus-solution are both supported. Canonical example has no captured response field.",
+  "invariants": [
+    "Two equations, two variables; nonsingular coefficient matrix and nonzero first pivot; no row exchange or singular-system classification taught here.",
+    "Standard forward elimination with unit pivots, keeping first-row y coefficient; REF is not unique but the stipulated standard procedure determines the displayed result.",
+    "Matrix choices must encode row-equivalent systems; solve choices must also give consistent x,y.",
+    "Difficulty retains comparable arithmetic workload; easy examples normalize integrally."
+  ],
+  "permitted_variations": [
+    "Vary coefficients, constants, signs and zero/nonzero solution coordinates while preserving nonsingularity and manageable arithmetic.",
+    "Vary whether first/second pivot normalization is needed and elimination multiplier sign.",
+    "Vary correct option position, distractor ordering and relative numerical ranks. Source correct y=-2 frequency is incidental, not a task constraint.",
+    "Both REF-only and solve targets are evidenced, with matching prompt, option type and solution endpoint."
+  ],
+  "source_refs": [
+    "2b3048cb-22e8-56e6-a26a-e3ac30e078b0",
+    "a63289e5-22c0-55e8-8542-9af2656af30b",
+    "706c95c0-19c0-574d-ac1c-7bbb6eee33bb",
+    "6bae40ff-f64b-5781-92c2-7de7bf870b94",
+    "0d942c9d-ca2d-5916-825d-4a4ac9478a87",
+    "eb1cabaf-074e-5667-9a8b-8255e755b894",
+    "26bbee69-6c8f-5073-bf18-e5b7229f3605",
+    "4e51e1e1-f4ea-594e-af90-cfd7caef02c6",
+    "08ec22c2-8cd9-5dca-af3f-944499fe851c",
+    "13eff08d-2b22-5094-8876-818462babb6f",
+    "1eea81be-26d7-57dd-a622-d66300de7f4f",
+    "tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: Steps 1\u20133 and back substitution",
+    "tutorial ee4b134d-2908-5930-86bb-32537e0d8347: \"The row echelon form of a matrix is not unique\"; unit diagonal makes back substitution easier."
+  ],
+  "source_gaps": [
+    "No images are listed; none needed. Canonical example has no answer bank."
+  ],
+  "independent_shortcut_risks": [
+    "Fixed correct option index, fixed numerical rank of bottom-right entry, unique fractional or sign pattern, or sole internally consistent matrix/solution can bypass elimination."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

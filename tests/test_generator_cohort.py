@@ -157,6 +157,29 @@ class CohortTests(unittest.TestCase):
             repair.assert_called_once()
             pipeline.publisher.extract_inventory.assert_called_once()
 
+    def test_retirement_policy_upgrade_rechecks_formerly_protected_served_question_once(self):
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,review,_,before,after=self.inventory_pipeline(t)
+            captures=iter([before,after])
+            def extract(kp,path):
+                value=next(captures);save(path/'inventory.json',value)
+                return value
+            pipeline.publisher.extract_inventory.side_effect=extract
+            with patch('generator_pool_repair.POOL_REPAIR_POLICY_VERSION',1), \
+                    patch('generator_pool_repair.repair_pool',return_value={'retired':[],'unresolved':[],
+                        'protected':[{'question':7,'reason':'already_served'}]}):
+                old=pipeline.repair_inventory(review)
+            self.assertFalse(old['inventory_changed'])
+            old_key=pipeline.state['pool_repair_input']
+            with patch('generator_pool_repair.repair_pool',return_value={'retired':[7],'unresolved':[],
+                    'protected':[]}) as repair:
+                updated=pipeline.repair_inventory(review)
+                repeated=pipeline.repair_inventory(review)
+            repair.assert_called_once()
+            self.assertTrue(updated['inventory_changed']);self.assertFalse(repeated['inventory_changed'])
+            self.assertNotEqual(pipeline.state['pool_repair_input'],old_key)
+            self.assertEqual(updated['policy_version'],2)
+
     def test_unrelated_basis_change_does_not_replace_reviewed_inventory_or_loop_reviews(self):
         with tempfile.TemporaryDirectory() as t:
             pipeline,review,_,before,_=self.inventory_pipeline(t)

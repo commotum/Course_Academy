@@ -1,4 +1,4 @@
-"""Strict repair acceptance tests. Current package intentionally exits 1.
+"""Strict repair acceptance tests. Current repaired package exits 0; archived defective package exits 1.
 Usage: /home/jake/Developer/Course_Academy/.venv/bin/python -B acceptance-tests.py [--package PATH]
 No package files, database, or external outputs are mutated.
 """

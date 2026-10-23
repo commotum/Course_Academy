@@ -92,9 +92,10 @@
       "case": "historical_generated",
       "sample_refs": [
         "generated-records.json",
-        "coverage-results.json"
+        "coverage-results.json",
+        "inventory-eligibility.json"
       ],
-      "result": "{'total': 5, 'resonant_position_1': 4, 'A_positive': 4, 'h_positive': 2, 'first_rate_equal_h': 4, 'resonant_position_0': 1, 'h_negative': 3, 'first_rate_below_h': 1, 'A_negative': 1}"
+      "result": "{'total': 5, 'resonant_position_1': 4, 'A_positive': 4, 'h_positive': 2, 'first_rate_equal_h': 4, 'resonant_position_0': 1, 'h_negative': 3, 'first_rate_below_h': 1, 'A_negative': 1} Historical, not current selectable practice: four mixed cases are retired; the remaining both-nonresonant case has a source-justified fixed trial family."
     }
   ],
   "counterfactuals": [
@@ -111,7 +112,10 @@
         "hard-math-results.json",
         "grader-input.json",
         "grader-delivered-report.json",
-        "render/rendering.json"
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-rest-records.json",
+        "render-inspection.json"
       ]
     },
     {
@@ -127,7 +131,10 @@
         "hard-math-results.json",
         "grader-input.json",
         "grader-delivered-report.json",
-        "render/rendering.json"
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-rest-records.json",
+        "render-inspection.json"
       ]
     },
     {
@@ -142,7 +149,10 @@
         "math-results.json",
         "grader-input.json",
         "grader-delivered-report.json",
-        "render/rendering.json"
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-rest-records.json",
+        "render-inspection.json"
       ]
     },
     {
@@ -156,7 +166,10 @@
         "counterfactual-records.json",
         "grader-input.json",
         "grader-delivered-report.json",
-        "render/rendering.json"
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-rest-records.json",
+        "render-inspection.json"
       ]
     }
   ],
@@ -304,7 +317,8 @@
       "Shared publisher prepare_records validation and normalization",
       "Requested-difficulty filtering",
       "Within-batch and captured-inventory deduplication",
-      "Read-only difficulty-first, uniform-within-band learner selection with history removal"
+      "Read-only difficulty-first, uniform-within-band learner selection with history removal",
+      "Retired-question exclusion through validate_practice_question before selection"
     ],
     "sample_refs": [
       "runtime-results.json",
@@ -312,11 +326,15 @@
       "delivery-batch/delivery.json",
       "delivery-hard/delivery.json",
       "delivery-independent/delivery.json",
-      "delivery-stored/delivery.json",
       "coverage-results.json",
-      "selection-results.json"
+      "selection-results.json",
+      "inventory-eligibility.json",
+      "selection-code.json",
+      "grader-delivered-report.json",
+      "delivery-batch/accepted.json",
+      "delivery-hard/accepted.json"
     ],
-    "result": "Requested batch 5 -> 5, independent easy 8 -> 8, focused hard 41 -> 41. Both mixed positions preserved. Stored 5 -> 0 on resubmission (deduplicated). Prospective selection reaches both repaired positions; historical-only pool retains prior limitation."
+    "result": "Exact runner batch 5 -> 5; independent easy 12 -> 10 by deduplication; focused hard 37 -> 37. Both mixed positions remain. Four historical mixed questions are retired, excluded before fresh selection. Conditional prospective selection reaches both positions. Actual delivered records pass native grading. Captured basis 5573 only."
   },
   "limitations": [
     "Finite fresh sample is not proof against all shortcuts.",
