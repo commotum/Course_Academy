@@ -187,6 +187,47 @@ fn self_directed_generation_uses_bounded_graph_scope_and_preserves_explicit_work
 }
 
 #[test]
+fn scoped_generation_uses_graph_bands_instead_of_false_flags_or_fractional_history() -> Result<()> {
+    let db=fixture()?;
+    let learner=identity(&db,"learner/id","test")?;
+    let target=identity(&db,"topic/title","Target")?;
+    let mut forms=vec![format!("[:db/add {learner} :learner/self-directed true]")];
+    for n in 0..29 {
+        let next=if n==28 {"band-one\" \"fractional".to_owned()} else {format!("band-foundation-{}",n+1)};
+        forms.push(format!(r#"{{:db/id "band-foundation-{n}" :topic/id #uuid "20000000-0000-4000-8000-{n:012}" :topic/next ["{next}"]}}"#));
+    }
+    forms.push(format!(r#"
+        {{:db/id "band-one" :topic/id #uuid "20000000-0000-4000-8001-000000000001" :topic/title "Band one prerequisite" :topic/next [{target}] :topic/knowledge-points ["band-one-kp"]}}
+        {{:db/id "band-one-kp" :knowledge-point/id #uuid "20000000-0000-4000-8002-000000000001" :knowledge-point/title "Band one bank"}}
+        {{:db/id "fractional" :topic/id #uuid "20000000-0000-4000-8001-000000000002" :topic/title "Fractional prerequisite" :topic/next [{target}] :topic/knowledge-points ["fractional-kp"]}}
+        {{:db/id "fractional-kp" :knowledge-point/id #uuid "20000000-0000-4000-8002-000000000002" :knowledge-point/title "Fractional bank"}}
+        {{:db/id "band-one-progress" :progress/topic "band-one" :progress/repetitions 1.0 :progress/learned false}}
+        {{:db/id "fractional-progress" :progress/topic "fractional" :progress/repetitions 0.5}}
+        [:db/add {learner} :learner/knowledge-profile "band-one-progress"]
+        [:db/add {learner} :learner/knowledge-profile "fractional-progress"]
+    "#));
+    let db=db.with_edn(&format!("[{}]",forms.join("\n")),0,
+        EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
+    let now=at("2026-10-11T00:00:00Z");
+    let band_one=identity(&db,"topic/title","Band one prerequisite")?;
+    let fractional=identity(&db,"topic/title","Fractional prerequisite")?;
+    let groups=urgency_groups(&db,learner,now)?;
+    assert!(!groups.get(&band_one).is_some_and(|groups|groups.iter().any(|(_,name)|name=="selected-prerequisite")));
+    assert!(groups[&fractional].iter().any(|(_,name)|name=="selected-prerequisite"));
+    assert!(groups[&fractional].iter().any(|(_,name)|name=="studied"),"broad maintenance evidence stays intact");
+    // Explicit selection still cannot relabel a band-one topic as ordinary new work.
+    let db=db.with_edn(&format!("[[:db/add {learner} :learner/queue {band_one}]]"),0,
+        EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
+    let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"lesson",false)?;
+    find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
+    let row=|title:&str|result.as_array().unwrap().iter().find(|r|r["topic/title"]==title).unwrap();
+    assert!(row("Band one prerequisite")["activity_demands"].as_array().unwrap().iter().all(|d|d["activity_type"]!="lesson"));
+    assert!(row("Fractional prerequisite")["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson"));
+    assert_eq!(row("Fractional prerequisite")["next_activity"],"lesson");
+    Ok(())
+}
+
+#[test]
 fn cursor_keeps_full_population_and_scheduler_selection_establishes_demand() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;

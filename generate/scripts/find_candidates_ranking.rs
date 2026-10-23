@@ -401,6 +401,7 @@ pub(super) fn annotate(
             .unwrap()
             .iter()
             .any(|g| g == "selected-prerequisite");
+        let new_scoped_lesson = scoped_lessons.as_ref().is_some_and(|scope| scope.contains(&topic));
         let current_need = t["triggers"].as_array().unwrap().iter().any(|tr| {
             !matches!(
                 tr["reason"].as_str(),
@@ -470,7 +471,9 @@ pub(super) fn annotate(
             upcoming
                 .first()
                 .map(|(_, _, kind)| kind.as_str())
-                .unwrap_or(if currently_learned {
+                .unwrap_or(if new_scoped_lesson {
+                    "lesson"
+                } else if currently_learned {
                     if reviewed.contains(&topic) {
                         "assessment"
                     } else {
@@ -500,7 +503,8 @@ pub(super) fn annotate(
         );
         if queued.contains(&topic)
             || (targeted.contains(&topic) && !completed_lessons.contains(&topic))
-            || (selected_prerequisite && !currently_learned)
+            || (selected_prerequisite && scoped_lessons.as_ref()
+                .map_or(!currently_learned, |scope| scope.contains(&topic)))
         {
             demand("lesson", relevance);
         }

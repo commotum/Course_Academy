@@ -271,6 +271,7 @@ fn urgency_groups(
             .collect()
     };
     let mut studied = BTreeSet::new();
+    let mut known_lessons = BTreeSet::new();
     let mut ready = BTreeSet::new();
     let at = DateTime::<Utc>::from_timestamp_millis(now).ok_or("invalid ranking time")?;
     let profiles = owned("learner/knowledge-profile")?;
@@ -289,12 +290,18 @@ fn urgency_groups(
             if learned == Some(true) || learned.is_none() && repetitions > 0.0 {
                 studied.insert(eid(&row[0])?);
             }
+            // New lesson preparation uses the graph's band-one boundary.
+            // Keep broad studied/review maintenance on its existing evidence.
+            if learned == Some(true) || repetitions >= 1.0 {
+                known_lessons.insert(eid(&row[0])?);
+            }
         }
     }
     let tasks = owned("learner/activity")?;
     if !tasks.is_empty() {
         for row in query(db, COMPLETED_LESSONS, vec![ids(&tasks)?])? {
             studied.insert(eid(&row[0])?);
+            known_lessons.insert(eid(&row[0])?);
         }
     }
     for &topic in &studied {
@@ -307,7 +314,7 @@ fn urgency_groups(
     if let Some(scope) = find_candidates_ranking::bounded_lesson_scope(db, learner)? {
         // Ordinary self-directed preparation matches the visible depth-two
         // graph scope, regardless of prerequisite mastery or current stock.
-        for topic in scope.difference(&selected).filter(|topic| !studied.contains(topic)) {
+        for topic in scope.difference(&selected).filter(|topic| !known_lessons.contains(topic)) {
             groups
                 .entry(*topic)
                 .or_default()
