@@ -1,42 +1,40 @@
-# Current state — 2026-10-22, author-307
+# Current state — 2026-10-22, author-309
 
-Read feedback, both retained findings, latest history event, prior session state,
-required generation guidance, supplied source lesson and source questions.
-Preserved the completed generator and all registered regressions.
+Preserved generator, manifest, instructional account and registered checks. Read
+latest feedback, retained findings and history, prior state, required guidance,
+lesson passages and prerequisites. No new generator defect was demonstrated.
 
-Exact latest failure reproduced first:
+Reproduced the latest failure before other checks:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Actual installed runner sample-stage control flow invokes repair before
-regressions or sampling because the candidate is byte-identical. Retained finding
-9b8cb52352b8ca3e790e explicitly requires an evidence-only correction and preserving
-runtime; no new generator defect has been demonstrated.
+exits 1. Actual installed sample-stage control flow rejects unchanged runtime
+before regressions or sampling. Finding 9b8cb52352b8ca3e790e explicitly requests
+an evidence-only correction and preserving runtime.
 
 Fresh commands, exit codes, logs and unchanged runtime hashes:
 `evidence/current-author-verification.json`.
 
-- `checks/check_all.py`: PASS. CLI/relocation, 10 complete source banks, 81 independent
-  mathematical readbacks, 405 native-grader submissions, delivery and inventory.
-- `checks/check_batch_selection.py`: PASS. Reported seed 4258185931, visible
-  counterfactuals and within-template rank/position probes before/after delivery,
-  plus native grading.
-- `checks/check_evidence_contract.py`: FAIL at the installed runner handoff.
-  Actual evidence bundle validation, relocation, source/current-record binding,
-  and missing-provenance/wrong-root negative controls pass.
-- `checks/check_render_binding.py`: PASS. Retained actual-UI records equal fresh
-  delivered endpoints. Reinspected `evidence/author8-render/question-001.png`:
-  prompt, five matrix choices and full solution are readable and unclipped.
-  Rendering reused because bound records and runtime remain unchanged.
+- `checks/check_all.py`: PASS; retained CLI, complete source-bank replay,
+  independent mathematics, native grading, shared delivery and captured inventory.
+- `checks/check_batch_selection.py`: PASS; seed 4258185931 has 1/5 shortcut hits
+  both raw and delivered, versus the historical 5/5 failure. Controlled five-target
+  banks, ten profiles and 25 delivered native-grader submissions pass.
+- `checks/check_evidence_contract.py`: FAIL solely at strict installed handoff.
+  The 83-file bundle validates at relocated roots; missing-provenance/wrong-root
+  controls reject; current records and three affected stored generated records
+  remain bound. No installation outside workspace was attempted.
+- `checks/check_render_binding.py`: PASS; ten complete source banks and two actual
+  UI render inputs match fresh delivered records. Visually reinspected
+  `evidence/author8-render/question-001.png`: readable, unclipped matrices,
+  choices and solution. No rerender needed for unchanged content.
 
-No runtime, engine, database, publication, external runner, or other-job changes.
-The already staged runner patch remains uninstalled. No acceptance criteria were
-weakened; the evidence finding remains a failing registered regression.
+No runtime, engine, database, publication, external runner or other-job edits.
+No checks weakened. Existing instructional account remains applicable.
 
 ## Next unfinished step
 
-The runner owner must resolve the unchanged-package gate for the retained
-evidence-only finding. The staged correction targets
-`scripts/generator_pipeline.py` outside the authorized workspace. The requested
-external evidence installation is also outside the authorized write scope.
-After that correction, rerun the strict installed handoff and retained regressions
-before a fresh independent review. Changing generator bytes merely to evade the
-gate would not repair this failure.
+Runner owner must review/apply `runner-fix/evidence-only-rejection.patch` to
+`scripts/generator_pipeline.py`, outside authorized workspace, then rerun strict
+installed handoff and retained regressions before fresh review. Prior 23 offline
+proposal cases remain evidence of feasibility only; not rerun or represented as
+an installed repair. External installation of `evidence/contract-correction`
+is runner-owned. Changing runtime bytes to evade the gate would not repair it.
