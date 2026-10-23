@@ -8,41 +8,63 @@ python3 generate/scripts/find_candidates.py
 
 The fixed Datalog queries are in `queries/`. Rust executes them against one captured EDB database value; the Python launcher reuses the project's native build and database configuration. The default database and learner match the local application. Output retains complete nested `topics` and their inventories, and adds a flat `knowledge_points` list containing one ranked build candidate per KP. Topics with no KPs and KPs with empty question banks remain visible.
 
-Eligibility includes studied topics, targets, queued topics, their unready prerequisite topics, direct descendants of studied or queued topics, and current activity needs. Prerequisite preparation follows `topic/next` and KP key-prerequisite relationships transitively, stopping at prerequisites that satisfy the engine's current retention readiness. A learned but overdue prerequisite receives prerequisite relevance for review; an unlearned prerequisite needs lesson supply. Prerequisite preparation is a lower priority than direct selections; graph ancestry alone does not make a topic an immediate study obligation. Direct descendant expansion remains one hop. Required remediation and active work can enter even outside the learner's selections. There is no course or stock filter. A completed lesson or initialized learned progress establishes study history; legacy positive repetitions count when `progress/learned` is absent. A completed review establishes review history.
+In self-directed mode, ordinary new-lesson demand uses the same scope as Study:
+`learner/targets` union `learner/queue`, plus prerequisites through two reverse
+`topic/next` edges, limited to global layer 30 or above. Topics with no progress
+record or fewer than one repetition are new, unless explicit learned status or a
+completed lesson/review already establishes learning. Repetitions of one or more
+exclude a topic even when its local learned flag is false. Deeper prerequisites
+and KP-only prerequisite links do not expand this scope, and prerequisite mastery
+does not gate its lessons.
 
-Before admitting agent build or review work outside direct selections, the finder checks every
-distinct KP belonging to the current queue or targets. Each must have a usable
-hashed generator package and at least five available questions in each of the easy,
-moderate, and hard bands. A missing generator, legacy package awaiting migration,
-or any remaining band deficit keeps this gate closed. A failed/rejected generation
-attempt does not count as completed supply.
+Required remediation, active work, scheduler requests, and current review or
+assessment needs retain demand outside the new-lesson scope. Registered packages
+remain available for maintenance. Broader studied and descendant metadata can
+appear for diagnostics, but an outside ordinary lesson without activity demand
+does not create an authoring job.
 
-While the gate is closed, only those selected KPs enter the build lane. Approved
-packages can refill automatically across all topics. With `include_registered`,
-the native first pass reads selected inventories plus registered hashed-package
-KPs, using the registered-script index. It excludes unregistered sibling KPs in
-outside topics and does not expand prerequisite, downstream, or studied-topic
-banks for agent work. Missing or stale approvals outside the selected scope wait
-for the build gate to open. When selected supply is complete, discovery may inspect
-the broader population. It checks the gate again on that snapshot, so a selection
-or supply change can close it again.
-`selection_gate` records the selected KP set and remaining generator/stock deficits.
-Pending publication reconciliation remains the sole safety exception; other drafts
-retain their workspace until their scope becomes eligible again.
+Standard self-directed discovery captures this population at one database basis.
+It does not wait for directly selected topics to have usable generators or a full
+five-per-band reserve before considering prerequisite lessons. `selection_gate`
+reports mode `study-scope`, the scoped KP set, missing generators, and shortages
+against five total questions per KP; its `open` field stays true. These shortages
+affect ranking rather than admission of other jobs.
 
-The finder and durable worker use one comparator, `scripts/generator_priority.py`, under policy `relevance-v5`. Within the eligible population, relevance is the first key:
+Course mode retains the earlier discovery phases and completion gate. Its first
+pass reads directly selected topics and registered refill packages. Broader
+authoring opens only after every directly selected KP has a usable hashed
+generator and five available questions in each difficulty band. The full capture
+checks this gate again. Course-mode prerequisite discovery retains operational
+readiness and transitive topic/KP prerequisite links. Explicit native
+`selected_only` inspection also keeps its direct-selection contract; the standard
+launcher sends `respect_study_scope` to use the self-directed behavior.
+
+The finder and durable worker share `scripts/generator_priority.py`, under policy
+`study-scope-v6`. Urgency is the first comparison:
+
+| Order | Work |
+| ---: | --- |
+| 0 | Actual shortages for active, requested, or required remedial work |
+| 1 | Other actual lesson, review, or assessment shortages |
+| 2 | Distinct-topic assessment variety |
+| 3 | Advance builds and routine replenishment |
+
+Within an urgency class, relevance precedes activity purpose:
 
 | Tier | Relevance |
 | ---: | --- |
-| 0 | Required remediation or supply needed by an active/requested activity |
-| 1 | Directly selected study: queue and targets |
-| 2 | Prerequisite preparation for selected topics |
+| 0 | The matching active, requested, or remedial activity demand |
+| 1 | All new scoped lessons, plus directly selected study needs |
+| 2 | Other selected prerequisite preparation, including course-mode preparation |
 | 3 | Other current review or assessment needs |
 | 4 | Speculative preparation and maintenance outside current study |
 
-Tier 0 applies to the matching activity demand, not every possible shortage in its topic. Direct queue/target membership wins when a topic is also a prerequisite. A directly selected review shortage precedes a prerequisite lesson shortage regardless of graph layer, support count, or bank size. Purpose and topic order are compared only within the same relevance tier. Within each relevance tier, purpose orders work as follows:
+A depth-two new lesson has the same relevance as a selected root. An active
+review shortage keeps its immediate priority, while a stocked selected topic's
+advance build cannot displace an actual lesson shortage. Immediate priority does
+not carry over to unrelated future bands on the same topic.
 
-| Purpose | Points | Shortage |
+| Purpose | Diagnostic points | Shortage |
 | --- | ---: | --- |
 | Upcoming lesson | 60,000 | Missing toward 5 total questions in this KP |
 | Upcoming review | 50,000 | Missing toward 5 total questions across the topic |
@@ -52,11 +74,29 @@ Tier 0 applies to the matching activity demand, not every possible shortage in i
 | Easy-topic assessment coverage | 10,000 | Missing toward 3 distinct topics |
 | Advance build | 0 | 0 |
 
-Only a positive shortage receives shortage priority. The strongest applicable reason wins; reasons are not added. The old additive `score` and point components remain diagnostic fields and do not determine ordering.
+Only a positive shortage receives shortage priority. At the same urgency and
+relevance, lesson shortages precede reviews and assessments; variety follows
+hard/moderate/easy order. The strongest applicable reason wins; reasons are not
+added. The additive `score` and point components remain diagnostic fields and do
+not determine ordering.
 
-Within lesson work, topics sort by global prerequisite layer ascending, distinct selected goals supported descending, engine priority descending, waiting age, and stable topic ID. Layers reuse the engine's longest path through `topic/next`; the stored layer is zero-based. Support counts distinct IDs in the union of queue and targets, including the topic itself if selected. Duplicate selections and multiple paths to one goal count once. Topic ordering precedes KP shortage size, so an earlier lesson's deficient KPs stay together. Reviews use their due dates rather than graph layers; assessments retain first-study age as a tiebreaker. Stable KP IDs finish the ordering.
+Within lesson work, topics sort by global prerequisite layer ascending, distinct
+selected goals supported descending, engine priority descending, waiting age,
+and stable topic ID. Layers use the engine's longest path through `topic/next`;
+the stored layer is zero-based. Support counts distinct IDs in the union of queue
+and targets. Topic ordering precedes KP shortage size, so an earlier lesson's
+deficient KPs stay together. Reviews use their due dates; assessments retain
+first-study age as a tiebreaker. Stable KP IDs finish the ordering. Study can keep
+serving available lessons while generation prepares an earlier missing bank.
 
-Activity demands are simultaneous. A target without a completed local lesson needs lesson supply even if imported mastery implies a review next. A queued topic establishes explicit lesson demand, including re-study after an earlier local completion. A completed review or assessment does not substitute for a completed local lesson. Existing review or assessment demand is evaluated alongside lesson demand, using its own pool. `next_activity` remains a diagnostic summary, not an exclusive filter on shortages. First-study dates come from completed lesson timestamps; unknown imported dates stay unknown and sort last.
+Activity demands are simultaneous. Self-directed ordinary lesson demand follows
+the new-topic filter above; merely selecting an already known topic does not make
+it a new lesson. Existing active, explicit scheduler, and remedial lesson requests
+retain their independent demand. Review and assessment demand use their own
+pools. Course mode retains its direct queue/target lesson rules. `next_activity`
+is a diagnostic summary rather than an exclusive shortage filter. First-study
+dates come from completed lesson timestamps; unknown imported dates stay unknown
+and sort last.
 
 Counts exclude seen, reserved, canonical, invalid and ungraded free-response questions. Valid unrated questions count toward lesson/review totals; assessments require rated questions. Variety is measured over all eligible studied-and-reviewed topics, including topics whose generators already exist or whose next activity is another review. Each demand determines its depletion scope, not membership in this coverage pool. One topic occupies at most one of the six difficulty slots. A candidate earns variety priority only when adding a source-observed band improves this coverage; unknown band capability is not assumed. Output shows the proposed band and resulting coverage.
 
@@ -68,7 +108,13 @@ For later runs, pass the last successfully processed cursor:
 python3 generate/scripts/find_candidates.py --after-basis BASIS --lineage LINEAGE
 ```
 
-The cursor validates the captured transaction log and lineage. Every invocation ranks the current eligible population at its captured basis. While selected supply is incomplete, agent work is limited to direct selections; registered packages remain visible for automated refills. Assessment coverage is diagnostic for the scoped population. Broader coverage and proactive preparation are evaluated only after the gate opens. Due reviews are checked within the admitted scope because time can advance without a transaction. The output contains the next cursor. A lineage mismatch or log gap fails instead of silently advancing.
+The cursor validates the captured transaction log and lineage. Every invocation
+ranks the current eligible population at its captured basis, including due reviews
+whose eligibility can change without a transaction. Self-directed discovery reads
+the full current population once; course-mode broader discovery remains subject
+to its completion gate. Assessment coverage is diagnostic for the captured
+population. The output contains the next cursor. A lineage mismatch or log gap
+fails instead of silently advancing.
 
 The scheduler can supply selected topic entity IDs before creating an activity or choosing questions:
 
@@ -76,7 +122,12 @@ The scheduler can supply selected topic entity IDs before creating an activity o
 python3 generate/scripts/find_candidates.py --topic TOPIC_EID --activity-type assessment
 ```
 
-Repeat `--topic` to annotate several scheduler requests. These establish activity demand within the admitted scope; they do not bypass the direct-selection completion gate. Once that gate opens, a scheduler request can admit a topic outside the usual eligibility groups. This option is not a query filter: use bounded entity reads for a small readiness investigation. The coverage calculation guides build ranking and does not construct an assessment or change assessment admission. `--at RFC3339_TIME` makes review checks reproducible.
+Repeat `--topic` to annotate several scheduler requests. In self-directed mode
+these can establish immediate activity demand outside ordinary new-lesson scope.
+Course-mode requests remain subject to its direct-selection completion gate. This
+option is not a query filter: use bounded entity reads for a small readiness
+investigation. Coverage guides build ranking and does not construct an assessment
+or change assessment admission. `--at RFC3339_TIME` makes review checks reproducible.
 
 This command is read-only. The learner server calls the same discovery and ranking
 code in its background inventory refresh, then admits durable jobs through
@@ -90,7 +141,7 @@ replenishment priority.
 
 The accepted live cursor and job files are under
 `.local/learning/inventory/<database>/<learner>/`; the cursor marks this policy as
-`relevance-v5`. `/api/inventory` remains the native activity-readiness diagnostic from
+`study-scope-v6`. `/api/inventory` remains the native activity-readiness diagnostic from
 `engine/rust/inventory.rs`, not the ranked generator job queue. Generator ranking
 does not change the engine's lesson/review/assessment admission rules.
 

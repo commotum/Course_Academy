@@ -256,6 +256,25 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertTrue(all(request['jobKind'] == 'refill' for request in requests))
         self.assertTrue(all(request['purpose'] == 'routine-replenishment' for request in requests))
 
+    def test_ended_study_demand_withdraws_build_until_actual_package_is_observed(self):
+        selected = self.relevant(self.kp(1, topic=2), 1)
+        selected.update(build_eligible=True, build_required=True)
+        self.jobs.accept(self.ranked(selected))
+        build = self.path_for(1, 'build')
+        outside = {**selected, 'build_eligible': False, 'build_required': False}
+        inventory = self.ranked(outside)
+        inventory['selection_gate'] = {'open': True, 'mode': 'study-scope',
+                                       'selected_knowledge_points': []}
+        self.jobs.accept(inventory)
+        self.assertEqual(json.loads(build.read_text())['state'], 'withdrawn')
+        self.assertFalse(self.jobs.run_one())
+        # A subsequently observed usable package is completion evidence even
+        # when the topic no longer requires an ordinary first-learning lesson.
+        outside.update(generator_script='generators/aa/hash/main.py', generator_usable=True)
+        self.jobs.accept(self.ranked(outside))
+        self.assertEqual(json.loads(build.read_text())['state'], 'verified')
+        self.assertTrue(any(job['request']['jobKind'] == 'refill' for job in self.records()))
+
     def test_study_scope_workers_skip_blocked_or_locked_early_lessons(self):
         self.jobs.accept(self.study_scope_inventory(
             (1, 37, 'selected-prerequisite', 'lesson', 1, 0, True),

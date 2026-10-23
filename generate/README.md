@@ -18,24 +18,31 @@ band. An explicit band is never silently replaced. Inventory classification
 requests likewise produce a reviewed initial batch; existing source questions
 are preserved.
 
-The learner application runs three concurrent generator builders and one independent
-refill worker. Each builder uses the [finder's relevance-first ordering](scripts/README.md),
-claiming the highest-priority unlocked KP through authoring and independent review.
-The refill worker runs approved hashed packages
-without Codex sessions, aiming for five easy, five moderate and five hard questions
-per KP. It maintains existing packages even after their topics leave the urgency
-groups. Legacy scripts and approved drafts enter the build worker for packaging and
-review. Shared KP locks prevent builders and refills from publishing competing versions.
-Builder slot locks also preserve the concurrency limit across service restarts.
+When generation is enabled, the learner application runs three concurrent generator
+builders and one independent refill worker. Each builder uses the
+[finder's urgency ordering](scripts/README.md), claiming the highest-priority
+unlocked KP through authoring and independent review. Shared KP locks prevent
+builders and refills from publishing competing versions. Builder slot locks also
+preserve the concurrency limit across service restarts.
 
-The build worker first finishes the current queue and targets: every selected KP
-needs a usable hashed generator and five available questions in each difficulty
-band. Creating, repairing, or reviewing generators for other topics waits until
-that supply is complete. New selections or deficits close this gate again.
-Approved refills run independently across all registered packages, including
-prerequisite and downstream topics. An outside refill that needs approval or repair
-waits for the build scope to open. Saved drafts are retained; uncertain publications
-are reconciled using their exact requests.
+In self-directed mode, ordinary lesson preparation follows the same L30+ targets,
+queue, and depth-two prerequisite scope as Study, with the same below-band-one
+new-topic filter. All new lessons in that scope share one relevance tier. Actual
+shortages for active, requested, or remedial work come first; other activity
+shortages follow, then assessment variety, then advance builds and routine
+replenishment. Within ordinary lesson shortages, earlier global layers come first
+and a topic's deficient KPs stay together. Required work and current review or
+assessment needs can enter from outside the lesson scope.
+
+The self-directed build lane does not wait for every direct selection to have a
+complete bank. Five fresh questions per KP satisfy a lesson's total-stock need;
+filling five of each difficulty remains background reserve work. Course mode
+retains its direct-selection completion gate before broader authoring.
+Approved hashed packages refill independently without Codex sessions, aiming for
+five easy, five moderate, and five hard questions per KP, including existing
+packages outside the current scope. Legacy scripts and approved drafts enter the
+build worker for packaging and review at their current priority. Saved drafts are
+retained; uncertain publications are reconciled using their exact requests.
 
 The application refreshes the ranking at startup, after learner actions and completed
 generation jobs, and through the scheduler's 30-second refresh. Both workers wait for

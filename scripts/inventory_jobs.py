@@ -236,8 +236,14 @@ class InventoryJobs:
                 comparable = {**value, 'request': {**request, 'basis': previous['request'].get('basis')}} if previous else value
                 if comparable != previous:
                     save(path, value)
-            present_kps = {kp['db/id'] for topic in inventory['topics'] for kp in topic['knowledge_points']}
-            present_kps.update(kp['db/id'] for kp in inventory.get('maintained_knowledge_points', []))
+            captured_kps = [kp for topic in inventory['topics'] for kp in topic['knowledge_points']]
+            captured_kps.extend(inventory.get('maintained_knowledge_points', []))
+            present_kps = {kp['db/id'] for kp in captured_kps}
+            # A topic can remain in diagnostics after its lesson demand ends.
+            # Its mere presence does not verify an unfinished generator build.
+            verifiable_builds = {kp['db/id'] for kp in captured_kps
+                if kp.get('build_eligible', True) or (kp.get('generator_usable')
+                    and (kp.get('generator_script') or '').startswith('generators/'))}
             for path, old in existing.items():
                 if path in current:
                     continue
@@ -258,7 +264,7 @@ class InventoryJobs:
                     # Outside builds are excluded, not completed. Refills stay
                     # eligible, so captured full stock can verify their jobs.
                     in_scope = (old['request'].get('jobKind', 'build') == 'refill'
-                                or selected is None or kp in selected)
+                                or (selected is None or kp in selected) and kp in verifiable_builds)
                     present = kp in present_kps and in_scope
                     state = 'rejected' if old.get('state') == 'rejected' else 'verified' if present else 'withdrawn'
                     if old.get('state') != state:

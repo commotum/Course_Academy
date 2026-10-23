@@ -12,14 +12,20 @@ Automatically call [Inventory](2-inventory.md) for a topic when:
 Retakes use the same activity triggers and inventory requirements. Topic selection and eligibility must happen before filtering by question supply; an empty bank must still trigger inventory.
 
 The running application coalesces refresh events after learner actions, scheduler
-passes and generator completion. It also refreshes at startup and on the scheduler's
-30-second cadence. The finder captures a consistent database snapshot and inspects
-the directly selected pool and registered refill packages first. Agent authoring,
-repair, and review for prerequisite, downstream, and unrelated topics is eligible
-only after every selected KP has a usable hashed generator and five available
-questions in each difficulty band. Approved refills run across registered packages
-independently of this gate. The durable cursor records the accepted lineage and basis. This scan
-runs outside the learner API lock; starting a lesson does not await generator work.
+passes and generator completion, including startup and the scheduler's 30-second
+cadence. In self-directed mode the finder captures the bounded Study lesson pool,
+current activity needs, and maintenance inventory together at one database basis.
+New lessons use targets and queue plus two reverse `topic/next` hops, L30+, and the
+same below-band-one filter as Study. Prerequisite mastery and empty banks do not
+remove these topics from generation demand. Ordinary new lessons outside that
+scope do not create authoring demand.
+
+There is no direct-selection completion gate in self-directed mode. Course mode
+retains the existing gate: broader authoring waits until directly selected KPs
+have usable hashed generators and five fresh questions in each difficulty band.
+Approved refills remain independent. The durable cursor records the accepted
+lineage and basis. The scan runs outside the learner API lock; starting a lesson
+does not await generator work.
 
 1. Pass the affected topics and activity types to Inventory.
 2. If inventory is sufficient, no generation is needed. Otherwise, queue background generation for the shortages, reusing existing jobs for overlapping pools.
@@ -28,25 +34,27 @@ runs outside the learner API lock; starting a lesson does not await generator wo
 Recheck availability before starting an unstarted activity. Preserve already started or paused work; existing required-work rules still apply while generation runs.
 
 The live worker and read-only `generate/scripts/find_candidates.py` share the
-`relevance-v5` comparator in `scripts/generator_priority.py`. After applying the
-selection-completion gate to agent build and review work, they order eligible work by
-relevance first: required or active activity needs, directly selected study (queue
-and targets), prerequisite preparation, other current review/assessment needs,
-then speculative preparation. Direct membership wins when a topic is also a
-prerequisite. Within each group, lesson shortages precede review
-shortages, assessment shortages, hard/moderate/easy distinct-topic assessment
-coverage, and advance preparation or routine replenishment. A selected review
-shortage therefore precedes a prerequisite lesson shortage regardless of size or
-graph layer.
+`study-scope-v6` comparator in `scripts/generator_priority.py`. They order work by:
+
+1. Actual shortages for active, requested, or required remedial work.
+2. Other actual lesson, review, or assessment shortages.
+3. Distinct-topic assessment variety, in hard/moderate/easy order within relevance.
+4. Advance builds and routine replenishment.
+
+Within each urgency class, relevance and activity purpose refine the order. New
+scoped roots and prerequisite lessons all have relevance tier 1, so early missing
+lesson banks are not deferred behind their directly selected descendants. Lesson
+shortages precede review and assessment shortages at the same relevance tier.
+Current needs outside the lesson scope retain their activity demand; immediate
+priority applies only to the matching shortage, not every future band in a topic.
 
 Lesson work orders topics by global prerequisite layer, distinct selected goals
-supported, engine priority, and age before comparing individual KP deficits.
-Review work uses due dates instead of prerequisite layers. Selected lesson demand
-is independent of imported mastery: targets without a completed local lesson and
-explicitly queued lessons are checked even when the inferred next activity is a
-review. Lessons need five usable fresh questions per KP, reviews five across the
+supported, engine priority, and age before comparing individual KP deficits. A
+lesson's deficient KPs stay together. Reviews use due dates instead of graph
+layers. Lessons need five usable fresh questions per KP, reviews five across the
 topic, and assessments one rated question across the topic. Exactly five satisfies
-the lesson/review threshold; a complete bank receives no shortage priority.
+the lesson/review threshold. Missing per-band reserves do not block another job
+or give a stocked activity shortage priority.
 
 The flat `knowledge_points` list deduplicates build candidates and excludes usable
 registered generators. Full nested topic inventories remain available for coverage
@@ -57,7 +65,8 @@ it with `include_registered=true` so the independent refill worker also maintain
 existing hashed generators outside the urgency groups. Those extra topics remain
 ineligible for new generator creation. Refills run approved packages directly;
 missing or stale approval defers the affected difficulty to the build worker for
-review when its topic is eligible under the selection gate. See the
+review at its current priority, subject to the course-mode selection gate when
+applicable. See the
 [pipeline guide](../README.md) for recovery and storage details.
 Uncertain publication recovery precedes ordinary work to reconcile its exact saved
 request. Unfinished authoring and review drafts retain their workspace and resume
