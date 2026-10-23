@@ -508,7 +508,9 @@ impl Algebra {
             Atom::Root(d, p) if **p == Poly::atom(Atom::E) => Some((a.clone(), *d, *n)),
             _ => None,
         }).collect();
-        if e_roots.len() > 1 {
+        // A repeated root is one map entry with multiplicity, not several
+        // distinct atoms. Reduce its exponent too (e.g. fourth_root(e)^2).
+        if !e_roots.is_empty() {
             let exponent = e_roots.iter().fold(Q::zero(), |q, (_, d, n)| {
                 q + Q::new((*n).into(), (*d).into())
             });
@@ -2021,6 +2023,34 @@ mod tests {
         assert!(supports("exp(1/100)", Context::default()));
         assert!(!supports("exp(1/0)", Context::default()));
         assert!(compare("exp((x/x)/2)", "e^(1/2)", Context::default()).is_err());
+    }
+    #[test]
+    fn repeated_e_roots_reduce_multiplicities() {
+        for degree in 2..=8 {
+            for count in [2, 3, degree, degree + 1] {
+                for sign in [-1, 1] {
+                    let factor = format!("exp({sign}/{degree})");
+                    let product = vec![factor.as_str(); count as usize].join("*");
+                    let power = format!("e^({}/{degree})", sign * count);
+                    eq(&product, &power);
+                    eq(&power, &product);
+                    eq(&format!("({factor})^{count}"), &power);
+                    for wrong in [
+                        format!("-({power})"),
+                        format!("2*({power})"),
+                        format!("e^({}/{degree})", sign * count + 1),
+                    ] {
+                        assert_eq!(compare(&product, &wrong, Context::default()), Ok(false),
+                            "{product} != {wrong}");
+                    }
+                }
+            }
+        }
+        eq("8*exp(-1/4)*exp(-1/4)/(5*sqrt(5))", "8*sqrt(5)/(25*sqrt(e))");
+        eq("exp(1/4)*exp(1/4)*exp(1/3)", "e^(5/6)");
+        eq("exp(1/4)*exp(1/4)*exp(-1/2)", "1");
+        assert!(compare("exp(-1/4)*exp(-1/4)*(x/x)", "exp(-1/2)", Context::default()).is_err());
+        assert_eq!(compare("sqrt(x^2)", "x", Context::default()), Ok(false));
     }
     #[test]
     fn roots_of_positive_constant_powers_share_rational_power_form() {

@@ -1,4 +1,4 @@
-"""Retained cf8dcbf41937f26e0c48: current generator, visible math, real grading."""
+"""Retained fractional exp findings: current generator, visible math, real grading."""
 import json, os, subprocess, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
@@ -35,9 +35,16 @@ def cases(records):
                 '8/(5*sqrt(5)*exp(1/2))',
                 '8*exp(-1/2)/(5*sqrt(5))',
                 '8/(5*sqrt(5)*exp(2/4))',
+                '8*exp(-1/4)*exp(-1/4)/(5*sqrt(5))',
+                '8/(5*sqrt(5)*exp(1/4)*exp(1/4))',
+                '8*exp(-1/6)^3/(5*sqrt(5))',
+                '8*exp(-1/8)^4/(5*sqrt(5))',
                 '8*exp(-1/6)*exp(-1/3)/(5*sqrt(5))']]
             checks += [{'submitted':v,'expected':'rejected'} for v in [
                 '8/(5*sqrt(5)*exp(-1/2))',
+                '8*exp(-1/4)/(5*sqrt(5))',
+                '-8*exp(-1/4)*exp(-1/4)/(5*sqrt(5))',
+                '16*exp(-1/4)*exp(-1/4)/(5*sqrt(5))',
                 '8/(5*sqrt(5)*exp(1/3))']]
         out.append({'label':r['question'][':question/id'],'record':r,'checks':checks})
     return out
@@ -46,7 +53,7 @@ def main():
     ps=[dict(a=1,b=1,c=1,u=2),dict(a=1,b=1,c=1,u=3),
         dict(a=1,b=1,c=1,u=4),dict(a=5,b=2,c=-1,u=3),
         dict(a=1,b=2,c=2,u=5),dict(a=5,b=3,c=4,u=6)]
-    records=[g.generate('hard',917+i,'reciprocal_exp_root_blank',parameters=p) for i,p in enumerate(ps)]
+    records=[g.generate('hard',66081 if i==0 else 917+i,'reciprocal_exp_root_blank',parameters=p) for i,p in enumerate(ps)]
     # A current source replay; compare every original field value, without trusting metadata.
     source=json.loads((W.parent/'source/source.json').read_text())['material']['kp'][':knowledge-point/questions']
     replays=[]
@@ -70,7 +77,7 @@ def main():
     assert accepted and any(r['generation']['parameters']==ps[0] for r in accepted)
     save('regression-delivered-grader-input.json',cases(accepted))
     run([ENGINE,W/'regression-delivered-grader-input.json',W/'regression-delivered-grader-result.json'])
-    save('regression-result.json',{'finding':'cf8dcbf41937f26e0c48','current_records':len(records),
+    save('regression-result.json',{'findings':['cf8dcbf41937f26e0c48','f1db9b4f2ce0efa72b7b'],'current_records':len(records),
          'delivered_records':len(accepted),'source_replays':len(replays),'result':'passed'})
     print('Fractional exp regression passed:',len(records),'current records;',len(accepted),'delivered')
 if __name__=='__main__':main()
