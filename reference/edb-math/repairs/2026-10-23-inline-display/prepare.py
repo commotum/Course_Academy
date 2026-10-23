@@ -48,7 +48,8 @@ def balanced_source(tex):
  return depth==0 and not env
 
 def decision(value,m,attr):
- tex=body(m);integral=bool(audit.INTEGRAL.search(tex));big=bool(audit.BIG.search(tex));env=bool(audit.ENV.search(tex));fracs=tex.count(r'\frac')+tex.count(r'\dfrac');longfrac=(fracs>=2 and len(tex)>=40) or fracs and len(tex)>=70;longroot=r'\sqrt' in tex and len(tex)>=90;chain=(tex.count('=')>=3 and len(tex)>=70) or ('=' in tex and len(tex)>=180 and not env)
+ lineleft=value[value.rfind('\n',0,m.start())+1:m.start()];lineend=value.find('\n',m.end());lineright=value[m.end():lineend if lineend>=0 else len(value)];line_alone=not lineleft.strip() and not lineright.strip(' \t.,;:')
+ tex=body(m);integral=bool(audit.INTEGRAL.search(tex));big=bool(audit.BIG.search(tex));env=bool(audit.ENV.search(tex));fracs=tex.count(r'\frac')+tex.count(r'\dfrac');longfrac=(fracs>=2 and len(tex)>=40) or fracs and len(tex)>=70;longroot=r'\sqrt' in tex and len(tex)>=90;chain=(line_alone and tex.count('=')>=2) or (tex.count('=')>=3 and len(tex)>=70) or ('=' in tex and len(tex)>=180 and not env)
  if not any((integral,big,env,longfrac,longroot,chain)):return None,None
  if not balanced_source(tex):return 'retain','preexisting-unbalanced-source-math'
  left=value[value.rfind('\n',0,m.start())+1:m.start()];end=value.find('\n',m.end());right=value[m.end():end if end>=0 else len(value)];standalone=not left.strip() and not right.strip(' \t.,;:')
