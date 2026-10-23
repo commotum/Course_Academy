@@ -1,0 +1,260 @@
+{
+  "learner_operation": "Recognize the whole constant multiplying ln x, pull it through differentiation, replace ln x by 1/x, and simplify; first rewrite division by a constant when that source form occurs.",
+  "fixed_features": [
+    {
+      "feature": "Single ln x differentiated with respect to x",
+      "justification": "Canonical 6624681a-bb00-59db-8df9-4d5a3cd00434 and tutorial b1f46211-3766-53d0-bcc7-30bb9056b948 establish this exact operation; other logarithm tasks are separate KPs."
+    },
+    {
+      "feature": "Coefficient remains in derivative",
+      "justification": "This is the constant multiple rule itself; fixing that relationship is essential, while fixing its value or excluding reciprocal coefficients is not."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Constant coefficient and sign",
+      "eligible_variation": "Integers, reduced rational coefficients including 1/d, and integer multiples of e supported by source.",
+      "observed": "Signed integer/rational/e forms vary; every |n|=1 coefficient is excluded, including source ln(x)/4."
+    },
+    {
+      "role": "Constant in denominator presentation",
+      "eligible_variation": "ln x divided by a varying nonzero constant; source q-70887 supplies rewrite to constant multiple.",
+      "observed": "No supporting template; raw-q-70887 rejected and n=1,d=4,k=0 rejected in normal generation."
+    },
+    {
+      "role": "Radio correct-choice position",
+      "eligible_variation": "Any of five positions independent of correct coefficient.",
+      "observed": "Stored positions vary by profile; actual UI adds independent deterministic ordering."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Integer/fraction/euler/canonical/equivalent-entry profiles",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-analysis.json"
+      ],
+      "result": "38 constructed records cover all five existing profiles; 37 survive captured-inventory filtering. Both signs observed."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "5 of 5 survive; two positive integer radios, one negative euler radio, two negative rational blanks."
+    },
+    {
+      "case": "Source reciprocal family",
+      "sample_refs": [
+        "source-replay.json",
+        "missing-reciprocal-family.json",
+        "regression-result.json"
+      ],
+      "result": "Failed: source ln(x)/4 cannot be generated."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold integer profile and seed 17 fixed; change coefficient 7 to -7.",
+      "expected": "Function, derivative and each solution stage change sign; old answer rejected and new one accepted.",
+      "observed": "Exact math and native option grading pass; actual UI screenshots show 7/x versus -7/x and corresponding solution steps.",
+      "status": "passed",
+      "justification": "Coefficient sign directly determines the derivative by the constant multiple rule.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep coefficient 7 and integer profile fixed; change seed 17 to 18.",
+      "expected": "Same function, solution and correct mathematical response despite option permutation.",
+      "observed": "Prompt/solution/key preserved, stored bank permuted; native grader accepts the same mathematical answer; actual UI inspected.",
+      "status": "passed",
+      "justification": "Option order is not mathematical evidence, as source banks support recognition of the derivative rather than a label.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "raw-sample / integer",
+      "scope": "within_template",
+      "strategy": "always choose stored option 4",
+      "correct": 4,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "raw-sample / fraction",
+      "scope": "within_template",
+      "strategy": "always choose stored option 1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "raw-sample / euler",
+      "scope": "within_template",
+      "strategy": "always choose stored option 5",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "delivered-sample / integer",
+      "scope": "within_template",
+      "strategy": "always choose stored option 4",
+      "correct": 4,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "delivered-sample / fraction",
+      "scope": "within_template",
+      "strategy": "always choose stored option 1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "delivered-sample / euler",
+      "scope": "within_template",
+      "strategy": "always choose stored option 5",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "delivered-batch / integer",
+      "scope": "within_template",
+      "strategy": "always choose stored option 5",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Stored answer-list position",
+      "subgroup": "delivered-batch / euler",
+      "scope": "within_template",
+      "strategy": "always choose stored option 1",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. No fixed position across larger profile sample; one-item subgroup is descriptive only, not evidence of a structural shortcut. The UI also reorders choices; this tests generator list placement only.",
+      "sample_refs": [
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "Actual UI answer position",
+      "subgroup": "exact delivered batch radio fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose displayed position 2",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way uniform guessing. Counts come from actual rendered DOM; no one displayed position answers all radios. Future task/item IDs change UI ordering.",
+      "sample_refs": [
+        "render-inspection.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt is a constant times ln x",
+      "subgroup": "all 46 independently checked examples",
+      "scope": "overall",
+      "strategy": "Preserve the complete coefficient and replace ln x by 1/x",
+      "correct": 46,
+      "total": 46,
+      "baseline": 0.0,
+      "disposition": "intended_skill",
+      "conclusion": "The comparison strategy always answering 1/x succeeds in 0/46 tested cases. Preserving c and differentiating ln is exactly the canonical operation, not an incidental bypass.",
+      "sample_refs": [
+        "math-results.json",
+        "independent-records.json",
+        "batch-records.json",
+        "counterfactual-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "parameter-domain rejection and profile sampling",
+      "requested difficulty",
+      "publisher normalization and inventory/batch deduplication",
+      "captured inventory usability and retirement",
+      "difficulty-weighted selection code and seeded all-easy reproduction",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "delivery-analysis.json",
+      "delivery-batch/delivery.json",
+      "delivery-sample/delivery.json",
+      "inventory-analysis.json",
+      "render-inspection.json"
+    ],
+    "result": "No filtering stage restores the omitted reciprocal family. Current candidate batch survives intact; actual rendered radio positions vary. Conditional all-easy native-rule reproduction reaches every candidate."
+  },
+  "limitations": [
+    "Live learner histories and policy distribution were not supplied; selection conclusions are conditional on fresh candidates and positive easy weight.",
+    "Inventory is captured basis 5668, not a live bank.",
+    "No finite sample establishes absence of every shortcut.",
+    "Requested easy only; other authored difficulty levels not certified."
+  ]
+}

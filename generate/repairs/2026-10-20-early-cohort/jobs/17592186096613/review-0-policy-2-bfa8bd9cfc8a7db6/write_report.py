@@ -1,0 +1,37 @@
+import json,pathlib
+r=pathlib.Path.cwd(); root='/home/jake/Developer/Course_Academy'; package=str(r.parent/'workspace')
+def read(p):return json.load(open(r/p))
+def save(p,v):(r/p).write_text(json.dumps(v,indent=2))
+a=read('source-analysis.json')
+source={k:a[k] for k in ['skill','reasoning_steps','invariants','permitted_variations','source_refs','evidence_paths']}
+def check(status,paths,details):return dict(status=status,evidence_paths=paths,details=details)
+report={'verdict':'revise','summary':'The generator excludes the source-supported ln(x)/d family: n=1,d=4,k=0 is rejected. Current sampled records and the five-record batch passed math, grading, rendering, and packaging checks.','source_analysis':source,'checks':{
+'source_replay':check('failed',['source-analysis.json','source-replay.json','additional-source-replay.json','regression-result.json'],'Nine declared raw source cases replay with complete banks; the 6e source and canonical 5 example are supported semantically. Source q-70887, ln(x)/4, cannot be reproduced. Missing source keys/solutions were explicitly distinguished from observed evidence.'),
+'math':check('passed',['review_tests.py','math-results.json','independent-records.json','batch-records.json'],'Independent visible-expression differentiation verifies keys and final solutions for 46 records, including all five actual batch records; radio keys are unique.'),
+'variety':check('failed',['missing-reciprocal-family.json','delivery-analysis.json','regression-result.json'],'Existing five profiles vary coefficient magnitude and sign, but the global |n|>=2 constraint and absent division template suppress an explicitly supported coefficient/presentation family.'),
+'scope':check('passed',['source-analysis.json','scope-analysis.json','independent-records.json'],'Tested easy outputs retain one constant-multiple natural-log derivative and source radio/blank contracts. Authored moderate/hard outputs are outside this requested-difficulty review.'),
+'grading':check('passed',['grader-input.json','grader-report.json'],'Actual native grade_field passed 245 checks: 76 accepted and 169 rejected. Blank checks include rational rearrangement, negative exponents, unreduced equivalents, sign errors, wrong powers, and zero; radio checks cover all options.'),
+'rendering':check('passed',['render/rendering.json','render-counterfactual/rendering.json','render-inspection.json'],'Actual UI rendered all five batch records and controlled sign/seed pairs without reported errors. Representative radio/blank and both counterfactual screenshots inspected.'),
+'packaging':check('passed',['packaging-tests.json','relocation-records.json','delivery-batch/delivery.json','delivery-sample/delivery.json'],'Exact Python 3.13.5 and SymPy 1.14.0 match manifest; deterministic replay and relocation pass. Batch 5/5 and sample 37/38 survive actual delivery filtering. Original package hashes unchanged. No image/external asset output.'),
+'decision_variation':check('failed',['pedagogical-variation.json','counterfactual-records.json','delivery-analysis.json','inventory-analysis.json'],'Controlled sign and irrelevant-seed changes behave correctly and no tested incidental shortcut was demonstrated. Nevertheless the specification excludes the source-supported reciprocal coefficient and its rewrite operation; delivery cannot restore that missing family. Captured inventory and conditional learner-selection rules examined.')},'findings':[{'kind':'restriction','description':'The global 2<=abs(n) coefficient guard and missing division-form template exclude y=ln(x)/4, an explicit easy source question. This removes the learner operation of rewriting division by a constant before differentiating, as well as all unit-numerator rational coefficients.','source_refs':['4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887): y=ln(x)/4; bank {-1/(4x),1/(4x),-4/x,1/x,4/x}; solution rewrites to (1/4)ln x','tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: derivative of ln x is 1/x'],'reproduction':f'{root}/.venv/bin/python {r}/regression_reciprocal.py {package} exits 1. Minimal API case: generate_easy(seed=17, parameters={{"n":1,"d":4,"k":0}}) raises ValueError("Template/field/profile outside level"). See regression-result.json and missing-reciprocal-family.json.','requested_change':'Support the source division-by-constant family throughout parameter validation, template/profile selection, sampling, answer bank, and solution construction. Replay q-70887 with its complete five-option bank and rewrite stage; vary the denominator within an easy range and derive all dependent content together. Retain the strict reciprocal regression and extend it to verify the generated source bank, mathematics, grading and rendering. Do not merely remove the source case or change the seed.'}]}
+save('result.json',report)
+x=read('missing-reciprocal-family.json');x['command']=f'{root}/.venv/bin/python {r}/regression_reciprocal.py {package}';save('missing-reciprocal-family.json',x)
+(r/'commands.md').write_text(f'''All commands were run from `{r}`. No database writes or publication occurred.
+
+- `{root}/.venv/bin/python review_tests.py > test-summary.json` (supports optional package path and candidate-records file).
+- `{root}/.venv/bin/python analysis_followup.py > followup-summary.txt`
+- `{root}/.venv/bin/python regression_reciprocal.py ../workspace > regression-result.json` — expected success requirement fails, exit 1.
+- `{root}/generate/runs/current/check-engine grader-input.json grader-report.json > grader.log 2>&1`
+- `{root}/.venv/bin/python {root}/generate/pipeline/check_delivery.py --input batch-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math`
+- Same delivery command with `--input independent-records.json --output delivery-sample`.
+- `{root}/.venv/bin/python {root}/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root ../workspace` (default six records includes all five batch records).
+- Same renderer with `--input counterfactual-records.json --output render-counterfactual`.
+- Relocation: copied package under evidence_root/relocated-package; ran its entrypoint with `--difficulty easy --seed 3129290382 --count 5 --format json`; compared complete output with runner batch. See packaging-tests.json.
+- `python3 finalize_evidence.py`; schema validated using jsonschema against supplied pedagogical-variation.schema.json; all relative sample references verified nonempty.
+
+Repair history and preflight paths were absent. No prior independent review was supplied. Original package file hashes were compared after testing and unchanged.
+''')
+(r/'session-state.md').write_text('Review complete: revise. One restriction: source q-70887 reciprocal coefficient/division family excluded by |n|>=2 and absent profile. Strict regression_reciprocal.py exits 1 with n=1,d=4,k=0. All 46 math records, 245 grader checks, UI rendering and packaging passed. Actual batch 5/5 accepted; independent sample 37/38 accepted. Inventory inspected at basis 5668: no demonstrated historical defect; affected-inventory.json is empty. All eight checks and evidence references saved in result.json; pedagogical-variation schema validated. Original package unchanged.\n')
+for c in report['checks'].values():
+ for p in c['evidence_paths']:assert (r/p).stat().st_size
+print('result.json saved; all check evidence files nonempty')

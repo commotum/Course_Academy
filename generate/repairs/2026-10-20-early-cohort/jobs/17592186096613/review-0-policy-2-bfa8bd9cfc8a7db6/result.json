@@ -1,0 +1,109 @@
+{
+  "verdict": "revise",
+  "summary": "The generator excludes the source-supported ln(x)/d family. The five-record batch passed math, grading, rendering, and delivery checks. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate a constant multiple of ln x using the constant multiple rule.",
+    "reasoning_steps": [
+      "Identify the complete constant coefficient.",
+      "Rewrite division by a constant as multiplication when needed.",
+      "Differentiate ln x to 1/x and simplify."
+    ],
+    "invariants": [
+      "One natural logarithm of x, with no chain rule or additional terms.",
+      "Preserve the source radio and blank response contracts."
+    ],
+    "permitted_variations": [
+      "Coefficient magnitude, sign, rational denominator, and supported multiples of e.",
+      "Division-by-constant presentation and radio option order."
+    ],
+    "source_refs": [
+      "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948",
+      "Canonical example 6624681a-bb00-59db-8df9-4d5a3cd00434",
+      "Question 4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "additional-source-replay.json",
+        "regression-result.json"
+      ],
+      "details": "Nine declared source profiles replay successfully; the additional 6e example is supported semantically. The ln(x)/4 source case cannot be generated."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "review_tests.py"
+      ],
+      "details": "Independent differentiation verified answers and final solutions for 46 records, including the complete runner batch."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "missing-reciprocal-family.json",
+        "delivery-analysis.json"
+      ],
+      "details": "The global |n|>=2 restriction and missing division template suppress a source-supported family."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "independent-records.json"
+      ],
+      "details": "Tested easy outputs preserve the intended constant-multiple differentiation operation and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grading passed 245 checks, including equivalent blank entries and plausible wrong answers."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendering passed; representative radio, blank, and counterfactual screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-tests.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation, and unchanged package hashes verified. Delivery accepted 5/5 batch records and 37/38 independent samples."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivery-analysis.json",
+        "inventory-analysis.json"
+      ],
+      "details": "Controlled counterfactuals passed and no tested incidental shortcut was demonstrated. However, the specification excludes reciprocal coefficients and their source-supported rewrite operation. No historical stored-record defect was demonstrated."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "The generator rejects y=ln(x)/4 because its coefficient validation requires |n|>=2 and it lacks the division-by-constant template. This excludes an explicit easy source question and its rewrite step.",
+      "source_refs": [
+        "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887): ln(x)/4, derivative 1/(4x), five-option reciprocal bank"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python regression_reciprocal.py ../workspace from evidence_root. It exits 1: generate_easy(seed=17, parameters={\"n\":1,\"d\":4,\"k\":0}) raises ValueError(\"Template/field/profile outside level\").",
+      "requested_change": "Support reciprocal coefficients and division-by-constant presentation throughout validation, sampling, bank construction, and worked solutions. Replay q-70887 with its complete bank and rewrite stage, then vary its denominator. Retain the strict regression and verify math, grading, and rendering."
+    }
+  ]
+}
