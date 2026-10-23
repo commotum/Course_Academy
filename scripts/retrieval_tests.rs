@@ -143,6 +143,19 @@ impl Fixture {
                 forms.push(json!({"db/id":format!("answer-{topic}-{q}"),"answer/id":id(n+2),"answer/type":kw("answer.type/math"),"answer/value":"2","answer/feedback":"That is the correct value."}));
             }
         }
+        // Retrieval scenarios live at L30+, independent of the queue boundary tests.
+        for layer in 0..29 {
+            let next = if layer == 28 {
+                (0..5).map(|i|format!("topic-{i}")).collect::<Vec<_>>()
+            } else { vec![format!("foundation-{}",layer+1)] };
+            forms.push(json!({"db/id":format!("foundation-{layer}"),"topic/id":id(90_000_000+layer),"topic/next":next}));
+        }
+        forms.push(json!({"db/id":"foundation-progress","progress/id":"foundation",
+            "progress/topic":"foundation-28","progress/policy":"policy","progress/learned":true,
+            "progress/repetitions":1.0,"progress/memory":1.0,"progress/memory-at":{"$instant":now},
+            "progress/interval-days":36500.0,"progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,
+            "progress/assessment-mass":0.0,"progress/practice-mass":0.0}));
+        forms.push(add(json!("learner"),"learner/knowledge-profile",json!("foundation-progress")));
         f.tx(forms, if migrated { now - 2000 } else { now - lesson_age_ms })?;
         f.learner = f.snapshot()?.entities.with_attribute("learner/id")[0];
         let mastered = f.snapshot()?.refs(f.learner, "learner/activity")?;
@@ -1032,7 +1045,8 @@ fn study_now_and_lesson_resume_bypass_required_queue_work_without_changing_it() 
             }
 
             let s = f.snapshot()?;
-            let queued_topic = s.entities.with_attribute("topic/id")[0];
+            let queued_topic = s.entities.with_attribute("topic/id").into_iter()
+                .find(|t| text(&s,*t,"topic/title") == "Topic 0").unwrap();
             let kp = s.refs(queued_topic, "topic/knowledge-points")?[0];
             let question = s.refs(kp, "knowledge-point/questions")?[0];
             let fields = s.refs(question, "question/answer-fields")?;

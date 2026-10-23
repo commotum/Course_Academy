@@ -60,7 +60,8 @@ the [Progress](http://127.0.0.1:8765/progress), or the
 and repetition values from EDB; browsing them leaves the study course unchanged.
 Lessons present one item at a time
 and save responses, active elapsed time, XP, and FIRe progress to EDB. Study serves
-lessons, due reviews, and assessments. In self-directed mode, it combines your
+lessons, due reviews, and assessments for topics in global graph layer 30 or above.
+In self-directed mode, it combines your
 explicit queue with targets and their unfinished prerequisites, stopping at known
 topics and the prerequisite ancestry of topics you have studied. Content without
 a supported grader or sufficient practice is excluded from new lesson offers.

@@ -905,6 +905,8 @@ pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
     Ok(layers)
 }
 
+pub const MIN_STUDY_LAYER: usize = 30;
+
 /// Study uses the graph's one-based L30 cutoff, including saved attempts and
 /// retrieval work. Apply it before scheduling so excluded required work cannot
 /// hide eligible activities. Direct topic study has its own selection path.
@@ -913,7 +915,7 @@ fn filter_study_layers(
     plan: Vec<PlannedActivity>,
 ) -> Result<Vec<PlannedActivity>> {
     let layers = topic_layers(s)?;
-    let eligible = |topic: u64| layers.get(&topic).is_some_and(|&layer| layer >= 29);
+    let eligible = |topic: u64| layers.get(&topic).is_some_and(|&layer| layer + 1 >= MIN_STUDY_LAYER);
     let mut result = Vec::new();
     for candidate in plan {
         if let Some(topic) = s.optional_ref(candidate.activity, "activity/scope")? {
@@ -3065,6 +3067,56 @@ pub(crate) mod tests {
             .unwrap()
             .insert("topic/next".into(), json!([80]));
         assert!(topic_layers(&s).unwrap_err().contains("cycle"));
+    }
+
+    #[test]
+    fn study_excludes_l29_and_keeps_l30_and_l31_including_saved_attempts() {
+        let mut s = planning_fixture(&[]);
+        for topic in 500..531 {
+            planning_lesson(&mut s, topic, &if topic < 530 { vec![topic + 1] } else { vec![] });
+        }
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([528,529,530]));
+        put(&mut s.entities, 600, json!({"learner-task/activity":10528,
+            "learner-task/status":"learner-task.status/paused"}));
+        put(&mut s.entities, 601, json!({"learner-task/activity":10530,
+            "learner-task/status":"learner-task.status/started"}));
+        put(&mut s.entities, 602, json!({"progress/topic":528,"progress/repetitions":1.0}));
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!([600,601]));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([602]));
+        s.entities.get_mut(&7).unwrap().insert("module/topics".into(), json!([528,529,530]));
+        let before = s.entities.clone();
+        for self_directed in [true, false] {
+            s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(self_directed));
+            let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
+            assert_eq!(plan.iter().map(|p| p.activity).collect::<Vec<_>>(), [10530,10529]);
+        }
+        // A direct topic request remains available outside the Study queue.
+        assert_eq!(selected_topic_candidates(&s,1,5,528,planning_time()).unwrap()[0].activity,10528);
+        s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(true));
+        assert_eq!(s.entities, before);
+    }
+
+    #[test]
+    fn study_checks_every_assessment_topic_against_the_layer_cutoff() {
+        let mut s = planning_fixture(&[]);
+        put(&mut s.entities, 1100, json!({"db/ident":"activity.type/assessment"}));
+        let mut s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
+        for topic in 500..531 {
+            planning_lesson(&mut s, topic, &if topic < 530 { vec![topic + 1] } else { vec![] });
+            put(&mut s.entities, 40000 + topic, json!({"knowledge-point/id":id(40000+topic),
+                "knowledge-point/questions":[20000+topic]}));
+            s.entities.get_mut(&topic).unwrap().insert("topic/knowledge-points".into(),json!([40000+topic]));
+        }
+        put(&mut s.entities, 700, json!({"activity/id":id(700),"activity/type":"activity.type/assessment",
+            "activity/steps":[30529,30528],"activity/first-step":30529}));
+        s.entities.get_mut(&30529).unwrap().insert("step/next".into(), json!(30528));
+        let candidate = PlannedActivity { activity:700, topic:529, priority:11000.0,
+            target_count:0, target_topics:vec![], remaining_topics:0,
+            nearest_target_steps:None, due:None, reason:"Assessment".into() };
+        assert!(filter_study_layers(&s,vec![candidate.clone()]).unwrap().is_empty());
+        s.entities.get_mut(&700).unwrap().insert("activity/steps".into(), json!([30529,30530]));
+        s.entities.get_mut(&30529).unwrap().insert("step/next".into(), json!(30530));
+        assert_eq!(filter_study_layers(&s,vec![candidate]).unwrap().len(),1);
     }
 
     #[test]

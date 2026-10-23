@@ -790,12 +790,17 @@ fn home_with_candidates(
         }
     }
     let mut waiting = vec![];
+    let layers = learning::topic_layers(s)?;
     for t in s.refs(l, "learner/activity")? {
         if status(s, t, "learner-task/status")? != "paused" {
             continue;
         }
         let a = s.reference(t, "learner-task/activity")?;
         if status(s, a, "activity/type")? != "lesson" {
+            continue;
+        }
+        let topic = s.reference(a, "activity/scope")?;
+        if layers.get(&topic).is_none_or(|&layer| layer + 1 < learning::MIN_STUDY_LAYER) {
             continue;
         }
         let chain = items(s, t)?;
@@ -904,6 +909,9 @@ fn queue_preparation(
     }
     let mut forms = vec![];
     let mut prepared_lessons = BTreeSet::new();
+    let layers = learning::topic_layers(s)?;
+    let study_topic = |topic: u64| layers.get(&topic)
+        .is_some_and(|&layer| layer + 1 >= learning::MIN_STUDY_LAYER);
     let lifecycle = course_academy_engine::scheduling::lifecycle(s, l)?;
     for (&activity, &task) in &pending {
         if !matches!(
@@ -938,6 +946,11 @@ fn queue_preparation(
         }
     }
     for (index, definition) in retrieval::schedule(s, l, c, at)?.into_iter().enumerate() {
+        if definition.topic.is_some_and(|topic| !study_topic(topic))
+            || definition.questions.iter().any(|q| !s.topic_for_question(*q).is_ok_and(&study_topic))
+        {
+            continue;
+        }
         let task = format!("retrieval-task-{index}");
         if let Some(activity) = definition.existing_activity {
             prepared_lessons.insert(activity);
@@ -3144,6 +3157,13 @@ mod study_queue_tests {
                 json!({"db/ident":kw(ident)}).as_object().unwrap().clone(),
             );
         }
+        // Keep the selection fixtures at L30+; the cutoff has its own boundary tests.
+        for topic in 90000..90029 {
+            let next = if topic == 90028 { vec![5,7] } else { vec![topic + 1] };
+            records.insert(topic, json!({"topic/id":format!("foundation-{topic}"),"topic/next":next}).as_object().unwrap().clone());
+        }
+        records.insert(90029, json!({"progress/topic":90028,"progress/repetitions":1.0}).as_object().unwrap().clone());
+        records.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([90029]));
         EntitySnapshot::new(records, 42).unwrap()
     }
 
@@ -3884,6 +3904,23 @@ mod study_queue_tests {
     }
 
     #[test]
+    fn study_home_and_preparation_exclude_topics_below_l30_in_both_modes() {
+        let mut s = fixture();
+        // Removing the foundation chain puts the course and selected topics
+        // below L30, including their already prepared tasks.
+        s.entities.get_mut(&90028).unwrap().insert("topic/next".into(),json!([]));
+        for self_directed in [true,false] {
+            s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(),json!(self_directed));
+            let view = home(&s,1).unwrap();
+            assert!(view["activities"].as_array().unwrap().is_empty());
+            assert!(view["waitingActivities"].as_array().unwrap().is_empty());
+            let (_,candidates) = queue_preparation(&s,1,Utc::now()).unwrap();
+            assert!(candidates.is_empty());
+            assert!(check_activity_start(&s,1,51,None,Utc::now()).is_err());
+        }
+    }
+
+    #[test]
     fn study_display_materialization_start_and_preview_share_queue_selection() {
         let mut s = fixture();
         let at = Utc::now();
@@ -4051,7 +4088,7 @@ mod study_queue_tests {
         s.entities
             .get_mut(&1)
             .unwrap()
-            .insert("learner/knowledge-profile".into(), json!([23]));
+            .insert("learner/knowledge-profile".into(), json!([23,90029]));
         assert_eq!(
             queue_forms(&s, 1, at).unwrap(),
             vec![
