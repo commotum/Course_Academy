@@ -122,6 +122,10 @@ pub struct SnapshotRecords {
     attributes: RefCell<Option<Arc<AttributeIndex>>>,
     #[serde(skip)]
     topic_neighbors: RefCell<Option<Arc<TopicAdjacency>>>,
+    #[serde(skip)]
+    validated_questions: RefCell<BTreeSet<u64>>,
+    #[serde(skip)]
+    validated_practice_questions: RefCell<BTreeSet<u64>>,
 }
 impl Deref for SnapshotRecords {
     type Target = BTreeMap<u64, Record>;
@@ -134,6 +138,8 @@ impl DerefMut for SnapshotRecords {
         self.owners.get_mut().clear();
         *self.attributes.get_mut() = None;
         *self.topic_neighbors.get_mut() = None;
+        self.validated_questions.get_mut().clear();
+        self.validated_practice_questions.get_mut().clear();
         &mut self.records
     }
 }
@@ -150,6 +156,8 @@ impl From<BTreeMap<u64, Record>> for SnapshotRecords {
             owners: RefCell::default(),
             attributes: RefCell::new(Some(Arc::new(attributes))),
             topic_neighbors: RefCell::default(),
+            validated_questions: RefCell::default(),
+            validated_practice_questions: RefCell::default(),
         }
     }
 }
@@ -162,6 +170,22 @@ impl SnapshotRecords {
             }
         }
         attributes
+    }
+
+    pub(crate) fn question_validated(&self, question: u64) -> bool {
+        self.validated_questions.borrow().contains(&question)
+    }
+
+    pub(crate) fn mark_question_validated(&self, question: u64) {
+        self.validated_questions.borrow_mut().insert(question);
+    }
+
+    pub(crate) fn practice_question_validated(&self, question: u64) -> bool {
+        self.validated_practice_questions.borrow().contains(&question)
+    }
+
+    pub(crate) fn mark_practice_question_validated(&self, question: u64) {
+        self.validated_practice_questions.borrow_mut().insert(question);
     }
 
     pub fn with_attribute(&self, attribute: &str) -> Vec<u64> {
@@ -298,6 +322,27 @@ impl EntitySnapshot {
         // attributes. New task items must not discard the curriculum indexes.
         for (&eid, record) in &normalized {
             let old = self.entities.records.get(&eid);
+            // Question structure and grader support depend on authored content,
+            // not task responses or retention. Keep successful validation across
+            // learner commits; errors are never cached. Practice freshness is
+            // separate; structural edits invalidate the standalone practice check.
+            if record.is_empty() || old.into_iter().flat_map(|r| r.keys()).chain(record.keys()).any(|attr| {
+                ["question/", "answer-field/", "answer/", "knowledge-point/"].iter()
+                    .any(|prefix| attr.starts_with(prefix))
+                    && old.and_then(|r| r.get(attr)) != record.get(attr)
+            }) {
+                self.entities.validated_questions.get_mut().clear();
+                self.entities.validated_practice_questions.get_mut().clear();
+            }
+            let changed = |attr: &str| old.and_then(|r| r.get(attr)) != record.get(attr);
+            // New ordinary retrieval routes do not affect question membership.
+            // Editing a multistep route or its assigned-problem wrappers does.
+            if ["multistep/steps", "multistep-step/question", "assigned-problem/content"].iter().any(|attr| changed(attr))
+                || (changed("step/content") && self.entities.records.contains_key(&eid)
+                    && !self.owners(eid, "multistep/steps")?.is_empty())
+            {
+                self.entities.validated_practice_questions.get_mut().clear();
+            }
             if ["topic/id", "topic/next"].iter().any(|attr| {
                 old.and_then(|r| r.get(*attr)) != record.get(*attr)
             }) {

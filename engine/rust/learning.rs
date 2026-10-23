@@ -137,16 +137,23 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
 }
 
 pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
+    if s.entities.question_validated(question) {
+        return Ok(());
+    }
     validate_response_question(s, question)?;
     if has_free_fields(s, question)? {
         return Err("free responses do not supply correctness observations for practice".into());
     }
+    s.entities.mark_question_validated(question);
     Ok(())
 }
 
 /// Fresh lesson, review and assessment practice must be self-contained.
 /// Do not use this for grading or replaying previously presented questions.
 pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<()> {
+    if s.entities.practice_question_validated(question) {
+        return Ok(());
+    }
     validate_question(s, question)?;
     if s.entity(question)?.get("question/retired").and_then(Value::as_bool) == Some(true) {
         return Err("Retired questions are unavailable for fresh practice".into());
@@ -169,6 +176,7 @@ pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<(
             "multistep questions belong to their full activity, not standalone practice".into(),
         );
     }
+    s.entities.mark_practice_question_validated(question);
     Ok(())
 }
 
@@ -2704,6 +2712,59 @@ pub(crate) mod tests {
             850,
             json!({"multistep/id":id(850),"multistep/steps":steps}),
         );
+    }
+
+    #[test]
+    fn question_validation_survives_answers_and_completion_but_tracks_authored_edits() {
+        let mut s = fixture();
+        validate_practice_question(&s, 100).unwrap();
+        assert!(s.entities.question_validated(100));
+        for (eid, record) in [
+            (900, json!({"task-item/status":1000+10,"task-item/content":100})),
+            (901, json!({"learner-task/status":1000+15,"learner-task/activity":20})),
+            (902, json!({"progress/memory":0.75,"progress/repetitions":3.0})),
+        ] {
+            s.replace_records(BTreeMap::from([(eid, record.as_object().unwrap().clone())]), s.basis_t+1).unwrap();
+            assert!(s.entities.question_validated(100));
+            assert!(s.entities.practice_question_validated(100));
+            validate_practice_question(&s, 100).unwrap();
+        }
+        // The cache of a speculative clone must not change its source.
+        let mut changed = s.clone();
+        let mut field = changed.entities[&200].clone();
+        field.remove("answer-field/correct");
+        changed.replace_records(BTreeMap::from([(200, field)]), changed.basis_t+1).unwrap();
+        assert!(!changed.entities.question_validated(100));
+        assert!(validate_practice_question(&changed, 100).is_err());
+        assert!(s.entities.question_validated(100));
+        validate_practice_question(&s, 100).unwrap();
+
+        s.replace_records(BTreeMap::from([
+            (940, json!({"step/content":100}).as_object().unwrap().clone()),
+            (941, json!({"activity/steps":[940]}).as_object().unwrap().clone()),
+        ]), s.basis_t+1).unwrap();
+        assert!(s.entities.practice_question_validated(100));
+        // Structural membership is checked even when the question itself is unchanged.
+        s.replace_records(BTreeMap::from([
+            (950, json!({"step/content":100}).as_object().unwrap().clone()),
+            (951, json!({"multistep/steps":[950]}).as_object().unwrap().clone()),
+        ]), s.basis_t+1).unwrap();
+        assert!(s.entities.question_validated(100));
+        assert!(validate_practice_question(&s, 100).is_err());
+
+        let mut question = s.entities[&100].clone();
+        question.insert("question/retired".into(), json!(true));
+        s.replace_records(BTreeMap::from([(100, question)]), s.basis_t+1).unwrap();
+        assert!(!s.entities.question_validated(100));
+        assert!(validate_practice_question(&s, 100).is_err());
+        // Direct fixture edits and retractions also invalidate validation.
+        validate_question(&s, 101).unwrap();
+        s.entities.get_mut(&201).unwrap().remove("answer-field/correct");
+        assert!(!s.entities.question_validated(101));
+        assert!(validate_question(&s, 101).is_err());
+        validate_question(&s, 102).unwrap();
+        s.replace_records(BTreeMap::from([(202, serde_json::Map::new())]), s.basis_t+1).unwrap();
+        assert!(validate_question(&s, 102).is_err());
     }
 
     #[test]

@@ -1029,6 +1029,7 @@ fn queue_preparation(
         forms.push(add(json!(l), "learner/activity", json!(task)));
     }
     let mut eligible = BTreeSet::new();
+    let unavailable = learning::unavailable_questions(s, l)?;
     for (_, (candidate, engine_eligible)) in plan {
         let activity = candidate.activity;
         if retrieval::kind(s, activity)? == "lesson"
@@ -1041,7 +1042,7 @@ fn queue_preparation(
             && !course_academy_engine::inventory::lesson_ready(
                 s,
                 &s.refs(candidate.topic, "topic/knowledge-points")?,
-                &learning::unavailable_questions(s, l)?,
+                &unavailable,
             )?
         {
             continue;
