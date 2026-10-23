@@ -1,0 +1,692 @@
+{
+  "learner_operation": "Solve a three-variable upper-triangular system using back substitution and select its ordered solution vector. Read the final variable, substitute into the second equation, then into the first; compare all three coordinates to the bank.",
+  "fixed_features": [
+    {
+      "feature": "Three upper-triangular equations with unit leading coefficients",
+      "justification": "Canonical e-4690 and tutorial 3149 teach two back-substitution stages; augmented matrices and non-unit pivots belong to subsequent KPs."
+    },
+    {
+      "feature": "Select one complete ordered vector from five radio choices",
+      "justification": "All 13 captured source banks use five choices and a single vector response."
+    },
+    {
+      "feature": "All RHS values and all bank coordinates coupled to one positive scale",
+      "justification": "Author-imposed, not instructionally justified: mathematical correctness is preserved but so are answer-bearing signs, equalities and order relations. This fixed feature is rejected."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signs and zero/nonzero status of solution coordinates",
+      "eligible_variation": "Vary small signed RHS values independently while retaining the same two substitution stages.",
+      "observed": "Fixed within every profile by k>0. For example q-129453 always has the only positive middle coordinate."
+    },
+    {
+      "role": "Which choice has a coordinate equality or extremum",
+      "eligible_variation": "Change which option satisfies incidental equality/order cues; derive banks from varied instances with exactly one solution.",
+      "observed": "q-20418 correct is always the sole x=y vector; q-10195 always has the negative first coordinate closest to zero."
+    },
+    {
+      "role": "Correct choice position and representation",
+      "eligible_variation": "Positions may shuffle; angle and column vectors and xyz/indexed labels are supported source forms.",
+      "observed": "Source bank positions fixed in generator, but actual UI shuffles. Structural bank cues survive."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-20418: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['5/2', '5/2', '2'], ['10', '10', '8'], ['45/2', '45/2', '18']]. Correct answer position remains 5 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-10195: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['-1/2', '-1', '2'], ['-2', '-4', '8'], ['-9/2', '-9', '18']]. Correct answer position remains 3 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-10196: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['0', '2', '3'], ['0', '8', '12'], ['0', '18', '27']]. Correct answer position remains 2 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-10197: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['11/2', '1', '1/2'], ['22', '4', '2'], ['99/2', '9', '9/2']]. Correct answer position remains 1 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-10198: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['11', '3', '1/3'], ['44', '12', '4/3'], ['99', '27', '3']]. Correct answer position remains 3 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-10199: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['7', '3', '1'], ['28', '12', '4'], ['63', '27', '9']]. Correct answer position remains 3 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-129447: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['4', '1/2', '-1'], ['16', '2', '-4'], ['36', '9/2', '-9']]. Correct answer position remains 1 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-129452: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['3/2', '7/2', '3'], ['6', '14', '12'], ['27/2', '63/2', '27']]. Correct answer position remains 3 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-129453: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['6', '4', '-2'], ['24', '16', '-8'], ['54', '36', '-18']]. Correct answer position remains 3 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-129455: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['2/3', '1', '-1/3'], ['8/3', '4', '-4/3'], ['6', '9', '-3']]. Correct answer position remains 1 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "q-20421: scales 1,4,9",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "Exact solutions [['6', '-1', '3'], ['24', '-4', '12'], ['54', '-9', '27']]. Correct answer position remains 2 in emitted bank, but actual UI shuffles; position alone is not claimed as a learner shortcut. Sign/equality/order cue remains predictive."
+    },
+    {
+      "case": "batch",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ],
+      "result": "5 records; 5 correct conditional shortcut selections."
+    },
+    {
+      "case": "delivered_batch",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "4 records; 4 correct conditional shortcut selections."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-10195: scale 1 to 4, preserving coefficient matrix, names and bank shape.",
+      "expected": "(-1/2,-1,2) becomes (-2,-4,8); prompt RHSs, explanation and accepted response change together.",
+      "observed": "Exact independent solve, every displayed solution equality, all five native responses, and actual UI before/after agree. The same incidental bank rule still selects the answer.",
+      "status": "passed",
+      "justification": "Changing RHSs changes the unique solution; passing this dependency test does not justify freezing answer roles.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "all-grader-report.json",
+        "render-delivered-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold q-10195 coefficients, e=1 and f=2 fixed; change first RHS c from 1/2 to 3.",
+      "expected": "Solution changes from (-1/2,-1,2) to (2,-1,2), requiring reconsideration of the negative-first-coordinate cue.",
+      "observed": "Current API only permits proportional scaling. Explicit in-memory source-parameter perturbation raises AssertionError because the scaled source bank cannot express the new solution. No record was generated; no renderer/grader pass is claimed for this rejected instance.",
+      "status": "failed",
+      "justification": "The lesson permits the same two substitution stages regardless of the resulting sign of x. This is a specification restriction, not a stale-key claim for supported inputs.",
+      "sample_refs": [
+        "review.py",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "In-memory prompt-variable rename xyz to indexed x1,x2,x3, holding all coefficients, RHSs and choices fixed.",
+      "expected": "Same ordered vector and correct answer ID; prompt and explanation both use indexed variables.",
+      "observed": "Constructor output has the same ordered solution; native grader accepts the same vector and rejects the same four distractors. Actual UI confirms renamed equations and explanation.",
+      "status": "passed",
+      "justification": "Both names occur in source examples; names carry no numerical information. The fixture mutation was in memory, never in package files.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "all-grader-report.json",
+        "render-delivered-pairs/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-{x}_{3},{x}_{3}; angle",
+      "subgroup": "samples: q-20418",
+      "scope": "within_template",
+      "strategy": "choose the sole vector with first = second",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y+z,y+z,z; angle",
+      "subgroup": "samples: q-10195",
+      "scope": "within_template",
+      "strategy": "choose the negative first coordinate closest to zero",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}+{x}_{3},{x}_{2}-{x}_{3},{x}_{3}; angle",
+      "subgroup": "samples: q-10196",
+      "scope": "within_template",
+      "strategy": "choose first = 0 and last > 0",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y+2z,z; angle",
+      "subgroup": "samples: q-10197",
+      "scope": "within_template",
+      "strategy": "choose the largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}+3{x}_{3},{x}_{2}-3{x}_{3},{x}_{3}; angle",
+      "subgroup": "samples: q-10198",
+      "scope": "within_template",
+      "strategy": "choose largest middle coordinate, breaking ties by smallest last coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y-z,z; angle",
+      "subgroup": "samples: q-10199",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-2{x}_{2}+{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "samples: q-129447",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y-z,y-z,z; column",
+      "subgroup": "samples: q-129452",
+      "scope": "within_template",
+      "strategy": "choose the largest middle coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}-{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "samples: q-129453",
+      "scope": "within_template",
+      "strategy": "choose the sole positive middle coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-6{x}_{3},{x}_{3}; column",
+      "subgroup": "samples: q-129455",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose smallest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y+z,z; column",
+      "subgroup": "samples: q-20421",
+      "scope": "within_template",
+      "strategy": "among negative middle coordinates choose largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_samples: q-20418",
+      "scope": "within_template",
+      "strategy": "choose the sole vector with first = second",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y+z,y+z,z; angle",
+      "subgroup": "delivered_samples: q-10195",
+      "scope": "within_template",
+      "strategy": "choose the negative first coordinate closest to zero",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}+{x}_{3},{x}_{2}-{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_samples: q-10196",
+      "scope": "within_template",
+      "strategy": "choose first = 0 and last > 0",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y+2z,z; angle",
+      "subgroup": "delivered_samples: q-10197",
+      "scope": "within_template",
+      "strategy": "choose the largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}+3{x}_{3},{x}_{2}-3{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_samples: q-10198",
+      "scope": "within_template",
+      "strategy": "choose largest middle coordinate, breaking ties by smallest last coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y-z,z; angle",
+      "subgroup": "delivered_samples: q-10199",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-2{x}_{2}+{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_samples: q-129447",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y-z,y-z,z; column",
+      "subgroup": "delivered_samples: q-129452",
+      "scope": "within_template",
+      "strategy": "choose the largest middle coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}-{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_samples: q-129453",
+      "scope": "within_template",
+      "strategy": "choose the sole positive middle coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-6{x}_{3},{x}_{3}; column",
+      "subgroup": "delivered_samples: q-129455",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose smallest first coordinate",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x-y-z,y+z,z; column",
+      "subgroup": "delivered_samples: q-20421",
+      "scope": "within_template",
+      "strategy": "among negative middle coordinates choose largest first coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-6{x}_{3},{x}_{3}; column",
+      "subgroup": "batch: q-129455",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose smallest first coordinate",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y+z,y+z,z; angle",
+      "subgroup": "batch: q-10195",
+      "scope": "within_template",
+      "strategy": "choose the negative first coordinate closest to zero",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-2{x}_{2}+{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "batch: q-129447",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-{x}_{2}+3{x}_{3},{x}_{2}-3{x}_{3},{x}_{3}; angle",
+      "subgroup": "batch: q-10198",
+      "scope": "within_template",
+      "strategy": "choose largest middle coordinate, breaking ties by smallest last coordinate",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}+{x}_{2}-{x}_{3},{x}_{2}-6{x}_{3},{x}_{3}; column",
+      "subgroup": "delivered_batch: q-129455",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose smallest first coordinate",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "x+y+z,y+z,z; angle",
+      "subgroup": "delivered_batch: q-10195",
+      "scope": "within_template",
+      "strategy": "choose the negative first coordinate closest to zero",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "{x}_{1}-2{x}_{2}+{x}_{3},{x}_{2}+{x}_{3},{x}_{3}; angle",
+      "subgroup": "delivered_batch: q-129447",
+      "scope": "within_template",
+      "strategy": "among positive middle coordinates choose largest first coordinate",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing among five choices succeeds at rate 0.2. This bank-only rule uses no RHS or substitution. Positive scaling preserves it algebraically; observed success is not merely an aggregate position imbalance. Source-profile names label reports; the predictor reads only displayed LHS and vector shape.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "all-grader-report.json"
+      ]
+    },
+    {
+      "cue": "Recognizable LHS/notation profile",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "Apply the per-template sign/equality/order rules listed in probe_shortcuts.py",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 surviving records answered without using RHS values. Baseline is random selection from five answers. This is a candidate-batch failure as well as a construction defect.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "constructor validation and rejection",
+      "CLI finite-domain shuffle and mathematical-fingerprint deduplication",
+      "requested easy difficulty",
+      "shared publisher normalization and inventory/batch deduplication",
+      "captured inventory eligibility",
+      "actual Rust learner history and difficulty-first selection rules",
+      "actual UI choice shuffling"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "delivery-samples/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "inventory-review.json",
+      "selection-analysis.json",
+      "shortcut-results.json",
+      "render/rendering.json"
+    ],
+    "result": "33 independent samples -> 28 accepted; exact runner batch 5 -> 4 accepted. All sampled survivors retain bank-only conditional shortcuts. All 16 possible seen subsets of the four surviving batch records were examined: every nonempty remaining set consists solely of predictable records. No selectable generated historical records exist in captured inventory."
+  },
+  "limitations": [
+    "Finite audit, not proof about every imaginable shortcut. The exhibited sign/equality/order rules are invariant under the full allowed positive scaling domain.",
+    "No publication preparation file exists; shared read-only filtering uses inventory basis 5578. Later inventory may change acceptance counts.",
+    "No live learner policy or history supplied. Selection conclusion applies whenever easy receives positive weight and one of these records remains eligible.",
+    "q-20451 lacks source correctness, difficulty and solution evidence; excluding it is documented separately from the unjustified omission of complete easy q-20450."
+  ]
+}

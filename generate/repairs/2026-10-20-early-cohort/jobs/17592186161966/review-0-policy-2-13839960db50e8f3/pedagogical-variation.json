@@ -1,0 +1,360 @@
+{
+  "learner_operation": "Use the unchanged source column and pivot-row entries to calculate k=-a_ri/a_rp for each missing column addition, then select the two operations that transform A into B.",
+  "fixed_features": [
+    {
+      "feature": "4x4 integer matrices, additive column operations, one supplied and two missing operations",
+      "justification": "Canonical cbf8e85c-ffa6-55b9-a087-2a5272f10f25 and all 13 source practice prompts use this workload and response contract."
+    },
+    {
+      "feature": "One correct radio option with a pair of column operations",
+      "justification": "Source answer fields consistently request one complete pair, not arbitrary multi-selection."
+    },
+    {
+      "feature": "Generator recipes fix a negative-swapped singleton distractor relative to the correct pair",
+      "justification": "No instructional justification: this incidental answer-bearing arrangement enables a matrix-free shortcut and must change."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Pivot row, pivot column, supplied operation and missing columns",
+      "eligible_variation": "All 48 row/pivot/given combinations preserve the three-operation method.",
+      "observed": "45 combinations in 120 fresh records; all 48 explicitly exercised. Controlled given-column change updates prompt and requested pair."
+    },
+    {
+      "role": "Signs and magnitudes of missing operation multipliers",
+      "eligible_variation": "Positive/negative and equal/unequal integral coefficients, with small nonzero pivot and unique answer bank.",
+      "observed": "All four sign combinations occur; bounded rejection removes collisions. Relevant entry sign changes propagate correctly. Three bank profiles retain an answer-producing distractor cue."
+    },
+    {
+      "role": "Complete source answer-bank profiles",
+      "eligible_variation": "Every rated captured source profile must be replayable; vary incidental bank assignments without losing source replay.",
+      "observed": "Ten rated profiles sampled. q-130617 and q-130630 are absent, although both are rated moderate in current source."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Sampler/rejection and source scope",
+      "sample_refs": [
+        "samples.json",
+        "rejection-trace.json",
+        "rejection-summary.json",
+        "coverage.json",
+        "role-boundaries.json",
+        "role-boundary-results.json"
+      ],
+      "result": "120 independent seeded samples; 139 actual attempts, 19 bank collisions rejected. All samples mathematically correct. All 48 role assignments pass explicit construction checks."
+    },
+    {
+      "case": "Relevant and irrelevant controlled dependency cases",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-grading.json",
+        "render-input.json"
+      ],
+      "result": "Changed pivot-row sign changes (-2,3) to (2,3); changed off-row nonpivot entry preserves (-2,3); changed supplied column requests (3,-4). All actual grader outcomes agree."
+    },
+    {
+      "case": "Requested batch after publication normalization and deduplication",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-batch/delivery.json",
+        "delivery-stage-results.json",
+        "selection-analysis.json"
+      ],
+      "result": "5/5 accepted; 2/5 remain vulnerable to the choice-only rule. Moderate-only eligible candidate selection preserves probability 2/5 under positive moderate weight; no live learner history is claimed."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-grading.json",
+        "render-input.json",
+        "render/rendering.json"
+      ],
+      "status": "passed",
+      "kind": "relevant",
+      "change": "Change only A[0][1] from +4 to -4 and its dependent operation multiplier from -2 to +2; regenerate dependent B, choices and explanation.",
+      "expected": "First missing operation changes from subtracting 2C1 to adding 2C1; old pair is rejected.",
+      "observed": "(-2,3) becomes (2,3); changed prompt, choice, intermediate matrices and conclusion inspected; native grader accepts new pair and rejects old pair.",
+      "justification": "Pivot is +2, so coefficient sign must reverse to zero the changed row entry."
+    },
+    {
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-grading.json",
+        "render-input.json",
+        "render/rendering.json"
+      ],
+      "status": "passed",
+      "kind": "irrelevant",
+      "change": "Hold pivot row and operations fixed; change A[1][2] from 2 to 7 and recompute B.",
+      "expected": "Correct operation pair remains (-2,3), while affected off-row matrix entries change.",
+      "observed": "Answer pair preserved; new intermediate/final entries and solution verified; native grader accepts the same mathematical pair under the new choice ID.",
+      "justification": "The multiplier is determined by the pivot-row ratio; off-row entry changes do not alter that ratio."
+    },
+    {
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-grading.json",
+        "render-input.json",
+        "render/rendering.json"
+      ],
+      "status": "passed",
+      "kind": "relevant",
+      "change": "Hold A and all operations fixed; change supplied operation from C4 to C2.",
+      "expected": "Requested pair changes from (C2,C3) with (-2,3) to (C3,C4) with (3,-4).",
+      "observed": "Prompt blanks, answer operations, explanatory conclusion and native grader track the new targets; A/B remain identical.",
+      "justification": "Which operation is supplied is incidental, but directly determines which two the learner must infer."
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Four options share an ordered absolute multiplier pair; the remaining option swaps those magnitudes.",
+      "subgroup": "q-130619 bank signature, independently generated seeds",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take singleton pair (u,v), choose (-v,-u); ignore both matrices.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform five-choice guessing succeeds with probability 0.2. This visible bank-only rule succeeds 12/12; source-column reasoning is unnecessary. UI shuffling leaves coefficient relationships unchanged.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Four options share an ordered absolute multiplier pair; the remaining option swaps those magnitudes.",
+      "subgroup": "q-130624 bank signature, independently generated seeds",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take singleton pair (u,v), choose (-v,-u); ignore both matrices.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform five-choice guessing succeeds with probability 0.2. This visible bank-only rule succeeds 12/12; source-column reasoning is unnecessary. UI shuffling leaves coefficient relationships unchanged.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Four options share an ordered absolute multiplier pair; the remaining option swaps those magnitudes.",
+      "subgroup": "q-130627 bank signature, independently generated seeds",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take singleton pair (u,v), choose (-v,-u); ignore both matrices.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform five-choice guessing succeeds with probability 0.2. This visible bank-only rule succeeds 12/12; source-column reasoning is unnecessary. UI shuffling leaves coefficient relationships unchanged.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Same four-plus-one absolute coefficient signature",
+      "subgroup": "Exact runner batch survivors",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the negative swapped singleton coefficient pair.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Both applicable records among the exact five delivered candidates are solved; baseline is random one-of-five choice. This is a delivered batch defect as well as a runtime family defect.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "minimal-shortcut.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-130619 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 2/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-130624 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 4/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-130627 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 3/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-42562 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 2/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-42563 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 2/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-42929 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 3/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-91210 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 1/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-91211 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 1/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-91212 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 3/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "First displayed option after actual UI FNV ordering",
+      "subgroup": "q-91214 source recipe",
+      "scope": "within_template",
+      "strategy": "Select first visible UI option, actual FNV ordering, item id 1001 (explicit fixture identity)",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 2/12 for explicit fixture item identity 1001; random guessing baseline 0.2. No perfect displayed-position predictor in this sample; raw fixed bank indices are not UI positions. This limited probe does not certify absence of other cues.",
+      "sample_refs": [
+        "samples.json",
+        "ui-position-probes.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "actual bounded sampler rejection/resampling",
+      "requested moderate difficulty",
+      "publisher shared normalization and stable IDs",
+      "captured inventory and within-batch deduplication",
+      "native practice eligibility rules and retirement exclusion",
+      "difficulty-first and seen-question selection rules",
+      "actual UI choice permutation"
+    ],
+    "sample_refs": [
+      "rejection-trace.json",
+      "delivery-samples/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-stage-results.json",
+      "selection-analysis.json",
+      "inventory-audit.json",
+      "ui-position-probes.json"
+    ],
+    "result": "All 120 fresh and all 5 batch records survive. The coefficient cue predicts 36/36 matching fresh cases and 2/2 matching batch cases. Actual selection rules impose no condition removing it. Captured basis 5579 has no generated stored records."
+  },
+  "limitations": [
+    "No finite audit establishes absence of every shortcut.",
+    "Inventory is captured at basis 5579; later writes may change deduplication.",
+    "Live policy weights, future database entity IDs and individual learner histories were not supplied. Selection is analyzed from actual code, with an explicit possible-history scenario and order-independent probability result.",
+    "Unrated q-91208 is intentionally excluded from moderate sampling; its full bank was separately verified, without inventing a source difficulty.",
+    "No historical generated records exist in the captured inventory; original source questions are not submitted as generated pool defects."
+  ]
+}
