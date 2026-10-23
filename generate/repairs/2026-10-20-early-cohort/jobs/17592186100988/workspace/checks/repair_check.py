@@ -135,6 +135,7 @@ inv=json.loads(INVENTORY.read_text());generated=[q for q in inv['questions'] if 
 assert not generated,'Inventory requires separate generated-record investigation'
 save('inventory-analysis.json',{'basis':inv['basis'],'original_questions':[{'id':q[':question/id'],'entity_id':q[':db/id'],'source':q.get(':question/math-academy-id'),'eligible':key({'question':q}) is not None and not q.get(':question/retired',False)} for q in inv['questions']],'generated_records':0,'finding':'Verified captured inventory contains only original source records; no historical generated-pool defects demonstrated.'})
 save('affected-inventory.json',{'affected_questions':[]})
+run([sys.executable,ROOT/'checks/shortcut_check.py'])
 save('commands.json',COMMANDS)
 save('repair-results.json',{'status':'passed','source_banks':len(replay),'control_records':len(controls),'distinct_controls_after_delivery':len(control_after),'normal_samples':len(samples),'prospective_batch':5,'native_grader_records':len(grading),'native_grader_checks':sum(len(x['checks']) for x in grading),'retained_findings':['6fe521c09fbe226f09cf','05aea05dfa8bdd6f4d11','dd308c275d525eec01fa'],'limitations':['No learner-specific history or live inventory supplied; shared delivery filtering uses captured inventory.']})
 print((OUT/'repair-results.json').read_text())

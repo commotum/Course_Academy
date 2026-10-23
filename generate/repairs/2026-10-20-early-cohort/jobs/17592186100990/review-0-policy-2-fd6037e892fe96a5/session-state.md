@@ -1,0 +1,1 @@
+Source reconstructed independently. 120 fresh samples, 39 position boundaries, 8/9 source replays; q-139629 unsupported. Math checks complete. Fixed bank shortcut demonstrated for q-13498. Exact symbolic blank grader fails. Shared delivery: batch and samples processed. Renderer initial six complete; full selected render pending. Package untouched.
