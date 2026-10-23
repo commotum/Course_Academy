@@ -1,0 +1,11 @@
+Preserved the repaired generator, manifest, instructional account and all five executable finding declarations. No new runtime defect is demonstrated by unchanged source, inventory or feedback.
+
+Reproduced the latest failure first with job Python `-B checks/batch_regressions.py --finding inventory`: exit 1, five affected historical generated records, 64/64 sign-extremum successes in the retained possible learner-history witness. This is conditional selection evidence, not a prediction for all learners.
+
+Ran job Python `-B checks/recheck_status.py --output evidence/author-978`: exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass; 17 source practice banks replay; 14 records retain conditional contrasts after shared delivery; native grading accepts 7 correct and rejects 28 wrong choices; exact dependencies and relocated CLI replay pass. Five staged replacements and identity mappings verify. All five generated inventory records were audited; original source questions were not marked generated.
+
+Source canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination and a contradiction; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions. Neither requires numeric extremity. The completed construction and finite-batch repairs preserve that operation. The remaining review finding explicitly requests a separate inventory-remediation workflow. The native selector reads stored candidates independently of this Python entrypoint; another generator edit cannot retire the five stored banks.
+
+Inspected the source classification flowchart and retained actual-UI screenshot `evidence/repair-3/render/question-001.png`: readable equations, five choices, augmented matrices, elimination and contradiction; no clipping or unresolved notation observed. Runtime and render inputs are unchanged, so no interchangeable render was generated.
+
+Status: unsupported for the historical selectable-pool criterion. Separate authorized remediation must resolve the exact five identities in `affected-inventory.json`, followed by fresh inventory capture and the strict regression. Replacement candidates remain in `evidence/repair-3/inventory-repair-proposal.json`; they are proposed, not applied. No database, publication, engine or other-job changes were made. The failing acceptance criterion was not weakened.

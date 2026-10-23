@@ -1,37 +1,30 @@
-# Current state — 2026-10-22, author-286
+# Current state — 2026-10-22, author-289
 
-Read feedback and both retained findings before work. Reproduced the exact latest
-failure first with the job Python: `-B checks/check_current_handoff.py` exits 1.
-The actual installed runner rejects the unchanged package before regressions or
-sampling. Its hash still matches the staged patch base. Finding
-9b8cb52352b8ca3e790e explicitly requests a report-only correction and unchanged
-runtime; no package change is justified.
+Read feedback and all retained findings/history; reused completed source analysis.
+Reproduced the latest failure first with job Python:
+`-B checks/check_current_handoff.py` exits 1. Actual installed runner
+`scripts/generator_pipeline.py:723-727` rejects the unchanged runtime before
+retained regressions or sampling. Its evidence-only finding requires preservation
+of runtime; no new generator defect is demonstrated.
 
-Preserved all runtime files, completed construction/batch repairs, instructional
-account, evidence bundle and strict acceptance criteria. Fresh commands, timings,
-exit codes, logs and before/after runtime hashes:
-`evidence/author286-verification.json`.
+Fresh verification: `evidence/author289-verification.json` records exact commands,
+exit codes, timings, logs and unchanged runtime hashes.
 
-- All declared regressions ran. `checks/check_all.py` passed packaging, source
-  replay, independent math, native grading, actual delivery and stored inventory.
-- `checks/check_batch_selection.py` passed the exact seed 4258185931, all ten
-  supported profiles, controlled target changes, delivery and 25 native responses.
-  Reported cue scores 1/5 before and after delivery.
-- `checks/check_evidence_contract.py` validates the real correction bundle,
-  relocation, negative controls and current-record bindings, then exits 1 solely
-  because the strict installed-runner handoff still fails.
-- `checks/check_render_binding.py` passed ten complete banks and current delivered
-  UI endpoints. Visually inspected the retained question-001.png: readable prompt,
-  choices and complete solution. No rendering change required.
+- `checks/check_all.py` passes (CLI relocation/count contract, source replay,
+  independent mathematics, native grading, shared delivery, stored inventory).
+- `checks/check_batch_selection.py` passes, including seed 4258185931 before/after
+  delivery and controlled within-family answer-role changes. Original cue: 1/5.
+- `checks/check_evidence_contract.py` validates the real bundle, relocation and
+  negative controls, then exits 1 because strict installed handoff still fails.
+- `checks/check_render_binding.py` passes: ten complete source banks and actual-UI
+  records bind to current runtime. Inspected question-001.png: readable throughout.
+- Runtime, engine, runner, database, publication and other jobs were not edited.
 
 ## Next unfinished step
 
-Runner owner must review/install `runner-fix/evidence-only-rejection.patch` in
-`scripts/generator_pipeline.py`, then rerun strict regressions and fresh independent
-review. The target is outside this authorized workspace. The staged correction is
-not installed and the failing regression remains strict. Corrected evidence bundle:
-`evidence/contract-correction`. Do not change runtime bytes just to evade the gate,
-weaken tests, or treat historical acceptance as fresh approval. Repeating unchanged
-author work cannot install this external correction.
-
-No publication, database, engine, live-service or other-job changes occurred.
+Apply/review `runner-fix/evidence-only-rejection.patch` in the runner repository,
+then rerun strict regressions and fresh independent review. This requires editing
+`scripts/generator_pipeline.py` outside the user-authorized workspace. The patch
+remains uninstalled and the retained check remains failing. Repeated authoring or
+changing valid generator bytes cannot repair this external design rule.
+Corrected self-contained evidence root: `evidence/contract-correction`.

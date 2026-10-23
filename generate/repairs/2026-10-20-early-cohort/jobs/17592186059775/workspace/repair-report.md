@@ -1,20 +1,20 @@
-# Current repair result — author-284
+# Current repair result — author-289
 
-Completed generator repairs are preserved. Fresh delivery, controlled shortcut,
-independent mathematics, 25 native grading responses, relocated CLI and ten
-complete source-bank checks pass. Runtime hashes are unchanged. The corrected
-relative evidence bundle validates with relocation and negative controls.
+Preserved completed generator repairs and reproduced the latest failure first.
+Runtime files remain byte-identical. Generator, source replay, independent math,
+native grading, delivery, inventory and shortcut regressions pass. The corrected
+evidence bundle validates with relocation and missing-file negative controls.
+Retained actual-UI render records bind to current output and were inspected.
 
-Strict installed-runner handoff still fails before these checks can be launched
-by the runner. Its package/source/engine identity gate has no evidence-only
-exception. The staged runner patch passes 23 offline cases, but installing it
-requires editing `scripts/generator_pipeline.py` outside the authorized workspace.
-No runtime or acceptance criterion was altered to bypass this failure.
+The strict evidence regression still exits 1: the installed runner rejects the
+unchanged package before sampling. The concrete staged correction targets
+`scripts/generator_pipeline.py`, outside this workspace's authorized writes.
+It remains uninstalled. No runtime change is justified by the evidence-only
+finding, and its strict acceptance criterion has not been weakened.
 
-Commands/results: `evidence/author284-verification.json`.
+Exact commands/results: `evidence/author289-verification.json`.
 Current failure: `evidence/current-handoff-regression.json`.
-Proposed correction: `runner-fix/evidence-only-rejection.patch`.
-Corrected report bundle and affected inventory: `evidence/contract-correction`.
+Corrected bundle: `evidence/contract-correction`.
+Proposed external fix: `runner-fix/evidence-only-rejection.patch`.
 
-Fresh independent review remains required after the runner owner resolves this
-external handoff. No publication or database changes occurred.
+Fresh independent review remains required. No publication or database changes.
