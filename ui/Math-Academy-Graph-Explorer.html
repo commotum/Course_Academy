@@ -298,7 +298,6 @@ button,input,select { font:inherit; }
 </style>
 
 <style id="load-state-styles">
-#refreshData{border:0;border-left:1px solid var(--tone-44);padding:0 0 0 12px;background:none;color:var(--tone-aa);font:9px var(--font);cursor:pointer;text-transform:uppercase;letter-spacing:.07em}#refreshData:hover{color:var(--tone-ff)}
 .load-state{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(480px,calc(100% - 36px));padding:24px;border:1px solid var(--tone-44);background:var(--tone-08);font-size:12px;line-height:1.7;text-align:center}.load-state[hidden]{display:none}.load-state .pill,.load-state a{display:block;margin:16px auto 0;color:var(--tone-ff);font-size:10px}.load-state .pill[hidden],.load-state a[hidden]{display:none}
 @media(max-width:680px){.load-state{top:65%}}
 </style>
@@ -369,7 +368,7 @@ button,input,select { font:inherit; }
 <canvas aria-label="Graph minimap. Click to pan; hold Shift and scroll to change depth." class="minimap" height="280" id="minimap" width="440"></canvas>
 
 <div class="minimap-stats"><span aria-atomic="true" aria-live="polite" id="depthReadout">Depth: 1</span><span id="zoomReadout">100%</span></div></div>
-<div class="footer-panel"><span id="scopeReadout">Loading topics…</span><a href="/home" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Study ↗</a><button id="refreshData" type="button" disabled>Refresh</button><span>Wheel / pinch to zoom · drag to pan</span></div>
+<div class="footer-panel"><span id="scopeReadout">Loading topics…</span><span>Wheel / pinch to zoom · drag to pan</span></div>
 </div>
 <section id="targetWeekStrip" class="target-week-strip" aria-label="Filter targets by assignment week" hidden>
 <div class="target-week-heading"><span id="targetWeekReadout" role="status" aria-live="polite" aria-atomic="true">All weeks</span><span class="target-week-hint">Shift-click for a range</span></div>
@@ -1420,7 +1419,17 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     if(persist){try{localStorage.setItem(targetColorKey,String(enabled));}catch{ /* Keep the local view usable. */ }}
     refreshTargetColors();
   }
+  function updateScopeReadout() {
+    if(!state.layout)return;
+    const {activeNodes,activeLinks}=state.layout;
+    const newTopics=targetsView?activeNodes.filter(node=>{
+      const value=repetitions[node.id];
+      return snapshot?.learned?.[node.id]===false || !Number.isFinite(value) || value<1;
+    }).length:0;
+    $('scopeReadout').textContent=`${activeNodes.length} topics${targetsView?` · ${newTopics} new topics`:''} · ${activeLinks.length} links`;
+  }
   function updateCompetencyReadout() {
+    updateScopeReadout();
     renderStatusColorLegend();
     const current=state.selected!==null?competencyFor(state.selected):null;
     $('competencyReadout').textContent=current?(current.known?current.label:'No data'):(snapshot?.learner.name||'Knowledge profile');
@@ -1494,7 +1503,6 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     }
     $('backBtn').disabled = state.historyIndex <= 0;
     $('forwardBtn').disabled = state.historyIndex >= state.history.length - 1;
-    $('scopeReadout').textContent = `${state.layout.activeNodes.length} topics · ${state.layout.activeLinks.length} links · ${state.layout.scoped ? 'local columns / global badges' : 'global layers'}`;
     $('badgeNote').hidden=!state.layout.scoped;
     $('badgeNote').textContent='L01–L'+String(META.layerCount).padStart(2,'0')+' · global prerequisite layers';
     document.body.classList.toggle('scoped-view',state.layout.scoped);
@@ -2459,7 +2467,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   window.addEventListener('storage',event=>{if(event.key==='course-academy-queue-changed')void refreshLearningProgress();});
   async function loadData() {
     if(loading)return;loading=true;
-    $('refreshData').disabled=true;$('courseBrowse').disabled=true;$('retryLoad').hidden=true;$('loadState').hidden=false;
+    $('courseBrowse').disabled=true;$('retryLoad').hidden=true;$('loadState').hidden=false;
     $('loadMessage').textContent='Loading your knowledge graph…';
     try {
       if(location.protocol==='file:')throw new Error('Open the explorer through its local server to load your database.');
@@ -2481,9 +2489,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       $('retryLoad').hidden=location.protocol==='file:';
       $('localServerLink').hidden=location.protocol!=='file:';
       if(snapshot)$('courseBrowse').disabled=false;
-    } finally {loading=false;$('refreshData').disabled=false;renderTargetCourseFilters();renderTargetWeekStrip();}
+    } finally {loading=false;renderTargetCourseFilters();renderTargetWeekStrip();}
   }
-  $('retryLoad').onclick=loadData;$('refreshData').onclick=loadData;
+  $('retryLoad').onclick=loadData;
   $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
   $('targetColorToggle').addEventListener('click',()=>{
     $('targetColorToggle').dataset.animate='true';setColorCode(!colorCodeEnabled);
