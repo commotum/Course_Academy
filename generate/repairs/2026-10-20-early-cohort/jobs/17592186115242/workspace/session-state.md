@@ -1,9 +1,16 @@
-# Current state: author 948
+# Current state: author 951
 
-Latest failure reproduced first: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exits 1 for five historical stored records, with 64/64 shortcut successes in the retained possible-history scenario. Evidence: evidence/author-948/initial-reproduction-command.json and initial-reproduction.json.
+Latest failure reproduced first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five historical stored banks, 64/64 shortcut successes in the retained possible-history witness.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-948` exits 1 solely for finding 591f580cadb749294588. All four generator findings pass: source replay (17 banks), zero-root support, shortcut and controlled-variation checks before/after delivery (14 records), 35 native-grader checks, exact dependencies and relocation. Existing five-replacement proposal verifies and remains unapplied. Retained actual-UI screenshot 001 and source tutorial flowchart visually inspected.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-951`.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass; 17 complete source banks replay; 14 records preserve contrasts after shared delivery; 35 native-grader checks and dependency/relocation checks pass. Five-replacement proposal verifies, unapplied. Retained actual-UI screenshot 001 and source flowchart visually inspected. All five generated inventory records tested; affected-inventory.json evidence paths resolve relative to requested author-951 root.
 
-No runtime, manifest, source, engine, database, publication or other-job changes. Strict regressions preserved. All five generated inventory records tested; affected-inventory.json paths resolve relative to requested author-948 evidence root. Commands/results/disposition: evidence/author-948.
+No runtime, manifest, source, engine, database, publication, or other-job changes. Strict regression failure preserved. Commands/results/disposition: evidence/author-951.
 
-Unfinished: separate inventory remediation, then fresh inventory capture and strict recheck. Existing proposal: evidence/repair-3/inventory-repair-proposal.json. This task explicitly prohibits the required database changes. Do not repeat unchanged author passes expecting them to alter stored records. Status: unsupported for the combined delivered-pool requirement; current-generator checks pass.
+Unfinished: separate inventory remediation using evidence/repair-3/inventory-repair-proposal.json, then fresh capture and strict recheck. This task forbids the required database changes. No new generator defect demonstrated. Status: unsupported for combined delivered-pool requirement; current-generator checks pass.
+
+Repeating generator-only work against the same captured inventory cannot resolve
+the outstanding stored-pool finding. The exact existing limitation was reproduced;
+no acceptance criterion was weakened.
