@@ -1,0 +1,114 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained shortcuts are repaired. All eight checks pass, including delivery of the exact five-record batch. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify two row additions that create zeros in one column of a 3x3 matrix using the specified unchanged pivot row.",
+    "reasoning_steps": [
+      "Identify the pivot row and cleared column.",
+      "Determine both cancellation coefficients.",
+      "Verify the complete transformed rows.",
+      "Select the matching operation pair."
+    ],
+    "invariants": [
+      "Two row additions using one unchanged nonzero pivot row.",
+      "Small integer arithmetic in 3x3 matrices.",
+      "Five-choice radio response with one correct pair."
+    ],
+    "permitted_variations": [
+      "Pivot row and cleared column.",
+      "Both coefficient signs and magnitudes.",
+      "Non-target matrix entries.",
+      "Distractor roles, signs and ordering."
+    ],
+    "source_refs": [
+      "122850ae-d465-5748-ba36-b0dbdbbedca0",
+      "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+      "06935f3f-15fc-5327-b073-368a75317d06",
+      "399b7598-c793-5032-9f33-ac02c7b85fe1",
+      "Introduction tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "boundary-records.json"
+      ],
+      "details": "All ten complete source banks and the canonical transform replay correctly. Captured source gaps are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "helpers.py",
+        "math-results.json",
+        "fresh-cli-results.json"
+      ],
+      "details": "Independent exact arithmetic checked every choice, unique keys and worked stages for 111 initial records and 22 fresh CLI records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-samples.json",
+        "boundary-records.json",
+        "fresh-cli-results.json",
+        "delivery-cli/delivery.json"
+      ],
+      "details": "All ten profiles, nine pivot-column coordinates and four coefficient-sign combinations exercised. Fresh CLI delivery preserved all 22 records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-review.json",
+        "packaging.json"
+      ],
+      "details": "Preserves the easy two-addition workload and radio response contract. Unsupported difficulties are rejected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-combined-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader matched 230 expected acceptances and 653 expected rejections, including controlled counterfactuals and delivered shortcut submissions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "layout-render/rendering.json"
+      ],
+      "details": "Eight actual UI screenshots inspected. Mathematical notation, choices and changed solutions render correctly; long solution chains are scrollable."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "execution-results.json",
+        "retained-finding-results.json",
+        "final-verification.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and rejection tests pass. Both retained checks fail on historical examples and pass current code. Package unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "probes.json",
+        "selection.json",
+        "affected-inventory.json",
+        "retained-finding-results.json"
+      ],
+      "details": "All five batch records survive delivery and cover four signed answer pairs. The former batch bypass succeeds on only 2/5. Conditional probes and identical-bank counterfactuals refute fixed coefficient assignments. Captured inventory contains only original source questions; no stored generated defects exist. Conclusions remain limited to the captured state and tested strategies."
+    }
+  },
+  "findings": []
+}

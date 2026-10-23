@@ -76,11 +76,11 @@ resampling=[]
 for p in g.PROFILES:
  counts=[]
  def trace(frame,event,arg):
-  if event=='line' and frame.f_code.co_filename==str(PKG/'17592186161967.py') and frame.f_lineno==74:counts.append(1)
+  if event=='line' and frame.f_code.co_filename==str(PKG/'17592186161967.py') and frame.f_lineno==73:counts.append(frame.f_locals['_'])
   return trace
  sys.settrace(trace);r=g.generate(seed=73691,bank_profile=p);sys.settrace(None)
  assert r==g.generate(seed=73691,bank_profile=p)
- resampling.append({'profile':p,'seed':73691,'candidate_attempts':len(counts),'record':r})
+ resampling.append({'profile':p,'seed':73691,'candidate_attempts':len(set(counts)),'record':r})
 save('resampling.json',resampling)
 reject=[]
 for kwargs in [{'difficulty':'hard'},{'difficulty':'moderate'},{'bank_profile':'missing'},{'parameters':dict(base,ks=[0,2,3])},{'parameters':dict(base,pivot=3)},{'parameters':dict(base,A=[[0,2,3],[2,5,4],[-3,7,8]])}]:

@@ -17,6 +17,22 @@
       "source_hash": "8b7133418fd8d37d542f346613f64f0f4d55898ca902135a9aa2646876683e12",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-0-policy-2-da51d3ee0942346e",
       "attempt": 0
+    },
+    {
+      "id": "f1db9b4f2ce0efa72b7b",
+      "finding": {
+        "kind": "grading",
+        "description": "For x=e^(1/t), y=1/sqrt(t^2+1), t=2, the correct slope is 8*sqrt(5)/(25*sqrt(e)). The equivalent response 8*exp(-1/4)*exp(-1/4)/(5*sqrt(5)) returns unresolved. This affects the supported hard blank family, including delivered records; the five easy batch records are unaffected.",
+        "source_refs": [
+          "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+          "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)"
+        ],
+        "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-grading.py. Uses seed 66081, template reciprocal_exp_root_blank, parameters {a:1,b:1,c:1,u:2}. The strict expected=accepted check exits 1 with unresolved.",
+        "requested_change": "Repair shared-engine canonicalization of repeated rational powers of e. In symbolic.rs reduce_term, e_roots.len()>1 misses one root atom with multiplicity two: two fourth-root factors must normalize to a square root. Retain the strict reproduction and wrong-answer controls. Preserve the source family and valid learner notation."
+      },
+      "source_hash": "8b7133418fd8d37d542f346613f64f0f4d55898ca902135a9aa2646876683e12",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-1-policy-2-adc52c8c9e3abed7",
+      "attempt": 1
     }
   ],
   "events": [
@@ -158,6 +174,143 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-0-policy-2-da51d3ee0942346e"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "5beb390768bb9fd64e71ddcbef07a77ae7e3877dfefbc3eb42f24485896ab56f",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The original grading failure is fixed, but an equivalent exponential product still returns unresolved. Seven other checks pass. Package and database unchanged.",
+        "source_analysis": {
+          "skill": "Differentiate both parametric coordinates and evaluate y'(t)/x'(t) at the specified parameter.",
+          "reasoning_steps": [
+            "Differentiate both coordinates.",
+            "Divide the derivatives.",
+            "Evaluate and simplify the exact slope.",
+            "Select or enter the matching expression."
+          ],
+          "invariants": [
+            "Finite slope at a valid parameter.",
+            "Source differentiation rules and comparable difficulty.",
+            "Five-option radio or exact mathematical blank."
+          ],
+          "permitted_variations": [
+            "Coefficients and valid evaluation targets.",
+            "Slope signs, zero status and correct-choice positions.",
+            "Coordinate translations that preserve derivatives."
+          ],
+          "source_refs": [
+            "Tutorial 94a5a3d6-2fcd-522e-934f-f2bf8a8569c4: chain-rule derivation of y'(t)/x'(t).",
+            "Canonical 148e5378-9177-59ba-9b1e-3633c940babd: differentiate, divide and evaluate.",
+            "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+            "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-cases.json",
+            "reuse-provenance.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "current-source-replay.json",
+              "source-scope-review.json"
+            ],
+            "details": "All 22 supported practice replays match independently verified records and complete banks. Canonical answer-bank evidence is absent and explicitly excluded."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "current-math.json",
+              "grading-failure-math.json",
+              "current-review.py"
+            ],
+            "details": "Fourteen current records pass independent mathematical checks. The failing learner response differs from the correct slope by exactly zero."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "samples-independent.json",
+              "counterfactuals.json",
+              "delivery-batch/delivery.json",
+              "delivery-fresh/delivery.json"
+            ],
+            "details": "Unchanged 20-template coverage retained. All five batch records and five fresh easy records survive delivery filtering."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-scope-review.json",
+              "fresh-hard.json",
+              "fresh-easy.json"
+            ],
+            "details": "Examined variations preserve source differentiation rules, response profiles and difficulty."
+          },
+          "grading": {
+            "status": "failed",
+            "evidence_paths": [
+              "repair-review.json",
+              "minimal-grader-current.json",
+              "grading-failure-input.json",
+              "grading-failure-execution.json",
+              "delivered-grading-failure.log",
+              "remaining-grader-results.json",
+              "reproduce-grading.py"
+            ],
+            "details": "Repeated exp(-1/4) factors produce an unresolved result for a valid exact answer, before and after delivery. The original counterexample and 784 other checks pass."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-current/rendering.json",
+              "current-render-inspection.json",
+              "render-current/question-001.png",
+              "render-current/question-002.png",
+              "render-current/question-006.png"
+            ],
+            "details": "Six actual-UI renders pass. Inspected screenshots cover the plot, radio controls, exact blank and hard worked solution."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "current-packaging.json",
+              "current-runtime.json",
+              "package-before.json",
+              "package-after.json"
+            ],
+            "details": "Dependencies match exactly; relocated deterministic replay passes. Actual batch content matches after asset-prefix normalization. Workspace hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "passed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "current-shortcuts.json",
+              "shortcut-followup-results.json",
+              "remaining-grader-results.json",
+              "current-selection.json",
+              "current-inventory-review.json",
+              "affected-inventory.json"
+            ],
+            "details": "Controlled pairs and conditional shortcut evidence remain valid. Batch radio positions are 2, 5, 4, 3. Selection conclusions assume fresh candidates and positive easy-band weight. No affected generated inventory records demonstrated at captured basis 5644."
+          }
+        },
+        "findings": [
+          {
+            "kind": "grading",
+            "description": "For x=e^(1/t), y=1/sqrt(t^2+1), t=2, the correct slope is 8*sqrt(5)/(25*sqrt(e)). The equivalent response 8*exp(-1/4)*exp(-1/4)/(5*sqrt(5)) returns unresolved. This affects the supported hard blank family, including delivered records; the five easy batch records are unaffected.",
+            "source_refs": [
+              "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+              "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)"
+            ],
+            "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-grading.py. Uses seed 66081, template reciprocal_exp_root_blank, parameters {a:1,b:1,c:1,u:2}. The strict expected=accepted check exits 1 with unresolved.",
+            "requested_change": "Repair shared-engine canonicalization of repeated rational powers of e. In symbolic.rs reduce_term, e_roots.len()>1 misses one root atom with multiplicity two: two fourth-root factors must normalize to a square root. Retain the strict reproduction and wrong-answer controls. Preserve the source family and valid learner notation."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-1-policy-2-adc52c8c9e3abed7"
     }
   ]
 }

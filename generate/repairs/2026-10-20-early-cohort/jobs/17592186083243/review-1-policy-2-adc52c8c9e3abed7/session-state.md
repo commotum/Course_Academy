@@ -1,1 +1,1 @@
-Source analysis confirmed and copied before author/package inspection. Package and engine investigation pending.
+Review complete: revise. One native-grader capability failure persists for repeated quarter-exponent factors, reproduced on raw and delivered current hard record. All eight checks recorded; seven pass. result.json and evidence-contract.json saved. No package/database changes.

@@ -3,7 +3,7 @@ def eq(a,b):
  # On each source question's positive-radicand real domain, rational powers
  # and sqrt(u^3) agree. Force denesting only for this documented domain.
  return s.simplify(s.powdenest(a,force=True)-s.powdenest(b,force=True))==0
-records=sum([json.load(open(ROOT/n)) for n in ['source-replays.json','independent-samples.json','batch-records.json','counterfactual-records.json']],[])
+records=sum([json.load(open(ROOT/n)) for n in ['source-replays.json','independent-samples.json','batch-records.json','counterfactual-records.json','focused-samples.json']],[])
 cases=[];results=[]
 for n,r in enumerate(records):
  a=expected(r);v=latex(correct(r));f=field(r);checks=[]

@@ -1,0 +1,1375 @@
+{
+  "learner_operation": "Use the specified unchanged pivot row to determine both integer row-addition coefficients, check that both complete rows become B, and select the matching pair. A matrix-sign simplification still exercises cancellation; a fixed bank label/sign revealing a coefficient does not.",
+  "fixed_features": [
+    {
+      "feature": "3x3 matrices and two additions from one unchanged nonzero pivot row",
+      "justification": "All ten source questions and canonical example require this operation, not full elimination, swaps or column operations."
+    },
+    {
+      "feature": "Five-choice radio response, exactly one correct pair",
+      "justification": "Complete source banks use this contract; exact arithmetic verifies unique correctness."
+    },
+    {
+      "feature": "Small integer arithmetic and distinct magnitude distractor",
+      "justification": "Keeps the easy workload and source-style errors. Swap profiles need unequal magnitudes; unit profiles need one magnitude above one for five distinct choices."
+    },
+    {
+      "feature": "One visible magnitude-error shape for a five-record CLI pool",
+      "justification": "A small pool can cover all four independently varying coefficient sign pairs within one recognizable shape. The shape itself does not determine either coefficient sign. Other shapes and all source profiles remain supported across sampling and larger pools; no instructional rule requires all shapes in every five-record pool."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Pivot row and cleared column",
+      "eligible_variation": "Any of the three row/column positions with valid exact nonzero pivot",
+      "observed": "Nine boundary coordinates verified; controlled fixed-A changes update row operations, matrices and solution."
+    },
+    {
+      "role": "Both signed cancellation coefficients",
+      "eligible_variation": "Independent sign changes; equal or unequal magnitudes when a distinct source-style bank exists",
+      "observed": "Each profile has four correct pairs under one unchanged ordered bank; current batch contains all four sign pairs, including equal magnitudes."
+    },
+    {
+      "role": "Magnitude-error row and signed coefficients",
+      "eligible_variation": "Unit error may affect either coefficient; distractor signs can vary independently of correct signs",
+      "observed": "Fresh 12-record CLI batch contains unit-first, unit-second and swap shapes with all four signed answer pairs in each."
+    },
+    {
+      "role": "Correct choice position",
+      "eligible_variation": "Any answer position; UI reordering must preserve correctness",
+      "observed": "Several positions in actual batch; actual UI changes the stored order. Position probes are not perfect predictors."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All original bank profiles and canonical transform",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "boundary-records.json"
+      ],
+      "result": "Ten complete mathematical banks reproduced, including duplicate captured fields; canonical A/B and operations checked. Canonical source has no captured answer bank."
+    },
+    {
+      "case": "Independent numerical and coordinate variation",
+      "sample_refs": [
+        "fresh-samples.json",
+        "boundary-records.json",
+        "resampling.json"
+      ],
+      "result": "All ten profiles, all coefficient-sign combinations and all nine row/column targets tested. Rejection/resampling retains nonzero exact pivots and one identified cleared column."
+    },
+    {
+      "case": "Actual runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "probes.json"
+      ],
+      "result": "All five survive; four signed pairs; opposite-first-outlier shortcut 2/5, matching-first 3/5, and both second-sign strategies have counterexamples. Matrices vary beyond sign flips."
+    },
+    {
+      "case": "Fresh CLI batches across batch-construction branches",
+      "sample_refs": [
+        "fresh-cli.json",
+        "fresh-cli-results.json",
+        "delivery-cli/accepted.json"
+      ],
+      "result": "Seeds 49217/12, 10983/5, 483/2, 904/3; 22/22 survive. Twelve-record pool has all three recognizable shapes and four signed pairs per shape. Two/three-record boundaries have both coefficient signs, with finite size limiting joint coverage."
+    },
+    {
+      "case": "Apparent perfect cue in tiny direct-sampler subgroup",
+      "sample_refs": [
+        "fresh-samples.json",
+        "shortcut-results.json",
+        "fresh-cli.json",
+        "delivery-cli/accepted.json"
+      ],
+      "result": "Direct seed subset unit-first has 6/6 opposite-first predictions (2/2 after deduplication). These were uncurated single-instance controls, not the candidate batch. Fresh batch construction supplies same-shape counterexamples: 2/4 successes in its unit-first subgroup, preserved after delivery; code explicitly admits both signs. This does not demonstrate a universal generator or current candidate-batch defect."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold seed 472, profile q-42531 and all other A entries fixed; change A21 from 2 to -2",
+      "expected": "First coefficient changes -2 to +2; second stays +3; bank stays identical; rendered B and explanation change",
+      "observed": "All relationships verified by exact arithmetic, actual native acceptance/rejection of every choice, and screenshots 3/4.",
+      "status": "passed",
+      "justification": "Cancellation depends on the target entry relative to pivot.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold base transform target/pivot data fixed; change A22 from 5 to 6",
+      "expected": "Both coefficient answers preserved; transformed non-target entry and corresponding worked stages update",
+      "observed": "Key remains (-2,+3), changed B22 and solution stage agree; native grader and screenshots 3/5 confirm.",
+      "status": "passed",
+      "justification": "A22 is outside the cleared column, so changes the transformed matrix entry but not the cancellation coefficient.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold A=[[1,1,3],[2,1,5],[4,3,7]] fixed; change target column 1 to 2, then pivot row 1 to 2",
+      "expected": "B, prompt pivot where applicable, coefficients and worked solution track the new target",
+      "observed": "Pairs (-2,-4), (-1,-3), and (-1,-3) on different target row labels; exact row arithmetic and screenshots 6/7/8 agree, all choice grader outcomes correct.",
+      "status": "passed",
+      "justification": "Pivot/target are eligible answer-bearing roles; equal numerical coefficients on different target rows do not make the operation pairs identical.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold seed, profile, magnitudes and ordered choice bank fixed while varying the two target-column signs independently",
+      "expected": "All four signed pairs become correct under the identical visible bank",
+      "observed": "Independent ten-profile quartets each have four keys; all choices graded. Prior retained author check also independently rerun with old failing and current passing controls.",
+      "status": "passed",
+      "justification": "Separates correct-role assignment from irrelevant bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "grader-report.json",
+        "retained-finding-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/all",
+      "scope": "overall",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 10,
+      "total": 22,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 12,
+      "total": 22,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 11,
+      "total": 22,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 11,
+      "total": 22,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 1",
+      "correct": 9,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 2",
+      "correct": 2,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 3",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 4",
+      "correct": 3,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "fixed stored position 5",
+      "correct": 2,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/all",
+      "scope": "overall",
+      "strategy": "modal signed coefficient 1, calculate other",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 4,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 4,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 1",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 2",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 3",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 4",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 5",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 1",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 2",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 3",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 4",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 5",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 2",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 3",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 4",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed stored position 5",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is random selection among five choices; actual UI also reorders the stored positions.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "delivered-cli/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal signed coefficient 1, calculate other",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/all",
+      "scope": "overall",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/all",
+      "scope": "overall",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal signed coefficient 0, calculate other",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity -1, calculate other coefficient",
+      "correct": 14,
+      "total": 28,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 0, polarity 1, calculate other coefficient",
+      "correct": 14,
+      "total": 28,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity -1, calculate other coefficient",
+      "correct": 14,
+      "total": 28,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Visible extra-choice signs/frequencies or bank position",
+      "subgroup": "fixed-bank/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "outlier sign coordinate 1, polarity 1, calculate other coefficient",
+      "correct": 14,
+      "total": 28,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.5 is guessing the unknown coefficient sign after calculating the other coefficient. No deterministic answer-producing cue in this tested subgroup; controlled fixed-bank quartets separate matrix evidence from bank appearance.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "probes.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Signs of the two target entries relative to the pivot",
+      "subgroup": "actual five-record batch",
+      "scope": "within_template",
+      "strategy": "Choose coefficient signs opposite each target/pivot ratio and match the dominant bank magnitudes",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.25 guesses one of four signed pairs after excluding the magnitude distractor. This strategy still inspects both target entries and applies cancellation; it is the same row-zero reasoning illustrated in tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0 and complete source banks, not an incidental label cue.",
+      "sample_refs": [
+        "batch.json",
+        "source-replays.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter rejection and resampling",
+      "CLI batch shape/sign conditioning and bounded resampling",
+      "actual publisher normalization and deduplication against captured inventory",
+      "requested easy difficulty filtering",
+      "learner selection rules and empty-history positive-easy-weight simulation",
+      "actual UI answer reordering"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "fresh-cli.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-cli/delivery.json",
+      "selection.json",
+      "inventory-inspection.json",
+      "probes.json"
+    ],
+    "result": "Captured basis 5580: batch 5/5, independent CLI 22/22, direct sampler 8/40 after mathematical deduplication across same-seed profiles. No generated stored records exist. All batch counterexamples remain eligible under positive easy weight; weighted selection has nonzero support for every member. No policy weights selects first eligible; zero easy weight selects none of this pool. No live publication performed."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of every shortcut.",
+    "Captured source/inventory basis 5580; later inventory, policy weights, learner history and eventual database entity ordering are unavailable. Selection uses file rank as a possible ordering; uniform within-band reachability is order invariant.",
+    "Small pools of two or three records cannot cover all four signed pairs. Their two individual coefficient signs do vary; the requested five-record pool covers all four.",
+    "Canonical source has no captured answer bank; its transform and worked operations are checked without inventing source choices."
+  ]
+}

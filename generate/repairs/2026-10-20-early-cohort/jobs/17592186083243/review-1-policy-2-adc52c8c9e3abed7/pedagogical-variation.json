@@ -174,6 +174,17 @@
         "samples-independent.json"
       ],
       "result": "{\"targets\": [\"log(pi/6)\", \"log(5*pi/6)\"], \"keys\": [\"- \\\\frac{16 \\\\sqrt{6}}{5}\", \"\\\\frac{16 \\\\sqrt{6}}{15}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "current runner batch and independent easy regression",
+      "sample_refs": [
+        "batch.json",
+        "fresh-easy.json",
+        "current-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "delivery-fresh/accepted.json"
+      ],
+      "result": "Five current batch and five fresh easy records survive delivery; cue measurements preserved. Current radio UI positions [2, 5, 4, 3]."
     }
   ],
   "counterfactuals": [
@@ -188,7 +199,7 @@
         "counterfactuals.json",
         "counterfactual-records.json",
         "math-results.json",
-        "grader-followup-results.json",
+        "remaining-grader-results.json",
         "render-counterfactual/rendering.json"
       ]
     },
@@ -203,7 +214,7 @@
         "counterfactuals.json",
         "counterfactual-records.json",
         "math-results.json",
-        "grader-followup-results.json",
+        "remaining-grader-results.json",
         "render-counterfactual/rendering.json"
       ]
     },
@@ -218,7 +229,7 @@
         "counterfactuals.json",
         "counterfactual-records.json",
         "math-results.json",
-        "grader-followup-results.json",
+        "remaining-grader-results.json",
         "render-counterfactual/rendering.json"
       ]
     },
@@ -233,7 +244,7 @@
         "counterfactuals.json",
         "counterfactual-records.json",
         "math-results.json",
-        "grader-followup-results.json",
+        "remaining-grader-results.json",
         "render-counterfactual/rendering.json"
       ]
     },
@@ -248,7 +259,7 @@
         "counterfactuals.json",
         "counterfactual-records.json",
         "math-results.json",
-        "grader-followup-results.json",
+        "remaining-grader-results.json",
         "render-counterfactual/rendering.json"
       ]
     }
@@ -1164,6 +1175,70 @@
         "delivery-batch/accepted.json",
         "shortcut-results.json"
       ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "current batch radio fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random choice among five options has success 0.2. This strategy does not answer every batch radio; template-specific evidence remains in prior independent cue follow-ups. Singleton templates in this batch cannot establish recurring conditional predictors.",
+      "sample_refs": [
+        "batch.json",
+        "current-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "current batch radio fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random choice among five options has success 0.2. This strategy does not answer every batch radio; template-specific evidence remains in prior independent cue follow-ups. Singleton templates in this batch cannot establish recurring conditional predictors.",
+      "sample_refs": [
+        "batch.json",
+        "current-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "current batch radio fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random choice among five options has success 0.2. This strategy does not answer every batch radio; template-specific evidence remains in prior independent cue follow-ups. Singleton templates in this batch cannot establish recurring conditional predictors.",
+      "sample_refs": [
+        "batch.json",
+        "current-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "current batch radio fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random choice among five options has success 0.2. This strategy does not answer every batch radio; template-specific evidence remains in prior independent cue follow-ups. Singleton templates in this batch cannot establish recurring conditional predictors.",
+      "sample_refs": [
+        "batch.json",
+        "current-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
     }
   ],
   "delivery": {
@@ -1185,15 +1260,19 @@
       "delivery-independent/accepted.json",
       "inventory-review.json",
       "selection-results.json",
-      "shortcut-results.json"
+      "shortcut-results.json",
+      "delivery-fresh/delivery.json",
+      "fresh-easy.json",
+      "current-shortcuts.json",
+      "current-selection.json"
     ],
-    "result": "Runner batch: 5 input, 0 duplicates, 5 accepted. Independently sampled easy set: 16 input, 0 duplicates, 16 accepted. Measured keys, templates and cue counts are preserved across filtering. All five batch cases remain selectable under the stated fresh easy-band assumptions; actual UI ordering was read from rendered HTML."
+    "result": "Current batch: 5 input, 0 duplicates, 5 accepted. Fresh easy sample: 5 input, 0 duplicates, 5 accepted. Retained independent easy sample: 16 accepted. Rejection rules unchanged. Current raw/delivered cue metrics match; all five survive eligible fresh easy-band selection assumptions. Current UI positions measured from actual HTML."
   },
   "limitations": [
     "Finite audit cannot prove absence of every shortcut.",
     "Per-template random samples are deliberately small; three apparent perfect cues received targeted counterexamples rather than a broad search.",
     "No live policy or learner history is supplied; selection analysis is conditional on fresh eligible candidates and positive easy weight. Captured inventory basis 5644 may later change.",
     "Hard/moderate sampler checks do not imply delivery under this job's easy request.",
-    "The separate native grading failure for fractional exp arguments remains unresolved; decision variation checks do not waive it."
+    "Separate native grading failure: repeated quarter-exponent factors are not recognized as the equivalent half exponent; decision variation does not waive it."
   ]
 }
