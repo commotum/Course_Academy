@@ -6,11 +6,11 @@
     "existing_entrypoint": null,
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 0,
+  "stage": "generate",
+  "attempt": 1,
   "seed": 928264887,
   "created": 1792734409.3677704,
-  "updated": 1792734912.2852654,
+  "updated": 1792735513.973789,
   "source_hash": "d4586b6544994b9799b8b41004c47a9f36c075ecf488085741c48152f4b2e8c6",
   "inventory_hash": "1160492f67ff7e126edc6b6f3141e66d8161eb0d22468fce67a50a32de4c8676",
   "manifest": "package.json",
@@ -29,5 +29,148 @@
   "review_sessions": [
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087693/review-0-policy-2-2aefcf3e7328e3ac",
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087693/review-0-policy-2-8040d13f050e26af"
-  ]
+  ],
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087693/review-0-policy-2-8040d13f050e26af",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "62d7395bb443b95ef5c1dcf282c3df6eefe9eb496593ae763818986bd0e49527",
+      "batch_hash": "52f7edaf40262e1e960ba0bea67712b805e31cff82d539f1a39577dcff49d4e1",
+      "source_hash": "d4586b6544994b9799b8b41004c47a9f36c075ecf488085741c48152f4b2e8c6",
+      "inventory_hash": "1160492f67ff7e126edc6b6f3141e66d8161eb0d22468fce67a50a32de4c8676",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202"
+    }
+  },
+  "progress_failures": {
+    "1993dffbeb0a3abb9f24e17c9a5f7c00cffbeb23233851ddc9068b059e4485dd": 1
+  },
+  "needs_repair": true,
+  "error": {
+    "verdict": "revise",
+    "summary": "The generator omits captured source question q-139628 from replay support. Other tested checks passed. No stored-pool defect was demonstrated, and package files remained unchanged.",
+    "source_analysis": {
+      "skill": "Determine matrix dimensions by counting rows and columns in order.",
+      "reasoning_steps": [
+        "Inspect the displayed matrix.",
+        "Count rows and columns independently.",
+        "Report rows \u00d7 columns through radio selection or two numeric blanks."
+      ],
+      "invariants": [
+        "One explicitly displayed rectangular matrix.",
+        "Rows precede columns.",
+        "Entry values require no arithmetic."
+      ],
+      "permitted_variations": [
+        "Vary row and column counts independently within the supported workload.",
+        "Vary labels and entries independently of dimensions.",
+        "Vary radio banks and correct-choice positions.",
+        "Allow rectangular and square matrices in both blank templates."
+      ],
+      "source_refs": [
+        "6587b5f1-8a44-556a-a95e-20c54dfebc04",
+        "46957bca-e845-5160-aeaf-7ce8847fe404",
+        "80862d10-12ca-5f6e-9209-5f8bf84be504",
+        "Tutorial d68f01b8-8bc6-59a1-8d80-d284abbcdf6e: dimensions are the number of rows and columns, written in that order."
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "failed",
+        "evidence_paths": [
+          "source-replay-results.json",
+          "source-prompt-results.json",
+          "replay_regression.py",
+          "replay-regression.log"
+        ],
+        "details": "Eight packaged profiles reproduce source matrices, field contracts, complete banks and solutions. The ninth captured practice source, q-139628, raises Unknown source profile."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "audit.py",
+          "math-results.json",
+          "inventory-results.json"
+        ],
+        "details": "Independently verified dimensions, keys and solution counts on 218 generated records. All 14 captured inventory records also have correct dimension answers."
+      },
+      "variety": {
+        "status": "passed",
+        "evidence_paths": [
+          "samples.json",
+          "boundaries.json",
+          "finite-batch.json",
+          "pedagogical-variation.json"
+        ],
+        "details": "All 25 supported shapes work in every template. The exact runner batch contains five distinct shapes."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-analysis.json",
+          "scope-results.json"
+        ],
+        "details": "Generated questions preserve the easy counting task, supported entry representations and response formats."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-input.json",
+          "grader-results.json"
+        ],
+        "details": "All 259 native-grader assertions passed, including equivalent numeric notation, incorrect counts, transposed dimensions and every radio choice."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "render-remaining/rendering.json",
+          "visual-inspection.json"
+        ],
+        "details": "Actual UI rendered 16 records without reported errors. Visual inspection covered all counterfactuals, representative batch questions and large source matrices."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "rejection-results.json",
+          "package-integrity.json"
+        ],
+        "details": "Exact dependencies match. Deterministic replay, relocation and invalid-input checks passed. Package hashes remained unchanged."
+      },
+      "decision_variation": {
+        "status": "passed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "counterfactual-results.json",
+          "grader-results.json",
+          "delivery-batch/delivery.json",
+          "delivery-sample/delivery.json",
+          "selection-results.json",
+          "affected-inventory.json"
+        ],
+        "details": "Relevant shape changes alter answers; irrelevant entry and label changes preserve them. Tested conditional strategies demonstrated no reusable shortcut. Delivery retained 120/120 independent samples and 5/5 runner records. Selection conclusions are bounded by captured inventory and unknown learner history."
+      }
+    },
+    "findings": [
+      {
+        "kind": "source_fidelity",
+        "description": "The package retains eight source cases from basis 3966 and omits q-139628 from the supplied basis-5665 capture. This original Chelsea question displays a 4\u00d74 matrix and requires two blanks, both answered 4. Its replay profile is rejected.",
+        "source_refs": [
+          "80862d10-12ca-5f6e-9209-5f8bf84be504 (q-139628)",
+          "generate/principles.md: Establish fidelity first"
+        ],
+        "reproduction": "From evidence_root, run /home/jake/Developer/Course_Academy/.venv/bin/python -B replay_regression.py --package ../workspace. Minimal call: generate(seed=0, profile=\"observed-q-139628\"). It raises ValueError: Unknown source profile; see replay-regression.log.",
+        "requested_change": "Refresh the source/replay registry to cover every supplied target-KP practice source and add a completeness regression independent of the packaged source list. Preserve this source matrix, two blank answers and solution; document correction of its absent table reference. Keep row and column counts independently variable when extending the stem. No database change is requested."
+      }
+    ]
+  },
+  "last_rejected_package": "62d7395bb443b95ef5c1dcf282c3df6eefe9eb496593ae763818986bd0e49527",
+  "last_rejected_source": "d4586b6544994b9799b8b41004c47a9f36c075ecf488085741c48152f4b2e8c6",
+  "last_rejected_engine": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202",
+  "author_running": true
 }

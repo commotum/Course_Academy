@@ -13,7 +13,7 @@ def shape(q):
  body=re.search(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',q[':question/problem'],re.S)[1]
  rows=body.split('\\\\'); widths=[len(r.split('&')) for r in rows]; assert len(set(widths))==1
  return len(rows),widths[0]
-def values(q):return [correct(f) for f in q[':question/answer-fields']]
+def values(q):return [correct(f) for f in sorted(q[':question/answer-fields'], key=lambda f:f[':answer-field/key'])]
 def norm(s): return re.sub(r'\s|[${}.]','',s)
 def checkmath(rec):
  q=rec['question'];r,c=shape(q); fs=q[':question/answer-fields'];v=values(q)
