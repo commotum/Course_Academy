@@ -1,17 +1,12 @@
-# Author-303 result
+# Current repair result
 
-Preserved completed generator repairs. Fresh CLI/source/math/native-grading,
-delivery/inventory and shortcut regressions pass. The corrected evidence bundle
-passes path validation and relocation controls. The registered evidence regression
-remains nonzero because the installed runner rejects unchanged runtime before
-sampling, conflicting with the retained evidence-only preservation requirement.
+Completed generator repairs remain intact. Fresh CLI, source replay, mathematical, native-grading, delivery, inventory, shortcut and rendering-binding checks pass. Runtime hashes are unchanged.
 
-Commands and results: `evidence/author303-verification.json`.
+The registered evidence regression remains nonzero because the installed runner rejects unchanged runtime before sampling, while retained finding 9b8cb52352b8ca3e790e requires preserving runtime. Its corrected evidence bundle passes path validation and relocation controls. The external runner correction remains staged, not installed.
+
+Commands and results: `evidence/current-author-verification.json`.
 Strict failure: `evidence/current-handoff-regression.json`.
 Corrected bundle: `evidence/contract-correction`.
 Staged external fix: `runner-fix/evidence-only-rejection.patch`.
 
-Status is unsupported: applying the required runner correction and installing
-evidence outside the workspace are beyond the authorized write scope. No runtime
-bytes were changed to evade this gate. This is an external handoff limitation;
-the source-supported easy Gaussian-elimination generator remains intact.
+Status is unsupported: the required runner correction and evidence installation are outside the authorized workspace. No package bytes were changed to evade the gate.
