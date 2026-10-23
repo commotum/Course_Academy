@@ -1,20 +1,7 @@
-# Author-335 continuation before verification
+# Current continuation before validation
 
-The latest installed-runner byte-identity rejection was reproduced first.
-Finding 9b8cb52352b8ca3e790e explicitly requests evidence-only correction and
-preserving the package. No generator construction change is justified.
+The exact latest failure is the installed runner's byte-identical package gate, reproduced with `checks/check_current_handoff.py` (exit 1). Retained finding 9b8cb52352b8ca3e790e requests an evidence-only correction and preservation of runtime. The staged evidence passes real report validation and its missing-file and wrong-root controls; the registered check remains failing because the installed handoff rejects before testing it.
 
-Retain the instructional account and completed repairs: source questions
-9752715d-a11c-5d27-95dc-d20bec1117cb and
-dc5530a8-d7bb-5ee6-b842-11178cec4e06, and tutorial
-2112d3af-1fb0-5a70-ab99-59931db99930's pivot normalization, lower-entry
-elimination and second-pivot normalization support the easy five-radio task
-with optional back substitution. Controlled RHS changes must continue to
-change the correct candidate while preserving coefficient workload and the
-complete answer bank. Keep source replay and every retained regression.
+Source q-73439 (9752715d-a11c-5d27-95dc-d20bec1117cb), q-130909 (dc5530a8-d7bb-5ee6-b842-11178cec4e06), and tutorial 2112d3af-1fb0-5a70-ab99-59931db99930 still support first-pivot normalization, lower-left elimination, second-pivot normalization and optional back substitution. Tutorial ee4b134d-2908-5930-86bb-32537e0d8347 explains why diagonal ones simplify back substitution. Retain the existing easy five-radio contract, full replay banks, eligible candidate ranks, arithmetic workload and completed batch-selection repair. The existing instructional-account.md remains the complete specification. Source images are absent; matrix notation is rendered as math.
 
-Run the registered checks once. The handoff cannot be repaired by changing
-incidental generator bytes: the identified runner correction is outside the
-workspace-only write authorization. Do not weaken its strict failing check or
-claim that a staged patch has been installed. No new rendering is needed for
-unchanged content; retain the verified actual-UI render bindings.
+No change to the learner task or runtime design is justified by the demonstrated evidence-path failure. Verify each registered regression once and the retained render binding; do not rerun broad exploration or install the external runner patch. Preserve the strict failing check. The workspace-only restriction prohibits changing scripts/generator_pipeline.py or installing reports outside this workspace.
