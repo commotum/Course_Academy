@@ -2729,6 +2729,14 @@ pub(crate) mod tests {
             (902, json!({"activity/steps":[901]}).as_object().unwrap().clone()),
         ]), s.basis_t+1).unwrap();
         assert!(s.entities.lesson_route(20).is_some());
+        let mut shorter = s.clone();
+        let mut activity = shorter.entities[&20].clone();
+        activity.insert("activity/steps".into(), json!([30]));
+        let mut first = shorter.entities[&30].clone();
+        first.remove("step/next");
+        shorter.replace_records(BTreeMap::from([(20, activity), (30, first)]), shorter.basis_t+1).unwrap();
+        assert_eq!(lesson_steps(&shorter, 20).unwrap().len(), 1);
+        assert!(shorter.owners(31, "activity/steps").unwrap().is_empty());
         let mut changed = s.clone();
         let mut step = changed.entities[&30].clone();
         step.insert("step/next".into(), json!(30));

@@ -330,6 +330,22 @@ impl EntitySnapshot {
                 return Err("ident changes require a complete snapshot".into());
             }
         }
+        // Capture old containment before invalidating any indexes. Rebuilding
+        // an index midway through invalidation would cache db-before owners
+        // after their changed parent had already been processed.
+        let mut route_owners = BTreeMap::new();
+        let mut multistep_edits = BTreeSet::new();
+        for (&eid, record) in &normalized {
+            let Some(old) = self.entities.records.get(&eid) else { continue };
+            if ["step/content", "step/next"].iter().any(|attr| old.get(*attr) != record.get(*attr)) {
+                route_owners.insert(eid, self.owners(eid, "activity/steps")?);
+                if old.get("step/content") != record.get("step/content")
+                    && !self.owners(eid, "multistep/steps")?.is_empty()
+                {
+                    multistep_edits.insert(eid);
+                }
+            }
+        }
         // Ordinary commits only invalidate reverse indexes for changed
         // attributes. New task items must not discard the curriculum indexes.
         for (&eid, record) in &normalized {
@@ -351,17 +367,16 @@ impl EntitySnapshot {
             // New ordinary retrieval routes do not affect question membership.
             // Editing a multistep route or its assigned-problem wrappers does.
             if ["multistep/steps", "multistep-step/question", "assigned-problem/content"].iter().any(|attr| changed(attr))
-                || (changed("step/content") && self.entities.records.contains_key(&eid)
-                    && !self.owners(eid, "multistep/steps")?.is_empty())
+                || multistep_edits.contains(&eid)
             {
                 self.entities.validated_practice_questions.get_mut().clear();
             }
             if old.into_iter().flat_map(|r| r.keys()).chain(record.keys()).any(|attr| changed(attr) && attr.starts_with("activity/")) {
                 self.entities.lesson_routes.get_mut().remove(&eid);
             }
-            if ["step/content", "step/next"].iter().any(|attr| changed(attr)) && self.entities.records.contains_key(&eid) {
-                for activity in self.owners(eid, "activity/steps")? {
-                    self.entities.lesson_routes.get_mut().remove(&activity);
+            if let Some(activities) = route_owners.get(&eid) {
+                for activity in activities {
+                    self.entities.lesson_routes.get_mut().remove(activity);
                 }
             }
             if changed("tutorial/content") || changed("topic/knowledge-points") || changed("tutorial/id") || changed("topic/id") {

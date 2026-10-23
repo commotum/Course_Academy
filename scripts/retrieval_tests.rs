@@ -1635,6 +1635,18 @@ pub(super) fn durable_fixture(
             forms.push(json!({"db/id":format!("fixture-answer-{topic}-{offset}"),"answer/id":id(n+2),"answer/type":kw("answer.type/math"),"answer/value":"2","db/ensure":kw("answer/validate")}));
         }
     }
+    // Meet the same L30 cutoff as real Study topics, with known foundations
+    // so the course planner can admit lessons without bypassing prerequisites.
+    for foundation in 0..learning::MIN_STUDY_LAYER - 1 {
+        let next: Vec<_> = if foundation + 1 == learning::MIN_STUDY_LAYER - 1 {
+            (0..5).map(|i| format!("fixture-topic-{i}")).collect()
+        } else {
+            vec![format!("fixture-foundation-{}", foundation + 1)]
+        };
+        forms.push(json!({"db/id":format!("fixture-foundation-{foundation}"),"topic/id":id(10000+foundation as u128),"topic/next":next}));
+        forms.push(json!({"db/id":format!("fixture-foundation-progress-{foundation}"),"progress/id":format!("fixture-{nonce}-foundation-{foundation}"),"progress/topic":format!("fixture-foundation-{foundation}"),"progress/policy":policy,"progress/learned":true,"progress/repetitions":1.0,"progress/memory":1.0,"progress/memory-at":{"$instant":Utc::now().timestamp_millis()},"progress/interval-days":4.0,"progress/assessment-accuracy":0.8,"progress/practice-accuracy":0.8,"progress/assessment-mass":0.0,"progress/practice-mass":0.0,"db/ensure":kw("progress/validate")}));
+        forms[3]["learner/knowledge-profile"].as_array_mut().unwrap().push(json!(format!("fixture-foundation-progress-{foundation}")));
+    }
     let start = Utc::now();
     let mut s = super::integration::commit(
         conn,
@@ -1651,18 +1663,13 @@ pub(super) fn durable_fixture(
         .find(|l| s.entities[l]["learner/id"] == json!(learner))
         .unwrap();
     if assessment {
-        let forms = s
-            .refs(l, "learner/activity")?
-            .iter()
-            .map(|t| {
-                cas(
-                    &s,
-                    *t,
-                    "learner-task/status",
-                    "learner-task.status/completed",
-                )
-            })
-            .collect::<Result<Vec<_>>>()?;
+        let mut forms = vec![];
+        for task in s.refs(l, "learner/activity")? {
+            forms.push(cas(&s, task, "learner-task/status", "learner-task.status/completed")?);
+            // Preserve the original source learning date while recording the
+            // fixture now, just as imported terminal lessons do.
+            forms.push(add(json!(task), "learner-task/finished-at", schema::instant_value(start-chrono::Duration::days(3))));
+        }
         s = super::integration::commit(
             conn,
             endpoint,
@@ -1674,8 +1681,8 @@ pub(super) fn durable_fixture(
     }
     if assessment {
         // Live writers require monotonic transaction instants. Author this
-        // admitted route explicitly; the 48-hour admission boundary is tested
-        // against isolated historical fixtures, without backdating live writes.
+        // admitted route explicitly using the original learning dates above,
+        // without backdating any live transaction instants.
         let qs = (0..5)
             .map(|topic| {
                 let t = s
