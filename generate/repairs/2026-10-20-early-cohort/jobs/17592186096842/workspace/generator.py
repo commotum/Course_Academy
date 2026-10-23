@@ -13,7 +13,7 @@ from math_format import normalize_prose, normalize_tex, checked_math_content
 KP_ID=17592186096842
 KP_UUID='2f0cdac9-57b2-5634-8d98-d6adf8a85204'
 TITLE='Differentiating a Radical Function Using the Chain Rule'
-VERSION='radical-chain-3'
+VERSION='radical-chain-4'
 ROOT=Path(__file__).resolve().parent/'data'
 X=sp.Symbol('x', real=True)
 U=sp.Symbol('u', positive=True)
@@ -68,8 +68,8 @@ DEFAULT_PROFILES={
  'slope_sum_radio':['source_sum','authored_operations','operations_chain'],
 }
 
-PROFILES['scale_bank']=(None,'authored whole bank: contiguous coefficient ladder, correct role selected first')
-DEFAULT_PROFILES={name:['scale_bank'] for name,spec in TEMPLATES.items() if spec['field']=='radio'}
+PROFILES['arithmetic_bank']=(None,'authored whole bank: irregular rational arithmetic outcomes, correct rank selected first')
+DEFAULT_PROFILES={name:['arithmetic_bank'] for name,spec in TEMPLATES.items() if spec['field']=='radio'}
 
 def tex(v):return sp.latex(sp.sympify(v)).replace(' ', '').replace(r'\left(', '(').replace(r'\right)', ')')
 def poly(p,spec,var='x'):
@@ -200,19 +200,43 @@ def render(scaffold,parts):
     if '<<' in scaffold:raise ValueError('Unfilled template')
     return scaffold
 
-def bank(spec,p,profile,assignment=None):
+def weighted_scalars(rng,pool,count):
+    chosen=[]
+    remaining=list(pool)
+    for _ in range(count):
+        value=rng.choices(remaining,weights=[1/int(v.q)**2 for v in remaining],k=1)[0]
+        chosen.append(value);remaining.remove(value)
+    return chosen
+
+def bank(spec,p,profile,assignment=None,rng=None):
     inner,du,e,d,ans=model(spec,p)
     def assessed(v):return sp.simplify(v.subs(X,p['t'])) if spec.get('slope') else v
     answer_spec={**spec,'braced':False} if spec['source']=='q-314194' else spec
-    out=[('correct',ans,tex(ans) if spec.get('slope') or profile=='scale_bank' else derivative_tex(answer_spec,p))]
+    out=[('correct',ans,tex(ans) if spec.get('slope') or profile=='arithmetic_bank' else derivative_tex(answer_spec,p))]
     if spec['field']=='blank':return out
-    if profile=='scale_bank':
-        rank=assignment
-        # Replace only the radical's inner-derivative coefficient. In sum
-        # questions the cubic contribution is identical in all five options:
-        # scaling the whole slope would let nearest-cubic guessing bypass it.
+    if profile=='arithmetic_bank':
+        # Scalar arithmetic errors generalize the irregular fractions in the
+        # source banks. The pool is independent of the correct scalar; in
+        # particular its denominators are not the question's evaluated root.
         extra=3*p['k']*p['t']**2 if spec.get('sum') else 0
-        values=[('coefficient_'+str(q),extra+(ans-extra)*sp.Rational(q,p['a']),None) for q in range(p['a']-rank,p['a']-rank+5) if q!=p['a']]
+        factor=sp.Integer(1) if spec.get('slope') else inner**(e-1)
+        scalar=sp.simplify((ans-extra)/factor)
+        pool=ARITHMETIC_SCALARS
+        lower=[v for v in pool if v<scalar]
+        upper=[v for v in pool if v>scalar]
+        # Keep arithmetic errors in a comparable range without fixing the key
+        # at the middle, either extreme, or next to a predictable gap.
+        radius=max(sp.Integer(2),abs(scalar)) * 2
+        lower=[v for v in lower if v>=scalar-radius]
+        upper=[v for v in upper if v<=scalar+radius]
+        for _ in range(100):
+            scalars=sorted(weighted_scalars(rng,lower,assignment)+[scalar]+weighted_scalars(rng,upper,4-assignment))
+            gaps=[b-a for a,b in zip(scalars,scalars[1:])]
+            # A reduced integer/half must not be the only simple-looking
+            # option among complicated fractions. Reject the whole bank.
+            if len(set(gaps))>1 and any(q!=scalar and q.q<=scalar.q for q in scalars):break
+        else:raise ValueError('No irregular whole bank')
+        values=[('arithmetic_scalar_'+str(q),extra+q*factor,None) for q in scalars if q!=scalar]
     elif profile=='source_reciprocal':
         values=[('empirical_minus_three_over_inner',-3/inner,frac(-3,poly(p,spec))),('omit_inner_and_wrong_exponent',1/(2*sp.sqrt(inner)),frac(1,'2'+r'\sqrt{'+poly(p,spec)+'}')),('keep_square_root_exponent',-du/(2*sp.sqrt(inner)),frac(-du,'2'+r'\sqrt{'+poly(p,spec)+'}')),('omit_inner_and_negative_sign',1/(2*inner**sp.Rational(3,2)),frac(1,'2'+r'\sqrt{('+poly(p,spec)+r'{)}^{3}}'))]
     elif profile=='source_spaced':
@@ -252,6 +276,8 @@ def bank(spec,p,profile,assignment=None):
         for _,other,_ in out[:i]:
             if sp.simplify(value-other)==0:raise ValueError('Ambiguous whole bank')
     return out
+
+ARITHMETIC_SCALARS=sorted({sp.Rational(n,d) for n in range(-96,97) for d in range(1,25)})
 
 def check_parameters(spec,p):
     expected={'a','b'} | ({'c'} if spec['degree']==2 else set()) | ({'t'} if spec.get('slope') else set()) | ({'k'} if spec.get('sum') else set())
@@ -319,9 +345,9 @@ def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=N
 @checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,replay=False,bank_role=None):
     rng=random.Random(seed)
-    if profile not in (None,'scale_bank','blank') and not replay:
+    if profile not in (None,'arithmetic_bank','blank') and not replay:
         raise ValueError('Historical banks are available only through source replay')
-    if profile not in (None,'scale_bank','authored_operations','operations_chain','blank'):
+    if profile not in (None,'arithmetic_bank','authored_operations','operations_chain','blank'):
         if profile not in PROFILES:raise ValueError('Unknown profile')
         required=PROFILES[profile][0]
         if template is not None and template!=required:raise ValueError('Ineligible source profile')
@@ -332,12 +358,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         template=rng.choice(eligible)
     if template not in eligible:raise ValueError('Template incompatible with level or field')
     spec=TEMPLATES[template];profile=profile or ('blank' if spec['field']=='blank' else rng.choice(DEFAULT_PROFILES[template]))
-    assignment=(rng.randrange(5) if bank_role is None else bank_role) if profile=='scale_bank' else None
+    assignment=(rng.randrange(5) if bank_role is None else bank_role) if profile=='arithmetic_bank' else None
     if assignment is not None and (type(assignment)!=int or assignment not in range(5)):raise ValueError('Bank role must be 0..4')
     if (spec['field']=='blank')!=(profile=='blank'):raise ValueError('Profile incompatible with field')
     for attempt in range(1000):
         p=dict(parameters) if parameters is not None else sample(spec,rng)
-        try:check_parameters(spec,p); options=bank(spec,p,profile,assignment);break
+        try:check_parameters(spec,p); options=bank(spec,p,profile,assignment,rng);break
         except ValueError:
             if parameters is not None:raise
     else:raise ValueError('No valid whole-bank instance')
@@ -381,6 +407,6 @@ def markdown(rec):
     return s+q[':question/worked-solution']
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='json');ap.add_argument('--template');ap.add_argument('--profile',choices=['scale_bank','blank']);ap.add_argument('--replay-source',action='store_true');a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='json');ap.add_argument('--template');ap.add_argument('--profile',choices=['arithmetic_bank','blank']);ap.add_argument('--replay-source',action='store_true');a=ap.parse_args()
     records=replay_sources() if a.replay_source else [generate(level,a.seed+i,a.template,profile=a.profile) for level in (['moderate'] if a.difficulty=='unclassified' else [a.difficulty]) for i in range(a.count)]
     print(json.dumps(records,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
