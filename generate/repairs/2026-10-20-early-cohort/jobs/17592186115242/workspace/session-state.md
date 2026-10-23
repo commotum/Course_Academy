@@ -1,31 +1,25 @@
-# Current state: author 1029
+# Current state: author 1032
 
-Preserved completed runtime repairs, manifest and all five strict regressions.
-Read feedback, five retained findings and latest history, generation instructions,
-original lesson, all 17 complete practice questions/banks, canonical example,
-prerequisite context, diagram and existing instructional account.
+Preserved completed runtime repairs, manifest, instructional specification and
+all five strict regression declarations. Read latest feedback and retained
+finding history before testing.
 
-First execution:
+First executed check:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical banks affected; possible-history shortcut 64/64.
+Exit 1: five historical banks affected; retained possible-history shortcut 64/64.
 
 Validation milestone:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-1029`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator findings
-pass; 17 source banks replay; 14 records retain tested contrasts after delivery;
-native grader accepts 7 correct and rejects 28 wrong choices. Exact dependencies,
-relocation and protected runtime/source/inventory/manifest hashes pass.
-Staged complete replacement mappings verify and remain unapplied.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-1032`
+Exit 1 solely for finding 591f580cadb749294588. Four generator findings pass;
+17 source banks replay; 14 records retain contrasts after shared delivery;
+native grader accepts 7 correct and rejects 28 wrong choices. Dependencies,
+relocation and protected hashes pass. Staged replacements verified, unapplied.
+Visually inspected retained UI screenshot and source tutorial flowchart.
+No runtime, engine, database, source or publication edits performed.
 
-Visually inspected retained actual-UI screenshot
-`evidence/repair-3/render/question-001.png` and tutorial flowchart.
-Runtime and representative output unchanged; retained rendering reused.
-No runtime, engine, database, publication or source edits performed.
-Evidence: evidence/author-1029/commands.json, results.json, disposition.md.
-
-Next unfinished step: separate authorized inventory-remediation workflow must
-review/apply evidence/repair-3/inventory-repair-proposal.json, supply fresh capture,
-and rerun strict historical-pool/delivery checks. This task forbids database edits
-and publication. Generator changes cannot retire stored candidate entities.
-Keep the strict failure; do not repeat unchanged author passes expecting a new
-result or overwrite captured inventory with hypothetical replacements.
+Next unfinished action: the separate inventory-remediation workflow must apply
+the reviewed mapping in evidence/repair-3/inventory-repair-proposal.json and
+supply a fresh inventory capture. This task prohibits that database change.
+Preserve the strict failure; another unchanged author pass cannot retire stored
+candidate entities. Evidence: evidence/author-1032/commands.json, results.json,
+and disposition.md.
