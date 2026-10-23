@@ -403,6 +403,8 @@ class Pipeline:
                 context['review_contract_feedback'] = {
                     'error': error, 'result_file': self.state.get('review_report_result_file', str(evidence / 'result.json')),
                     'instruction': 'Correct your report/evidence in evidence_root; preserve the reviewed package and completed checks.'}
+            if not self.admit_review_session(directory):
+                return None
             result = self.session('review', context, directory)
             save(directory / 'result.json', result)
             # A changed candidate is a separate failure, never a report repair.
@@ -425,6 +427,14 @@ class Pipeline:
                     save(evidence / 'result.json', result)
                     self.persist(review_report_error=None, review_report_result_file=None,
                                  report_repair_directory=None)
+                    if result['verdict'] == 'accepted':
+                        repaired = self.repair_inventory(evidence)
+                        if repaired and repaired.get('unresolved'):
+                            self.block_inventory(repaired)
+                            return None
+                        if repaired and repaired['inventory_changed']:
+                            self.persist(stage='validate', needs_repair=True)
+                            return None
                     return result
                 error = {'code': 'review_evidence_correction', 'findings': result['findings'],
                          'instruction': 'Fix the report and evidence under evidence_root; the generator does not need an author pass for these findings.'}
@@ -623,7 +633,34 @@ class Pipeline:
         if self.candidate_hash() != before:
             raise ValueError('Repair checks modified the runtime package')
 
+    def repair_inventory(self, evidence=None):
+        from generator_inventory import repair_inventory
+        return repair_inventory(self, evidence)
+
+    def block_inventory(self, result):
+        self.block('inventory_repair_blocked', {
+            'owner': 'inventory',
+            'error': 'Stored-question repair needs intervention; see pool-repair/verification.json.',
+            'unresolved': result.get('unresolved', [])}, 'validate')
+
     def repair(self, reason):
+        findings = reason.get('findings', [])
+        if any(row.get('kind') == 'inventory' for row in findings):
+            self.remember_repair(reason)
+            repaired = self.repair_inventory()
+            if not repaired or repaired.get('unresolved'):
+                self.block_inventory(repaired or {'unresolved': ['Missing reviewed affected-inventory.json evidence']})
+                return
+            content = [row for row in findings if row.get('kind') not in {'inventory', 'evidence'}]
+            if not content:
+                if not repaired['inventory_changed']:
+                    self.block_inventory({'unresolved': ['Review still rejects inventory already repaired; no delivery evidence changed.']})
+                    return
+                self.check_repair_regressions()
+                self.sample()
+                self.persist(stage='validate', package_hash=self.candidate_hash(), needs_repair=True)
+                return
+            reason = {**reason, 'findings': content}
         self.remember_repair(reason)
         save(self.directory / 'feedback.json', {**reason,
             'repair_history_file': str(self.directory / 'repair-history.json'),
@@ -666,6 +703,24 @@ class Pipeline:
             return False
         return True
 
+    def admit_review_session(self, directory):
+        """Count a new review before launch, across every evidence binding."""
+        if self.state['stage'] == 'blocked':
+            return False
+        identity = str(inside(self.directory, directory))
+        sessions = self.state.get('review_sessions', [])
+        if identity in sessions:
+            # Retries and cached results retain their per-session launch cap.
+            return True
+        limit = self.state.get('review_session_limit', self.max_attempts * 3)
+        if len(sessions) >= limit:
+            self.block('review_sessions_exhausted', {
+                'sessions': len(sessions), 'limit': limit, 'next_directory': identity,
+                'error': 'Independent reviews exhausted the durable job budget, including evidence or engine refreshes.'}, 'validate')
+            return False
+        self.persist(review_sessions=[*sessions, identity], review_session_limit=limit)
+        return True
+
     def block(self, code, reason, resume_stage):
         self.persist(stage='blocked', needs_repair=True,
                      repair_cycle=self.state.get('repair_cycle', 0) + 1, error={
@@ -694,6 +749,7 @@ class Pipeline:
         report_limits = {key: count + 3 for key, count in self.state.get('review_report_rounds', {}).items()}
         self.persist(stage=stage, author_attempt_limit=self.state['attempt'] + self.max_attempts,
                      resume_events=events, progress_failures={}, review_report_limits=report_limits,
+                     review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3,
                      needs_repair=True)
 
     def run(self, stop_after='push', *, resume_reason=None):
@@ -708,6 +764,9 @@ class Pipeline:
                 # Existing attempts count, including jobs admitted by older
                 # runners. A deployment must not rearm a runaway job.
                 self.persist(author_attempt_limit=self.max_attempts)
+            if 'review_session_limit' not in self.state:
+                self.persist(review_session_limit=self.max_attempts * 3,
+                             review_sessions=self.state.get('review_sessions', []))
             if resume_reason is not None:
                 self.resume_blocked(resume_reason)
             self._attempt_limit = self.state['author_attempt_limit']

@@ -120,27 +120,30 @@ def inventory_check():
         assert root(current) == root(r)
         counterparts.append(current)
         z = probes([r])['easy:unit_bare']
-        if z['sign_extremum_successes'] == 1:
+        if z['sign_extremum_successes'] == 1 and not saved.get(':question/retired', False):
             affected.append(dict(question_id=q[':question/id'],entity_id=saved[':db/id']))
     # Exact conditional within-easy selection, after a learner has seen the new
     # batch but none of the old questions. Entity ordering is known for old pool.
-    pool = sorted(historic,key=lambda r:stored[r['question'][':question/id']][':db/id'])
+    pool = sorted([r for r in historic if not stored[r['question'][':question/id']].get(':question/retired', False)],
+                  key=lambda r:stored[r['question'][':question/id']][':db/id'])
     draws = []
-    for i in range(64):
+    for i in range(64 if pool else 0):
         digest=hashlib.sha256(f'course-academy/question-selection/v1/author-repair-{i}'.encode()).digest()
         u=(int.from_bytes(digest[8:16],'big')>>11)/(1<<53)
         draws.append(pool[int(u*len(pool))])
-    selection=probes(draws)
+    selection=probes(draws) if draws else {}
     passed = not affected
     write('historical-current-counterparts.json',counterparts)
     write('inventory-results.json',dict(passed=passed,affected_questions=affected,
           inventory_basis=inventory['basis'],selection=selection,
+          historical_shortcut_witness=probes(historic),retired_count=len(historic)-len(pool),
+          retirement_filter='engine/rust/learning.rs: validate_practice_question',
           source='engine/rust/question_selection.rs: select, conditional on positive easy weight',
-          limits=['Captured inventory remains selectable; this author cannot change database content.',
+          limits=['Retired questions are excluded from fresh practice; historical records and their defects are retained.',
                   'Actual learner history and configured policy are not supplied.',
                   'The 64/64 witness is a possible new-seen history, not a prediction of all histories.']))
     print(json.dumps(dict(finding='591f580cadb749294588',passed=passed,affected=len(affected),
-                         selection_successes=selection['easy:unit_bare']['sign_extremum_successes'],draws=64)))
+                         selection_successes=selection.get('easy:unit_bare',{}).get('sign_extremum_successes',0),draws=len(draws))))
     return 0 if passed else 1
 
 if __name__ == '__main__':

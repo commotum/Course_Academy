@@ -6,7 +6,7 @@ use std::{error::Error, fs::File, io::{BufWriter, Write}, collections::BTreeMap}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<_> = std::env::args().collect();
-    if args.len() != 6 { return Err("usage: export_math_image_history DATABASE BASIS IDS.json OUTPUT.jsonl".into()); }
+    if args.len() != 6 { return Err("usage: export_math_image_history DATABASE --as-of BASIS IDS.json OUTPUT.jsonl".into()); }
     let ids: Vec<u64> = serde_json::from_reader(File::open(&args[4])?)?;
     let basis: u64 = args[3].parse()?;
     let conn = Connection::connect_configured_with_cache_limits(postgres_config_from_env()?, args[1].clone(), 2048, 64 * 1024 * 1024)?;

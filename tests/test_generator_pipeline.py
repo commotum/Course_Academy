@@ -441,6 +441,45 @@ class GeneratorPipelineTests(unittest.TestCase):
             self.assertEqual(self.pipeline(session).run()['stage'], 'blocked')
         self.assertEqual(session.call_count, 1)
 
+    def test_review_budget_counts_new_directories_once_across_restarts(self):
+        first = self.pipeline(FakeSession(), attempts=1)
+        directory = self.job / 'review-first'
+        self.assertTrue(first.admit_review_session(directory))
+        self.assertTrue(first.admit_review_session(directory))
+        restarted = self.pipeline(FakeSession(), attempts=20)
+        self.assertTrue(restarted.admit_review_session(directory))
+        self.assertEqual(len(restarted.state['review_sessions']), 1)
+        self.assertEqual(restarted.state['review_session_limit'], 3)
+        self.assertTrue(restarted.admit_review_session(self.job / 'review-second'))
+        self.assertTrue(restarted.admit_review_session(self.job / 'review-third'))
+        self.assertFalse(restarted.admit_review_session(self.job / 'review-fourth'))
+        self.assertEqual(restarted.state['stage'], 'blocked')
+        self.assertEqual(restarted.state['error']['code'], 'review_sessions_exhausted')
+        self.assertEqual(len(restarted.state['review_sessions']), 3)
+
+    def test_engine_refresh_reviews_share_a_durable_budget_until_explicit_resume(self):
+        session = FakeSession()
+        state = self.pipeline(session, attempts=1).run()
+        self.assertEqual(state['stage'], 'verified')
+        engine = self.root / 'engine/rust'
+        engine.mkdir(parents=True)
+        for revision in range(3):
+            (engine / 'grading.rs').write_text(f'// engine revision {revision}\n')
+            state = self.pipeline(session, attempts=1).run()
+        self.assertEqual(state['stage'], 'blocked')
+        self.assertEqual(state['error']['code'], 'review_sessions_exhausted')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review', 'review'])
+        self.assertEqual(state['review_session_limit'], 3)
+        for _ in range(2):
+            self.assertEqual(self.pipeline(session, attempts=99).run()['stage'], 'blocked')
+        self.assertEqual(len(session.calls), 4)
+        state = self.pipeline(session, attempts=1).run(resume_reason='Engine updates have stabilized; review current engine')
+        self.assertEqual(state['stage'], 'verified')
+        self.assertEqual(state['review_session_limit'], 6)
+        self.assertEqual(len(state['review_sessions']), 4)
+        self.assertEqual(state['attempt'], 1)
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
     def test_scheduler_locks_survive_the_author_reviewer_handoff(self):
         fake = FakeSession()
         class RecordingSession(CodexSession):

@@ -10,7 +10,7 @@ Execution uses the existing generator pipeline with three parallel workers and t
 
 Passing unchanged archived packages receive current review approval through verified unchanged registration, without publishing extra questions. Changed/repackaged runtimes receive their reviewed five-question initial batch. Reviewer evidence includes the required structural-shortcut checks by recognizable template and after delivery filtering, rather than relying on total output uniqueness.
 
-If an independent review demonstrates defects in stored generated questions, the pool repair path requires exact question identities and reproduced generated-record evidence. It removes only unused, noncanonical, nonsource questions' pool memberships after a fresh guarded read and native transaction preview. Question/answer entities and learner history remain. Source questions, previously served questions and unsupported claims are protected. Unresolved source/content/engine issues remain explicitly recorded as needing repair; they are never converted to successful certification.
+If an independent review demonstrates defects in stored generated questions, the pool repair path requires exact question identities and reproduced generated-record evidence. It marks demonstrated unused, noncanonical, nonsource generated questions retired after a fresh guarded read and native transaction preview. Their KP memberships remain intact. Repair and inventory recapture happen before the final independent review. Question/answer entities and learner history remain. Source questions, previously served questions and unsupported claims are protected. Unresolved source/content/engine issues remain explicitly recorded as needing repair; they are never converted to successful certification.
 
 The running scoped service is `course-academy-generator-cohort-20261020.service`, now backed by a persistent unit installed through `scripts/generator_services.py`. It restarts on unexpected worker-process failure and retains its definition after a clean boundary stop. Automatic inventory builders/refills remain disabled through `COURSE_ACADEMY_DISABLE_GENERATION=1`. The campaign stops if the provider reports a capacity limit instead of retrying that failure across the cohort.
 
@@ -25,8 +25,19 @@ Current status:
   --directory generate/repairs/2026-10-20-early-cohort
 ```
 
-`jobs/<kp>/job.json` records the pipeline stage; `author-*` and `review-*` retain session evidence. `status.json` is updated at job boundaries and by the status command. A `stop-after-current` file requests a clean boundary stop. To resume, remove that file and start the persistent scoped service; `generator_services.start_cohort(directory)` installs its definition if necessary. Completed jobs, exact pending submissions and session launch limits are retained. Content repair turns no longer become abandoned attempt-limit failures: the pipeline retains every finding, runs executable regressions, and resumes focused repair at the current priority. Report-format errors continue as report correction without reauthoring. Infrastructure interruption preserves the current job for service recovery.
+`jobs/<kp>/job.json` records the pipeline stage; `author-*` and `review-*` retain session evidence. `status.json` is updated at job boundaries and by the status command. A `stop-after-current` file requests a clean boundary stop. To resume, remove that file and start the persistent scoped service; `generator_services.start_cohort(directory)` installs its definition if necessary. Completed jobs, exact pending submissions and session launch limits are retained. Author and review budgets persist across restarts. Repeated unchanged failures, permission blockers, and exhausted budgets stop new campaign claims with a visible `campaign_error`; the service exits 78 and does not restart automatically. Report-format errors continue as report correction without reauthoring. Infrastructure interruption preserves the current job for service recovery.
 
 Validation of the campaign machinery: seven cohort tests, three pool-repair tests and all 35 existing generator-pipeline tests passed. These tests establish scheduling, package adoption, publication/retirement guardrails and recovery behavior; individual generator correctness is established by each generator's actual independent review.
 
 On 2026-10-21 the cohort service was upgraded to `--workers 3`. The previous single worker was drained at a saved pipeline boundary before enabling concurrent state writes. `stop-after-current` prevents new claims across all slots and lets current attempts reach a saved boundary. A provider capacity error is shared across workers: no further generators are claimed, while other in-flight work is retained. Clear `capacity_error` under the campaign state lock only when intentionally resuming after capacity becomes available. General creation/refill workers remain disabled.
+
+After resolving a blocker, requeue that one job explicitly, then start the service:
+
+```bash
+.venv/bin/python scripts/generator_cohort.py resume \
+  --directory generate/repairs/2026-10-20-early-cohort \
+  --kp KNOWLEDGE_POINT_ID --resume-reason 'Describe the completed fix'
+systemctl --user start course-academy-generator-cohort-20261020.service
+```
+
+Report corrections run in the full reviewer evidence root. They do not go through generator authoring or require an artificial runtime change. Historical inventory findings use the runner's guarded retirement path before recapture and fresh review. Database basis changes alone do not trigger another review.

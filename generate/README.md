@@ -47,8 +47,7 @@ Approval is specific to the package, original instructional source, database lin
 KP, reviewed difficulty, and review-policy version. Missing or stale approval queues an independent review
 in the build worker. An unsupported band is recorded and other work continues.
 An unsupported difficulty with no source evidence is retained as unsupported.
-Repairable content failures remain pending at their existing priority and retain
-their exact workspace and publication recovery state. Inventory is rechecked
+Generator defects return to the author with executable counterexamples. Report corrections stay with the independent reviewer, and historical inventory defects go to the runner. Repeated failures or exhausted budgets become visible `blocked` jobs; their workspaces and publication recovery state are retained. Inventory is rechecked
 after publication; existing jobs and pending commit requests survive restarts.
 
 Approval is the independent Codex reviewer's recorded acceptance, followed by
@@ -72,9 +71,7 @@ Revisions preserve the generator workspace. A prior independent review's source
 account and scripts are offered for reuse only when its source hash and review
 policy match; tests still run against the current candidate and all eight checks
 remain required. A malformed review report gets one correction by the reviewer
-using its saved evidence, without another author pass or resampling. If the report
-remains invalid, report correction stays pending without rebuilding the generator
-or resampling its batch. Completed structured
+using its saved evidence, without another author pass or resampling. Each evidence root permits at most three review/report sessions before an explicit blocked stop. Correction sessions can write their full evidence root. Report-only corrections do not require runtime code changes. Completed structured
 agent results are reused on restart. Prompts direct interrupted sessions to saved
 progress, limit bulk output, and stop testing once the required evidence passes.
 
@@ -116,11 +113,8 @@ not republish that batch. This change does not increase review scheduling priori
    rendering and package relocation. All eight checks require evidence. A read-only
    `source/inventory.json` provides the captured question bank and the publisher’s
    deduplication fingerprints for delivered-distribution checks.
-   Rejections return to the author with a cumulative finding history. Each finding
-   requires an executable regression before another independent review. An unchanged
-   rejected package is not reviewed again unless its source or grading engine changed.
-   Three author attempts bound one worker turn; unfinished work yields as `repair`
-   and resumes in a focused root-cause repair cycle, rather than being blacklisted.
+   Generator rejections return to the author with a cumulative finding history and executable regressions. Evidence findings return to the reviewer; inventory findings are repaired by the runner before fresh independent review. An unchanged generator rejected for an actual code defect stops with a no-progress error.
+   Three author attempts bound the saved job by default; restarting a worker does not renew them. A rejected unchanged package or repeated identical failure blocks. A job also has a durable budget of nine distinct review sessions by default, including input refreshes.
 3. **Prepare:** Verify the approved code, records, source and images. Publish
    the immutable generator package and hash image bytes through the shared image
    library. Deduplicate content and construct typed EDB forms using the existing
@@ -197,19 +191,18 @@ contributor. Codex uses the user's existing login and model configuration.
   service after changing the setting.
 - `EDB_MATH_ROOT`, `EDB_POSTGRES_URL`, `EDB_ENDPOINT`, `EDB_BIN`,
   `LEARNING_REQUEST_DIR`: existing database and asset configuration.
-- `--max-attempts`: author/repair attempts per worker turn, default 3; the durable
-  job continues across turns until accepted or an external blocker is identified.
+- `--max-attempts`: durable author/repair budget, default 3, plus three review sessions per author attempt.
+- `--resume-reason`: after fixing a saved blocker, explicitly grant one additional bounded recovery and record why. Increasing `--max-attempts` or restarting alone does not reset a saved budget.
 
 Author and reviewer sessions cannot publish through this workflow. They work in
 their own directories with noninteractive sandboxed Codex execution. The runner
 performs deterministic publication after acceptance. `repair-history.json` preserves
-every finding, `repair-regressions.json` maps findings to workspace Python checks,
+every finding, `repair-regressions.json` maps generator findings to workspace Python checks,
 and `repair-preflight.json` records actual executions. Failed preflight checks go
 back to repair before another full review. A `sample` checkpoint resumes completed
 author work without launching another author. Source-supported engine limitations
 remain repair tasks; a grading finding permits a scoped engine fix with acceptance
-and rejection regressions. Infrastructure interruptions retain exact state and
-background backoff. Provider/session launch limits remain distinct from content
+and rejection regressions. Infrastructure interruptions retain exact state with bounded retry; three process failures without a structured result block the inventory job. Provider/session launch limits remain distinct from content
 repair and never cause uncertain publication requests to be replaced.
 
 Scoped campaigns use persistent user-service definitions installed by

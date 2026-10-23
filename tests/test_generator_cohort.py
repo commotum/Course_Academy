@@ -2,6 +2,7 @@
 from datetime import datetime
 import json
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 import unittest
@@ -15,11 +16,12 @@ from inventory_jobs import save
 
 
 class CohortTests(unittest.TestCase):
-    def inventory_pipeline(self, directory):
+    def inventory_pipeline(self, directory, pipeline_type=CohortPipeline):
         directory=Path(directory)
         publisher=Mock()
-        pipeline=CohortPipeline(directory,{'kp':123,'difficulty':'easy','count':5},publisher,session=Mock())
+        pipeline=pipeline_type(directory,{'kp':123,'difficulty':'easy','count':5},publisher,session=Mock())
         source={'database':'fixture','lineage':'lineage','kp_id':123}
+        publisher.client.status.return_value={**source,'basis':1}
         save(directory/'source/source.json',source)
         before={**source,'basis':1,'questions':[{':db/id':7,':question/retired':False}]}
         after={**source,'basis':2,'questions':[{':db/id':7,':question/retired':True}]}
@@ -51,14 +53,13 @@ class CohortTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             pipeline,review,result,before,after=self.inventory_pipeline(t)
             with patch('generator_pool_repair.repair_pool',return_value={'retired':[7],'unresolved':[]}) as repair, \
-                    patch.object(Pipeline,'repair') as author_repair, \
                     patch.object(pipeline,'check_repair_regressions') as regressions, \
                     patch.object(pipeline,'sample') as sample, \
                     patch.object(pipeline,'candidate_hash',return_value='unchanged-runtime'):
                 pipeline.repair(result)
             repair.assert_called_once()
             self.assertEqual(repair.call_args.args[2],[review/'affected-inventory.json'])
-            author_repair.assert_not_called();pipeline.session.assert_not_called()
+            pipeline.session.assert_not_called()
             regressions.assert_called_once();sample.assert_called_once()
             self.assertEqual(pipeline.state['stage'],'validate')
             self.assertEqual(pipeline.state['inventory_hash'],digest(after))
@@ -76,20 +77,20 @@ class CohortTests(unittest.TestCase):
             math={**result['findings'][0],'kind':'math','description':'Generator computes the wrong square.'}
             result={**result,'findings':[*result['findings'],math]}
             with patch('generator_pool_repair.repair_pool',return_value={'retired':[7],'unresolved':[]}), \
-                    patch.object(Pipeline,'repair') as author_repair:
+                    patch.object(pipeline,'engine_identity',return_value='fixture-engine'):
                 pipeline.repair(result)
-            self.assertEqual(author_repair.call_args.args[0]['findings'],[math])
+            self.assertEqual(pipeline.state['stage'],'generate')
+            self.assertEqual(json.loads((Path(t)/'feedback.json').read_text())['findings'],[math])
 
     def test_unresolved_inventory_blocks_before_author_or_publication(self):
         with tempfile.TemporaryDirectory() as t:
             pipeline,_,result,_,_=self.inventory_pipeline(t)
             with patch('generator_pool_repair.repair_pool',return_value={
-                    'retired':[],'unresolved':[{'question':7,'reason':'canonical_example'}]}), \
-                    patch.object(Pipeline,'repair') as author_repair:
+                    'retired':[],'unresolved':[{'question':7,'reason':'canonical_example'}]}):
                 pipeline.repair(result)
             self.assertEqual(pipeline.state['stage'],'blocked')
             self.assertEqual(pipeline.state['error']['code'],'inventory_repair_blocked')
-            author_repair.assert_not_called();pipeline.session.assert_not_called()
+            pipeline.session.assert_not_called()
             pipeline.publisher.publish.assert_not_called()
 
     def test_inventory_repair_requires_valid_bound_review_and_preserves_publication_intent(self):
@@ -109,14 +110,67 @@ class CohortTests(unittest.TestCase):
             self.assertEqual(json.loads((Path(t)/'publication/request.json').read_text()),
                              {'request':'exact-saved-bytes'})
 
-    def test_accepted_report_with_new_pool_repairs_requires_fresh_independent_review(self):
+    def test_inventory_repair_checks_database_identity_before_any_mutation(self):
         with tempfile.TemporaryDirectory() as t:
             pipeline,review,_,_,_=self.inventory_pipeline(t)
-            with patch.object(Pipeline,'review_candidate',return_value={'verdict':'accepted'}), \
+            pipeline.publisher.client.status.return_value={'database':'other','lineage':'wrong-lineage'}
+            with patch('generator_pool_repair.repair_pool') as repair:
+                with self.assertRaisesRegex(ValueError,'reviewed database and lineage'):
+                    pipeline.repair_inventory(review)
+                repair.assert_not_called()
+
+    def test_accepted_report_with_new_pool_repairs_requires_fresh_independent_review(self):
+        from test_generator_pipeline import FakeSession
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,review,_,_,_=self.inventory_pipeline(t)
+            result=FakeSession()('review',{},review)
+            pipeline.session.return_value=result
+            pipeline.persist(previous_review={'directory':str(review),'binding':pipeline.review_binding()})
+            with patch.object(pipeline,'context',return_value={}), \
+                    patch.object(pipeline,'verify_approval_inputs'), \
                     patch.object(pipeline,'repair_inventory',return_value={'inventory_changed':True,'unresolved':[]}):
                 self.assertIsNone(pipeline.review_candidate(review))
             self.assertEqual(pipeline.state['stage'],'validate')
             pipeline.publisher.publish.assert_not_called()
+
+    def test_plain_pipeline_routes_inventory_findings_to_runner_without_author(self):
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,_,result,_,_=self.inventory_pipeline(t,pipeline_type=Pipeline)
+            with patch('generator_pool_repair.repair_pool',return_value={'retired':[7],'unresolved':[]}), \
+                    patch.object(pipeline,'check_repair_regressions'), \
+                    patch.object(pipeline,'sample'), \
+                    patch.object(pipeline,'candidate_hash',return_value='unchanged-runtime'):
+                pipeline.repair(result)
+            self.assertEqual(pipeline.state['stage'],'validate')
+            pipeline.session.assert_not_called()
+
+    def test_equivalent_report_in_new_directory_does_not_repeat_inventory_work(self):
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,review,_,_,_=self.inventory_pipeline(t)
+            with patch('generator_pool_repair.repair_pool',return_value={'retired':[7],'unresolved':[]}) as repair:
+                self.assertTrue(pipeline.repair_inventory(review)['inventory_changed'])
+                another=Path(t)/'review-2-policy-2-new-binding'
+                shutil.copytree(review,another)
+                pipeline.persist(previous_review={'directory':str(another),
+                    'binding':{'source_hash':pipeline.state['source_hash']}})
+                self.assertFalse(pipeline.repair_inventory(another)['inventory_changed'])
+            repair.assert_called_once()
+            pipeline.publisher.extract_inventory.assert_called_once()
+
+    def test_unrelated_basis_change_does_not_replace_reviewed_inventory_or_loop_reviews(self):
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,review,_,before,_=self.inventory_pipeline(t)
+            fresh={**before,'basis':999}
+            def extract(kp,path):
+                save(path/'inventory.json',fresh)
+                return fresh
+            pipeline.publisher.extract_inventory.side_effect=extract
+            with patch('generator_pool_repair.repair_pool',return_value={'retired':[],'unresolved':[]}):
+                result=pipeline.repair_inventory(review)
+            self.assertFalse(result['inventory_changed'])
+            self.assertEqual(pipeline.state['inventory_hash'],digest(before))
+            self.assertEqual(json.loads((Path(t)/'source/inventory.json').read_text()),before)
+            self.assertEqual(json.loads(Path(result['fresh_inventory']).read_text()),fresh)
 
     def test_repair_retains_the_source_calibrated_default_without_another_author_session(self):
         with tempfile.TemporaryDirectory() as t:

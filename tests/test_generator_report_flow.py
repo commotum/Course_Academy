@@ -97,6 +97,39 @@ class GeneratorReportFlowTests(unittest.TestCase):
         self.assertEqual(result["attempt"], 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
+    def test_engine_change_during_report_correction_requires_fresh_review(self):
+        pipeline = self.pipeline(fixtures.FakeSession())
+        pipeline.run(stop_after="generate")
+        original_evidence = pipeline.review_directory()
+        original_binding = dict(pipeline.review_binding())
+        pipeline.persist(report_repair_directory=str(original_evidence),
+                         review_report_rounds={str(original_evidence): 1},
+                         review_report_error="Save the missing independent measurement.",
+                         review_report_result_file=str(original_evidence / "result.json"))
+
+        class ChangedEngine(ReportSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == "review" and len(self.review_contexts) == 1:
+                    engine = Path(context["repo_root"]) / "engine/rust/grader.rs"
+                    engine.parent.mkdir(parents=True)
+                    engine.write_text("// Different grader requires independent verification.\n")
+                return result
+
+        session = ChangedEngine()
+        result = self.pipeline(session).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual([role for role, _ in session.calls], ["review", "review"])
+        first_directory, first_context = session.review_contexts[0]
+        second_directory, second_context = session.review_contexts[1]
+        self.assertEqual(first_directory, original_evidence / "contract-repair")
+        self.assertNotEqual(first_context["evidence_root"], second_context["evidence_root"])
+        self.assertNotEqual(first_context["review_binding"]["engine_hash"], second_context["review_binding"]["engine_hash"])
+        self.assertEqual(json.loads((original_evidence / "review-binding.json").read_text()), original_binding)
+        self.assertEqual(Path(result["review"]), second_directory / "result.json")
+        self.assertEqual(json.loads((second_directory / "review-binding.json").read_text()), second_context["review_binding"])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
     def test_demonstrated_generator_defect_is_fixed_rechecked_and_published(self):
         class ArithmeticRepair(ReportSession):
             def __init__(self):

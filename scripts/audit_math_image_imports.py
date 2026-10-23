@@ -118,7 +118,7 @@ def capture_index(paths: list[Path], relevant_hashes: set[str]):
                     "tag": obj["tag"], "representation": obj.get("representation"),
                     "original_path": obj.get("path")}
             for digest in hashes:
-                if len(index[digest]) < 5 and info not in index[digest]:
+                if info not in index[digest] and (len(index[digest]) < 5 or kind not in {e['kind'] for e in index[digest]}):
                     index[digest].append(info)
             stats["relevant_asset_records"] += 1
     return index, dict(stats)
@@ -130,7 +130,7 @@ def read_facts(snapshot):
             yield json.loads(line)
 
 
-def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Path, source_image_map: Path | None = None):
+def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Path, source_image_map: Path | None = None, asset_decisions: Path | None = None):
     records = defaultdict(dict)
     parents = defaultdict(set)
     uses = defaultdict(list)
@@ -188,6 +188,15 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
                 info.update(kind=kind, reason="linked original SVG metadata" if kinds else "no SVG evidence; retain for raster/source review")
         assets[relative] = info
 
+    if asset_decisions is not None:
+        decisions = json.loads(asset_decisions.read_text())
+        for relative, decision in decisions.items():
+            if relative not in assets or assets[relative]['kind'] != 'unclassified-raster':
+                raise ValueError(f'Review decision does not name an unresolved asset: {relative}')
+            if decision.get('kind') not in ('reviewed-diagram', 'generated-graphic') or not decision.get('evidence'):
+                raise ValueError(f'Review decision needs a disposition and evidence: {relative}')
+            assets[relative].update(kind=decision['kind'], reason=decision['reason'], review_evidence=decision['evidence'])
+
     def context(eid):
         seen, todo = set(), deque([eid])
         while todo:
@@ -205,7 +214,7 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
     findings, review = [], []
     for fact in facts:
         affected = [m for m in fact["images"] if assets[m["path"]]["kind"] in ("math-svg", "math-raster")]
-        uncertain = [m for m in fact["images"] if assets[m["path"]]["kind"] not in ("math-svg", "math-raster", "non-math-svg", "captured-non-math-raster", "source-raster")]
+        uncertain = [m for m in fact["images"] if assets[m["path"]]["kind"] not in ("math-svg", "math-raster", "non-math-svg", "captured-non-math-raster", "source-raster", "reviewed-diagram", "generated-graphic")]
         if affected:
             findings.append({**fact, "math_images": affected, "context": context(fact["e"])})
         if uncertain:
@@ -223,7 +232,7 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
             by_kind[assets[image["path"]]["kind"]] += 1
     summary = {"basis_t": json.loads(snapshot.with_suffix(".manifest.json").read_text())["basis_t"],
         "snapshot": str(snapshot), "exported_facts_scanned": sum(counts.values()),
-        "string_facts_scanned": sum(string_counts.values()), "string_attributes_scanned": dict(string_counts),
+        "string_and_identity_values_scanned": sum(string_counts.values()), "textual_scalar_attributes_scanned": dict(string_counts),
         "image_bearing_facts": len(facts), "image_occurrences": sum(len(f["images"]) for f in facts),
         "unique_image_assets": len(assets), "assets_by_kind": dict(Counter(a["kind"] for a in assets.values())),
         "confirmed_affected_entities": len({f["e"] for f in findings}),
@@ -240,7 +249,7 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
             topics = sorted({r["topic/math-academy-id"] for r in f["context"] if "topic/math-academy-id" in r})
             own = records[f["e"]]
             writer.writerow([f["e"], f["a"], len(f["math_images"]), f["t"], f["source"], ";".join(map(str, topics)), own.get("question/math-academy-id", ""), own.get("tutorial/math-academy-id", ""), f["value_sha256"]])
-    print(json.dumps(summary, indent=2))
+    print(json.dumps({k:v for k,v in summary.items() if k not in ('textual_scalar_attributes_scanned','confirmed_attributes_by_transaction')}, indent=2))
 
 
 def main():
@@ -250,8 +259,9 @@ def main():
     p.add_argument("--evidence-list", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--source-image-map", type=Path)
+    p.add_argument("--asset-decisions", type=Path)
     a = p.parse_args()
-    run(a.snapshot, a.math_root, [Path(line) for line in a.evidence_list.read_text().splitlines() if line], a.output, a.source_image_map)
+    run(a.snapshot, a.math_root, [Path(line) for line in a.evidence_list.read_text().splitlines() if line], a.output, a.source_image_map, a.asset_decisions)
 
 
 if __name__ == "__main__":
