@@ -7,7 +7,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 JS=r'''async rows=>{
  const results=[];
- const normalize=s=>s.replace(/\\displaystyle\b/g,'').replace(/\s/g,'');
+ const normalize=s=>s.replace(/\\displaystyle\b/g,'').replace(/\s/g,'').replace(/[.,;:]+$/,'');
  for(const row of rows){const versions={};
   for(const version of ['before','after']){
    const a=document.createElement('article');a.className='lesson-content content-card';a.append(render(row[version],'prose',row.fields));content.append(a);
@@ -17,19 +17,18 @@ JS=r'''async rows=>{
    const items=[...MathJax.startup.document.math].filter(m=>a.contains(m.typesetRoot));
    const errors=items.map(m=>[...m.typesetRoot.querySelectorAll('[data-mml-node="merror"]')].map(n=>n.textContent));
    const unknown=items.map(m=>[...m.typesetRoot.querySelectorAll('[data-mml-node="mtext"]')].filter(n=>[...n.querySelectorAll('path[data-c],use[data-c]')][0]?.getAttribute('data-c')==='5C').length);
-   versions[version]={math:items.length,display:items.filter(m=>m.display).length,errors,unknown,thrown,skeleton,slots};
+   versions[version]={math:items.length,display:items.filter(m=>m.display).length,errors,unknown,thrown,skeleton,slots,math_sources:items.map(m=>normalize(m.math))};
    MathJax.typesetClear([a]);a.remove();
   }
   const failures=[];const b=versions.before,c=versions.after;
   if(c.thrown)failures.push('after-threw');
-  if(c.math!==b.math)failures.push('math-count');
+  if(c.math-b.math!==row.edits.reduce((n,e)=>n+(e.deindented_math_count||0),0))failures.push('math-count');
   if(JSON.stringify(b.skeleton)!==JSON.stringify(c.skeleton))failures.push('document-structure');
   if(JSON.stringify(b.slots)!==JSON.stringify(c.slots))failures.push('answer-slots');
   if(c.display-b.display!==row.edits.filter(e=>e.action==='display').length)failures.push('display-count');
-  for(let i=0;i<Math.min(b.math,c.math);i++){
-   if(c.errors[i].length>b.errors[i].length)failures.push('new-math-error:'+i);
-   if(c.unknown[i]>b.unknown[i])failures.push('new-undefined-command:'+i);
-  }
+  const prior=new Map();for(let i=0;i<b.math;i++){const k=b.math_sources[i];if(!prior.has(k))prior.set(k,{errors:0,unknown:0});prior.get(k).errors+=b.errors[i].length;prior.get(k).unknown+=b.unknown[i]}
+  const current=new Map();for(let i=0;i<c.math;i++){const k=c.math_sources[i];if(!current.has(k))current.set(k,{errors:0,unknown:0});current.get(k).errors+=c.errors[i].length;current.get(k).unknown+=c.unknown[i]}
+  for(const [k,v] of current){if(v.errors>(prior.get(k)?.errors||0))failures.push('new-math-error');if(v.unknown>(prior.get(k)?.unknown||0))failures.push('new-undefined-command')}
   results.push({entity:row.entity,attribute:row.attribute,before_sha256:row.before_sha256,after_sha256:row.after_sha256,failures,...versions});
  }
  return results;

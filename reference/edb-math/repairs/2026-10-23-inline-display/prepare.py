@@ -29,9 +29,28 @@ def integral_reference(tex):
  # An operator/domain reference has no integrand or equation.
  return bool(re.fullmatch(r'\{?\\(?:int|iint|iiint|oint)\s*\}?(?:\s*[_^]\s*(?:\{[^{}]*\}|[A-Za-z0-9]))*\s*[.,;:]?',s)) or s in ('∫','∬','∭','∮')
 
+def balanced_source(tex):
+ depth=0;env=[];i=0
+ while i<len(tex):
+  if tex[i]=='%':
+   newline=tex.find('\n',i);i=len(tex) if newline<0 else newline+1;continue
+  if tex[i]=='\\':
+   token=re.match(r'\\(begin|end)\{([^{}]+)\}',tex[i:])
+   if token:
+    if token[1]=='begin':env.append(token[2])
+    elif not env or env.pop()!=token[2]:return False
+    i+=len(token[0]);continue
+   i+=2;continue
+  if tex[i]=='{':depth+=1
+  elif tex[i]=='}':depth-=1
+  if depth<0:return False
+  i+=1
+ return depth==0 and not env
+
 def decision(value,m,attr):
- tex=body(m);integral=bool(audit.INTEGRAL.search(tex));big=bool(audit.BIG.search(tex));env=bool(audit.ENV.search(tex));fracs=tex.count(r'\frac')+tex.count(r'\dfrac');longfrac=(fracs>=2 and len(tex)>=40) or fracs and len(tex)>=70;longroot=r'\sqrt' in tex and len(tex)>=90
- if not any((integral,big,env,longfrac,longroot)):return None,None
+ tex=body(m);integral=bool(audit.INTEGRAL.search(tex));big=bool(audit.BIG.search(tex));env=bool(audit.ENV.search(tex));fracs=tex.count(r'\frac')+tex.count(r'\dfrac');longfrac=(fracs>=2 and len(tex)>=40) or fracs and len(tex)>=70;longroot=r'\sqrt' in tex and len(tex)>=90;chain=(tex.count('=')>=3 and len(tex)>=70) or ('=' in tex and len(tex)>=180 and not env)
+ if not any((integral,big,env,longfrac,longroot,chain)):return None,None
+ if not balanced_source(tex):return 'retain','preexisting-unbalanced-source-math'
  left=value[value.rfind('\n',0,m.start())+1:m.start()];end=value.find('\n',m.end());right=value[m.end():end if end>=0 else len(value)];standalone=not left.strip() and not right.strip(' \t.,;:')
  context=html_context(value,m.start());layout=any(tag in ('table','td','th','select','option','a','code','pre') or re.search(r'class=[\'"][^\'"]*(?:matrix-operands|matrix-answer|matrix-response|question-equation)',raw) for tag,raw in context)
  explicit=bool(re.match(r'\s*(?:\{\s*)?\\displaystyle\b',tex))
@@ -48,7 +67,7 @@ def decision(value,m,attr):
   # Preserve compact vectors and small matrices used as in-sentence objects.
   if tex.count(r'\\')>=2 and len(tex)>=100:return 'display','embedded-large-matrix'
   return 'retain','compact-matrix-or-vector-reference'
- if longfrac or longroot:return 'display','embedded-long-calculation'
+ if longfrac or longroot or chain:return 'display','embedded-long-calculation'
  if big and len(tex)>=25 and ('=' in tex or re.search(r'\b(?:evaluate|calculate|compute|find|determine)\b',left,re.I)):return 'display','main-large-operator-calculation'
  return 'retain','compact-operator-reference'
 
@@ -62,17 +81,21 @@ def transform(row,overrides):
   if key in overrides:action='retain';reason=overrides[key]
   if action=='retain':review.append({'offset':m.start(),'math':m[0],'reason':reason});continue
   tex=body(m);prefix='' if re.match(r'\s*\\displaystyle\b',tex) else r'\displaystyle '
-  end=m.end();punct=''
+  end=m.end();punct='';start=m.start();deindented=False;line_prefix='';deindented_math_count=0
+  line_start=value.rfind('\n',0,m.start())+1;leading=re.match(r'[ \t]*',value[line_start:m.start()])[0];previous_start=value.rfind('\n',0,max(0,line_start-1))+1;previous=value[previous_start:max(0,line_start-1)]
+  if action=='display' and row['a']=='question/problem' and '{{field-' in value and not previous.strip() and (len(leading)>=4 or '\t' in leading) and line_start>=cursor:
+   start=line_start;deindented=True;line_prefix=value[line_start+len(leading):m.start()];line_end=value.find('\n',m.end());line_end=len(value) if line_end<0 else line_end;deindented_math_count=max(1,len(tokens(value[line_start:line_end])))
   if action=='display' and end<len(value) and value[end] in '.,;:' and not tex.rstrip().endswith(tuple('.,;:')):punct=value[end];end+=1
   replacement='$$\n'+prefix+tex+punct+'\n$$' if action=='display' else '$'+prefix+tex+'$'
-  parts.extend([value[cursor:m.start()],replacement]);cursor=end
-  edits.append({'key':key,'start':m.start(),'end':end,'original':value[m.start():end],'original_math':m[0],'tex':tex,'replacement':replacement,'action':action,'reason':reason,'added_prefix':prefix,'moved_punctuation':punct})
+  replacement=line_prefix+replacement
+  parts.extend([value[cursor:start],replacement]);cursor=end
+  edits.append({'key':key,'start':start,'math_start':m.start(),'end':end,'deindented_source_equation':deindented,'deindented_math_count':deindented_math_count,'original':value[start:end],'original_math':m[0],'tex':tex,'replacement':replacement,'action':action,'reason':reason,'added_prefix':prefix,'moved_punctuation':punct})
  parts.append(value[cursor:]);after=''.join(parts)
  if edits:
   before_math=[body(m) for m in tokens(value)];after_math=[body(m) for m in tokens(after)];assert len(before_math)==len(after_math),(row['e'],row['a'],'math-count')
   planned=iter(edits);nextedit=next(planned,None)
   for a,b in zip(tokens(value),tokens(after)):
-   if nextedit and a.start()==nextedit['start']:
+   if nextedit and a.start()==nextedit['math_start']:
     assert body(b).strip()==(nextedit['added_prefix']+body(a)+nextedit['moved_punctuation']).strip();nextedit=next(planned,None)
    else:assert body(a)==body(b)
   assert not nextedit
