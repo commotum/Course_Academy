@@ -1,0 +1,121 @@
+{
+  "verdict": "revise",
+  "summary": "The generator excludes the canonical example\u2019s cubic inner term. Tested mathematics, grading, rendering and packaging passed. Package files remained unchanged; no affected stored record was demonstrated.",
+  "source_analysis": {
+    "skill": "Differentiate polynomial powers using the chain rule, then evaluate slopes or construct tangent equations in the higher-difficulty families.",
+    "reasoning_steps": [
+      "Identify the inner polynomial and outer power.",
+      "Differentiate both and multiply.",
+      "For point questions, evaluate the derivative; for tangents, apply point-slope form."
+    ],
+    "invariants": [
+      "Preserve polynomial-power composition and source difficulty workloads.",
+      "Derive prompts, answers and solutions from the same parameters.",
+      "Accept equivalent symbolic blank responses."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs, powers, evaluation points and answer positions.",
+      "Support both source-observed quartic-plus-linear and quartic-plus-cubic inner polynomials.",
+      "Reorder terms without changing mathematical answers."
+    ],
+    "source_refs": [
+      "19bf8d06-cbcc-547b-b882-ac89cd39fd1a",
+      "b551e489-4c37-53ea-831b-8f3ca007450b",
+      "f0bd56a8-5c99-5166-be8e-4185bfb62ed5",
+      "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate the outer function, multiply by the inner derivative, then substitute."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-coverage.json",
+        "canonical-regression.log"
+      ],
+      "details": "Twelve practice cases replay their mathematics and complete radio banks, with documented source corrections. Canonical e-181 cannot be reproduced."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-results.json",
+        "boundary-results.json"
+      ],
+      "details": "146 prompt-derived exact checks found correct keys, distinct choices and valid point coordinates."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples-independent.json",
+        "pedagogical-variation.json",
+        "canonical-coverage.json"
+      ],
+      "details": "Coefficients, signs, powers, points and bank ranks vary, but the source-supported cubic second term is unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Tested outputs preserve source-supported operations, response types and difficulty workloads."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grading passed 78 acceptance and 106 rejection checks, including equivalent expressions and stale counterfactual answers."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Twenty actual-UI renders passed; ten representative screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime.json",
+        "relocation-records.json",
+        "commands.json"
+      ],
+      "details": "Exact dependencies match. Relocation and deterministic replay passed. Package hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Tested counterfactuals propagate correctly, and conditional probes found no perfect runtime predictor. However, the second quartic term\u2019s degree remains unjustifiably fixed. All five batch records survive delivery."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "Canonical e-181 requires (3x^4+x^3)^5. The quartic constructor always uses a*x^4+b*x, fixing the second inner-derivative term to a constant. Every other constructor also excludes a cubic inner term.",
+      "source_refs": [
+        "19bf8d06-cbcc-547b-b882-ac89cd39fd1a: g=3x^4+x^3 and g'=12x^3+3x^2",
+        "b551e489-4c37-53ea-831b-8f3ca007450b: quartic-plus-linear practice family",
+        "generate/principles.md: establish source fidelity and vary eligible mathematical relationships"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python canonical_regression.py. It fails on seed 99173, template quartic_radio, parameters a=3,b=1,n=5: output is (3x^4+x)^5. Adding second_power=3 is rejected. Complete output and constructor-wide evidence are saved in canonical-counterexample-records.json and canonical-coverage.json.",
+      "requested_change": "Retain quartic-plus-linear practice and support the canonical cubic second term through an explicit degree slot or source-derived family. Derive all dependent mathematics from that structure, replay e-181, and test linear-versus-cubic changes. No database repair is requested."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

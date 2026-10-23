@@ -1,0 +1,89 @@
+{
+  "basis": 5615,
+  "eligibility": {
+    "stored_total": 20,
+    "stored_eligible": 19,
+    "retired": 0
+  },
+  "selection_rule": "question_selection.rs: deduplicate by entity ID; exclude seen/retired/invalid before selection; choose a positive-weight nonempty difficulty band then uniform stable SHA256 draw within band; unrated fallback only if no weighted rated band. Unconfigured policy picks smallest entity ID.",
+  "conditional_simulation": "100 fresh-task seed draws, easy-only weights, exact surviving batch as candidate pool. Pending entity IDs/order are unknown, so this demonstrates accessible choice-index support, not future learner-specific frequencies.",
+  "counts": {
+    "4488b435-75c4-5bf8-836f-8c025405b71b": 22,
+    "5c07f75d-1f18-51f4-b433-e46bd0df0550": 25,
+    "a25c900d-1561-5094-9272-47bf64ff1c06": 20,
+    "41c093aa-391c-5ebf-acae-bdc80fe54491": 18,
+    "c83476a7-334e-550f-a570-977c18f19b5f": 15
+  },
+  "history_effect": "Seen questions removed. Each surviving member has positive probability in weighted easy mode; learner history can reduce any subgroup. Policy and history not captured, so no universal future distribution asserted.",
+  "stages": {
+    "independent": {
+      "database_writes": 0,
+      "inventory_basis": 5615,
+      "kp_id": 17592186096841,
+      "difficulty": "easy",
+      "input_count": 36,
+      "duplicate_count": 0,
+      "accepted_count": 36,
+      "accepted_file": "accepted.json",
+      "asset_root": "assets",
+      "stages_examined": [
+        "requested difficulty",
+        "knowledge-point identity",
+        "image localization",
+        "question validation",
+        "stable identities",
+        "inventory and batch deduplication"
+      ],
+      "limits": [
+        "Uses captured inventory; concurrent publication may change duplicates.",
+        "Does not examine generator rejection/resampling or certify mathematical or pedagogical correctness.",
+        "Does not simulate learner history, weighted selection, database identity collisions, or publication."
+      ],
+      "input_sha256": {
+        "input": "0f232bc35c3d92c0e5ee0fdea8f7203bfe067e18c844558dc4b804f54e343553",
+        "inventory": "19ddfda4440dfa292485f1665202fcd352e272164e9862ea2ae2f0ee27111604",
+        "source": "7f2479e5d6cd50a6a21c57118cef2238910ec6167e52115358a7b831e80e9d9c"
+      },
+      "implementation_sha256": {
+        "generate/pipeline/check_delivery.py": "be72a59ffa87c5aa0ab59e13d17bc20e31a9003196430b7c4fb273980fb9095b",
+        "scripts/generator_publish.py": "d10e5580427b7e7a1ddd044012e0737c0daa78a836904a1323ff1720eb00fdd3",
+        "capture/scripts/database/images.py": "105a36f45bbd8391c8827534994187430d28fe8978423c7e08bf01b84b825b4f"
+      }
+    },
+    "batch": {
+      "database_writes": 0,
+      "inventory_basis": 5615,
+      "kp_id": 17592186096841,
+      "difficulty": "easy",
+      "input_count": 5,
+      "duplicate_count": 0,
+      "accepted_count": 5,
+      "accepted_file": "accepted.json",
+      "asset_root": "assets",
+      "stages_examined": [
+        "requested difficulty",
+        "knowledge-point identity",
+        "image localization",
+        "question validation",
+        "stable identities",
+        "inventory and batch deduplication"
+      ],
+      "limits": [
+        "Uses captured inventory; concurrent publication may change duplicates.",
+        "Does not examine generator rejection/resampling or certify mathematical or pedagogical correctness.",
+        "Does not simulate learner history, weighted selection, database identity collisions, or publication."
+      ],
+      "input_sha256": {
+        "input": "40f69ae2dd23fb503e75d29d10718518fe384e66dca7b1e6485ab97d19951363",
+        "inventory": "19ddfda4440dfa292485f1665202fcd352e272164e9862ea2ae2f0ee27111604",
+        "source": "7f2479e5d6cd50a6a21c57118cef2238910ec6167e52115358a7b831e80e9d9c"
+      },
+      "implementation_sha256": {
+        "generate/pipeline/check_delivery.py": "be72a59ffa87c5aa0ab59e13d17bc20e31a9003196430b7c4fb273980fb9095b",
+        "scripts/generator_publish.py": "d10e5580427b7e7a1ddd044012e0737c0daa78a836904a1323ff1720eb00fdd3",
+        "capture/scripts/database/images.py": "105a36f45bbd8391c8827534994187430d28fe8978423c7e08bf01b84b825b4f"
+      }
+    }
+  },
+  "rejection": "All 120 constructed records succeeded; recorded sampling_attempts expose whole-bank and small-point resampling. Easy families require one attempt. Higher point families reject inner value outside \u00b11..3 or zero inner derivative to keep evaluation short/nondegenerate; radio bank rejects duplicate mathematical options."
+}

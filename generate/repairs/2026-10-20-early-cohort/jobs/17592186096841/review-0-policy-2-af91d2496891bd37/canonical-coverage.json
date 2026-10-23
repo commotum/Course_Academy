@@ -1,0 +1,25 @@
+{
+  "source": {
+    ":db/id": 17592186096400,
+    ":question/id": "19bf8d06-cbcc-547b-b882-ac89cd39fd1a",
+    ":question/math-academy-id": "e-181",
+    ":question/problem": "Given that $f(x) = (3x^4+x^3)^5,$ calculate $\\dfrac {\\textrm{d}f} {\\textrm{d}x}.$",
+    ":question/worked-solution": "First, we express $f(x)$ as a composite function:\n\n$$\nf = g^5, \\qquad g = 3x^4+x^3\n$$\n\nThe chain rule states that\n\n$$\n\\dfrac {\\textrm{d}f} {\\textrm{d}x} = \\dfrac {\\textrm{d}f} {\\textrm{d}g} \\cdot \\dfrac {\\textrm{d}g} {\\textrm{d}x}.\n$$\n\nDifferentiating, we have\n\n$$\n\\dfrac {\\textrm{d}f} {\\textrm{d}g}  = 5g^4,\n$$\n\nand\n\n$$\n\\dfrac {\\textrm{d}g} {\\textrm{d}x} = 12x^3 + 3x^2.\n$$\n\nFinally, multiplying the two together and substituting for $g$ gives\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} & =5{g}^{4}\\cdot (12{x}^{3}+3{x}^{2}) \\\\  & =5(3{x}^{4}+{x}^{3})^{4}(12{x}^{3}+3{x}^{2}).\\end{aligned}\n$$"
+  },
+  "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finish_checks.py",
+  "parameters": {
+    "a": 3,
+    "b": 1,
+    "n": 5
+  },
+  "generated_prompt": "Find $\\frac{df}{dx}$ when $f(x)=(3 x^{4} + x)^{5}$.",
+  "source_inner": "3*x^4+x^3",
+  "actual_inner": "3*x^4+x",
+  "source_derivative": "5*(3*x^4+x^3)^4*(12*x^3+3*x^2)",
+  "actual_derivative": "4860*x**19 + 6885*x**16 + 3780*x**13 + 990*x**10 + 120*x**7 + 5*x**4",
+  "attempted_second_power_3": [
+    "Exact integer parameters with template keys required"
+  ],
+  "family_invariant": "All constructors have inner polynomial in {a*x+b, a*t^2+b, a*x^2+b, a*x^2+b*x+c, a*x^4+b*x}; coefficient of degree 3 is zero identically. Canonical inner degree-3 coefficient is 1.",
+  "verdict": "Cannot replay canonical inner or its variable inner-derivative second term; not a mathematical error in the generated substitute."
+}

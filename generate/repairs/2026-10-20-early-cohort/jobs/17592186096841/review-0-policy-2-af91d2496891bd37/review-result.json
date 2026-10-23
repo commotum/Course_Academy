@@ -1,0 +1,142 @@
+{
+  "verdict": "revise",
+  "summary": "One source-backed restriction: every supported inner polynomial lacks a cubic term, so canonical example e-181 cannot be replayed. Tested outputs, grader cases, rendering and packaging passed; no affected stored record was demonstrated.",
+  "source_analysis": {
+    "skill": "Differentiate a polynomial raised to a positive integer power using the chain rule; evaluate slopes and form tangent lines in the documented higher-difficulty families.",
+    "reasoning_steps": [
+      "Identify inner polynomial g and outer power n.",
+      "Compute n*g^(n-1) and g prime independently, multiply and substitute.",
+      "For slope questions evaluate at the supplied abscissa; for tangent questions use the slope and point."
+    ],
+    "invariants": [
+      "One polynomial inner function and positive integer outer power; no radicals or transcendental outer functions.",
+      "All dependent expressions and coordinates derive from the same polynomial, power and target.",
+      "Radio options are distinct with exactly one derivative/slope/tangent answer.",
+      "Blank grading accepts algebraically equivalent polynomials."
+    ],
+    "permitted_variations": [
+      "Vary nonzero coefficients and signs, constants, outer exponent, source-supported polynomial degrees and variable names within comparable workload.",
+      "Vary evaluation abscissa and consequent ordinate, slope sign and zero/nonzero outcomes where valid.",
+      "Reorder inner terms or answer choices without changing mathematical correctness. Correct position and distractor size/order are incidental.",
+      "Relevant coefficient/exponent/target changes must update answer and solution; irrelevant term ordering must preserve answer."
+    ],
+    "source_refs": [
+      "b551e489-4c37-53ea-831b-8f3ca007450b",
+      "f0bd56a8-5c99-5166-be8e-4185bfb62ed5",
+      "5f760aed-6b31-5953-b3f9-00dcac8b3038",
+      "421599a5-1cf3-595e-9d3b-cce9b649fa80",
+      "45dae178-5aad-56cb-99e8-4cae2859e574",
+      "f5911b4d-cb67-58a7-a1eb-0368289d94d7",
+      "4d9eda9c-9861-5891-97dc-ba4b870f7db4",
+      "f16d8b27-8720-58fb-ad21-d69be0217bc6",
+      "6c44e7b4-d61a-54f6-b052-1c62e5ff035f",
+      "a24feddb-3c6c-5b5d-be09-ecb6ef41d845",
+      "016c901a-a8ed-57f7-ace0-713928705ac4",
+      "c125870a-b46c-59e0-a9be-37ea8a9a1d43",
+      "19bf8d06-cbcc-547b-b882-ac89cd39fd1a",
+      "tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: f(g)=g^3, g(x)=1+2x; derivative 3g^2 * 2 = 6(1+2x)^2",
+      "tutorial 58c36c82-b739-55f9-8e99-4df1e0cbde24: (f(g(x))) prime = f prime(g(x))*g prime(x)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json",
+        "canonical-coverage.json",
+        "canonical-regression.log"
+      ],
+      "details": "All 12 practice questions replay their mathematics and complete radio banks. q-340690 correctly omits an incorrect historical blank alternative; q-48625 needs inferred key/solution. Two derivative prompts normalize whitespace around the blank. Canonical e-181 cannot replay its quartic-plus-cubic inner polynomial."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-results.json",
+        "boundary-results.json"
+      ],
+      "details": "Independently differentiated displayed prompts for 146 records: keys correct, radio alternatives distinct, one correct choice. Point coordinates checked exactly; representative worked solutions inspected. This does not certify the missing canonical family."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples-independent.json",
+        "pedagogical-variation.json",
+        "canonical-coverage.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "120 stratified samples vary coefficients, signs, powers, points and bank ranks. However, the canonical second-term degree is suppressed by every constructor. All 36 sampled easy records and all 5 runner records survive captured delivery; selection limits are documented."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "samples-independent.json"
+      ],
+      "details": "Observed outputs retain polynomial-power differentiation, source-supported slope/tangent tasks, response types and difficulty workloads. The separate coverage restriction is not scope drift."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "grader.log"
+      ],
+      "details": "Native learner grader passed 78 acceptance and 106 rejection checks, including expanded/factored blank equivalents, wrong polynomials, all radio options and stale answers after relevant changes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-006.png",
+        "render-all/question-018.png"
+      ],
+      "details": "Actual UI rendered 20 records without reported errors. Ten representative screenshots inspected for notation, controls, worked solutions and counterfactual propagation."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime.json",
+        "package-before.json",
+        "boundary-results.json",
+        "relocation-records.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime dependency versions match manifest. Relocated package output matches original for seed 99173/count 5. Boundary rejection and deterministic replay checked; original package file hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "grader-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "canonical-coverage.json"
+      ],
+      "details": "Relevant coefficient, power and point changes propagate through prompts, solutions and grading; term-order changes preserve the answer. Conditional shortcut probes found no perfect predictor in sampled runtime templates. Nevertheless the source-supported second inner term cannot change from linear to cubic; its derivative role is unjustifiably fixed."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "The polynomial constructors exclude the KP canonical example (3x^4+x^3)^5. The quartic branch always uses a*x^4+b*x, so its second inner-derivative term is always constant rather than allowing the source-required 3*x^2. Every other supported branch also has zero cubic coefficient. This is a generator-domain omission, not an incorrect answer in the five easy batch records.",
+      "source_refs": [
+        "19bf8d06-cbcc-547b-b882-ac89cd39fd1a (e-181): g=3x^4+x^3; dg/dx=12x^3+3x^2; df/dx=5(3x^4+x^3)^4(12x^3+3x^2)",
+        "b551e489-4c37-53ea-831b-8f3ca007450b (q-48625): quartic-plus-linear practice case",
+        "generate/principles.md: Establish fidelity first; preserve the method without fixing incidental source assignments"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python canonical_regression.py (exit 1). Current generate_moderate(seed=99173, template=\"quartic_radio\", parameters={\"a\":3,\"b\":1,\"n\":5}) yields (3x^4+x)^5. Adding second_power=3 is rejected. canonical-coverage.json records the constructor-wide zero-cubic invariant; canonical-counterexample-records.json contains the complete output.",
+      "requested_change": "Retain the quartic-plus-linear family and add source-grounded support for a cubic second inner term, either as an explicit term-degree slot or a canonical-derived family. Derive prompt, inner derivative, answer bank and solution from that term structure. Replay e-181 exactly and add a controlled linear-versus-cubic regression. Preserve existing difficulty separation; no database repair is requested."
+    }
+  ]
+}

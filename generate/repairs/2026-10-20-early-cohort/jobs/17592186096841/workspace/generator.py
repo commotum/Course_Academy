@@ -70,7 +70,7 @@ def maths(name,p):
   it=(str(b)+signterm(a,str(v))) if family=='affine_constant' else tex(inner)
  elif family=='quadratic': inner=a*v**2+b;it=tex(inner)
  elif family=='quadratic_full': inner=a*v**2+b*v+p['c'];it=tex(inner)
- else: inner=a*v**4+b*v;it=tex(inner)
+ else: inner=a*v**4+b*v**p.get('second_power',1);it=tex(inner)
  di=sp.diff(inner,v); derivative=n*inner**(n-1)*di
  dt=(str(n*a)+power(it,n-1)) if family.startswith('affine') else str(n)+power(it,n-1)+'('+tex(di)+')'
  if family=='quadratic':dt=tex(n*di)+power(it,n-1)
@@ -217,8 +217,8 @@ def quartic_grid_bank(p,data,design):
  sign=1 if p['a']>0 else -1
  cells=[target]+[(i,j) for i in range(3) for j in range(2) if (i,j) not in (target,tuple(missing))]
  return [('correct' if (i,j)==target else f'coefficient_grid_{i}_{j}',
-          outer[j]*inner**(p['n']-1)*(sign*leading[i]*v**3+p['b']),
-          str(outer[j])+power(it,p['n']-1)+'('+tex(sign*leading[i]*v**3+p['b'])+')') for i,j in cells]
+          outer[j]*inner**(p['n']-1)*(sign*leading[i]*v**3+(di-4*p['a']*v**3)),
+          str(outer[j])+power(it,p['n']-1)+'('+tex(sign*leading[i]*v**3+(di-4*p['a']*v**3))+')') for i,j in cells]
 
 # Complete banks are selected before values are constructed.
 def bank(name,p,profile,data,recipes=None,bank_design=None):
@@ -244,7 +244,7 @@ def bank(name,p,profile,data,recipes=None,bank_design=None):
   vals=quartic_grid_bank(p,data,bank_design)
  elif name=='quartic_radio':
   major=4*a*v**3
-  vals=[('correct',d,dt),('linear_derivative_retains_x',n*inner**(n-1)*(major+b*v),str(n)+power(it,n-1)+'('+tex(major+b*v)+')'),
+  vals=[('correct',d,dt),('linear_derivative_retains_x',n*inner**(n-1)*(major+b*v**p.get('second_power',1)),str(n)+power(it,n-1)+'('+tex(major+b*v**p.get('second_power',1))+')'),
         ('omit_linear_term',n*major*inner**(n-1),str(n)+'('+tex(major)+')'+power(it,n-1)),
         ('omit_linear_retain_exponent',n*major*inner**n,str(n)+'('+tex(major)+')'+power(it,n)),
         ('raise_inner_derivative',n*inner**(n-1)*di**n,str(n)+power(it,n-1)+power(tex(di),n))]
@@ -259,6 +259,9 @@ def bank(name,p,profile,data,recipes=None,bank_design=None):
 
 def validate_parameters(name,p):
  required={'a','b','n'}|({'c'} if name=='quadratic_slope' else set())|({'z'} if 'slope' in name or name.startswith('tangent') else set())
+ if name=='quartic_radio' and 'second_power' in p:
+  required.add('second_power')
+  if p['second_power'] not in (1,3):raise ValueError('Second term degree must be 1 or 3')
  if set(p)!=required or any(type(x)!=int for x in p.values()):raise ValueError('Exact integer parameters with template keys required')
  if not 2<=p['n']<=6 or not p['a'] or not p['b']:raise ValueError('Need n=2..6, a,b nonzero')
  if any(abs(x)>12 for k,x in p.items() if k!='n'):raise ValueError('Coefficients/point bounds ±12')
@@ -295,10 +298,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  quartic_authored=profile=='authored_quartic'
  if bank_design is not None and not (affine_authored or quartic_authored):raise ValueError('Bank design only applies to authored coefficient grids')
  if parameters is not None:validate_parameters(name,parameters)
+ second_power=rng.choice((1,3)) if name=='quartic_radio' and parameters is None else None
  design=(dict(bank_design) if bank_design is not None else select_affine_design(rng,parameters) if affine_authored
          else select_quartic_design(rng,parameters) if quartic_authored else None)
  for attempt in range(128):
   p=dict(parameters) if parameters is not None else sample(name,rng)
+  if second_power is not None:p['second_power']=second_power
   if affine_authored and parameters is None:
    p['n']=design['powers'][design['power_rank']]
    p['a']=(1 if p['a']>0 else -1)*design['slopes'][design['slope_rank']]

@@ -1,0 +1,1 @@
+Current source replay: 12 complete banks pass. Previous signed-pair counterexample blocked; all eight common-bank target witnesses pass. Fresh prompt-derived math and source checks saved. All 11 formerly affected inventory records retired at basis 5602. Next: actual grader, delivery, UI render, final shortcut and selection analysis.
