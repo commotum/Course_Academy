@@ -1,0 +1,320 @@
+{
+  "learner_operation": "Integrate n/(ax+b) by linear substitution and select the antiderivative n/a ln|ax+b|+C from five mathematical radio choices.",
+  "fixed_features": [
+    {
+      "feature": "One constant numerator over a nonconstant affine denominator",
+      "justification": "Canonical e-449 and Introduction tutorial use one affine substitution."
+    },
+    {
+      "feature": "Five radio choices containing logarithmic antiderivatives with +C",
+      "justification": "All six captured practice banks use this response structure; no free-entry requirement."
+    },
+    {
+      "feature": "Small integer coefficients and one substitution",
+      "justification": "Preserves the easy workload of the complete source questions. Particular signs, nonunit slope direction, correct coefficient rank and choice position are not essential."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Numerator and affine slope jointly determine logarithm coefficient",
+      "eligible_variation": "Change n and signed nonzero a independently within the small-number source method; correct coefficient can be positive fractional, negative or integral.",
+      "observed": "Every a>0 is fixed to 1; all a<0 cases fix n=1. Canonical [3,5,2] is rejected by all profiles. No positive fractional correct coefficient occurs."
+    },
+    {
+      "role": "Correct coefficient rank and form among distractors",
+      "eligible_variation": "The coefficient n/a should determine correctness, with other bank members occasionally larger/smaller or sharing sign/fraction form.",
+      "observed": "Coefficient templates always make maximum positive coefficient correct. Negative-slope template always makes the unique negative proper fraction correct."
+    },
+    {
+      "role": "Correct argument and answer position",
+      "eligible_variation": "Affine intercept and signs may change; visual choice position may change without changing correctness.",
+      "observed": "Intercepts and arguments vary; UI hashes IDs to shuffle display. Unit-slope identity simplifications are legitimate."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivered-probes.json"
+      ],
+      "result": "{\"count\": 70, \"profiles\": {\"negative-slope\": 16, \"positive-shift\": 16, \"negative-shift\": 18, \"coefficient\": 20}, \"templates\": {\"q-49452\": 16, \"q-49454\": 16, \"q-49450\": 18, \"q-49453\": 8, \"q-15707\": 12}, \"parameter_ranges\": {\"n\": [1, 2, 4, 5, 6, 7, 8, 9], \"a\": [-9, -7, -6, -4, -3, -2, 1], \"b\": [-12, -11, -10, -9, -8, -7, -6, -5, -4, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}}"
+    },
+    {
+      "case": "delivered",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "delivered-probes.json"
+      ],
+      "result": "{\"count\": 50, \"profiles\": {\"negative-slope\": 14, \"positive-shift\": 8, \"negative-shift\": 9, \"coefficient\": 19}, \"templates\": {\"q-49452\": 14, \"q-49454\": 8, \"q-49450\": 9, \"q-49453\": 8, \"q-15707\": 11}, \"parameter_ranges\": {\"n\": [1, 2, 4, 5, 6, 7, 8, 9], \"a\": [-9, -7, -6, -4, -3, -2, 1], \"b\": [-12, -11, -10, -9, -8, -7, -6, -5, -4, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}}"
+    },
+    {
+      "case": "batch_raw",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivered-probes.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"positive-shift\": 2, \"coefficient\": 2, \"negative-slope\": 1}, \"templates\": {\"q-49454\": 2, \"q-15707\": 2, \"q-49452\": 1}, \"parameter_ranges\": {\"n\": [1, 3, 7], \"a\": [-4, 1], \"b\": [1, 5, 6, 8, 9]}}"
+    },
+    {
+      "case": "batch_delivered",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivered-probes.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"positive-shift\": 2, \"coefficient\": 2, \"negative-slope\": 1}, \"templates\": {\"q-49454\": 2, \"q-15707\": 2, \"q-49452\": 1}, \"parameter_ranges\": {\"n\": [1, 3, 7], \"a\": [-4, 1], \"b\": [1, 5, 6, 8, 9]}}"
+    },
+    {
+      "case": "Missing positive nonunit-slope canonical source",
+      "sample_refs": [
+        "rejections.json",
+        "regression-results.json"
+      ],
+      "result": "All five profiles reject [3,5,2]; q-49511 template [2,3,5] is absent. Complete canonical solution and Introduction support the omitted operation."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold template q-15707, seed 912, slope 1 and intercept 7; change numerator 2 to 3.",
+      "expected": "Response and solution coefficient must change 2 to 3.",
+      "observed": "Prompt, substitution algebra, final answer and native accepted choice all follow numerator. Actual UI screenshots checked. Bank-only maximum-positive action nevertheless remains valid.",
+      "status": "passed",
+      "justification": "Numerator is relevant through n/a. This passing dependency check does not waive the shortcut defect.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "counterfactual-records.json",
+        "grader-results.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold [2,1,7] and seed 912; change equals-ending wording q-15707 to Calculate wording q-49453.",
+      "expected": "Same mathematical response despite different question/choice identifiers.",
+      "observed": "Both render integral 2/(x+7); answer and solution remain 2 ln|x+7|+C. Native grader accepts this member and rejects four distractors in each.",
+      "status": "passed",
+      "justification": "The two source wording templates have identical mathematical operation and equivalent five-choice banks.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "counterfactual-records.json",
+        "grader-results.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "same argument, unique negative proper fraction: choose it",
+      "subgroup": "raw recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, unique negative proper fraction: choose it; do not read integrand",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, three positive coefficients: choose largest positive coefficient",
+      "subgroup": "raw recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, three positive coefficients: choose largest positive coefficient; do not read integrand",
+      "correct": 20,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, unique negative proper fraction: choose it",
+      "subgroup": "delivered recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, unique negative proper fraction: choose it; do not read integrand",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, three positive coefficients: choose largest positive coefficient",
+      "subgroup": "delivered recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, three positive coefficients: choose largest positive coefficient; do not read integrand",
+      "correct": 19,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, three positive coefficients: choose largest positive coefficient",
+      "subgroup": "batch_delivered recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, three positive coefficients: choose largest positive coefficient; do not read integrand",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, unique negative proper fraction: choose it",
+      "subgroup": "batch_delivered recognizable same-argument bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "same argument, unique negative proper fraction: choose it; do not read integrand",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform guessing among five radio choices. The 100% bank-only rule needs no substitution or comparison with the integrand; UI shuffling and publication deduplication preserve the cue. Counts for the actual batch describe that finite pool, not a separate random-seed problem.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivered-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, three positive coefficients: choose largest positive coefficient",
+      "subgroup": "q-15707",
+      "scope": "within_template",
+      "strategy": "same argument, three positive coefficients: choose largest positive coefficient; ignore prompt",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Within-template conditional probe, random five-choice baseline 0.2. This follows from the construction for every allowed instance: coefficient bank is {n,1/n,-n,-1/n,1} with n>=2; negative-slope bank is {1/a,-1/a,a,-a,-1} with a<=-2. The qualifying shape/rank is always correct.",
+      "sample_refs": [
+        "independent-samples.json",
+        "raw-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, three positive coefficients: choose largest positive coefficient",
+      "subgroup": "q-49453",
+      "scope": "within_template",
+      "strategy": "same argument, three positive coefficients: choose largest positive coefficient; ignore prompt",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Within-template conditional probe, random five-choice baseline 0.2. This follows from the construction for every allowed instance: coefficient bank is {n,1/n,-n,-1/n,1} with n>=2; negative-slope bank is {1/a,-1/a,a,-a,-1} with a<=-2. The qualifying shape/rank is always correct.",
+      "sample_refs": [
+        "independent-samples.json",
+        "raw-probes.json"
+      ]
+    },
+    {
+      "cue": "same argument, unique negative proper fraction: choose it",
+      "subgroup": "q-49452",
+      "scope": "within_template",
+      "strategy": "same argument, unique negative proper fraction: choose it; ignore prompt",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Within-template conditional probe, random five-choice baseline 0.2. This follows from the construction for every allowed instance: coefficient bank is {n,1/n,-n,-1/n,1} with n>=2; negative-slope bank is {1/a,-1/a,a,-a,-1} with a<=-2. The qualifying shape/rank is always correct.",
+      "sample_refs": [
+        "independent-samples.json",
+        "raw-probes.json"
+      ]
+    },
+    {
+      "cue": "first visually displayed option",
+      "subgroup": "actual UI preview",
+      "scope": "overall",
+      "strategy": "choose first radio option after actual UI ordering",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform-guess baseline 0.2. Raw serialization is misleading: actual UI shuffles by identity and correct positions vary. No fixed-position defect is asserted.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render/input.json",
+        "render-counterfactual/input.json"
+      ]
+    },
+    {
+      "cue": "unit numerator and unit slope",
+      "subgroup": "q-49450",
+      "scope": "within_template",
+      "strategy": "retain the shifted argument and use coefficient 1",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.2 random guessing. This strategy reads numerator/slope/argument and applies n/a=1; the simplification is mathematically justified in these source cases. No requirement to introduce harder calculations within every item.",
+      "sample_refs": [
+        "independent-samples.json",
+        "math-results.json"
+      ]
+    },
+    {
+      "cue": "unit numerator and unit slope",
+      "subgroup": "q-49454",
+      "scope": "within_template",
+      "strategy": "retain the shifted argument and use coefficient 1",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.2 random guessing. This strategy reads numerator/slope/argument and applies n/a=1; the simplification is mathematically justified in these source cases. No requirement to introduce harder calculations within every item.",
+      "sample_refs": [
+        "independent-samples.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator allowed bounds and deterministic sampling",
+      "mathematical-fingerprint rejection/resampling",
+      "requested difficulty",
+      "publisher normalization and validation",
+      "captured inventory and within-batch deduplication",
+      "fresh-practice eligibility",
+      "weighted easy-band selection and history exclusion",
+      "actual UI choice order"
+    ],
+    "sample_refs": [
+      "resampling-records.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivered-probes.json",
+      "selection-analysis.json",
+      "inventory-analysis.json",
+      "render-inspection.json"
+    ],
+    "result": "Fresh resampling trace: 19 attempts -> 15 unique records, four duplicates skipped. Delivery: independent 70 -> 50; exact batch 5 -> 5. Both structural bank cues survive. All generated records are easy, keyed radio questions; positive-weight easy selection can serve them and cannot change their bank relationships. No prepared publication file exists; shared read-only delivery adapter used. Inventory basis 5669 contains only original sources, no eligible historical generated records."
+  },
+  "limitations": [
+    "Finite fresh sample and boundaries support the stated probes, not absence of every possible shortcut.",
+    "Actual learner policies, histories and future entity IDs are not captured; selection analysis uses the real hash/weight rules with surrogate IDs and states the resulting limits.",
+    "q-49511 lacks source solution, correct link and difficulty; inferred key is mathematically clear but not represented as captured source evidence.",
+    "Moderate and hard are outside the requested easy level.",
+    "The required changes are generator construction changes; original source records must remain unchanged."
+  ]
+}

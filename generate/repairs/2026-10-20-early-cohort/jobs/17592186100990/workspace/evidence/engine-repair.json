@@ -1,0 +1,25 @@
+{
+  "file": "engine/rust/symbolic.rs",
+  "patch": "engine.patch",
+  "before_sha256": "d59a35c7e4bfbabb0a3a182a3b2917dc2d1bc41069a44192f9d5132dacbbec28",
+  "after_sha256": "c052e55799bf40012c595ff6adaf24259df2e0eab11ab83c9f7df2bb9edba621",
+  "grader_sha256": "6d29dc5aa7d57de7634148351f26f107edbd62f938e3711bf945f2fca68780df",
+  "rule": "Parse a named symbol followed by a literal subscript into a distinct formal variable. Grouping braces do not change labels; different bases and index sequences remain distinct. Preserve TeX one-character unbraced argument semantics. No question IDs or topic exceptions.",
+  "commands": [
+    "cargo test --lib symbolic::tests::indexed_symbols_preserve_base_and_subscript -- --exact",
+    "cargo test --lib symbolic::tests",
+    "cargo test --lib learning::tests",
+    "cargo build --lib",
+    "rustc --edition=2024 generate/runs/current/check-engine.rs -L dependency=target/debug/deps --extern course_academy_engine=target/debug/libcourse_academy_engine.rlib --extern serde_json=target/debug/deps/libserde_json-aa6609cd3ddd6b25.rlib -o generate/runs/current/check-engine",
+    "generate/runs/current/check-engine generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/review-0-policy-2-fd6037e892fe96a5/grader-symbolic-strict.json generate/repairs/2026-10-20-early-cohort/jobs/17592186100990/workspace/evidence/repaired-symbolic-strict.json"
+  ],
+  "results": {
+    "indexed_unit": 1,
+    "symbolic_suite": 19,
+    "learning_suite": 46,
+    "retained_strict_acceptances": 10,
+    "retained_strict_rejections": 10
+  },
+  "services_restarted": false,
+  "database_writes": 0
+}

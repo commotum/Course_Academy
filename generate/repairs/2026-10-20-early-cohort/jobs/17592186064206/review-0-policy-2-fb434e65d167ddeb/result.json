@@ -1,0 +1,134 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated defects: positive nonunit slopes are excluded, and recognizable answer banks reveal the correct choice without reading the integrand. Mathematics, grading, rendering, and packaging checks pass. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Integrate n/(ax+b) using linear substitution and select (n/a) ln|ax+b|+C.",
+    "reasoning_steps": [
+      "Set u=ax+b and derive dx=du/a.",
+      "Retain the numerator and integrate the reciprocal.",
+      "Substitute back and distinguish coefficient, sign, and argument distractors."
+    ],
+    "invariants": [
+      "One indefinite integral with constant numerator and nonzero affine slope.",
+      "Logarithmic antiderivative with absolute value and additive constant.",
+      "Five radio choices with exactly one correct answer."
+    ],
+    "permitted_variations": [
+      "Small numerator, slope, and intercept changes preserving the substitution method.",
+      "Positive, negative, integral, and fractional correct coefficients.",
+      "Prompt wording, denominator order, distractors, and choice position."
+    ],
+    "source_refs": [
+      "d6501a20-6ebd-5786-870e-3527423b6332 (e-449)",
+      "58fee417-01ff-5eb4-9db6-9bace2e941d9 (q-49511)",
+      "0fe299cc-e2f3-5032-a27f-6865f6c34c09 (q-15707)",
+      "f7ef9efb-7fe5-57f8-b97b-c7d8ad3002b1 (q-49453)",
+      "2da03267-825e-5f39-863f-d7f53abceed7 (q-49452)",
+      "539b2d2a-d59d-59a2-8b1b-cd7fbe582c04: Introduction derives substitution and checks by differentiation.",
+      "933683cf-f7fa-50f2-9f11-4522ca637c77: The General Formula."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replays.json"
+      ],
+      "details": "Five complete supported source questions reproduce exact prompts, solutions, complete unordered banks, and keys. The excluded positive-slope family is addressed separately as a restriction."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "audit.py"
+      ],
+      "details": "83 records independently checked from mathematical text: exactly one derivative-matching choice and a correct final solution."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "delivered-probes.json",
+        "rejections.json",
+        "regression-results.json"
+      ],
+      "details": "Every positive slope is fixed to 1. Canonical positive nonunit-slope cases are rejected, and coefficient rank/form remains answer-bearing within recognizable banks."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "source-analysis.json"
+      ],
+      "details": "Observed variations preserve the easy, single-substitution workload and radio response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepted 23 independently correct selections and rejected 92 distractors. Free-entry equivalence is inapplicable to these radio fields."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Eleven actual-UI previews passed automated checks; seven screenshots were inspected across profiles and controlled pairs. UI shuffling rules out a fixed first-position defect."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "resampling-records.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Exact dependency versions match. Relocation and deterministic replay reproduce the runner batch; duplicate rejection was exercised. Declared package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivered-probes.json",
+        "regression-execution.json",
+        "regression-batch-results.json",
+        "selection-analysis.json",
+        "inventory-analysis.json",
+        "affected-inventory.json"
+      ],
+      "details": "After delivery filtering, bank-only strategies succeed on 19/19 coefficient cases and 14/14 negative-slope cases. The exact batch retains corresponding 2/2 and 1/1 successes. Controlled dependencies pass, but do not eliminate these shortcuts. Captured inventory contains no generated historical records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "allowed() fixes every positive slope to 1, excluding the complete canonical example 3/(5x+2), the Introduction's 1/(2x+1), and q-49511's 2/(3x+5). Missing fields on q-49511 do not justify excluding the operation supported by the complete lesson.",
+      "source_refs": [
+        "d6501a20-6ebd-5786-870e-3527423b6332",
+        "539b2d2a-d59d-59a2-8b1b-cd7fbe582c04",
+        "58fee417-01ff-5eb4-9db6-9bace2e941d9"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression_shortcuts.py. All five profiles reject canonical parameters [3,5,2]; regression-results.json retains every attempt.",
+      "requested_change": "Extend parameter and bank construction to support small positive nonunit slopes and numerator scaling. Derive dependent content from n/a, retain source banks, and document q-49511's inferred key and solution separately from captured evidence."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Coefficient banks always make the largest positive coefficient correct; negative-slope banks always make the unique negative proper fraction correct. Both strategies ignore the integrand and survive publication filtering and UI shuffling.",
+      "source_refs": [
+        "0fe299cc-e2f3-5032-a27f-6865f6c34c09",
+        "f7ef9efb-7fe5-57f8-b97b-c7d8ad3002b1",
+        "2da03267-825e-5f39-863f-d7f53abceed7"
+      ],
+      "reproduction": "Minimal pair: template q-15707, seed 912, parameters [2,1,7] and [3,1,7]. Choosing the largest positive coefficient answers both. Actual batch seed 994860460 produces coefficients {3,1/3,-3,-1/3,1}, with 3 correct. Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression_shortcuts.py --candidate-records delivery-batch/accepted.json --output regression-batch-results.json. It exits 1.",
+      "requested_change": "Change family-wide bank construction so coefficient rank, sign, or fraction form does not identify correctness within recognizable subgroups. Preserve the n/a rule and source replay. Retain the candidate-file regression and validate prospective CLI batches through delivery filtering; changing seeds or shuffling choices is insufficient. Let the runner regenerate its batch."
+    }
+  ]
+}

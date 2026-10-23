@@ -1,0 +1,37 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186064206/review-0-policy-2-fb434e65d167ddeb",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-independent --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-counterfactual-records.json --output render-counterfactual --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finish_audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python write_report.py"
+  ],
+  "regression_commands": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "regression_shortcuts.py"
+      ],
+      "exit_code": 1,
+      "stdout": "{\"passed\": false, \"failures\": 2, \"report\": \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186064206/review-0-policy-2-fb434e65d167ddeb/regression-results.json\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "regression_shortcuts.py",
+        "--candidate-records",
+        "delivery-batch/accepted.json",
+        "--output",
+        "regression-batch-results.json"
+      ],
+      "exit_code": 1,
+      "stdout": "{\"passed\": false, \"failures\": 1, \"report\": \"regression-batch-results.json\"}\n",
+      "stderr": ""
+    }
+  ]
+}

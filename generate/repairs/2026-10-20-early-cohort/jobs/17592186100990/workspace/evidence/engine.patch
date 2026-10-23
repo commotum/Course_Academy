@@ -1,0 +1,104 @@
+--- a/engine/rust/symbolic.rs
++++ b/engine/rust/symbolic.rs
+@@ -1390,6 +1390,16 @@
+     }
+     fn power(&mut self) -> Result<Ast> {
+         let mut a = self.atom()?;
++        if self.mark('_') {
++            let Ast::Symbol(name) = a else {
++                return Err("a subscript requires a named symbol".into());
++            };
++            // Subscripts name distinct formal variables. In particular, the
++            // digits of a matrix index are labels, not an arithmetic value.
++            // Braces around the base or individual index labels are cosmetic.
++            let index = self.subscript()?;
++            a = Ast::Symbol(format!("{name}_[{index}]"));
++        }
+         if self.mark('^') {
+             a = Ast::Binary('^', Box::new(a), Box::new(self.nested(Self::signed)?));
+         }
+@@ -1397,6 +1407,50 @@
+             a = Ast::Binary('/', Box::new(a), Box::new(Ast::Number("100".into())));
+         }
+         Ok(a)
++    }
++    fn subscript(&mut self) -> Result<String> {
++        if self.mark('{') {
++            let mut index = String::new();
++            while !self.mark('}') {
++                index.push_str(&self.nested_index()?);
++            }
++            if index.is_empty() {
++                return Err("empty subscript".into());
++            }
++            Ok(index)
++        } else {
++            // TeX's unbraced argument is one character: a_12 is a_1 * 2,
++            // not a_{12}. Do not silently accept a different expression.
++            match self.take()? {
++                Token::Number(n) if n.chars().all(|c| c.is_ascii_digit()) => {
++                    if n.len() > 1 {
++                        self.at -= 1;
++                        self.tokens[self.at] = Token::Number(n[1..].into());
++                    }
++                    Ok(n[..1].into())
++                }
++                Token::Word(n) if n.chars().count() == 1 => Ok(n),
++                _ => Err("unsupported subscript label".into()),
++            }
++        }
++    }
++    fn nested_index(&mut self) -> Result<String> {
++        if self.depth >= 64 {
++            return Err("math input exceeds 64 nesting levels".into());
++        }
++        self.depth += 1;
++        let result = if self.peek() == Some(&Token::Mark('{')) {
++            self.subscript()
++        } else {
++            match self.take()? {
++                Token::Number(n) if n.chars().all(|c| c.is_ascii_digit()) => Ok(n),
++                Token::Word(n) if n.chars().count() == 1 => Ok(n),
++                Token::Mark(',') => Ok(",".into()),
++                _ => Err("unsupported subscript label".into()),
++            }
++        };
++        self.depth -= 1;
++        result
+     }
+     fn group_or_tex_atom(&mut self) -> Result<Ast> {
+         // In TeX, an unbraced fraction argument is one character, not a whole
+@@ -1807,6 +1861,33 @@
+ #[cfg(test)]
+ mod tests {
+     #[test]
++    fn indexed_symbols_preserve_base_and_subscript() {
++        use super::{compare, supports, Context};
++        for (a, b) in [
++            ("{b}_{11}", "b_{11}"),
++            ("{{a}}_{{2}{3}}", "a_{23}"),
++            ("x_i", "{x}_{i}"),
++            ("a_{ij}", "a_{{i}{j}}"),
++            ("2*a_{12}+a_{12}", "3*a_{12}"),
++            ("a_{12}^2", "a_{12}*a_{12}"),
++            ("log_2(8)", "3"),
++        ] {
++            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} vs {b}");
++        }
++        for (a, b) in [
++            ("b_{11}", "b_{12}"), ("a_{23}", "a_{32}"),
++            ("a_{23}", "b_{23}"), ("b_{11}", "b"),
++            ("b_{11}", "11*b"), ("b_{11}", "-2"),
++            ("b_{11}", "b_11"), ("a_{12}", "a_{1,2}"),
++            ("a_{12}", "a_{012}"),
++        ] {
++            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
++        }
++        for a in ["a_{}", "a_{", "a_", "a_{1}_2", "(a+b)_{12}", "a_{1+2}"] {
++            assert!(!supports(a, Context::default()), "{a}");
++        }
++    }
++    #[test]
+     fn ivp_symbolic_roots_and_composed_log_intervals() {
+         use super::{compare, Context};
+         for (a, b) in [

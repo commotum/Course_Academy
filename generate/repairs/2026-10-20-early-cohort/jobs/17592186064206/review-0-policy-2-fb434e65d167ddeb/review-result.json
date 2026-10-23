@@ -1,0 +1,143 @@
+{
+  "verdict": "revise",
+  "summary": "Correct mathematics and grading, but two demonstrated generator defects: omitted positive nonunit slopes and prompt-independent answer-bank shortcuts. Package unchanged; no historical generated inventory records exist at captured basis 5669.",
+  "source_analysis": {
+    "skill": "Integrate n/(ax+b) by linear substitution and select the antiderivative n/a ln|ax+b|+C from five mathematical radio choices.",
+    "reasoning_steps": [
+      "Identify the entire affine denominator u=ax+b.",
+      "Differentiate u and substitute dx=du/a, retaining the numerator n.",
+      "Integrate the reciprocal to (n/a) ln|u|+C.",
+      "Return to x and distinguish coefficient/sign and argument distractors."
+    ],
+    "invariants": [
+      "Nonzero affine slope; constant numerator; one indefinite integral.",
+      "Absolute value in logarithm and arbitrary additive constant.",
+      "Five choices, exactly one antiderivative; easy single substitution workload.",
+      "No combination of integrals or absorbing C into logarithm: those are separately identified subsequent knowledge points."
+    ],
+    "permitted_variations": [
+      "Small nonzero integer numerator and signed slope; small signed intercept, slope-one and negative-slope cases.",
+      "Coefficient may be positive or negative, integral or fractional; correctness must follow n/a rather than an option position or distinctive form.",
+      "Denominator can be ax+b or b+ax; order is incidental.",
+      "Choice order, prompt wording, and signed coefficient/argument distractors may vary while retaining all observed source banks on replay."
+    ],
+    "source_refs": [
+      "0fe299cc-e2f3-5032-a27f-6865f6c34c09 (q-15707)",
+      "58fee417-01ff-5eb4-9db6-9bace2e941d9 (q-49511)",
+      "33493dd3-c6fe-5889-a9fc-d8fc59aa44da (q-49450)",
+      "2da03267-825e-5f39-863f-d7f53abceed7 (q-49452)",
+      "f7ef9efb-7fe5-57f8-b97b-c7d8ad3002b1 (q-49453)",
+      "69e9c2db-c46a-594b-831a-b87a3d7f93fe (q-49454)",
+      "d6501a20-6ebd-5786-870e-3527423b6332 (e-449)",
+      "539b2d2a-d59d-59a2-8b1b-cd7fbe582c04 Introduction: let u=2x+1; dx=1/2 du; differentiate result to check.",
+      "933683cf-f7fa-50f2-9f11-4522ca637c77 The General Formula: integral 1/(ax+b) dx = (1/a) ln|ax+b|+C."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replays.json",
+        "source-analysis.json"
+      ],
+      "details": "All five complete supported easy questions reproduce exact prompts, solutions, complete unordered banks and keys. q-49511 is explicitly unsupported; omission of its positive-slope family and the canonical example is separately a restriction finding."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "audit.py"
+      ],
+      "details": "83 generated/replayed/batch/counterfactual records checked from rendered TeX strings: exactly one derivative-matching choice and correct final solution. No reliance on generation parameters for the independent derivative oracle."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "delivered-probes.json",
+        "rejections.json",
+        "regression-results.json",
+        "inventory-analysis.json"
+      ],
+      "details": "Four profiles occur, but every positive slope is 1. Positive nonunit-slope source cases are suppressed; answer-bearing coefficient shapes are fixed within recognizable banks."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "source-analysis.json"
+      ],
+      "details": "Observed output retains one affine substitution, reciprocal logarithm and five radio choices at easy difficulty; no added operators or reasoning stages."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native learning::grade_field: 23 independently correct selections accepted and 92 distractor selections rejected. All fields are radio; equivalent free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json",
+        "render/question-002.png",
+        "render-counterfactual/question-002.png"
+      ],
+      "details": "11 actual UI previews passed automated rendering checks; seven screenshots inspected across four profiles and both controlled pairs. Mathematical notation, controls and solutions render correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "resampling-records.json"
+      ],
+      "details": "Exact Python 3.13.5/SymPy 1.14.0 dependency contract matches runtime. Relocation and seed/count/difficulty replay match runner batch; duplicate rejection traced; package files unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivered-probes.json",
+        "regression-execution.json",
+        "regression-batch-results.json",
+        "selection-analysis.json",
+        "affected-inventory.json"
+      ],
+      "details": "Prompt-independent rank/form strategies succeed in both raw and delivered recognizable subgroups. Delivered independent sample: maximum positive coefficient 19/19, unique negative proper fraction 14/14; exact batch: 2/2 and 1/1. UI shuffling does not remove these cues."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "The generator excludes positive nonunit slopes, although canonical e-449 integrates 3/(5x+2), the Introduction integrates 1/(2x+1), and q-49511 supplies a complete bank for 2/(3x+5). allowed() fixes every positive slope to 1. Missing fields on q-49511 do not justify deleting the operation supported by the complete canonical lesson.",
+      "source_refs": [
+        "d6501a20-6ebd-5786-870e-3527423b6332 (e-449)",
+        "539b2d2a-d59d-59a2-8b1b-cd7fbe582c04 (Introduction)",
+        "58fee417-01ff-5eb4-9db6-9bace2e941d9 (q-49511)"
+      ],
+      "reproduction": "From evidence_root: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression_shortcuts.py. All five profiles reject parameters [3,5,2]; see regression-results.json. audit.py also records KeyError for template q-49511, parameters [2,3,5].",
+      "requested_change": "Extend the family-wide parameter and bank construction to cover small positive nonunit slopes with numerator scaling, including canonical [3,5,2] and source [2,3,5]. Derive prompts, solutions and keys from n/a; retain complete source banks and document the inferred q-49511 solution/key separately from captured evidence. Keep the strict canonical regression."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Recognizable banks reveal the answer without reading the integrand. In coefficient templates the bank coefficients are {n,1/n,-n,-1/n,1}, n>=2, so always choose the largest positive coefficient. In negative-slope banks the only negative proper fraction is always correct. These construction-wide cues survive deduplication and actual UI shuffling; the current five-question batch contains two coefficient instances and one negative-slope instance.",
+      "source_refs": [
+        "0fe299cc-e2f3-5032-a27f-6865f6c34c09 (q-15707)",
+        "f7ef9efb-7fe5-57f8-b97b-c7d8ad3002b1 (q-49453)",
+        "2da03267-825e-5f39-863f-d7f53abceed7 (q-49452)",
+        "539b2d2a-d59d-59a2-8b1b-cd7fbe582c04: substitute and differentiate to verify"
+      ],
+      "reproduction": "Minimal pair: generate(seed=912, template=\"q-15707\", parameters=[2,1,7]) and [3,1,7]. Largest-positive strategy answers both without the prompt (regression-results.json). Exact delivered batch example seed 994860460, parameters [3,1,6], question 0d07d5cb-6a6f-5339-952e-7ade69a3e336: coefficients {3,1/3,-3,-1/3,1}; choose 3. Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression_shortcuts.py --candidate-records delivery-batch/accepted.json --output regression-batch-results.json; exits 1.",
+      "requested_change": "Change bank construction and eligible answer-bearing assignments so correct coefficient rank/sign/fraction form is not fixed within each recognizable bank/template, while preserving the n/a rule and source replay. Shuffling choices or changing the seed is insufficient. Retain the candidate-file regression and test prospective CLI batches with seed 994860459, count 5, difficulty easy through check_delivery.py. Repair package construction; let the runner regenerate its batch. Do not remove the affected source families."
+    }
+  ]
+}
