@@ -905,6 +905,35 @@ pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
     Ok(layers)
 }
 
+/// Study uses the graph's one-based L30 cutoff, including saved attempts and
+/// retrieval work. Apply it before scheduling so excluded required work cannot
+/// hide eligible activities. Direct topic study has its own selection path.
+fn filter_study_layers(
+    s: &EntitySnapshot,
+    plan: Vec<PlannedActivity>,
+) -> Result<Vec<PlannedActivity>> {
+    let layers = topic_layers(s)?;
+    let eligible = |topic: u64| layers.get(&topic).is_some_and(|&layer| layer >= 29);
+    let mut result = Vec::new();
+    for candidate in plan {
+        if let Some(topic) = s.optional_ref(candidate.activity, "activity/scope")? {
+            if eligible(topic) {
+                result.push(candidate);
+            }
+        } else {
+            // Assessments span topics; their representative candidate.topic
+            // alone does not describe all the questions they would serve.
+            let steps = lesson_steps(s, candidate.activity)?;
+            if !steps.is_empty() && steps.iter().all(|step| {
+                s.topic_for_question(step.content).is_ok_and(&eligible)
+            }) {
+                result.push(candidate);
+            }
+        }
+    }
+    Ok(result)
+}
+
 /// Study has two independent sources. Explicit selections may cross courses
 /// and bypass the engine's mastery/prerequisite gates, but never content checks.
 /// Self-directed study also prepares targets up to historically known topics.
@@ -1006,7 +1035,7 @@ fn queue_candidates_in_scope(
                 }
             })
     });
-    crate::scheduling::filter_candidates(s, learner, plan)
+    crate::scheduling::filter_candidates(s, learner, filter_study_layers(s, plan)?)
 }
 
 /// Engine eligibility is independent of explicit queue membership and mode.
@@ -1070,7 +1099,7 @@ pub fn engine_candidates(
                 }
             })
     });
-    crate::scheduling::filter_candidates(s, learner, ongoing)
+    crate::scheduling::filter_candidates(s, learner, filter_study_layers(s, ongoing)?)
 }
 
 /// Compatibility wrapper for callers that only need the ordered activity IDs.
@@ -2943,7 +2972,28 @@ pub(crate) mod tests {
         s
     }
 
+    // Selection tests use a known foundation chain so their small topic graphs
+    // exercise normal Study behavior above the production L30 boundary.
+    fn study_planning_fixture(targets: &[u64]) -> EntitySnapshot {
+        let mut s = planning_fixture(targets);
+        let topics = s.entities.with_attribute("topic/id");
+        for topic in 90000..90029 {
+            let next = if topic == 90028 { topics.clone() } else { vec![topic + 1] };
+            put(&mut s.entities, topic, json!({"topic/id":id(topic),"topic/next":next}));
+        }
+        put(&mut s.entities, 90029, json!({"progress/topic":90028,"progress/repetitions":1.0}));
+        let mut profile = s.refs(1, "learner/knowledge-profile").unwrap();
+        profile.push(90029);
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!(profile));
+        s
+    }
+
     fn planning_lesson(s: &mut EntitySnapshot, topic: u64, next: &[u64]) -> u64 {
+        if s.entities.contains_key(&90028) {
+            let mut next_topics = s.refs(90028, "topic/next").unwrap();
+            next_topics.push(topic);
+            s.entities.get_mut(&90028).unwrap().insert("topic/next".into(), json!(next_topics));
+        }
         let activity = 10000 + topic;
         let question = 20000 + topic;
         let step = 30000 + topic;
@@ -2972,7 +3022,7 @@ pub(crate) mod tests {
 
     #[test]
     fn explicit_topic_planning_matches_manual_queue_override_without_editing_records() {
-        let mut s = planning_fixture(&[]);
+        let mut s = study_planning_fixture(&[]);
         planning_lesson(&mut s, 80, &[81]);
         planning_lesson(&mut s, 81, &[]);
         let at = Utc::now();
@@ -3019,7 +3069,7 @@ pub(crate) mod tests {
 
     #[test]
     fn self_directed_queue_orders_global_layer_then_priority_and_resumes_first() {
-        let mut s = planning_fixture(&[]);
+        let mut s = study_planning_fixture(&[]);
         let foundation = planning_lesson(&mut s, 80, &[82]);
         let practiced_root = planning_lesson(&mut s, 81, &[]);
         let later = planning_lesson(&mut s, 82, &[]);
@@ -3074,7 +3124,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_queue_is_explicit_cross_course_and_does_not_fall_back_to_course_work() {
-        let mut s = planning_fixture(&[90]);
+        let mut s = study_planning_fixture(&[90]);
         let queued = planning_lesson(&mut s, 80, &[]);
         planning_lesson(&mut s, 81, &[80]); // Unlearned prerequisite.
         planning_lesson(&mut s, 90, &[]);
@@ -3130,7 +3180,7 @@ pub(crate) mod tests {
     #[test]
     fn study_targets_prepare_unknown_frontier_and_stop_at_overdue_study() {
         let at = planning_time();
-        let mut s = planning_fixture(&[90]);
+        let mut s = study_planning_fixture(&[90]);
         let basic = planning_lesson(&mut s, 80, &[81]);
         let studied = planning_lesson(&mut s, 81, &[82]);
         let prerequisite = planning_lesson(&mut s, 82, &[90]);
@@ -3161,7 +3211,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_targets_skip_basic_ancestors_proven_by_another_known_branch() {
-        let mut s = planning_fixture(&[90]);
+        let mut s = study_planning_fixture(&[90]);
         let basic = planning_lesson(&mut s, 80, &[81]);
         let known_downstream = planning_lesson(&mut s, 81, &[]);
         let missing = planning_lesson(&mut s, 82, &[90]);
@@ -3185,7 +3235,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_queue_only_topics_do_not_expand_prerequisites_but_targets_still_do() {
-        let mut s = planning_fixture(&[90]);
+        let mut s = study_planning_fixture(&[90]);
         let queue_prerequisite = planning_lesson(&mut s, 80, &[81]);
         let queued = planning_lesson(&mut s, 81, &[]);
         let target_prerequisite = planning_lesson(&mut s, 82, &[90]);
@@ -3274,7 +3324,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_targets_keep_manual_queue_and_direct_topic_overrides() {
-        let mut s = planning_fixture(&[81]);
+        let mut s = study_planning_fixture(&[81]);
         let basic = planning_lesson(&mut s,80,&[81]);
         let known = planning_lesson(&mut s,81,&[]);
         put(&mut s.entities,600,json!({"progress/topic":81,"progress/repetitions":2.0}));
@@ -3289,7 +3339,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_targets_keep_the_five_fresh_questions_per_kp_requirement() {
-        let mut s = planning_fixture(&[80]);
+        let mut s = study_planning_fixture(&[80]);
         let target = planning_lesson(&mut s,80,&[]);
         for q in 24000..24005 {
             let mut question = s.entities[&100].clone();
@@ -3308,7 +3358,7 @@ pub(crate) mod tests {
     #[test]
     fn self_directed_queue_resumes_unselected_attempts_before_new_cross_course_lessons() {
         for state in ["started", "paused"] {
-            let mut s = planning_fixture(&[]);
+            let mut s = study_planning_fixture(&[]);
             let selected = planning_lesson(&mut s, 80, &[]);
             let unselected = planning_lesson(&mut s, 81, &[]);
             put(
@@ -3356,7 +3406,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_queue_keeps_content_checks_and_rejects_non_topic_refs() {
-        let mut s = planning_fixture(&[]);
+        let mut s = study_planning_fixture(&[]);
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -3397,7 +3447,7 @@ pub(crate) mod tests {
 
     #[test]
     fn study_engine_interleaves_modules_and_ignores_queue_and_targets() {
-        let mut s = planning_fixture(&[90]);
+        let mut s = study_planning_fixture(&[90]);
         let a = planning_lesson(&mut s, 80, &[]);
         let b = planning_lesson(&mut s, 81, &[]);
         let c = planning_lesson(&mut s, 82, &[]);
