@@ -1,0 +1,33 @@
+{
+  "finding_ids": [
+    "9c7856089e1ac50b09d1",
+    "4bb13dd660b79e861b1a"
+  ],
+  "preflight_claim": {
+    "passed": true,
+    "finding_ids": [
+      "9c7856089e1ac50b09d1",
+      "4bb13dd660b79e861b1a"
+    ],
+    "checks": [
+      {
+        "script": "checks/regression.py",
+        "args": [],
+        "sha256": "cc019322dc92d7fe6f98c498d07e1334d5d48a91e2b410dc66f9371558b50552",
+        "exit_code": 0,
+        "stdout": "{\"source_banks\": 6, \"source_choices\": 30, \"canonical_replay\": true, \"math_records\": 91, \"native_grader_checks\": 455, \"prospective_count\": 5, \"historical_shortcut\": 0, \"deterministic_and_relocated\": true, \"inventory_generated_records\": 0, \"passed\": true}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "independent_before": "retained-before.json",
+  "independent_current": "retained-current.json",
+  "author_rerun": "author-check/validation-summary.json",
+  "result": "Both retained failures reproduced on previous package and tested current package. Both are resolved for exercised cases. Author preflight passes but omits a=1,b=0; new independent boundary test fails.",
+  "commands": [
+    "context-python regression.py --package ../review-0-policy-2-6273cf8765511f83/relocated --candidate-records ../review-0-policy-2-6273cf8765511f83/delivery-batch/accepted.json --output retained-before.json",
+    "context-python regression.py --candidate-records batch.json --output retained-current.json",
+    "context-python author-regression.py",
+    "context-python zero-intercept-regression.py"
+  ]
+}

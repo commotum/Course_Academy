@@ -1,0 +1,712 @@
+{
+  "learner_operation": "Locate a highlighted matrix entry, count its one-based row and column, and express the ordered indices in matrix-entry notation.",
+  "fixed_features": [
+    {
+      "feature": "One highlighted cell and one-based row before column",
+      "justification": "Tutorials 34f3a63d-a273-50fb-b26a-ae172c7e93e9 and 775ac64e-8b63-5c51-824d-1d99d17a2a0a define the operation."
+    },
+    {
+      "feature": "Small integer matrices; five radio options or source-supported symbolic/two-index blanks",
+      "justification": "All nine source cases use these response workloads. Matrix values do not determine coordinates."
+    },
+    {
+      "feature": "Source-shaped five-option geometries",
+      "justification": "Conservative distractor extension preserves complete source banks; fixing their correct role is not justified. Current sampler instead chooses a bank placement with at least two in-matrix targets and varies the highlighted target."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Highlighted cell",
+      "eligible_variation": "Any valid cell in observed small shapes; fixed bank controls can change which member is highlighted.",
+      "observed": "55 explicit shape/coordinate boundaries, including all 16 4x4 cells; all five roles in each source bank exercised."
+    },
+    {
+      "role": "Correct radio option",
+      "eligible_variation": "Position and relative bank role must not identify the answer without reading the box.",
+      "observed": "Current delivered batch has two radio groups, each with two different target roles and different correct-option positions. Controlled banks exercise every role."
+    },
+    {
+      "role": "Matrix letter and incidental entries",
+      "eligible_variation": "Labels vary consistently; values may change while preserving coordinate response.",
+      "observed": "Fresh labels vary; paired zero/one matrix controls preserve correct responses and update solution values."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every supplied source family",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-comparison.json"
+      ],
+      "result": "Nine cases match complete answer banks and matrices. q139629 highlight restored from keys/solution; canonical example is an instructional demonstration without fields."
+    },
+    {
+      "case": "Boundary coordinates and regular sampler",
+      "sample_refs": [
+        "boundaries.json",
+        "samples.json",
+        "fresh-batches.json",
+        "fresh-batch-inputs.json"
+      ],
+      "result": "55 boundary assignments, 40 fresh individual records and 40 finite-batch candidates. All four templates and all five radio profiles appear across targeted samples."
+    },
+    {
+      "case": "Exact delivered candidate batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "5/5 accepted: four radio questions in two contrasting bank groups and one symbolic blank. The symbolic field has the separately reported comma-index grading defect."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Move highlighted cell while holding matrix values, symbol, whole bank, layout and shuffle seed fixed.",
+      "expected": "Correct coordinate, selected option, positional explanation and native accepted response change; old response is rejected.",
+      "observed": "22 relevant pairs update keys/solutions; native pair tests reject stale answers. Representative same-bank screenshots show z21 becoming z13.",
+      "status": "passed",
+      "justification": "Lesson defines the answer by row and column of the boxed cell.",
+      "sample_refs": [
+        "controlled-records.json",
+        "controlled-pairs.json",
+        "counterfactual-results.json",
+        "pair-grader-report.json",
+        "render/question-015.png",
+        "render/question-017.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace all zero entries with ones, holding target and bank fixed.",
+      "expected": "Coordinate answer and native acceptance preserved; value equality in solution updates.",
+      "observed": "27 irrelevant pairs preserve keys and native acceptance. Radio and symbolic solution conclusions update 0 to 1; two-index explanation correctly stays unchanged.",
+      "status": "passed",
+      "justification": "Entry magnitude is irrelevant to identifying row and column.",
+      "sample_refs": [
+        "controlled-records.json",
+        "controlled-pairs.json",
+        "counterfactual-results.json",
+        "pair-grader-report.json",
+        "render/question-015.png",
+        "render/question-016.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "choice position",
+      "subgroup": "batch_delivered ('inline', 4, 4, ((2, 2), (2, 3), (3, 2), (3, 3), (3, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "batch_delivered ('inline', 4, 4, ((2, 2), (2, 3), (3, 2), (3, 3), (3, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "batch_delivered ('inline', 4, 4, ((3, 5), (4, 3), (4, 4), (5, 6), (6, 5)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "batch_delivered ('inline', 4, 4, ((3, 5), (4, 3), (4, 4), (5, 6), (6, 5)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('inline', 3, 4, ((1, 1), (1, 2), (2, 1), (2, 2), (2, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4; comparison is uniform guessing among five choices (0.2). Distinct targets=4. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('inline', 3, 4, ((1, 1), (1, 2), (2, 1), (2, 2), (2, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4; comparison is uniform guessing among five choices (0.2). Distinct targets=4. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 4, ((3, 4), (4, 2), (4, 4), (5, 4), (6, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3; comparison is uniform guessing among five choices (0.2). Distinct targets=3. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 4, ((3, 4), (4, 2), (4, 4), (5, 4), (6, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; comparison is uniform guessing among five choices (0.2). Distinct targets=3. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((3, 3), (3, 4), (3, 5), (4, 3), (4, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((3, 3), (3, 4), (3, 5), (4, 3), (4, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 1), (3, 2), (3, 3), (4, 1), (4, 2)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 1), (3, 2), (3, 3), (4, 1), (4, 2)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((2, 4), (3, 2), (3, 4), (4, 4), (5, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((2, 4), (3, 2), (3, 4), (4, 4), (5, 4)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 4, ((1, 3), (2, 1), (2, 3), (3, 3), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 4, ((1, 3), (2, 1), (2, 3), (3, 3), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((3, 3), (3, 4), (4, 3), (4, 4), (4, 5)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 3, 4, ((3, 3), (3, 4), (4, 3), (4, 4), (4, 5)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 1), (3, 2), (4, 1), (4, 2), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; comparison is uniform guessing among five choices (0.2). Distinct targets=3. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 1), (3, 2), (4, 1), (4, 2), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; comparison is uniform guessing among five choices (0.2). Distinct targets=3. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((1, 3), (2, 1), (2, 2), (3, 4), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((1, 3), (2, 1), (2, 2), (3, 4), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 3), (4, 1), (4, 2), (5, 4), (6, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "fresh_delivered ('display', 4, 2, ((3, 3), (4, 1), (4, 2), (5, 4), (6, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; comparison is uniform guessing among five choices (0.2). Distinct targets=2. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "controls_delivered ('inline', 4, 4, ((1, 1), (1, 2), (1, 3), (2, 1), (2, 2)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "controls_delivered ('inline', 4, 4, ((1, 1), (1, 2), (1, 3), (2, 1), (2, 2)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "controls_delivered ('inline', 4, 4, ((1, 3), (2, 1), (2, 3), (3, 3), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "controls_delivered ('inline', 4, 4, ((1, 3), (2, 1), (2, 3), (3, 3), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "controls_delivered ('display', 4, 4, ((1, 1), (1, 2), (2, 1), (2, 2), (2, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "controls_delivered ('display', 4, 4, ((1, 1), (1, 2), (2, 1), (2, 2), (2, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "controls_delivered ('display', 4, 4, ((1, 3), (2, 1), (2, 2), (3, 4), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first serialized option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues. UI independently hashes choice order; actual rendered positions are probed separately.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "visible bank coordinate rank",
+      "subgroup": "controls_delivered ('display', 4, 4, ((1, 3), (2, 1), (2, 2), (3, 4), (4, 3)))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the smallest row-major coordinate",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10; comparison is uniform guessing among five choices (0.2). Distinct targets=5. This probe does not establish absence of other cues.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "q13498 recognizable five-coordinate bank shape",
+      "subgroup": "delivered fresh records matching shape",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose middle column of smallest row, ignoring matrix",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 1/5. The previously perfect predictor now has observed counterexamples. No matching bank in the exact five-record batch, so that batch alone cannot verify repair.",
+      "sample_refs": [
+        "delivered-fresh-cue.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "q13498 recognizable five-coordinate bank shape",
+      "subgroup": "delivered controls records matching shape",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose middle column of smallest row, ignoring matrix",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 1/5. The previously perfect predictor now has observed counterexamples. No matching bank in the exact five-record batch, so that batch alone cannot verify repair.",
+      "sample_refs": [
+        "delivered-controls-cue.json",
+        "delivery-controls/accepted.json"
+      ]
+    },
+    {
+      "cue": "boxed cell position",
+      "subgroup": "all independently checked records",
+      "scope": "overall",
+      "strategy": "Count row from top and column from left",
+      "correct": 205,
+      "total": 205,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "205/205 correct from visible coordinates. The 0.2 comparison applies to five-choice radios only; there is no shared random baseline for free responses. This cue is the lesson operation itself.",
+      "sample_refs": [
+        "independent-math.json"
+      ]
+    },
+    {
+      "cue": "actual rendered answer position",
+      "subgroup": "exact batch visible bank q-13489",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first displayed option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. Both visible-bank groups have differing rendered correct positions; live item-seeded hashing can change order further.",
+      "sample_refs": [
+        "rendered-batch-positions.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual rendered answer position",
+      "subgroup": "exact batch visible bank q-13489",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose last displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. Both visible-bank groups have differing rendered correct positions; live item-seeded hashing can change order further.",
+      "sample_refs": [
+        "rendered-batch-positions.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual rendered answer position",
+      "subgroup": "exact batch visible bank q-13499",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first displayed option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. Both visible-bank groups have differing rendered correct positions; live item-seeded hashing can change order further.",
+      "sample_refs": [
+        "rendered-batch-positions.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual rendered answer position",
+      "subgroup": "exact batch visible bank q-13499",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose last displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. Both visible-bank groups have differing rendered correct positions; live item-seeded hashing can change order further.",
+      "sample_refs": [
+        "rendered-batch-positions.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator valid-position and bank-placement domain (at least two eligible targets)",
+      "Finite batch pairing and output shuffling",
+      "Requested easy difficulty",
+      "Actual publisher validation and content normalization",
+      "Captured-inventory and within-batch deduplication",
+      "Practice eligibility, history exclusions and weighted selection rules"
+    ],
+    "sample_refs": [
+      "fresh-batch-inputs.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-controls/delivery.json",
+      "delivery-analysis.json",
+      "selection-analysis.json",
+      "inventory-analysis.json"
+    ],
+    "result": "5/5 exact batch; 32/40 fresh batch records; 46/56 controls survive. Duplicate source-bank geometries and overlapping fixed-seed profile samples explain removals. Every surviving radio group retains contrasting targets. Selection may remove seen records and does not correct the grading defect."
+  },
+  "limitations": [
+    "No finite audit proves absence of all shortcuts. Conditional small groups are regression examples, not population estimates.",
+    "Review targets easy only. Authored moderate/hard are not certified.",
+    "No live learner histories, policy distribution or later inventory; selection claims are limited to captured basis5667 and inspected code.",
+    "Source replay preserves original answer arrangement by design and is not itself a varied practice pool.",
+    "Native grading accepts tested bracing, numeric fractions and added zero, but rejects valid comma-separated matrix indices; reported separately as grading.",
+    "Serialized option-position probes are distinguished from actual preview UI order; learner item IDs are unavailable."
+  ]
+}

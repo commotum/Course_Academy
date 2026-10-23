@@ -1,0 +1,123 @@
+{
+  "verdict": "revise",
+  "summary": "Confirmed a deliverable boundary defect: a=1, b=0 produces x0 instead of x. Both previous findings are resolved. The runner\u2019s current batch is valid; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Integrate n/(ax+b) using substitution and select its antiderivative.",
+    "reasoning_steps": [
+      "Set u=ax+b and identify slope a.",
+      "Apply dx=du/a.",
+      "Obtain (n/a)ln|ax+b|+C.",
+      "Distinguish coefficient and argument errors."
+    ],
+    "invariants": [
+      "One constant numerator and nonconstant affine denominator.",
+      "Five radio choices with one correct antiderivative.",
+      "Absolute-value logarithm and additive integration constant."
+    ],
+    "permitted_variations": [
+      "Small coefficients, slope signs and intercepts, including zero.",
+      "Correct coefficient rank, logarithm argument and answer position."
+    ],
+    "source_refs": [
+      "d6501a20-6ebd-5786-870e-3527423b6332",
+      "58fee417-01ff-5eb4-9db6-9bace2e941d9",
+      "tutorial 539b2d2a-d59d-59a2-8b1b-cd7fbe582c04: Introduction",
+      "tutorial 933683cf-f7fa-50f2-9f11-4522ca637c77: The General Formula"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "retained-findings-review.json"
+      ],
+      "details": "All six source banks replay. Canonical prompt and solution match. Missing q-49511 key and solution were explicitly reconstructed and independently checked."
+    },
+    "math": {
+      "status": "failed",
+      "evidence_paths": [
+        "math.json",
+        "minimal-failure.json",
+        "zero-intercept-regression.json",
+        "delivered-zero-intercept-regression.json"
+      ],
+      "details": "Parameters [2,1,0] produce 2/x0 and 2 ln|x0|+C. CLI seed 575 produces five defective records, all surviving delivery. Sixty other checked records pass independent differentiation."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-and-shortcuts.json",
+        "samples.json",
+        "boundary-records.json"
+      ],
+      "details": "Both bank profiles vary answer-bearing roles and support positive nonunit slopes. The zero-intercept formatting defect is assessed separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json"
+      ],
+      "details": "The construction preserves easy single-affine substitution and the source response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "malformed-grader-report.json"
+      ],
+      "details": "Native radio grading accepted 60 independently verified correct choices and rejected 240 distractors. It also accepts the malformed record\u2019s declared UUID, confirming that grading does not block the content defect."
+    },
+    "rendering": {
+      "status": "failed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png"
+      ],
+      "details": "The actual UI visibly displays x0 throughout the defective question and solution. Automatic MathJax checks pass despite the incorrect mathematics."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "retained-before.json",
+        "retained-current.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, declared-file relocation and invalid-request rejection pass. Previous regressions fail on the old package and pass on the revision. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "coverage-and-shortcuts.json",
+        "selection-analysis.json",
+        "delivery-batch/delivery.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled target changes update prompts, keys, solutions and grading; option reordering preserves responses. All five delivered batch choices become keys, and the prior shortcut succeeds 0/5. Captured inventory contains no generated records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "math",
+      "description": "The shared denominator formatter emits x0 for a=1, b=0. This corrupts prompts, logarithm arguments and solutions, including the false claim d(x0)/dx=1. Normal generation reaches this case, and delivery filtering accepts it.",
+      "source_refs": [
+        "tutorial 933683cf-f7fa-50f2-9f11-4522ca637c77: The General Formula",
+        "625c532a-d455-5b15-880d-e9fc5ae8ee72: reciprocal integration prerequisite"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python zero-intercept-regression.py; it exits 1 for parameters [2,1,0], seed 70519. Normal CLI reproduction: the same Python executable ../workspace/17592186064206.py --difficulty easy --count 5 --seed 575 --format json. Complete records: cli-seed-575.json. Delivery survivors: delivery-natural-boundary-records/accepted.json. The regression accepts --candidate-records and fails on all five survivors.",
+      "requested_change": "Fix denom(a,b) to render zero intercept correctly, including unit slope, across prompts, choices and solutions. Preserve zero-intercept practice. Adopt the retained regression and test zero intercept with unit, negative and nonunit slopes, including actual UI rendering."
+    }
+  ]
+}

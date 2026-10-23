@@ -1,0 +1,120 @@
+{
+  "verdict": "accepted",
+  "summary": "The quotient-family restriction is repaired. All eight checks pass for requested easy output. No current generator or eligible stored-pool defect was demonstrated; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate a constant multiple of ln(x), preserving the entire signed constant.",
+    "reasoning_steps": [
+      "Identify the constant, rewriting ln(x)/d when necessary.",
+      "Apply the constant multiple rule and (ln x)' = 1/x.",
+      "Simplify c/x and select or enter an equivalent expression."
+    ],
+    "invariants": [
+      "One natural logarithm with argument x.",
+      "Easy constant-multiple differentiation.",
+      "Five-option radio or equivalent-expression blank response."
+    ],
+    "permitted_variations": [
+      "Signed integer and rational constants, including unit fractions.",
+      "Integer multiples of e.",
+      "Multiplier and quotient presentations.",
+      "Radio option order."
+    ],
+    "source_refs": [
+      "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: derivative of ln(x) is 1/x.",
+      "Canonical 6624681a-bb00-59db-8df9-4d5a3cd00434: 5 ln(x) differentiates to 5/x.",
+      "4890c920-695d-52f8-8b20-5f7886a5c8be: ln(x)/4 and its constant-factor rewriting step.",
+      "f8867c14-c978-5609-8feb-155bfedae13c: 6e ln(x)."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "original-failure.json",
+        "repaired-gap.json",
+        "repair-verification.json"
+      ],
+      "details": "All 11 source prompts, solutions and captured banks replay. Independent and retained regressions fail the prior package and pass this revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_checks.py",
+        "supplement.py",
+        "math-results.json",
+        "solution-rows.json"
+      ],
+      "details": "55 independent records pass derivative, key and bank checks. Worked equalities pass in 58 focused records, including all 22 signed quotient cases."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-results.json",
+        "quotient-boundaries.json",
+        "batch-assessment.json",
+        "delivery-batch/delivery.json",
+        "delivery-samples/delivery.json"
+      ],
+      "details": "All six easy profiles are reachable. Delivery retains 5/5 batch records and 21/26 independent samples after deduplication, preserving quotient magnitude and sign variation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "counterfactuals.json"
+      ],
+      "details": "Requested easy output preserves constant-multiple logarithmic differentiation and the sourced quotient rewrite. Other difficulty bands are not certified."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-combined-input.json",
+        "grader-report.json",
+        "grader.log"
+      ],
+      "details": "Native grading passed 140 acceptance and 258 rejection checks, including equivalent entries, stale answers, radio distractors and the historical generated record."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json",
+        "render-pairs/question-030.png",
+        "render-pairs/question-031.png"
+      ],
+      "details": "Actual UI rendering passed for 32 batch/counterfactual records and five normalized delivery records. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "cli-replay.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay and relocation pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "batch-assessment.json",
+        "ui-order-probe.json",
+        "selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes and conditional shortcut probes pass. A third-position coincidence in the delivered preview depends on synthetic runtime IDs; the same records reach every position under ID changes. Captured delivery and selection rules were examined with explicit live-state limitations."
+    }
+  },
+  "findings": []
+}

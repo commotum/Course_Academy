@@ -1,0 +1,1 @@
+Milestone: all 11 raw sources replay exactly; independent math passes 66 records. Original retained regression fails old package and passes current. Author regression independently rerun safely. Delivery accepts 5/5 actual batch. Native grader: 148 accepted, 268 rejected, no mismatches. Packaging deterministic and relocation pass. Rendering and decision report pending.

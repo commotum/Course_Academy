@@ -1,0 +1,765 @@
+{
+  "learner_operation": "Returning c/x is the intended mathematical operation, even if it looks like substitution. Fixed coefficient, correct position, or template-specific sign cues would be incidental. Sign and representation may vary while the derivative rule remains fixed. Recognize reciprocal coefficients in a quotient, then apply the constant multiple rule.",
+  "fixed_features": [
+    {
+      "feature": "One natural logarithm with argument x; differentiate with respect to x.",
+      "justification": "Tutorial b1f46211 and canonical 6624681a teach (ln x)'=1/x; sums, bases and point evaluation belong to adjacent KPs."
+    },
+    {
+      "feature": "One correct expression among five radio choices, or equivalent-expression blank.",
+      "justification": "Captured source response contracts determine selection count, not the correct answer position."
+    },
+    {
+      "feature": "Quotient denominator magnitude 2..12 and numerator \u00b11.",
+      "justification": "q-70887 supplies a unit-numerator quotient. Negative signs are supported by other source constants; d=1 collapses its five-choice bank, zero is undefined; modest bounds preserve workload. Nonunit rationals remain available in other profiles."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Coefficient magnitude/sign",
+      "eligible_variation": "Signed integers and rationals, including unit fractions and Euler multiples.",
+      "observed": "All six easy profiles reached; new quotient domain covers both signs and d=2..12."
+    },
+    {
+      "role": "Presentation of the constant",
+      "eligible_variation": "c ln(x) or \u00b1ln(x)/d with one rewriting step.",
+      "observed": "Both presentations occur; quotient rewriting follows coefficient and denominator changes."
+    },
+    {
+      "role": "Correct radio position",
+      "eligible_variation": "Any position, preserving the correct mathematical expression.",
+      "observed": "Package shuffles; actual UI orders by runtime IDs. Position coincidence at synthetic preview IDs investigated by exact-function counterfactuals."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 26, \"profiles\": {\"quotient\": 9, \"euler\": 4, \"fraction\": 6, \"equivalent-entry\": 3, \"integer\": 2, \"canonical\": 2}, \"signs\": {\"negative\": 11, \"positive\": 15}, \"unique_derivatives\": 20, \"quotient_form\": 9}"
+    },
+    {
+      "case": "delivered_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 21, \"profiles\": {\"quotient\": 6, \"euler\": 4, \"fraction\": 6, \"equivalent-entry\": 1, \"integer\": 2, \"canonical\": 2}, \"signs\": {\"negative\": 8, \"positive\": 13}, \"unique_derivatives\": 20, \"quotient_form\": 6}"
+    },
+    {
+      "case": "raw_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch-assessment.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"quotient\": 3, \"fraction\": 1, \"canonical\": 1}, \"signs\": {\"negative\": 1, \"positive\": 4}, \"unique_derivatives\": 5, \"quotient_form\": 3}"
+    },
+    {
+      "case": "delivered_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch-assessment.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"quotient\": 3, \"fraction\": 1, \"canonical\": 1}, \"signs\": {\"negative\": 1, \"positive\": 4}, \"unique_derivatives\": 5, \"quotient_form\": 3}"
+    },
+    {
+      "case": "all new quotient denominators and signs",
+      "sample_refs": [
+        "author-regression/focused-samples.json",
+        "solution-rows.json",
+        "quotient-boundaries.json"
+      ],
+      "result": "Independently checked all worked rows for first 26 focused records: all 22 quotient coefficients \u00b11/d, d=2..12, plus unit-fraction blank profiles. Boundary rejection matches bank collisions and easy scope."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "quotient: {'n': 1, 'd': 4, 'k': 0} -> {'n': -1, 'd': 4, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{1}{4x} -> -\\frac{1}{4x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "canonical: {'n': 1, 'd': 4, 'k': 0} -> {'n': -1, 'd': 4, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{1}{4x} -> -\\frac{1}{4x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "equivalent-entry: {'n': 1, 'd': 4, 'k': 0} -> {'n': -1, 'd': 4, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{1}{4x} -> -\\frac{1}{4x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "integer: {'n': 7, 'd': 1, 'k': 0} -> {'n': -7, 'd': 1, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{7}{x} -> -\\frac{7}{x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "fraction: {'n': 2, 'd': 3, 'k': 0} -> {'n': 4, 'd': 3, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{2}{3x} -> \\frac{4}{3x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "euler: {'n': 2, 'd': 1, 'k': 1} -> {'n': -2, 'd': 1, 'k': 1} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{2e}{x} -> -\\frac{2e}{x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "canonical: {'n': -11, 'd': 1, 'k': 0} -> {'n': 11, 'd': 1, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "-\\frac{11}{x} -> \\frac{11}{x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "equivalent-entry: {'n': 11, 'd': 4, 'k': 0} -> {'n': -11, 'd': 4, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{11}{4x} -> -\\frac{11}{4x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "quotient-denominator: {'n': 1, 'd': 4, 'k': 0} -> {'n': 1, 'd': 5, 'k': 0} at fixed seed and profile.",
+      "expected": "Visible function, worked solution, derivative and accepted response track the changed coefficient.",
+      "observed": "\\frac{1}{4x} -> \\frac{1}{5x}; independent differentiation, worked rows, native grader and actual UI agree.",
+      "status": "passed",
+      "justification": "The complete signed coefficient is answer-bearing under the constant multiple rule; denominator changes preserve the quotient rewrite stage.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed/answer ordering only with explicit coefficients and profiles fixed for all nine controlled pairs.",
+      "expected": "Preserve problem, solution and mathematical accepted response.",
+      "observed": "All preserve problem, solution and key; radio permutations do not change native-grader outcomes. UI renders the same expressions.",
+      "status": "passed",
+      "justification": "The derivative depends on the function, not serialization order or seed.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "serialized option position",
+      "subgroup": "independent sample; all",
+      "scope": "overall",
+      "strategy": "Choose first serialized option",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "independent sample; integer",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "independent sample; fraction",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "independent sample; euler",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "independent sample; quotient",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "independent sample; canonical",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer -\\frac{11}{x}",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "independent sample; equivalent-entry",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer \\frac{11}{4x}",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation, ignore leading sign",
+      "subgroup": "independent sample; quotient",
+      "scope": "within_template",
+      "strategy": "Always choose positive 1/(d x)",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice among five alternatives. This partial mathematical rule fails on negative quotients before and after filtering; it is not a reliable cue.",
+      "sample_refs": [
+        "samples.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered sample; all",
+      "scope": "overall",
+      "strategy": "Choose first serialized option",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered sample; integer",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered sample; fraction",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered sample; euler",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered sample; quotient",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "delivered sample; canonical",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer -\\frac{11}{x}",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "delivered sample; equivalent-entry",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer \\frac{11}{4x}",
+      "correct": 0,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation, ignore leading sign",
+      "subgroup": "delivered sample; quotient",
+      "scope": "within_template",
+      "strategy": "Always choose positive 1/(d x)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice among five alternatives. This partial mathematical rule fails on negative quotients before and after filtering; it is not a reliable cue.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "exact batch; all",
+      "scope": "overall",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "batch.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "exact batch; fraction",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "batch.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "exact batch; quotient",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "batch.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "exact batch; canonical",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer -\\frac{11}{x}",
+      "correct": 0,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation, ignore leading sign",
+      "subgroup": "exact batch; quotient",
+      "scope": "within_template",
+      "strategy": "Always choose positive 1/(d x)",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice among five alternatives. This partial mathematical rule fails on negative quotients before and after filtering; it is not a reliable cue.",
+      "sample_refs": [
+        "batch.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered batch; all",
+      "scope": "overall",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered batch; fraction",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "serialized option position",
+      "subgroup": "delivered batch; quotient",
+      "scope": "within_template",
+      "strategy": "Choose first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Serialized order is not learner display order; no first-position cue found here. Singleton subgroups establish no stable pattern.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "blank presentation",
+      "subgroup": "delivered batch; canonical",
+      "scope": "within_template",
+      "strategy": "Enter fixed source answer -\\frac{11}{x}",
+      "correct": 0,
+      "total": 1,
+      "baseline": 1.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among observed distinct answers, not the infinite free-entry space; template does not preserve the source coefficient.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation, ignore leading sign",
+      "subgroup": "delivered batch; quotient",
+      "scope": "within_template",
+      "strategy": "Always choose positive 1/(d x)",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice among five alternatives. This partial mathematical rule fails on negative quotients before and after filtering; it is not a reliable cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "actual UI sampled pairs; all",
+      "scope": "overall",
+      "strategy": "Choose first displayed answer",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; tested actual UI positions. Runtime IDs, not solely the bank, determine order.",
+      "sample_refs": [
+        "render-records.json",
+        "variation-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "actual UI sampled pairs; integer",
+      "scope": "within_template",
+      "strategy": "Choose first displayed answer",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; tested actual UI positions. Runtime IDs, not solely the bank, determine order.",
+      "sample_refs": [
+        "render-records.json",
+        "variation-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "actual UI sampled pairs; fraction",
+      "scope": "within_template",
+      "strategy": "Choose first displayed answer",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; tested actual UI positions. Runtime IDs, not solely the bank, determine order.",
+      "sample_refs": [
+        "render-records.json",
+        "variation-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "actual UI sampled pairs; euler",
+      "scope": "within_template",
+      "strategy": "Choose first displayed answer",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; tested actual UI positions. Runtime IDs, not solely the bank, determine order.",
+      "sample_refs": [
+        "render-records.json",
+        "variation-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "actual UI sampled pairs; quotient",
+      "scope": "within_template",
+      "strategy": "Choose first displayed answer",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; tested actual UI positions. Runtime IDs, not solely the bank, determine order.",
+      "sample_refs": [
+        "render-records.json",
+        "variation-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "third displayed answer",
+      "subgroup": "exact delivered quotient subgroup at preview synthetic IDs",
+      "scope": "within_template",
+      "strategy": "Choose third displayed answer",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 3/3 in this specific preview. Investigated rather than waived by a larger generator sample: ui/learning.js hashes itemId:field.id:answer.id; preview fabricates contentId=index+1. The same three records reach every position as runtime IDs change. Thus this is a preview-ID coincidence, not an invariant of the delivered practice family. Actual future numeric IDs are unavailable.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json",
+        "ui-order-probe.json",
+        "ui-order-probe.js"
+      ]
+    },
+    {
+      "cue": "third displayed answer",
+      "subgroup": "same three delivered quotient records, runtime IDs 1..32",
+      "scope": "within_template",
+      "strategy": "Choose third displayed answer",
+      "correct": 22,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2; exact UI function yields 22/96 across ID counterfactuals, with every position reached for each unchanged record. These are ID-dependency tests, not claimed live draws.",
+      "sample_refs": [
+        "ui-order-probe.json",
+        "ui-order-probe.js"
+      ]
+    },
+    {
+      "cue": "displayed coefficient",
+      "subgroup": "all independently checked radio samples",
+      "scope": "overall",
+      "strategy": "Identify signed c, including c=\u00b11/d for a quotient, and select c/x",
+      "correct": 25,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.2; preserving the whole coefficient and replacing ln(x) with 1/x is exactly the source constant-multiple derivative operation, not an incidental shortcut.",
+      "sample_refs": [
+        "batch.json",
+        "samples.json",
+        "math-results.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "profile selection and valid-domain rejection before sampling",
+      "deterministic seed+i CLI construction",
+      "requested easy difficulty",
+      "actual publisher validation and normalization",
+      "captured-inventory and within-batch deduplication",
+      "retirement and answer-field eligibility",
+      "history exclusions and difficulty-weighted selection rules",
+      "actual UI choice ordering and its runtime-ID dependency"
+    ],
+    "sample_refs": [
+      "quotient-boundaries.json",
+      "rejections.json",
+      "packaging.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "selection-results.json",
+      "inventory-results.json",
+      "batch-assessment.json",
+      "ui-order-probe.json"
+    ],
+    "result": "Batch 5 -> 5; independent sample 26 -> 21 after duplicates, all six profiles survive and quotient cases retain both signs. Positive easy weight gives uniform fresh easy selection; history can remove cases and no weights were captured. Unconfigured policies choose lowest entity ID; zero easy weight excludes easy records. No exact future learner draw claimed."
+  },
+  "limitations": [
+    "Easy only; preserved moderate/hard authored bands are outside this certification.",
+    "Captured inventory basis 5668; future inventory may change deduplication.",
+    "Live policy/history and future published field/item/entity IDs are unavailable. Selection and UI ordering are examined from actual rules and explicit hypothetical IDs, not invented live state.",
+    "Single-item batch subgroups cannot establish cue reliability; finite samples cannot exclude every shortcut.",
+    "The prior omission is not corrupt stored content. Historical generated record was re-matched to inventory and regraded; no eligible historical defect demonstrated."
+  ]
+}

@@ -1,0 +1,1 @@
+Source and previous binding verified. Fresh math, source replay, delivery, relocation completed. Native grading run; inspect current-summary.json and current-native-execution.json. UI rendering and final report remain. Package untouched.

@@ -1,0 +1,594 @@
+{
+  "learner_operation": "Recognize u=ax+b, determine the slope a, scale the numerator n by 1/a, and select (n/a)ln|ax+b|+C while distinguishing coefficient and argument errors.",
+  "fixed_features": [
+    {
+      "feature": "One affine denominator, one constant numerator, one indefinite integral.",
+      "justification": "Canonical e-449 and the general-formula tutorial teach one reciprocal substitution; combinations belong to adjacent KPs."
+    },
+    {
+      "feature": "Five math radio choices with exactly one answer.",
+      "justification": "All six captured practice banks use this response contract."
+    },
+    {
+      "feature": "New bank options share the slope and have positive numerator candidates.",
+      "justification": "All source numerators are positive. Keeping easy integer numerators and a common slope does not fix the correct candidate: all five bank candidates become targets. Determining n/a remains necessary. Signed slope still varies."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct coefficient sign, magnitude and rank",
+      "eligible_variation": "Both slope signs; unit/nonunit slopes; each eligible coefficient rank may be correct.",
+      "observed": "All five keys occur for identical banks in the target batch and both controlled profiles; positive and negative slopes occur in the regression sample."
+    },
+    {
+      "role": "Correct logarithm argument",
+      "eligible_variation": "Preserve the affine argument matching the integrand; allow either argument group in a mixed bank to supply the answer.",
+      "observed": "Target batch has 2 choices with 8x+4 and 3 with 8x+6; each becomes correct. Controlled mixed bank likewise varies its qualifying argument."
+    },
+    {
+      "role": "Correct position",
+      "eligible_variation": "Radio position is incidental and should not predict the answer.",
+      "observed": "Generator and actual UI shuffle positions; both controlled templates have distinct displayed correct positions."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-and-shortcuts.json"
+      ],
+      "result": "5 raw, 5 delivered. All five choices become keys of one common bank."
+    },
+    {
+      "case": "samples",
+      "sample_refs": [
+        "samples.json",
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ],
+      "result": "20 raw, 20 delivered. Decision coverage and per-profile bank/signature measurements retained."
+    },
+    {
+      "case": "controls",
+      "sample_refs": [
+        "controls.json",
+        "delivery-controls/accepted.json",
+        "coverage-and-shortcuts.json"
+      ],
+      "result": "10 raw, 10 delivered. Decision coverage and per-profile bank/signature measurements retained."
+    },
+    {
+      "case": "counterfactual-records",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ],
+      "result": "12 raw, 10 delivered. Decision coverage and per-profile bank/signature measurements retained."
+    },
+    {
+      "case": "Zero intercept with positive unit slope",
+      "sample_refs": [
+        "minimal-failure.json",
+        "natural-boundary-records.json",
+        "zero-intercept-regression.json"
+      ],
+      "result": "Invalid x0 notation in this supported decision case; math/rendering fail independently of varied answer-role assignments."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold each five-choice bank fixed; vary the numerator and, in the mixed template, the intercept that supplies the integrand.",
+      "expected": "The keyed antiderivative must track the selected n/a and argument; prompt and worked substitution must change with the target.",
+      "observed": "Five distinct prompts, solutions and correct values per bank; all choices independently differentiated and exercised in the native grader. Rendered coefficient and argument changes match.",
+      "status": "passed",
+      "justification": "Canonical substitution and source shifted-argument distractors make both coefficient and argument relevant.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactuals.json",
+        "math.json",
+        "grader-report.json",
+        "render-records.json",
+        "render-remaining.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold parameters and full bank fixed; change only the seeded option order.",
+      "expected": "Preserve prompt, solution and correct mathematical value; grading must accept that value at its new position.",
+      "observed": "Both profiles preserve all three dependencies, change choice order, and pass native correct/wrong-choice tests. Both rendered before/after pairs inspected.",
+      "status": "passed",
+      "justification": "Radio option order is absent from the source integration rule.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-records.json",
+        "render-remaining.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "batch raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "batch.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "batch raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "batch.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "batch delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "batch delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Historical sign/argument bank signature",
+      "subgroup": "batch delivered",
+      "scope": "overall",
+      "strategy": "Two-negative bank: largest positive coefficient; three-negative bank: negative proper fraction; mixed bank: unique positive unit shifted logarithm.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. The retained exploit no longer solves this pool; absence of an eligible unique choice counts as failure.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "controls raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "controls.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "controls raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "controls.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "controls delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "controls delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Historical sign/argument bank signature",
+      "subgroup": "controls delivered",
+      "scope": "overall",
+      "strategy": "Two-negative bank: largest positive coefficient; three-negative bank: negative proper fraction; mixed bank: unique positive unit shifted logarithm.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. The retained exploit no longer solves this pool; absence of an eligible unique choice counts as failure.",
+      "sample_refs": [
+        "delivery-controls/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "samples raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "samples raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "samples raw: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "samples raw: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "samples delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "samples delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "samples delivered: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "samples delivered: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Historical sign/argument bank signature",
+      "subgroup": "samples delivered",
+      "scope": "overall",
+      "strategy": "Two-negative bank: largest positive coefficient; three-negative bank: negative proper fraction; mixed bank: unique positive unit shifted logarithm.",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. The retained exploit no longer solves this pool; absence of an eligible unique choice counts as failure.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "counterfactual-records raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "counterfactual-records raw: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "counterfactual-records raw: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "counterfactual-records raw: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "counterfactual-records delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "counterfactual-records delivered: mixed arguments",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "coefficient magnitude",
+      "subgroup": "counterfactual-records delivered: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the largest coefficient; break ties by lexical argument, without consulting the prompt.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "counterfactual-records delivered: one argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose index zero in the generator bank, without reading mathematics.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Successes are bounded sample measurements, not a universal probability claim. Both bank templates admit all five correct roles; no tested bank-only rule solves this subgroup. Authored order is additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Historical sign/argument bank signature",
+      "subgroup": "counterfactual-records delivered",
+      "scope": "overall",
+      "strategy": "Two-negative bank: largest positive coefficient; three-negative bank: negative proper fraction; mixed bank: unique positive unit shifted logarithm.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. The retained exploit no longer solves this pool; absence of an eligible unique choice counts as failure.",
+      "sample_refs": [
+        "delivery-counterfactual-records/accepted.json",
+        "coverage-and-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First visible radio",
+      "subgroup": "Rendered valid coefficient-choice",
+      "scope": "within_template",
+      "strategy": "Always choose the top displayed radio option.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Actual UI ordering varies; this small render subset is chosen for counterfactual inspection, not a random estimate. Top position is not a fixed key in either template.",
+      "sample_refs": [
+        "ui-positions.json",
+        "render-records.json",
+        "render-remaining.json"
+      ]
+    },
+    {
+      "cue": "First visible radio",
+      "subgroup": "Rendered valid argument-choice",
+      "scope": "within_template",
+      "strategy": "Always choose the top displayed radio option.",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Actual UI ordering varies; this small render subset is chosen for counterfactual inspection, not a random estimate. Top position is not a fixed key in either template.",
+      "sample_refs": [
+        "ui-positions.json",
+        "render-records.json",
+        "render-remaining.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator construction and rejection",
+      "requested difficulty",
+      "shared publication normalization",
+      "inventory and batch deduplication",
+      "practice eligibility and retired filtering",
+      "within-band learner selection and history subsets",
+      "actual UI choice order"
+    ],
+    "sample_refs": [
+      "coverage-and-shortcuts.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-natural-boundary-records/accepted.json",
+      "selection-analysis.json",
+      "inventory-review.json"
+    ],
+    "result": "The five runner records survive and have five different keys in a shared bank; old shortcut no longer solves them. Fresh controls retain coverage. Dedup removes two irrelevant reorder duplicates from controlled pairs. All five malformed seed-575 records also survive, so separate math failure remains deliverable."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of every shortcut.",
+    "The current batch supplies only one mixed-argument bank; it supports practice on five different numerator/argument decisions, not independent coverage of every slope sign.",
+    "Math and notation validity fail at a=1,b=0; pedagogical key-variation success does not waive this defect.",
+    "Selection conclusions are conditional on captured inventory and supplied code; no live learner policy/history is available."
+  ]
+}
