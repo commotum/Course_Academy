@@ -1,0 +1,21 @@
+{
+  "file": "engine/rust/symbolic.rs",
+  "patch": "engine.patch",
+  "before_sha256": "c052e55799bf40012c595ff6adaf24259df2e0eab11ab83c9f7df2bb9edba621",
+  "after_sha256": "6a24b2f1ee3851637076c4c98a99ce592be33e7d09b944c70a8686815b3b0167",
+  "grader_sha256": "3404693ac68bf03c18b51ea6c6353638ba12e6f296435e310e9c1c3caeb08508",
+  "rule": "Canonicalize the complete ordered pair of single-character indices; preserve separators for longer components and tuples.",
+  "commands": [
+    "cargo test --lib symbolic::tests",
+    "cargo test --lib learning::tests",
+    "cargo build --lib",
+    "rustc --edition=2024 generate/runs/current/check-engine.rs -L dependency=target/debug/deps --extern course_academy_engine=target/debug/libcourse_academy_engine.rlib --extern serde_json=target/debug/deps/libserde_json-aa6609cd3ddd6b25.rlib -o generate/runs/current/check-engine"
+  ],
+  "results": {
+    "symbolic_tests": 20,
+    "learning_tests": 46,
+    "build_exit_code": 0
+  },
+  "database_writes": 0,
+  "services_restarted": false
+}
