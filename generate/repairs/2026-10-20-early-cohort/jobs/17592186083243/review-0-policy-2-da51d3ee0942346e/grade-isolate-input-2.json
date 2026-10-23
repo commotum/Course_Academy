@@ -1,0 +1,88 @@
+[
+  {
+    "label": "equivalent-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186083243,
+        "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+        "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+      },
+      "question": {
+        ":question/id": "cafe6315-cf1e-5dee-bcfc-b000bb5100b8",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "For the parametric curve \n\n$$\nx=e^{\\frac{5}{t}},\\,y=\\frac{1}{\\sqrt{t^{2} + 1}},\\,0<t<\\infty,\n$$\n\ncalculate the slope $m$ of the tangent to the curve at the point where $t=4.$ Do not round the answer.\n\n$m=$\n{{field-1}}",
+        ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=- \\frac{5 e^{\\frac{5}{t}}}{t^{2}},\\,y'(t)=- \\frac{t}{\\left(t^{2} + 1\\right)^{\\frac{3}{2}}}.\n$$\n\n \n\nSo, we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(- \\frac{t}{\\left(t^{2} + 1\\right)^{\\frac{3}{2}}}\\right)}{\\left(- \\frac{5 e^{\\frac{5}{t}}}{t^{2}}\\right)} \\\\  & =\\frac{t^{3} e^{- \\frac{5}{t}}}{5 \\left(t^{2} + 1\\right)^{\\frac{3}{2}}}.\\end{aligned}\n$$\n\nTherefore, when $t=4,$ the slope $m$ of the tangent to the curve is\n\n$$\n\\begin{aligned}m=\\frac{dy}{dx}\\,{|}_{t=4} & =\\frac{\\left(4\\right)^{3} e^{- \\frac{5}{\\left(4\\right)}}}{5 \\left(\\left(4\\right)^{2} + 1\\right)^{\\frac{3}{2}}} \\\\  & =\\frac{64}{85 \\sqrt{17} e^{\\frac{5}{4}}} \\\\  & =\\frac{64 \\sqrt{17}}{1445 e^{\\frac{5}{4}}}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e5576d73-fb49-5b30-ae87-cd2428a97418",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/key": "field-1",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bc8fcfdc-dbf6-5d4d-a0a3-50f100c95d5d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{64 \\sqrt{17}}{1445 e^{\\frac{5}{4}}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bc8fcfdc-dbf6-5d4d-a0a3-50f100c95d5d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "finite-parametric-slope-4",
+        "seed": 71238,
+        "template": "reciprocal_exp_root_blank",
+        "parameters": {
+          "a": 5,
+          "b": 1,
+          "u": 4,
+          "c": 1
+        },
+        "bank_profile": null,
+        "presentation_profile": "observed",
+        "profile_origin": "observed-blank",
+        "source": {
+          "database": "math",
+          "basis": 4664,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-363490",
+          "q-353363"
+        ],
+        "domain": "0<t<\\infty",
+        "mathematical_fingerprint": "08a0aed803d5d554d7b4fbef479461802f0b6a439f7c2f197311d69e6ed63aec",
+        "parameter_fingerprint": "08a0aed803d5d554d7b4fbef479461802f0b6a439f7c2f197311d69e6ed63aec",
+        "content_fingerprint": "89c8454264b8dd76789b292c6080eb7a4f29c534b9f5fa94f7474c895674a766",
+        "derivation": {
+          "x": "exp(5/t)",
+          "y": "1/sqrt(t**2 + 1)",
+          "dx": "-5*exp(5/t)/t**2",
+          "dy": "-t/(t**2 + 1)**(3/2)",
+          "ratio": "t**3*exp(-5/t)/(5*(t**2 + 1)**(3/2))",
+          "m": "64*sqrt(17)*exp(-5/4)/1445"
+        },
+        "bank_factors": null,
+        "bank_anchor_target": null,
+        "bank_partner": null,
+        "sampling_rejections": [],
+        "recipes": {
+          "\\frac{64 \\sqrt{17}}{1445 e^{\\frac{5}{4}}}": "correct"
+        },
+        "plots": {},
+        "sympy": "1.14.0",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "64*sqrt(17)/(1445*e^(5/4))",
+        "expected": "accepted",
+        "purpose": "equivalent reciprocal/exponential forms of independently differentiated slope"
+      }
+    ]
+  }
+]

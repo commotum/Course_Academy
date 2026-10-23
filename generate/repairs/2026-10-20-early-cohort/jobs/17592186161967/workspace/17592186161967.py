@@ -93,7 +93,67 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(coeff))),':answer/type':':answer.type/text',':answer/value':pair(targets,p,coeff)} for coeff in bank]
  question={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[bank.index(correct)][':answer/id']]}]}
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Row Operations to Create a Column of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':2,'seed':seed,'template':'row-zero-3x3','bank_profile':profile,'bank_mode':'source-replay' if source_replay else 'independent-signs','parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
-def batch(difficulty,count,seed):return [generate(difficulty,seed+i,bank_profile=PROFILES[i%len(PROFILES)]) for i in range(count)]
+def batch_has_counterexamples(rows):
+ """Each visible magnitude-error family must refute both sign polarities."""
+ groups={}
+ fingerprints=set()
+ for row in rows:
+  meta=row['generation'];fp=meta['parameter_fingerprint']
+  if fp in fingerprints:return False
+  fingerprints.add(fp)
+  params=meta['parameters'];correct=tuple(k for i,k in enumerate(params['ks']) if i!=params['pivot'])
+  bank=[tuple(o[2] for o in operations(a[':answer/value'])) for a in row['question'][':question/answer-fields'][0][':answer-field/choices']]
+  extra=next(z for z in bank if tuple(map(abs,z))!=tuple(map(abs,correct)))
+  shape=tuple(abs(extra[d])!=abs(correct[d]) for d in (0,1))
+  signs=groups.setdefault(shape,[set(),set()])
+  for d in (0,1):signs[d].add(extra[d]*correct[d]>0)
+ return all(all(len(values)==2 for values in signs) for signs in groups.values())
+
+def batch(difficulty,count,seed):
+ if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty '+difficulty)
+ if count<0:raise ValueError('Count must be nonnegative')
+ if count<2:return [generate(difficulty,seed)] if count else []
+ rng=random.Random(str(seed)+':batch')
+ # A full two-coefficient sign decision requires four cases in each visible
+ # bank shape. Small batches choose a shape, not a reduced source family.
+ shapes=[(True,False),(False,True),(True,True)]
+ if count<8:shapes=[rng.choice(shapes)]
+ elif count<12:shapes=[rng.choice(shapes[:2]),shapes[2]]
+ rng.shuffle(shapes)
+ sizes=[count//len(shapes)+(i<count%len(shapes)) for i in range(len(shapes))]
+ rows=[];fingerprints=set()
+ for shape,size in zip(shapes,sizes):
+  profiles=list(UNIT_PROFILES if shape!=(True,True) else tuple(p for p in PROFILES if p not in UNIT_PROFILES))
+  rng.shuffle(profiles)
+  # Choose the extra signs independently, then exercise all four possible
+  # correct sign pairs against that cue. This also defeats cross-coordinate
+  # sign inference, rather than merely reversing the old first-sign cue.
+  extra_signs=(rng.choice((-1,1)),rng.choice((-1,1)))
+  cases=[(-1,-1),(-1,1),(1,-1),(1,1)]
+  rng.shuffle(cases)
+  if size<4:
+   first=(rng.choice((-1,1)),rng.choice((-1,1)))
+   cases=[first,tuple(-v for v in first)]+cases
+  plan=cases[:size]+[rng.choice(cases[:4]) for _ in range(max(0,size-len(cases)))]
+  rng.shuffle(plan)
+  for i,signs in enumerate(plan):
+   profile=profiles[i%len(profiles)]
+   for attempt in range(10000):
+    row=generate(difficulty,rng.getrandbits(64),bank_profile=profile)
+    meta=row['generation'];params=meta['parameters']
+    correct=tuple(k for r,k in enumerate(params['ks']) if r!=params['pivot'])
+    if tuple(1 if k>0 else -1 for k in correct)!=signs:continue
+    bank=[tuple(o[2] for o in operations(a[':answer/value'])) for a in row['question'][':question/answer-fields'][0][':answer-field/choices']]
+    extra=next(z for z in bank if tuple(map(abs,z))!=tuple(map(abs,correct)))
+    if tuple(abs(extra[d])!=abs(correct[d]) for d in (0,1))!=shape:continue
+    if tuple(1 if k>0 else -1 for k in extra)!=extra_signs:continue
+    if meta['parameter_fingerprint'] in fingerprints:continue
+    fingerprints.add(meta['parameter_fingerprint']);rows.append(row);break
+   else:raise ValueError('Bounded batch sampler exhausted')
+ rng.shuffle(rows)
+ assert len(rows)==count and batch_has_counterexamples(rows)
+ for row in rows:row['generation']['batch']={'version':2,'seed':seed,'count':count}
+ return rows
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':

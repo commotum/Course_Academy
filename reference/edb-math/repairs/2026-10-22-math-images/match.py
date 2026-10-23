@@ -7,7 +7,7 @@ def save(path,v):path.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
 JS=r'''html=>{
  const doc=new DOMParser().parseFromString(html,'text/html');
  const math=doc.querySelector('svg [data-mml-node="math"]');
- if(!math)throw Error('No semantic math root');
+ if(!math)return null;
  const roles=new Set(['mfrac','msup','msub','msubsup','munder','mover','munderover','msqrt','mroot','mtable','mtr','mtd','menclose']);
  const leaves=new Set(['mi','mn','mo','mtext','ms','text']);
  const stretchy={'239B':'28','239C':'28','239D':'28','239E':'29','239F':'29','23A0':'29','23A1':'5B','23A2':'5B','23A3':'5B','23A4':'5D','23A5':'5D','23A6':'5D','23A7':'7B','23A8':'7B','23A9':'7B','23AA':'7B','23AB':'7D','23AC':'7D','23AD':'7D','23B7':'221A','E001':'221A'};
@@ -39,8 +39,11 @@ def main():
  with sync_playwright() as p:
   browser=p.chromium.launch(headless=True,timeout=15000);page=browser.new_page()
   page.route('**/*',lambda route:route.fulfill(body=fixture,content_type='text/html') if route.request.url==origin+'/fixture' else route.continue_() if route.request.url.startswith(origin+'/') else route.abort())
-  page.goto(origin+'/fixture');page.wait_for_function('window.ready === true',timeout=20000);page.evaluate('window.fingerprint='+JS)
-  targets=page.evaluate('rows=>Object.fromEntries(rows.map(([p,s])=>[p,fingerprint(s)]))',list(source.items()));save(RAW/'repair-target-fingerprints.json',targets)
+  page.goto(origin+'/fixture');page.wait_for_function('window.ready === true',timeout=20000);page.evaluate('() => {window.fingerprint='+JS+';}')
+  targets={}
+  for i in range(0,len(source),100):
+   targets.update(page.evaluate('rows=>Object.fromEntries(rows.map(([p,s])=>[p,fingerprint(s)]))',list(source.items())[i:i+100]))
+  save(RAW/'repair-target-fingerprints.json',targets)
   existing=RAW/'repair-rendered-candidates.jsonl';done=[]
   if existing.exists():done=list(map(json.loads,existing.open()))
   assert all(r['tex']==candidates[i]['tex'] for i,r in enumerate(done))
@@ -55,7 +58,7 @@ def main():
   for i,r in enumerate(done):
    if r.get('fp') and not r.get('errors') and not r.get('error'):index.setdefault(r['fp'],[]).append(i)
   for path,fp in targets.items():
-   if fp in index:
+   if fp and fp in index:
     ids=index[fp];best=min(ids,key=lambda i:len(candidates[i]['tex']));matches[path]={'tex':candidates[best]['tex'],'method':'rendered-structure-match','evidence':candidates[best]['evidence'],'matching_candidates':len(ids)}
   save(HERE/'matched-recoveries.json',matches);save(HERE/'unmatched-assets.json',[p for p in targets if p not in matches])
   print(json.dumps({'targets':len(targets),'matched':len(matches),'unmatched':len(targets)-len(matches),'render_errors':sum(bool(r.get('errors') or r.get('error')) for r in done)}))

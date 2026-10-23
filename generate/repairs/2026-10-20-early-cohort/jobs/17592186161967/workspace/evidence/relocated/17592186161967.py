@@ -93,7 +93,39 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(coeff))),':answer/type':':answer.type/text',':answer/value':pair(targets,p,coeff)} for coeff in bank]
  question={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[bank.index(correct)][':answer/id']]}]}
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Row Operations to Create a Column of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':2,'seed':seed,'template':'row-zero-3x3','bank_profile':profile,'bank_mode':'source-replay' if source_replay else 'independent-signs','parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
-def batch(difficulty,count,seed):return [generate(difficulty,seed+i,bank_profile=PROFILES[i%len(PROFILES)]) for i in range(count)]
+def batch_has_counterexamples(rows):
+ """Each visible magnitude-error family must refute both sign polarities."""
+ groups={}
+ fingerprints=set()
+ for row in rows:
+  meta=row['generation'];fp=meta['parameter_fingerprint']
+  if fp in fingerprints:return False
+  fingerprints.add(fp)
+  params=meta['parameters'];correct=tuple(k for i,k in enumerate(params['ks']) if i!=params['pivot'])
+  bank=[tuple(o[2] for o in operations(a[':answer/value'])) for a in row['question'][':question/answer-fields'][0][':answer-field/choices']]
+  extra=next(z for z in bank if tuple(map(abs,z))!=tuple(map(abs,correct)))
+  shape=tuple(abs(extra[d])!=abs(correct[d]) for d in (0,1))
+  signs=groups.setdefault(shape,[set(),set()])
+  for d in (0,1):signs[d].add(extra[d]*correct[d]>0)
+ return all(all(len(values)==2 for values in signs) for signs in groups.values())
+
+def batch(difficulty,count,seed):
+ if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty '+difficulty)
+ if count<0:raise ValueError('Count must be nonnegative')
+ if count<2:return [generate(difficulty,seed)] if count else []
+ rng=random.Random(str(seed)+':batch')
+ for attempt in range(2000):
+  profiles=list(PROFILES);rng.shuffle(profiles)
+  selected=[profiles[i%len(profiles)] for i in range(count)]
+  # Both source bank families fit once each can have a cue-breaking pair.
+  if count>=4 and not 2<=sum(p in UNIT_PROFILES for p in selected)<=count-2:continue
+  rows=[generate(difficulty,rng.getrandbits(64),bank_profile=p) for p in selected]
+  if batch_has_counterexamples(rows):
+   rng.shuffle(rows)
+   for row in rows:
+    row['generation']['batch']={'version':1,'seed':seed,'count':count,'attempt':attempt}
+   return rows
+ raise ValueError('Bounded batch sampler exhausted without sign-cue counterexamples')
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
