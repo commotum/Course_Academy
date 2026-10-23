@@ -7,10 +7,10 @@
     "job_kind": "build"
   },
   "stage": "generate",
-  "attempt": 279,
+  "attempt": 281,
   "seed": 4258185931,
   "created": 1792680517.8311014,
-  "updated": 1792715220.4025085,
+  "updated": 1792715471.6693814,
   "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
   "inventory_hash": "2ca46edb2ade278dd8313f38dcb1aa2d840e7717e29b05fe1db2f7c8334928b9",
   "manifest": "package.json",
@@ -22,16 +22,16 @@
     "error": {
       "status": "unsupported",
       "manifest": "package.json",
-      "summary": "Preserved completed repairs. Generator checks pass; the strict runner handoff still fails before sampling.",
+      "summary": "Preserved completed repairs. Generator, grading, delivery, source replay and shortcut checks pass. Strict runner handoff still fails.",
       "evidence_paths": [
-        "evidence/author278-verification.json",
-        "evidence/author278-regressions.json",
+        "evidence/author280-verification.json",
         "evidence/current-handoff-regression.json",
+        "evidence/evidence-contract-validation.json",
         "runner-fix/evidence-only-rejection.patch",
         "session-state.md"
       ],
       "limitations": [
-        "The runner rejects unchanged packages despite the evidence-only repair request. Installing the staged correction requires editing scripts/generator_pipeline.py outside the authorized workspace. The correction remains uninstalled and the failing regression is preserved."
+        "The installed runner rejects the unchanged package despite the evidence-only finding requiring runtime preservation. Resolving this requires the staged scripts/generator_pipeline.py fix outside the authorized workspace; it remains uninstalled."
       ]
     },
     "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -63,5 +63,5 @@
   },
   "review_report_error": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
   "repeated_candidate": true,
-  "repair_cycle": 91
+  "repair_cycle": 92
 }
