@@ -3234,6 +3234,22 @@ mod study_queue_tests {
         let s = &app.snapshot;
         let l = app.learner_eid;
         eprintln!("Profile home basis={} entities={} cache-lifetime={:?}", s.basis_t, s.entities.len(), app.home_lifetime());
+        let c = s.reference(l, "learner/course")?;
+        macro_rules! measure {
+            ($label:literal, $expression:expr) => {{
+                let started = Instant::now();
+                let value = $expression?;
+                eprintln!("Profile component {}: {:.3} ms", $label, started.elapsed().as_secs_f64()*1000.);
+                value
+            }};
+        }
+        measure!("queue candidates", learning::queue_candidates(s, l, c, Utc::now()));
+        measure!("engine candidates", learning::engine_candidates(s, l, c, Utc::now()));
+        measure!("retrieval schedule", retrieval::schedule(s, l, c, Utc::now()));
+        measure!("topic layers", learning::topic_layers(s));
+        measure!("unavailable questions", learning::unavailable_questions(s, l));
+        measure!("lifecycle", course_academy_engine::scheduling::lifecycle(s, l));
+        measure!("assessment status", course_academy_engine::inventory::assessment_status(s, l, Utc::now()));
         for run in 0..3 {
             let started = Instant::now();
             let (forms, candidates) = queue_preparation(s, l, Utc::now())?;
