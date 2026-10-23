@@ -1,13 +1,9 @@
-# Current state — author 1326
+# Current state — author 1329
 
-Preserved all completed generator repairs, runtime files, instructional account, historical inventory evidence and strict regression declarations. Current feedback and both history findings introduce no new generator defect. Read the required generation and shared-validation documentation; source/runtime/handoff hashes remain unchanged.
+Read latest feedback, both retained findings and prior session state. Reproduced strict external-report regression first; it still exits 1 with `decision_variation has an unresolved decision shortcut`. Workspace correction passes the real contract/schema and replays 26 current records. The required destination is outside this workspace; no external write was attempted.
 
-Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1: `decision_variation has an unresolved decision shortcut` at the required prior-review destination. The staged correction passes the real contract/schema and replays 26 records against current code. Evidence: `evidence/author-1326/latest-failure.log`, `report-results.json`, `report-staged-validation.json`.
+Retained role regression exits 0: exact reorder/transfer counterexamples, boundaries, delivery, within-template shortcut checks and 30 native-grader checks pass. Retained-state check exits 0: 55 handoff artifact hashes, unchanged source/runtime and eight independently parsed mathematical cases verified. Completed runtime repairs, source replay/rendering evidence, historical inventory records and strict regression declarations remain intact.
 
-Retained `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1326/role` exits 0: exact reorder, controlled resonance transfer, signed boundaries, conditional shortcut probes, shared delivery and all 30 native-grader checks pass. Both resonance positions survive delivery (19 first, 17 second).
+Commands and results: `evidence/author-1329/results.json`; strict error: `evidence/author-1329/latest-failure.log`; delivered-role and grading details: `evidence/author-1329/role/results.json`. No runtime, engine, database or publication changes.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: 55 staged artifacts, unchanged source/runtime hashes, and eight independently parsed mathematical cases verified. Retained source replay and rendering evidence remain applicable to unchanged runtime. No unrelated bulk checks or new renders repeated.
-
-Commands, exits and blocker: `evidence/author-1326/results.json`. No external writes, database changes, publication, engine changes, or runtime edits.
-
-Next required action: the runner installs the staged correction at the required prior-review destination using `evidence/review-installation-handoff.json`, reruns the strict default regression, then obtains fresh independent review. The required destination is outside this session's authorized workspace. Keep the strict failing check and do not replace it with a writable substitute. An identical workspace-only retry cannot close this installation finding. Status remains unsupported.
+Unfinished action: runner installation from `evidence/review-installation-handoff.json` into the original prior-review destination, followed by the unchanged strict regression and fresh independent review. Finding 645672a4cd3f9bf609ca cannot close through another unchanged workspace-only retry. Status: unsupported.
