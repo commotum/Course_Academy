@@ -1,0 +1,109 @@
+Using the change of variables 
+
+$$
+u=x-y,\,v=y+1,
+$$
+
+calculate the area of the finite region $D$ bounded by the curve $(x-y)^{2}+y=2$ and the line $y=0.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['\\frac{2}{3}', '\\frac{8\\sqrt{2}}{3}', '\\frac{8}{3}', '\\frac{2\\sqrt{2}}{3}', '\\frac{\\sqrt{2}}{3}']
+Correct ref: {':answer/id': '8232f0ab-a3f1-5a06-a6cb-8418ed7a1099', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\frac{8\\sqrt{2}}{3}', ':db/id': 17592186373314}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=x-y,\,v=y+1
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $x-y=u$ and $y=v+1$ into the equation of the first curve, we get
+
+$$
+\begin{aligned}(x-y)^{2}+y=2\,⟹\,(y+1)=3-(x-y)^{2}\,⟹\,v=3-{u}^{2},\end{aligned}
+$$
+
+ 
+
+while substituting $y=v-1$ into the equation of the line, we obtain
+
+$$
+\begin{aligned}y=0\,⟹\,v=1.\end{aligned}
+$$
+
+To find the intersections of the curves in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}v=3-{u}^{2} \\ v=1\end{aligned}\,⟹\,{\begin{aligned}u=\pm \sqrt{2} \\ v=1.\end{aligned}\end{aligned}
+$$
+
+So, the intersection points are $(\pm \sqrt{2},1).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ={(u,v)\,:\,-\sqrt{2}\le u\le \sqrt{2},\,1\le v\le 3-{u}^{2}.}.
+$$
+
+![](images/9c/9cec7ff29557aa14cd19309e9180482a44091e7ef215205285822674e7bc25b0.png)
+
+ 
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}1 & -1 \\ 0 & 1\end{aligned}| \\  & =1.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(1)^{-1}=1.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}\text{d}u\text{d}v \\  & ={\int }_{-\sqrt{2}}^{\sqrt{2}}[{\int }_{1}^{3-{u}^{2}}\,dv]du \\  & ={\int }_{-\sqrt{2}}^{\sqrt{2}}[v]_{1}^{3-{u}^{2}}\,du \\  & ={\int }_{-\sqrt{2}}^{\sqrt{2}}(3-{u}^{2}-1)\,du \\  & ={\int }_{-\sqrt{2}}^{\sqrt{2}}(2-{u}^{2})\,du \\  & ={[2u-\frac{{u}^{3}}{3}]}_{-\sqrt{2}}^{\sqrt{2}} \\  & =(2\sqrt{2}-\frac{2\sqrt{2}}{3})-(-2\sqrt{2}+\frac{2\sqrt{2}}{3}) \\  & =\frac{8\sqrt{2}}{3}\end{aligned}
+$$

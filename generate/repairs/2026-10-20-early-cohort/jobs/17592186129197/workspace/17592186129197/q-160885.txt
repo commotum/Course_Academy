@@ -1,0 +1,123 @@
+Using the change of variables 
+
+$$
+u=y+2x,\,v=y-2x,
+$$
+
+calculate the area of the finite region $D$ bounded by the lines $y+2x=1,$ $y-2x=1$ and the curve ${y}^{2}-4{x}^{2}=4.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['\\operatorname{ln}\u20614-\\frac{3}{2}', '\\operatorname{ln}\u20614-\\frac{3}{4}', '2\\operatorname{ln}\u20614-3', '4\\operatorname{ln}\u20614-\\frac{3}{4}', '2\\operatorname{ln}\u20614-\\frac{3}{2}']
+Correct ref: {':answer/id': '9175a99b-56d0-595b-86db-511244542711', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\operatorname{ln}\u20614-\\frac{3}{4}', ':db/id': 17592186371909}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=y+2x,\,v=y-2x
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $y+2x=u$ into the equation of the first line, we get
+
+$$
+\begin{aligned}y+2x=1\,⟹\,u=1,\end{aligned}
+$$
+
+while substituting $y-2x=v$ into the equation of the second line, we obtain
+
+$$
+\begin{aligned}y-2x=1\,⟹\,v=1.\end{aligned}
+$$
+
+Substituting $u=y+2x$ and $v=y-2x$ into the equation of curve, we get
+
+$$
+\begin{aligned}{y}^{2}-4{x}^{2}=4\,⟹\,(y+2x)(y-2x)=4,\,⟹\,uv=4.\end{aligned}
+$$
+
+The intersection point of the two lines in the $uv$-plane is $(1,1).$
+
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}uv=4 \\ u=1\end{aligned}\,⟹\,{\begin{aligned}u=1 \\ v=4.\end{aligned}\end{aligned}
+$$
+
+ 
+
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}uv=4 \\ v=1\end{aligned}\,⟹\,{\begin{aligned}u=4 \\ v=1.\end{aligned}\end{aligned}
+$$
+
+ 
+
+So, the intersection points are $(1,1),$ $(1,4)$ and $(4,1).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ={(u,v)\,:\,1\le u\le 4,\,1\le v\le \frac{4}{u}}.
+$$
+
+![](images/30/30fff9564451baadff3cae48dbfb91dc08fc8591e596e7cd2f65d8cfc6c9c5a6.png)
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}2 & 1 \\ -2 & \text{ }\text{ }1\end{aligned}| \\  & =4.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(4)^{-1}=\frac{1}{4}.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}|\frac{1}{4}|\,\text{d}u\text{d}v \\  & =\frac{1}{4}{\int }_{1}^{4}[{\int }_{1}^{4/u}\,dv]du \\  & =\frac{1}{4}{\int }_{1}^{4}[v]_{1}^{4/u}\,du \\  & =\frac{1}{4}{\int }_{1}^{4}(\frac{4}{u}-1)du \\  & =\frac{1}{4}{[4\operatorname{ln}⁡u-u]}_{1}^{4} \\  & =\frac{1}{4}(4\operatorname{ln}⁡4-4+1) \\  & =\frac{1}{4}(4\operatorname{ln}⁡4-3) \\  & =\operatorname{ln}⁡4-\frac{3}{4}\end{aligned}
+$$

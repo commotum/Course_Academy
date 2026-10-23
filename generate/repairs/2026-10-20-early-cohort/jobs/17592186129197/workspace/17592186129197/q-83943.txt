@@ -1,0 +1,105 @@
+Using the change of variables 
+
+$$
+u=x-2y,\,v=y,
+$$
+
+calculate the area of the finite region $D$ bounded by the curve $y-(x-2y)^{2}=2$ and the line $y=3.$
+CAPTURED FIELDS (all)
+Field 0: selection
+['\\frac{2}{3}', '10', '2', '\\frac{4}{3}', '\\frac{1}{3}']
+Correct ref: {':answer/id': '2b3d1083-137d-51cd-af77-24049d080386', ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': '\\frac{4}{3}', ':db/id': 17592186373337}
+SOLUTION
+The area of the required region is given by
+
+$$
+{∬}_{D}dxdy.
+$$
+
+Let's define a transformation $T$ as follows: 
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\to [\begin{aligned}x(u,v) \\ y(u,v)\end{aligned}]
+$$
+
+This transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.
+
+To compute the required area, we will use the change of variables formula
+
+$$
+{∬}_{D}dxdy={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\text{ }dudv
+$$
+
+where $\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  
+
+Note that the changes of variables
+
+$$
+u=x-2y,\,v=y
+$$
+
+ 
+
+gives us the *inverse* function ${T}^{-1},$ that is
+
+$$
+{T}^{-1}:[\begin{aligned}x \\ y\end{aligned}]\to [\begin{aligned}u(x,y) \\ v(x,y)\end{aligned}].
+$$
+
+To compute the required area, we proceed in four steps:
+
+**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ 
+
+Substituting $x-2y=u$ and $y=v$ into the equation of the first curve, we get
+
+$$
+\begin{aligned}y-(x-2y)^{2}=2\,⟹\,v-{u}^{2}=2\,⟹\,v={u}^{2}+2,\end{aligned}
+$$
+
+while substituting $y=v$ into the equation of the second curve, we obtain
+
+$$
+\begin{aligned}y=3\,⟹\,v=3.\end{aligned}
+$$
+
+To find the intersections of the curves in the $uv$-plane, we solve the following system:
+
+$$
+\begin{aligned}{\begin{aligned}v={u}^{2}+2 \\ v=3\end{aligned}\,⟹\,{\begin{aligned}u=\pm 1 \\ v=3.\end{aligned}\end{aligned}
+$$
+
+So, the intersection points are $(\pm 1,3).$
+
+Therefore, our domain in the $uv$-plane has the type I representation
+
+$$
+Δ={(u,v)\,:\,-1\le u\le 1,\,{u}^{2}+2\le v\le 3}.
+$$
+
+![](images/ca/ca755cd11609e7c704adb37eb867ff8cc48bc5fc44b29cd777269be5791d9160.png)
+
+**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
+
+The Jacobian determinant corresponding to ${T}^{-1}$ is
+
+$$
+\begin{aligned}\frac{∂(u,v)}{∂(x,y)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y}\end{aligned}| \\  & =|\begin{aligned}1 & -2 \\ 0 & 1\end{aligned}| \\  & =1.\end{aligned}
+$$
+
+**Step 3**: Compute the Jacobian determinant corresponding to $T:$
+
+The Jacobian determinant corresponding to $T$ is
+
+$$
+\frac{∂(x,y)}{∂(u,v)}={(\frac{∂(u,v)}{∂(x,y)})}^{-1}=(1)^{-1}=1.
+$$
+
+Note that $\frac{∂(x,y)}{∂(u,v)}\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$
+
+**Step 4**: Compute the required area.
+
+We calculate the required area by performing the change of variables:
+
+$$
+\begin{aligned}{∬}_{D}\text{d}x\text{d}y & ={∬}_{Δ}|\frac{∂(x,y)}{∂(u,v)}|\,\text{d}u\text{d}v \\  & ={∬}_{Δ}|1|\text{d}u\text{d}v \\  & ={\int }_{-1}^{1}[{\int }_{{u}^{2}+2}^{3}\,dv]du \\  & ={\int }_{-1}^{1}[v]_{{u}^{2}+2}^{3}\,du \\  & ={\int }_{-1}^{1}(3-({u}^{2}+2))\,du \\  & ={\int }_{-1}^{1}(1-{u}^{2})\,du \\  & ={[u-\frac{{u}^{3}}{3}]}_{-1}^{1} \\  & =2-\frac{2}{3} \\  & =\frac{4}{3}\end{aligned}
+$$
