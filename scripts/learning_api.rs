@@ -406,8 +406,16 @@ impl Application {
         } else {
             Duration::ZERO
         };
+        // A queue cache hit must keep its original expiry. The scheduler polls
+        // every 30 seconds; renewing on each hit could hide time-based changes.
+        let reusable_cache = self.home_cache.as_ref().and_then(|(at, lifetime, _, prepared)| {
+            (action == "queue" && *prepared && at.elapsed() < *lifetime).then_some(*at)
+        });
         let result = self.process(&body)?;
-        if matches!(action, "home" | "queue") {
+        let reused_cache = reusable_cache.is_some_and(|previous| {
+            self.home_cache.as_ref().is_some_and(|(at, _, _, _)| *at == previous)
+        });
+        if matches!(action, "home" | "queue") && !reused_cache {
             self.home_cache = Some((started, home_lifetime, result.clone(), action == "queue"));
         }
         trace(action, started);
@@ -423,64 +431,76 @@ impl Application {
     }
 
     fn home_lifetime(&self) -> Duration {
-        let now = schema::timestamp_days(Utc::now());
-        let mut seconds: f64 = 60.0;
-        // A failed/malformed estimate disables caching; home() supplies its
-        // ordinary validation error instead of hiding it behind stale output.
-        let Ok(progress) = self
-            .snapshot
-            .refs(self.learner_eid, "learner/knowledge-profile")
-        else {
+        home_cache_duration(&self.snapshot, self.learner_eid, Utc::now())
+    }
+}
+
+fn home_cache_duration(snapshot: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Duration {
+    let now = schema::timestamp_days(at);
+    let mut seconds: f64 = 60.0;
+    // A failed/malformed estimate disables caching; home() supplies its
+    // ordinary validation error instead of hiding it behind stale output.
+    let Ok(progress) = snapshot.refs(learner, "learner/knowledge-profile")
+    else {
+        return Duration::ZERO;
+    };
+    for progress in progress {
+        let Ok(record) = snapshot.entity(progress) else {
             return Duration::ZERO;
         };
-        for progress in progress {
-            let Ok(record) = self.snapshot.entity(progress) else {
-                return Duration::ZERO;
-            };
-            if record.get("progress/learned") != Some(&json!(true)) {
-                continue;
+        if record.get("progress/learned") != Some(&json!(true)) {
+            continue;
+        }
+        let boundary = (|| -> Option<(f64, f64)> {
+            let memory = record.get("progress/memory")?.as_f64()?;
+            let interval = record.get("progress/interval-days")?.as_f64()?;
+            let at = schema::instant_days(record.get("progress/memory-at")?).ok()?;
+            let policy = snapshot.eid(record.get("progress/policy")?).ok()?;
+            let threshold = snapshot.entity(policy)
+                .ok()?
+                .get("policy/review-threshold")?
+                .as_f64()?;
+            if !memory.is_finite()
+                || memory < 0.0
+                || !interval.is_finite()
+                || interval <= 0.0
+                || !threshold.is_finite()
+                || threshold <= 0.0
+            {
+                return None;
             }
-            let boundary = (|| -> Option<(f64, f64)> {
-                let memory = record.get("progress/memory")?.as_f64()?;
-                let interval = record.get("progress/interval-days")?.as_f64()?;
-                let at = schema::instant_days(record.get("progress/memory-at")?).ok()?;
-                let policy = self.snapshot.eid(record.get("progress/policy")?).ok()?;
-                let threshold = self
-                    .snapshot
-                    .entity(policy)
-                    .ok()?
-                    .get("policy/review-threshold")?
-                    .as_f64()?;
-                if !memory.is_finite()
-                    || memory <= 0.0
-                    || !interval.is_finite()
-                    || interval <= 0.0
-                    || !threshold.is_finite()
-                    || threshold <= 0.0
-                {
-                    return None;
-                }
-                Some((at, at + interval * (memory / threshold).log2()))
-            })();
-            let Some((anchor, due)) = boundary else {
-                return Duration::ZERO;
-            };
-            for change in [anchor, due] {
-                if change >= now {
-                    seconds = seconds.min(((change - now) * 86400.0 - 0.002).max(0.0));
-                }
+            // Zero memory is valid and already due. It has no future
+            // decay crossing, but a future observation still matters.
+            Some((at, if memory == 0.0 { at } else { at + interval * (memory / threshold).log2() }))
+        })();
+        let Some((anchor, due)) = boundary else {
+            return Duration::ZERO;
+        };
+        for change in [anchor, due] {
+            if change >= now {
+                seconds = seconds.min(((change - now) * 86400.0 - 0.002).max(0.0));
             }
         }
-        if let Ok(tasks) = self.snapshot.refs(self.learner_eid, "learner/activity") {
-            for task in tasks {
-                if let Ok(Some(remaining)) = retrieval::remaining(&self.snapshot, task, Utc::now())
-                {
-                    seconds = seconds.min((remaining - 0.002).max(0.0));
-                }
-            }
-        }
-        Duration::from_secs_f64(seconds)
     }
+    if let Ok(tasks) = snapshot.refs(learner, "learner/activity") {
+        for task in tasks {
+            if let Ok(Some(remaining)) = retrieval::remaining(snapshot, task, at)
+            {
+                seconds = seconds.min((remaining - 0.002).max(0.0));
+            }
+        }
+    }
+    // Assessment topics become eligible after 48 hours even with no commit.
+    let Ok(history) = course_academy_engine::scheduling::lifecycle(snapshot, learner) else {
+        return Duration::ZERO;
+    };
+    for learned in history.mastered.values() {
+        let boundary = *learned + chrono::Duration::hours(48);
+        if boundary >= at {
+            seconds = seconds.min(((boundary - at).num_milliseconds() as f64 / 1000.0 - 0.002).max(0.0));
+        }
+    }
+    Duration::from_secs_f64(seconds)
 }
 
 fn inventory_cache_duration(review_lifetime:Duration, mastered:impl Iterator<Item=DateTime<Utc>>, now:DateTime<Utc>) -> Duration {
@@ -821,7 +841,7 @@ fn home_with_candidates(
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"supplyShortages":course_academy_engine::inventory::requests(s,l,Utc::now())?,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
     )
 }
 
@@ -2644,14 +2664,14 @@ impl Application {
             .ok_or("A stable requestId is required")?;
         let journal = PathBuf::from(std::env::var("LEARNING_REQUEST_DIR")?)
             .join(format!("{learner}-{request}.json"));
-        let cached_queue = if action == "queue" && body["background"] != true
+        let cached_queue = if action == "queue"
             && reset_unstarted_lessons(s, l)?.is_empty()
         {
             self.cached_home(true)
         } else {
             None
         };
-        let mut _planned_candidates = None;
+        let mut planned_candidates = None;
         let saved: Json = if journal.exists() {
             let saved: Json = serde_json::from_slice(&std::fs::read(&journal)?)?;
             if saved["input"] != *body {
@@ -2670,7 +2690,7 @@ impl Application {
                         forms.retain(|f| f.get(2) != Some(&kw("learner-task/offered-at")));
                     }
                     if forms.is_empty() {
-                        _planned_candidates = Some(candidates);
+                        planned_candidates = Some(candidates);
                     }
                     forms
                 };
@@ -2737,10 +2757,10 @@ impl Application {
             }
             if saved["empty"] == true {
                 if let Some(view) = cached_queue {
-                    return self.record_queue_offer(view, request);
+                    return if body["background"] == true { Ok(view) } else { self.record_queue_offer(view, request) };
                 }
             }
-            let view = home_with_candidates(s, l, None)?;
+            let view = home_with_candidates(s, l, planned_candidates)?;
             return if body["background"] == true {
                 Ok(view)
             } else {
@@ -2889,6 +2909,31 @@ mod lesson_progress_tests {
         assert_eq!(inventory_cache_duration(Duration::from_secs(1),[before].into_iter(),now),Duration::from_secs(1));
         assert_eq!(inventory_cache_duration(Duration::ZERO,[past].into_iter(),now),Duration::ZERO);
         assert_eq!(inventory_cache_duration(Duration::from_secs(60),[now-chrono::Duration::hours(48)].into_iter(),now),Duration::ZERO);
+    }
+
+    #[test]
+    fn home_cache_accepts_zero_memory_and_expires_before_retention_changes() {
+        let now = Utc::now();
+        let records = BTreeMap::from([
+            (1, json!({"learner/knowledge-profile":[2]}).as_object().unwrap().clone()),
+            (2, json!({"progress/learned":true,"progress/policy":3,"progress/memory":0.0,
+                "progress/memory-at":schema::instant_value(now-chrono::Duration::days(1)),
+                "progress/interval-days":1.0}).as_object().unwrap().clone()),
+            (3, json!({"policy/review-threshold":0.5}).as_object().unwrap().clone()),
+        ]);
+        let mut s = EntitySnapshot::new(records, 42).unwrap();
+        assert_eq!(home_cache_duration(&s, 1, now), Duration::from_secs(60));
+        s.entities.get_mut(&2).unwrap().insert("progress/memory".into(), json!(1.0));
+        s.entities.get_mut(&2).unwrap().insert("progress/memory-at".into(), schema::instant_value(now-chrono::Duration::days(1)+chrono::Duration::seconds(3)));
+        let lifetime = home_cache_duration(&s, 1, now).as_secs_f64();
+        assert!(lifetime > 2.99 && lifetime < 3.0, "{lifetime}");
+        // A future observation is also an eligibility boundary for zero memory.
+        s.entities.get_mut(&2).unwrap().insert("progress/memory".into(), json!(0.0));
+        s.entities.get_mut(&2).unwrap().insert("progress/memory-at".into(), schema::instant_value(now+chrono::Duration::seconds(3)));
+        let lifetime = home_cache_duration(&s, 1, now).as_secs_f64();
+        assert!(lifetime > 2.99 && lifetime < 3.0, "{lifetime}");
+        s.entities.get_mut(&2).unwrap().insert("progress/memory".into(), json!(-1.0));
+        assert_eq!(home_cache_duration(&s, 1, now), Duration::ZERO);
     }
 
     #[test]
@@ -3185,7 +3230,7 @@ mod study_queue_tests {
     #[test]
     #[ignore = "read-only performance measurement against the configured database"]
     fn profile_study_home_reads() -> Result<()> {
-        let app = Application::connect(std::env::var("EDB_DATABASE")?, std::env::var("PAGE_TEST_LEARNER")?, std::env::var("EDB_ENDPOINT").unwrap_or_default())?;
+        let mut app = Application::connect(std::env::var("EDB_DATABASE")?, std::env::var("PAGE_TEST_LEARNER")?, std::env::var("EDB_ENDPOINT").unwrap_or_default())?;
         let s = &app.snapshot;
         let l = app.learner_eid;
         eprintln!("Profile home basis={} entities={} cache-lifetime={:?}", s.basis_t, s.entities.len(), app.home_lifetime());
@@ -3199,6 +3244,13 @@ mod study_queue_tests {
             let started = Instant::now();
             let _view = home_with_candidates(s, l, Some(candidates))?;
             eprintln!("Profile home run={run} reused-planning={:.3} ms", started.elapsed().as_secs_f64()*1000.);
+        }
+        let view = home(&app.snapshot, l)?;
+        app.home_cache = Some((Instant::now(), app.home_lifetime(), view, true));
+        for run in 0..5 {
+            let started = Instant::now();
+            let view = app.handle(json!({"action":"home"}))?;
+            eprintln!("Profile cached home run={run} elapsed={:.3} ms bytes={}", started.elapsed().as_secs_f64()*1000., serde_json::to_vec(&view)?.len());
         }
         Ok(())
     }
