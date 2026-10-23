@@ -1,0 +1,918 @@
+{
+  "learner_operation": "Interpret row then column, check both against square order, and copy the intersecting entry or report that it does not exist.",
+  "fixed_features": [
+    {
+      "feature": "Square matrices, one target, row-before-column indexing",
+      "justification": "KP title and tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 define this operation."
+    },
+    {
+      "feature": "Easy square orders 2\u20134, scalar integers/radicals",
+      "justification": "Supplied canonical example and six practice cases establish this visual workload; no arithmetic is needed."
+    },
+    {
+      "feature": "Five radio alternatives including No such entry; numeric blanks have existing targets",
+      "justification": "Matches source bf0cde7f-5b94-5af7-b3da-c7304b62c190 and blank 4b55801d-38e7-5449-9bcb-92a485dcdd1c."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Existing versus missing entry",
+      "eligible_variation": "Within the same matrix, letter, layout and complete answer bank, change row/column across its boundary.",
+      "observed": "Retained failing 2x2 counterfactual now accepted; both missing row and missing column work for all five default radio banks. All represented paired CLI and exact batch subgroups have existing and missing cases."
+    },
+    {
+      "role": "Target location and scalar form",
+      "eligible_variation": "Move to another valid coordinate; target signs, zero and radicals rather than fixing the source example target.",
+      "observed": "All four 2x2 cells independently targeted; fresh API samples cover all six bank profiles. Target-value radical edits update the key. Whole-bank coordinate recipes constrain individual profiles, while blank and all_four routes supply broader target choices."
+    },
+    {
+      "role": "Non-target entries, names and choice positions",
+      "eligible_variation": "Rename matrix or edit non-target entry without changing the answer; choice position may vary.",
+      "observed": "Controlled irrelevant edits preserve answer and native grading. Actual UI permutes choices based on task and field identities."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Fresh API sampling and rejection",
+      "sample_refs": [
+        "samples.json",
+        "resampling.json",
+        "coverage.json"
+      ],
+      "result": "48 easy records across six default banks, 88 proposals. Sixteen 2x2 radios split eight existing/eight missing; four 4x4 inline API examples happen to be existing, but controlled and CLI counterparts establish both outcomes."
+    },
+    {
+      "case": "Independent paired CLI sample",
+      "sample_refs": [
+        "cli-samples.json",
+        "delivery-cli/accepted.json",
+        "current-batch-regression.json",
+        "cli-batch-regression.json"
+      ],
+      "result": "32/32 survive delivery; all five size/layout groups contain both outcomes."
+    },
+    {
+      "case": "Exact runner batch seed 3302362091 count 5",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "coverage.json"
+      ],
+      "result": "5/5 survive; two matrices with paired existing/missing radio targets and a numeric blank. Existing answers differ in sign/form. The pair construction intentionally repeats matrices to alter the decision evidence."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold matrix and complete bank fixed, move target to missing row or column, including repaired b32/b22 boundary; separately target each of four 2x2 entries.",
+      "expected": "Key and explanation track coordinate; native grader accepts new choice and rejects prior numeric/missing choice.",
+      "observed": "All applicable controlled cases pass prompt-derived math and native grading. Actual UI depicts missing row/column and corresponding explanations; original strict test fails old package and passes current.",
+      "status": "passed",
+      "justification": "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a defines index bounds; size alone does not decide existence.",
+      "sample_refs": [
+        "controlled-records.json",
+        "controlled-relationships.json",
+        "math-verification.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json",
+        "retained-regression-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change the requested entry to sqrt(2), leaving target and other matrix entries fixed.",
+      "expected": "Answer becomes sqrt(2); old value rejected.",
+      "observed": "Five bank profiles update keys and explanations. Native grader tests every option; actual 2x2 UI shows radical target and answer.",
+      "status": "passed",
+      "justification": "The requested scalar, not its sign or form, determines the response.",
+      "sample_refs": [
+        "controlled-records.json",
+        "controlled-relationships.json",
+        "math-verification.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename B to G or change a non-target entry to sqrt(3), keeping target fixed.",
+      "expected": "Response preserved; prompt and explanation reflect edited matrix/name.",
+      "observed": "All five profiles preserve response, pass native choices and prompt/solution checks. Actual UI confirms the 2x2 pair.",
+      "status": "passed",
+      "justification": "Only the requested intersection determines the existing entry.",
+      "sample_refs": [
+        "controlled-records.json",
+        "controlled-relationships.json",
+        "math-verification.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "samples.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 3/5; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "samples.json / radio/3/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 2/3; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "samples.json / radio/2/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 8/16; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "samples.json / radio/4/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 4/10; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "samples.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 0/4; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "samples.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "samples.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 9,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "samples.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "samples.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "unique negative choice",
+      "subgroup": "samples.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "samples.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-sample/accepted.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 3/5; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-sample/accepted.json / radio/3/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 2/3; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-sample/accepted.json / radio/2/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 8/16; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-sample/accepted.json / radio/4/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 4/10; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-sample/accepted.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 0/4; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-sample/accepted.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-sample/accepted.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 9,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "delivery-sample/accepted.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "unique negative choice",
+      "subgroup": "delivery-sample/accepted.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "cli-samples.json / radio/4/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 8/16; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "cli-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "cli-samples.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "cli-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "cli-samples.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 5/10; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "cli-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "cli-samples.json / radio/3/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "cli-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "cli-samples.json / radio/2/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "cli-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "cli-samples.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "cli-samples.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "cli-samples.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 6,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "cli-samples.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "cli-samples.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "cli-samples.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "unique negative choice",
+      "subgroup": "cli-samples.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "cli-samples.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-cli/accepted.json / radio/4/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 8/16; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-cli/accepted.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-cli/accepted.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 5/10; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-cli/accepted.json / radio/3/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-cli/accepted.json / radio/2/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-cli/accepted.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-cli/accepted.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 6,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "delivery-cli/accepted.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "unique negative choice",
+      "subgroup": "delivery-cli/accepted.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "delivery-cli/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "batch-records.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "batch-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "batch-records.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "batch-records.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "batch-records.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "batch-records.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "batch-records.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "batch-records.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-batch/accepted.json / radio/4/inline",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Square order and display layout",
+      "subgroup": "delivery-batch/accepted.json / radio/3/display",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry without reading indices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline 0.2. Absence strategy succeeds 1/2; paired CLI and exact batch include both decisions per represented subgroup. API samples fluctuate, and an all-existing subgroup still requires scalar lookup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-batch/accepted.json / inline",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "delivery-batch/accepted.json / display",
+      "scope": "within_template",
+      "strategy": "Choose the first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-option baseline 0.2. Not perfect; stored order is additionally permuted by actual UI using task-item and field identities.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique radical choice",
+      "subgroup": "delivery-batch/accepted.json / existing radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "After checking existence, select the only choice with this scalar form.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/4 after excluding the missing option. Individual tiny subgroups can be perfect by chance; independent controlled changes and broader samples refute a construction rule assigning this form to the answer. No entire delivered family solved by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Second displayed option",
+      "subgroup": "Exact batch radio items in actual preview",
+      "scope": "overall",
+      "strategy": "Select the second displayed option.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. Observed 3/4 is not perfect; actual choiceOrder depends on future task-item ID as well as field/answer IDs. No fixed live second-option rule demonstrated.",
+      "sample_refs": [
+        "batch-records.json",
+        "ui-order-check.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "Matrix letter R",
+      "subgroup": "delivery-cli/accepted.json / matrix R",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry based only on the letter.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline 0.2; paired CLI keeps both decisions for each sampled letter.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "Matrix letter B",
+      "subgroup": "delivery-cli/accepted.json / matrix B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry based only on the letter.",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline 0.2; paired CLI keeps both decisions for each sampled letter.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "Matrix letter P",
+      "subgroup": "delivery-cli/accepted.json / matrix P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry based only on the letter.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline 0.2; paired CLI keeps both decisions for each sampled letter.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "Matrix letter A",
+      "subgroup": "delivery-cli/accepted.json / matrix A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry based only on the letter.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline 0.2; paired CLI keeps both decisions for each sampled letter.",
+      "sample_refs": [
+        "delivery-cli/accepted.json"
+      ]
+    },
+    {
+      "cue": "Matrix letter B",
+      "subgroup": "delivery-batch/accepted.json / matrix B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No such entry based only on the letter.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline 0.2; paired CLI keeps both decisions for each sampled letter.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator bank/value rejection and resampling",
+      "deterministic paired CLI construction",
+      "requested easy filter",
+      "actual publisher normalization and identities",
+      "inventory and within-batch deduplication",
+      "fresh eligibility and retirement exclusion",
+      "learner history exclusion and difficulty-weighted selection rules",
+      "actual UI choice permutation"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "coverage.json",
+      "delivery-sample/delivery.json",
+      "delivery-cli/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-records.json",
+      "selection-analysis.json",
+      "ui-order-check.json"
+    ],
+    "result": "48 API, 32 paired CLI, and exact 5-record batch all survive filtering. Five original eligible sources plus five candidates form the captured prospective fresh pool. Selection preserves eligibility support when easy has positive weight; histories may remove paired counterparts. No generated stored records exist at basis 5666."
+  },
+  "limitations": [
+    "Finite targeted review cannot prove absence of every shortcut.",
+    "Moderate/hard authored routes are unchanged and outside requested easy scope.",
+    "Live learner histories, active weights and future entity IDs absent; no guarantee every selected subset remains balanced.",
+    "Original absent-only 2x2 source radio remains in captured pool; it is not a generated historical defect.",
+    "Source q-13506 has missing answer/solution attributes, independently reconstructed; raw q-13490 is evidence-only for its opaque complete bank.",
+    "Missing radio targets conservatively use one index n+1, extending source row absence to column absence; simultaneous missing indices were not required to repair this finding."
+  ]
+}

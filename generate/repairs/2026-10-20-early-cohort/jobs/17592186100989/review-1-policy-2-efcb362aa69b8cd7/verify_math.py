@@ -1,7 +1,7 @@
 """Verify rendered mathematical content independently of generation metadata."""
 import json,re,pathlib
 root=pathlib.Path(__file__).resolve().parent
-files=['samples.json','batch-records.json','source-replay-records.json','counterfactual-records.json','minimal-shortcut.json','render-remaining-records.json']
+files=['samples.json','cli-samples.json','batch-records.json','source-replay-records.json','counterfactual-records.json','controlled-records.json']
 def matrix(text):
  m=re.search(r'\\begin\{(?:bmatrix|aligned)\}(.*?)\\end\{(?:bmatrix|aligned)\}',text,re.S)
  return [[v.strip() for v in row.split('&')] for row in m[1].split('\\\\')] if m else None

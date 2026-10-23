@@ -1,0 +1,24 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100988/review-1-policy-2-2ae550c9d2622d7e",
+  "commands": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python review.py",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python regression.py --package ../workspace --output regression-results.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python regression.py --package ../review-0-policy-2-cec2a81535a7c052/relocated-package --output prior-regression-results.json (expected exit1)",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-sample --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python variation_checks.py",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python packaging.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python changed_rules.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine changed-grader-input.json changed-grader-results.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 28 --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "python3 finalize.py",
+    "python3 write_result.py"
+  ],
+  "notes": [
+    "Scripts and samples are retained under this directory.",
+    "changed_rules.py retains its exact additional delivery command.",
+    "Author preflight inspected; its strict source_regression.py is byte-identical to rerun independent regression.py.",
+    "Initial changed-rule join by question UUID was corrected to generation batch seed because publisher normalization changes UUIDs; successful rerun preserved all records."
+  ]
+}

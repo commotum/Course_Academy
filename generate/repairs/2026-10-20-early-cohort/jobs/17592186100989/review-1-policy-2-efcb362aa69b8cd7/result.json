@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "The demonstrated 2\u00d72 shortcut is repaired. All eight checks pass for the current easy generator and exact five-question batch; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Read the first subscript as row and the second as column, check existence in a square matrix, then report that entry.",
+    "reasoning_steps": [
+      "Identify requested row and column.",
+      "Check both against matrix order.",
+      "Read their intersection or select No such entry."
+    ],
+    "invariants": [
+      "Square matrix; row-before-column convention; no matrix arithmetic.",
+      "Prompt, key, and explanation refer to the same target.",
+      "A blank requires an existing entry."
+    ],
+    "permitted_variations": [
+      "Matrix letter, entries including sign and zero, order 2\u20134, any in-range target coordinate.",
+      "Radio missing-row, missing-column, or both-missing cases; whether an entry exists must follow indices and size.",
+      "Correct choice position and distractor entries; radical positions and whether a radical is targeted are incidental, not fixed answer roles."
+    ],
+    "source_refs": [
+      "fe56a988-49e9-5f33-b0a5-f43d33984c1d: canonical b22=2",
+      "3ed21892-cb94-585d-abae-e9ccc908efe4: 3x3 a32=8",
+      "fa83ce3b-cd7c-5f0a-a836-4e78952d94f6: 4x4 p14=4",
+      "0f770f62-3fda-5a7c-ad0a-d63eb715c9d0: 3x3 g22=2",
+      "4b55801d-38e7-5449-9bcb-92a485dcdd1c: blank a22=-3",
+      "5aee8772-02f1-5e96-b1e0-f67b0c259d43: radical-containing 4x4 r43=1",
+      "bf0cde7f-5b94-5af7-b3da-c7304b62c190: 2x2 b32 does not exist",
+      "tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: \"The first subscript represents the row and the second subscript represents the column.\"",
+      "tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: each entry is defined for i=1,...,m and j=1,...,n."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json"
+      ],
+      "details": "Replayed all six practice cases with complete banks and canonical matrix/target. Missing q-13506 attributes explicitly reconstructed; historical raw naming distinguished from supplied source."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "verify_math.py",
+        "math-verification.json"
+      ],
+      "details": "132 independent prompt-derived key, bank uniqueness and worked-solution checks passed."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "resampling.json",
+        "controlled-records.json",
+        "retained-regression-results.json"
+      ],
+      "details": "Six default profiles observed. Prior 2x2 restriction fixed; fresh 2x2 radio cases split 8 existing/8 missing. All five radio banks pass relevant and irrelevant changes."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "samples.json"
+      ],
+      "details": "Requested easy retains square orders 2\u20134 and direct entry/existence reasoning."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader passed 263 checks: 72 accepted and 191 rejected, including equivalent integer/radical entries and stale counterpart choices."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "16 actual-UI previews passed; nine screenshots visually inspected, including controlled relevant/irrelevant pairs and radical blank."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact installed dependency versions, deterministic replay, manifest-file relocation and invalid-input rejection passed; package unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "batch-regression-results.json",
+        "retained-regression-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-cli/delivery.json",
+        "selection-analysis.json",
+        "inventory-analysis.json",
+        "affected-inventory.json"
+      ],
+      "details": "Old failing tests fail preserved old output and pass current. Exact batch and paired CLI preserve both existence cases per radio size/layout after delivery. No generated historical inventory records exist in captured bank; live-selection limits stated."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,122 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. The three prior defects are resolved, including in the exact delivered batch. No new defect was demonstrated. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Locate a matrix entry using row-first, column-second indexing, including recognizing nonexistent entries.",
+    "reasoning_steps": [
+      "Interpret the subscripts as row and column.",
+      "Check the indices against the matrix dimensions.",
+      "Return the intersecting entry or select No such entry."
+    ],
+    "invariants": [
+      "Indices and dimensions determine existence.",
+      "The requested location determines the numeric answer.",
+      "Radio questions have one correct choice; numeric blanks require an existing entry."
+    ],
+    "permitted_variations": [
+      "Vary supported rectangular shapes, target positions and signed integer entries.",
+      "Vary target existence independently of radio layout.",
+      "Vary labels, irrelevant entries and choice order."
+    ],
+    "source_refs": [
+      "622baf41-fe35-55ee-bfc6-f1e6a2cb089a",
+      "8904abf3-dbf2-549a-8f8b-9fbdb7308ad3",
+      "01081318-5aef-53ec-b42a-cf09d90e23dc",
+      "5bfd6a33-c881-55bc-8200-148d7f57a946",
+      "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
+      "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: entries are defined within row and column bounds."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-records.json",
+        "regression-results.json",
+        "retained-findings-verification.json"
+      ],
+      "details": "All seven complete source banks and available solutions replay. The canonical 2\u00d74 case now succeeds. Missing original keys and solutions remain documented evidence-only gaps."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-verification.json"
+      ],
+      "details": "164 current records independently checked from visible matrices and indices; keys and worked solutions agree."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-shortcuts.json",
+        "resampling.json",
+        "changed-rule-results.json",
+        "delivery-sample/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-analysis.json",
+        "inventory-analysis.json",
+        "affected-inventory.json"
+      ],
+      "details": "All five shapes and profiles occur. Both source-family restrictions are resolved. All 60 samples and five batch records survive delivery. Captured inventory contains no generated records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-analysis.json"
+      ],
+      "details": "Requested-easy outputs retain direct lookup or bounds checking with source-supported response formats and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "changed-grader-input.json",
+        "changed-grader-results.json",
+        "counterfactual-verification.json"
+      ],
+      "details": "705 native grader checks passed, including equivalent entries, plausible wrong responses, radio alternatives and controlled answer changes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-002.png",
+        "render/question-004.png",
+        "render/question-005.png",
+        "render/question-017.png"
+      ],
+      "details": "28 actual-UI renders passed. Inspected screenshots show readable matrices, subscripts, controls and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "guard-results.json",
+        "retained-findings-verification.json",
+        "commands.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact dependencies match. Deterministic CLI replay matches the runner batch and survives relocation. Retained regressions fail previous code and pass current code. Package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-probes.json",
+        "counterfactual-verification.json",
+        "batch-rule-tests.json",
+        "delivery-batch/accepted.json",
+        "ui-position-probes.json"
+      ],
+      "details": "The layout-based elimination shortcut is broken in samples and the exact delivered batch. Controlled pairs and six additional batch constructions pass. Conditional probes found no demonstrated incidental shortcut; finite-test and learner-history limits are documented."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,46 @@
+{
+  "history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100988/repair-history.json",
+  "preflight_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100988/repair-preflight.json",
+  "preflight_claim": {
+    "passed": true,
+    "finding_ids": [
+      "6fe521c09fbe226f09cf",
+      "05aea05dfa8bdd6f4d11",
+      "dd308c275d525eec01fa"
+    ],
+    "checks": [
+      {
+        "script": "checks/repair_check.py",
+        "args": [],
+        "sha256": "2750e1e32a007778bc05c99e4c94d131e4cec6f4fb638dfa0d951cb9d575a593",
+        "exit_code": 0,
+        "stdout": "{\n  \"status\": \"passed\",\n  \"source_banks\": 7,\n  \"control_records\": 67,\n  \"distinct_controls_after_delivery\": 27,\n  \"normal_samples\": 120,\n  \"prospective_batch\": 5,\n  \"native_grader_records\": 43,\n  \"native_grader_checks\": 206,\n  \"retained_findings\": [\n    \"6fe521c09fbe226f09cf\",\n    \"05aea05dfa8bdd6f4d11\",\n    \"dd308c275d525eec01fa\"\n  ],\n  \"limitations\": [\n    \"No learner-specific history or live inventory supplied; shared delivery filtering uses captured inventory.\"\n  ]\n}\n\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "source_regression_byte_identical_to_independent_test": true,
+  "negative_controls": "prior-regression-results.json",
+  "current_controls": "regression-results.json",
+  "findings": [
+    {
+      "id": "6fe521c09fbe226f09cf",
+      "current_status": "resolved",
+      "case": "canonical_2x4",
+      "negative_error": "Easy dimension bound"
+    },
+    {
+      "id": "05aea05dfa8bdd6f4d11",
+      "current_status": "resolved",
+      "case": "source_numeric_only_3x2",
+      "negative_error": "four_locations requires three columns"
+    },
+    {
+      "id": "dd308c275d525eec01fa",
+      "current_status": "resolved",
+      "case": "display_absence_role",
+      "negative_error": "Unsupported template/field combination"
+    }
+  ],
+  "assessment": "Author repair_check invokes the identical strict independent regression, then current-package source, domain, batch, delivery and grader checks. Its reported pass is supported here by actual negative-control failures and fresh independent reruns. Author check was not run in place because it writes package/evidence."
+}

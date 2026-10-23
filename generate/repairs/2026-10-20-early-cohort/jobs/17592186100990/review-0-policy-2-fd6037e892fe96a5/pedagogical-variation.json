@@ -1,0 +1,285 @@
+{
+  "learner_operation": "Locate a highlighted matrix entry, count its one-based row and column, and express the ordered indices in matrix-entry notation.",
+  "fixed_features": [
+    {
+      "feature": "One highlighted cell, one-based row then column",
+      "justification": "The lesson explicitly defines first subscript as row and second as column."
+    },
+    {
+      "feature": "Five radio options or source-shaped blank fields",
+      "justification": "Preserves observed response contracts; five options do not justify a fixed relative correct-choice role."
+    },
+    {
+      "feature": "Easy small integer matrices",
+      "justification": "Observed matrices require short visual scans with no arithmetic."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Highlighted position",
+      "eligible_variation": "Every valid cell of supported small matrix shapes, with prompt, key and solution tracking it.",
+      "observed": "All 39 cells of the five implemented easy shapes tested through numeric blanks. 4x4 source q-139629 absent; q-13499 radio profile is constrained to (3,4) by offsets."
+    },
+    {
+      "role": "Correct member of a recognizable choice-bank arrangement",
+      "eligible_variation": "Different eligible members may be highlighted; the answer-bank shape should not determine which one is correct.",
+      "observed": "q-13498 always assigns the smaller-row middle-column choice as correct. 28/28 samples and 1/1 matching batch item."
+    },
+    {
+      "role": "Matrix label and entry values",
+      "eligible_variation": "Rename label consistently; integer values do not determine coordinates.",
+      "observed": "Sample letters vary; controlled replacement of values preserves answers. Source matrices and explanation values independently checked."
+    },
+    {
+      "role": "Response family",
+      "eligible_variation": "Radio, symbolic blank and two-index blanks remain represented.",
+      "observed": "Default excludes symbolic blanks; native parser cannot grade them."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Fresh seeds 90200..90319, normal easy sampling",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json"
+      ],
+      "result": "120 records: all three default templates and all five radio profiles observed; 77 radio records; structural choice-only strategy correct on 67/77, with ambiguous shape explicitly distinguished."
+    },
+    {
+      "case": "Every implemented small-shape position, including diagonal, off-diagonal and edges",
+      "sample_refs": [
+        "boundaries.json",
+        "math-results.json"
+      ],
+      "result": "39 explicit numeric-blank boundary cases correct; no 4x4 source shape support."
+    },
+    {
+      "case": "Exact runner batch seed 3782988951, count 5, easy",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "5/5 survive; four radio and one numeric blank. Bank-shape strategies get 3/4 radios, including the forced q-13498 cue."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Same 3x4 matrix and A label: move highlight (1,1) to (2,2).",
+      "expected": "Response changes from a_11/(1,1) to a_22/(2,2); prompt highlight and explanation move together, old numerical response is rejected.",
+      "observed": "radio and two numeric blanks: rendered highlight, response keys and solution track the expected dependency. Native correct selections/equivalent numeric responses accepted and wrong responses rejected.",
+      "status": "passed",
+      "justification": "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 makes indices depend on position, not entry value. The required grader check fails only for symbolic entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "additional-math.json",
+        "grader-supported-report.json",
+        "grader-symbolic-strict-execution.json",
+        "grader-symbolic-diagnostic-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Same 3x4 matrix and A label: move highlight (1,1) to (2,2).",
+      "expected": "Response changes from a_11/(1,1) to a_22/(2,2); prompt highlight and explanation move together, old numerical response is rejected.",
+      "observed": "symbolic blank: rendered highlight, response keys and solution track the expected dependency. Native symbolic responses remain unresolved, including canonical correct notation.",
+      "status": "failed",
+      "justification": "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 makes indices depend on position, not entry value. The required grader check fails only for symbolic entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "additional-math.json",
+        "grader-supported-report.json",
+        "grader-symbolic-strict-execution.json",
+        "grader-symbolic-diagnostic-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep A and highlighted (1,1); replace all incidental integer entries, including highlighted value 1 with 9.",
+      "expected": "Response remains a_11/(1,1); symbolic-value equality in explanation updates from 1 to 9.",
+      "observed": "radio and two numeric blanks: rendered highlight, response keys and solution track the expected dependency. Native correct selections/equivalent numeric responses accepted and wrong responses rejected.",
+      "status": "passed",
+      "justification": "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 makes indices depend on position, not entry value. The required grader check fails only for symbolic entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "additional-math.json",
+        "grader-supported-report.json",
+        "grader-symbolic-strict-execution.json",
+        "grader-symbolic-diagnostic-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep A and highlighted (1,1); replace all incidental integer entries, including highlighted value 1 with 9.",
+      "expected": "Response remains a_11/(1,1); symbolic-value equality in explanation updates from 1 to 9.",
+      "observed": "symbolic blank: rendered highlight, response keys and solution track the expected dependency. Native symbolic responses remain unresolved, including canonical correct notation.",
+      "status": "failed",
+      "justification": "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 makes indices depend on position, not entry value. The required grader check fails only for symbolic entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "additional-math.json",
+        "grader-supported-report.json",
+        "grader-symbolic-strict-execution.json",
+        "grader-symbolic-diagnostic-report.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: q-13498",
+      "subgroup": "display_radio / q-13498",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 11,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: q-13498",
+      "subgroup": "inline_radio / q-13498",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 17,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: q-13503",
+      "subgroup": "display_radio / q-13503",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: q-13499",
+      "subgroup": "inline_radio / q-13499",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: ambiguous q-13489/q-125611",
+      "subgroup": "display_radio / ambiguous q-13489/q-125611",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 17,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Visible normalized coordinate arrangement in the answer bank: ambiguous q-13489/q-125611",
+      "subgroup": "inline_radio / ambiguous q-13489/q-125611",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer relative correct coordinate from the choice-set shape alone; ambiguous shape predicts minimum row/minimum column. Never inspect the highlighted matrix.",
+      "correct": 18,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is random selection among five choices. Perfect q-13498 prediction is structurally forced by fixed offsets; the ambiguous shape has conflicting roles and is not a perfect predictor. Small q-13503/q-13499 samples are supporting observations, not broad statistical estimates.",
+      "sample_refs": [
+        "samples.json",
+        "delivery-analysis.json",
+        "regression_shortcut.py"
+      ]
+    },
+    {
+      "cue": "q-13498 answer-bank shape",
+      "subgroup": "exact delivered batch, matching radio item",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose middle column among the three choices having the smallest row index.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The batch has one such item (seed 3782988955); the same forced rule succeeds in 28/28 independent examples. Baseline is one of five choices. This is a generator construction defect present in the batch, not a claim that one rule answers every batch item.",
+      "sample_refs": [
+        "shortcut-regression-batch.json",
+        "shortcut-regression-samples.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "First serialized answer position",
+      "subgroup": "all sampled radio items",
+      "scope": "overall",
+      "strategy": "Select first option without reading it.",
+      "correct": 18,
+      "total": 77,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect position cue demonstrated; comparison is random one-of-five selection. Actual UI can reorder choices, while the demonstrated bank-shape cue survives any order.",
+      "sample_refs": [
+        "samples.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator template/profile selection and eligible-position filtering; no rejection loop",
+      "Requested easy difficulty",
+      "Actual publisher validation, normalization, inventory and within-batch deduplication",
+      "Captured inventory and retired/correct-reference eligibility",
+      "Learner history exclusions and difficulty-first selection code"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "delivery-analysis.json",
+      "inventory-analysis.json",
+      "selection-analysis.json"
+    ],
+    "result": "No records removed: 5/5 batch and 120/120 fresh samples survive at captured basis 5667. Selection does not rebalance answer-bank roles; any surviving matching item retains its shortcut. No stored generated record defect demonstrated."
+  },
+  "limitations": [
+    "No live database, future inventory, policy weights or learner history examined. Read-only selection analysis cannot determine actual learner draw frequencies.",
+    "No finite probe proves absence of all shortcuts. The q-13498 defect is supported by explicit examples and the construction rule.",
+    "Moderate/hard authored extensions were outside requested easy review.",
+    "The two original symbolic source families cannot pass native grading; strict failing tests retained."
+  ]
+}

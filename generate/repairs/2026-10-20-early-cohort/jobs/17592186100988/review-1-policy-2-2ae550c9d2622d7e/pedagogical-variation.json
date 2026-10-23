@@ -1,0 +1,1645 @@
+{
+  "learner_operation": "Read a requested matrix entry using row-first, column-second indexing, including recognizing a nonexistent entry.",
+  "fixed_features": [
+    {
+      "feature": "Row-first, column-second subscripts and direct integer lookup",
+      "justification": "Tutorial34f3a63d and the seven practice sources define this operation."
+    },
+    {
+      "feature": "Small nonsquare matrices, one scalar blank or five-choice radio response",
+      "justification": "Source families cover2x3,2x4,3x2,3x4,5x4; square-entry and inverse-index tasks are adjacent KPs. Numeric-only response contracts require an existing entry."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Requested row and column",
+      "eligible_variation": "Every cell in supported small rectangular shapes; invalid row or column when No such entry is offered",
+      "observed": "All8 canonical2x4 positions and all6 numeric-only3x2 positions work. Fresh sampling includes all five shapes."
+    },
+    {
+      "role": "Target existence",
+      "eligible_variation": "Valid or absent independent of radio layout and matrix label",
+      "observed": "Fresh60 contain51 valid and9 absent; batch contains4 valid and1 absent. Fixed-layout controls cover row and column overflow in all5 radio API styles."
+    },
+    {
+      "role": "Correct scalar and choice",
+      "eligible_variation": "Signed one-digit values and zero, nonfixed matrix position and independently shuffled options",
+      "observed": "Target-change controls2\u21925 and2\u2192No such entry update answers and grader results; label and non-target changes preserve2. Batch keys are -7,No such entry,0,3,6."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source and repaired domains",
+      "sample_refs": [
+        "source-records.json",
+        "source-replay.json",
+        "regression-results.json",
+        "numeric-3x2-records.json",
+        "boundary-records.json"
+      ],
+      "result": "Seven full banks and available solutions replay; canonical2x4 and six3x2 numeric-bank targets now supported."
+    },
+    {
+      "case": "Fresh sample and resampling",
+      "sample_refs": [
+        "samples.json",
+        "resampling.json",
+        "coverage-shortcuts.json"
+      ],
+      "result": "60 fresh seeds731100..731159;117 whole-instance attempts,60 accepted. All profiles and shapes observed; shapes/targets are conditioned on distinct bank entries."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "decision-probes.json"
+      ],
+      "result": "Five accepted, zero duplicates. Both existence roles survive within the display absence-bank subgroup; numeric-only and blank contracts require numeric values."
+    },
+    {
+      "case": "New batch-construction rule",
+      "sample_refs": [
+        "batch-rule-tests.json",
+        "changed-rule-results.json",
+        "delivery-changed/accepted.json"
+      ],
+      "result": "Previous seed4036014606 and five new seeds/counts preserve layout/existence contrasts before and after actual filtering."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep [[1,2,3],[4,5,6]], label and radio layout fixed; change target12\u219222,12\u219232 or12\u219214.",
+      "expected": "Response2\u21925 or No such entry; rendered indices/explanations and native grading follow new target.",
+      "observed": "Passed across all five radio styles, with numeric target changes also checked for blank. Actual native accepts new answers and rejects old where offered; all corresponding UI records rendered.",
+      "status": "passed",
+      "justification": "Tutorial2970 determines existence by bounds; tutorial2969 determines value by row/column intersection.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-verification.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename A\u2192Y or change cell13 from3\u21928 while requesting12.",
+      "expected": "Correct value remains2 while notation and repeated matrix update.",
+      "observed": "Answer preserved in native grading; prompt and solution follow changed context in actual rendered records.",
+      "status": "passed",
+      "justification": "Labels and cells outside the requested intersection do not determine its value.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-verification.json",
+        "grader-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / all",
+      "scope": "overall",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 12,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / all",
+      "scope": "overall",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 6,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / all",
+      "scope": "overall",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 5,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / all",
+      "scope": "overall",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 9,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 1,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "samples.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 15,
+      "total": 19,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "samples.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 14,
+      "total": 19,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "samples.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "samples.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "samples.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "samples.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "batch.json / all",
+      "scope": "overall",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "batch.json / all",
+      "scope": "overall",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "batch.json / all",
+      "scope": "overall",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "batch.json / all",
+      "scope": "overall",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "batch.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "batch.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "batch.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "batch.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "batch.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "batch.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "batch.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "batch.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "batch.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "batch.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "batch.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "batch.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "batch.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 12,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 6,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 5,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 9,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 1,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "delivery-sample/accepted.json / inline/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 15,
+      "total": 19,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 2,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "delivery-sample/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 14,
+      "total": 19,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-sample/accepted.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-sample/accepted.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-sample/accepted.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-sample/accepted.json / inline/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-batch/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-batch/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-batch/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-batch/accepted.json / all",
+      "scope": "overall",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-batch/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-batch/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-batch/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-batch/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Prompt layout with an absence option",
+      "subgroup": "delivery-batch/accepted.json / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Eliminate No such entry without checking dimensions",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .8 is safe elimination of an arbitrary option among five. Both valid and absent targets occur in this visible layout; the former universal layout exclusion is broken. Fixed-layout controls test the dependency directly.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-verification.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-batch/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-batch/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-batch/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-batch/accepted.json / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first cell",
+      "subgroup": "delivery-batch/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return first cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last cell",
+      "subgroup": "delivery-batch/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return last cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "minimum cell",
+      "subgroup": "delivery-batch/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return minimum cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "maximum cell",
+      "subgroup": "delivery-batch/accepted.json / display/blank",
+      "scope": "within_template",
+      "strategy": "Return maximum cell without reading requested indices",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.05263157894736842,
+      "disposition": "not_predictive",
+      "conclusion": "Radio reference baseline is uniform choice among five; blank reference is uniform integer -9..9. No systematic corner/extremum rule is enforced. Singleton coincidences cannot establish a family rule; target-change controls hold the matrix fixed and refute fixed-cell strategies.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / all",
+      "scope": "overall",
+      "strategy": "Choose displayed position 1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / all",
+      "scope": "overall",
+      "strategy": "Choose displayed position 2",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / all",
+      "scope": "overall",
+      "strategy": "Choose displayed position 3",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / all",
+      "scope": "overall",
+      "strategy": "Choose displayed position 4",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / all",
+      "scope": "overall",
+      "strategy": "Choose displayed position 5",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/absence-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "batch / display/numeric-bank",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. This is one actual UI ordering; order is independently shuffled by UI. No position answers the complete batch or either multi-item radio subgroup.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "CLI batch construction",
+      "requested difficulty",
+      "publisher normalization and validation",
+      "inventory and within-batch deduplication",
+      "retirement and complete-key eligibility",
+      "learner freshness and difficulty-first selection rules",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "batch-rule-tests.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-changed/delivery.json",
+      "selection-analysis.json",
+      "ui-position-probes.json"
+    ],
+    "result": "60/60 independent samples and5/5 exact batch survive. Additional31 controls/batch records survive. Capture basis5665 has seven originals, five eligible and two missing keys; zero generated inventory records. Positive easy weighting allows all fresh eligible easy records; no layout filtering."
+  },
+  "limitations": [
+    "Finite probes cannot prove absence of every shortcut.",
+    "No learner history or configured difficulty weights supplied; actual selection rules were inspected, but no particular learner next-question prediction is made. A zero easy weight excludes all easy candidates; unconfigured fallback picks first sorted eligible ID.",
+    "Inventory may change after captured basis5665.",
+    "Raw profiles preserve two missing original keys/solutions and are evidence-only; this is a documented source gap, not newly generated ungradable practice.",
+    "Review covers requested easy; moderate/hard authored extensions are not certified.",
+    "One-item and explicit-profile CLI requests cannot promise both existence roles; tested default multi-item batching does."
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "verdict": "revise",
+  "summary": "Three demonstrated failures: a choice-only shortcut, excluded symbolic blanks that the native grader cannot grade, and missing source coverage. Package unchanged. No stored generated-record defect demonstrated.",
+  "source_analysis": {
+    "skill": "Locate a highlighted matrix entry and express its one-based row and column in index notation.",
+    "reasoning_steps": [
+      "Locate the highlighted cell.",
+      "Count its row from the top and column from the left.",
+      "Select or enter the indexed symbol, or enter the two indices separately."
+    ],
+    "invariants": [
+      "One identifiable highlighted cell.",
+      "The first subscript denotes row; the second denotes column.",
+      "Matrix labels, correct answers and explanations agree.",
+      "Preserve radio, symbolic-blank and two-index response families."
+    ],
+    "permitted_variations": [
+      "Vary highlighted positions, small matrix dimensions, labels and integer values.",
+      "Vary correct-choice roles within recognizable answer arrangements.",
+      "Changing incidental entry values preserves the coordinate answer."
+    ],
+    "source_refs": [
+      "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
+      "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: indices range over all valid rows and columns.",
+      "9fd0e65a-fdf4-5ff0-b32a-cc8e1d649563 (q-13498)",
+      "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
+      "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)",
+      "7e0025f5-b24a-57c0-a91e-70e60e6e725f (q-139629)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "additional-math.json"
+      ],
+      "details": "Eight source cases reproduce complete banks and matrices. q-139629 returns Unknown evidence profile."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "additional-math.json"
+      ],
+      "details": "184 records checked independently from displayed coordinates and solution values; no mathematical errors found."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples.json",
+        "delivery-analysis.json",
+        "source-replay-results.json"
+      ],
+      "details": "All five radio profiles appear, but symbolic blanks and the observed 4\u00d74 source shape are excluded. Fixed bank offsets constrain answer roles."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "math-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Tested easy outputs preserve short visual indexing tasks without additional operations or prerequisites."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grader-supported-report.json",
+        "grader-symbolic-strict.json",
+        "grader-symbolic-strict-execution.json",
+        "grader-symbolic-diagnostic-report.json"
+      ],
+      "details": "Supported responses pass 45 acceptance and 82 rejection checks. Correct symbolic entries, including {b}_{11} and b_{11}, return unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-all/rendering.json",
+        "render-all/question-017.png"
+      ],
+      "details": "19 actual-UI cases render without reported errors. Representative screenshots show readable highlights, controls, notation and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocation.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependency versions match. Deterministic replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-regression-samples.json",
+        "shortcut-regression-batch.json",
+        "delivery-analysis.json",
+        "selection-analysis.json"
+      ],
+      "details": "The recognizable q-13498 answer-bank shape predicts the answer without reading the matrix: 28/28 fresh cases and the matching delivered batch item. All five batch records survive delivery."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Within the q-13498 bank shape, choosing the middle column among choices with the smallest row always gives the answer. This bypasses locating the highlighted cell.",
+      "source_refs": [
+        "9fd0e65a-fdf4-5ff0-b32a-cc8e1d649563 (q-13498)",
+        "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9"
+      ],
+      "reproduction": "From evidence_root: python3 regression_shortcut.py batch.json shortcut-regression-batch.json exits 1. Seed 3782988955 offers c13,c12,c22,c11,c21; the rule selects correct c12 without inspecting the matrix. The same regression succeeds on 28/28 matching fresh examples.",
+      "requested_change": "Change BANKS/bank/eligible_positions construction to vary correct roles within recognizable option arrangements while retaining exact source replay. Option shuffling and entry-value changes cannot repair this cue. Retain the candidate-records regression and regenerate the batch through the repaired package."
+    },
+    {
+      "kind": "grading",
+      "description": "Symbolic blanks are excluded from default practice because the native grader cannot parse their correct indexed-symbol answers.",
+      "source_refs": [
+        "36238d70-96e9-5c96-9f9b-52eb899b35f4 (q-279553)",
+        "a5eb6b6d-276d-54a5-b401-53f9f0ed2a3f (q-279556)"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-symbolic-strict.json grader-symbolic-strict-report.json exits 1: {b}_{11} expected accepted, got unresolved (unconsumed mathematical notation). The complete source-replay record uses seed 73.",
+      "requested_change": "Retain strict valid-notation acceptance and wrong-index rejection tests. Report indexed-symbol parsing/equivalence as a required engine capability; engine edits are unauthorized in this job. Do not remove the family or restrict valid notation as a workaround."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Source q-139629 and its observed 4\u00d74 easy matrix family are unsupported. Its missing highlight is recoverable from the matching (3,1) answer keys and solution.",
+      "source_refs": [
+        "7e0025f5-b24a-57c0-a91e-70e60e6e725f (q-139629)"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python -B ../workspace/17592186100990.py --difficulty easy --profile completed:q-139629 --seed 73 --format json returns Unknown evidence profile. See source-replay-results.json.",
+      "requested_change": "Add the source profile, document restoring its highlight at row 3 column 1, reproduce both numeric fields and the solution, and support legitimate highlighted positions in the observed 4\u00d74 easy family."
+    }
+  ]
+}
