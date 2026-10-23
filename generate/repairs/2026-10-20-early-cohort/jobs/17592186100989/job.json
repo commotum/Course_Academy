@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186100989.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 0,
+  "stage": "generate",
+  "attempt": 1,
   "seed": 3302362091,
   "created": 1792735178.28798,
-  "updated": 1792735179.5328317,
+  "updated": 1792735773.9248247,
   "source_hash": "dc35d4bf0e0a067870e35a413c8498553f965e2e9677288bef341aa8ef2f8a39",
   "inventory_hash": "13b921a5d29d2bd1a70d7cbf5f7de0db22370caa814ad9b63b67180369d8b075",
   "manifest": "package.json",
@@ -28,5 +28,149 @@
   "review_session_limit": 9,
   "review_sessions": [
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/review-0-policy-2-2c307eef8ade70a2"
-  ]
+  ],
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/review-0-policy-2-2c307eef8ade70a2",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "fc4f7552d0df3300be63aad8bbefd0a066683e2fa732b7c0ee9a8f533f4694b6",
+      "batch_hash": "bab425d7e5a847da77009e00078b8b9dd76e9b230224be5bad6b389446b1c8f1",
+      "source_hash": "dc35d4bf0e0a067870e35a413c8498553f965e2e9677288bef341aa8ef2f8a39",
+      "inventory_hash": "13b921a5d29d2bd1a70d7cbf5f7de0db22370caa814ad9b63b67180369d8b075",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202"
+    }
+  },
+  "progress_failures": {
+    "5d0afb87b1a3727d2dc17a79e4335fe5404845036e589a7fc3e638e18c818935": 1
+  },
+  "needs_repair": true,
+  "error": {
+    "verdict": "revise",
+    "summary": "Every default 2\u00d72 radio question can be answered by selecting \u201cNo such entry\u201d without reading the indices. This shortcut survived delivery in 33/33 sampled cases and the batch\u2019s matching item. Package files remained unchanged.",
+    "source_analysis": {
+      "skill": "Interpret the first subscript as row and the second as column, check existence, and identify the indicated matrix entry.",
+      "reasoning_steps": [
+        "Read the requested row and column.",
+        "Compare both indices with the square matrix\u2019s order.",
+        "Return the intersecting entry or select \u201cNo such entry.\u201d"
+      ],
+      "invariants": [
+        "Square matrices and row-before-column indexing.",
+        "Prompt, answer and solution refer to the same target.",
+        "Numeric blanks require existing entries."
+      ],
+      "permitted_variations": [
+        "Matrix order 2\u20134, name, entries and target coordinates.",
+        "Existing and nonexistent targets within the same radio presentation and matrix size.",
+        "Choice positions and complete distractor banks."
+      ],
+      "source_refs": [
+        "fe56a988-49e9-5f33-b0a5-f43d33984c1d",
+        "bf0cde7f-5b94-5af7-b3da-c7304b62c190",
+        "4b55801d-38e7-5449-9bcb-92a485dcdd1c",
+        "5aee8772-02f1-5e96-b1e0-f67b0c259d43",
+        "Tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: first subscript represents row; second represents column.",
+        "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: entries are defined within the matrix dimensions."
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-replay-results.json",
+          "source-replay-records.json"
+        ],
+        "details": "Reconstructed six practice cases, complete banks and the canonical target. Missing source attributes were explicitly inferred. Historical raw R/E naming differs, but current learner output matches the supplied source."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "verify_math.py",
+          "math-verification.json"
+        ],
+        "details": "152 record checks independently verified prompt indexing, keys, option uniqueness and worked solutions; no failures."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "coverage.json",
+          "resampling.json",
+          "construction-restrictions.json",
+          "restriction-reproduction.txt"
+        ],
+        "details": "All six default bank profiles appeared, but construction reserves 2\u00d72 radios for nonexistent entries. Valid existing-target counterfactuals are rejected."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "scope-results.json",
+          "samples.json"
+        ],
+        "details": "Requested easy samples preserve square orders 2\u20134 and direct lookup/existence reasoning."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-input.json",
+          "grader-report.json"
+        ],
+        "details": "Native grader passed 86 checks, including equivalent numeric/radical entries, wrong answers and stale answers after relevant changes."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "render-pairs/rendering.json",
+          "visual-inspection.json"
+        ],
+        "details": "Twelve actual-UI previews rendered successfully; nine screenshots were visually inspected, including controlled pairs and radicals."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "package-integrity.json",
+          "rejection-results.json"
+        ],
+        "details": "Dependencies match installed versions exactly. Deterministic replay, relocation and invalid-input rejection passed. All 98 package files remained unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "shortcut-regression.json",
+          "batch-shortcut-regression.json",
+          "delivery-sample/delivery.json",
+          "delivery-batch/delivery.json",
+          "selection-analysis.json",
+          "inventory-analysis.json",
+          "affected-inventory.json"
+        ],
+        "details": "Shape-only selection succeeds on 33/33 sampled 2\u00d72 radios and 1/1 in the exact batch. All survived delivery. Selection cannot introduce absent counterexamples. Captured inventory contains only original source questions; no stored generated records were demonstrated defective."
+      }
+    },
+    "findings": [
+      {
+        "kind": "decision_shortcut",
+        "description": "Default easy radio construction fixes the answer to \u201cNo such entry\u201d whenever the matrix is 2\u00d72. Learners can ignore the requested indices. Sampling forces existing radio profiles to larger matrices, while validation forbids existing targets in the 2\u00d72 all_four profile.",
+        "source_refs": [
+          "bf0cde7f-5b94-5af7-b3da-c7304b62c190",
+          "fe56a988-49e9-5f33-b0a5-f43d33984c1d",
+          "Tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a",
+          "generate/principles.md"
+        ],
+        "reproduction": "Generate easy seed 11, profile all_four, parameters {\"name\":\"B\",\"matrix\":[[\"1\",\"-3\"],[\"0\",\"5\"]],\"i\":3,\"j\":2}: answer is No such entry. Change only i to 2: expected answer 5, but generation raises ValueError. Run reproduce_restriction.py against the package entrypoint. Run python3 shortcut_regression.py --candidate-records delivery-sample/accepted.json --output shortcut-regression.json to reproduce 33/33 shape-only successes. Batch seed 3302362091 exhibits the same defect.",
+        "requested_change": "Decouple existence from matrix size and recognizable radio presentation. Permit existing and missing targets within the same size/layout groups, deriving banks and solutions consistently. Retain strict boundary-counterfactual and conditional-shortcut regressions, verify delivery, and regenerate through the deterministic package CLI. Changing seeds or editing runner-owned batch/database records does not repair this construction rule."
+      }
+    ]
+  },
+  "last_rejected_package": "fc4f7552d0df3300be63aad8bbefd0a066683e2fa732b7c0ee9a8f533f4694b6",
+  "last_rejected_source": "dc35d4bf0e0a067870e35a413c8498553f965e2e9677288bef341aa8ef2f8a39",
+  "last_rejected_engine": "cfc77c7dba5aec570545b612fcf45b5049204b3cd2cc957fdf396daf47910202",
+  "author_running": true
 }

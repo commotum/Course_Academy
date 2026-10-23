@@ -1,0 +1,622 @@
+{
+  "skill": "Determine matrix dimensions by counting rows and columns in order.",
+  "reasoning_steps": [
+    "Inspect the displayed rectangular array.",
+    "Count rows and columns independently; zeros, signs and radicals still occupy entries.",
+    "Report rows \u00d7 columns by radio selection or two ordered numeric blanks."
+  ],
+  "invariants": [
+    "One explicitly displayed rectangular matrix; easy visual counting, no arithmetic on entries.",
+    "Rows precede columns.",
+    "Radio banks have five dimension pairs; blank fields separately encode row and column counts.",
+    "Keep matrices within the source workload (up to six rows and columns)."
+  ],
+  "permitted_variations": [
+    "Vary rows and columns independently, including rectangular and square arrays; lesson also supports one-row/one-column/1\u00d71 arrays.",
+    "Vary label and entries independently of shape, and bank order independently of correct dimensions.",
+    "Blank wording and radio wording need not imply a fixed shape; square blank examples are incidental assignments, not an instructional requirement."
+  ],
+  "source_refs": [
+    "6587b5f1-8a44-556a-a95e-20c54dfebc04",
+    "db84014f-1fd8-5018-a180-0056f36ae71a",
+    "d021458e-bd20-5ec8-b70b-f44845e5c966",
+    "46957bca-e845-5160-aeaf-7ce8847fe404",
+    "8c21a537-8833-5fb1-9faa-0f3b2f1af56b",
+    "7783a7fa-d703-5aad-927d-29508fc5f399",
+    "035fc963-2ee7-5299-9898-0c721b8439ff",
+    "e3a38efe-eb84-5e2d-ad2a-4f06e69038f1",
+    "0dae081d-1261-53c2-a70c-664b771975ed",
+    "80862d10-12ca-5f6e-9209-5f8bf84be504",
+    "tutorial d68f01b8-8bc6-59a1-8d80-d284abbcdf6e: dimensions are the number of rows and the number of columns; M has 3 rows and 4 columns, so 3 \u00d7 4",
+    "tutorial 1628e679-983a-5be7-9af6-81f0f45fa29a: one row, one column, and 1 \u00d7 1 matrices",
+    "tutorial 06286713-0de9-5c18-959f-04de81bee510: square matrix has equal rows and columns"
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "source_cases": [
+    {
+      "id": "6587b5f1-8a44-556a-a95e-20c54dfebc04",
+      "prompt": "What are the dimensions of the matrix ${A},$ where \n\n$$\n{A}=\n\\begin{bmatrix}4 & 5 & 1 \\\\ -2 & 0 & 6 \\\\ 3 & 2 & -5 \\\\ 5 & 1 & 7\\end{bmatrix}?\n$$",
+      "solution": "The matrix ${A}$ has $4$ rows and $3$ columns. Therefore, its dimensions are $4\\times 3.$",
+      "fields": []
+    },
+    {
+      "id": "db84014f-1fd8-5018-a180-0056f36ae71a",
+      "prompt": "What are the dimensions of the matrix $A$, where\n$A = \\begin{bmatrix}-2 & 4 & 5 & 6 \\\\ 1 & 8 & -3 & 7\\end{bmatrix}$?",
+      "solution": "The matrix $A$ has $2$ rows and $4$ columns. Therefore, its dimensions are $2 \\times 4$.",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0fac330d-727e-5fd3-bbfe-2a4a4119535d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 2",
+              ":db/id": 17592186084629
+            },
+            {
+              ":answer/id": "349a2dce-359a-59dd-8a84-a1df7ac4cbce",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3 \\times 3",
+              ":db/id": 17592186084630
+            },
+            {
+              ":answer/id": "5b6c2c88-80c5-56b3-a45a-42a8af87e619",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 3",
+              ":db/id": 17592186084631
+            },
+            {
+              ":answer/id": "c2920f12-2ec4-5b28-9554-5e61dd2128da",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4 \\times 2",
+              ":db/id": 17592186084627
+            },
+            {
+              ":answer/id": "fca8ae2e-b122-5d5b-b86f-0660a8d466a1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 4",
+              ":db/id": 17592186084628
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "fca8ae2e-b122-5d5b-b86f-0660a8d466a1",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "2 \\times 4",
+            ":db/id": 17592186084628
+          },
+          ":answer-field/id": "f87a2a84-3ef2-5822-8d48-6956d8474406",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186084626
+        }
+      ]
+    },
+    {
+      "id": "d021458e-bd20-5ec8-b70b-f44845e5c966",
+      "prompt": "What are the dimensions of the matrix $C$, where\n$C = \\begin{bmatrix}1 & 3 & 7 \\\\ 4 & 6 & -4\\end{bmatrix}$?",
+      "solution": "The matrix $C$ has $2$ rows and $3$ columns. Therefore, its dimensions are $2 \\times 3$.",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "00b57263-5084-531b-ba31-65c659e525fe",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3 \\times 2",
+              ":db/id": 17592186086743
+            },
+            {
+              ":answer/id": "3bed9f6a-be45-5762-adea-75605ae6b42b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3 \\times 3",
+              ":db/id": 17592186086744
+            },
+            {
+              ":answer/id": "5ae36f50-1c45-59ec-ab09-1076f463e943",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 4",
+              ":db/id": 17592186086745
+            },
+            {
+              ":answer/id": "72b917da-20b2-57a0-a18b-957eb5054ba4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 2",
+              ":db/id": 17592186086746
+            },
+            {
+              ":answer/id": "e8dc99f9-7f85-5b8f-80f2-fc2295beea28",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2 \\times 3",
+              ":db/id": 17592186086742
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e8dc99f9-7f85-5b8f-80f2-fc2295beea28",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "2 \\times 3",
+            ":db/id": 17592186086742
+          },
+          ":answer-field/id": "2b6f784e-2cbd-59f0-a974-713be860e832",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186086741
+        }
+      ]
+    },
+    {
+      "id": "46957bca-e845-5160-aeaf-7ce8847fe404",
+      "prompt": "What are the dimensions of the matrix $P$, where\n\n$$\nP = \\begin{bmatrix}0 & -2 & 2 \\\\ 2 & 0 & -2 \\\\ -2 & 2 & 0\\end{bmatrix}\n$$\n\nThe dimensions of $P$ are {{field-1}} $\\times$ {{field-2}}.",
+      "solution": "The matrix $P$ has $3$ rows and $3$ columns. Therefore, its dimensions are $3\\times 3.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7610ac8d-9ca7-55a6-a6f1-a87e16064e7b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3",
+              ":db/id": 17592186234726
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7610ac8d-9ca7-55a6-a6f1-a87e16064e7b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "3",
+            ":db/id": 17592186234726
+          },
+          ":answer-field/id": "ca8a6906-9d09-51f8-97dc-5482c2fa528a",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186235220
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "93d12b62-2205-5ebb-a036-3e0d6fd691ba",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3",
+              ":db/id": 17592186234776
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "93d12b62-2205-5ebb-a036-3e0d6fd691ba",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "3",
+            ":db/id": 17592186234776
+          },
+          ":answer-field/id": "bf5b41b4-e496-5174-872b-e179568bd9f4",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186235210
+        }
+      ]
+    },
+    {
+      "id": "8c21a537-8833-5fb1-9faa-0f3b2f1af56b",
+      "prompt": "What are the dimensions of the matrix $S$, where $S=\\begin{bmatrix}-1 & 1 & -5 & 1 & 0 & 2 \\\\ 1 & 1 & 0 & 0 & 0 & 1 \\\\ -5 & 0 & 1 & -4 & 0 & 0 \\\\ 9 & -3 & 0 & 1 & 0 & 2 \\\\ 11 & 0 & 0 & -1 & 1 & 1 \\\\ 0 & 1 & 1 & 1 & 1 & 0\\end{bmatrix}?$",
+      "solution": "The matrix $S$ has $6$ rows and $6$ columns. Therefore, its dimensions are $6\\times 6.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2b950a5c-99d2-53de-8dfb-6c3181f7210b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5\\times 5",
+              ":db/id": 17592186257172
+            },
+            {
+              ":answer/id": "60318d34-1d21-5259-8ff2-25ae2dc9d4e4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "6\\times 6",
+              ":db/id": 17592186257626
+            },
+            {
+              ":answer/id": "7cd730c2-362c-569e-951f-16f2d7ca5ada",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5\\times 6",
+              ":db/id": 17592186257882
+            },
+            {
+              ":answer/id": "989cbbd0-05df-5561-87a8-589bea718bde",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4\\times 4",
+              ":db/id": 17592186258127
+            },
+            {
+              ":answer/id": "d32bade0-da87-5a91-94ac-bdae1a900653",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "6\\times 4",
+              ":db/id": 17592186258629
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "60318d34-1d21-5259-8ff2-25ae2dc9d4e4",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "6\\times 6",
+            ":db/id": 17592186257626
+          },
+          ":answer-field/id": "27799b23-f13f-5739-b60e-fe6a48ce96b2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186259100
+        }
+      ]
+    },
+    {
+      "id": "7783a7fa-d703-5aad-927d-29508fc5f399",
+      "prompt": "What are the dimensions of the matrix $T$, where $T=\\begin{bmatrix}\\sqrt{5} & -23 \\\\ 4 & -\\sqrt{2}\\end{bmatrix}?$",
+      "solution": "The matrix $T$ has $2$ rows and $2$ columns. Therefore, its dimensions are $2\\times 2.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0afbc2d8-a0a3-5a20-ab0a-f1652b2d553a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\times 3",
+              ":db/id": 17592186256884
+            },
+            {
+              ":answer/id": "8c1d708c-a026-56de-af89-d61f4546eed5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "1\\times 1",
+              ":db/id": 17592186258011
+            },
+            {
+              ":answer/id": "9434d274-7292-5633-a451-41e3ffd478f6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\times 2",
+              ":db/id": 17592186258088
+            },
+            {
+              ":answer/id": "9beaa7da-4369-50bb-b465-e7c2e96dd21f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 2",
+              ":db/id": 17592186258151
+            },
+            {
+              ":answer/id": "ee8d902f-0ec9-552c-8673-f1611025aaa7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 3",
+              ":db/id": 17592186258849
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "9434d274-7292-5633-a451-41e3ffd478f6",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "2\\times 2",
+            ":db/id": 17592186258088
+          },
+          ":answer-field/id": "cf7f427f-66a5-5f5d-bfeb-65a2cd13157b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186259399
+        }
+      ]
+    },
+    {
+      "id": "035fc963-2ee7-5299-9898-0c721b8439ff",
+      "prompt": "What are the dimensions of the matrix $Y$, where $Y=\\begin{bmatrix}-\\sqrt{7} & 10 & -2 \\\\ -4 & 0 & -5 \\\\ 1 & \\sqrt{2} & -\\sqrt{3}\\end{bmatrix}?$",
+      "solution": "The matrix $Y$ has $3$ rows and $3$ columns. Therefore, its dimensions are $3\\times 3.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "13cf7c60-6753-520a-913d-34571f240216",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 2",
+              ":db/id": 17592186256960
+            },
+            {
+              ":answer/id": "4391323c-b0a6-58d2-b671-3b48de20e25a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\times 2",
+              ":db/id": 17592186257377
+            },
+            {
+              ":answer/id": "5cea199b-9cae-57ce-be2c-df1a169bbe8d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5\\times 5",
+              ":db/id": 17592186257589
+            },
+            {
+              ":answer/id": "84d503db-1449-5d58-9703-b78cdb464957",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5\\times 3",
+              ":db/id": 17592186257957
+            },
+            {
+              ":answer/id": "95fedd7b-ff1d-50a2-bb65-a919e54e8e44",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 3",
+              ":db/id": 17592186258100
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "95fedd7b-ff1d-50a2-bb65-a919e54e8e44",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "3\\times 3",
+            ":db/id": 17592186258100
+          },
+          ":answer-field/id": "30d1d4b7-9890-5050-a36f-9677c6fa94fb",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186259119
+        }
+      ]
+    },
+    {
+      "id": "e3a38efe-eb84-5e2d-ad2a-4f06e69038f1",
+      "prompt": "Let $K=\\begin{bmatrix}1 & 0 & -2 & 3 & -1 \\\\ 0 & -1 & 4 & 0 & 2 \\\\ 5 & -3 & 0 & -\\sqrt{3} & 0 \\\\ 0 & 2 & -1 & \\frac{1}{3} & -4 \\\\ -2 & 0 & 0 & 6 & \\sqrt{2}\\end{bmatrix}.$ \nThe dimensions of the matrix $K$ are {{field-1}}\n$\\times $\n{{field-2}}.",
+      "solution": "The matrix $K$ has $5$ rows and $5$ columns. Therefore, its dimensions are $5\\times 5.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4ef72665-8b76-5262-9484-64b06937f869",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5",
+              ":db/id": 17592186297881
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4ef72665-8b76-5262-9484-64b06937f869",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "5",
+            ":db/id": 17592186297881
+          },
+          ":answer-field/id": "d3fa82b2-5ae4-5192-a59f-a6015b19af90",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186299358
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8494584c-2b87-5258-9fb9-f2676fc79c2a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5",
+              ":db/id": 17592186298124
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8494584c-2b87-5258-9fb9-f2676fc79c2a",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "5",
+            ":db/id": 17592186298124
+          },
+          ":answer-field/id": "52e402f6-15b5-5688-9bfc-c0a0767fad63",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186298917
+        }
+      ]
+    },
+    {
+      "id": "0dae081d-1261-53c2-a70c-664b771975ed",
+      "prompt": "What are the dimensions of the matrix $K$, where\n$K=\\begin{bmatrix}9 & 2 \\\\ 2 & 0 \\\\ 1 & 5 \\\\ 0 & 1\\end{bmatrix}?$",
+      "solution": "The matrix $K$ has $4$ rows and $2$ columns. Therefore, its dimensions are $4\\times 2.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "22816ed3-7d89-5938-bdd7-bfde9745e952",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 2",
+              ":db/id": 17592186333302
+            },
+            {
+              ":answer/id": "29a95a18-542b-5170-9ef5-c2dcb3c509f1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\times 4",
+              ":db/id": 17592186333377
+            },
+            {
+              ":answer/id": "ca454403-3e4e-5743-9ebe-ad181a042bd0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4\\times 2",
+              ":db/id": 17592186334751
+            },
+            {
+              ":answer/id": "d8acc50b-a9e4-518d-98a1-b58f51da8ecc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4\\times 3",
+              ":db/id": 17592186334887
+            },
+            {
+              ":answer/id": "f881195e-ace6-547b-aaf9-1fa443609e87",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\times 4",
+              ":db/id": 17592186335166
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ca454403-3e4e-5743-9ebe-ad181a042bd0",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "4\\times 2",
+            ":db/id": 17592186334751
+          },
+          ":answer-field/id": "5f5a5d1a-6298-5353-b2d3-e9dc623fc3ae",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186335426
+        }
+      ]
+    },
+    {
+      "id": "80862d10-12ca-5f6e-9209-5f8bf84be504",
+      "prompt": "Chelsea represents the information in the table using the following matrix:\n\n$$\nP=\\begin{bmatrix}0 & -3 & -3 & -3 \\\\ 3 & 0 & -3 & -3 \\\\ 3 & 3 & 0 & -3 \\\\ 3 & 3 & 3 & 0\\end{bmatrix}\n$$\n\nThe dimensions of $P$ are$\\,$\n{{field-1}}\n$\\times$\n{{field-2}}.",
+      "solution": "The matrix $P$ has $4$ rows and $4$ columns. Therefore, its dimensions are $4\\times 4.$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cc6e6e59-6924-5ced-bf1a-73ed4b07d137",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186625251
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "cc6e6e59-6924-5ced-bf1a-73ed4b07d137",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "4",
+            ":db/id": 17592186625251
+          },
+          ":answer-field/id": "10c6eef4-50f8-5f38-91f6-0a275ee6562c",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186625371
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "eb981696-46ad-5d55-87ea-1bead90a6783",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186625315
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "eb981696-46ad-5d55-87ea-1bead90a6783",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "4",
+            ":db/id": 17592186625315
+          },
+          ":answer-field/id": "59927699-ed41-5e38-9990-56fd777837c4",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186625413
+        }
+      ]
+    }
+  ],
+  "source_limits": [
+    "Canonical example lacks answer fields, so no original response control can be inferred for it.",
+    "Chelsea source refers to a table absent from the capture; the complete displayed matrix suffices for dimensions.",
+    "Route planning and identifying a matrix by description are adjacent knowledge points, not this target skill."
+  ],
+  "decision_analysis": "Shape must determine both ordered counts. Label, entries, wording, and bank position are incidental. A cue that identifies a fixed answer from wording or label bypasses counting. Geometric row/column structure is intended evidence.",
+  "provenance": {
+    "reused_from": "../review-0-policy-2-8040d13f050e26af/source-analysis.json",
+    "verification": "All ten source prompts, solutions, complete answer fields match current source exactly; cited tutorials reread before package inspection."
+  }
+}

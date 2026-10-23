@@ -25,7 +25,7 @@ OBSERVED = json.loads((HERE / 'recipes.json').read_text())
 SOURCE = json.loads((HERE / 'source-cases.json').read_text())
 SOURCE_RECORDS = {q[':question/math-academy-id']: q for q in SOURCE['questions']}
 SUPPORTED_LEVELS = ('easy',)
-TEMPLATES = ('radio', 'where-dual-blank', 'let-dual-blank')
+TEMPLATES = ('radio', 'where-dual-blank', 'let-dual-blank', 'chelsea-dual-blank')
 DIMENSIONS = tuple((r,c) for r in range(2,7) for c in range(2,7))
 R,C = sp.symbols('r c', integer=True, positive=True)
 
@@ -81,6 +81,12 @@ def source_parameters(source_id):
 
 def make_prompt(template,p):
     name=p['name']
+    if template=='chelsea-dual-blank':
+        # The captured source refers to an absent table. The displayed matrix
+        # alone supplies all evidence needed for this dimension-counting task.
+        operand=matrix_operands([name+' = '+matrix_tex(p['entries'])])
+        return ('Chelsea represents information using the following matrix:\n\n'+operand+
+                '\n\nThe dimensions of $'+name+'$ are\n\n{{field-1}} $\\times$ {{field-2}}.')
     operand=matrix_operands([name+' = '+matrix_tex(p['entries'])+('.' if template=='let-dual-blank' else '?')])
     if template=='let-dual-blank':
         return 'Let\n\n'+operand+'\n\nThe dimensions of the matrix $'+name+'$ are\n\n{{field-1}} $\\times$ {{field-2}}.'

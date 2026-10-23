@@ -1,0 +1,52 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/review-0-policy-2-2c307eef8ade70a2",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python review.py",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python analyze.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 verify_math.py",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/source/inventory.json --difficulty easy --output delivery-sample --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 6 --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-remaining-records.json --output render-pairs --limit 6 --math-root /media/jake/SSD/EDB/math",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 shortcut_regression.py --candidate-records delivery-sample/accepted.json --output shortcut-regression.json",
+      "exit_code": 1,
+      "meaning": "Expected failing acceptance test: perfect shape shortcut retained."
+    },
+    {
+      "command": "python3 shortcut_regression.py --candidate-records delivery-batch/accepted.json --output batch-shortcut-regression.json",
+      "exit_code": 1,
+      "meaning": "Expected failing acceptance test: perfect shape shortcut retained."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_restriction.py /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100989/workspace/17592186100989.py",
+      "exit_code": 1,
+      "meaning": "Expected failing acceptance test: valid existing-target counterfactual rejected."
+    }
+  ]
+}

@@ -1,0 +1,313 @@
+{
+  "learner_operation": "Decode row then column, check existence against square order, and read the indicated entry; the existence decision must use both size and requested indices.",
+  "fixed_features": [
+    {
+      "feature": "Square matrix, one requested entry, row-before-column order",
+      "justification": "KP title and tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9 explicitly define this skill."
+    },
+    {
+      "feature": "Easy sizes 2\u20134 and scalar entries, five-option radio or one blank",
+      "justification": "All six source questions use these sizes and response forms. No need for matrix arithmetic."
+    },
+    {
+      "feature": "Numeric blank asks for an existing entry",
+      "justification": "Source 4b55801d-38e7-5449-9bcb-92a485dcdd1c is a scalar blank; absence uses radio text choice in bf0cde7f-5b94-5af7-b3da-c7304b62c190."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Existing versus absent target in radio",
+      "eligible_variation": "Hold square order and response format fixed and vary target across boundary. Size alone is insufficient evidence.",
+      "observed": "Every 2x2 radio is absent, all 3x3/4x4 radio existing. Existing 2x2 all_four is explicitly rejected."
+    },
+    {
+      "role": "Target coordinate/value",
+      "eligible_variation": "Any existing coordinate; signs, zero, radical can be targeted.",
+      "observed": "Varies for blanks; controlled target/value changes update key and explanation. Whole-bank recipes restrict radio coordinates."
+    },
+    {
+      "role": "Matrix letter, irrelevant entries and answer position",
+      "eligible_variation": "Rename or change non-target cell without changing answer; shuffle options.",
+      "observed": "Blank counterfactual preserves answer. Radio choices shuffled; shape cue survives UI shuffle."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "samples.json",
+      "sample_refs": [
+        "coverage.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 128, \"shape_response_counts\": {\"radio/4x4/existing\": 31, \"blank/4x4/existing\": 12, \"radio/3x3/existing\": 35, \"radio/2x2/absent\": 33, \"blank/2x2/existing\": 7, \"blank/3x3/existing\": 10}, \"target_coordinates_by_shape\": {\"2\": [[1, 1], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2]], \"3\": [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]], \"4\": [[1, 1], [1, 2], [1, 4], [2, 1], [2, 2], [2, 3], [2, 4], [3, 1], [3, 2], [3, 3], [3, 4], [4, 1], [4, 2], [4, 3], [4, 4]]}, \"signed_zero_radical_targets\": {\"negative\": 43, \"radical\": 13, \"missing\": 33, \"positive\": 38, \"zero\": 1}}"
+    },
+    {
+      "case": "delivery-sample/accepted.json",
+      "sample_refs": [
+        "coverage.json",
+        "delivery-sample/accepted.json"
+      ],
+      "result": "{\"count\": 128, \"shape_response_counts\": {\"radio/4x4/existing\": 31, \"blank/4x4/existing\": 12, \"radio/3x3/existing\": 35, \"radio/2x2/absent\": 33, \"blank/2x2/existing\": 7, \"blank/3x3/existing\": 10}, \"target_coordinates_by_shape\": {\"2\": [[1, 1], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2]], \"3\": [[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]], \"4\": [[1, 1], [1, 2], [1, 4], [2, 1], [2, 2], [2, 3], [2, 4], [3, 1], [3, 2], [3, 3], [3, 4], [4, 1], [4, 2], [4, 3], [4, 4]]}, \"signed_zero_radical_targets\": {\"negative\": 43, \"radical\": 13, \"missing\": 33, \"positive\": 38, \"zero\": 1}}"
+    },
+    {
+      "case": "batch-records.json",
+      "sample_refs": [
+        "coverage.json",
+        "batch-records.json"
+      ],
+      "result": "{\"count\": 5, \"shape_response_counts\": {\"radio/2x2/absent\": 1, \"blank/4x4/existing\": 2, \"blank/2x2/existing\": 1, \"radio/3x3/existing\": 1}, \"target_coordinates_by_shape\": {\"2\": [[2, 2], [2, 3]], \"3\": [[1, 2]], \"4\": [[1, 3], [3, 3]]}, \"signed_zero_radical_targets\": {\"missing\": 1, \"positive\": 3, \"negative\": 1}}"
+    },
+    {
+      "case": "delivery-batch/accepted.json",
+      "sample_refs": [
+        "coverage.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"count\": 5, \"shape_response_counts\": {\"radio/2x2/absent\": 1, \"blank/4x4/existing\": 2, \"blank/2x2/existing\": 1, \"radio/3x3/existing\": 1}, \"target_coordinates_by_shape\": {\"2\": [[2, 2], [2, 3]], \"3\": [[1, 2]], \"4\": [[1, 3], [3, 3]]}, \"signed_zero_radical_targets\": {\"missing\": 1, \"positive\": 3, \"negative\": 1}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Same 3x3 matrix, target a22 to a13, then separate a22 value 5 to -3.",
+      "expected": "Answer becomes 3 or -3 respectively; old answer 5 rejected; prompt and explanation follow.",
+      "observed": "Public generator gives expected answers and coherent prompts/solutions. Native grader accepts new keys and rejects stale 5. Actual UI screenshots show changed targets/values.",
+      "status": "passed",
+      "justification": "Tutorial row-column rule determines which value must be read.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a11 from 1 to -2 while targeting a22=5; separately rename A to R.",
+      "expected": "Answer stays 5; irrelevant entry/letter changes render consistently.",
+      "observed": "Key, explanation and native accepted value remain 5; prompt matrix/name changes.",
+      "status": "passed",
+      "justification": "Only row2 column2 determines the requested value.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep 2x2 B=[[1,-3],[0,5]] and all_four radio bank; change b32 to b22.",
+      "expected": "No such entry becomes 5 with the same matrix/response shape.",
+      "observed": "Baseline valid; generator rejects b22 with Easy absent bank is2x2 with exactly one index3. No after-record can render or grade because construction rejects it.",
+      "status": "failed",
+      "justification": "Tutorial defines all in-range entries; canonical b22 is an existing entry in a 2x2. The source absent outcome is incidental.",
+      "sample_refs": [
+        "minimal-shortcut.json",
+        "construction-restrictions.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "2x2 matrix with radio controls",
+      "subgroup": "samples.json / 2x2 radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the text No such entry without reading the requested index.",
+      "correct": 33,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice among five is 0.2; shape-only strategy is perfect. Current construction proves this conditional cue structurally; the batch observation alone is only one item.",
+      "sample_refs": [
+        "samples.json",
+        "construction-restrictions.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "samples.json / display radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 13,
+      "total": 63,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "samples.json / inline radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 3,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "2x2 matrix with radio controls",
+      "subgroup": "delivery-sample/accepted.json / 2x2 radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the text No such entry without reading the requested index.",
+      "correct": 33,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice among five is 0.2; shape-only strategy is perfect. Current construction proves this conditional cue structurally; the batch observation alone is only one item.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "construction-restrictions.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "delivery-sample/accepted.json / display radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 13,
+      "total": 63,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "delivery-sample/accepted.json / inline radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 3,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "2x2 matrix with radio controls",
+      "subgroup": "batch-records.json / 2x2 radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the text No such entry without reading the requested index.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice among five is 0.2; shape-only strategy is perfect. Current construction proves this conditional cue structurally; the batch observation alone is only one item.",
+      "sample_refs": [
+        "batch-records.json",
+        "construction-restrictions.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "batch-records.json / display radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "batch-records.json / inline radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "2x2 matrix with radio controls",
+      "subgroup": "delivery-batch/accepted.json / 2x2 radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the text No such entry without reading the requested index.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice among five is 0.2; shape-only strategy is perfect. Current construction proves this conditional cue structurally; the batch observation alone is only one item.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "construction-restrictions.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "delivery-batch/accepted.json / display radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "First stored choice",
+      "subgroup": "delivery-batch/accepted.json / inline radio",
+      "scope": "within_template",
+      "strategy": "Select first stored option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. No structural fixed-position rule observed; UI additionally permutes choices. Tiny batch subgroups are descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "requested easy difficulty",
+      "publisher normalization and stable identities",
+      "inventory and within-batch deduplication",
+      "fresh-practice eligibility, retirement and learner history exclusions",
+      "difficulty-weighted learner selection",
+      "actual UI option permutation and rendering"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "delivery-sample/delivery.json",
+      "delivery-sample/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-analysis.json",
+      "render/rendering.json"
+    ],
+    "result": "128/128 fresh samples and 5/5 batch survive. Shape cue remains perfect in its subgroup: 33/33 fresh and 1/1 batch. Captured source-plus-batch fresh pool has 2/2 such radios absent; eligibility/history/difficulty selection can remove but cannot repair this conditional invariant."
+  },
+  "limitations": [
+    "Finite audit does not certify absence of other shortcuts.",
+    "Current inventory has only original source questions, not stored generated instances.",
+    "No learner-specific weights/history or future publication IDs; selection conclusion is conditional over all reachable eligible subsets.",
+    "Evidence-only raw q-125593 carries historical E naming; current learner profile correctly uses R matching current source.",
+    "Moderate/hard are not selected by this easy job."
+  ]
+}

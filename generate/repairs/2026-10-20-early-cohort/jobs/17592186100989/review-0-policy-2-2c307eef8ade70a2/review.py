@@ -66,10 +66,11 @@ for idx,r in enumerate(batch+cp+replay+[minimal]):
  if f[':answer-field/type'].endswith('/radio'):
   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/value']==e else 'rejected','purpose':'independent prompt lookup'} for a in f[':answer-field/choices']]
  else:
-  if re.fullmatch('-?\d+',e):
+  if re.fullmatch(r'-?\d+',e):
    v=int(e);forms=[(e,True),(f'{v}.0',True),(f'{2*v}/2',True),(str(v+1),False)]
   else:forms=[(e,True),('sqrt(2)' if e==r'\sqrt{2}' else 'sqrt(3)',True),('2',False)]
   checks=[{'submitted':v,'expected':'accepted' if ok else 'rejected','purpose':'equivalent scalar or plausible wrong entry'} for v,ok in forms]
+ if idx in (6,7): checks.append({'submitted':'5','expected':'rejected','purpose':'stale base answer rejected after relevant target/value change'})
  cases.append({'label':f'record-{idx}','record':r,'checks':checks})
 rad=g.generate_easy(seed=19,profile='blank',parameters={'name':'G','matrix':[['0',r'\sqrt{2}'],['-1','2']],'i':1,'j':2})
 cases.append({'label':'radical-blank','record':rad,'checks':[{'submitted':v,'expected':e,'purpose':'legitimate radical notation or incorrect rational'} for v,e in [(r'\sqrt{2}','accepted'),('sqrt(2)','accepted'),('2^(1/2)','accepted'),('2','rejected')]]})

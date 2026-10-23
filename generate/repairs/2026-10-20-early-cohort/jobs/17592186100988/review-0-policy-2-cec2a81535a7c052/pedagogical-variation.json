@@ -1,0 +1,769 @@
+{
+  "learner_operation": "Read a requested matrix entry using row-first, column-second indexing, including recognizing a nonexistent entry.",
+  "fixed_features": [
+    {
+      "feature": "Row-first, column-second indexing in a small rectangular integer matrix",
+      "justification": "Tutorial34f3a63d explicitly defines index order; source questions require direct entry lookup."
+    },
+    {
+      "feature": "One response, five-choice radio or numeric blank",
+      "justification": "The seven captured practice questions use these response contracts. Blank requires an existing target because it supplies a scalar."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target row and column",
+      "eligible_variation": "All valid cells of source-supported rectangular shapes",
+      "observed": "44 positions covered in the four permitted shapes; canonical2x4 shape is rejected."
+    },
+    {
+      "role": "Target existence",
+      "eligible_variation": "Valid or one-index-overflow targets when the radio bank includes No such entry, independent of inline/display formatting",
+      "observed": "Eight missing-entry records in120; all forced inline. Fifty displayed radio records with No such entry always have a numeric key."
+    },
+    {
+      "role": "Numeric-only bank profile",
+      "eligible_variation": "Five unique numeric values for source3x2 and2x3 examples, as well as larger supported rectangles",
+      "observed": "Normal four_locations is the sole numeric-only radio profile and rejects every2-column matrix; source3x2 only replays in evidence-only mode."
+    },
+    {
+      "role": "Selected scalar, label and option position",
+      "eligible_variation": "Values -9..9 including zero, labels independently renamed, shuffled choices",
+      "observed": "Positive, zero and negative keys; controlled label renaming preserves the answer. No fixed numeric answer or answer position solves the batch."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source replay",
+      "sample_refs": [
+        "source-records.json",
+        "source-replay.json",
+        "regression-results.json"
+      ],
+      "result": "Seven practice banks/fields/prompts/available solutions match. Canonical2x4 runtime support fails."
+    },
+    {
+      "case": "Fresh seeds and boundary targets",
+      "sample_refs": [
+        "samples.json",
+        "boundary-records.json",
+        "resampling.json",
+        "coverage-shortcuts.json"
+      ],
+      "result": "120 samples from720010..720129;264 attempted parameter sets;44 explicit in-bounds targets.112 valid and8 absent. All five default profiles observed."
+    },
+    {
+      "case": "Exact runner batch and surviving records",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "selection-analysis.json",
+        "ui-position-probes.json"
+      ],
+      "result": "Five of five accepted: five numeric keys, four radios and one blank. Two displayed No such entry options are always wrong. No complete-answer batch shortcut demonstrated; absence of a branch in five draws is not alone called a defect."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold matrix [[1,2,3],[4,5,6]] fixed; change target(1,2) to(2,2) for blank and radio.",
+      "expected": "Answer changes2\u21925; old response rejected; prompt and explanation follow new target.",
+      "observed": "Both formats passed native grading and actual rendered prompt/solution checks.",
+      "status": "passed",
+      "justification": "The source lesson defines the target by both indices.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-verification.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename matrix A\u2192Y, or change non-target cell(1,3) from3 to8 while requesting(1,2).",
+      "expected": "Answer remains2; notation or repeated matrix follows changed context.",
+      "observed": "Answer preserved; prompt/solution changed coherently and native grader accepted2.",
+      "status": "passed",
+      "justification": "Neither label spelling nor non-target entry determines the requested value.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-verification.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold display radio layout and [[1,2,3],[4,5,6]] fixed; change a12 to a32 and use the missing-entry bank.",
+      "expected": "Displayed question remains available with No such entry as key.",
+      "observed": "Normal API rejects display_radio+overflow_locations. Changing layout to inline permits the same target and grades correctly.",
+      "status": "failed",
+      "justification": "Tutorial2970 defines existence by bounds, not layout; q13496 demonstrates the missing-entry response and q13488 demonstrates valid entry with the same option.",
+      "sample_refs": [
+        "regression-results.json",
+        "counterfactual-records.json",
+        "counterfactual-verification.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Stored answer position",
+      "subgroup": "all radio",
+      "scope": "overall",
+      "strategy": "choose stored position 1",
+      "correct": 21,
+      "total": 99,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "all radio",
+      "scope": "overall",
+      "strategy": "choose stored position 2",
+      "correct": 14,
+      "total": 99,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "all radio",
+      "scope": "overall",
+      "strategy": "choose stored position 3",
+      "correct": 21,
+      "total": 99,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "all radio",
+      "scope": "overall",
+      "strategy": "choose stored position 4",
+      "correct": 20,
+      "total": 99,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "all radio",
+      "scope": "overall",
+      "strategy": "choose stored position 5",
+      "correct": 23,
+      "total": 99,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display radio with No such entry",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 12,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display radio with No such entry",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 7,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display radio with No such entry",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 10,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display radio with No such entry",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 12,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display radio with No such entry",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 9,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Display-math layout with a No such entry option",
+      "subgroup": "display radio with No such entry / samples.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Eliminate No such entry using display layout only",
+      "correct": 50,
+      "total": 50,
+      "baseline": 0.8,
+      "disposition": "defect",
+      "conclusion": "Baseline .8 is safe-elimination chance for an arbitrary one of five options. This predicts one elimination, not the final numeric answer. Code fixes absence to inline formatting. Native grading verifies the text option is rejected in every tested member; delivery preserves the cue.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_noperiod_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 3,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_noperiod_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 7,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_noperiod_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_noperiod_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_noperiod_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 7,
+      "total": 29,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 3,
+      "total": 29,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 6,
+      "total": 29,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 5,
+      "total": 29,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 8,
+      "total": 29,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_should_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 4,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_should_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 1,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_should_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 4,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_should_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "display_should_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_no_entry_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_no_entry_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_no_entry_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_no_entry_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_no_entry_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 1",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 2",
+      "correct": 1,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 3",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 4",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "inline_radio",
+      "scope": "within_template",
+      "strategy": "choose stored position 5",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Stored order is not UI order; UI renderer shuffled choices, so stored-order predictors alone are not learner shortcuts. Baseline is uniform random choice among five. Internal inline absence and numeric branches share a visible layout, so their separate metadata names cannot support a learner shortcut claim.",
+      "sample_refs": [
+        "samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Display-math layout with a No such entry option",
+      "subgroup": "display radio with No such entry / batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Eliminate No such entry using display layout only",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.8,
+      "disposition": "defect",
+      "conclusion": "Baseline .8 is safe-elimination chance for an arbitrary one of five options. This predicts one elimination, not the final numeric answer. Code fixes absence to inline formatting. Native grading verifies the text option is rejected in every tested member; delivery preserves the cue.",
+      "sample_refs": [
+        "batch.json",
+        "coverage-shortcuts.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "four batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose displayed position 1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. No position solves the complete batch; these counts describe one actual UI rendering.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "four batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose displayed position 2",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. No position solves the complete batch; these counts describe one actual UI rendering.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "four batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose displayed position 3",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. No position solves the complete batch; these counts describe one actual UI rendering.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "four batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose displayed position 4",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. No position solves the complete batch; these counts describe one actual UI rendering.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    },
+    {
+      "cue": "Actual displayed answer position",
+      "subgroup": "four batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose displayed position 5",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline .2. No position solves the complete batch; these counts describe one actual UI rendering.",
+      "sample_refs": [
+        "batch.json",
+        "ui-position-probes.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator profile selection and whole-instance rejection/resampling",
+      "requested difficulty",
+      "publisher validation and stable identities",
+      "captured inventory and within-batch deduplication",
+      "retirement and complete-key eligibility",
+      "learner history exclusion and difficulty-first selection rules",
+      "actual UI answer ordering"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-sample/accepted.json",
+      "delivery-batch/accepted.json",
+      "selection-analysis.json",
+      "ui-position-probes.json"
+    ],
+    "result": "120/120 fresh samples and5/5 batch survive actual shared delivery. Decision counts and layout cue are unchanged. Inventory basis5665 has no generated records; five eligible originals and two incomplete originals. Selector has no corrective layout/role balancing."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of all shortcuts.",
+    "Layout cue predicts an exclusion/existence decision, not the final numeric value.",
+    "No supplied learner history or policy weights; selection assessed from actual rules and fresh-pool eligibility, not a prediction of a particular learner\u2019s next question.",
+    "Source canonical example has no answer field capture; its numeric answer and matrix are sufficient to demonstrate the unsupported2x4 shape.",
+    "Review covers requested easy difficulty; moderate/hard authored extensions are not certified."
+  ]
+}
