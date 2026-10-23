@@ -1,0 +1,1508 @@
+{
+  "learner_operation": "Decompose y=u^(+/-1/2), differentiate outer and inner, multiply and substitute; evaluate at target x for slopes, adding the observed cubic derivative when present.",
+  "fixed_features": [
+    {
+      "feature": "Square-root or reciprocal-square-root outer function and linear/quadratic inner polynomial",
+      "justification": "All captured KP questions and e-182 use these operations."
+    },
+    {
+      "feature": "Positive square radicand at evaluated point",
+      "justification": "Preserves real differentiability and source easy numeric arithmetic."
+    },
+    {
+      "feature": "Five radio options or a math blank",
+      "justification": "Observed response contracts. No need to fix which position or scalar role is correct."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target and slope sign",
+      "eligible_variation": "Vary target and coefficients within real differentiable domain, including legitimate zero slopes.",
+      "observed": "Source/template coverage retained; same quadratic evaluated at 1,5,9 gives positive, zero, negative slopes."
+    },
+    {
+      "role": "Correct scalar and choice position",
+      "eligible_variation": "Vary distractors and correct numeric rank without a value-shape cue identifying the answer.",
+      "observed": "All five signed ranks exercised; irregular spacing repairs old cue, but nearest-zero remains predictive within linear-root slope template."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "reciprocal_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": 7, \"b\": 1}, {\"a\": -5, \"b\": -5}, {\"a\": 6, \"b\": 10}, {\"a\": 8, \"b\": -1}, {\"a\": 4, \"b\": 1}], \"answers\": [\"-7/(2*(7*x + 1)**(3/2))\", \"5/(2*(-5*x - 5)**(3/2))\", \"-3/(6*x + 10)**(3/2)\", \"-4/(8*x - 1)**(3/2)\", \"-2/(4*x + 1)**(3/2)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [2, 3, 1, 3, 3], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_spaced_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": -5, \"b\": 8}, {\"a\": -7, \"b\": -8}, {\"a\": -7, \"b\": -9}, {\"a\": 5, \"b\": -7}, {\"a\": -6, \"b\": -7}], \"answers\": [\"-5/(2*sqrt(8 - 5*x))\", \"-7/(2*sqrt(-7*x - 8))\", \"-7/(2*sqrt(-7*x - 9))\", \"5/(2*sqrt(5*x - 7))\", \"-3/sqrt(-6*x - 7)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [0, 2, 4, 2, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_constfirst_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": -6, \"b\": 6}, {\"a\": 7, \"b\": -6}, {\"a\": 2, \"b\": -2}, {\"a\": 3, \"b\": -7}, {\"a\": 7, \"b\": 11}], \"answers\": [\"-3/sqrt(6 - 6*x)\", \"7/(2*sqrt(7*x - 6))\", \"1/sqrt(2*x - 2)\", \"3/(2*sqrt(3*x - 7))\", \"7/(2*sqrt(7*x + 11))\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [4, 3, 2, 2, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": 6, \"b\": 99, \"t\": -3}, {\"a\": -7, \"b\": 43, \"t\": 1}, {\"a\": -3, \"b\": 18, \"t\": 3}, {\"a\": 6, \"b\": 36, \"t\": 0}, {\"a\": -5, \"b\": -6, \"t\": -3}], \"answers\": [\"1/3\", \"-7/12\", \"-1/2\", \"1/2\", \"-5/6\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [3, 0, 4, 1, 2], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": 3, \"b\": -12}], \"answers\": [\"-3/(2*(3*x - 12)**(3/2))\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "reciprocal_blank_braced",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": 4, \"b\": 2}], \"answers\": [\"-2/(4*x + 2)**(3/2)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": 3, \"b\": 7, \"c\": 0}], \"answers\": [\"(3*x + 7/2)/sqrt(3*x**2 + 7*x)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": 6, \"b\": -1}], \"answers\": [\"3/sqrt(6*x - 1)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": -4, \"b\": 10, \"c\": 0, \"t\": 2}], \"answers\": [\"3/8\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_linear_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": 7, \"b\": 2}, {\"a\": 8, \"b\": 5}, {\"a\": -2, \"b\": -10}, {\"a\": 7, \"b\": -9}, {\"a\": 4, \"b\": 4}], \"answers\": [\"7/(2*sqrt(7*x + 2))\", \"4/sqrt(8*x + 5)\", \"-1/sqrt(-2*x - 10)\", \"7/(2*sqrt(7*x - 9))\", \"2/sqrt(4*x + 4)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [3, 4, 1, 3, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_positive_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": -3, \"b\": 25, \"t\": 0}, {\"a\": -6, \"b\": 13, \"t\": -2}, {\"a\": -4, \"b\": 68, \"t\": 1}, {\"a\": 8, \"b\": 28, \"t\": 1}, {\"a\": 4, \"b\": 5, \"t\": -1}], \"answers\": [\"-3/10\", \"-3/5\", \"-1/4\", \"2/3\", \"2\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [3, 0, 3, 4, 2], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": -4, \"b\": -11, \"t\": -3}], \"answers\": [\"-2\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 1, \"parameters\": [{\"a\": 2, \"b\": -2, \"c\": 0, \"t\": 2}], \"answers\": [\"3/2\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": 2, \"b\": 0, \"c\": 112, \"t\": 4}, {\"a\": -5, \"b\": 0, \"c\": 70, \"t\": -3}, {\"a\": -3, \"b\": 0, \"c\": 192, \"t\": -4}, {\"a\": -6, \"b\": 0, \"c\": 40, \"t\": -2}, {\"a\": -3, \"b\": 0, \"c\": 91, \"t\": 3}], \"answers\": [\"2/3\", \"3\", \"1\", \"3\", \"-9/8\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [1, 0, 3, 3, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sum_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"n\": 5, \"parameters\": [{\"a\": -6, \"b\": 82, \"t\": 3, \"k\": 4}, {\"a\": 4, \"b\": 4, \"t\": 3, \"k\": 2}, {\"a\": -8, \"b\": 97, \"t\": 2, \"k\": 2}, {\"a\": -6, \"b\": 10, \"t\": 1, \"k\": -2}, {\"a\": 3, \"b\": 61, \"t\": -4, \"k\": -3}], \"answers\": [\"861/8\", \"109/2\", \"212/9\", \"-15/2\", \"-2013/14\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [1, 0, 2, 3, 1], \"attempts\": [1, 1, 1, 1, 1]}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold y=sqrt(-x^2+10x); target x=1,5,9.",
+      "expected": "Slopes 4/3,0,-4/3 with matching substitutions, keys, rendered text and grading.",
+      "observed": "All matched. Native grader accepts independent equivalent entries and rejects shifted answers; screenshots inspected.",
+      "status": "passed",
+      "justification": "q-342792 and q-342789 assess evaluated chain-rule slopes; target assignment is incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-extra/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold y=sqrt(9+4x), x=0, role=2; seeds 610 and 611 change distractors/order.",
+      "expected": "Preserve answer 2/3, prompt, solution and grader outcome.",
+      "observed": "Preserved; banks differ, both actual UI views and all radio grades checked.",
+      "status": "passed",
+      "justification": "Source radios assess derivative value, not distractor identity or display position.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-extra/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first_position",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_sign",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique sign. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_sign",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique sign. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Initial 4/5 nearest-zero signal independently confirmed by 8/15 fresh unforced draws; bypasses all differentiation. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 1 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_denominator",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 1 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_denominator",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 1 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_sign",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique sign. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 1 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_denominator",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_denominator",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_sign",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique sign. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 4 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_denominator",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_denominator",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_sign",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique sign. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by first position. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_value",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "median_value",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by median value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_value",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum value. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "minimum_absolute",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by minimum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "maximum_absolute",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by maximum absolute. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_length",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum length. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_length",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum length. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 2 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_minimum_denominator",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique minimum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 3 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "unique_maximum_denominator",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Select option by unique maximum denominator. Unique-feature strategies abstain on ties.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No reproducible shortcut established from this bounded subgroup; small counts are not universal guarantees. One of five choices gives .2 random baseline; 0 ties/abstentions excluded.",
+      "sample_refs": [
+        "independent-samples.json",
+        "cues-independent-samples.json"
+      ]
+    },
+    {
+      "cue": "smallest absolute answer",
+      "subgroup": "fresh slope_sqrt_radio holdout",
+      "scope": "within_template",
+      "strategy": "Ignore the function and target; select the unique answer nearest zero.",
+      "correct": 8,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/15 fresh successes vs one-of-five baseline; binomial upper tail 0.00424 for this held-out strategy. A probabilistic shortcut, not a universal key. All 15 draws retained; delivery preserves all.",
+      "sample_refs": [
+        "focused-samples.json",
+        "focused-cues.json",
+        "nearest-zero-fresh.json"
+      ]
+    },
+    {
+      "cue": "smallest absolute answer",
+      "subgroup": "delivered holdout",
+      "scope": "within_template",
+      "strategy": "Ignore the function and target; select the unique answer nearest zero.",
+      "correct": 8,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/15 fresh successes vs one-of-five baseline; binomial upper tail 0.00424 for this held-out strategy. A probabilistic shortcut, not a universal key. All 15 draws retained; delivery preserves all.",
+      "sample_refs": [
+        "delivery-focused/accepted.json",
+        "delivered-analysis.json"
+      ]
+    },
+    {
+      "cue": "smallest absolute answer",
+      "subgroup": "exact delivered batch: sole radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select 7/6, the displayed value nearest zero.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "One-of-five baseline. This is a concrete occurrence of the independently reproduced family bias; one item alone would not establish it. Four batch blanks are not bypassed by this strategy.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivered-analysis.json",
+        "nearest-zero-fresh.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "equal option spacing",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive spacing by visible coefficient, negating for reciprocal.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Earlier universal cue removed; all current banks irregular. Saved failing batch triggers unchanged regression check; five-option random baseline .2.",
+      "sample_refs": [
+        "regression-results.json",
+        "old-failing-batch.json",
+        "independent-samples.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "requested difficulty",
+      "publisher validation and stable identities",
+      "captured-inventory and within-batch deduplication",
+      "retirement and learner-history eligibility rules",
+      "difficulty-first learner selection, conditional within-band distribution"
+    ],
+    "sample_refs": [
+      "delivered-analysis.json",
+      "delivery-batch/accepted.json",
+      "delivery-focused/accepted.json",
+      "selection-results.json",
+      "inventory-status.json",
+      "packaging-results.json"
+    ],
+    "result": "All 5 actual batch, 47 initial samples, and 15 focused records survive. Nearest-zero bias survives (8/15 focused; 1/1 batch radio). Three formerly affected stored radios are retired; no eligible stored generated radio remains. Source radios are originals, not generated."
+  },
+  "limitations": [
+    "Nearest-zero shortcut is probabilistic (8/15 fresh), not claimed to solve every generated question.",
+    "No shortcut-free guarantee from finite samples; ancillary 5-case cue groups are descriptive.",
+    "Inventory basis 5663 only; future publications, entity IDs, policy weights and learner histories may change selection.",
+    "Unchanged source data and sampling rules verified against prior independent package; broad unchanged-domain evidence reused, not re-audited exhaustively."
+  ]
+}

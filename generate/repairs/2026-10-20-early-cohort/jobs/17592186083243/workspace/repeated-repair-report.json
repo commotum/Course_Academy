@@ -1,0 +1,75 @@
+{
+  "status": "ready",
+  "findings": [
+    "cf8dcbf41937f26e0c48",
+    "f1db9b4f2ce0efa72b7b"
+  ],
+  "change": "Normalize rational exponents of every nonempty e-root collection, accounting for multiplicity even when only one distinct root atom is stored. Preserve existing positivity, domain and work-limit guards.",
+  "engine_patch": "repeated-engine-repair.patch",
+  "engine_binding": "repeated-engine-binding.json",
+  "runtime_package_unchanged": true,
+  "before": "repeated-exp-before-execution.json",
+  "after": "repeated-exp-after-execution.json",
+  "regression_sensitivity": "Updated retained regression exits 1 against the previous native harness (repeated-regression-before.log) and passes after rebuilding (repeated-regression-after.log).",
+  "source_fidelity": {
+    "affected_source_replays": 2,
+    "unchanged_prior_complete_banks": 22,
+    "prior_evidence": "prior-evidence/source-replay-results.json"
+  },
+  "correctness": {
+    "fresh_hard": 8,
+    "requested_easy": 5,
+    "easy_probes": 22,
+    "evidence": [
+      "regression-math.json",
+      "current-math.json"
+    ]
+  },
+  "grading": {
+    "symbolic_tests": 18,
+    "native_reports": {
+      "regression-grader-result.json": {
+        "accepted_checks": 25,
+        "database_writes": 0,
+        "documented_unresolved_checks": 0,
+        "entry_point": "course_academy_engine::learning::grade_field",
+        "rejected_checks": 29
+      },
+      "regression-delivered-grader-result.json": {
+        "accepted_checks": 25,
+        "database_writes": 0,
+        "documented_unresolved_checks": 0,
+        "entry_point": "course_academy_engine::learning::grade_field",
+        "rejected_checks": 29
+      },
+      "current-grader-result.json": {
+        "accepted_checks": 54,
+        "database_writes": 0,
+        "documented_unresolved_checks": 0,
+        "entry_point": "course_academy_engine::learning::grade_field",
+        "rejected_checks": 199
+      }
+    }
+  },
+  "decision_variation": {
+    "validation": {
+      "batch": 5,
+      "delivered_batch": 5,
+      "probe_records": 22,
+      "delivered_probe_records": 22,
+      "runtime_unchanged": true,
+      "result": "passed"
+    },
+    "counterfactuals": "current-counterfactuals.json",
+    "within_template_probes": "current-shortcuts.json",
+    "source_scope": "instructional-account.md"
+  },
+  "rendering": "repeated-render-inspection.json",
+  "inventory": "repeated-inventory-check.json",
+  "affected_inventory": "affected-inventory.json",
+  "limitations": [
+    "Inventory and delivery conclusions use captured basis 5644; live learner history and weighted selection were not exercised.",
+    "Native algebra retains its existing root-degree bound; this repair covers repeated factors within that supported representation.",
+    "Canonical e-596 lacks captured answer fields; prior complete-bank replay covers the 22 practice sources."
+  ]
+}

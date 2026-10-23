@@ -1,0 +1,194 @@
+{
+  "learner_operation": "Inspect the displayed array, count rows and columns independently, and report rows \u00d7 columns. Entries and labels do not determine dimensions.",
+  "fixed_features": [
+    {
+      "feature": "One rectangular array and ordered rows \u00d7 columns answer",
+      "justification": "Tutorial d68f01b8-8bc6-59a1-8d80-d284abbcdf6e defines dimensions this way."
+    },
+    {
+      "feature": "Five radio choices or two numeric blanks",
+      "justification": "These are the complete response contracts in supplied source questions."
+    },
+    {
+      "feature": "Normal row and column counts independently range 2 through 6",
+      "justification": "Conservative finite domain spanning observed source workloads; covers 25 ordered decisions. Vector tutorial permits a later extension, but no supplied target question requires a vector and omission alone does not establish inadequate practice."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Row count and column count",
+      "eligible_variation": "Change either independently; equal counts in original blanks are incidental.",
+      "observed": "All 25 ordered shapes work in each template; both blank templates produce nonsquare matrices."
+    },
+    {
+      "role": "Correct radio dimension pair and position",
+      "eligible_variation": "Any of five distinct bank members can be correct; position and label should not reveal the key.",
+      "observed": "Normal construction samples a bank then chooses its correct shape uniformly. All five answer positions occur in 30 radio samples. Fixed-seed explicit boundary fixtures have correlated shuffle positions; they are not the delivered sampling distribution."
+    },
+    {
+      "role": "Name and entry values",
+      "eligible_variation": "Change names and entries without altering dimension answer.",
+      "observed": "Controlled A-to-Z rename and first entry 1-to-0 preserve 2\u00d73 in all three templates."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All declared shapes in all three templates",
+      "sample_refs": [
+        "boundary-records.json",
+        "coverage-results.json"
+      ],
+      "result": "75 independent explicit cases; 25 ordered dimensions per template; all answers and solutions match."
+    },
+    {
+      "case": "Random and rejected/resampled batch coverage",
+      "sample_refs": [
+        "normal-records.json",
+        "finite-batch-records.json",
+        "construction-results.json"
+      ],
+      "result": "90 random cases; full finite batch 25 unique shapes after 54 repeated-shape rejections."
+    },
+    {
+      "case": "Exact runner batch after delivery",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ],
+      "result": "Five shapes 6\u00d72, 3\u00d73, 4\u00d76, 2\u00d72, 5\u00d75; 5/5 survive; no sign-only repeat. Radio and where-blank subgroups contain one member each, so no repeated shortcut inferred from a singleton."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Append row [7,8,9] to fixed 2\u00d73 array; keep name, original entries, template and radio bank fixed.",
+      "expected": "Answer changes from 2\u00d73 to 3\u00d73; column count remains 3; old row answer must fail.",
+      "observed": "All three templates update prompt, solution and accepted response. Native grader rejects old row count and accepts new count; radio checks every bank member. Actual UI screenshots show the added row.",
+      "status": "passed",
+      "justification": "Row count is defining evidence under tutorial 2968.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename A to Z and change first entry 1 to 0; preserve all row and column boundaries.",
+      "expected": "2\u00d73 remains correct and all equivalent entries retain grading outcomes.",
+      "observed": "All templates preserve dimension key, solution counts and native grader outcomes; rendered name/entry change is visible. Choice IDs and order can change because identities are content-derived.",
+      "status": "passed",
+      "justification": "Values and matrix name are not arguments of the dimensions rule.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "First answer position",
+      "subgroup": "radio",
+      "scope": "within_template",
+      "strategy": "Select first offered choice without counting",
+      "correct": 4,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5: random choice among five radio options.",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Blank prompt wording: where-dual-blank",
+      "subgroup": "where-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then repeat that number in the column blank",
+      "correct": 5,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5: after counting rows, uniform guess among five permitted column counts. Only 5/30 successes; wording does not imply equal dimensions.",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Blank prompt wording: let-dual-blank",
+      "subgroup": "let-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then repeat that number in the column blank",
+      "correct": 5,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5: after counting rows, uniform guess among five permitted column counts. Only 5/30 successes; wording does not imply equal dimensions.",
+      "sample_refs": [
+        "normal-records.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Let wording in actual runner batch",
+      "subgroup": "let-dual-blank, seed 928264887",
+      "scope": "within_template",
+      "strategy": "Count rows then repeat as columns",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Only 1/3 correct; two nonsquare counterexamples survive delivery. Baseline is uniform column guess among five permitted counts, not a significance claim for three cases.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Matrix shape and row/column layout",
+      "subgroup": "All 90 independent random records",
+      "scope": "overall",
+      "strategy": "Count displayed rows and columns in order",
+      "correct": 90,
+      "total": 90,
+      "baseline": 0.04,
+      "disposition": "intended_skill",
+      "conclusion": "Shape is answer-bearing evidence by the lesson definition. Counting it is the intended operation; baseline 1/25 is a blind ordered-dimension guess.",
+      "sample_refs": [
+        "normal-records.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator construction",
+      "semantic-shape rejection/resampling",
+      "requested difficulty",
+      "publication normalization and validation",
+      "inventory and within-batch deduplication",
+      "retirement and practice eligibility",
+      "learner history exclusion and easy-band selection rules"
+    ],
+    "sample_refs": [
+      "construction-results.json",
+      "delivery-normal/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-selection-results.json"
+    ],
+    "result": "90/90 independent and 5/5 runner records survive. Shape distributions unchanged. All generated records are easy, so positive easy-band weighting does not select a shape by template; histories remove seen records. Captured current bank has 12 easy and two unrated candidates; none is retired."
+  },
+  "limitations": [
+    "No finite probe rules out every incidental shortcut.",
+    "Source q-139628 replay is unsupported and fails separately; no decision-variation pass waives source fidelity.",
+    "Vectors are not generated; finite observed-workload domain is disclosed, not claimed as all possible matrix dimensions.",
+    "Live policy/history and concurrent inventory changes are not captured. See exact conditional selection analysis in delivery-selection-results.json."
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "verdict": "revise",
+  "summary": "The spacing defect is repaired, but revised answer banks favor a nearest-zero shortcut: 8/15 fresh successes versus a 20% guessing baseline. The actual batch radio also exhibits it. The other seven checks passed; previously affected stored radios are retired. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate radical functions using the chain rule, then evaluate at the specified point for tangent slopes.",
+    "reasoning_steps": [
+      "Identify the inner polynomial and outer power.",
+      "Differentiate both and multiply.",
+      "Substitute and simplify.",
+      "Evaluate at the requested point when applicable."
+    ],
+    "invariants": [
+      "Preserve observed function families, difficulty and response formats.",
+      "Require positive radicands at evaluation points.",
+      "Retain the inner-derivative factor, including legitimate zero slopes."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs and valid evaluation points.",
+      "Vary positive, negative and zero slopes where supported.",
+      "Vary distractors and correct-choice positions without revealing the answer through incidental cues."
+    ],
+    "source_refs": [
+      "8fcdb2c8-71ca-5bfa-b7fe-49f8f2c05bbb (e-182)",
+      "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+      "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+      "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate outer and inner functions, multiply, then substitute."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "canonical-record.json",
+        "scope-results.json"
+      ],
+      "details": "Replayed all 17 source questions and the canonical case. Complete radio banks and mathematical keys match. Missing source fields and historical blank-submission differences are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "verify_saved.py",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent differentiation verified 89 records on their real domains, including unique correct radio answers."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "independent-samples.json",
+        "focused-samples.json",
+        "batch-records.json"
+      ],
+      "details": "All 15 templates and five radio scalar ranks exercised. Parameter variety remains adequate; the separate answer-bank cue fails decision variation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "generator-change.diff",
+        "provenance.json"
+      ],
+      "details": "Observed function families, reasoning stages, difficulty assignments and response formats remain represented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "414 native-grader checks passed: 127 accepted and 287 rejected, including equivalent free entries. No unresolved cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-extra/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendered 14 records without reported errors. Eight representative screenshots were inspected, including controlled pairs and the actual batch radio."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "regression-results.json",
+        "commands.md",
+        "evidence-contract.json"
+      ],
+      "details": "Exact dependencies, deterministic batch replay, relocation, boundary rejection and package immutability passed. The retained spacing check rejects its old counterexample and passes current outputs."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "nearest-zero-fresh.json",
+        "nearest-zero-delivery-focused-accepted.json",
+        "nearest_zero_regression.py",
+        "delivered-analysis.json",
+        "selection-results.json",
+        "inventory-status.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Nearest-zero selection succeeds on 8/15 fresh linear-root slope radios and the actual batch radio. Delivery preserves the cue. Relevant and irrelevant counterfactual checks passed. The three previously affected stored radios are retired; no eligible stored generated radio remains."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The replacement arithmetic_bank disproportionately makes the correct slope the option nearest zero. Ignoring the function and target and choosing the smallest absolute answer succeeds on 4/5 discovery cases and 8/15 fresh unforced cases, versus a 20% guessing baseline. The fresh-case binomial upper tail is 0.00424. This is a probabilistic shortcut, not a universal key. All fresh cases survive delivery, and the actual batch\u2019s sole radio exhibits it. The distractor radius floor and denominator weighting leave small correct slopes unusually close to zero.",
+      "source_refs": [
+        "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+        "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+        "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B nearest_zero_regression.py; exit 1 reproduces 8/15 using easy slope_sqrt_radio seeds 764300..764314. Passing delivery-focused/accepted.json also reproduces the failure. Minimal actual-batch witness: seed 3173462203, a=7,b=37,t=-4. For y=sqrt(37+7x) at x=-4, choices are 7/6,31/13,-39/14,3,40/13. The smallest absolute value is the correct 7/6. See batch-records.json and render/question-004.png. The single witness alone is not treated as statistical proof.",
+      "requested_change": "Revise the family-wide arithmetic_bank construction so small correct slopes are not systematically distinguished by absolute magnitude. Address absolute-rank cues alongside signed rank and spacing while preserving source families, valid targets and deterministic replay. Retain the fresh-seed and explicit-candidate regression through delivery. Do not repair this by changing the seed or hand-picking a batch; the runner should regenerate its batch after package repair."
+    }
+  ]
+}

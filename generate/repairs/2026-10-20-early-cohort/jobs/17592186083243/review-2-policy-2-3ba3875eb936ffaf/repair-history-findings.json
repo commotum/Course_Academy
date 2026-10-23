@@ -1,0 +1,35 @@
+[
+  {
+    "id": "cf8dcbf41937f26e0c48",
+    "finding": {
+      "kind": "grading",
+      "description": "For x=e^(1/t), y=1/sqrt(t^2+1), t=2, the correct slope is 8*sqrt(5)/(25*e^(1/2)). The valid response 8/(5*sqrt(5)*exp(1/2)) returns unresolved. Equivalent e^(-1/2) notation is accepted. This is a shared-engine capability blocker affecting the hard blank family, not the five easy batch records.",
+      "source_refs": [
+        "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+        "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)",
+        "2399836b-91ff-571b-9534-908c753b0355 (q-15475)"
+      ],
+      "reproduction": "From evidence_root run: /home/jake/Developer/Course_Academy/generate/runs/current/check-engine minimal-grader-input.json minimal-grader-result.json. The record uses generate('hard',917,'reciprocal_exp_root_blank',parameters={'a':1,'b':1,'c':1,'u':2}). Exact failure output is saved in minimal-grader-execution.json.",
+      "requested_change": "Add shared-engine equivalence support between exp(q) and e^q for rational q, retaining strict acceptance and wrong-answer rejection tests. Engine repair is outside this job's authorized scope; route this as an engine blocker. Do not remove the source family or restrict valid learner notation."
+    },
+    "source_hash": "8b7133418fd8d37d542f346613f64f0f4d55898ca902135a9aa2646876683e12",
+    "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-0-policy-2-da51d3ee0942346e",
+    "attempt": 0
+  },
+  {
+    "id": "f1db9b4f2ce0efa72b7b",
+    "finding": {
+      "kind": "grading",
+      "description": "For x=e^(1/t), y=1/sqrt(t^2+1), t=2, the correct slope is 8*sqrt(5)/(25*sqrt(e)). The equivalent response 8*exp(-1/4)*exp(-1/4)/(5*sqrt(5)) returns unresolved. This affects the supported hard blank family, including delivered records; the five easy batch records are unaffected.",
+      "source_refs": [
+        "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+        "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-grading.py. Uses seed 66081, template reciprocal_exp_root_blank, parameters {a:1,b:1,c:1,u:2}. The strict expected=accepted check exits 1 with unresolved.",
+      "requested_change": "Repair shared-engine canonicalization of repeated rational powers of e. In symbolic.rs reduce_term, e_roots.len()>1 misses one root atom with multiplicity two: two fourth-root factors must normalize to a square root. Retain the strict reproduction and wrong-answer controls. Preserve the source family and valid learner notation."
+    },
+    "source_hash": "8b7133418fd8d37d542f346613f64f0f4d55898ca902135a9aa2646876683e12",
+    "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186083243/review-1-policy-2-adc52c8c9e3abed7",
+    "attempt": 1
+  }
+]

@@ -1,0 +1,1 @@
+Source and unchanged evidence reused with provenance. Current source replay, fresh math and grading suite, CLI and runtime executed; see current-* reports. Delivery, renderer and final contract audit pending.
