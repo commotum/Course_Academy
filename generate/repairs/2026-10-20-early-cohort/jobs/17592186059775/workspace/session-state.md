@@ -1,34 +1,17 @@
-# Current state — author-337
+# Current state — author-340
 
-Preserved all completed generator repairs and runtime files. Read feedback,
-the two retained findings and latest history event (337 total events).
-Reproduced the exact latest failure first:
+Read feedback and both retained findings in repair-history.json; reused the existing instructional account, source analysis, candidate and executable regressions. Inspected all 12 supplied source questions, the lesson, canonical example and prerequisite context. No runtime, manifest, engine, runner, publication, database or other-job changes.
+
+Exact latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed `scripts/generator_pipeline.py:723` rejects the unchanged
-package before retained regressions or sampling.
+Exit 1: installed `scripts/generator_pipeline.py:723` rejects the unchanged package before regressions and sampling. The retained evidence-only finding explicitly requires runtime preservation.
 
-Ran each registered regression once and the retained UI binding check.
-Commands, logs, exit codes and unchanged runtime hashes:
-`evidence/current-author-verification.json`.
+Ran the registered regressions once and checked retained UI binding:
+- `checks/check_all.py`: exit 0 (CLI/relocation, source banks, independent math, native grading, shared delivery and captured inventory).
+- `checks/check_batch_selection.py`: exit 0 (historical seed 4258185931, controlled target roles, delivery and native grading).
+- `checks/check_evidence_contract.py`: exit 1. Evidence bundle, relocation and negative controls pass; installed runner handoff fails.
+- `checks/check_render_binding.py`: exit 0. Reinspected `evidence/author8-render/question-001.png`; readable matrices, controls and elimination steps. No new render was needed for unchanged records.
 
-- `checks/check_all.py`: exit 0; relocated CLI, ten complete source banks,
-  independent mathematics, native grading, shared delivery and inventory checks.
-- `checks/check_batch_selection.py`: exit 0; exact reported seed, delivered
-  shortcut and controlled target-change/native-grader checks.
-- `checks/check_evidence_contract.py`: exit 1; evidence bundle and missing-file/
-  wrong-root controls pass, but installed runner handoff remains failing.
-- `checks/check_render_binding.py`: exit 0; retained actual UI records match
-  current delivery. Inspected `evidence/author8-render/question-001.png`:
-  matrices, choices and elimination steps are readable.
+Commands, results, logs and unchanged runtime hashes: `evidence/current-author-verification.json`.
 
-No new mathematical or instructional defect was demonstrated. The retained
-review explicitly requests a report-only correction and preservation of the
-runtime. Changing runtime bytes solely to bypass the identity gate would not
-repair the defect. The strict failing check remains registered.
-
-Unfinished action: runner owner reviews/applies the already staged
-`runner-fix/evidence-only-rejection.patch` to `scripts/generator_pipeline.py`,
-then reruns the installed handoff and obtains fresh independent review.
-The target and runner-supplied evidence installation root are outside authorized
-workspace writes. No external runner, engine, database, other job, publication
-or runtime package changes were made. The staged patch remains uninstalled.
+Unfinished: the external runner must resolve its evidence-only/unchanged-package gate and route this preserved candidate to fresh independent review. Existing proposal: `runner-fix/evidence-only-rejection.patch`. The corrected evidence bundle remains at `evidence/contract-correction`, with root-relative reports and three reproduced affected stored generated records. Neither the runner correction nor installation at the runner-owned evidence root is writable within this task. Strict failing regression remains registered. Do not alter generator bytes simply to evade the gate; do not treat a staged patch or historical accepted report as current approval.

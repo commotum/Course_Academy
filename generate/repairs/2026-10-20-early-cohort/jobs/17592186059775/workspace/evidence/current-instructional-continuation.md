@@ -1,7 +1,9 @@
-# Current continuation before validation
+# Author-339 continuation before validation
 
 The exact latest failure is the installed runner's byte-identical package gate, reproduced with `checks/check_current_handoff.py` (exit 1). Retained finding 9b8cb52352b8ca3e790e requests an evidence-only correction and preservation of runtime. The staged evidence passes real report validation and its missing-file and wrong-root controls; the registered check remains failing because the installed handoff rejects before testing it.
 
 Source q-73439 (9752715d-a11c-5d27-95dc-d20bec1117cb), q-130909 (dc5530a8-d7bb-5ee6-b842-11178cec4e06), and tutorial 2112d3af-1fb0-5a70-ab99-59931db99930 still support first-pivot normalization, lower-left elimination, second-pivot normalization and optional back substitution. Tutorial ee4b134d-2908-5930-86bb-32537e0d8347 explains why diagonal ones simplify back substitution. Retain the existing easy five-radio contract, full replay banks, eligible candidate ranks, arithmetic workload and completed batch-selection repair. The existing instructional-account.md remains the complete specification. Source images are absent; matrix notation is rendered as math.
 
 No change to the learner task or runtime design is justified by the demonstrated evidence-path failure. Verify each registered regression once and the retained render binding; do not rerun broad exploration or install the external runner patch. Preserve the strict failing check. The workspace-only restriction prohibits changing scripts/generator_pipeline.py or installing reports outside this workspace.
+
+Author-339 reproduced the exact installed gate first (exit 1). Reuse the completed source analysis and existing implementation; run the three retained regression scripts once and the source/render binding. No new generator construction or parameter change is supported by the report-only finding.
