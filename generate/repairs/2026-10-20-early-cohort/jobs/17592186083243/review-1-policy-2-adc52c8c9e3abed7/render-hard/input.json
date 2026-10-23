@@ -1,0 +1,433 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186083243,
+      "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+      "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+    },
+    "question": {
+      ":question/id": "5cdeb8f3-b769-5761-aa1f-f987a5b71136",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the parametric curve \n\n$$\nx=\\sqrt{\\sin{\\left(e^{t} \\right)}},\\,y=\\cot{\\left(e^{t} \\right)},\\,-\\infty<t<1,\n$$\n\ncalculate the slope of the tangent to the curve at the point where $t=\\ln{\\left(\\frac{\\pi}{6} \\right)}.$",
+      ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\n\\begin{aligned}x'(t)&=\\frac{1}{2 \\sqrt{\\sin{\\left(e^{t} \\right)}}}\\cdot \\cos{\\left(e^{t} \\right)}\\cdot e^{t}\\\\ &= \\frac{e^{t} \\cos{\\left(e^{t} \\right)}}{2 \\sqrt{\\sin{\\left(e^{t} \\right)}}},\\\\ y'(t)&=- e^{t} \\csc^{2}{\\left(e^{t} \\right)}.\\end{aligned}\n$$\n\n \n\nSo we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(- e^{t} \\csc^{2}{\\left(e^{t} \\right)}\\right)}{\\left(\\frac{e^{t} \\cos{\\left(e^{t} \\right)}}{2 \\sqrt{\\sin{\\left(e^{t} \\right)}}}\\right)} \\\\  & =\\frac{- 2 \\sqrt{\\sin{\\left(e^{t} \\right)}}}{\\sin^{2}{\\left(e^{t} \\right)} \\cos{\\left(e^{t} \\right)}} \\\\  & =- \\frac{2}{\\sin^{\\frac{3}{2}}{\\left(e^{t} \\right)} \\cos{\\left(e^{t} \\right)}}.\\end{aligned}\n$$\n\nTherefore, when $t=\\ln{\\left(\\frac{\\pi}{6} \\right)},$ the slope of the tangent to the curve is\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =- \\frac{2}{\\sin^{\\frac{3}{2}}{\\left(e^{\\left(\\ln{\\left(\\frac{\\pi}{6} \\right)}\\right)} \\right)} \\cos{\\left(e^{\\left(\\ln{\\left(\\frac{\\pi}{6} \\right)}\\right)} \\right)}} \\\\  & =\\frac{-2}{1\\left(\\frac{1}{2}\\right)^{3/2}\\left(\\frac{\\sqrt{3}}{2}\\right)} \\\\  & =- \\frac{8 \\sqrt{6}}{3}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "99fc8697-2f32-58f1-8c23-4ec8be08c595",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/key": "selection",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7865295d-de29-5b64-bc4d-0abf4457382a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 \\sqrt{6}"
+            },
+            {
+              ":answer/id": "761009ca-2a7a-59e0-b9ae-5877f5081237",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\sqrt{6}"
+            },
+            {
+              ":answer/id": "6313b38b-0791-5306-ae56-1f2ccf3585b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{2 \\sqrt{6}}{3}"
+            },
+            {
+              ":answer/id": "4705b25b-4967-5cb5-a89e-17d39f62536f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\sqrt{6}}{6}"
+            },
+            {
+              ":answer/id": "da750b87-e6ba-5288-a728-9d957c03557f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{8 \\sqrt{6}}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "da750b87-e6ba-5288-a728-9d957c03557f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "finite-parametric-slope-4",
+      "seed": 4021,
+      "template": "nested_trig_radio",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "u": "log(pi/6)"
+      },
+      "bank_profile": "observed_q-15476",
+      "presentation_profile": "observed",
+      "profile_origin": "observed-expression-pattern",
+      "source": {
+        "database": "math",
+        "basis": 4664,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-15476"
+      ],
+      "domain": "-\\infty<t<1",
+      "mathematical_fingerprint": "4f9c2d4d7d6f43e27e04209bc03cbc6916ec2a714fe38d81168027c7778395cc",
+      "parameter_fingerprint": "4f9c2d4d7d6f43e27e04209bc03cbc6916ec2a714fe38d81168027c7778395cc",
+      "content_fingerprint": "cbc167fa5aabd177fb3e6a845e150d38ff506215199dd42a75fd3d6c89fbaa79",
+      "derivation": {
+        "x": "sqrt(sin(exp(t)))",
+        "y": "cot(exp(t))",
+        "dx": "exp(t)*cos(exp(t))/(2*sqrt(sin(exp(t))))",
+        "dy": "-exp(t)*csc(exp(t))**2",
+        "ratio": "-2/(sin(exp(t))**(3/2)*cos(exp(t)))",
+        "m": "-8*sqrt(6)/3"
+      },
+      "bank_factors": null,
+      "bank_anchor_target": null,
+      "bank_partner": null,
+      "sampling_rejections": [],
+      "recipes": {
+        "- \\frac{8 \\sqrt{6}}{3}": "correct",
+        "- \\frac{2 \\sqrt{6}}{3}": "empirical quarter slope",
+        "- \\frac{\\sqrt{6}}{6}": "empirical root/cosine expression",
+        "- 2 \\sqrt{6}": "empirical cosine-squared factor",
+        "- \\sqrt{6}": "empirical half cosine-squared factor"
+      },
+      "plots": {},
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186083243,
+      "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+      "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+    },
+    "question": {
+      ":question/id": "962aff59-fab0-54b1-9bd3-1513cd29ecc9",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "![](images/7a/7ae65c873838ede4cce89c953ff2654fa1e58e65fdc87896c8ba85bbf947be20.png)\n\nFor the parametric curve \n\n$$\nx=6 \\cos {t},\\,y=2 \\sin {3 t},\\,0\\le t<2\\pi,\n$$\n\nshown above, calculate the slope $m$ of the tangent to the curve at the point where $t=\\frac{\\pi}{4}.$ Do not round the answer.\n\n$m=$\n{{field-1}}",
+      ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=- 6 \\sin {t},\\,y'(t)=6 \\cos {3 t}.\n$$\n\n \n\nSo, we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(6 \\cos {3 t}\\right)}{\\left(- 6 \\sin {t}\\right)} \\\\  & =- \\frac{\\cos {3 t}}{\\sin {t}}.\\end{aligned}\n$$\n\nTherefore, when $t=\\frac{\\pi}{4},$ the slope $m$ of the tangent to the curve is\n\n$$\n\\begin{aligned}m=\\frac{dy}{dx}\\,{|}_{t=\\frac{\\pi}{4}} & =- \\frac{\\cos {3 \\left(\\frac{\\pi}{4}\\right)}}{\\sin {\\left(\\frac{\\pi}{4}\\right)}} \\\\  & =- \\frac{\\left(- \\frac{\\sqrt{2}}{2}\\right)}{\\left(\\frac{\\sqrt{2}}{2}\\right)} \\\\  & =1.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1145afc9-b1ab-5692-989d-59da9c29831b",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/key": "field-1",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d73e9a8a-7dfb-5263-999f-0d0bc05adb6c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d73e9a8a-7dfb-5263-999f-0d0bc05adb6c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "finite-parametric-slope-4",
+      "seed": 4021,
+      "template": "harmonic_blank",
+      "parameters": {
+        "a": 6,
+        "b": 2,
+        "n": 3,
+        "u": "pi/4"
+      },
+      "bank_profile": null,
+      "presentation_profile": "observed",
+      "profile_origin": "observed-blank",
+      "source": {
+        "database": "math",
+        "basis": 4664,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-348304",
+        "q-353351"
+      ],
+      "domain": "0\\le t<2\\pi",
+      "mathematical_fingerprint": "acfc0fe1d975d2f56c1d7188e534eade0e69a0afbc75969989ac7c89233476cc",
+      "parameter_fingerprint": "acfc0fe1d975d2f56c1d7188e534eade0e69a0afbc75969989ac7c89233476cc",
+      "content_fingerprint": "0a60562d1e18a835e9733aa6d05de00bf7bccd5e5a44a9b88ffd516ee40b0824",
+      "derivation": {
+        "x": "6*cos(t)",
+        "y": "2*sin(3*t)",
+        "dx": "-6*sin(t)",
+        "dy": "6*cos(3*t)",
+        "ratio": "-cos(3*t)/sin(t)",
+        "m": "1"
+      },
+      "bank_factors": null,
+      "bank_anchor_target": null,
+      "bank_partner": null,
+      "sampling_rejections": [],
+      "recipes": {
+        "1": "correct"
+      },
+      "plots": {
+        "prompt": "images/7a/7ae65c873838ede4cce89c953ff2654fa1e58e65fdc87896c8ba85bbf947be20.png",
+        "origin": "unchanged-source-curve"
+      },
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186083243,
+      "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+      "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+    },
+    "question": {
+      ":question/id": "4687f18a-340d-52e3-967d-f65e6c5823ba",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "![](images/35/35c62ccf48c4d0a49729da04b443cb94d112e673e0c24e7784d22f48eaabf8f7.png)\n\nFor the parametric curve \n\n$$\nx=3 \\cos {t},\\,y=4 \\sin {2 t},\\,0\\le t<2\\pi,\n$$\n\nshown above, calculate the slope $m$ of the tangent to the curve at the point where $t=\\frac{\\pi}{3}.$ Do not round the answer.\n\n$m=$\n{{field-1}}",
+      ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=- 3 \\sin {t},\\,y'(t)=8 \\cos {2 t}.\n$$\n\n \n\nSo, we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(8 \\cos {2 t}\\right)}{\\left(- 3 \\sin {t}\\right)} \\\\  & =- \\frac{8 \\cos {2 t}}{3 \\sin {t}}.\\end{aligned}\n$$\n\nTherefore, when $t=\\frac{\\pi}{3},$ the slope $m$ of the tangent to the curve is\n\n$$\n\\begin{aligned}m=\\frac{dy}{dx}\\,{|}_{t=\\frac{\\pi}{3}} & =- \\frac{8 \\cos {2 \\left(\\frac{\\pi}{3}\\right)}}{3 \\sin {\\left(\\frac{\\pi}{3}\\right)}} \\\\  & =- \\frac{8 \\left(- \\frac{1}{2}\\right)}{3 \\left(\\frac{\\sqrt{3}}{2}\\right)} \\\\  & =\\frac{8 \\sqrt{3}}{9}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4a95e861-8287-5d79-a702-d839548ae2bf",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/key": "field-1",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "29409351-d631-5109-acba-a11eb394620f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{8 \\sqrt{3}}{9}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "29409351-d631-5109-acba-a11eb394620f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "finite-parametric-slope-4",
+      "seed": 4021,
+      "template": "harmonic_blank",
+      "parameters": {
+        "a": 3,
+        "b": 4,
+        "n": 2,
+        "u": "pi/3"
+      },
+      "bank_profile": null,
+      "presentation_profile": "observed",
+      "profile_origin": "observed-blank",
+      "source": {
+        "database": "math",
+        "basis": 4664,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-348304",
+        "q-353351"
+      ],
+      "domain": "0\\le t<2\\pi",
+      "mathematical_fingerprint": "151cefd57feae1a0fe1b457a3f067631aadcd79b7d3b4c9c619883f45ad1e465",
+      "parameter_fingerprint": "151cefd57feae1a0fe1b457a3f067631aadcd79b7d3b4c9c619883f45ad1e465",
+      "content_fingerprint": "fe6169ac7bd26634bf50b0a6137431dd633960a470d64eff2cecccece01dcf0d",
+      "derivation": {
+        "x": "3*cos(t)",
+        "y": "4*sin(2*t)",
+        "dx": "-3*sin(t)",
+        "dy": "8*cos(2*t)",
+        "ratio": "-8*cos(2*t)/(3*sin(t))",
+        "m": "8*sqrt(3)/9"
+      },
+      "bank_factors": null,
+      "bank_anchor_target": null,
+      "bank_partner": null,
+      "sampling_rejections": [],
+      "recipes": {
+        "\\frac{8 \\sqrt{3}}{9}": "correct"
+      },
+      "plots": {
+        "prompt": "images/35/35c62ccf48c4d0a49729da04b443cb94d112e673e0c24e7784d22f48eaabf8f7.png",
+        "origin": "unchanged-source-curve"
+      },
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186083243,
+      "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+      "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+    },
+    "question": {
+      ":question/id": "ddb1d411-1dc2-5c85-b70b-9e3faa7238fb",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "![](images/03/0353d9a2b8c8e46552e0816658628f67b58c0c6bef51bd05261becac42a55798.png)\n\nFor the parametric curve \n\n$$\nx=e^{2 t},\\,y=\\ln{\\left(t + 2 \\right)},\\,-2<t<\\infty,\n$$\n\nshown above, calculate the slope $m$ of the tangent to the curve at the point where $t=0.$ Do not round the answer.\n\n$m=$\n{{field-1}}",
+      ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=2 e^{2 t},\\,y'(t)=\\frac{1}{t + 2}.\n$$\n\n \n\nSo, we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(\\frac{1}{t + 2}\\right)}{\\left(2 e^{2 t}\\right)} \\\\  & =\\frac{e^{- 2 t}}{2 \\left(t + 2\\right)}.\\end{aligned}\n$$\n\nTherefore, when $t=0,$ the slope $m$ of the tangent to the curve is\n\n$$\n\\begin{aligned}m=\\frac{dy}{dx}\\,{|}_{t=0} & =\\frac{e^{- 2 \\left(0\\right)}}{2 \\left(\\left(0\\right) + 2\\right)} \\\\  & =\\frac{1}{4} \\\\  & =\\frac{1}{4}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0d4882aa-e90d-5fcb-8064-f690564bf19f",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/key": "field-1",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e3610844-839f-515c-827f-d914647693cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e3610844-839f-515c-827f-d914647693cb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "finite-parametric-slope-4",
+      "seed": 4021,
+      "template": "exp_log_blank",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "u": 0
+      },
+      "bank_profile": null,
+      "presentation_profile": "observed",
+      "profile_origin": "observed-blank",
+      "source": {
+        "database": "math",
+        "basis": 4664,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-353352"
+      ],
+      "domain": "-2<t<\\infty",
+      "mathematical_fingerprint": "4bc2d0684d19de05090cc7d8a2b710da86c237d775a619989d96d1613b37474c",
+      "parameter_fingerprint": "4bc2d0684d19de05090cc7d8a2b710da86c237d775a619989d96d1613b37474c",
+      "content_fingerprint": "51ccb464954f891d84a4ff810687eef39af2805766f741da0ab855eda490a474",
+      "derivation": {
+        "x": "exp(2*t)",
+        "y": "log(t + 2)",
+        "dx": "2*exp(2*t)",
+        "dy": "1/(t + 2)",
+        "ratio": "exp(-2*t)/(2*(t + 2))",
+        "m": "1/4"
+      },
+      "bank_factors": null,
+      "bank_anchor_target": null,
+      "bank_partner": null,
+      "sampling_rejections": [],
+      "recipes": {
+        "\\frac{1}{4}": "correct"
+      },
+      "plots": {
+        "prompt": "images/03/0353d9a2b8c8e46552e0816658628f67b58c0c6bef51bd05261becac42a55798.png",
+        "origin": "unchanged-source-curve"
+      },
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186083243,
+      "id": "d0bda136-40a9-576a-b85c-4d4ebefaeb27",
+      "title": "Calculating the Slope of the Tangent to a Parametric Curve at a Given Point"
+    },
+    "question": {
+      ":question/id": "b7afd751-1855-5780-b7b0-e8454952acdb",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the parametric curve \n\n$$\nx=\\sec^{2} {t},\\,y=\\csc^{3} {t},\\,0<t<\\frac{\\pi}{2},\n$$\n\ncalculate the slope of the tangent to the curve at the point where $t=\\frac{\\pi}{4}.$",
+      ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=2 \\tan {t} \\sec^{2} {t},\\,y'(t)=- 3 \\cot {t} \\csc^{3} {t}.\n$$\n\n \n\nSo we have\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =\\frac{\\left(- 3 \\cot {t} \\csc^{3} {t}\\right)}{\\left(2 \\tan {t} \\sec^{2} {t}\\right)} \\\\  & =- 3 \\cot {t} \\csc^{3} {t}\\left(\\frac{\\cos^{2} {t} \\cot {t}}{2}\\right) \\\\  & =- \\frac{3}{2}\\,\\cos^{2} {t} \\cot^{2} {t} \\csc^{3} {t} \\\\  & =- \\frac{3}{2}\\left(\\frac{1}{\\sin^{3} {t}}\\right)\\left(\\frac{\\cos^{2} {t}}{\\sin^{2} {t}}\\right)\\cos^{2} {t} \\\\  & =- \\frac{3 \\cos^{4} {t}}{2 \\sin^{5} {t}} \\\\  & =- \\frac{3 \\cot^{4} {t} \\csc {t}}{2}.\\end{aligned}\n$$\n\nTherefore, when $t=\\frac{\\pi}{4},$ the slope of the tangent to the curve is\n\n$$\n\\begin{aligned}\\frac{dy}{dx} & =- \\frac{3 \\cot^{4} {\\left(\\frac{\\pi}{4}\\right)} \\csc {\\left(\\frac{\\pi}{4}\\right)}}{2} \\\\  & =\\frac{-3\\cdot \\left(\\sqrt{2}\\right)\\cdot \\left(1\\right)^{4}}{2} \\\\  & =- \\frac{3 \\sqrt{2}}{2}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b44e104b-5066-5bf9-a858-59e8f1ab3feb",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/key": "selection",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bdfe9c28-4354-514f-8e54-23a8053c7a1f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\sqrt{2}}{2}"
+            },
+            {
+              ":answer/id": "967714af-ea9c-53b6-b2aa-61377fdb68aa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\sqrt{2}}{3}"
+            },
+            {
+              ":answer/id": "ceb1fe08-d1ed-5c59-8a75-9add3bc621a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2"
+            },
+            {
+              ":answer/id": "ea58f3ef-caf7-565d-9ce1-05762f4c28f5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\sqrt{2}"
+            },
+            {
+              ":answer/id": "3351b1ec-66e2-5669-b898-c64e2ff92661",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\sqrt{2}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bdfe9c28-4354-514f-8e54-23a8053c7a1f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "finite-parametric-slope-4",
+      "seed": 4021,
+      "template": "sec_csc_radio",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "u": "pi/4"
+      },
+      "bank_profile": "observed_q-15477",
+      "presentation_profile": "observed",
+      "profile_origin": "observed-expression-pattern",
+      "source": {
+        "database": "math",
+        "basis": 4664,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-15477"
+      ],
+      "domain": "0<t<\\frac{\\pi}{2}",
+      "mathematical_fingerprint": "6a86711d2a00d645507033640b936f16e49a3807e976942e2a479baea392788e",
+      "parameter_fingerprint": "6a86711d2a00d645507033640b936f16e49a3807e976942e2a479baea392788e",
+      "content_fingerprint": "24dc5bc9aacfa9316a0b22669628a00f67a86cb88b5ccf97e3f283f802325a18",
+      "derivation": {
+        "x": "sec(t)**2",
+        "y": "csc(t)**3",
+        "dx": "2*tan(t)*sec(t)**2",
+        "dy": "-3*cot(t)*csc(t)**3",
+        "ratio": "-3*cot(t)**4*csc(t)/2",
+        "m": "-3*sqrt(2)/2"
+      },
+      "bank_factors": null,
+      "bank_anchor_target": null,
+      "bank_partner": null,
+      "sampling_rejections": [],
+      "recipes": {
+        "- \\frac{\\sqrt{2}}{2}": "omit cubic factor",
+        "-2": "alter trig factors",
+        "- \\sqrt{2}": "omit half factor",
+        "- \\frac{3 \\sqrt{2}}{2}": "correct",
+        "- \\frac{\\sqrt{2}}{3}": "alter cubic and half factors"
+      },
+      "plots": {},
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

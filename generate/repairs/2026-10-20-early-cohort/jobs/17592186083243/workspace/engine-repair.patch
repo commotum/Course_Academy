@@ -1,0 +1,88 @@
+--- a/engine/rust/symbolic.rs
++++ b/engine/rust/symbolic.rs
+@@ -495,10 +495,35 @@
+             _ => None,
+         })
+     }
+-    fn reduce_term(&mut self, m: Mono, c: Q) -> Result<Poly> {
++    fn reduce_term(&mut self, mut m: Mono, c: Q) -> Result<Poly> {
+         self.spend(1)?;
+         if self.depth >= 64 {
+             return Err("symbolic expansion exceeds its depth limit".into());
++        }
++        // Products of positive real roots of e add their rational exponents.
++        // This also keeps split exp constants consistent with a single exp(q).
++        // Stay within the existing root-degree bound and leave other radicands
++        // alone: combining arbitrary real roots would need sign conditions.
++        let e_roots: Vec<_> = m.iter().filter_map(|(a, n)| match a {
++            Atom::Root(d, p) if **p == Poly::atom(Atom::E) => Some((a.clone(), *d, *n)),
++            _ => None,
++        }).collect();
++        if e_roots.len() > 1 {
++            let exponent = e_roots.iter().fold(Q::zero(), |q, (_, d, n)| {
++                q + Q::new((*n).into(), (*d).into())
++            });
++            if let Some(degree) = exponent.denom().to_u8().filter(|d| *d <= 8) {
++                for (a, _, _) in e_roots { m.remove(&a); }
++                let whole = exponent.to_integer().to_u16().ok_or("symbolic power exceeds limit")?;
++                if whole > 0 {
++                    let n = m.entry(Atom::E).or_insert(0);
++                    *n = n.checked_add(whole).ok_or("symbolic power exceeds limit")?;
++                }
++                let remainder = (exponent.numer() % exponent.denom()).to_u16().unwrap();
++                if remainder > 0 {
++                    m.insert(Atom::Root(degree, Box::new(Poly::atom(Atom::E))), remainder);
++                }
++            }
+         }
+         for (a, e) in &m {
+             let degree = match a {
+@@ -965,9 +990,14 @@
+                     let positive = self.function("exp", &x.neg())?;
+                     return self.div(&Value::integer(1), &positive);
+                 }
+-                if let Some(c) = x.constant().filter(Q::is_integer) {
+-                    let n = c.to_integer().to_i32().ok_or("exponential exceeds range")?;
+-                    return self.integer_power(&Value::atom(Atom::E), n);
++                if let Some(c) = x.constant()
++                    && (c.is_integer() || c.denom() <= &BigInt::from(8))
++                {
++                    // exp(q) and e^q denote the same positive real number.
++                    // Share the exact rational-power representation, including
++                    // root atoms, instead of retaining an opaque exp(q) atom.
++                    // Larger root degrees keep the existing opaque exp form.
++                    return self.power(&Value::atom(Atom::E), &Value::number(c));
+                 }
+                 if x.den == Poly::integer(1)
+                     && x.num.0.values().all(|c| {
+@@ -1969,6 +1999,30 @@
+         }
+     }
+     #[test]
++    fn fractional_exp_constants_share_exact_power_form() {
++        for q in ["0", "1", "-2", "1/2", "-1/2", "3/2", "2/4", "1/3", "-2/3", "5/4", "1/5", "5/6", "1/7", "7/8"] {
++            let exponential = format!("exp({q})");
++            let power = format!("e^({q})");
++            eq(&exponential, &power);
++            eq(&power, &exponential);
++        }
++        for (a, b) in [
++            ("exp(1/2)", "sqrt(e)"),
++            ("exp(3/2)", "sqrt(e^3)"),
++            ("exp(-1/2)*exp(1/2)", "1"),
++            ("exp(1/2)*exp(1/3)", "e^(5/6)"),
++            ("8/(5*sqrt(5)*exp(1/2))", "8*sqrt(5)/(25*e^(1/2))"),
++        ] {
++            eq(a, b);
++        }
++        for wrong in ["-e^(1/2)", "2*e^(1/2)", "e^(-1/2)", "e^(1/3)"] {
++            assert_eq!(compare("exp(1/2)", wrong, Context::default()), Ok(false));
++        }
++        assert!(supports("exp(1/100)", Context::default()));
++        assert!(!supports("exp(1/0)", Context::default()));
++        assert!(compare("exp((x/x)/2)", "e^(1/2)", Context::default()).is_err());
++    }
++    #[test]
+     fn roots_of_positive_constant_powers_share_rational_power_form() {
+         eq(r"\frac{\sqrt{e^3}}{3}", r"\frac{e^{\frac{3}{2}}}{3}");
+         for base in ["e", "pi"] {

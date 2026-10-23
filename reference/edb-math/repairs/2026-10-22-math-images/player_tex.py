@@ -24,5 +24,6 @@ def normalize_asset(path,tex,svg):
   dollars=len(re.findall(r'<use\b[^>]*href=[\'"]#[^\'"]*-24[\'"]',drawing))
   assert dollars==len(markers)+tex.count(r'\$'),(path,dollars,len(markers))
   tex=re.sub(r'\\\[/?math\]',lambda m:r'\$',tex)
+ tex=re.sub(r'(?<!\\)\$',lambda m:r'\$',tex)
  tex=re.sub(r'\\(sech|csch)\b',lambda m:r'\operatorname{'+m[1]+'}',tex)
  return tex

@@ -1,0 +1,146 @@
+[
+  {
+    "name": "author-bank-old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "control-old-bank/check_repair.py"
+    ],
+    "exit": 1,
+    "tail": "67/review-3-policy-2-31cbd9292c1d647f/control-old-bank/check_repair.py\", line 94, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-3-policy-2-31cbd9292c1d647f/control-old-bank/check_repair.py\", line 65, in main\n    assert not all(oldleaks),'Retained 36-case failure persists'\n           ^^^^^^^^^^^^^^^^^\nAssertionError: Retained 36-case failure persists\n"
+  },
+  {
+    "name": "author-bank-current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "control-current/check_repair.py"
+    ],
+    "exit": 0,
+    "tail": "{\"status\": \"pass\", \"old_shortcut_success\": 9, \"old_range_count\": 36, \"identical_bank_groups\": 52, \"controlled_records\": 208}\n"
+  },
+  {
+    "name": "author-batch-old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "control-old-batch/check_batch_repair.py"
+    ],
+    "exit": 1,
+    "tail": "17592186161967/review-3-policy-2-31cbd9292c1d647f/control-old-batch/check_batch_repair.py\", line 42, in main\n    before=probe(rows)\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-3-policy-2-31cbd9292c1d647f/control-old-batch/check_batch_repair.py\", line 25, in probe\n    assert all(0<h<n for h in hits),(shape,hits,n,'uniform sign cue')\n           ~~~^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('unit-first', [0, 0], 2, 'uniform sign cue')\n"
+  },
+  {
+    "name": "author-batch-current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "control-current/check_batch_repair.py",
+      "--small-sample"
+    ],
+    "exit": 0,
+    "tail": "{\"status\": \"pass\", \"raw_count\": 5, \"survivors\": 5, \"groups\": {\"unit-second\": {\"count\": 5, \"same_sign_successes\": [3, 2], \"opposite_sign_successes\": [2, 3], \"correct_positions\": [1, 2, 3, 4]}}, \"small_sample_count\": 54}\n"
+  },
+  {
+    "name": "independent-bank-old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_shortcut.py",
+      "control-old-bank/17592186161967.py"
+    ],
+    "exit": 1,
+    "tail": "{\"parameters\": {\"A\": [[1, 2, 3], [2, 5, 4], [-3, 7, 8]], \"pivot\": 0, \"column\": 0, \"ks\": [0, -2, 3]}, \"bank_profile\": \"q-42531\", \"bank\": [[-2, -1], [2, -3], [-2, 3], [-2, -3], [2, 3]], \"inferred_first_coefficient\": -2, \"correct_first_coefficient\": -2}\n{\"leaked\": 36, \"tested\": 36, \"acceptance\": \"Generalized unit-perturbation profiles must not make the most frequent first coefficient always correct.\"}\n"
+  },
+  {
+    "name": "independent-bank-current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_shortcut.py"
+    ],
+    "exit": 0,
+    "tail": "{\"parameters\": {\"A\": [[1, 2, 3], [2, 5, 4], [-3, 7, 8]], \"pivot\": 0, \"column\": 0, \"ks\": [0, -2, 3]}, \"bank_profile\": \"q-42531\", \"bank\": [[2, 3], [-2, 3], [2, -3], [-1, -3], [-2, -3]], \"inferred_first_coefficient\": 2, \"correct_first_coefficient\": -2}\n{\"leaked\": 9, \"tested\": 36, \"acceptance\": \"Generalized unit-perturbation profiles must not make the most frequent first coefficient always correct.\"}\n"
+  },
+  {
+    "name": "independent-batch-old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_batch_shortcut.py",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-1-policy-2-fa94c3c9d1dc4929/batch.json"
+    ],
+    "exit": 1,
+    "tail": ": \"q-130451\",\n      \"outlier\": [\n        1,\n        -5\n      ],\n      \"predicted\": [\n        -4,\n        5\n      ],\n      \"correct\": [\n        -4,\n        5\n      ],\n      \"success\": true\n    },\n    {\n      \"question_id\": \"bb82ba3b-882d-54e8-83ff-a692078227fb\",\n      \"seed\": 1278010741,\n      \"profile\": \"q-91158\",\n      \"outlier\": [\n        -3,\n        8\n      ],\n      \"predicted\": [\n        8,\n        3\n      ],\n      \"correct\": [\n        8,\n        3\n      ],\n      \"success\": true\n    }\n  ]\n}\n"
+  },
+  {
+    "name": "independent-batch-current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_batch_shortcut.py",
+      "batch.json"
+    ],
+    "exit": 0,
+    "tail": "\",\n      \"outlier\": [\n        -4,\n        -1\n      ],\n      \"predicted\": [\n        4,\n        5\n      ],\n      \"correct\": [\n        -4,\n        5\n      ],\n      \"success\": false\n    },\n    {\n      \"question_id\": \"9dcfddce-5b82-59b3-aaa2-cd20fff49192\",\n      \"seed\": 1113682686971738915,\n      \"profile\": \"q-42531\",\n      \"outlier\": [\n        -9,\n        -1\n      ],\n      \"predicted\": [\n        9,\n        4\n      ],\n      \"correct\": [\n        9,\n        4\n      ],\n      \"success\": true\n    }\n  ]\n}\n"
+  },
+  {
+    "name": "relocated",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "relocated/17592186161967.py",
+      "--seed",
+      "1278010737",
+      "--count",
+      "5",
+      "--format",
+      "json"
+    ],
+    "exit": 0,
+    "tail": "saved JSON output"
+  },
+  {
+    "name": "delivery-batch",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "batch.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "delivery-batch",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "exit": 0,
+    "tail": "{\"input_count\": 5, \"duplicate_count\": 0, \"accepted_count\": 5, \"inventory_basis\": 5580, \"report\": \"delivery-batch/delivery.json\"}\n"
+  },
+  {
+    "name": "delivery-fresh",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "fresh-samples.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "delivery-fresh",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "exit": 0,
+    "tail": "{\"input_count\": 40, \"duplicate_count\": 32, \"accepted_count\": 8, \"inventory_basis\": 5580, \"report\": \"delivery-fresh/delivery.json\"}\n"
+  }
+]
