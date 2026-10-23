@@ -1,0 +1,30 @@
+{
+  "status": "blocked",
+  "runtime_changes": false,
+  "findings": {
+    "efa97df560cec8fee6e1": "regression_passed",
+    "645672a4cd3f9bf609ca": "external_required_report_still_fails"
+  },
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "log": "evidence/author-1281/latest-failure.log",
+      "result": "evidence/author-1281/report-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1281/role",
+      "exit_code": 0,
+      "result": "evidence/author-1281/role/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "log": "evidence/author-1281/retained-regression.log"
+    }
+  ],
+  "staged_correction": "evidence/corrected-review",
+  "installation_handoff": "evidence/review-installation-handoff.json",
+  "next_required_action": "Runner must install the existing validated correction at the required prior-review destination, then run the unchanged strict regression and obtain fresh independent review. That destination is outside the workspace authorized for this author.",
+  "scope": "No runtime, source, database, engine, publication, or external files changed. Strict regressions retained. Prior full source replay, inventory reproduction, relocation and visually inspected UI evidence retained because runtime/source are unchanged."
+}

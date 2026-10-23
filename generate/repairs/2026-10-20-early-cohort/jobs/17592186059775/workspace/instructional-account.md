@@ -163,3 +163,17 @@ completed target-role repairs remain applicable. No runtime change is justified
 by the evidence-only finding. Recheck the retained evidence and shortcut failures,
 CLI/source replay and render bindings; retain the strict handoff failure. The
 required runner edit is outside this job's authorized workspace.
+
+## Author-291 continuation, before verification
+
+Latest reproduction again stops at the installed runner's byte-identity gate,
+before sampling. Retain the completed Gaussian-elimination generator and all
+strict regressions. Source q-73439 (9752715d-a11c-5d27-95dc-d20bec1117cb),
+q-130909 (dc5530a8-d7bb-5ee6-b842-11178cec4e06), and tutorial
+2112d3af-1fb0-5a70-ab99-59931db99930's first-pivot normalization,
+lower-entry elimination, and second-pivot normalization continue to justify the
+easy five-radio contract and optional back substitution. The retained
+evidence-only finding requires preserving runtime, not selecting new parameters
+or changing instructional scope. Verify registered regressions and the staged
+runner correction; do not change runtime bytes to evade the gate. The runner
+change remains outside the permitted workspace.

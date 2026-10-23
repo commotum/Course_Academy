@@ -1,30 +1,37 @@
-# Current state — 2026-10-22, author-289
+# Current state — 2026-10-22, author-291
 
-Read feedback and all retained findings/history; reused completed source analysis.
-Reproduced the latest failure first with job Python:
-`-B checks/check_current_handoff.py` exits 1. Actual installed runner
-`scripts/generator_pipeline.py:723-727` rejects the unchanged runtime before
-retained regressions or sampling. Its evidence-only finding requires preservation
-of runtime; no new generator defect is demonstrated.
+Read latest feedback and both retained findings; inspected all history-event
+summaries and reused completed source analysis. Reproduced latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1. The installed runner's byte-identical-package gate rejects before
+regressions or sampling, although the latest independent finding is evidence-only
+and explicitly requests preserving the runtime.
 
-Fresh verification: `evidence/author289-verification.json` records exact commands,
-exit codes, timings, logs and unchanged runtime hashes.
+Fresh commands, exact results, logs and runtime hashes:
+`evidence/author291-verification.json`.
 
-- `checks/check_all.py` passes (CLI relocation/count contract, source replay,
-  independent mathematics, native grading, shared delivery, stored inventory).
-- `checks/check_batch_selection.py` passes, including seed 4258185931 before/after
-  delivery and controlled within-family answer-role changes. Original cue: 1/5.
-- `checks/check_evidence_contract.py` validates the real bundle, relocation and
-  negative controls, then exits 1 because strict installed handoff still fails.
-- `checks/check_render_binding.py` passes: ten complete source banks and actual-UI
-  records bind to current runtime. Inspected question-001.png: readable throughout.
-- Runtime, engine, runner, database, publication and other jobs were not edited.
+- `checks/check_all.py`: passes CLI relocation/count, ten complete source banks,
+  independent mathematics, native grading, delivery and stored-inventory checks.
+- `checks/check_batch_selection.py`: passes seed 4258185931, all ten profiles,
+  controlled answer-role changes, native grading and shared delivery. Original
+  pivot/rank cue scores 1/5 on raw and delivered batch.
+- `checks/check_evidence_contract.py`: corrected bundle, relocation and missing
+  file controls pass; exits 1 because actual installed handoff still fails.
+- `checks/check_runner_handoff.py`: passes 23 cases for the staged external fix
+  in a temporary checkout; installed runner remains unchanged.
+- `checks/check_render_binding.py`: passes current-runtime/source/UI binding.
+  Reinspected retained question-001.png; readable matrices and row operations.
+
+No runtime, runner, engine, database, publication or other-job edits. Strict
+regressions remain registered and unchanged. No new source-supported generator
+defect was demonstrated; runtime changes solely to evade the gate would not
+repair its evidence-only handling.
 
 ## Next unfinished step
 
-Apply/review `runner-fix/evidence-only-rejection.patch` in the runner repository,
-then rerun strict regressions and fresh independent review. This requires editing
-`scripts/generator_pipeline.py` outside the user-authorized workspace. The patch
-remains uninstalled and the retained check remains failing. Repeated authoring or
-changing valid generator bytes cannot repair this external design rule.
-Corrected self-contained evidence root: `evidence/contract-correction`.
+Runner owner must review/apply `runner-fix/evidence-only-rejection.patch` to
+`scripts/generator_pipeline.py`, then rerun strict regressions and fresh
+independent review. This target is outside the authorized workspace. The patch
+is uninstalled. Evidence bundle: `evidence/contract-correction`; installation
+manifest: `evidence/contract-installation.json`. Another unchanged authoring
+retry cannot change the external gate.

@@ -1,20 +1,18 @@
-# Current repair result — author-289
+# Current repair result — author-291
 
-Preserved completed generator repairs and reproduced the latest failure first.
-Runtime files remain byte-identical. Generator, source replay, independent math,
-native grading, delivery, inventory and shortcut regressions pass. The corrected
-evidence bundle validates with relocation and missing-file negative controls.
-Retained actual-UI render records bind to current output and were inspected.
+Preserved all completed generator repairs. Reproduced the latest failure first
+and ran retained checks. Source replay, math, native grading, delivery, inventory
+and shortcut checks pass. Corrected evidence validates with relocation and
+missing-file negative controls; source/UI bindings pass. Runtime unchanged.
 
-The strict evidence regression still exits 1: the installed runner rejects the
-unchanged package before sampling. The concrete staged correction targets
-`scripts/generator_pipeline.py`, outside this workspace's authorized writes.
-It remains uninstalled. No runtime change is justified by the evidence-only
-finding, and its strict acceptance criterion has not been weakened.
+Strict evidence regression still exits 1: installed runner rejects the unchanged
+package before sampling. Proposed external correction passes 23 offline cases,
+but targets `scripts/generator_pipeline.py` outside the authorized workspace.
+The patch is not installed and the failing acceptance criterion is unchanged.
 
-Exact commands/results: `evidence/author289-verification.json`.
+Commands/results: `evidence/author291-verification.json`.
 Current failure: `evidence/current-handoff-regression.json`.
-Corrected bundle: `evidence/contract-correction`.
-Proposed external fix: `runner-fix/evidence-only-rejection.patch`.
+Bundle: `evidence/contract-correction`.
+Proposed fix: `runner-fix/evidence-only-rejection.patch`.
 
-Fresh independent review remains required. No publication or database changes.
+Fresh independent review remains required. No publication or database writes.
