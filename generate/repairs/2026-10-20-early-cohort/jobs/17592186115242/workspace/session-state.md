@@ -1,9 +1,25 @@
-# Current state: author 994
+# Current state: author 997
 
-Read feedback and all five retained findings before testing. First check: job Python `-B checks/batch_regressions.py --finding inventory`; exit 1, five exact historical stored records affected, 64/64 shortcut successes in the possible-history witness.
+Read feedback and all five retained findings before testing. First executed check:
+job Python `-B checks/batch_regressions.py --finding inventory`; exit 1,
+five reproduced historical banks affected, 64/64 shortcut successes in the
+retained possible-history witness. Command and report: evidence/author-997.
 
-Ran job Python `-B checks/recheck_status.py --output evidence/author-994`; exit 1 solely for finding 591f580cadb749294588. Four current-generator findings pass, including 17 complete source banks, printed mathematics, zero roots, counterfactuals, conditional shortcuts and shared delivery on 14 records. Native grader: 7 accepted, 28 rejected, no mismatches. Dependency pins, relocation and five staged replacement mappings verify. No captured generated inventory remains untested. Protected runtime/source/inventory/manifest hashes unchanged. Both retained actual-UI screenshots and source tutorial flowchart visually inspected.
+Reran all four current-generator regressions from repair-regressions.json:
+shortcut, source, zero and finite batch; all exit 0. Includes 17 source banks
+and three batches totaling 14 records before/after shared delivery. Verified
+protected runtime, manifest, source and inventory hashes against retained
+evidence. Verified the staged five-item replacement mapping and record hash.
+No captured generated inventory is untested. Reuse unchanged native grader
+and render evidence; no new rendering or grading run is claimed.
 
-No runtime, database, publication, engine, source or other-job changes. Preserve completed repairs, instructional account, all executable regression declarations and staged replacements. Current commands/results/disposition are in evidence/author-994.
+Preserved runtime, instructional account, manifest, strict regressions and
+replacement proposal. No database, engine, publication, image or other-job
+changes. Current commands/results: evidence/author-997.
 
-Status: unsupported. Next required step is the separate inventory-remediation workflow named by retained finding 591f580cadb749294588, then fresh capture and strict recheck. Database changes are prohibited in this author task. Do not weaken the strict test, substitute the proposed pool for captured inventory, or repeat unrelated validation to imply that the historical defect is fixed.
+Status: unsupported. Finding 591f580cadb749294588 explicitly requires separate
+inventory remediation, followed by fresh inventory capture and strict recheck.
+Applying replacements would change database content, which this task prohibits.
+Workspace generator edits cannot change stored banks. Keep the historical test
+failing; do not substitute a hypothetical replacement pool or repeat unchanged
+validation as a claimed fix.

@@ -1,37 +1,39 @@
-# Current state — 2026-10-22, author-300
+# Current state — 2026-10-22, author-302
 
-Preserved the generator, manifest, completed repairs and strict regressions.
-Read latest feedback, both retained findings, all 300 history events and the
-existing source/instructional analysis. No new generator defect is demonstrated.
+Existing generator, runtime manifest, completed repairs and strict regressions
+are preserved. Read latest feedback, both retained findings, full history
+structure and prior source/instructional analysis before validation.
 
-Reproduced the exact latest failure first:
+Exact latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed scripts/generator_pipeline.py rejects the byte-identical
-runtime before regressions or sampling, while the retained evidence-only finding
-requires preserving that runtime.
+exits 1. The installed runner rejects the unchanged package before running
+retained regressions or sampling. Finding 9b8cb52352b8ca3e790e explicitly
+requests an evidence-only correction and preservation of runtime files.
 
 Commands, exit codes, logs and unchanged runtime hashes:
-`evidence/author300-verification.json`.
+`evidence/author302-verification.json`.
 
-- Registered legacy CLI/source/math/grading/delivery/inventory check: PASS.
-- Registered shortcut finding 9e827407d5429a1f8827: PASS, including reported
-  seed 4258185931, controlled changes, native grading and shared delivery.
-- Registered evidence finding 9b8cb52352b8ca3e790e: FAIL only at installed
-  runner handoff. Actual evidence bundle, relocation and negative controls PASS.
-- Source/render binding: PASS, 10 complete source banks. Reinspected retained
-  actual-UI screenshot evidence/author8-render/question-001.png; supplied matrix,
-  five choices and row-operation solution are readable. Runtime and inputs
-  remain bound to that rendering; no unnecessary rerender was performed.
+- `checks/check_all.py`: PASS (CLI relocation/count, ten complete source banks,
+  independent math, native grading, delivery, inventory).
+- `checks/check_batch_selection.py`: PASS (retained shortcut seed 4258185931;
+  raw and delivered shortcut succeeds 1/5, all five target ranks and positions;
+  native grading passes; all ten source profiles retained).
+- `checks/check_evidence_contract.py`: FAIL only at the installed runner gate.
+  Corrected evidence paths, two relocated evidence roots, missing-provenance
+  and wrong-root negative controls pass.
+- `checks/check_render_binding.py`: PASS. Reinspected the retained actual-UI
+  screenshot `evidence/author8-render/question-001.png`; readable and unclipped.
 
-No runtime/package, external runner, engine, database, publication or other-job
-writes occurred. Only workspace verification evidence and status were updated.
+No runtime, engine, external runner, publication, database or other-job changes.
+The proposed external correction remains `runner-fix/evidence-only-rejection.patch`;
+it is not installed. Its existing offline verification is retained, not rerun.
 
 ## Next unfinished step
 
-Runner owner must resolve the evidence-only repair's byte-identity rejection.
-The concrete staged proposal runner-fix/evidence-only-rejection.patch targets
-scripts/generator_pipeline.py outside authorized writes and remains uninstalled.
-The corrected relative evidence bundle is evidence/contract-correction, with its
-copy map in evidence/contract-installation.json. After external correction,
-rerun the installed handoff and registered regressions before independent review.
-Do not alter runtime bytes to evade the gate or claim staged changes are installed.
+The runner owner must resolve the unchanged-package rejection for this
+independent evidence-only finding and install the corrected relative evidence
+bundle using `evidence/contract-installation.json`. These writes are outside
+this workspace and unauthorized in the author session. Then rerun the strict
+installed handoff and retained regressions before a fresh independent review.
+Do not change runtime bytes merely to evade the gate or mark the failing check
+as passed. No further generator construction defect was demonstrated.
