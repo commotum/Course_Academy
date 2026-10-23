@@ -149,6 +149,7 @@ def assemble(level,seed,template,p,profile,sid=None,raw=False,cells=None):
  if not raw:
   for attr in (':question/problem', ':question/worked-solution'):
    if attr in q:q[attr]=q[attr].replace(r'[\begin{aligned}',r'\begin{bmatrix}').replace(r'\end{aligned}]',r'\end{bmatrix}')
+  q[':question/problem']=q[':question/problem'].replace('where$', 'where $')
  # Preserve source field order (two_indices is column first, then row).
  if template=='two_indices':specs=[('field-2','blank',[str(p['j'])],str(p['j'])),('field-1','blank',[str(p['i'])],str(p['i']))]
  elif template=='notation_blank':v=index(p);specs=[('field-1','blank',[v],v)]
@@ -157,6 +158,9 @@ def assemble(level,seed,template,p,profile,sid=None,raw=False,cells=None):
   values=bank(p,bank_source,cells)
   correct=index(p,braced=bank_source not in ('q-13498','q-13503'))
   specs=[('selection','radio',values,correct)]
+ if sid:
+  source_order={f[':answer-field/key']:i for i,f in enumerate(old[':question/answer-fields'])}
+  specs.sort(key=lambda f:source_order[f[0]])
  refs=not raw or all(':answer-field/correct' in f for f in old[':question/answer-fields'])
  identity={'version':VERSION,'question':q,'fields':[{'key':k,'type':t,'bank':sorted(v),'correct':c if refs else None,'correct_present':refs} for k,t,v,c in specs]}
  cid=digest(identity);qid=uid('question:'+cid);fields=[]
@@ -173,7 +177,7 @@ def assemble(level,seed,template,p,profile,sid=None,raw=False,cells=None):
   'parameters':p,'mathematical_fingerprint':digest(['position-to-index',len(p['matrix']),len(p['matrix'][0]),p['i'],p['j']]),
   'content_identity':cid,'eligible_for_learning':not raw,'evidence_only':raw,
   'native_limitation':None,
-  'source_provenance':{k:CAPTURE[k] for k in ('database','basis','lineage')},
+  'source_provenance':CAPTURE.get('additional_source_provenance',{}).get(sid,{k:CAPTURE[k] for k in ('database','basis','lineage')}),
   'authored_level':level!='easy' or bool(sid and ':question/difficulty' not in old),
   'presentation_repair':not raw,'plot_rating':'none','plot_assets':{},
   'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},

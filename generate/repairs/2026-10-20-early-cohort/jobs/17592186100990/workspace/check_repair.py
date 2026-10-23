@@ -93,6 +93,8 @@ def source_check():
  for q in SOURCES:
   sid=q[':question/math-academy-id'];r=cli(73,1,'completed:'+sid)[0];records.append(r)
   visible(r);assert matrix(q)[0]==matrix(r['question'])[0],sid
+  if sid=='q-139629':
+   assert [f[':answer-field/key'] for f in r['question'][':question/answer-fields']]==[f[':answer-field/key'] for f in q[':question/answer-fields']]
   fs={f[':answer-field/key']:f for f in r['question'][':question/answer-fields']}
   for f in q[':question/answer-fields']:
    rf=fs[f[':answer-field/key']]

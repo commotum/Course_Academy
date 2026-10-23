@@ -1,0 +1,333 @@
+{
+  "learner_operation": "Recognize the entire constant multiplying ln(x), including a reciprocal constant shown as ln(x)/d; use the constant multiple rule and derivative 1/x, then select or enter c/x.",
+  "fixed_features": [
+    {
+      "feature": "Single natural logarithm with argument x, differentiated with respect to x.",
+      "justification": "Tutorial b1f46211 teaches (ln x)'=1/x; adjacent KPs separately teach sums, general bases and tangent evaluation."
+    },
+    {
+      "feature": "One correct radio expression or one blank derivative response.",
+      "justification": "The source uses five-option single-select fields and equivalent mathematical blank entries. Correct-choice count is essential to this radio contract."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Constant coefficient and its sign",
+      "eligible_variation": "Signed integers, rational constants including unit fractions, integer multiples of e.",
+      "observed": "Both signs and existing rational/Euler profiles vary; all unit numerators are rejected."
+    },
+    {
+      "role": "Constant presentation",
+      "eligible_variation": "Multiplier c ln(x) and quotient ln(x)/d, as explicitly shown in q-70887.",
+      "observed": "Only multiplier form is generated. The quotient-rewriting stage is missing."
+    },
+    {
+      "role": "Correct radio position",
+      "eligible_variation": "Any of five positions, with response still determined mathematically.",
+      "observed": "Generator shuffles and UI reorders choices; first displayed position is not a reliable predictor in tested groups."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 34, \"profiles\": {\"integer\": 9, \"euler\": 5, \"equivalent-entry\": 8, \"canonical\": 6, \"fraction\": 6}, \"signs\": {\"positive\": 23, \"negative\": 11}, \"unique_derivatives\": 29, \"quotient_form\": 0}"
+    },
+    {
+      "case": "delivered_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 32, \"profiles\": {\"integer\": 9, \"euler\": 5, \"equivalent-entry\": 6, \"canonical\": 6, \"fraction\": 6}, \"signs\": {\"positive\": 22, \"negative\": 10}, \"unique_derivatives\": 29, \"quotient_form\": 0}"
+    },
+    {
+      "case": "raw_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"euler\": 1, \"canonical\": 1, \"integer\": 2, \"equivalent-entry\": 1}, \"signs\": {\"negative\": 3, \"positive\": 2}, \"unique_derivatives\": 5, \"quotient_form\": 0}"
+    },
+    {
+      "case": "delivered_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"euler\": 1, \"canonical\": 1, \"integer\": 2, \"equivalent-entry\": 1}, \"signs\": {\"negative\": 3, \"positive\": 2}, \"unique_derivatives\": 5, \"quotient_form\": 0}"
+    },
+    {
+      "case": "source quotient form ln(x)/4 and unit fraction coefficient",
+      "sample_refs": [
+        "source-gap.json",
+        "source-analysis.json"
+      ],
+      "result": "Failed: source q-70887 is unsupported; normal n=1,d=4,k=0 is rejected. The fixed nonunit numerator guard suppresses this eligible representation and reasoning case."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "integer: change coefficient numerator by +2 with denominator, Euler factor, seed and bank profile fixed.",
+      "expected": "Prompt and worked coefficient change; derivative and accepted response change accordingly.",
+      "observed": "\\frac{7}{x} -> \\frac{9}{x}; prompt, solution and key changed, symbolic and native-grader checks pass. Actual UI displays the changed values.",
+      "status": "passed",
+      "justification": "Constant multiple rule makes c answer-bearing. All radio choices are checked; blanks accept equivalents and reject the stale before-answer.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "fraction: change coefficient numerator by +2 with denominator, Euler factor, seed and bank profile fixed.",
+      "expected": "Prompt and worked coefficient change; derivative and accepted response change accordingly.",
+      "observed": "\\frac{2}{3x} -> \\frac{4}{3x}; prompt, solution and key changed, symbolic and native-grader checks pass. Actual UI displays the changed values.",
+      "status": "passed",
+      "justification": "Constant multiple rule makes c answer-bearing. All radio choices are checked; blanks accept equivalents and reject the stale before-answer.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "euler: change coefficient numerator by +2 with denominator, Euler factor, seed and bank profile fixed.",
+      "expected": "Prompt and worked coefficient change; derivative and accepted response change accordingly.",
+      "observed": "\\frac{2e}{x} -> \\frac{4e}{x}; prompt, solution and key changed, symbolic and native-grader checks pass. Actual UI displays the changed values.",
+      "status": "passed",
+      "justification": "Constant multiple rule makes c answer-bearing. All radio choices are checked; blanks accept equivalents and reject the stale before-answer.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "canonical: change coefficient numerator by +2 with denominator, Euler factor, seed and bank profile fixed.",
+      "expected": "Prompt and worked coefficient change; derivative and accepted response change accordingly.",
+      "observed": "-\\frac{11}{x} -> -\\frac{9}{x}; prompt, solution and key changed, symbolic and native-grader checks pass. Actual UI displays the changed values.",
+      "status": "passed",
+      "justification": "Constant multiple rule makes c answer-bearing. All radio choices are checked; blanks accept equivalents and reject the stale before-answer.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "equivalent-entry: change coefficient numerator by +2 with denominator, Euler factor, seed and bank profile fixed.",
+      "expected": "Prompt and worked coefficient change; derivative and accepted response change accordingly.",
+      "observed": "\\frac{11}{4x} -> \\frac{13}{4x}; prompt, solution and key changed, symbolic and native-grader checks pass. Actual UI displays the changed values.",
+      "status": "passed",
+      "justification": "Constant multiple rule makes c answer-bearing. All radio choices are checked; blanks accept equivalents and reject the stale before-answer.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed 53 to 54 while holding explicit parameters and profile fixed in each of five families.",
+      "expected": "Preserve prompt, solution and mathematical response; option permutations must not affect grading.",
+      "observed": "All five preserve prompt/solution/key. Three radio banks change serialized order. Two blank banks have no realized order change. Native grading and actual-UI rendering pass.",
+      "status": "passed",
+      "justification": "Seed/choice order has no role in differentiating c ln(x); the source radio response identifies an expression, not a position.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "variation-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first displayed answer",
+      "subgroup": "all; actual UI batch and controlled pairs",
+      "scope": "overall",
+      "strategy": "choose first displayed option",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give a uniform-choice baseline of 0.2. This position does not reliably predict the key in the rendered sample; UI order is measured from saved actual-UI HTML, not serialized order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "integer; actual UI batch and controlled pairs",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give a uniform-choice baseline of 0.2. This position does not reliably predict the key in the rendered sample; UI order is measured from saved actual-UI HTML, not serialized order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "fraction; actual UI batch and controlled pairs",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give a uniform-choice baseline of 0.2. This position does not reliably predict the key in the rendered sample; UI order is measured from saved actual-UI HTML, not serialized order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "euler; actual UI batch and controlled pairs",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give a uniform-choice baseline of 0.2. This position does not reliably predict the key in the rendered sample; UI order is measured from saved actual-UI HTML, not serialized order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "cue": "displayed coefficient c in c ln(x)",
+      "subgroup": "all sampled radio families",
+      "scope": "overall",
+      "strategy": "Preserve the whole signed constant and replace ln(x) by 1/x.",
+      "correct": 32,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "A random radio selection succeeds with probability 0.2. This rule succeeds throughout, but it is the lesson's constant multiple derivative operation, not an incidental cue. Independent symbolic derivatives and native grading verify it.",
+      "sample_refs": [
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "blank prompt/solution template",
+      "subgroup": "canonical",
+      "scope": "within_template",
+      "strategy": "Always enter the original source coefficient derivative -\\frac{11}{x}",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among distinct correct values observed in this subgroup, not over the infinite free-entry response space. A fixed source answer does not solve this family.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "blank prompt/solution template",
+      "subgroup": "equivalent-entry",
+      "scope": "within_template",
+      "strategy": "Always enter the original source coefficient derivative \\frac{11}{4x}",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among distinct correct values observed in this subgroup, not over the infinite free-entry response space. A fixed source answer does not solve this family.",
+      "sample_refs": [
+        "samples.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer after delivery normalization",
+      "subgroup": "exact delivered batch; all",
+      "scope": "overall",
+      "strategy": "Always select the first rendered radio option.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guess baseline is 1/5. Delivered radio positions are 2, 1, 2 (one-based); integer subgroup positions are 1 and 2. No fixed-position rule solves the entire radio subset. Single Euler item cannot establish a subgroup pattern.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer after delivery normalization",
+      "subgroup": "exact delivered batch; integer",
+      "scope": "within_template",
+      "strategy": "Always select the first rendered radio option.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guess baseline is 1/5. Delivered radio positions are 2, 1, 2 (one-based); integer subgroup positions are 1 and 2. No fixed-position rule solves the entire radio subset. Single Euler item cannot establish a subgroup pattern.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json",
+        "render-delivered/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator profile-first sampling and parameter-domain rejection",
+      "deterministic CLI batch construction (seed+i)",
+      "requested easy difficulty",
+      "publisher validation/normalization",
+      "captured inventory and within-batch deduplication",
+      "practice eligibility and retirement rules",
+      "history exclusions and difficulty-weighted selection formula",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "rejections.json",
+      "packaging.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "selection-results.json",
+      "inventory-results.json",
+      "variation-results.json",
+      "delivered-ui-positions.json",
+      "render-delivered/rendering.json"
+    ],
+    "result": "All 5 runner candidates survive; independent sample 34 -> 32 after two duplicates. All existing five profiles survive in the control sample; no quotient form exists before or after filtering. Selection cannot restore an absent family. Actual live policy/history were not captured; conditional selection analysis and limits are recorded."
+  },
+  "limitations": [
+    "Only easy publication was requested; authored moderate/hard are not certified.",
+    "Captured basis 5668 is a snapshot; later inventory changes can affect deduplication.",
+    "No live policy/learner history or future published entity IDs were supplied. Selection formula was inspected and exercised under explicit assumptions; no exact live draws are claimed.",
+    "Finite samples do not rule out every possible shortcut.",
+    "Current restriction is a missing family, not a demonstrated corrupt stored record; affected-inventory.json is empty after checking the captured generated record."
+  ]
+}

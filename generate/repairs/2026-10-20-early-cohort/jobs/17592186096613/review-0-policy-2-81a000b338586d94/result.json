@@ -1,0 +1,141 @@
+{
+  "verdict": "revise",
+  "summary": "The generator excludes the sourced ln(x)/4 family by rejecting unit-fraction coefficients. Sampled mathematics, native grading, rendering and packaging passed; no stored-pool defect was demonstrated.",
+  "source_analysis": {
+    "skill": "Differentiate a constant multiple of ln(x), preserving the whole signed constant, including rational constants and multiples of e.",
+    "reasoning_steps": [
+      "Identify the constant factor, rewriting ln(x)/d as (1/d)ln(x) when needed.",
+      "Apply the constant multiple rule and d(ln x)/dx=1/x.",
+      "Simplify c/x and select the matching radio answer or enter an equivalent expression."
+    ],
+    "invariants": [
+      "Single natural logarithm with argument x; no chain rule, sums, general bases or point evaluation.",
+      "Easy workload: one constant multiple derivative, optionally rewriting a quotient by a constant.",
+      "Radio banks have five alternatives; blank inputs must accept mathematically equivalent notation."
+    ],
+    "permitted_variations": [
+      "Signed integer and modest rational coefficients; proper and improper fractions.",
+      "Integer multiples of the constant e.",
+      "Quotient presentation ln(x)/d and factor presentation c ln(x).",
+      "Radio option order and correct position are incidental; distractors should remain plausible and unique.",
+      "Changing the coefficient must change the answer; reordering choices must preserve its mathematical value."
+    ],
+    "source_refs": [
+      "tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: The derivative of the natural logarithm is the reciprocal function; d(ln x)/dx=1/x.",
+      "canonical 6624681a-bb00-59db-8df9-4d5a3cd00434: 5 ln x -> 5(ln x)' -> 5/x.",
+      "39f62811-3b9a-5225-ae53-715b926ed4a3",
+      "5519d8f3-5f4f-5b34-b1bb-b26079a6662a",
+      "a6a48b7a-f270-5ba0-b480-17bea4dd2da0",
+      "531eff6b-7728-5135-92da-8477ae71ccbe",
+      "319b8cc3-c619-5308-8487-fad516398fb6",
+      "681375a5-0c42-5d37-8f3f-a0f73ddc205e",
+      "a09e33e6-12c2-544c-8fa4-02ef6f3be0de",
+      "dffc415e-0ffd-5f91-84e8-ab042b2a6f3c",
+      "eeedc903-d84c-5e00-bc96-dcee7bf9bc01",
+      "4890c920-695d-52f8-8b20-5f7886a5c8be",
+      "f8867c14-c978-5609-8feb-155bfedae13c"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replays.json",
+        "source-euler-replay.json",
+        "source-gap.json"
+      ],
+      "details": "Nine original profiles replay exact prompts, captured solutions and complete banks. Newer q-70889 replays through the normal Euler family. q-70887 is unsupported. Missing captured keys/fields are distinguished from inferred completions."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_checks.py",
+        "math-results.json",
+        "samples.json",
+        "batch.json"
+      ],
+      "details": "Independent symbolic differentiation of 54 records agrees with keys and final worked equalities; radio banks are distinct and blank aliases equivalent. Includes exact runner batch and controlled pairs."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-gap.json",
+        "rejections.json",
+        "variation-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-samples/delivery.json"
+      ],
+      "details": "Existing five profiles vary coefficients/signs, but |n|>=2 suppresses every unit fraction and no quotient-presentation family exists. Five runner records survive; 32/34 independent records survive deduplication."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Requested easy samples retain one constant-multiple natural-log derivative and source response contracts. Nonrequested authored difficulty levels are not certified."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-combined-input.json",
+        "grader-report.json",
+        "grader.log"
+      ],
+      "details": "Native learning::grade_field passed 145 accepted and 221 rejected submissions, including equivalent blank notation, stale counterfactual answers, all radio alternatives and the captured historical generated blank."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json",
+        "render-delivered/question-001.png",
+        "render-pairs/question-009.png",
+        "render-pairs/question-010.png"
+      ],
+      "details": "Actual UI rendered 20 batch/pair records plus all five normalized delivery records; representative screenshots inspected. No MathJax, control, clipping or image errors observed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "cli-replay.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact Python 3.13.5 and SymPy 1.14.0 dependencies match manifest. CLI reproduces the runner batch, relocated runtime reproduces it, no external assets are required, and package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "variation-results.json",
+        "selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant coefficient changes and irrelevant seed changes behave correctly; tested position cues are not reliable. However the specification fixes multiplier presentation and excludes the source quotient-rewriting decision case. Selection/delivery cannot restore this missing family; live policy/history limitations are documented."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "Source q-70887 asks y=ln(x)/4 with answer 1/(4x), but generate_easy(parameters={n:1,d:4,k:0}) raises ValueError. validate_parameters requires |n|>=2 for every profile, and the template/bank inventory has no quotient-by-a-constant family. This removes a demonstrated easy reasoning case: rewrite division by a constant before applying the constant multiple rule.",
+      "source_refs": [
+        "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887), prompt y=ln(x)/4 and solution rewrite to (1/4)ln(x)",
+        "b1f46211-3766-53d0-bcc7-30bb9056b948, derivative of ln(x) is 1/x",
+        "generate/principles.md, meaningful variety and faithful source reproduction"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_source_gap.py. It exits 1 and writes source-gap.json. Minimal normal call: generate_easy(seed=917, parameters={\"n\":1,\"d\":4,\"k\":0}); source replay call uses profile=\"raw-q-70887\" with the same parameters.",
+      "requested_change": "Add the sourced quotient-by-a-constant family to source replay and normal easy sampling, including reduced unit-fraction coefficients, the complete five-choice bank, and the rewrite step. Use family-specific domain and distractor rules so valid unit fractions are not excluded to avoid collisions in unrelated banks. Retain the failing regression and verify varied denominators, source fidelity, native grading and delivery. No database or runner-owned batch edits are requested."
+    }
+  ]
+}
