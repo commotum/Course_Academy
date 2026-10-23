@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT))
 from inventory_jobs import save
 from generator_packages import package_digest, publish_package, resolve_registered_script, check_dependencies, verify_package
 from generator_review import REVIEW_POLICY_VERSION, validate_review
+from generator_progress import failure_signature, material_identity
 
 
 def read(path):
@@ -131,7 +132,8 @@ class CodexSession:
                 output.unlink()
         execution_path = directory / 'execution.json'
         execution = read(execution_path) if execution_path.exists() else {'launches': 0}
-        if execution['launches'] >= self.max_launches:
+        launch_limit = execution.get('launch_limit', self.max_launches)
+        if execution['launches'] >= launch_limit:
             raise SessionRetryExhausted(role, directory, execution)
         (directory / 'prompt.txt').write_text(prompt)
         executable = self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE') or shutil.which('codex', path=self.environment.get('PATH')) or str(Path.home() / '.local/bin/codex')
@@ -143,7 +145,8 @@ class CodexSession:
                    '--output-last-message', str(output), '--json', '-']
         # Count before spawning so parent/process crashes cannot reset an
         # unfinished ephemeral session's budget and launch it forever.
-        execution = {'launches': execution['launches'] + 1, 'status': 'running'}
+        execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running'}
+        execution.pop('error', None)
         save(execution_path, execution)
         try:
             with (directory / 'events.jsonl').open('a') as log:
@@ -164,7 +167,7 @@ class CodexSession:
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             execution.update(status='failed', error=str(error))
             save(execution_path, execution)
-            if execution['launches'] >= self.max_launches:
+            if execution['launches'] >= launch_limit:
                 raise SessionRetryExhausted(role, directory, execution) from error
             raise
         save(execution_path, {**execution, 'status': 'completed'})
@@ -178,6 +181,8 @@ class Pipeline:
         self.directory.mkdir(parents=True, exist_ok=True)
         self.environment = dict(os.environ if environment is None else environment)
         self.publisher, self.session = publisher, session or CodexSession(self.root, self.environment)
+        if max_attempts < 1:
+            raise ValueError('max_attempts must be positive')
         self.max_attempts = max_attempts
         inherited = json.loads(self.environment.get('COURSE_ACADEMY_GENERATOR_LOCK_FDS', '[]'))
         if not isinstance(inherited, list) or any(type(fd) is not int or fd < 0 for fd in inherited):
@@ -571,6 +576,13 @@ class Pipeline:
             updates = {'last_rejected_package': self.state.get('package_hash'),
                        'last_rejected_source': self.state.get('source_hash'),
                        'last_rejected_engine': self.engine_identity()} if reason.get('verdict') in {'revise', 'unsupported'} else {}
+            signature = failure_signature(reason, material_identity(self))
+            failures = self.state.get('progress_failures', {})
+            failures[signature] = failures.get(signature, 0) + 1
+            self.persist(progress_failures=failures)
+            if failures[signature] >= 2:
+                self.block('no_progress', reason, 'generate')
+                return
             self.persist(stage='generate', needs_repair=True, error=reason, **updates)
 
     def admit_publication(self):
@@ -596,22 +608,57 @@ class Pipeline:
             return False
         return True
 
-    def run(self, stop_after='push'):
+    def block(self, code, reason, resume_stage):
+        self.persist(stage='blocked', needs_repair=True, error={
+            'code': code, 'cause': reason, 'resume_stage': resume_stage,
+            'instruction': 'Resolve the recorded cause, then explicitly resume with --resume-reason. Automatic retries are disabled.'})
+
+    def resume_blocked(self, reason):
+        """Grant one recorded, bounded recovery; a process restart grants none."""
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError('An explicit resume requires a nonempty reason')
+        if self.state['stage'] not in {'blocked', 'failed', 'unsupported', 'repair', 'report-repair'}:
+            raise ValueError('Only a blocked or yielded repair can be explicitly resumed')
+        error = self.state.get('error') or {}
+        prior_stage = self.state['stage']
+        stage = error.get('resume_stage') if isinstance(error, dict) else None
+        stage = stage or ('validate' if prior_stage == 'report-repair' else 'generate')
+        cause = error.get('cause', error) if isinstance(error, dict) else {}
+        if isinstance(cause, dict) and cause.get('code') == 'agent_session_retry_exhausted':
+            execution_path = inside(self.directory, cause['session_directory']) / 'execution.json'
+            execution = read(execution_path)
+            save(execution_path, {**execution, 'launch_limit': execution['launches'] + getattr(self.session, 'max_launches', 3)})
+        events = self.state.get('resume_events', [])
+        events.append({'time': time.time(), 'reason': reason.strip(), 'attempt': self.state['attempt'],
+                       'prior_stage': prior_stage, 'prior_error': error,
+                       'material': material_identity(self)})
+        report_limits = {key: count + 3 for key, count in self.state.get('review_report_rounds', {}).items()}
+        self.persist(stage=stage, author_attempt_limit=self.state['attempt'] + self.max_attempts,
+                     resume_events=events, progress_failures={}, review_report_limits=report_limits,
+                     needs_repair=True)
+
+    def run(self, stop_after='push', *, resume_reason=None):
         with (self.directory / 'worker.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            # A caller may have constructed this object before another worker
+            # finished. Always make launch decisions from the locked state.
+            self.state = read(self.path)
             if isinstance(self.session, CodexSession):
                 self.session.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())
-            # Bound each worker turn, not the lifetime of a repairable job.
-            # The scheduler keeps a yielded repair at its existing priority.
-            self._attempt_limit = self.state['attempt'] + self.max_attempts
+            if 'author_attempt_limit' not in self.state:
+                # Existing attempts count, including jobs admitted by older
+                # runners. A deployment must not rearm a runaway job.
+                self.persist(author_attempt_limit=self.max_attempts)
+            if resume_reason is not None:
+                self.resume_blocked(resume_reason)
+            self._attempt_limit = self.state['author_attempt_limit']
             try:
                 return self._run(stop_after)
             except SessionRetryExhausted as error:
-                self.persist(stage='failed', error={
-                    'code': 'agent_session_retry_exhausted', 'role': error.role,
-                    'session_directory': str(error.directory), 'launches': error.execution['launches'],
-                    'error': error.execution.get('error', 'Session was interrupted'),
-                    'resume_stage': self.state['stage']})
+                reason = {'code': 'agent_session_retry_exhausted', 'role': error.role,
+                          'session_directory': str(error.directory), 'launches': error.execution['launches'],
+                          'error': error.execution.get('error', 'Session was interrupted')}
+                self.block('agent_session_retry_exhausted', reason, self.state['stage'])
                 return self.state
 
     def _run(self, stop_after):
@@ -632,14 +679,6 @@ class Pipeline:
                 rounds.setdefault(str(self.review_directory()), 2)
                 self.persist(stage='report-repair', review_report_rounds=rounds,
                              review_report_error=error.get('error'))
-                continue
-            recoverable = (isinstance(error, dict) and error.get('code') not in
-                {'agent_session_retry_exhausted', 'review_contract_invalid'})
-            if stage == 'failed' and not self.is_refill and (recoverable or error == 'Authoring attempts exhausted'):
-                # Migrate old attempt-limit failures without resetting session
-                # launch counts or touching any durable publication request.
-                self.repair(error if isinstance(error, dict) else read(self.directory / 'feedback.json'))
-                self.persist(repair_cycle=self.state.get('repair_cycle', 0) + 1)
                 continue
             if stage == 'repair':
                 self.persist(stage='generate')
@@ -696,8 +735,7 @@ class Pipeline:
             elif stage == 'generate':
                 attempt = self.state['attempt'] if self.state.get('author_running') else self.state['attempt'] + 1
                 if attempt > self._attempt_limit:
-                    self.persist(stage='repair', needs_repair=True,
-                                 repair_cycle=self.state.get('repair_cycle', 0) + 1)
+                    self.block('author_attempts_exhausted', self.state.get('error'), 'generate')
                     return self.state
                 self.persist(attempt=attempt, author_running=True)
                 evidence = self.directory / f'author-{attempt}'
@@ -827,7 +865,8 @@ def main(argv=None):
     parser.add_argument('--difficulty', choices=['auto', 'easy', 'moderate', 'hard'], default='auto')
     parser.add_argument('--count', type=int, default=5)
     parser.add_argument('--database', default='math')
-    parser.add_argument('--max-attempts', type=int, default=3)
+    parser.add_argument('--max-attempts', type=int, default=3, help='Durable author attempt budget; restarts do not replenish it')
+    parser.add_argument('--resume-reason', help='Explicitly grant a blocked job a bounded recovery after addressing its cause')
     parser.add_argument('--stop-after', choices=['generate', 'validate', 'prepare', 'push'], default='push')
     args = parser.parse_args(argv)
     if args.count < 1 or args.max_attempts < 1:
@@ -864,16 +903,16 @@ def main(argv=None):
             # Once admitted, keep the original inputs across inventory refreshes.
             if (directory / 'job.json').exists():
                 request = read(directory / 'job.json')['request']
-            result = Pipeline(directory, request, publisher, environment=env, max_attempts=args.max_attempts).run(args.stop_after)
+            result = Pipeline(directory, request, publisher, environment=env, max_attempts=args.max_attempts).run(args.stop_after, resume_reason=args.resume_reason)
             print(json.dumps({'kp': kp, 'stage': result['stage'], 'directory': str(directory)}), flush=True)
             if args.inventory_job:
                 save(args.inventory_job.with_suffix('.result'), {
-                    'outcome': 'generated' if result['stage'] == 'verified' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',
+                    'outcome': 'generated' if result['stage'] == 'verified' else 'blocked' if result['stage'] == 'blocked' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',
                     'evidence': str(directory / 'job.json'), 'generator': result.get('registration'),
                     'publication': result.get('publication'), 'needs_repair': result.get('needs_repair', False),
                     'difficulty': result.get('effective_difficulty', request['difficulty']),
                     'package': request.get('registered_package'), 'reason': result.get('error')})
-            failed |= result['stage'] in {'failed', 'unsupported', 'repair', 'report-repair'}
+            failed |= result['stage'] in {'blocked', 'failed', 'unsupported', 'repair', 'report-repair'}
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
             failed = True
             print(json.dumps({'kp': kp, 'error': str(error), 'directory': str(directory)}), file=sys.stderr, flush=True)

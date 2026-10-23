@@ -6,7 +6,21 @@ from pathlib import Path
 REVIEW_POLICY_VERSION = 2
 CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
-                 "source_fidelity", "decision_shortcut", "packaging", "evidence")
+                 "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")
+
+
+def evidence_only_review(result):
+    """Route missing/corrupt review evidence back to the independent reviewer.
+
+    This identifies who must repair the result; it does not approve the package
+    or relax any evidence check. Mixed reports still require generator repairs.
+    """
+    if not isinstance(result, dict) or result.get("verdict") not in {"revise", "unsupported"}:
+        return False
+    findings = result.get("findings")
+    return (isinstance(findings, list) and bool(findings)
+            and all(isinstance(finding, dict) and finding.get("kind") == "evidence"
+                    for finding in findings))
 
 
 def _text(value, label):

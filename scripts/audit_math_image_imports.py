@@ -15,6 +15,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 import xml.etree.ElementTree as ET
 
 IMAGE = re.compile(r"images/[0-9a-f]{2}/[0-9a-f]{64}\.(?:png|svg|jpg|jpeg|gif|webp|avif)")
@@ -81,24 +82,37 @@ def objects(value):
 def capture_index(paths: list[Path], relevant_hashes: set[str]):
     index = defaultdict(list)
     stats = Counter()
+    seen_files, classifications = set(), {}
     for path in paths:
         try:
-            value = json.loads(path.read_text())
+            raw = path.read_bytes()
+            stats["bytes_read"] += len(raw)
+            file_hash = hashlib.sha256(raw).digest()
+            if file_hash in seen_files:
+                stats["duplicate_files_skipped"] += 1
+                continue
+            seen_files.add(file_hash)
+            value = json.loads(raw)
         except (OSError, ValueError) as exc:
             raise ValueError(f"Cannot audit capture evidence {path}: {exc}") from exc
         stats["files_read"] += 1
+        if stats["files_read"] % 500 == 0:
+            print(f'Capture evidence: {stats["files_read"]} unique files, {len(index)} relevant assets', file=sys.stderr, flush=True)
         for obj in objects(value):
             if obj.get("tag") != "svg" or not isinstance(obj.get("html"), str):
                 continue
             html = obj["html"]
-            hashes = {obj.get("sha256"), obj.get("original_svg_sha256"), hashlib.sha256(html.encode()).hexdigest()}
+            html_hash = hashlib.sha256(html.encode()).hexdigest()
+            hashes = {obj.get("sha256"), obj.get("original_svg_sha256"), obj.get("source_sha256"), html_hash}
             for key in ("path", "original_svg_path"):
                 if isinstance(obj.get(key), str):
                     hashes.add(Path(obj[key]).stem)
             hashes &= relevant_hashes
             if not hashes:
                 continue
-            kind, reason = svg_kind(html)
+            if html_hash not in classifications:
+                classifications[html_hash] = svg_kind(html)
+            kind, reason = classifications[html_hash]
             info = {"file": str(path), "kind": kind, "reason": reason,
                     "tag": "svg", "representation": obj.get("representation"),
                     "original_path": obj.get("path")}
@@ -109,6 +123,12 @@ def capture_index(paths: list[Path], relevant_hashes: set[str]):
     return index, dict(stats)
 
 
+def read_facts(snapshot):
+    with snapshot.open() as stream:
+        for line in stream:
+            yield json.loads(line)
+
+
 def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Path):
     records = defaultdict(dict)
     parents = defaultdict(set)
@@ -117,8 +137,7 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
     counts = Counter()
     string_counts = Counter()
     noncanonical = []
-    for line in snapshot.open():
-        row = json.loads(line)
+    for row in read_facts(snapshot):
         eid, attr, value = row["e"], row["a"], row["v"]
         counts[attr] += 1
         if attr in META:

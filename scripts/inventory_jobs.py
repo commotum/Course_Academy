@@ -141,13 +141,6 @@ class InventoryJobs:
             existing = {path: json.loads(path.read_text()) for path in self.directory.glob('*.json')
                         if path.name != 'cursor.json'}
             existing = {path: job for path, job in existing.items() if 'request' in job}
-            for path, job in list(existing.items()):
-                if job.get('state') == 'rejected' and job.get('outcome', {}).get('outcome') in {'failed', 'repair-pending'}:
-                    # Previous versions incorrectly blacklisted repairable
-                    # content failures. Retain the exact cycle/workspace.
-                    job = {**job, 'state': 'pending', 'retryAt': 0, 'rejectedVariants': []}
-                    existing[path] = job
-                    save(path, job)
             build_records, refill_records = {}, {}
             for path, job in existing.items():
                 request = job['request']
@@ -248,6 +241,8 @@ class InventoryJobs:
             for path, old in existing.items():
                 if path in current:
                     continue
+                if old.get('state') == 'blocked':
+                    continue
                 if self.publication_recovery(path, old):
                     save(path, {**old, 'request': {**old['request'], 'jobKind': old['request'].get('jobKind', 'build')},
                                 'state': 'running', 'recoveryOnly': True})
@@ -293,9 +288,6 @@ class InventoryJobs:
                 changed = any(old.get('request', {}).get(k) != request.get(k) for k in ('stage', 'missing', 'script'))
                 state = old.get('state', 'pending')
                 cycle = old.get('cycle', 1)
-                if state == 'rejected' and old.get('outcome', {}).get('outcome') in {'failed', 'repair-pending'}:
-                    state = 'pending'
-                    old = {**old, 'retryAt': 0, 'rejectedVariants': []}
                 # The service manager may lack the interactive shell's PATH.
                 # Installing/finding the executable is new operational evidence,
                 # not a reason to retain a content-capability rejection.
@@ -317,6 +309,8 @@ class InventoryJobs:
                     continue
                 old = json.loads(path.read_text())
                 if 'request' in old:
+                    if old.get('state') == 'blocked':
+                        continue
                     state = 'verified' if old['request']['topic'] in inventory['qualifyingTopics'] else 'withdrawn'
                     if old.get('state') != state:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
@@ -325,17 +319,14 @@ class InventoryJobs:
     @staticmethod
     def recoverable(path: Path, job: dict) -> bool:
         """Saved unfinished drafts retain their inputs even after withdrawal."""
-        if not job or job.get('state') in {'verified', 'rejected'}:
+        if not job or job.get('state') in {'verified', 'rejected', 'blocked'}:
             return False
         directory = path.with_suffix('.pipeline') / str(job.get('cycle', 1))
         state_path = directory / 'job.json'
         if state_path.exists():
             state = json.loads(state_path.read_text())
-            if state.get('stage') == 'failed':
-                error = state.get('error')
-                return ((directory / 'publication/request.json').exists()
-                        or isinstance(error, dict) and error.get('code') != 'agent_session_retry_exhausted'
-                        or error == 'Authoring attempts exhausted')
+            if state.get('stage') in {'failed', 'blocked'}:
+                return (directory / 'publication/request.json').exists()
             return state.get('stage') not in {'verified', 'unsupported'}
         return False
 
@@ -428,20 +419,35 @@ class InventoryJobs:
                     completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
                         env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors)}, pass_fds=descriptors)
                 outcome = json.loads(result_path.read_text()) if result_path.exists() else {}
-                state = ('repair-needed' if lane == 'refill' and outcome.get('needs_repair') else
-                         'pending' if outcome.get('outcome') in {'repair-pending', 'failed'} else
+                state = ('blocked' if outcome.get('outcome') in {'blocked', 'failed', 'repair-pending'} else
+                         'repair-needed' if lane == 'refill' and outcome.get('needs_repair') else
                          'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit'} else
                          'awaiting-verification' if completed.returncode == 0 else 'pending')
+                failures = job.get('processFailures', 0) + 1 if completed.returncode and not outcome else 0
+                if failures >= 3:
+                    state = 'blocked'
+                    outcome = {'outcome': 'blocked', 'reason': {'code': 'pipeline_process_failed',
+                               'error': 'Pipeline failed three times without a structured result; inspect the saved log before resuming.'}}
                 rejections = job.get('rejectedVariants', [])
                 if state == 'rejected' and lane == 'build':
                     rejections = sorted(set([*rejections, request_variant(job['request'])]))
                 self.finish(path, {'state': state, 'attempts': attempts, 'completedAt': time.time(),
+                                  'processFailures': failures,
                                   'rejectedVariants': rejections,
                                   'replenishments': job.get('replenishments', 0) + (state == 'awaiting-verification'),
                                   'retryAt': time.time() + min(300, 10 * 2 ** min(attempts, 5)),
                                   'exitCode': completed.returncode, 'outcome': outcome}, cycle=cycle)
+                if state == 'blocked':
+                    print(json.dumps({'event': 'generator_blocked', 'knowledgePoint': job['request']['knowledgePoint'],
+                                      'job': str(path), 'reason': outcome.get('reason')}), file=sys.stderr, flush=True)
             except (OSError, subprocess.SubprocessError, ValueError) as error:
-                self.finish(path, {'state': 'pending', 'attempts': attempts, 'retryAt': time.time() + min(300, 10 * 2 ** min(attempts, 5)), 'error': str(error)}, cycle=cycle)
+                failures = job.get('processFailures', 0) + 1
+                state = 'blocked' if failures >= 3 else 'pending'
+                self.finish(path, {'state': state, 'attempts': attempts, 'processFailures': failures,
+                                  'retryAt': time.time() + min(300, 10 * 2 ** min(attempts, 5)), 'error': str(error)}, cycle=cycle)
+                if state == 'blocked':
+                    print(json.dumps({'event': 'generator_blocked', 'knowledgePoint': job['request']['knowledgePoint'],
+                                      'job': str(path), 'reason': str(error)}), file=sys.stderr, flush=True)
             finally:
                 kp_lock.close()
             return True
