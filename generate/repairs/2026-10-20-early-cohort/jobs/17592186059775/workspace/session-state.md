@@ -1,33 +1,32 @@
-# Current state — 2026-10-22, author-275
+# Current state — 2026-10-22, author-278
 
-Read latest feedback, both retained findings and history (275 prior events).
-Reproduced exact latest failure first: job Python `-B checks/check_current_handoff.py`
-exits 1. Installed sample-stage runner rejects byte-identical package before
-regressions and sampling. Confirmed actual gate in scripts/generator_pipeline.py.
+Read latest feedback, retained findings, final history event, existing session state,
+and required generation/validation guidance. Reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1. Installed runner rejects this byte-identical package before retained checks
+or sampling (`scripts/generator_pipeline.py:723`).
 
-Targeted verification (job Python, `-B`):
+Executed every registration in repair-regressions.json. Results and commands:
+`evidence/author278-regressions.json`, `evidence/author278-verification.json`.
 
-- checks/check_evidence_contract.py: fails strictly with exit 1 only at installed
-  handoff. Bundle validates under two relocated roots; wrong-root and missing
-  provenance controls reproduce. Twelve captures and three generated records bind.
-- checks/check_batch_selection.py: passes. Exact seed 4258185931: five accepted
-  after shared delivery; pivot/rank cue 1/5 raw and delivered. All ten profiles
-  checked; native grader accepts five correct and rejects twenty incorrect choices.
-- checks/check_cli_contract.py: passes relocated deterministic CLI, requested
-  counts 0/1/5, supported bands and finite-limit rejection.
-- checks/check_render_binding.py: passes ten complete banks and current UI input
-  binding. Reinspected author8-render/question-001.png: readable matrix notation,
-  five choices, controls, and correct elimination solution. Reused unchanged UI.
+- check_all.py: exit 0; CLI relocation, exact complete source replay, independent
+  mathematics, native grading, shared delivery and historical inventory pass.
+- check_batch_selection.py: exit 0; original seed and within-profile controlled
+  answer-role changes pass before and after shared filtering; native grades agree.
+- check_evidence_contract.py: exit 1; staged bundle validates at both relocated
+  roots with failing negative controls, but installed runner handoff still fails.
+- check_render_binding.py: exit 0; ten complete source banks and two actual UI
+  previews bind to current output. Inspected question-001.png: readable prompt,
+  five choices and full solution. Reused the unchanged actual UI rendering.
 
-Commands, logs, claims and runtime hashes: evidence/author275-verification.json.
-All six manifest/runtime files exactly match preserved baseline. No new defect
-justifies changing instructional construction. Existing instructional account,
-package and strict registered regressions preserved.
+All runtime/package bytes match author-277. Strict regressions remain intact.
+No generator defect justifies changing runtime bytes to evade the runner gate.
+The retained evidence-only finding explicitly requests preserving those bytes.
+No publication, database, engine, external runner, or other-job edits occurred.
 
-Unfinished action is outside permitted writes: runner owner must install the
-reviewable evidence-only gate repair (runner-fix/evidence-only-rejection.patch)
-in scripts/generator_pipeline.py and install the evidence bundle using the
-runner-supplied evidence root. Then rerun strict handoff/evidence regressions and
-fresh independent review. Proposed fix remains uninstalled. Do not weaken tests,
-change runtime bytes to evade the gate, or repeat author-only retries expecting
-external state to change. No database, publication, engine or other-job edits.
+Unfinished: runner owner must review and apply the already staged
+`runner-fix/evidence-only-rejection.patch` outside this workspace, verify its
+strict handoff regression, and route corrected evidence to fresh review.
+Current workspace-only authorization cannot install it. Further identical
+workspace author retries cannot change the external predicate; do not substitute
+cosmetic package changes, historical acceptance, or weakened tests for repair.
