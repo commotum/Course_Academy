@@ -1,0 +1,112 @@
+{
+  "verdict": "accepted",
+  "summary": "The missing source replay is repaired. All eight checks pass. No current-generator or stored-pool defect was demonstrated; package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Determine matrix dimensions by counting rows and columns in order.",
+    "reasoning_steps": [
+      "Inspect the displayed matrix.",
+      "Count rows and columns independently.",
+      "Report rows \u00d7 columns using radio selection or two numeric blanks."
+    ],
+    "invariants": [
+      "One explicitly displayed rectangular matrix.",
+      "Rows precede columns.",
+      "Entry values require no arithmetic."
+    ],
+    "permitted_variations": [
+      "Vary row and column counts independently within the supported workload.",
+      "Vary entries and labels without changing dimensions.",
+      "Vary radio banks and correct-choice positions.",
+      "Allow square and rectangular matrices in every blank template."
+    ],
+    "source_refs": [
+      "6587b5f1-8a44-556a-a95e-20c54dfebc04",
+      "46957bca-e845-5160-aeaf-7ce8847fe404",
+      "80862d10-12ca-5f6e-9209-5f8bf84be504",
+      "Tutorial d68f01b8-8bc6-59a1-8d80-d284abbcdf6e: dimensions are row and column counts, written in that order."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-prompt-results.json",
+        "repair-regression-results.json"
+      ],
+      "details": "All nine practice sources replay correctly, including complete answer banks. Both regressions fail on the previous omission and pass on the revision. Removing the absent-table reference is justified."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "inventory-results.json"
+      ],
+      "details": "112 generated records plus the column-removal control have correct dimensions and solutions. All 14 captured inventory records have correct dimension answers."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "samples.json",
+        "boundaries.json",
+        "finite-batch.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "The revised template supports all 25 shapes. Fresh samples and unchanged-template boundaries pass. The runner batch contains five distinct shapes across all four templates."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "The revision preserves easy row/column counting, supported entry representations and response contracts."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "All 335 native-grader assertions pass, covering equivalent notation, incorrect counts, transposed dimensions and radio distractors."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-middle/rendering.json",
+        "render-last/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "All 19 actual-UI renders passed and their screenshots were inspected, including counterfactuals, the repaired source and every runner-batch record."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "package-integrity.json",
+        "revision-scope.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and invalid-input rejection pass. Package files remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "selection-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant changes alter responses; irrelevant changes preserve them. Conditional probes demonstrated no reusable shortcut. Delivery retains 48/48 samples and 5/5 runner records. Selection conclusions remain bounded by captured inventory and unknown learner history."
+    }
+  },
+  "findings": []
+}

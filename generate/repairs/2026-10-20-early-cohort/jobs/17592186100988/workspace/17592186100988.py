@@ -18,7 +18,7 @@ import sympy as sp
 KP_ID=17592186100988
 KP_UUID='8d783281-8364-5597-a804-a4ea0d76bec8'
 TITLE='Finding an Entry of a Matrix'
-VERSION='rectangular-entry-lookup-v5'
+VERSION='rectangular-entry-lookup-v6'
 HERE=Path(__file__).with_suffix('')
 CAPTURE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in CAPTURE['record'][':knowledge-point/questions']}
@@ -37,6 +37,7 @@ OBSERVED={
  'q-125561':[('cell',1,1),('target',),('cell',3,2),('cell',2,1),('cell',2,2)]}
 VALID_RADIO_PROFILES=('location_no_entry','four_locations','swap_no_entry')
 DEFAULT_PROFILES=VALID_RADIO_PROFILES+('overflow_locations','blank')
+EASY_DIMENSIONS=((2,3),(2,4),(3,2),(3,4),(5,4))
 def level_templates(level):return TEMPLATES if level=='easy' else TEMPLATES[1:]
 def level_profiles(level):return DEFAULT_PROFILES if level=='easy' else VALID_RADIO_PROFILES+('blank',)
 
@@ -91,9 +92,13 @@ def default_positions(p,profile):
  if profile=='blank':return positions
  if profile=='location_no_entry':return positions+[(nxtrow,j),(i,nxtcol),(nxtrow,nxtcol),None]
  if profile=='four_locations':
-  if n<3:raise ValueError('four_locations requires three columns')
-  othercol=j-1 if j>1 and j-1!=nxtcol else j+2 if j+2<=n else j-2
-  return positions+[(nxtrow,j),(i,nxtcol),(nxtrow,nxtcol),(i,othercol)]
+  if n>=3:
+   othercol=j-1 if j>1 and j-1!=nxtcol else j+2 if j+2<=n else j-2
+   extra=(i,othercol)
+  else:
+   otherrow=i-1 if i>1 and i-1!=nxtrow else i+2 if i+2<=m else i-2
+   extra=(otherrow,j)
+  return positions+[(nxtrow,j),(i,nxtcol),(nxtrow,nxtcol),extra]
  if profile=='swap_no_entry':
   if i==j or j>m or i>n:raise ValueError('Swapped indices must exist and differ')
   return positions+[(j,i),(nxtrow,j),(i,nxtcol),None]
@@ -146,13 +151,13 @@ def guard(p,level,observed_source=None,allow_overflow=False):
   if allow_overflow:
    if level!='easy' or not ((i==m+1 and j<=n) or (j==n+1 and i<=m)):raise ValueError('Only easy one-index overflow by one is supported')
   elif i>m or j>n:raise ValueError('Numeric defaults require existing entries')
-  if level=='easy' and ((m,n) not in ((2,3),(3,2),(3,4),(5,4))):raise ValueError('Easy dimension bound')
+  if level=='easy' and ((m,n) not in EASY_DIMENSIONS):raise ValueError('Easy dimension bound')
   if level=='moderate' and ((m,n) not in ((5,6),(6,5)) or max(i,j)<4):raise ValueError('Moderate scanning bound')
   if level=='hard' and ((m,n) not in ((6,7),(7,6)) or max(i,j)<5):raise ValueError('Hard scanning bound')
  return p
 
 def sample(level,rng,profile):
- dimensions={'easy':((2,3),(3,2),(3,4),(5,4)),'moderate':((5,6),(6,5)),'hard':((6,7),(7,6))}
+ dimensions={'easy':EASY_DIMENSIONS,'moderate':((5,6),(6,5)),'hard':((6,7),(7,6))}
  for _ in range(10000):
   m,n=rng.choice(dimensions[level]);i,j=rng.randint(1,m),rng.randint(1,n)
   if profile=='overflow_locations':
@@ -194,12 +199,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if profile is not None and profile not in level_profiles(level):raise ValueError('Bank profile not supported at this level')
   allowed=[s for s in level_templates(level) if field_type is None or s.endswith('_'+field_type.removeprefix(':answer-field.type/'))]
   if profile is not None:
-   allowed=[s for s in allowed if (s=='inline_no_entry_radio' if profile=='overflow_locations' else s=='display_blank' if profile=='blank' else s not in ('display_blank','inline_no_entry_radio'))]
+   allowed=[s for s in allowed if (s=='display_blank')==(profile=='blank')]
   if not allowed:raise ValueError('Unsupported field/profile combination')
   style=template or rng.choice(allowed)
   if style not in allowed:raise ValueError('Unsupported template/field combination')
   kind='blank' if style.endswith('_blank') else 'radio'
-  bank_profile=profile or ('overflow_locations' if style=='inline_no_entry_radio' else 'blank' if kind=='blank' else rng.choice(VALID_RADIO_PROFILES))
+  bank_profile=profile or ('blank' if kind=='blank' else rng.choice([p for p in level_profiles(level) if p!='blank']))
   if (bank_profile=='blank')!=(kind=='blank'):raise ValueError('Field/profile mismatch')
   profile=bank_profile
   p=sample(level,rng,profile) if parameters is None else json.loads(json.dumps(parameters))
@@ -231,17 +236,46 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  question[':question/id']=qid;question[':question/answer-fields']=[field]
  m,n=len(p['matrix']),len(p['matrix'][0])
  task=[m,n,p['i'],p['j'],target(p)]
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':style,'profile':profile,'parameters':p,'source':source,'source_provenance':{k:CAPTURE[k] for k in ('database','basis','lineage')},'origin':'observed-parameterized' if raw else 'authored-completion' if completion else 'authored-default','evidence_only':bool(raw or completion),'eligible_for_learning':not raw and not completion,'content_identity':identity,'mathematical_fingerprint':digest(task),'task_components':task,'difficulty_claim':'observed' if raw and observed_level else 'unrated raw' if raw else 'authored visual-reading workload','bank_recipes':OBSERVED[source] if source else {'location_no_entry':'target,neighbor row,neighbor column,diagonal neighbor,missing','four_locations':'target,neighbor row,neighbor column,diagonal neighbor,other nearby column','swap_no_entry':'target,swapped indices,neighbor row,neighbor column,missing','overflow_locations':'missing,clamp overflow index,restart overflow index at1,clamp plus adjacent other index,restart plus adjacent other index','blank':'target'}[profile],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':style,'profile':profile,'parameters':p,'source':source,'source_provenance':{k:CAPTURE[k] for k in ('database','basis','lineage')},'origin':'observed-parameterized' if raw else 'authored-completion' if completion else 'authored-default','evidence_only':bool(raw or completion),'eligible_for_learning':not raw and not completion,'content_identity':identity,'mathematical_fingerprint':digest(task),'task_components':task,'difficulty_claim':'observed' if raw and observed_level else 'unrated raw' if raw else 'authored visual-reading workload','bank_recipes':OBSERVED[source] if source else {'location_no_entry':'target,neighbor row,neighbor column,diagonal neighbor,missing','four_locations':'target,neighbor row,neighbor column,diagonal neighbor,other nearby column or row','swap_no_entry':'target,swapped indices,neighbor row,neighbor column,missing','overflow_locations':'missing,clamp overflow index,restart overflow index at1,clamp plus adjacent other index,restart plus adjacent other index','blank':'target'}[profile],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 def markdown(record):
  q=record['question'];f=q[':question/answer-fields'][0];ref=f.get(':answer-field/correct',['',None])[1]
  options='\n'.join('- '+a[':answer/value']+(' (correct)' if a[':answer/id']==ref else '') for a in f[':answer-field/choices'])
  return q[':question/problem']+'\n\n'+options+'\n\n'+q.get(':question/worked-solution','[Source worked solution absent.]')
 
+def generate_batch(level,seed,count,template=None,field_type=None,profile=None):
+ """Keep existence contrasts together within each represented radio layout.
+
+ Explicit bank requests and one-item requests retain the single-item API.
+ Unpaired slots use banks that do not offer an absence decision.
+ """
+ if count<1:raise ValueError('count must be positive')
+ if level!='easy' or count==1 or profile is not None or field_type=='blank' or template=='display_blank':
+  return [generate(level,seed+k,template,field_type,profile=profile) for k in range(count)]
+ rng=random.Random(seed);records=[]
+ styles=[s for s in level_templates(level) if s!='display_blank']
+ if template is not None:
+  if template not in styles:raise ValueError('Unsupported template')
+  styles=[template]
+ while len(records)<count:
+  left=count-len(records)
+  pair=left>=2 and (not records or rng.choice((True,False)))
+  if pair:
+   style=rng.choice(styles)
+   for bank in (rng.choice(('location_no_entry','swap_no_entry')),'overflow_locations'):
+    records.append(generate(level,rng.getrandbits(64),template=style,field_type='radio',profile=bank))
+  else:
+   bank='four_locations' if template is not None or field_type=='radio' else rng.choice(('blank','four_locations'))
+   records.append(generate(level,rng.getrandbits(64),template=template,field_type=field_type,profile=bank))
+ rng.shuffle(records)
+ for index,record in enumerate(records):
+  record['generation']['batch']={'seed':seed,'count':count,'index':index,'rule':'layout-existence-contrasts'}
+ return records
+
 def main():
  cli=argparse.ArgumentParser();cli.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');cli.add_argument('--seed',type=int,default=0);cli.add_argument('--count',type=int,default=2);cli.add_argument('--format',choices=('markdown','json'),default='markdown');cli.add_argument('--template');cli.add_argument('--profile');cli.add_argument('--field-type',choices=('radio','blank'))
  args=cli.parse_args()
  if args.count<1:cli.error('count must be positive')
- records=[generate(level,args.seed+k,args.template,args.field_type,profile=args.profile) for level in LEVELS if args.difficulty in ('all',level) for k in range(args.count)]
+ records=[r for level in LEVELS if args.difficulty in ('all',level) for r in generate_batch(level,args.seed,args.count,args.template,args.field_type,args.profile)]
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()

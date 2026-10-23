@@ -1,1 +1,1 @@
-Source analysis reused and verified against original source; source-analysis.json written successfully. Package not yet inspected.
+Complete: accepted. Retained failure independently reproduced against old package; current source replays pass. 112 math records plus column control; 335 native grader assertions; delivery 48/48 and runner 5/5; 19 actual UI renders visually inspected. No stored defect demonstrated in captured inventory; affected-inventory.json empty. No package/database writes. Evidence schema and paths valid.

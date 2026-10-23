@@ -1,0 +1,680 @@
+{
+  "learner_operation": "Count rows and columns in the displayed array and report the ordered pair; do not calculate with entries.",
+  "fixed_features": [
+    {
+      "feature": "One numeric matrix, rows before columns, radio or two numeric blanks.",
+      "justification": "All nine source questions ask dimensions with these contracts."
+    },
+    {
+      "feature": "Normal sampled dimensions 2..6 on each axis.",
+      "justification": "Conservative practice domain covers all target-KP assessed shapes and adds independent rectangular roles within their visual workload. Later vector tutorial supports a wider optional domain; this generator does not claim full coverage of the whole lesson."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Ordered row and column counts",
+      "eligible_variation": "Both can independently range over supported sizes; blank wording is not a square-only constraint.",
+      "observed": "All 25 supported shapes validated in every template; random sample and runner coverage below."
+    },
+    {
+      "role": "Correct radio choice",
+      "eligible_variation": "Any of five supported bank shapes and any position can be correct, independent of label and values.",
+      "observed": "Normal sampling chooses bank first then uniform correct shape; controlled pair changes correct member with same bank."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "samples.json",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{\"radio\": {\"n\": 12, \"shapes\": {\"(4, 6)\": 1, \"(3, 3)\": 1, \"(6, 2)\": 1, \"(4, 5)\": 1, \"(5, 5)\": 2, \"(6, 6)\": 1, \"(2, 4)\": 2, \"(4, 3)\": 1, \"(4, 4)\": 1, \"(4, 2)\": 1}, \"square\": 5}, \"where-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}, \"let-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}, \"chelsea-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}}"
+    },
+    {
+      "case": "delivery-sample/accepted.json",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ],
+      "result": "{\"radio\": {\"n\": 12, \"shapes\": {\"(4, 6)\": 1, \"(3, 3)\": 1, \"(6, 2)\": 1, \"(4, 5)\": 1, \"(5, 5)\": 2, \"(6, 6)\": 1, \"(2, 4)\": 2, \"(4, 3)\": 1, \"(4, 4)\": 1, \"(4, 2)\": 1}, \"square\": 5}, \"where-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}, \"let-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}, \"chelsea-dual-blank\": {\"n\": 12, \"shapes\": {\"(5, 4)\": 1, \"(4, 5)\": 2, \"(6, 6)\": 3, \"(2, 4)\": 1, \"(2, 2)\": 1, \"(4, 6)\": 1, \"(3, 4)\": 1, \"(3, 6)\": 1, \"(2, 3)\": 1}, \"square\": 4}}"
+    },
+    {
+      "case": "runner-batch.json",
+      "sample_refs": [
+        "runner-batch.json"
+      ],
+      "result": "{\"radio\": {\"n\": 1, \"shapes\": {\"(2, 2)\": 1}, \"square\": 1}, \"where-dual-blank\": {\"n\": 2, \"shapes\": {\"(5, 4)\": 1, \"(3, 2)\": 1}, \"square\": 0}, \"let-dual-blank\": {\"n\": 1, \"shapes\": {\"(5, 5)\": 1}, \"square\": 1}, \"chelsea-dual-blank\": {\"n\": 1, \"shapes\": {\"(5, 6)\": 1}, \"square\": 0}}"
+    },
+    {
+      "case": "delivery-batch/accepted.json",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"radio\": {\"n\": 1, \"shapes\": {\"(2, 2)\": 1}, \"square\": 1}, \"where-dual-blank\": {\"n\": 2, \"shapes\": {\"(5, 4)\": 1, \"(3, 2)\": 1}, \"square\": 0}, \"let-dual-blank\": {\"n\": 1, \"shapes\": {\"(5, 5)\": 1}, \"square\": 1}, \"chelsea-dual-blank\": {\"n\": 1, \"shapes\": {\"(5, 6)\": 1}, \"square\": 0}}"
+    },
+    {
+      "case": "Full supported shape domain across templates",
+      "sample_refs": [
+        "boundaries.json",
+        "finite-batch.json",
+        "rejection-results.json"
+      ],
+      "result": "37 explicit domain records: all 25 shapes in the revised Chelsea template and four size corners in each unchanged template. 25-count batch retains 25 distinct shapes; rejection count is saved in packaging-results.json."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Append [7,8,9] as a third row to a fixed 2 \u00d7 3 matrix; radio bank unchanged.",
+      "expected": "Answer changes from 2 \u00d7 3 to 3 \u00d7 3; first blank changes, second stays 3; old radio answer rejected.",
+      "observed": "All four templates obey relationship; prompt and solution follow the count. Native grader checks all radio choices and numeric equivalent/wrong entries on both records. Actual UI screenshots checked.",
+      "status": "passed",
+      "justification": "Source tutorial defines dimensions solely by row and column counts; entry values and labels do not contribute.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-input.json",
+        "render-remaining/rendering.json",
+        "render-last/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename A to Z and change entries to zeros, a negative, a radical and a fraction, keeping 2 \u00d7 3 layout.",
+      "expected": "Answer remains 2 \u00d7 3 in every template.",
+      "observed": "All four templates obey relationship; prompt and solution follow the count. Native grader checks all radio choices and numeric equivalent/wrong entries on both records. Actual UI screenshots checked.",
+      "status": "passed",
+      "justification": "Source tutorial defines dimensions solely by row and column counts; entry values and labels do not contribute.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-input.json",
+        "render-remaining/rendering.json",
+        "render-last/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Remove last column from fixed Chelsea 2\u00d73 matrix, preserving remaining entries and label.",
+      "expected": "Row blank remains 2; column blank changes from 3 to 2.",
+      "observed": "Prompt becomes 2\u00d72; key and solution become 2\u00d72. Native grader accepts 2 and 4/2 and rejects stale 3.",
+      "status": "passed",
+      "justification": "Columns contribute independently of rows to the ordered dimension pair.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-last/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first answer position",
+      "subgroup": "samples.json: radio",
+      "scope": "within_template",
+      "strategy": "first answer position",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last answer position",
+      "subgroup": "samples.json: radio",
+      "scope": "within_template",
+      "strategy": "last answer position",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest row/column pair",
+      "subgroup": "samples.json: radio",
+      "scope": "within_template",
+      "strategy": "smallest row/column pair",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest row/column pair",
+      "subgroup": "samples.json: radio",
+      "scope": "within_template",
+      "strategy": "largest row/column pair",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first square option (else first)",
+      "subgroup": "samples.json: radio",
+      "scope": "within_template",
+      "strategy": "first square option (else first)",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "where-dual-blank wording",
+      "subgroup": "samples.json: where-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "let-dual-blank wording",
+      "subgroup": "samples.json: let-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "chelsea-dual-blank wording",
+      "subgroup": "samples.json: chelsea-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "samples.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "no matrix inspection",
+      "subgroup": "samples.json",
+      "scope": "overall",
+      "strategy": "Always answer 3 \u00d7 3, or fill 3 in both blanks.",
+      "correct": 1,
+      "total": 48,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/25 is uniform guessing among ordered supported shapes. The runner batch has five distinct shapes, preventing one literal response from solving it.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first answer position",
+      "subgroup": "delivery-sample/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "first answer position",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last answer position",
+      "subgroup": "delivery-sample/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "last answer position",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest row/column pair",
+      "subgroup": "delivery-sample/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "smallest row/column pair",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest row/column pair",
+      "subgroup": "delivery-sample/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "largest row/column pair",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first square option (else first)",
+      "subgroup": "delivery-sample/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "first square option (else first)",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "where-dual-blank wording",
+      "subgroup": "delivery-sample/accepted.json: where-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "let-dual-blank wording",
+      "subgroup": "delivery-sample/accepted.json: let-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "chelsea-dual-blank wording",
+      "subgroup": "delivery-sample/accepted.json: chelsea-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "no matrix inspection",
+      "subgroup": "delivery-sample/accepted.json",
+      "scope": "overall",
+      "strategy": "Always answer 3 \u00d7 3, or fill 3 in both blanks.",
+      "correct": 1,
+      "total": 48,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/25 is uniform guessing among ordered supported shapes. The runner batch has five distinct shapes, preventing one literal response from solving it.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "first answer position",
+      "subgroup": "runner-batch.json: radio",
+      "scope": "within_template",
+      "strategy": "first answer position",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last answer position",
+      "subgroup": "runner-batch.json: radio",
+      "scope": "within_template",
+      "strategy": "last answer position",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest row/column pair",
+      "subgroup": "runner-batch.json: radio",
+      "scope": "within_template",
+      "strategy": "smallest row/column pair",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest row/column pair",
+      "subgroup": "runner-batch.json: radio",
+      "scope": "within_template",
+      "strategy": "largest row/column pair",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first square option (else first)",
+      "subgroup": "runner-batch.json: radio",
+      "scope": "within_template",
+      "strategy": "first square option (else first)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "where-dual-blank wording",
+      "subgroup": "runner-batch.json: where-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "let-dual-blank wording",
+      "subgroup": "runner-batch.json: let-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "chelsea-dual-blank wording",
+      "subgroup": "runner-batch.json: chelsea-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "runner-batch.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "no matrix inspection",
+      "subgroup": "runner-batch.json",
+      "scope": "overall",
+      "strategy": "Always answer 3 \u00d7 3, or fill 3 in both blanks.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/25 is uniform guessing among ordered supported shapes. The runner batch has five distinct shapes, preventing one literal response from solving it.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "first answer position",
+      "subgroup": "delivery-batch/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "first answer position",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "last answer position",
+      "subgroup": "delivery-batch/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "last answer position",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "smallest row/column pair",
+      "subgroup": "delivery-batch/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "smallest row/column pair",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "largest row/column pair",
+      "subgroup": "delivery-batch/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "largest row/column pair",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first square option (else first)",
+      "subgroup": "delivery-batch/accepted.json: radio",
+      "scope": "within_template",
+      "strategy": "first square option (else first)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform choice among five answers has success 0.2. Bank is sampled before a uniform correct role. Finite measurements, particularly one-radio runner subgroup, cannot establish a predictor; controls hold bank fixed and change correct role.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "where-dual-blank wording",
+      "subgroup": "delivery-batch/accepted.json: where-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "let-dual-blank wording",
+      "subgroup": "delivery-batch/accepted.json: let-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "chelsea-dual-blank wording",
+      "subgroup": "delivery-batch/accepted.json: chelsea-dual-blank",
+      "scope": "within_template",
+      "strategy": "Count rows then copy that answer into both blanks.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The second dimension is uniform over 2..6 before delivery, so blindly copying a known row count has baseline 0.2. Both rectangular and square cases occur in control/sample domain; singleton delivered subgroups do not prove a reusable cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "no matrix inspection",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "overall",
+      "strategy": "Always answer 3 \u00d7 3, or fill 3 in both blanks.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/25 is uniform guessing among ordered supported shapes. The runner batch has five distinct shapes, preventing one literal response from solving it.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "requested difficulty",
+      "normalization and validation",
+      "inventory and within-batch deduplication",
+      "fresh usable inventory eligibility",
+      "difficulty-first learner selection"
+    ],
+    "sample_refs": [
+      "finite-batch.json",
+      "packaging-results.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "inventory-results.json"
+    ],
+    "result": "48/48 independent sample and 5/5 runner records survive actual shared filter. Decision coverage unchanged. Eligible stored records checked, easy-band selection does not condition on mathematical shape or wording. Exact future learner draw remains history/policy dependent."
+  },
+  "limitations": [
+    "Finite probes do not establish absence of all shortcuts.",
+    "Runner batch has two where-blank records and one each of radio, let-blank and Chelsea; singleton subgroup rates do not establish a reusable predictor. Controlled pairs challenge their wording and radio-bank cues.",
+    "All nine supplied practice sources now replay; source correction removes the unsupported absent-table reference from the Chelsea stem.",
+    "No stored defect demonstrated; affected-inventory.json is empty. Inventory generation metadata was not supplied, and was not invented.",
+    "Learner selection assessment conditions on a configured positive easy-band weight and fresh records; unconfigured legacy policy returns first candidate."
+  ]
+}
