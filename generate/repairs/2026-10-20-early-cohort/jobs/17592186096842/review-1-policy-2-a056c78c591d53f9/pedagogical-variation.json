@@ -1,0 +1,1612 @@
+{
+  "learner_operation": "Differentiate square-root and reciprocal-square-root functions of linear or quadratic polynomials using the chain rule; in slope questions evaluate the derivative at a specified point. Identify the inner function, apply the outer power rule and inner derivative, then evaluate when a target is given.",
+  "fixed_features": [
+    {
+      "feature": "Outer exponent +1/2 or -1/2 and inner polynomial degree at most two",
+      "justification": "Observed source families and canonical e-182; this preserves the chain-rule method."
+    },
+    {
+      "feature": "Positive square radicand at numeric evaluation targets",
+      "justification": "Real differentiability and comparable easy arithmetic in the captured slope tasks."
+    },
+    {
+      "feature": "Five radio options or a mathematical blank",
+      "justification": "Captured response contracts; neither correct position nor distractor spacing is essential."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Slope sign and zero/nonzero result",
+      "eligible_variation": "Change coefficients or target while retaining positive radicand and source arithmetic.",
+      "observed": "The same quadratic at x=1,5,9 yields 4/3,0,-4/3. Zero is not a fixed quadratic response."
+    },
+    {
+      "role": "Radio key value, numeric rank and displayed position",
+      "eligible_variation": "Derive the correct scalar from calculus; vary error values, rank and order without answer-bearing spacing.",
+      "observed": "All ranks 0..4 exercised in each of eight radio templates. Current banks reject equal gaps. No tested incidental cue succeeds on every member of any five-instance template sample."
+    },
+    {
+      "role": "Evaluation target",
+      "eligible_variation": "Hold the function fixed and change its valid target, updating question, solution and grade.",
+      "observed": "For sqrt(37+7x), x=-4 and -3 give 7/6 and 7/8; actual rendered outputs and native grading agree."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "reciprocal_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": -3, \"b\": 12}, {\"a\": 7, \"b\": 11}, {\"a\": -8, \"b\": 3}, {\"a\": 7, \"b\": -9}, {\"a\": 8, \"b\": -2}], \"answers\": [\"3/(2*(12 - 3*x)**(3/2))\", \"-7/(2*(7*x + 11)**(3/2))\", \"4/(3 - 8*x)**(3/2)\", \"-7/(2*(7*x - 9)**(3/2))\", \"-4/(8*x - 2)**(3/2)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [2, 2, 1, 2, 1], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_spaced_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": -8, \"b\": -1}, {\"a\": 7, \"b\": 4}, {\"a\": 4, \"b\": 3}, {\"a\": -6, \"b\": -4}, {\"a\": -2, \"b\": 3}], \"answers\": [\"-4/sqrt(-8*x - 1)\", \"7/(2*sqrt(7*x + 4))\", \"2/sqrt(4*x + 3)\", \"-3/sqrt(-6*x - 4)\", \"-1/sqrt(3 - 2*x)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [2, 1, 0, 1, 3], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_constfirst_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": 8, \"b\": 10}, {\"a\": -2, \"b\": 7}, {\"a\": 3, \"b\": -5}, {\"a\": -6, \"b\": 6}, {\"a\": -8, \"b\": -2}], \"answers\": [\"4/sqrt(8*x + 10)\", \"-1/sqrt(7 - 2*x)\", \"3/(2*sqrt(3*x - 5))\", \"-3/sqrt(6 - 6*x)\", \"-4/sqrt(-8*x - 2)\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [1, 1, 4, 2, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": -7, \"b\": 22, \"t\": -2}, {\"a\": -8, \"b\": 36, \"t\": 4}, {\"a\": 7, \"b\": 37, \"t\": -3}, {\"a\": 7, \"b\": 70, \"t\": -3}, {\"a\": -2, \"b\": 8, \"t\": 2}], \"answers\": [\"-7/12\", \"-2\", \"7/8\", \"1/2\", \"-1/2\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [2, 2, 3, 4, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": -4, \"b\": 12}], \"answers\": [\"2/(12 - 4*x)**(3/2)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "reciprocal_blank_braced",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": -6, \"b\": 8}], \"answers\": [\"3/(8 - 6*x)**(3/2)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": 7, \"b\": 11, \"c\": 0}], \"answers\": [\"(7*x + 11/2)/sqrt(7*x**2 + 11*x)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": -6, \"b\": 8}], \"answers\": [\"-3/sqrt(8 - 6*x)\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": -1, \"b\": 17, \"c\": 0, \"t\": 1}], \"answers\": [\"-15/128\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "sqrt_linear_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": 6, \"b\": -10}, {\"a\": 7, \"b\": 9}, {\"a\": 4, \"b\": 5}, {\"a\": -4, \"b\": 9}, {\"a\": -5, \"b\": 8}], \"answers\": [\"3/sqrt(6*x - 10)\", \"7/(2*sqrt(7*x + 9))\", \"2/sqrt(4*x + 5)\", \"-2/sqrt(9 - 4*x)\", \"-5/(2*sqrt(8 - 5*x))\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [0, 4, 4, 1, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_positive_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": -4, \"b\": 36, \"t\": 0}, {\"a\": 4, \"b\": 89, \"t\": -2}, {\"a\": -5, \"b\": 74, \"t\": 2}, {\"a\": -8, \"b\": -8, \"t\": -3}, {\"a\": -2, \"b\": 11, \"t\": 1}], \"answers\": [\"-1/3\", \"2/9\", \"-5/16\", \"-1\", \"-1/3\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [2, 4, 1, 4, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": 3, \"b\": -8, \"t\": 4}], \"answers\": [\"3/4\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 1, \"parameters\": [{\"a\": 3, \"b\": 4, \"c\": 0, \"t\": -2}], \"answers\": [\"-2\"], \"ranks\": [null], \"positions\": [], \"attempts\": [1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": 5, \"b\": 0, \"c\": -44, \"t\": 3}, {\"a\": 3, \"b\": 0, \"c\": 97, \"t\": -1}, {\"a\": 4, \"b\": 0, \"c\": -60, \"t\": 4}, {\"a\": -5, \"b\": 0, \"c\": 81, \"t\": -4}, {\"a\": -2, \"b\": 0, \"c\": 33, \"t\": -2}], \"answers\": [\"15\", \"-3/10\", \"8\", \"20\", \"4/5\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [4, 1, 2, 1, 1], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sum_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"parameters\": [{\"a\": -7, \"b\": 36, \"t\": -4, \"k\": -3}, {\"a\": 7, \"b\": 18, \"t\": 1, \"k\": -2}, {\"a\": 4, \"b\": 9, \"t\": 0, \"k\": 2}, {\"a\": 7, \"b\": 53, \"t\": 4, \"k\": -2}, {\"a\": -3, \"b\": 42, \"t\": 2, \"k\": 3}], \"answers\": [\"-2311/16\", \"-53/10\", \"2/3\", \"-1721/18\", \"143/4\"], \"ranks\": [0, 1, 2, 3, 4], \"positions\": [4, 0, 0, 3, 3], \"attempts\": [1, 1, 1, 1, 1]}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep sqrt(-x^2+10x), change x=1,5,9; keep sqrt(37+7x), change x=-4,-3.",
+      "expected": "4/3,0,-4/3 and 7/6,7/8 respectively, including prompt substitutions, solution, key and learner grading.",
+      "observed": "Independent exact differentiation, complete native-grader checks and inspected UI screenshots agree for both sets.",
+      "status": "passed",
+      "justification": "Target evaluation is explicit in q-342792/q-342789 and q-107360/q-107288. Fixing their outcomes would remove necessary evaluation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-extra/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep sqrt(9+4x), x=0 and rank 2 fixed; change seed 610 to 611, altering distractors and order.",
+      "expected": "Correct response 2/3, prompt and worked solution preserved despite changed bank.",
+      "observed": "Both records have the same prompt, solution and correct value. All choices graded independently; both UI screenshots inspected.",
+      "status": "passed",
+      "justification": "The source radio asks for the derivative value, which is independent of surrounding distractors and order.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "fresh independent: slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "fresh independent: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "fresh independent: sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "exact runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "delivered runner batch: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "delivered independent easy: slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient times common spacing",
+      "subgroup": "delivered independent easy: slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "coefficient times common spacing (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first option",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "first option (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "least numeric value",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "least numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "greatest numeric value",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "greatest numeric value (abstain if uniqueness/common spacing fails)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest TeX",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "uniquely shortest TeX (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique sign",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique sign (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique least denominator",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique least denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique greatest denominator",
+      "subgroup": "delivered independent easy: slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "unique greatest denominator (abstain if uniqueness/common spacing fails)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five choices gives a 0.2 blind-choice baseline. Counts include abstentions as failures. Finite incidental hits are not evidence of a stable family rule; inspect alongside bank construction and rank coverage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "requested difficulty filtering",
+      "actual publisher validation and deduplication against inventory basis 5663",
+      "exact runner batch survivors",
+      "fresh independent easy survivors",
+      "inventory retirement and practice eligibility",
+      "difficulty-first selection, history exclusions and conditional within-band selection"
+    ],
+    "sample_refs": [
+      "coverage-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "selection-results.json",
+      "inventory-results.json",
+      "regression-verification.json"
+    ],
+    "result": "All 5 runner records and 18 fresh independent easy records survive. The old spacing test fails on the historical witness and no longer predicts the current batch radio or tested fresh linear-root radios. The retained author regression also passes after rerun, including delivered controls. Three formerly affected generated radios are retired and excluded by actual eligibility code. Conditional selection adds no new spacing failure."
+  },
+  "limitations": [
+    "Finite cue probes do not prove absence of all possible shortcuts; individual chance hits, especially the single batch radio, are not universal template predictors.",
+    "Requested batch has four varied numerical blanks and one radio. It is not claimed to cover every easy family in five records. Its three quadratic blank responses are 3/2,25/12,-1/4, not sign-only duplicates.",
+    "Inventory basis 5663 is captured state. Later inventory, learner history, policy weights and entity IDs can change availability. The selection scenario tests conditional coverage, not a future exact learner sequence.",
+    "Unchanged source scaffolds and prior independent scope analysis were reused after exact file-hash comparison; fresh work focuses on changed banks and retained counterexamples."
+  ]
+}

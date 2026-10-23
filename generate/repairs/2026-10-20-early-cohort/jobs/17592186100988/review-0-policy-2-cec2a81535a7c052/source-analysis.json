@@ -1,0 +1,424 @@
+{
+  "skill": "Read a requested matrix entry using row-first, column-second indexing, including recognizing a nonexistent entry.",
+  "reasoning_steps": [
+    "Read i and j in a_ij as row and column respectively.",
+    "Compare indices to matrix dimensions.",
+    "If valid, locate their intersection and return its signed integer; otherwise select No such entry."
+  ],
+  "response_contract": "One radio choice from the complete five-choice bank, or one numeric blank. Canonical example is worked exposition without captured answer fields.",
+  "difficulty": "easy; direct lookup in small rectangular integer matrices, no arithmetic or matrix operations.",
+  "invariants": [
+    "Index order and bounds determine existence and value.",
+    "Matrix label and entry symbol must agree.",
+    "Numeric blank questions require a valid target.",
+    "Radio banks have one mathematically correct choice and unique alternatives."
+  ],
+  "permitted_variations": [
+    "Vary every target row and column within the supported small rectangular shapes.",
+    "Vary signed integer entries, including zero and repeated values, and the selected value independently of labels.",
+    "Vary invalid row versus invalid column and valid versus invalid targets in No such entry radio profiles.",
+    "Vary matrix names and choice ordering independently of correctness.",
+    "Keep source numeric-only radio profiles and blank profiles while varying their targets and values."
+  ],
+  "essential_vs_incidental": "Row-first indexing and bounds are essential. Particular labels A/C/D/E/F/Y, target positions, signs, correct choice positions, and source choice values are incidental. A No such entry option must not by itself imply an invalid target.",
+  "source_refs": [
+    "01081318-5aef-53ec-b42a-cf09d90e23dc",
+    "5bfd6a33-c881-55bc-8200-148d7f57a946",
+    "9a21ad85-5717-58f7-8766-e79db4edc556",
+    "c95438bb-9c3d-5b94-8cd7-da3897ba153e",
+    "e09062a5-fbd4-5002-8fc5-41df91866e41",
+    "d09f8217-b119-5565-bb4f-2ae4305acd87",
+    "8904abf3-dbf2-549a-8f8b-9fbdb7308ad3",
+    "622baf41-fe35-55ee-bfc6-f1e6a2cb089a",
+    "tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9: The first subscript represents the row and the second subscript represents the column.",
+    "tutorial 775ac64e-8b63-5c51-824d-1d99d17a2a0a: each entry a_ij is defined for i=1,...,m and j=1,...,n."
+  ],
+  "source_cases": [
+    {
+      "id": "01081318-5aef-53ec-b42a-cf09d90e23dc",
+      "problem": "Find the entry $a_{13}$ of the matrix $A$, where\n$A = \\begin{bmatrix}1 & 1 & 2 \\\\ -1 & 1 & 3\\end{bmatrix}$.",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "41799c02-ef9b-5d44-ad7e-54e529360070",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No such entry",
+              ":db/id": 17592186098077
+            },
+            {
+              ":answer/id": "72fe5296-a4e5-56e6-af38-e64f8b1e25d0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2",
+              ":db/id": 17592186098078
+            },
+            {
+              ":answer/id": "9bda8844-a8ba-550e-ad70-6a732b350a0b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-1",
+              ":db/id": 17592186098074
+            },
+            {
+              ":answer/id": "d47bfed2-903a-5b18-860a-950341cbc0c4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "0",
+              ":db/id": 17592186098075
+            },
+            {
+              ":answer/id": "f9923400-5525-55c5-9598-ae7268ed12b4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3",
+              ":db/id": 17592186098076
+            }
+          ],
+          ":answer-field/id": "b39084eb-5650-5de7-9e6f-fcc95d974ba4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186098073
+        }
+      ],
+      "solution": null
+    },
+    {
+      "id": "5bfd6a33-c881-55bc-8200-148d7f57a946",
+      "problem": "Find the entry $d_{43}$ of the matrix $D$, where\n$D = \\begin{bmatrix}0 & 1 & 2 & 4 \\\\ -1 & 2 & -3 & 5 \\\\ 2 & 1 & -3 & 4\\end{bmatrix}$.",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "28b84959-aa6d-5b42-b4ac-e5b65c865e82",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-1",
+              ":db/id": 17592186098088
+            },
+            {
+              ":answer/id": "62327425-fb7f-55df-8714-ab5c22d7e252",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186098089
+            },
+            {
+              ":answer/id": "7e9f6b00-763b-560a-b9a4-14e6683ea9bd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No such entry",
+              ":db/id": 17592186098090
+            },
+            {
+              ":answer/id": "93bf83cf-c21d-5aed-be2e-778cfc90d809",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5",
+              ":db/id": 17592186098086
+            },
+            {
+              ":answer/id": "eb04cc52-36c2-52c2-be8e-8cf82b15eca9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-3",
+              ":db/id": 17592186098087
+            }
+          ],
+          ":answer-field/id": "52c10e9d-510a-5dd5-b705-9b6e98c3f237",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186098085
+        }
+      ],
+      "solution": null
+    },
+    {
+      "id": "9a21ad85-5717-58f7-8766-e79db4edc556",
+      "problem": "Find the entry ${y}_{22}$ of the matrix $Y$, where \n\n$$\nY=\\begin{bmatrix}1 & -2 & 6 \\\\ -2 & -1 & 7\\end{bmatrix}.\n$$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0c567932-fe1e-50e5-a852-fa683905a078",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "1",
+              ":db/id": 17592186292984
+            },
+            {
+              ":answer/id": "281fa63f-d5df-52ec-8c66-114a256952aa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2",
+              ":db/id": 17592186293106
+            },
+            {
+              ":answer/id": "63e5b6ee-dc19-57f2-a1c1-a024610d1335",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-1",
+              ":db/id": 17592186293342
+            },
+            {
+              ":answer/id": "819001ed-70b4-55ea-8e2f-5812e43cc72f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-2",
+              ":db/id": 17592186293453
+            },
+            {
+              ":answer/id": "fd9028d7-54eb-5b52-839c-d1395ff86243",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "7",
+              ":db/id": 17592186293923
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "63e5b6ee-dc19-57f2-a1c1-a024610d1335",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "-1",
+            ":db/id": 17592186293342
+          },
+          ":answer-field/id": "48306b4d-7ce2-5078-b742-846932e6c3dd",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186294185
+        }
+      ],
+      "solution": "The entry ${y}_{22}$ lies at the intersection of the $2$nd row and $2$nd column. Therefore, ${y}_{22}=-1.$\n\n$$\nY=\\begin{bmatrix}1 & -2 & 6 \\\\ -2 & -1 & 7\\end{bmatrix}.\n$$"
+    },
+    {
+      "id": "c95438bb-9c3d-5b94-8cd7-da3897ba153e",
+      "problem": "Find the entry ${e}_{53}$ of the matrix $E$, where \n\n$$\nE=\\begin{bmatrix}-5 & -2 & 0 & 9 \\\\ 3 & -8 & -2 & 5 \\\\ -2 & 2 & 5 & -8 \\\\ 6 & 6 & -6 & 0 \\\\ -6 & 4 & 2 & 5\\end{bmatrix}.\n$$\n\n${e}_{53}=$\n{{field-1}}",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "97663313-9e1f-53ce-84d2-8ab50b1f726b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2",
+              ":db/id": 17592186293527
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "97663313-9e1f-53ce-84d2-8ab50b1f726b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "2",
+            ":db/id": 17592186293527
+          },
+          ":answer-field/id": "e6486256-f670-5b61-8298-6acbad89dd7b",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186294743
+        }
+      ],
+      "solution": "The entry ${e}_{53}$ lies at the intersection of the $5$th row and $3$rd column. Therefore, ${e}_{53}=2.$\n\n$$\nE=\\begin{bmatrix}-5 & -2 & 0 & 9 \\\\ 3 & -8 & -2 & 5 \\\\ -2 & 2 & 5 & -8 \\\\ 6 & 6 & -6 & 0 \\\\ -6 & 4 & 2 & 5\\end{bmatrix}.\n$$"
+    },
+    {
+      "id": "e09062a5-fbd4-5002-8fc5-41df91866e41",
+      "problem": "Find the entry ${f}_{32}$ of the matrix $F$, where \n\n$$\nF=\\begin{bmatrix}4 & 5 & -2 & 0 \\\\ -2 & -1 & 2 & 5 \\\\ 3 & 4 & 0 & -3\\end{bmatrix}.\n$$\n\n${f}_{32}=$\n{{field-1}}",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "08bbec5d-c22e-5416-941f-e614581e5ee1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186292968
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "08bbec5d-c22e-5416-941f-e614581e5ee1",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "4",
+            ":db/id": 17592186292968
+          },
+          ":answer-field/id": "6e95a709-acfb-50eb-82c6-8f68e1122c4b",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/blank"
+          },
+          ":db/id": 17592186294317
+        }
+      ],
+      "solution": "The entry ${f}_{32}$ lies at the intersection of the $3$rd row and $2$nd column. Therefore, ${f}_{32}=4.$\n\n$$\nF=\\begin{bmatrix}4 & 5 & -2 & 0 \\\\ -2 & -1 & 2 & 5 \\\\ 3 & 4 & 0 & -3\\end{bmatrix}.\n$$"
+    },
+    {
+      "id": "d09f8217-b119-5565-bb4f-2ae4305acd87",
+      "problem": "Find the entry ${c}_{24}$ of the matrix $C$, where \n\n$$\nC=\\begin{bmatrix}0 & 1 & 2 & 4 \\\\ -1 & 2 & -3 & 5 \\\\ 2 & 1 & -3 & 4\\end{bmatrix}.\n$$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "42e84e66-ce19-5239-8a81-e70ab0d7a064",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5",
+              ":db/id": 17592186395754
+            },
+            {
+              ":answer/id": "75f10e54-f429-5034-a07c-5f3a477a96f5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186395752
+            },
+            {
+              ":answer/id": "934f3147-a632-5a7a-90a4-6abb01c749b5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-3",
+              ":db/id": 17592186395751
+            },
+            {
+              ":answer/id": "c13c60e5-0749-5b32-b12e-a8ade2bfafa4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No such entry",
+              ":db/id": 17592186395750
+            },
+            {
+              ":answer/id": "fc409e78-b2db-5c05-a2e5-b9108d710f88",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-1",
+              ":db/id": 17592186395753
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "42e84e66-ce19-5239-8a81-e70ab0d7a064",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "5",
+            ":db/id": 17592186395754
+          },
+          ":answer-field/id": "009a80b9-eba7-5f26-9519-cf720d746fee",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186395749
+        }
+      ],
+      "solution": "The entry ${c}_{24}$ should lie at the intersection of the $2$nd row and $4$th column. Therefore, ${c}_{24}=5.$\n\n$$\nC=\\begin{bmatrix}0 & 1 & 2 & 4 \\\\ -1 & 2 & -3 & 5 \\\\ 2 & 1 & -3 & 4\\end{bmatrix}\n$$"
+    },
+    {
+      "id": "8904abf3-dbf2-549a-8f8b-9fbdb7308ad3",
+      "problem": "Find the entry ${e}_{31}$ of the matrix $E$, where \n\n$$\nE=\\begin{bmatrix}1 & 2 \\\\ -1 & 5 \\\\ -3 & 4\\end{bmatrix}.\n$$",
+      "fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6542246e-6fb1-5a0a-8c66-d92b07a647e5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "5",
+              ":db/id": 17592186398269
+            },
+            {
+              ":answer/id": "b38fc1a7-079a-5f48-a57c-e34f53ec5e20",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-1",
+              ":db/id": 17592186398268
+            },
+            {
+              ":answer/id": "d7bfa313-dae4-53f3-a57b-64e8da4543c6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-3",
+              ":db/id": 17592186398266
+            },
+            {
+              ":answer/id": "d7d1ec58-4625-5961-a2e3-b5cd7345701a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "1",
+              ":db/id": 17592186398265
+            },
+            {
+              ":answer/id": "fd0fb717-3703-5718-a040-1535e3177723",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4",
+              ":db/id": 17592186398267
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "d7bfa313-dae4-53f3-a57b-64e8da4543c6",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "-3",
+            ":db/id": 17592186398266
+          },
+          ":answer-field/id": "21415ffd-ab5b-5844-9b2a-182f8ede2fa5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186398264
+        }
+      ],
+      "solution": "The entry ${e}_{31}$ lies at the intersection of the $3$rd row and $1$st column. Therefore, ${e}_{31}=-3.$\n\n$$\nE=\\begin{bmatrix}1 & 2 \\\\ -1 & 5 \\\\ -3 & 4\\end{bmatrix}\n$$"
+    }
+  ],
+  "gaps": [
+    "q-13488 and q-13496 lack captured correct links and worked solutions; independently inferred answers are 2 and No such entry.",
+    "Canonical example lacks answer-field capture.",
+    "Prerequisite route diagram is not needed for this entry-lookup skill."
+  ],
+  "scope_limits": [
+    "Square matrices and reverse index identification are separate adjacent knowledge points; do not import those tasks."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

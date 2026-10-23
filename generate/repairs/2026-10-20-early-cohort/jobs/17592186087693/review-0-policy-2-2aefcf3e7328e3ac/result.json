@@ -1,0 +1,118 @@
+{
+  "verdict": "revise",
+  "summary": "One demonstrated defect: supplied source q-139628 is omitted and cannot be replayed. Other tested checks passed. Package files remain unchanged; no database writes occurred.",
+  "source_analysis": {
+    "skill": "Determine matrix dimensions by counting rows, then columns.",
+    "reasoning_steps": [
+      "Count displayed rows.",
+      "Count columns.",
+      "Report rows \u00d7 columns through radio selection or two numeric blanks."
+    ],
+    "invariants": [
+      "One rectangular matrix.",
+      "Row count precedes column count.",
+      "Entry values require no arithmetic."
+    ],
+    "permitted_variations": [
+      "Vary row and column counts independently.",
+      "Vary names and entries without changing dimensions.",
+      "Vary radio banks and correct-answer positions."
+    ],
+    "source_refs": [
+      "6587b5f1-8a44-556a-a95e-20c54dfebc04",
+      "80862d10-12ca-5f6e-9209-5f8bf84be504",
+      "Tutorial d68f01b8-8bc6-59a1-8d80-d284abbcdf6e: dimensions are rows \u00d7 columns."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "reproduce_missing_source.py",
+        "missing-source-regression.log"
+      ],
+      "details": "Eight supplied questions replay correctly, including complete banks. The ninth, q-139628, raises Unknown source profile."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "audit.py"
+      ],
+      "details": "188 records independently checked against displayed matrices; no incorrect keys or worked counts."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "construction-results.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "All 25 declared shapes work across three templates. Ninety fresh random records vary decisions; all five runner records survive delivery with distinct shapes."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "boundary-records.json",
+        "construction-results.json"
+      ],
+      "details": "Generated questions preserve dimension counting, source response formats and easy workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "345 native-grader checks passed, including equivalent fractions/decimals, reversed dimensions and stale answers after row changes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-010.png",
+        "render/question-015.png"
+      ],
+      "details": "All 16 actual-UI renders passed. Inspected counterfactuals, boundary matrices and runner examples display legible notation, controls and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocated-cli-records.json",
+        "evidence-validation.json"
+      ],
+      "details": "Manifest-only relocation reproduces the exact runner batch. Installed dependencies match declarations; invalid inputs are rejected. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "delivery-selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes track through answers, grading and rendering. Tested conditional shortcuts do not reliably predict responses. Delivery and selection rules were examined; live-history conclusions remain conditional. No stored-pool defect was demonstrated."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The package embeds eight older source questions and omits supplied q-139628: Chelsea\u2019s 4\u00d74 matrix P with two dimension blanks. Its source stem has no replay mapping or documented correction.",
+      "source_refs": [
+        "80862d10-12ca-5f6e-9209-5f8bf84be504 (q-139628)",
+        "generate/principles.md: Establish fidelity first"
+      ],
+      "reproduction": "From evidence_root run: /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_missing_source.py --package ../workspace. generate(seed=20261022, profile=\"observed-q-139628\") raises ValueError(\"Unknown source profile\").",
+      "requested_change": "Refresh source coverage and support q-139628 with its matrix, two blanks, 4\u00d74 answer and worked solution. Document any correction to its reference to an absent table. Make replay checks enumerate all supplied source IDs and retain the strict failing regression. No database or runner-batch edit is needed."
+    }
+  ]
+}

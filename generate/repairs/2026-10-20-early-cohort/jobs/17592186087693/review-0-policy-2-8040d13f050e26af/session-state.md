@@ -1,0 +1,1 @@
+Source account complete. Independent source replay: 8 captured profiles pass; q-139628 missing (Unknown source profile). Math, controls, deterministic CLI/relocation, 25-shape domain and input rejections saved. Grader, delivery and rendering pending. No package writes.
