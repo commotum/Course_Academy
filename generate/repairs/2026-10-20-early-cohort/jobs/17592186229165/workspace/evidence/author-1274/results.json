@@ -1,0 +1,28 @@
+{
+  "status": "unsupported",
+  "runtime_changes": false,
+  "external_writes": false,
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "evidence": "latest-failure.log",
+      "result": "Staged correction passes schema, contract and 26 current-generator replays; required prior-review report still fails decision_variation."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1274/role",
+      "exit_code": 0,
+      "evidence": "role/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "result": "55 handoff artifacts, unchanged runtime and source hashes, eight independently parsed unaffected mathematical cases pass."
+    }
+  ],
+  "open_finding": "645672a4cd3f9bf609ca",
+  "root_cause": "Required prior-review evidence is outside the workspace. The current generator construction repair is verified; changing generator rules cannot install the report.",
+  "next_required_action": "Runner installs checksum-bound corrected artifacts at the prior-review destination, reruns strict regression, then obtains fresh independent review.",
+  "handoff": "evidence/review-installation-handoff.json",
+  "retained_evidence": "Source replay, inventory reproduction, relocation, selection, and inspected UI evidence remain applicable under verified unchanged hashes."
+}
