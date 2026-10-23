@@ -408,7 +408,10 @@ pub(super) fn annotate(
                 Some("learner/queue" | "learner/targets")
             )
         });
-        let relevance = if queued.contains(&topic) || targeted.contains(&topic) {
+        // The whole bounded new-lesson pool is the learner's selected
+        // curriculum. A depth-two lesson is no less relevant than a root, so
+        // missing banks can be ordered by layer without a membership barrier.
+        let relevance = if new_scoped_lesson || queued.contains(&topic) || targeted.contains(&topic) {
             1u8
         } else if selected_prerequisite {
             2
@@ -417,6 +420,7 @@ pub(super) fn annotate(
         } else {
             4
         };
+        t["new_scoped_lesson"] = json!(new_scoped_lesson);
         t["relevance_tier"] = json!(relevance);
         t["topic_layer"] = json!(layers[&topic]);
         t["selected_support_count"] = json!(support.get(&topic).copied().unwrap_or(0));

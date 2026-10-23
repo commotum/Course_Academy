@@ -67,6 +67,8 @@ ranking_key = priority_key
 
 
 def baseline_relevance(topic):
+    if topic.get("new_scoped_lesson"):
+        return 1
     if topic.get("relevance_tier") is not None:
         return topic["relevance_tier"]
     groups = set(topic.get("urgency_groups", []))
@@ -97,11 +99,13 @@ def activity_demands(topic, relevance):
     return stages
 
 
-def selection_gate(topics):
-    """Expand agent build/review work after directly selected KPs are stocked."""
+def selection_gate(topics, *, self_directed=False):
+    """Report Study shortages; only legacy course mode gates broader authoring."""
     selected_topics, selected_kps, missing, understocked = set(), set(), set(), set()
     for topic in topics:
-        if not set(topic.get("urgency_groups", [])) & {"queued", "target"}:
+        selected = topic.get("new_scoped_lesson", False) if self_directed else (
+            bool(set(topic.get("urgency_groups", [])) & {"queued", "target"}))
+        if not selected:
             continue
         selected_topics.add(topic["db/id"])
         for kp in topic["knowledge_points"]:
@@ -111,20 +115,25 @@ def selection_gate(topics):
             if not (kp.get("generator_usable") and isinstance(script, str)
                     and script.startswith("generators/")):
                 missing.add(kp_id)
-            if any(kp["inventory"]["available"].get(band, 0) < 5 for band in COVERAGE_BANDS):
+            low = available_total(kp["inventory"]) < 5 if self_directed else (
+                any(kp["inventory"]["available"].get(band, 0) < 5 for band in COVERAGE_BANDS))
+            if low:
                 understocked.add(kp_id)
-    return {"open": not missing and not understocked,
+    return {"open": self_directed or (not missing and not understocked),
+            "mode": "study-scope" if self_directed else "direct-selection-completion",
             "selected_knowledge_points": sorted(selected_kps),
             "missing_generators": sorted(missing),
             "understocked_knowledge_points": sorted(understocked),
-            "required_per_band": 5,
+            "required_per_band": None if self_directed else 5,
+            "required_total": 5 if self_directed else None,
             "selected_topic_count": len(selected_topics),
             "selected_knowledge_point_count": len(selected_kps)}
 
 
 def ranked_candidates(result):
     """Keep complete nested inventories; rank one build job per KP by its strongest reason."""
-    gate = selection_gate(result["topics"])
+    self_directed = result.get("self_directed", False)
+    gate = selection_gate(result["topics"], self_directed=self_directed)
     result["selection_gate"] = gate
     selected_kps = set(gate["selected_knowledge_points"])
     topic_bands = {}
@@ -203,10 +212,11 @@ def ranked_candidates(result):
             reasons.sort(key=priority_key)
             kp.update(reasons[0])
             kp["priority_reasons"] = reasons
-            admitted = gate["open"] or kp["db/id"] in selected_kps
-            kp["build_required"] = bool(u) and admitted and kp["db/id"] not in usable
+            admitted = bool(demands) if self_directed else (gate["open"] or kp["db/id"] in selected_kps)
+            kp["build_eligible"] = bool(u) and admitted
+            kp["build_required"] = kp["build_eligible"] and kp["db/id"] not in usable
             kp["build_exclusion_reason"] = ("outside-urgency-groups" if not u else
-                                             "selected-inventory-incomplete" if not admitted else
+                                             ("outside-study-demand" if self_directed else "selected-inventory-incomplete") if not admitted else
                                              "usable-generator-registered" if kp["db/id"] in usable else None)
             kp["build_action"] = ("repair-generator" if kp.get("has_generator") else "create-generator") if kp["build_required"] else None
             if kp["build_required"]:
@@ -239,11 +249,13 @@ def ranked_candidates(result):
                           "purpose_points": PURPOSE, "urgency_values": URGENCY,
                           "counting": "usable, unseen and unreserved; assessments require rated questions",
                           "queue": "generator-build", "refill_target_per_kp": {"easy": 5, "moderate": 5, "hard": 5}}
-    result["sort_order"] = ["relevance_tier", "purpose", "purpose_specific_topic_order",
+    result["sort_order"] = ["shortage_urgency", "relevance_tier", "purpose", "purpose_specific_topic_order",
                             "waiting_since", "topic_entity", "shortage_desc", "knowledge_point_entity"]
     result["priority_order"] = {
-        "admission": "Build and review only direct queue/target KPs until each has a usable package and five fresh questions in every difficulty band; approved refills run independently",
-        "relevance": ["immediate obligation", "direct queue and targets", "unmet prerequisites",
+        "admission": ("All bounded new-lesson and current activity demands; no all-selected stock gate" if self_directed else
+                      "Direct queue/target completion gate; approved refills run independently"),
+        "urgency": ["immediate activity shortage", "ordinary activity shortage", "assessment variety", "advance preparation and routine replenishment"],
+        "relevance": ["immediate obligation", "bounded new lessons and direct study", "other prerequisite preparation",
                       "other current study", "speculative preparation"],
         "purpose": list(PURPOSE_ORDER),
         "lesson_topic": ["topic_layer", "selected_support_count_desc", "engine_priority_desc"],
@@ -293,10 +305,11 @@ def build(edb_root, test=False):
 
 def discover(database, learner, environment, *, binary, after_basis=None, lineage=None,
              at=None, topics=(), activity_type="assessment", include_registered=False):
-    """Read selections and registered refills first; expand agent work when ready."""
+    """Capture bounded Study demand together; preserve the course-mode gate."""
     request = {"database": database, "learner": learner, "after_basis": after_basis,
                "lineage": lineage, "at": at, "topics": list(topics),
-               "activity_type": activity_type, "include_registered": include_registered}
+               "activity_type": activity_type, "include_registered": include_registered,
+               "respect_study_scope": True}
     def capture(selected_only):
         response = subprocess.run([str(binary)], input=json.dumps({**request, "selected_only": selected_only}),
                                   text=True, env=environment, stdout=subprocess.PIPE,
@@ -306,6 +319,10 @@ def discover(database, learner, environment, *, binary, after_basis=None, lineag
         return ranked_candidates(result)
 
     primary = capture(True)
+    if primary.get("self_directed"):
+        # Native discovery already captured the full current-need population at
+        # one basis. No direct-selection stock gate can hide a scoped lesson.
+        return primary
     if not primary["selection_gate"]["open"]:
         return primary
     # Recompute the gate on the full snapshot: a newly selected topic or consumed

@@ -668,6 +668,25 @@ fn candidates_scoped(
     Ok(json!(records.into_values().collect::<Vec<_>>()))
 }
 
+/// Standard Study discovery inspects the bounded lesson pool and all current
+/// activity needs together. Explicit direct-selection inspection retains its
+/// narrower contract, and course-mode discovery keeps its existing phases.
+fn discovery_selection(db: &DatabaseValue, learner: u64, request: &Json) -> Result<(bool, bool)> {
+    let self_directed = match db.schema().resolve_ident(&Keyword::new("learner", "self-directed")) {
+        Some(attribute) => db.values(learner, attribute)?.contains(&Value::Bool(true)),
+        None => false,
+    };
+    let flag = |name: &str| -> Result<bool> {
+        match request.get(name) {
+            Some(value) => value.as_bool().ok_or_else(|| format!("{name} must be a boolean").into()),
+            None => Ok(false),
+        }
+    };
+    let selected_only = flag("selected_only")?;
+    let respect_study_scope = flag("respect_study_scope")?;
+    Ok((self_directed, selected_only && !(self_directed && respect_study_scope)))
+}
+
 fn main() -> Result<()> {
     let mut text = String::new();
     std::io::stdin().read_to_string(&mut text)?;
@@ -761,10 +780,7 @@ fn main() -> Result<()> {
             .ok_or("include_registered must be a boolean")?,
         None => false,
     };
-    let selected_only = match request.get("selected_only") {
-        Some(value) => value.as_bool().ok_or("selected_only must be a boolean")?,
-        None => false,
-    };
+    let (self_directed, selected_only) = discovery_selection(&db, learner, &request)?;
     let mut candidates = candidates_scoped(
         &db,
         learner,
@@ -780,7 +796,7 @@ fn main() -> Result<()> {
         "{}",
         serde_json::to_string_pretty(&json!({"database":database,"learner":learner_id,
         "basis":basis,"cursor":{"lineage":lineage,"basis":basis},"at":DateTime::<Utc>::from_timestamp_millis(now),
-        "selected_only":selected_only,"topics":candidates}))?
+        "self_directed":self_directed,"selected_only":selected_only,"topics":candidates}))?
     );
     Ok(())
 }

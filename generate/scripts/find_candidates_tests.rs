@@ -145,6 +145,21 @@ fn eligibility_includes_selected_studied_and_actual_pending_work() -> Result<()>
 }
 
 #[test]
+fn standard_discovery_expands_self_directed_scope_in_one_capture_only() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db,"learner/id","test")?;
+    let request = json!({"selected_only":true,"respect_study_scope":true});
+    assert_eq!(discovery_selection(&db,learner,&request)?,(false,true));
+    let db = db.with_edn(&format!("[[:db/add {learner} :learner/self-directed true]]"),0,
+        EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
+    assert_eq!(discovery_selection(&db,learner,&request)?,(true,false));
+    assert_eq!(discovery_selection(&db,learner,&json!({"selected_only":true}))?,(true,true));
+    assert_eq!(discovery_selection(&db,learner,&json!({"selected_only":true,"respect_study_scope":false}))?,(true,true));
+    assert!(discovery_selection(&db,learner,&json!({"respect_study_scope":"yes"})).is_err());
+    Ok(())
+}
+
+#[test]
 fn self_directed_generation_uses_bounded_graph_scope_and_preserves_explicit_work() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db,"learner/id","test")?;
@@ -167,13 +182,22 @@ fn self_directed_generation_uses_bounded_graph_scope_and_preserves_explicit_work
     let db=db.with_edn(&format!("[{}]",forms.join("\n")),0,
         EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
     let now=at("2026-10-11T00:00:00Z");
-    let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"lesson",false)?;
+    let (self_directed,selected_only)=discovery_selection(&db,learner,
+        &json!({"selected_only":true,"respect_study_scope":true}))?;
+    assert!(self_directed);
+    let mut result=candidates_scoped(&db,learner,now,None,&BTreeSet::new(),"lesson",false,selected_only)?;
     find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
     assert!(titles(&result).contains("Entry lesson"),"learned intermediate does not close scope traversal");
     assert!(!titles(&result).contains("Outside preparation"),"depth-three and KP-only preparation cannot widen scope");
     let row = |title:&str| result.as_array().unwrap().iter().find(|r|r["topic/title"]==title).unwrap();
     assert!(row("Entry lesson")["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson"));
+    for title in ["Entry lesson","Target"] {
+        assert_eq!(row(title)["new_scoped_lesson"],true);
+        assert_eq!(row(title)["relevance_tier"],1);
+        assert_eq!(row(title)["activity_demands"],json!([{"activity_type":"lesson","relevance_tier":1}]));
+    }
     for title in ["Known intermediate","Unlocked","Queue"] {
+        assert_eq!(row(title)["new_scoped_lesson"],false);
         assert!(row(title)["activity_demands"].as_array().unwrap().iter().all(|d|d["activity_type"]!="lesson"),
             "{title} must not establish ordinary lesson demand");
     }
@@ -183,6 +207,18 @@ fn self_directed_generation_uses_bounded_graph_scope_and_preserves_explicit_work
     let row=manual.as_array().unwrap().iter().find(|r|r["topic/title"]=="Outside preparation").unwrap();
     assert!(row["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson" && d["relevance_tier"]==0),
         "explicit generation requests retain their independent authority");
+    // Already-started work outside the new lesson scope also retains its
+    // immediate supply demand rather than competing as ordinary preparation.
+    let active_topic=identity(&db,"topic/title","Unlocked")?;
+    let task=eid(&query(&db,
+        "[:find ?task :in $ ?topic :where [?activity :activity/scope ?topic] [?task :learner-task/activity ?activity]]",
+        vec![input_eid(active_topic)?])?[0][0])?;
+    let db=db.with_edn(&format!("[[:db/add {task} :learner-task/status :learner-task.status/started]]"),0,
+        EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
+    let result=ranked_fixture(&db,learner)?;
+    let active=result.as_array().unwrap().iter().find(|r|r["db/id"]==active_topic).unwrap();
+    assert_eq!(active["new_scoped_lesson"],false);
+    assert_eq!(active["activity_demands"],json!([{"activity_type":"lesson","relevance_tier":0}]));
     Ok(())
 }
 
@@ -221,6 +257,9 @@ fn scoped_generation_uses_graph_bands_instead_of_false_flags_or_fractional_histo
     let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"lesson",false)?;
     find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
     let row=|title:&str|result.as_array().unwrap().iter().find(|r|r["topic/title"]==title).unwrap();
+    assert_eq!(row("Band one prerequisite")["new_scoped_lesson"],false);
+    assert_eq!(row("Fractional prerequisite")["new_scoped_lesson"],true);
+    assert_eq!(row("Fractional prerequisite")["relevance_tier"],1);
     assert!(row("Band one prerequisite")["activity_demands"].as_array().unwrap().iter().all(|d|d["activity_type"]!="lesson"));
     assert!(row("Fractional prerequisite")["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson"));
     assert_eq!(row("Fractional prerequisite")["next_activity"],"lesson");

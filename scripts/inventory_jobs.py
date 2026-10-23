@@ -47,7 +47,7 @@ def ranked_requests(inventory: dict) -> list[dict]:
         script = kp.get('generator_script')
         usable = kp.get('generator_usable', False)
         packaged = usable and bool(script) and script.startswith('generators/')
-        eligible = bool(kp.get('build_required') or kp.get('urgency_value'))
+        eligible = bool(kp.get('build_eligible', kp.get('build_required') or kp.get('urgency_value')))
         if not packaged and not eligible:
             continue
         common = {'knowledgePoint': kp['db/id'], 'topic': kp['topic_entity'],

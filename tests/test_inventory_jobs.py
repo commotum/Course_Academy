@@ -1,5 +1,6 @@
 import json
 import copy
+import fcntl
 from concurrent.futures import ThreadPoolExecutor
 import subprocess
 from pathlib import Path
@@ -187,6 +188,95 @@ class RankedInventoryJobTests(unittest.TestCase):
                     and (difficulty is None or request.get('difficulty') == difficulty)):
                 return path
         self.fail('Job not found')
+
+    def study_scope_inventory(self, *specifications):
+        # Native discovery supplies the bounded lesson scope before Python ranks
+        # it. Keep this fixture explicit so the test exercises the real finder,
+        # durable handoff and worker claim rather than a preordered request list.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'generate/scripts'))
+        from find_candidates import ranked_candidates
+        topics = []
+        for topic, layer, group, activity, tier, available, new_lesson in specifications:
+            stock = {'available': {'easy': available, 'moderate': 0, 'hard': 0},
+                     'available_total': available, 'rated_total': available,
+                     'supported_difficulties': ['easy', 'moderate', 'hard']}
+            topics.append({'db/id': topic, 'topic/title': f'Topic {topic}',
+                'topic_layer': layer, 'relevance_tier': tier,
+                'selected_support_count': 1, 'engine_priority': 0,
+                'new_scoped_lesson': new_lesson, 'urgency_groups': [group],
+                'studied': not new_lesson, 'reviewed': not new_lesson,
+                'completed_local_lesson': not new_lesson,
+                'next_activity': activity,
+                'activity_demands': [{'activity_type': activity, 'relevance_tier': tier}],
+                'topic_inventory': copy.deepcopy(stock),
+                'knowledge_points': [{'db/id': topic * 10, 'generator_script': None,
+                    'generator_usable': False, 'has_generator': False,
+                    'inventory': copy.deepcopy(stock)}]})
+        return ranked_candidates({'basis': 10, 'cursor': {'basis': 10, 'lineage': 'same'},
+                                  'self_directed': True, 'topics': topics})
+
+    def test_study_scope_shortages_reach_workers_before_later_direct_and_maintenance_work(self):
+        inventory = self.study_scope_inventory(
+            (1, 60, 'target', 'lesson', 1, 0, True),
+            (2, 37, 'selected-prerequisite', 'lesson', 1, 0, True),
+            (3, 29, 'target', 'review', 1, 5, False),
+            (4, 80, 'current-need', 'review', 0, 0, False),
+        )
+        # An empty later target bank cannot close admission to the earlier
+        # depth-two lesson; actual active work still leads the ordinary backlog.
+        gate = inventory['selection_gate']
+        self.assertTrue(gate['open'])
+        self.assertEqual(gate['mode'], 'study-scope')
+        self.assertTrue({10, 20}.issubset(gate['selected_knowledge_points']))
+        self.assertEqual([kp['db/id'] for kp in inventory['knowledge_points']], [40, 20, 10, 30])
+        self.assertEqual([request['knowledgePoint'] for request in ranked_requests(inventory)],
+                         [40, 20, 10, 30])
+        self.jobs.accept(inventory)
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            for _ in range(4):
+                self.assertTrue(self.jobs.run_one())
+        self.assertEqual(claimed, [40, 20, 10, 30])
+        self.assertFalse(self.jobs.run_one())
+
+    def test_explicit_build_ineligibility_cannot_be_revived_by_urgency(self):
+        outside = self.relevant(self.kp(1, topic=2), 1)
+        outside.update(build_eligible=False, build_required=False)
+        self.assertEqual(ranked_requests(self.ranked(outside)), [])
+        self.jobs.accept(self.ranked(outside))
+        self.assertEqual(self.records(), [])
+        # An approved package may still replenish independently; it receives
+        # routine demand, never the excluded context's lesson-shortage priority.
+        outside.update(generator_script='generators/aa/hash/main.py', generator_usable=True)
+        requests = ranked_requests(self.ranked(outside))
+        self.assertTrue(requests)
+        self.assertTrue(all(request['jobKind'] == 'refill' for request in requests))
+        self.assertTrue(all(request['purpose'] == 'routine-replenishment' for request in requests))
+
+    def test_study_scope_workers_skip_blocked_or_locked_early_lessons(self):
+        self.jobs.accept(self.study_scope_inventory(
+            (1, 37, 'selected-prerequisite', 'lesson', 1, 0, True),
+            (2, 41, 'selected-prerequisite', 'lesson', 1, 0, True),
+            (3, 44, 'target', 'lesson', 1, 0, True),
+        ))
+        blocked = self.path_for(10)
+        self.jobs.finish(blocked, {'state': 'blocked'})
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        with (self.jobs.directory / 'kp-20.lock').open('a') as busy:
+            fcntl.flock(busy, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            with patch('inventory_jobs.subprocess.run', side_effect=execute):
+                self.assertTrue(self.jobs.run_one())
+        self.assertEqual(claimed, [30])
+        self.assertEqual(json.loads(blocked.read_text())['state'], 'blocked')
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one())
+        self.assertEqual(claimed, [30, 20])
 
     def test_ranking_matches_finder_and_deduplicates_legacy_builds(self):
         self.accept(jobs=[self.request, {**self.request, 'difficulty': 'easy'}])

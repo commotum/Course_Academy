@@ -161,12 +161,12 @@ class RankingTests(unittest.TestCase):
         self.assertEqual([(r["topic_entity"], r["purpose"]) for r in rows],
                          [(1, "review-shortage"), (2, "lesson-shortage")])
 
-    def test_direct_advance_work_precedes_prerequisite_lesson(self):
+    def test_prerequisite_lesson_shortage_precedes_direct_advance_work(self):
         direct = topic(1, inventory(5))
         prerequisite = topic(2, groups=("selected-prerequisite",))
         rows = ranked_contexts(rank(prerequisite, direct))
         self.assertEqual([(r["topic_entity"], r["purpose"]) for r in rows],
-                         [(1, "advance-build"), (2, "lesson-shortage")])
+                         [(2, "lesson-shortage"), (1, "advance-build")])
 
     def test_direct_membership_wins_when_topic_is_also_a_prerequisite(self):
         for direct in ("queued", "target"):
@@ -182,7 +182,7 @@ class RankingTests(unittest.TestCase):
         rows = rank(speculative, current)["knowledge_points"]
         self.assertEqual([r["relevance_tier"] for r in rows], [3, 4])
         self.assertTrue(all(r["relevance_tier"] == 4 for r in rows[1]["priority_reasons"]))
-        self.assertEqual(priority_key(rows[1])[0], 4)
+        self.assertEqual(priority_key(rows[1])[:2], (1, 4))
 
     def test_immediate_demand_does_not_promote_other_purposes_on_the_topic(self):
         selected = topic(1, stage="review")
@@ -278,6 +278,50 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(priority_key(old[0])[0], 5)
 
 
+class StudyScopeRankingTests(unittest.TestCase):
+    @staticmethod
+    def lesson(eid, layer, *, direct=False, counts=None):
+        t = topic(eid, counts, groups=("target",) if direct else ("selected-prerequisite",))
+        t.update(new_scoped_lesson=True, topic_layer=layer,
+                 activity_demands=[{"activity_type":"lesson", "relevance_tier":1}])
+        return t
+
+    def test_urgency_then_earliest_blocked_scoped_lesson_not_direct_membership(self):
+        mixture = self.lesson(1,37)
+        later = self.lesson(2,54,direct=True)
+        ready = self.lesson(3,29,direct=True,counts=inventory(5))
+        active = topic(4,inventory(4),stage="review",groups=("current-need",))
+        active["activity_demands"]=[{"activity_type":"review","relevance_tier":0}]
+        selected_review = topic(5,inventory(4),stage="review",groups=("target",))
+        selected_review["activity_demands"]=[{"activity_type":"review","relevance_tier":1}]
+        result=ranked_candidates({"self_directed":True,"topics":[ready,later,selected_review,mixture,active]})
+        self.assertTrue(result["selection_gate"]["open"])
+        self.assertEqual(result["selection_gate"]["mode"],"study-scope")
+        self.assertEqual([kp["topic_entity"] for kp in result["knowledge_points"]],[4,1,2,5,3])
+        self.assertNotIn(30,result["selection_gate"]["understocked_knowledge_points"])
+        self.assertEqual(result["selection_gate"]["required_total"],5)
+
+    def test_missing_unrelated_selected_package_cannot_hide_scoped_preparation(self):
+        prerequisite=self.lesson(1,37)
+        late=self.lesson(2,80,direct=True)
+        outside=topic(3,groups=("studied-or-queued-descendant",))
+        outside["activity_demands"]=[]
+        result=ranked_candidates({"self_directed":True,"topics":[outside,late,prerequisite]})
+        self.assertEqual([kp["topic_entity"] for kp in result["knowledge_points"]],[1,2])
+        excluded=next(t for t in result["topics"] if t["db/id"]==3)["knowledge_points"][0]
+        self.assertFalse(excluded["build_eligible"])
+        self.assertEqual(excluded["build_exclusion_reason"],"outside-study-demand")
+
+    def test_actual_shortages_precede_selected_band_polish(self):
+        ready=self.lesson(1,29,direct=True,counts=inventory(5))
+        review=topic(2,inventory(4),stage="review",groups=("current-need",))
+        review["activity_demands"]=[{"activity_type":"review","relevance_tier":3}]
+        assessment=topic(3,stage="assessment",groups=("current-need",))
+        assessment["activity_demands"]=[{"activity_type":"assessment","relevance_tier":3}]
+        result=ranked_candidates({"self_directed":True,"topics":[ready,assessment,review]})
+        self.assertEqual([kp["topic_entity"] for kp in result["knowledge_points"]],[2,3,1])
+
+
 class SelectionGateTests(unittest.TestCase):
     def test_closed_gate_withholds_every_nonselected_build_including_immediate(self):
         direct = topic(1, inventory(4))
@@ -349,6 +393,17 @@ class SelectionGateTests(unittest.TestCase):
             result = discover("math", "learner", {"EDB_MATH_ROOT": "/tmp/math"}, binary="finder",
                               include_registered=include_registered)
         return result, [json.loads(call.kwargs["input"]) for call in run.call_args_list]
+
+    def test_self_directed_discovery_uses_one_complete_captured_scope(self):
+        direct=StudyScopeRankingTests.lesson(1,54,direct=True)
+        prerequisite=StudyScopeRankingTests.lesson(2,37)
+        result, requests=self.discover_snapshots({"basis":1,"self_directed":True,
+            "selected_only":False,"topics":[direct,prerequisite]})
+        self.assertEqual(len(requests),1)
+        self.assertTrue(requests[0]["respect_study_scope"])
+        self.assertFalse(result["selected_only"])
+        self.assertTrue(result["selection_gate"]["open"])
+        self.assertEqual([kp["topic_entity"] for kp in result["knowledge_points"]],[2,1])
 
     def test_discovery_stops_after_selected_only_capture_when_gate_closed(self):
         result, requests = self.discover_snapshots({"basis": 1, "topics": [topic(1)]})

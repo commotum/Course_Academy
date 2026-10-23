@@ -1,12 +1,12 @@
 """One ordering policy for generator discovery and the durable workers.
 
-The numeric score remains useful for diagnostics, but cannot express the hard
-boundaries between relevance, purpose, and lesson order.
+The numeric score remains diagnostic. Actual shortages precede speculative
+stock, with immediate activity needs ahead of ordinary Study preparation.
 """
 from datetime import datetime, timezone
 
 
-PRIORITY_POLICY = "relevance-v5"
+PRIORITY_POLICY = "study-scope-v6"
 PRIORITY_FIELDS = (
     "priority_policy", "relevance_tier", "baseline_relevance_tier", "topic_layer",
     "selected_support_count", "engine_priority", "review_due_at",
@@ -62,6 +62,11 @@ def priority_key(record):
         topic_order = (timestamp(record.get("first_studied_at")), 0, engine)
     else:
         topic_order = (0, 0, engine)
-    return (record.get("relevance_tier", 4), PURPOSE_ORDER.get(purpose, 7),
+    # Immediate priority belongs to an actual deficit, never every possible
+    # future band on the same topic. Useful stock wins over polish at any tier.
+    shortage = purpose in {"lesson-shortage", "review-shortage", "assessment-shortage"} and record.get("shortage", 0) > 0
+    urgency = (0 if record.get("relevance_tier") == 0 else 1) if shortage else (
+        2 if purpose in {"hard-variety", "moderate-variety", "easy-variety"} else 3)
+    return (urgency, record.get("relevance_tier", 4), PURPOSE_ORDER.get(purpose, 7),
             *topic_order, waiting, topic, -record.get("shortage", 0), kp,
             band)
