@@ -1,0 +1,310 @@
+{
+  "learner_operation": "Infer two elementary column additions that create two zeros in one row of a 3x3 matrix, using a specified unchanged pivot column. Learners must obtain multipliers from A and B, not recover the intended pair from distractor multiplicities.",
+  "fixed_features": [
+    {
+      "feature": "3x3 matrices, two column additions, specified unchanged pivot column",
+      "justification": "All ten practice sources and canonical e-8051 use this same operation and workload."
+    },
+    {
+      "feature": "Five choices with a single correct operation pair",
+      "justification": "Every complete observed practice bank uses one radio selection among five pairs."
+    },
+    {
+      "feature": "Nonzero pivot and integral multipliers",
+      "justification": "These make both requested additions meaningful and preserve the observed easy arithmetic."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Pivot column and cleared row",
+      "eligible_variation": "Each of three columns and three rows; update wording and dependent matrices together.",
+      "observed": "All nine combinations explicitly constructed and checked; fresh sampling varies these roles."
+    },
+    {
+      "role": "Signs and magnitudes of both multipliers",
+      "eligible_variation": "Positive/negative integral multipliers for either target column.",
+      "observed": "All four sign patterns present in independent sample; profile-dependent rejection also observed."
+    },
+    {
+      "role": "Correct pair relative to distractor multiplicities",
+      "eligible_variation": "The correct pair need not combine the most frequent individual operations; distractor construction should not reveal correctness without matrices.",
+      "observed": "Five profiles leak the correct pair through a recognizable option frequency signature. Source examples do not justify freezing this answer-bearing arrangement."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All row/pivot cases and source banks",
+      "sample_refs": [
+        "boundaries.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "Nine explicit row/pivot cases; all ten source practice banks and canonical values replayed. q-130614 uses equivalent q-130609 profile."
+    },
+    {
+      "case": "Independent samples versus exact runner batch",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "variation-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "216 fresh records across nine profiles; five runner records assessed separately. 102 sampled and one batch item expose the conditional shortcut."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "A[0][0] 4 -> -4, same pivot 2 and remaining data; first multiplier -2 -> +2.",
+      "expected": "First multiplier must flip sign; B and solution update and old pair is rejected.",
+      "observed": "Prompt and B, first operation, both solution stages and conclusion update; former correct operation pair is a distractor and native grader rejects it.",
+      "status": "passed",
+      "justification": "k=-a_ri/a_rp depends on target-row entry.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-extra/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Off-target A[1][0] 1 -> 8; target row and pivot unchanged.",
+      "expected": "Correct mathematical pair preserved; off-target computed matrix entries change.",
+      "observed": "Correct operation pair and whole bank preserved; prompt/B and intermediate matrix entries change; grader still accepts only the same mathematical pair. IDs change as content changes.",
+      "status": "passed",
+      "justification": "Changing a non-target-row entry of a target column does not change the ratio used to clear the target row.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-extra/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Same A and zeroed row, pivot column changes from C1 to C2.",
+      "expected": "Retained and modified column roles, all dependent matrices, prompt and explanations follow new pivot.",
+      "observed": "Prompt, target labels, B, operations, pivot-coordinate explanation and native correct choice follow the chosen pivot.",
+      "status": "passed",
+      "justification": "Source questions already vary the given unchanged column.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-extra/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0 correct in 0 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 21,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "21 correct in 21 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0 correct in 0 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0 correct in 0 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0 correct in 0 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 18,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "18 correct in 18 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 23,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "23 correct in 23 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 20,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "20 correct in 20 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Frequency of first and second operations within the five options",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 20,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "20 correct in 20 attempted predictions out of 24 records; abstentions counted as unsuccessful here. Baseline is uniform selection among five choices (20%). Profile is for audit stratification; predictor does not read profile metadata or matrices.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique first-operation mode occurs twice; unique second-operation mode; combined pair present",
+      "subgroup": "All records displaying this option-only signature",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 102,
+      "total": 102,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "102/102 across five profiles before and after delivery, versus 20% random selection. This frequency cue requires no matrix arithmetic. Minimal case succeeds under all 120 choice permutations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "minimal-failure-results.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Same visible component-frequency signature",
+      "subgroup": "Exact delivered runner batch, recognizable subset",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "When the first operation has a unique mode appearing twice and the second operation has a unique mode, select their combined pair if present; otherwise abstain.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The strategy answers one of five batch members and abstains on four; not a claim it answers the entire batch. The affected item survives normalization/deduplication; random choice baseline 20%.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First displayed answer",
+      "subgroup": "Fourteen actual-UI render cases",
+      "scope": "overall",
+      "strategy": "Always choose the first displayed option.",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No deterministic position predictor established in this small render set. Baseline 20% random choice; these deliberately chosen cases are not a distribution estimate.",
+      "sample_refs": [
+        "render-position-probe.json",
+        "render-input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling",
+      "requested easy filtering",
+      "actual publisher normalization and validation",
+      "captured-inventory and within-batch deduplication",
+      "fresh-practice eligibility and difficulty-first learner selection rules",
+      "actual UI option ordering"
+    ],
+    "sample_refs": [
+      "sampler-rejection.json",
+      "delivery-samples/delivery.json",
+      "delivery-samples/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-review.json",
+      "render-position-probe.json"
+    ],
+    "result": "216/216 independent samples and 5/5 batch records survive delivery against captured basis 5581. Option-only shortcut remains 102/102 conditional sample predictions and 1/1 conditional batch predictions. Fresh positive-easy-weight selection can deliver these defects; learner-specific exclusions may remove individual items."
+  },
+  "limitations": [
+    "No finite sample rules out all possible shortcuts.",
+    "Future database IDs, live policy weights and learner history are unavailable; selection analysis uses inspected rules and explicit hypothetical identity/history scenarios.",
+    "Captured inventory consists of ten original source questions and no generated records; affected-inventory.json is empty on that verified basis, not because generated records were left untested.",
+    "No database writes or publication performed."
+  ]
+}

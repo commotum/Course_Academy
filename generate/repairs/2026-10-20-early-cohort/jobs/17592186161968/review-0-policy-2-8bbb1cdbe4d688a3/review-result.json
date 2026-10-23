@@ -1,0 +1,131 @@
+{
+  "verdict": "revise",
+  "summary": "Revise the distractor construction: an option-frequency shortcut bypasses matrix reasoning and affects one of the five delivered batch questions. Mathematics, grading, source replay, rendering and packaging passed. No generated historical records occur in the captured inventory.",
+  "source_analysis": {
+    "skill": "Infer two elementary column additions that create two zeros in one row of a 3x3 matrix, using a specified unchanged pivot column.",
+    "reasoning_steps": [
+      "Identify the unchanged column j and the row r with two zeros in B.",
+      "For each other column i calculate k_i=-a_ri/a_rj, with nonzero pivot.",
+      "Apply each operation to the whole column and check that the intermediate and final matrices match B.",
+      "Select the one correct pair among five radio choices."
+    ],
+    "invariants": [
+      "3x3 integer matrices, two nontrivial column additions sharing a nonzero pivot.",
+      "Two integer multipliers and a single correct pair; no swaps, scaling, row operations, systems solving, or 4x4 workload.",
+      "Worked solution identifies pivot location and shows both complete matrix transformations."
+    ],
+    "permitted_variations": [
+      "Any of three pivot columns and three zeroed rows; all signs of nonzero integral multipliers.",
+      "Nonzero positive and negative pivots, including magnitudes greater than one with divisible entries.",
+      "Off-target entries may change without changing multipliers; changing a target-row entry must update multiplier and B.",
+      "Correct option position, multiplier magnitudes/order, distractor profiles and non-pivot column roles are incidental answer-bearing assignments, not fixed constraints."
+    ],
+    "source_refs": [
+      "a68c2e7c-c605-5187-a1fa-13349acf01b6 (q-42917)",
+      "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
+      "20588ade-71ed-551a-be45-9c686e3a54a5 (q-130609)",
+      "f5b6d005-cac9-5d71-a15c-66f827fd6327 (q-130610)",
+      "999081e6-b687-59be-9094-b550515c9e09 (q-130611)",
+      "87fa5bad-fa31-5e99-bbba-02c007ce2d91 (q-91186)",
+      "8c748818-492d-57de-bb7c-4dda21885c24 (q-91187)",
+      "50d09abe-1ccb-5c67-80df-655b78fbf493 (q-91192)",
+      "e8820685-174a-5aac-b0a4-a6b54f80941e (q-91188)",
+      "5b007bca-ff70-5f72-b366-01bf0baa6ac8 (q-130614)",
+      "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051), lesson step 007cc686-090e-50a0-8170-5b1c5eb412f6: make entries to the left of a13=1 equal to 0; C1+=6C3 and C2+=5C3.",
+      "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0 (10652), Column Operations: Adding a multiple of one column to another column: C_j := C_j+k C_i, j != i."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "All ten complete practice banks and canonical parameters replayed. Verified correction of q-91187 summary typo; duplicate q-42917 field consolidated; q-130614 shares q-130609 bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "audit.py"
+      ],
+      "details": "246 records independently checked using exact integer column operations, unique correct choices and every worked matrix stage."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-results.json",
+        "boundaries.json",
+        "sampler-rejection.json"
+      ],
+      "details": "All nine row/pivot assignments, four multiplier sign patterns and nine distinct bank profiles exercised. Incidental answer-bank shortcut fails the separate decision-variation check."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "source-analysis.json"
+      ],
+      "details": "Preserves easy two-operation 3x3 column-addition task and radio response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grade_field accepted 246 mathematically correct choices and rejected 984 wrong choices, including changed and preserved counterfactual answers. Radio-only contract; free-entry equivalents do not apply."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-extra/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Fourteen actual-UI cases rendered successfully; seven representative screenshots inspected, including every controlled pair."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "relocated-records.json"
+      ],
+      "details": "Exact Python 3.13.5 / SymPy 1.14.0 dependencies match; deterministic replay, relocation and rejection checks pass. Original package unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "minimal-failure-results.json",
+        "shortcut_regression.py",
+        "delivery-batch/delivery.json",
+        "selection-review.json"
+      ],
+      "details": "Option-component frequency bypass succeeds on all 102 recognizably eligible fresh samples and one of five actual batch items; survives filtering and arbitrary option ordering."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Fixed distractor recipes reveal the answer without inspecting A or B. When the first operation has a unique mode occurring twice and the second operation has a unique mode, their combined pair is correct in 102/102 sampled occurrences across q-91189, q-91186, q-91187, q-91192 and q-91188. The same defect occurs in delivered batch question dae1d6e6-8d41-5592-b4ba-d9ab62dba0c5 (seed 2967220665, q-91189), where the repeated operations identify multipliers (-2,-4).",
+      "source_refs": [
+        "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
+        "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051)",
+        "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: adding a multiple of one column to another",
+        "generate/principles.md: meaningful variety and incidental shortcuts"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_regression.py (expected assertion failure). Minimal current case: generate(seed=842, bank_profile=\"q-91189\", parameters={\"A\":[[4,2,-6],[1,3,4],[5,-1,2]],\"row\":0,\"pivot\":1,\"ks\":[-2,0,3]}). Coefficient bank is [(-1,3),(2,3),(-2,3),(-2,-3),(-3,2)]; unique component modes (-2,3) are the correct answer. minimal-failure.json retains complete record; minimal-failure-results.json verifies all 120 choice permutations.",
+      "requested_change": "Change the runtime distractor-construction rule across affected profiles so recognizable component-frequency patterns do not reliably identify the key. Preserve source replay and the legitimate matrix/pivot/multiplier domain; do not merely shuffle options, suppress affected profiles or filter the demonstrated parameter tuple. Keep the option-only predictor as a regression probe across profiles and replace the affected batch after repairing construction."
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "learner_operation": "Identify two elementary row additions that create zeros in one column of a 3x3 matrix using the specified unchanged pivot row. Determine the coefficient for each of the two target rows from the matrices, rather than from answer-bank frequency.",
+  "fixed_features": [
+    {
+      "feature": "3x3 matrices, one specified pivot row, two row additions, five radio choices",
+      "justification": "All ten assessed source cases share this workload and response contract; the Introduction performs two successive row additions."
+    },
+    {
+      "feature": "Nonzero integer pivot with exactly divisible target entries",
+      "justification": "The observed easy questions use small integral coefficients; fractional elimination would expand the arithmetic workload."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Pivot row and cleared column",
+      "eligible_variation": "All three rows and columns; hold A fixed when switching the target.",
+      "observed": "All nine coordinates tested; fixed-A changes (row 1,col 1) to (row 1,col 2) and (row 2,col 2) update prompt, key, solution and grading."
+    },
+    {
+      "role": "Two correct signed coefficients",
+      "eligible_variation": "Independent signs, units/nonunits, equal/unequal magnitudes compatible with a distinct complete bank.",
+      "observed": "All four sign cases observed. Unit-replacement profiles always duplicate the correct first coefficient in three of five options, revealing it."
+    },
+    {
+      "role": "Perturbed distractor coefficient and retained correct coefficient",
+      "eligible_variation": "Which coefficient is perturbed and whether the other is correct are incidental source-example assignments. Their generalization must not make bank frequency a reliable key.",
+      "observed": "q-42531, q-130451 and q-91162 always preserve the correct first coefficient in the extra unit distractor. This is the demonstrated defect."
+    },
+    {
+      "role": "Correct display position",
+      "eligible_variation": "Position independent of coefficients and source profile.",
+      "observed": "Authored positions are fixed by profile, but actual UI hashes choice IDs with item/field IDs. Original third-position hypothesis was refuted by rendered order."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Ten source banks and canonical example",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "boundary-records.json"
+      ],
+      "result": "All ten complete banks, including duplicate captured fields, reproduced mathematically; canonical has no captured bank."
+    },
+    {
+      "case": "Signed coefficient and pivot/column variation",
+      "sample_refs": [
+        "fresh-samples.json",
+        "math-coverage-shortcuts.json",
+        "boundary-records.json",
+        "boundary-results.json"
+      ],
+      "result": "120 samples across ten profiles, all four sign pairs, every pivot and column, plus explicit all-nine coordinate boundary grid."
+    },
+    {
+      "case": "Exact batch and survivors",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-followup.json"
+      ],
+      "result": "All five survive. Two have the recognizable unit-bank cue; both leak their first coefficient. Full matrix-free guess succeeds on one of those two."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "A[1,0] changes 2 to -2 while pivot row, column and all other entries stay fixed.",
+      "expected": "First coefficient changes -2 to +2; B, intermediate matrix, conclusion and graded correct answer must change.",
+      "observed": "All dependent content changes consistently. Every choice graded correctly on both records; both rendered and inspected. Frequency cue follows the changed answer.",
+      "status": "passed",
+      "justification": "This is exactly the cancellation operation illustrated by the Introduction. Correctness of the pair does not waive the bank shortcut.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "A[1,1] changes 5 to 6 with the eliminated column and pivot row unchanged.",
+      "expected": "Both coefficients stay fixed; affected non-target entries in B and the solution update.",
+      "observed": "Correct operation text preserved, matrices recomputed, all choices graded correctly, rendered pair inspected.",
+      "status": "passed",
+      "justification": "Only column 1 determines the elimination coefficients in this pair; other entries must still receive the same row addition.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold A=[[1,1,3],[2,1,5],[4,3,7]] fixed and change target (pivot,column) from (0,0) to (0,1) or (1,1).",
+      "expected": "Cleared column, pivot wording, operations, matrices and grading follow the new target.",
+      "observed": "Verified exact arithmetic, all-option native grading, actual UI prompt and solution screenshots for all three.",
+      "status": "passed",
+      "justification": "Source questions use every pivot-row identity and different columns; these are eligible answer-bearing roles.",
+      "sample_refs": [
+        "boundary-records.json",
+        "boundary-results.json",
+        "boundary-grader-report.json",
+        "target-render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "One unit second coefficient among four equal larger magnitudes; first coefficient has constant magnitude.",
+      "subgroup": "Recognizable unit-replacement answer banks across q-42531, q-130451 and q-91162",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer the entire first coefficient by choosing the signed value appearing three times; compute only the second row coefficient to select the pair.",
+      "correct": 36,
+      "total": 36,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.5 is a blind choice between the two first-coefficient signs. Bank frequency reveals the correct first operation in every tested case, independently of matrices and UI order. Native grader accepts all 36 resulting full answers when only the second operation is calculated. This bypasses one of the two required cancellations, not all arithmetic.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "shortcut-followup.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-report.json",
+        "minimal-reproduction.txt"
+      ]
+    },
+    {
+      "cue": "Same unit-replacement bank signature",
+      "subgroup": "All fresh cue-positive samples",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Inspect no matrix: use modal first coefficient and the sign of the unique unit second coefficient, scaled to the common nonunit magnitude.",
+      "correct": 24,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random five-choice guessing succeeds with probability 0.2. This bank-only strategy succeeds 24/36, not perfectly; it fails all q-42531 samples. After actual deduplication it still succeeds 12/24. The stronger universal claim is the first-operation leak above.",
+      "sample_refs": [
+        "shortcut-followup.json",
+        "shortcut-grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unit-replacement bank signature in the exact five-record batch",
+      "subgroup": "Two cue-positive runner records",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Mode of first signed coefficient, then calculate only the second cancellation.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.5 refers to guessing the first sign. Both affected records survive publication filtering. This is the same recipe defect manifested in the batch, not a claim that all five records have a matrix-free answer.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-followup.json",
+        "shortcut-grader-report.json"
+      ]
+    },
+    {
+      "cue": "Third authored choice",
+      "subgroup": "Six actual-UI initial renders",
+      "scope": "overall",
+      "strategy": "Select the third displayed choice.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "UI choiceOrder reorders authored choices. Rendered correct positions are 2,4,1,1,5,3. Authored third-position invariance is not a delivered defect.",
+      "sample_refs": [
+        "render-records.json",
+        "render/rendering.json",
+        "shortcut-followup.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "bounded generator rejection/resampling",
+      "requested easy difficulty",
+      "publisher validation and normalization",
+      "captured inventory and within-batch deduplication",
+      "practice eligibility and retirement rule",
+      "difficulty-weighted selection and prior-seen exclusions",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "resampling.json",
+      "delivery-fresh/delivery.json",
+      "delivery-fresh/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "inventory-inspection.json",
+      "selection.json",
+      "shortcut-followup.json",
+      "render/rendering.json"
+    ],
+    "result": "Fresh 120 -> 48 after 72 within-batch duplicates; shared seeds intentionally hold data fixed across profiles. Cue-positive 36 -> 24, and every survivor still leaks its first operation. Runner 5 -> 5, cue-positive 2 -> 2. Source replays are accepted by generic publication filtering despite mathematical identity to source items: changed layout is not canonicalized into semantic matrix identity. Selection does not inspect coefficient cues; under positive easy weight and fresh history every eligible survivor remains selectable. Captured inventory has ten original source records and no generated records."
+  },
+  "limitations": [
+    "Finite review cannot exclude every shortcut.",
+    "Learner history, live policy weights, future entity ordering and concurrent inventory changes were not supplied; selection reproduction uses empty history, positive easy weight and representative candidate ordering. This does not claim a particular live selection outcome.",
+    "Source example has no captured canonical answer bank; duplicate source fields are compared mathematically, and malformed spacing is normalized.",
+    "Long worked-solution matrix chains require horizontal scrolling; actual UI overflow is auto and programmatically scrollable."
+  ]
+}
