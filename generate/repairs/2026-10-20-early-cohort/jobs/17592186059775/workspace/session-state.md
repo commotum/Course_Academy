@@ -1,17 +1,17 @@
-# Current state — author-340
+# Current state — author-342
 
-Read feedback and both retained findings in repair-history.json; reused the existing instructional account, source analysis, candidate and executable regressions. Inspected all 12 supplied source questions, the lesson, canonical example and prerequisite context. No runtime, manifest, engine, runner, publication, database or other-job changes.
+Read the latest feedback and all retained findings; inspected the history summary (342 events), existing instructional account, source material and current candidate. Preserved completed repairs and every runtime/manifest byte. No runner, engine, database, publication or other-job edits.
 
-Exact latest failure reproduced first:
+Exact latest failure reproduced before other checks:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed `scripts/generator_pipeline.py:723` rejects the unchanged package before regressions and sampling. The retained evidence-only finding explicitly requires runtime preservation.
+Exit 1: the installed `scripts/generator_pipeline.py` sample-stage gate rejects the byte-identical candidate before regressions or sampling. Retained finding `9b8cb52352b8ca3e790e` explicitly requires an evidence-only correction and runtime preservation.
 
-Ran the registered regressions once and checked retained UI binding:
-- `checks/check_all.py`: exit 0 (CLI/relocation, source banks, independent math, native grading, shared delivery and captured inventory).
-- `checks/check_batch_selection.py`: exit 0 (historical seed 4258185931, controlled target roles, delivery and native grading).
-- `checks/check_evidence_contract.py`: exit 1. Evidence bundle, relocation and negative controls pass; installed runner handoff fails.
-- `checks/check_render_binding.py`: exit 0. Reinspected `evidence/author8-render/question-001.png`; readable matrices, controls and elimination steps. No new render was needed for unchanged records.
+Ran each registered regression once:
+- `checks/check_all.py`: exit 0 (CLI/relocation, complete source banks, independent math, native grading, shared delivery and captured inventory).
+- `checks/check_batch_selection.py`: exit 0 (exact seed 4258185931, all supported target roles, shared delivery and native grading).
+- `checks/check_evidence_contract.py`: exit 1. Real evidence validation, relocation and negative controls pass; installed-runner handoff fails.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks and two unchanged UI records bind. Visually reinspected `evidence/author8-render/question-001.png`; matrices, radio controls and worked solution are readable.
 
-Commands, results, logs and unchanged runtime hashes: `evidence/current-author-verification.json`.
+Commands, results and unchanged runtime hashes: `evidence/current-author-verification.json`. The historical shortcut remains a failing negative control; current raw and delivered shortcut probes pass. Captured inventory inspection reproduces three affected generated records, preserving source identities separately.
 
-Unfinished: the external runner must resolve its evidence-only/unchanged-package gate and route this preserved candidate to fresh independent review. Existing proposal: `runner-fix/evidence-only-rejection.patch`. The corrected evidence bundle remains at `evidence/contract-correction`, with root-relative reports and three reproduced affected stored generated records. Neither the runner correction nor installation at the runner-owned evidence root is writable within this task. Strict failing regression remains registered. Do not alter generator bytes simply to evade the gate; do not treat a staged patch or historical accepted report as current approval.
+Unfinished: apply the staged runner correction outside this workspace and install the validated evidence bundle at the runner-owned evidence root. Proposal: `runner-fix/evidence-only-rejection.patch`; bundle: `evidence/contract-correction`; installation inventory: `evidence/contract-installation.json`. Neither external write is authorized. Strict failing regression remains registered. Do not alter runtime bytes merely to evade the unchanged-package gate or use a historical accepted report as fresh approval. Further unchanged author retries cannot resolve this external boundary.
