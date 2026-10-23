@@ -6,8 +6,8 @@ from audit_math_image_imports import META,PARENTS
 sys.path.insert(0,str(ROOT/'scripts/question_capture'))
 from math_format import MATH
 SNAPSHOT=ROOT/'.local/edb/math-image-import-audit-2026-10-23-inline-display-facts.jsonl'
-INTEGRAL=re.compile(r'\\(?:int(?:op)?|iint|iiint|iiiint|idotsint|oint|oiint|oiiint)\b|[∫∬∭∮∯∰]')
-BIG=re.compile(r'\\(?:sum|prod|coprod|lim|limsup|liminf|bigcup|bigcap)\b|[∑∏⋃⋂]')
+INTEGRAL=re.compile(r'\\(?:int(?:op)?|iint|iiint|iiiint|idotsint|oint|oiint|oiiint)(?![A-Za-z])|[∫∬∭∮∯∰]')
+BIG=re.compile(r'\\(?:sum|prod|coprod|lim|limsup|liminf|bigcup|bigcap)(?![A-Za-z])|[∑∏⋃⋂]')
 ENV=re.compile(r'\\begin\{(?:[pbBvV]?matrix|array|aligned|align\*?|cases|gathered)\}')
 PROSE={'question/problem','question/worked-solution','tutorial/content','answer/feedback','answer-field/feedback','multistep/context','answer/value','assigned-problem/instructions'}
 def save(name,v):(HERE/name).write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
