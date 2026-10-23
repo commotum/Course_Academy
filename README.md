@@ -61,13 +61,20 @@ and repetition values from EDB; browsing them leaves the study course unchanged.
 Lessons present one item at a time
 and save responses, active elapsed time, XP, and FIRe progress to EDB. Study serves
 lessons, due reviews, and assessments for topics in global graph layer 30 or above.
-In self-directed mode, it combines your
-explicit queue with targets and their unfinished prerequisites, stopping at known
-topics and the prerequisite ancestry of topics you have studied. Content without
-a supported grader or sufficient practice is excluded from new lesson offers.
-Only `learner/targets` expands into automatic prerequisite lessons.
-`learner/queue` requests the selected topics directly. A prerequisite can still
-appear if it independently supports a target or was explicitly queued.
+In self-directed mode, new lessons come from `learner/targets`, `learner/queue`,
+and their prerequisites through two `topic/next` edges, matching the default
+Targets graph scope. Unlearned prerequisites never block an in-scope lesson or
+expand this boundary. Each topic's own learning history decides whether it needs
+a new lesson; faded retention stays in the review system.
+Content without a supported grader or sufficient fresh practice is skipped
+individually, so unavailable earlier lessons never hold up later ones. When their
+question banks are replenished, they rejoin the ordinary selection automatically.
+Available new lessons favor earlier global layers while interleaving topics by
+undirected graph distance from the last three completed lessons/reviews and the
+other chosen lessons. Distance contributes at most six layers of preference;
+there is no requirement to finish a layer before progressing. Question-generation
+demand uses the same bounded scope, including topics whose banks are empty.
+Course mode and explicit Study Now retain their separate selection rules.
 Equal-priority ordinary reviews fill the five visible slots with graph variety:
 the longest-overdue review comes first, followed by topics farthest from the
 closest review already selected, using prerequisite links in both directions.

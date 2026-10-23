@@ -236,6 +236,23 @@ test('known preparation uses explicit learned, legacy and completed evidence plu
   assert.ok(!known.has(134));
 });
 
+test('self-directed forecasts count unlearned scoped ancestors after downstream learning', () => {
+  const x = fixture({ tasks: false });
+  x.event(19, [[1, 'learner/self-directed', true, true],
+    [1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
+      'progress/topic': 134, 'progress/learned': true,
+    })]);
+  const known = knownPreparationTopics(x.f, 1);
+  assert.deepEqual([...known], [134]);
+  const inputs = x.inputs();
+  assert.equal(calculateForecast(inputs).inventory.remainingTopics, 4);
+  // The native capture's authoritative knownTopics has the same semantics as
+  // the local fallback, including when refreshing an already loaded forecast.
+  assert.equal(calculateForecast({ ...inputs, knownTopics: [134] }).inventory.remainingTopics, 4);
+  x.event(20, [[1, 'learner/self-directed', true, false], [1, 'learner/self-directed', false, true]]);
+  assert.equal(calculateForecast(x.inputs()).inventory.remainingTopics, 1);
+});
+
 test('unpriced homework contributes time without suppressing base throughput; undated imports are excluded', () => {
   const x = fixture();
   x.event(19, [[1, 'learner/activity', 4000, true], ...changesFor(4000, {
@@ -500,6 +517,20 @@ test('already learned prerequisites add zero growth, before applying missing-pri
   assert.equal(r.growth.total.baseXp, 10);
   assert.deepEqual(r.growth.total.estimatedTopics, []);
   assert.deepEqual(r.growth.total.unknownTopics, []);
+});
+
+test('self-directed growth does not infer earlier learning for an unlearned ancestor', () => {
+  const x = fixture({ tasks: false });
+  x.event(10, [[1, 'learner/self-directed', true, true],
+    [1, 'learner/knowledge-profile', 4000, true], ...changesFor(4000, {
+      'progress/topic': 134, 'progress/learned': true,
+    })]);
+  const inputs = x.inputs();
+  addAssignment(inputs, 0, 6000, 133, at(20));
+  addAssignment(inputs, 1, 6100, 135, at(22));
+  const r = calculateForecast(inputs);
+  assert.equal(r.growth.total.topics, 3); // Root 133 and its two unlearned prerequisites.
+  assert.equal(r.growth.total.baseXp, 30);
 });
 
 test('a target already learned when due contributes no growth, including at the same timestamp', () => {

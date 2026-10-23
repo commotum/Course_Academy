@@ -3212,7 +3212,17 @@ mod study_queue_tests {
         }
         records.insert(90029, json!({"progress/topic":90028,"progress/repetitions":1.0}).as_object().unwrap().clone());
         records.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([90029]));
-        EntitySnapshot::new(records, 42).unwrap()
+        let mut snapshot = EntitySnapshot::new(records, 42).unwrap();
+        // This fixture represents an already prepared queue. Keep its stored
+        // priority current while tests below exercise no-op preparation.
+        for candidate in learning::queue_candidates(&snapshot, 1, 2, Utc::now()).unwrap() {
+            let tasks = snapshot.owners(candidate.activity, "learner-task/activity").unwrap();
+            for task in tasks {
+                snapshot.entities.get_mut(&task).unwrap()
+                    .insert("learner-task/priority".into(), json!(candidate.priority));
+            }
+        }
+        snapshot
     }
 
     #[test]
@@ -4006,6 +4016,78 @@ mod study_queue_tests {
     }
 
     #[test]
+    fn bounded_scope_home_preparation_and_start_skip_shortages_without_mastery_gates() {
+        let mut s = fixture();
+        // A <- B <- C <- D: C is the depth-two entry point, even though D is
+        // unlearned. B has no question supply; it must not hold up A either.
+        // The second selected branch has its own unavailable earlier lesson.
+        for (topic, next, available) in [
+            (106, vec![], true), (107, vec![106], false),
+            (108, vec![107], true), (109, vec![108], true),
+            (116, vec![], true), (117, vec![116], false),
+        ] {
+            let activity = 2000 + topic;
+            let step = 3000 + topic;
+            let question = 4000 + topic;
+            let kp = 5000 + topic;
+            s.entities.insert(topic, json!({"topic/id":format!("topic-{topic}"),
+                "topic/next":next,"topic/knowledge-points":[kp]}).as_object().unwrap().clone());
+            s.entities.insert(activity, json!({"activity/id":format!("lesson-{topic}"),
+                "activity/type":"activity.type/lesson","activity/scope":topic,
+                "activity/title":format!("Lesson {topic}"),"activity/expected-seconds":720.0,
+                "activity/steps":[step],"activity/first-step":step}).as_object().unwrap().clone());
+            s.entities.insert(step, json!({"step/content":question}).as_object().unwrap().clone());
+            let mut record = s.entities[&71].clone();
+            record.insert("question/id".into(),json!(format!("fixed-{topic}")));
+            s.entities.insert(question,record);
+            let mut questions = vec![];
+            if available {
+                for i in 0..5 {
+                    let q = 6000 + topic * 10 + i;
+                    let mut record = s.entities[&71].clone();
+                    record.insert("question/id".into(),json!(format!("practice-{q}")));
+                    s.entities.insert(q,record);
+                    questions.push(q);
+                }
+            }
+            s.entities.insert(kp,json!({"knowledge-point/id":format!("skill-{kp}"),
+                "knowledge-point/questions":questions}).as_object().unwrap().clone());
+        }
+        s.entities.get_mut(&90028).unwrap().insert("topic/next".into(),json!([5,7,109,117]));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(),json!([106]));
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([116]));
+        let before = s.entities.clone();
+        let at = Utc::now();
+        let expected = BTreeSet::from([2106,2108,2116]);
+        let view = home(&s,1).unwrap();
+        let ids = |view: &Json| view["activities"].as_array().unwrap().iter()
+            .map(|card|card["activityId"].as_u64().unwrap()).collect::<BTreeSet<_>>();
+        assert_eq!(ids(&view),expected);
+        assert_eq!(ids(&developer_preview::home(&s,1).unwrap()),expected);
+        let (forms,candidates)=queue_preparation(&s,1,at).unwrap();
+        assert_eq!(candidates.iter().map(|p|p.activity).collect::<BTreeSet<_>>(),expected);
+        assert_eq!(ids(&home_with_candidates(&s,1,Some(candidates)).unwrap()),expected);
+        for activity in expected {
+            assert!(forms.iter().any(|form|form.get("learner-task/activity")==Some(&json!(activity))));
+            check_activity_start(&s,1,activity,None,at).unwrap();
+            let (starts,_)=mutate(&s,1,"start",&json!({"activityId":activity}),at).unwrap();
+            assert!(starts.iter().any(|form|form.get("learner-task/activity")==Some(&json!(activity))
+                && form.get("learner-task/status")==Some(&kw("learner-task.status/started"))));
+        }
+        for unavailable in [2107,2117,2109] {
+            assert!(check_activity_start(&s,1,unavailable,None,at).is_err());
+            assert!(!forms.iter().any(|form|form.get("learner-task/activity")==Some(&json!(unavailable))));
+        }
+        assert_eq!(s.entities,before,"read and speculative start checks never commit learner changes");
+        // Explicit Study Now remains able to choose D; switching to course mode
+        // still offers the independent course lesson, not the scoped lessons.
+        check_activity_start(&s,1,2109,Some(109),at).unwrap();
+        s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(),json!(false));
+        assert_eq!(ids(&home(&s,1).unwrap()),BTreeSet::from([50]));
+        assert!(check_activity_start(&s,1,2108,None,at).is_err());
+    }
+
+    #[test]
     fn study_display_materialization_start_and_preview_share_queue_selection() {
         let mut s = fixture();
         let at = Utc::now();
@@ -4157,6 +4239,7 @@ mod study_queue_tests {
     fn engine_unlocking_and_manual_selection_prepare_independently_without_duplicates() {
         let mut s = fixture();
         let at = Utc::now();
+        let selected_priority = s.entities[&81]["learner-task/priority"].clone();
         assert!(queue_forms(&s, 1, at).unwrap().is_empty());
         // An engine-eligible queued lesson can unlock through the engine itself.
         s.entities
@@ -4183,13 +4266,15 @@ mod study_queue_tests {
                     "learner-task/status",
                     "learner-task.status/unlocked"
                 )
-                .unwrap()
+                .unwrap(),
+                add(json!(81), "learner-task/priority", json!(1.0)),
             ]
         );
         s.entities.get_mut(&81).unwrap().insert(
             "learner-task/status".into(),
             kw("learner-task.status/unlocked"),
         );
+        s.entities.get_mut(&81).unwrap().insert("learner-task/priority".into(), json!(1.0));
         assert!(queue_forms(&s, 1, at).unwrap().is_empty());
         // Explicit selection alone must not maintain a false engine unlock.
         s.entities
@@ -4198,7 +4283,8 @@ mod study_queue_tests {
             .insert("progress/repetitions".into(), json!(0.0));
         assert_eq!(
             queue_forms(&s, 1, at).unwrap(),
-            vec![cas(&s, 81, "learner-task/status", "learner-task.status/locked").unwrap()]
+            vec![cas(&s, 81, "learner-task/status", "learner-task.status/locked").unwrap(),
+                add(json!(81), "learner-task/priority", selected_priority)]
         );
     }
 }

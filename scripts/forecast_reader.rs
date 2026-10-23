@@ -7,7 +7,7 @@ const ATTRIBUTES: &[&str] = &[
     "knowledge-point/id", "knowledge-point/key-prerequisites", "course/id", "course/code", "course/title",
     "course/units", "unit/modules", "module/topics", "learner/id",
     "learner/targets", "learner/queue", "learner/assignments", "learner/activity",
-    "learner/knowledge-profile", "learner/daily-xp-goal", "activity/id", "activity/type",
+    "learner/knowledge-profile", "learner/daily-xp-goal", "learner/self-directed", "activity/id", "activity/type",
     "activity/scope", "activity/course", "activity/due", "activity/steps",
     "activity/expected-seconds", "step/content", "multistep/steps",
     "assigned-problem/content", "assigned-problem/topic-coverage", "progress/topic",

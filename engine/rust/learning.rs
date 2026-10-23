@@ -1232,7 +1232,11 @@ fn known_topic_ancestry(
 /// Read-only preparation coverage, shared with workload estimates. Retention
 /// due dates do not turn already acquired lessons back into first-learning work.
 pub fn known_preparation_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
-    known_topic_ancestry(s, learner, &topic_prerequisites(s)?)
+    if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
+        learned_topics(s, learner)
+    } else {
+        known_topic_ancestry(s, learner, &topic_prerequisites(s)?)
+    }
 }
 
 fn target_support(
@@ -1516,14 +1520,11 @@ fn plan_candidates_in_scope(
     selection: StudyScope,
 ) -> Result<Vec<PlannedActivity>> {
     let mut scope = BTreeSet::new();
-    if selection.explicit() {
-        let topics = if let StudyScope::Topic(topic) = selection { vec![topic] } else { s.refs(learner, "learner/queue")? };
-        for topic in topics {
-            if !s.entity(topic)?.contains_key("topic/id") {
-                return Err("learner/queue must reference topics".into());
-            }
-            scope.insert(topic);
+    if let StudyScope::Topic(topic) = selection {
+        if !s.entity(topic)?.contains_key("topic/id") {
+            return Err("Study selection must reference a topic".into());
         }
+        scope.insert(topic);
     } else if selection != StudyScope::Queue {
         for unit in s.refs(course, "course/units")? {
             for module in s.refs(unit, "unit/modules")? {
@@ -3341,6 +3342,7 @@ pub(crate) mod tests {
         put(&mut s.entities,602,json!({"learner-task/activity":10083,"learner-task/status":"learner-task.status/completed"}));
         s.entities.get_mut(&1).unwrap().insert("learner/activity".into(),json!([602]));
         assert!(!learned_topics(&s,1).unwrap().contains(&81));
+        assert!(!known_preparation_topics(&s,1).unwrap().contains(&81));
         assert_eq!(study_candidates(&s,1,5,planning_time()).unwrap().iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82]));
     }
 

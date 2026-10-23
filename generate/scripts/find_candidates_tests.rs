@@ -145,6 +145,48 @@ fn eligibility_includes_selected_studied_and_actual_pending_work() -> Result<()>
 }
 
 #[test]
+fn self_directed_generation_uses_bounded_graph_scope_and_preserves_explicit_work() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db,"learner/id","test")?;
+    let target = identity(&db,"topic/title","Target")?;
+    let target_kp = identity(&db,"knowledge-point/title","KP Target")?;
+    let mut forms = vec![format!("[:db/add {learner} :learner/self-directed true]")];
+    for n in 0..29 {
+        let next = if n == 28 {"outside".to_owned()} else {format!("foundation-{}",n+1)};
+        forms.push(format!(r#"{{:db/id "foundation-{n}" :topic/id #uuid "10000000-0000-4000-8000-{n:012}" :topic/next ["{next}"]}}"#));
+    }
+    forms.push(format!(r#"
+        {{:db/id "outside" :topic/id #uuid "10000000-0000-4000-8001-000000000001" :topic/title "Outside preparation" :topic/next ["entry"]}}
+        {{:db/id "entry" :topic/id #uuid "10000000-0000-4000-8001-000000000002" :topic/title "Entry lesson" :topic/next ["middle"] :topic/knowledge-points ["entry-kp"]}}
+        {{:db/id "entry-kp" :knowledge-point/id #uuid "10000000-0000-4000-8002-000000000002" :knowledge-point/title "Empty entry bank"}}
+        {{:db/id "middle" :topic/id #uuid "10000000-0000-4000-8001-000000000003" :topic/title "Known intermediate" :topic/next [{target}]}}
+        {{:db/id "middle-progress" :progress/topic "middle" :progress/learned true}}
+        [:db/add {learner} :learner/knowledge-profile "middle-progress"]
+        [:db/add {target_kp} :knowledge-point/key-prerequisites "outside"]
+    "#));
+    let db=db.with_edn(&format!("[{}]",forms.join("\n")),0,
+        EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
+    let now=at("2026-10-11T00:00:00Z");
+    let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"lesson",false)?;
+    find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
+    assert!(titles(&result).contains("Entry lesson"),"learned intermediate does not close scope traversal");
+    assert!(!titles(&result).contains("Outside preparation"),"depth-three and KP-only preparation cannot widen scope");
+    let row = |title:&str| result.as_array().unwrap().iter().find(|r|r["topic/title"]==title).unwrap();
+    assert!(row("Entry lesson")["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson"));
+    for title in ["Known intermediate","Unlocked","Queue"] {
+        assert!(row(title)["activity_demands"].as_array().unwrap().iter().all(|d|d["activity_type"]!="lesson"),
+            "{title} must not establish ordinary lesson demand");
+    }
+    let outside=identity(&db,"topic/title","Outside preparation")?;
+    let mut manual=candidates(&db,learner,now,None,&BTreeSet::from([outside]),"lesson",false)?;
+    find_candidates_ranking::annotate(&db,learner,now,&mut manual)?;
+    let row=manual.as_array().unwrap().iter().find(|r|r["topic/title"]=="Outside preparation").unwrap();
+    assert!(row["activity_demands"].as_array().unwrap().iter().any(|d|d["activity_type"]=="lesson" && d["relevance_tier"]==0),
+        "explicit generation requests retain their independent authority");
+    Ok(())
+}
+
+#[test]
 fn cursor_keeps_full_population_and_scheduler_selection_establishes_demand() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
@@ -419,8 +461,13 @@ fn ranking_propagates_assignment_deadline_to_prerequisites_without_bank_filterin
     let learner = identity(&db, "learner/id", "test")?;
     let queued = identity(&db, "topic/title", "Queue")?;
     let target = identity(&db, "topic/title", "Target")?;
+    let foundations = (0..29).map(|n| {
+        let next = if n == 28 {queued.to_string()} else {format!("\"deadline-foundation-{}\"",n+1)};
+        format!(r#"{{:db/id "deadline-foundation-{n}" :topic/id #uuid "20000000-0000-4000-8000-{n:012}" :topic/next [{next}]}}"#)
+    }).collect::<Vec<_>>().join("\n");
     let text = format!(
         r#"[
+      {foundations}
       [:db/add {learner} :learner/self-directed true]
       [:db/add {queued} :topic/next {target}]
       {{:db/id "school" :activity/type :activity.type/assignment
