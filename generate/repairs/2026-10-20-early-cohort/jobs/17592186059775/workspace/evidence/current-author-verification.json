@@ -1,47 +1,59 @@
 {
-  "attempt": 346,
-  "commands": [
+  "author": 349,
+  "runtime_changed": false,
+  "checks": [
     {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "evidence": "evidence/current-handoff-regression.json"
+    },
+    {
+      "id": "legacy_packaging_or_sampling",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
-        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_evidence_contract.py"
+        "checks/check_all.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/current-check_all.log"
+    },
+    {
+      "id": "9e827407d5429a1f8827",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/current-check_batch_selection.log"
+    },
+    {
+      "id": "9b8cb52352b8ca3e790e",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "seconds": 2.3,
-      "log": "evidence/author346-check_evidence_contract.log"
+      "log": "evidence/current-check_evidence_contract.log"
     },
     {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_batch_selection.py"
-      ],
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
       "exit_code": 0,
-      "seconds": 12.45,
-      "log": "evidence/author346-check_batch_selection.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_cli_contract.py"
-      ],
-      "exit_code": 0,
-      "seconds": 10.94,
-      "log": "evidence/author346-check_cli_contract.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/workspace/checks/check_render_binding.py"
-      ],
-      "exit_code": 0,
-      "seconds": 0.41,
-      "log": "evidence/author346-check_render_binding.log"
+      "evidence": "evidence/current-render-binding.json"
     }
   ],
-  "runtime_changes": false,
-  "external_writes": false
+  "rendering": {
+    "reused_unchanged_output": true,
+    "visually_inspected": "evidence/author8-render/question-001.png",
+    "observation": "Readable augmented matrices, five radio choices, keyed answer and complete elimination steps."
+  },
+  "conclusion": "Generator regressions pass; the registered evidence check fails at the installed runner handoff. The corrected evidence bundle validates, but the runner rejects unchanged runtime before regressions or sampling.",
+  "external_changes_performed": false,
+  "remaining_action": {
+    "target": "scripts/generator_pipeline.py",
+    "staged_patch": "runner-fix/evidence-only-rejection.patch",
+    "authorized_in_this_session": false,
+    "reason": "User limits work to this workspace; retained evidence-only finding requires preserving runtime."
+  }
 }
