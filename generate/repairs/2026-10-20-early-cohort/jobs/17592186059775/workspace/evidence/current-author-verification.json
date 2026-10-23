@@ -1,23 +1,15 @@
 {
-  "attempt": 311,
+  "attempt": 317,
   "checks": [
     {
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
-        "checks/check_cli_contract.py"
+        "checks/check_current_handoff.py"
       ],
-      "exit_code": 0,
-      "log": "evidence/current-check_cli_contract.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_batch_selection.py"
-      ],
-      "exit_code": 0,
-      "log": "evidence/current-check_batch_selection.log"
+      "exit_code": 1,
+      "report": "evidence/current-handoff-regression.json",
+      "phase": "exact latest failure reproduced first"
     },
     {
       "command": [
@@ -26,7 +18,28 @@
         "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "log": "evidence/current-check_evidence_contract.log"
+      "log": "evidence/current-check_evidence_contract.log",
+      "seconds": 2.3
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/current-check_batch_selection.log",
+      "seconds": 12.68
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_cli_contract.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/current-check_cli_contract.log",
+      "seconds": 10.78
     },
     {
       "command": [
@@ -35,7 +48,8 @@
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-check_render_binding.log"
+      "log": "evidence/current-check_render_binding.log",
+      "seconds": 0.42
     }
   ],
   "runtime_hashes_unchanged": {
@@ -46,5 +60,16 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "limitation": "Installed runner unchanged-candidate gate still rejects before sampling; staged external patch not installed."
+  "limitation": "Installed runner rejects unchanged runtime before retained regressions or sampling. Retained evidence-only review explicitly preserves runtime. Required runner correction is outside authorized workspace; staged patch remains uninstalled.",
+  "scope": "Targeted retained findings and small CLI/source/render binding verification; broader unchanged evidence reused. No database, publication, service, runner, engine or runtime changes.",
+  "visual_inspection": {
+    "screenshot": "evidence/author8-render/question-001.png",
+    "result": "Reinspected: readable augmented matrices, five radio controls and full row-operation solution; no clipping. Retained render input is freshly bound to current delivered records."
+  },
+  "history_summary": {
+    "retained_findings": 2,
+    "events": 317,
+    "author_reported_limitation_events": 306,
+    "new_generator_defects_demonstrated": 0
+  }
 }
