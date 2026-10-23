@@ -1,0 +1,38 @@
+[
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/review-0-policy-2-af91d2496891bd37/canonical_regression.py",
+    "exit_code": 1,
+    "evidence": "reproduction.log",
+    "stage": "before repair; reproduced canonical omission"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python check_repair.py",
+    "exit_code": 0,
+    "evidence": "evidence/summary.json"
+  },
+  {
+    "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-results.json",
+    "exit_code": 0,
+    "evidence": "evidence/grader-results.json"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/quartic-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/source/inventory.json --difficulty moderate --output evidence/delivery-quartic --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+    "exit_code": 0,
+    "evidence": "evidence/delivery-quartic/delivery.json"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/easy-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096841/source/inventory.json --difficulty easy --output evidence/delivery-easy --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+    "exit_code": 0,
+    "evidence": "evidence/delivery-easy/delivery.json"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/render-records.json --output evidence/render --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math",
+    "exit_code": 0,
+    "evidence": "evidence/render/rendering.json"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finish_validation.py",
+    "exit_code": 0,
+    "evidence": "evidence/packaging-results.json"
+  }
+]

@@ -1,0 +1,11 @@
+# Completed targeted repair
+
+Finding 1f66e48744758180770f reproduced with the exact prior canonical_regression.py command; assertion traceback retained in reproduction.log. Read feedback and complete repair history before editing. Instructional account written before runtime changes.
+
+Implemented optional quartic second_power in {1,3}; omission retains linear explicit replay. Normal quartic sampling selects degree before coefficient design. Prompt, derivative, both bank profiles and solution share that polynomial. Existing easy behavior and prior source corrections retained.
+
+Validation completed: check_repair.py passed 64 mathematical records, 12 complete practice-source bank replays (with documented erroneous blank alternative excluded), canonical cubic replay, controlled degree change, both signed boundaries/profiles, and 36 normal quartic records. Declared executable regression in repair-regressions.json. Native grader: 46 accepted, 94 rejected, no unexpected outcomes. Delivery accepted 36/36 moderate quartic and 5/5 requested easy records. Degree, rank and position variation survived filtering; finish_validation.py shortcut probes passed separately within both degree groups. All four actual-UI renders passed and screenshots were visually inspected. Relocation and exact installed dependencies passed. Eight non-source inventory mathematical checks passed; no affected individual inventory record demonstrated. Captured retirement/key eligibility and live-selection limits are documented.
+
+Exact commands/results: evidence/commands.json. No database content or published images changed. Evidence was kept inside the supplied workspace because the external author-1 directory is not writable scope. Next step is the runner's fresh independent review; no author validation remains pending.
+
+Final source audit: an initial exact-material assertion detected one prerequisite e-139 TeX-parenthesis difference. Inspection confirmed no mathematical difference; normalizing this one delimiter pair makes the material identical. Relevant KP, practice and lesson content match exactly. Recorded in instructional-account.md and evidence/final-report.json; runtime source remains preserved.
