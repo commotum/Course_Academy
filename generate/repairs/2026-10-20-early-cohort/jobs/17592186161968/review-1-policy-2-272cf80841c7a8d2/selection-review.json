@@ -1,0 +1,59 @@
+{
+  "basis": 5581,
+  "rules": "question_selection.rs select: sorted unique IDs; positive easy band yields uniform hash draw within easy; zero easy weight excludes it, no policy selects smallest ID. learning.rs validate_practice_question rejects retired, incomplete, multistep; unavailable_questions excludes seen/reserved/fixed future lesson items.",
+  "input": "delivery-batch/accepted.json",
+  "scenarios": [
+    {
+      "excluded_indices": [],
+      "selection_counts": {
+        "1": 30,
+        "0": 29,
+        "3": 28,
+        "4": 26,
+        "2": 37
+      },
+      "remaining_correct_positions": [
+        1,
+        2,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "excluded_indices": [
+        0
+      ],
+      "selection_counts": {
+        "2": 43,
+        "1": 35,
+        "3": 38,
+        "4": 34
+      },
+      "remaining_correct_positions": [
+        2,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "excluded_indices": [
+        0,
+        1
+      ],
+      "selection_counts": {
+        "2": 51,
+        "4": 46,
+        "3": 53
+      },
+      "remaining_correct_positions": [
+        4,
+        4,
+        3
+      ]
+    }
+  ],
+  "eligibility": "All five single-radio complete, unretired easy records remain usable before learner exclusions.",
+  "limits": "Synthetic increasing IDs and histories; future entity IDs, actual learner history, live inventory changes are not observable. This tests the selection rule, not a future draw."
+}

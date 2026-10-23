@@ -17,6 +17,8 @@ ROOT=Path(__file__).with_suffix('')
 SRC=json.loads((ROOT/'source.json').read_text())
 R=SRC['record']; TITLE=R[':knowledge-point/title']; VERSION='type-I-area-1'
 Q={q[':question/math-academy-id']:q for q in R[':knowledge-point/questions']}
+CURRENT=json.loads((ROOT/'current-source.json').read_text())
+CURRENT_Q={q[':question/math-academy-id']:q for q in CURRENT['material']['kp'][':knowledge-point/questions']}
 x,y,u,v=sp.symbols('x y u v', real=True)
 FAMILIES={'simple':('q-38374','easy'), 'mixed':(None,'moderate'),'quartic':('q-82874','hard'),'hyper_y':('q-160885','hard'),'down':('q-82878','hard'),'up':('q-83943','hard'),'vertical':('q-83947','hard'),'hyper_x':('q-160710','hard')}
 ANCHORS={'q-38374':{'a':1,'h':1,'k':0},'q-82874':{'a':1,'h':1,'k':0},'q-160885':{'a':2,'h':4,'k':1},'q-82878':{'a':1,'h':2,'k':1},'q-83943':{'a':2,'h':1,'k':2},'q-83947':{'a':3,'h':4,'k':-3},'q-160710':{'a':1,'h':2,'k':1}}
@@ -61,8 +63,8 @@ def swap_math(text,scale):
    t=re.sub(r'(?<![A-Za-z\\])([xy])(?![A-Za-z])',lambda n:rf'\frac{{{n[1]}}}{{{s}}}',t)
   return t
  return re.sub(r'\$\$[\s\S]*?\$\$|\$[^$]*\$',sub,text)
-def raw_generate(level,seed,source,parameters):
- q=Q[source]; p=dict(parameters or {'scale':1})
+def raw_generate(level,seed,source,parameters,historical=False):
+ q=(Q if historical else CURRENT_Q)[source]; p=dict(parameters or {'scale':1})
  if set(p)!={'scale'} or not isinstance(p['scale'],int) or not 1<=p['scale']<=4:raise ValueError('raw scale: integer 1..4 only')
  s=sp.Integer(p['scale']); out={k:copy.deepcopy(val) for k,val in q.items() if k not in [':db/id',':question/math-academy-id',':question/id',':question/answer-fields']}
  if ':question/difficulty' in out:out[':question/difficulty']=out[':question/difficulty'][':db/ident']
@@ -72,9 +74,10 @@ def raw_generate(level,seed,source,parameters):
   # Source solution is a full math/prose template. A similarity scales the
   # forward determinant by s² and every area-chain RHS by s². All transformations
   # are applied to complete blocks, never scattered numeric literals.
-  family=next(f for f,z in FAMILIES.items() if z[0]==source)
-  m=model(family,ANCHORS[source]); det=m['det']; inv=m['J']
   if s!=1:
+   if source not in ANCHORS:raise ValueError('current source supports exact scale=1 replay only')
+   family=next(f for f,z in FAMILIES.items() if z[0]==source)
+   m=model(family,ANCHORS[source]); det=m['det']; inv=m['J']
    start=sol.index('**Step 2**'); end=sol.index('**Step 3**')
    sec=sol[start:end]
    matrix=[sp.diff(m[z],t)/s for z in ['U','V'] for t in [x,y]]
@@ -107,7 +110,7 @@ def raw_generate(level,seed,source,parameters):
   answer_types=[answer[':answer/type'][':db/ident']for answer in sourcefield[':answer-field/choices']]
   specs.append({'bank':bank,'spelling':spell,'correct':correct,'attributes':attributes,'answer_attributes':answer_attributes,'answer_types':answer_types})
  first=specs[0]
- return record(out,first['bank'],first['correct'],first['spelling'],level,seed,source,p,'raw:'+source,False,{'source_omissions':sorted(set([':question/difficulty',':question/worked-solution'])-set(q)), 'source_field_omissions':[sorted(set([':answer-field/correct'])-set(field))for field in q[':question/answer-fields']]},field_specs=specs)
+ return record(out,first['bank'],first['correct'],first['spelling'],level,seed,source,p,('historical:' if historical else 'raw:')+source,False,{'source':{key:(SRC if historical else CURRENT)[key] for key in ['database','basis','lineage']},'replay_capture':'historical' if historical else 'current','source_omissions':sorted(set([':question/difficulty',':question/worked-solution'])-set(q)), 'source_field_omissions':[sorted(set([':answer-field/correct'])-set(field))for field in q[':question/answer-fields']]},field_specs=specs)
 def model(f,p):
  a,h,k=map(sp.Integer,(p['a'],p['h'],p['k']))
  if f in ['simple','down','up']:
@@ -147,18 +150,22 @@ def sample(f,rng):
   k=rng.randint(1,3);return {'a':a,'h':rng.randint(k*k+1,12),'k':k}
  if f=='down':return {'a':a,'h':rng.choice([2,3,5,6,7,8,10,12]),'k':rng.randint(1,4)}
  return {'a':a,'h':rng.choice([1,2,3,4,5,6,7,8,9,10,12,16]),'k':rng.choice([-5,-4,-3,-2,-1,1,2,3,4,5])}
-def recipes(f,d,p,profile):
- A,J=d['A'],abs(d['J']);P=d['prim'];lo,hi=d['lo'],d['hi'];width=d['width']
- # Whole method-derived banks. All five operations are selected before p.
+def candidate_instances(f,rng):
+ """Choose a bank without assigning the correct-answer role to any member."""
+ candidates=[]
+ for _ in range(1000):
+  p=sample(f,rng);d=model(f,p)
+  if all(not eq(d['A'],other['A']) for _,other in candidates):
+   candidates.append((p,d))
+   if len(candidates)==5:return candidates
+ raise ValueError('could not construct five distinct counterfactual areas')
+def recipes(f,d,p,profile,candidates):
  if profile!='method':raise ValueError('normal profile is method')
- if f.startswith('hyper'):
-  h,k=sp.Integer(p['h']),sp.Integer(p['k']);L=h*sp.log(hi/lo);D=k*(hi-lo)
-  return [A,J*(L+D),-A,J*L,-J*D]
- if f=='quartic':
-  h=sp.Integer(p['h']);L=h**2/2;D=h**2/5
-  return [A,J*(L+D),-A,J*L,J*D]
- h=sp.Integer(p['h']);r=sp.sqrt(h);L=2*h*r;D=2*r**3/3
- return [A,J*(L+D),-A,J*L,J*D]
+ bank=[other['A'] for _,other in candidates]
+ # Explicit parameter calls retain the same bank whenever their area is a
+ # member, allowing all five target assignments with the same choice values.
+ if not any(eq(d['A'],value) for value in bank):bank[-1]=d['A']
+ return bank
 RENDERER_VERSION='type-I-region-pixel-calibration-5'
 _PLOT_LOCK=threading.RLock()
 def plot(f,p,d,output_dir=None):
@@ -166,7 +173,9 @@ def plot(f,p,d,output_dir=None):
  # within one process; independent process calls still use unique atomic files.
  with _PLOT_LOCK:return _plot_impl(f,p,d,output_dir)
 def _plot_impl(f,p,d,output_dir=None):
- folder=Path(output_dir) if output_dir else ROOT/'plots';folder.mkdir(parents=True,exist_ok=True)
+ output_dir=output_dir or os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR')
+ if not output_dir:raise ValueError('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR is required for generated assets')
+ folder=Path(output_dir)/'plots';folder.mkdir(parents=True,exist_ok=True)
  key=digest({'renderer_version':RENDERER_VERSION,'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'f':f,'p':p,'geometry':str((d['lo'],d['hi'],d['low'],d['high']))})[:24]
  dst=folder/(key+'.png');side=folder/(key+'.json')
  if dst.exists() and side.exists():return str(dst.resolve())
@@ -361,22 +370,24 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if level not in ['easy','moderate','hard']:raise ValueError('level')
  if field_type not in [None,'radio',':answer-field.type/radio']:raise ValueError('radio only')
  rng=random.Random(seed)
- if profile and profile.startswith('raw:'):
-  sid=profile[4:]
-  if sid not in Q:raise ValueError('source id')
-  return raw_generate(level,seed,sid,parameters)
+ if profile and profile.startswith(('raw:','historical:')):
+  prefix,sid=profile.split(':',1); historical=prefix=='historical'
+  if sid not in (Q if historical else CURRENT_Q):raise ValueError('source id')
+  return raw_generate(level,seed,sid,parameters,historical)
  allowed=[f for f,z in FAMILIES.items() if z[1]==level]
  f=template or rng.choice(allowed)
  if f not in allowed:raise ValueError('family difficulty mismatch')
- selected=profile or 'method' # Complete bank is fixed before parameter sampling.
+ selected=profile or 'method'
  if selected!='method':raise ValueError('profile')
- for _ in range(1000):
-  p=dict(parameters) if parameters is not None else sample(f,rng);guards(f,p);d=model(f,p);bank=recipes(f,d,p,selected)
+ candidates=candidate_instances(f,rng)
+ target=rng.randrange(len(candidates))
+ for _ in range(1):
+  p=dict(parameters) if parameters is not None else dict(candidates[target][0]);guards(f,p);d=model(f,p);bank=recipes(f,d,p,selected,candidates)
   if all(not eq(bank[i],bank[j]) for i in range(5) for j in range(i)):
    asset=plot(f,p,d);sol=solution(f,p,d,asset);pr=prompt(f,p,d)
    for z in [pr,sol]+list(map(tex,bank)):format_ok(z)
    q={':question/problem':pr,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level}
-   return record(q,bank,d['A'],list(map(tex,bank)),level,seed,f,p,selected,True,{'source_question':FAMILIES[f][0],'plot':asset,'domain':{z:str(d[z]) for z in ['lo','hi','low','high']}})
+   return record(q,bank,d['A'],list(map(tex,bank)),level,seed,f,p,selected,True,{'bank_construction':'compatible-instance-areas','bank_parameters':[cp for cp,_ in candidates],'source_question':FAMILIES[f][0],'plot':asset,'domain':{z:str(d[z]) for z in ['lo','hi','low','high']}})
   if parameters is not None:raise ValueError('complete bank collision')
  raise ValueError('no eligible instance')
 # Easy: authored unit-determinant, zero-shift square-gap family.
@@ -399,7 +410,7 @@ if __name__=='__main__':
  results=[]
  for level in (['easy','moderate','hard']if args.difficulty=='all'else[args.difficulty]):
   capacities={'simple':48,'mixed':42,'quartic':24,'hyper_y':176,'hyper_x':176,'down':256,'up':960,'vertical':960}
-  limit=1 if args.profile and args.profile.startswith('raw:') else capacities[args.template] if args.template else sum(capacities[f]for f,(_,band)in FAMILIES.items()if band==level)
+  limit=1 if args.profile and args.profile.startswith(('raw:','historical:')) else capacities[args.template] if args.template else sum(capacities[f]for f,(_,band)in FAMILIES.items()if band==level)
   if args.count>limit:a.error(f'finite catalog limit for {level}: {limit}; requested {args.count}')
   seen=set();selected=[]
   for offset in range(500+args.count*200):

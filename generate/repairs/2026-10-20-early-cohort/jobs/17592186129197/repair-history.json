@@ -1,0 +1,342 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "bfb40e768b17052babbc",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Selecting the unique positive choice with a negative counterpart reveals the correct area. Selecting the median also succeeds throughout the tested output. All three batch survivors remain vulnerable.",
+        "source_refs": [
+          "9de92581-00d5-5343-90be-3b5527bfab49",
+          "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+          "generate/principles.md: surface variation with a fixed decision structure"
+        ],
+        "reproduction": "Run the job Python on regression-shortcut.py; current exit is 1. easy/simple, seed 8191, parameters {a:1,h:1,k:0} produces choices 2, 2/3, -4/3, 4/3, 8/3. Both shortcuts select 4/3 without reading the prompt.",
+        "requested_change": "Revise the family-wide distractor construction to break signed-pair and fixed-rank cues. Retain strict regressions per template and replace the vulnerable batch."
+      },
+      "source_hash": "63d49013da3b54a050bc32e84513f1e0dfe605ccaeca587536af6b5f267e0c5d",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129197/review-0-policy-2-ab126a3860059c06",
+      "attempt": 0
+    },
+    {
+      "id": "2185805fc9fcc95ab6b5",
+      "finding": {
+        "kind": "inventory",
+        "description": "Eleven eligible stored generated questions reproduce the same shortcuts: five easy, five moderate, and one hard. Original source questions and retired history are excluded.",
+        "source_refs": [
+          "inventory.json: basis 5582",
+          "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b"
+        ],
+        "reproduction": "Run audit.py and the native grader using grader-input.json. affected-inventory.json lists exact IDs and parameters; generated-records.json contains complete reproduced records. Example: UUID 29d96b47-2528-56e8-a582-384c42fdef27, entity 17592186558868, seed 2957136466, simple {a:4,h:36,k:0}; the shortcut selects the accepted area 288.",
+        "requested_change": "The runner should repair or retire the eleven listed eligible generated records after the package fix, refresh inventory, and request independent verification."
+      },
+      "source_hash": "63d49013da3b54a050bc32e84513f1e0dfe605ccaeca587536af6b5f267e0c5d",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129197/review-0-policy-2-ab126a3860059c06",
+      "attempt": 0
+    },
+    {
+      "id": "1ce536ab6304867dd083",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The historical raw replay does not match the current source contract: q-82874 returns two fields, including an unkeyed obsolete field, instead of one keyed field. Five additional current profiles are unsupported.",
+        "source_refs": [
+          "5371e22a-fae1-5a1c-87b6-2b32ed156fc8",
+          "57f9fe20-2df7-5d01-bf45-354e1e66779e",
+          "cfee0347-870f-5cb0-bd74-a4488b93243b",
+          "5e32ec93-9a95-5b63-b1e8-8733a4d5c7af",
+          "1b4091f0-4a95-54e5-98db-b30b1df1c475",
+          "b4c23fa9-f154-5b24-977d-0b5df3576acf"
+        ],
+        "reproduction": "audit.py calls generate('hard',97,profile='raw:q-82874',parameters={'scale':1}); source-replay.json records expected/actual field counts [1,2]. The five other profiles raise ValueError('source id').",
+        "requested_change": "Provide current-source replay with exact field ownership, keys, and complete banks; preserve historical replay separately and explicitly document unsupported families."
+      },
+      "source_hash": "63d49013da3b54a050bc32e84513f1e0dfe605ccaeca587536af6b5f267e0c5d",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129197/review-0-policy-2-ab126a3860059c06",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "317efcdd5681c145a44a8cfd5ff1f71f09b931642f4c17fb43ba271da3150668",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Answer-bank shortcuts solve all 39 independent samples, all five batch questions, and all three delivery survivors. Eleven eligible stored generated questions share the defect. Source replay is also stale. Package and database unchanged; full report saved in result.json.",
+        "source_analysis": {
+          "skill": "Find area using a supplied affine transformation and a Type I integral.",
+          "reasoning_steps": [
+            "Transform boundaries and determine intersections and integration bounds.",
+            "Compute the absolute reciprocal Jacobian.",
+            "Integrate the vertical width and select the exact area."
+          ],
+          "invariants": [
+            "Invertible affine transformation and finite bounded region.",
+            "Source-supported integration workload and five-choice radio response."
+          ],
+          "permitted_variations": [
+            "Transformation coefficients, determinant, translations, and domain dimensions.",
+            "Upper/lower boundary assignments within supported families.",
+            "Distractor relationships, correct-choice rank, and position."
+          ],
+          "source_refs": [
+            "9de92581-00d5-5343-90be-3b5527bfab49: canonical four-step solution",
+            "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+            "5371e22a-fae1-5a1c-87b6-2b32ed156fc8"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-math.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json"
+            ],
+            "details": "Six current banks replay exactly; q-82874 has an obsolete extra field. Five additional supplied profiles are unsupported."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math.json",
+              "source-math.json"
+            ],
+            "details": "Independent integration verifies all 44 current sample/batch keys and distinct choices; source errors are documented separately."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "sampling-summary.json",
+              "shortcut-results.json",
+              "median-probe.json"
+            ],
+            "details": "All eight implemented families vary numerically but preserve answer-revealing distractor relationships."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "sampling-summary.json",
+              "samples.json"
+            ],
+            "details": "Tested normal output preserves the source methods, representations, and response contract."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json"
+            ],
+            "details": "Native grader: 55 valid selections accepted and 176 wrong selections rejected. All tested fields are radio."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-more/rendering.json",
+              "render-review.json",
+              "render-contact.png"
+            ],
+            "details": "Eleven actual-UI renders inspected across eight templates and controlled pairs; no reported math or image errors."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-tests.json",
+              "package-integrity.json",
+              "finite-limit.stderr"
+            ],
+            "details": "Relocation, deterministic replay, boundary rejection, finite-limit handling, and exact dependency versions verified. All 2,885 package files unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "counterfactual-results.json",
+              "post-delivery-shortcuts.json",
+              "selection.json",
+              "regression-result.json"
+            ],
+            "details": "Counterfactual dependencies work, but signed-pair and median shortcuts bypass the intended reasoning and survive delivery and eligible easy-pool selection."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Selecting the unique positive choice with a negative counterpart reveals the correct area. Selecting the median also succeeds throughout the tested output. All three batch survivors remain vulnerable.",
+            "source_refs": [
+              "9de92581-00d5-5343-90be-3b5527bfab49",
+              "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+              "generate/principles.md: surface variation with a fixed decision structure"
+            ],
+            "reproduction": "Run the job Python on regression-shortcut.py; current exit is 1. easy/simple, seed 8191, parameters {a:1,h:1,k:0} produces choices 2, 2/3, -4/3, 4/3, 8/3. Both shortcuts select 4/3 without reading the prompt.",
+            "requested_change": "Revise the family-wide distractor construction to break signed-pair and fixed-rank cues. Retain strict regressions per template and replace the vulnerable batch."
+          },
+          {
+            "kind": "inventory",
+            "description": "Eleven eligible stored generated questions reproduce the same shortcuts: five easy, five moderate, and one hard. Original source questions and retired history are excluded.",
+            "source_refs": [
+              "inventory.json: basis 5582",
+              "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b"
+            ],
+            "reproduction": "Run audit.py and the native grader using grader-input.json. affected-inventory.json lists exact IDs and parameters; generated-records.json contains complete reproduced records. Example: UUID 29d96b47-2528-56e8-a582-384c42fdef27, entity 17592186558868, seed 2957136466, simple {a:4,h:36,k:0}; the shortcut selects the accepted area 288.",
+            "requested_change": "The runner should repair or retire the eleven listed eligible generated records after the package fix, refresh inventory, and request independent verification."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "The historical raw replay does not match the current source contract: q-82874 returns two fields, including an unkeyed obsolete field, instead of one keyed field. Five additional current profiles are unsupported.",
+            "source_refs": [
+              "5371e22a-fae1-5a1c-87b6-2b32ed156fc8",
+              "57f9fe20-2df7-5d01-bf45-354e1e66779e",
+              "cfee0347-870f-5cb0-bd74-a4488b93243b",
+              "5e32ec93-9a95-5b63-b1e8-8733a4d5c7af",
+              "1b4091f0-4a95-54e5-98db-b30b1df1c475",
+              "b4c23fa9-f154-5b24-977d-0b5df3576acf"
+            ],
+            "reproduction": "audit.py calls generate('hard',97,profile='raw:q-82874',parameters={'scale':1}); source-replay.json records expected/actual field counts [1,2]. The five other profiles raise ValueError('source id').",
+            "requested_change": "Provide current-source replay with exact field ownership, keys, and complete banks; preserve historical replay separately and explicitly document unsupported families."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129197/review-0-policy-2-ab126a3860059c06"
+    },
+    {
+      "attempt": 0,
+      "package_hash": "317efcdd5681c145a44a8cfd5ff1f71f09b931642f4c17fb43ba271da3150668",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Answer-bank shortcuts solve all 39 independent samples, all five batch questions, and all three delivery survivors. Eleven eligible stored generated questions share the defect. Source replay is also stale. Package and database unchanged; full report saved in result.json.",
+        "source_analysis": {
+          "skill": "Find area using a supplied affine transformation and a Type I integral.",
+          "reasoning_steps": [
+            "Transform boundaries and determine intersections and integration bounds.",
+            "Compute the absolute reciprocal Jacobian.",
+            "Integrate the vertical width and select the exact area."
+          ],
+          "invariants": [
+            "Invertible affine transformation and finite bounded region.",
+            "Source-supported integration workload and five-choice radio response."
+          ],
+          "permitted_variations": [
+            "Transformation coefficients, determinant, translations, and domain dimensions.",
+            "Upper/lower boundary assignments within supported families.",
+            "Distractor relationships, correct-choice rank, and position."
+          ],
+          "source_refs": [
+            "9de92581-00d5-5343-90be-3b5527bfab49: canonical four-step solution",
+            "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+            "5371e22a-fae1-5a1c-87b6-2b32ed156fc8"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-math.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json"
+            ],
+            "details": "Six current banks replay exactly; q-82874 has an obsolete extra field. Five additional supplied profiles are unsupported."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math.json",
+              "source-math.json"
+            ],
+            "details": "Independent integration verifies all 44 current sample/batch keys and distinct choices; source errors are documented separately."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "sampling-summary.json",
+              "shortcut-results.json",
+              "median-probe.json"
+            ],
+            "details": "All eight implemented families vary numerically but preserve answer-revealing distractor relationships."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "sampling-summary.json",
+              "samples.json"
+            ],
+            "details": "Tested normal output preserves the source methods, representations, and response contract."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json"
+            ],
+            "details": "Native grader: 55 valid selections accepted and 176 wrong selections rejected. All tested fields are radio."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-more/rendering.json",
+              "render-review.json",
+              "render-contact.png"
+            ],
+            "details": "Eleven actual-UI renders inspected across eight templates and controlled pairs; no reported math or image errors."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-tests.json",
+              "package-integrity.json",
+              "finite-limit.stderr"
+            ],
+            "details": "Relocation, deterministic replay, boundary rejection, finite-limit handling, and exact dependency versions verified. All 2,885 package files unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "counterfactual-results.json",
+              "post-delivery-shortcuts.json",
+              "selection.json",
+              "regression-result.json"
+            ],
+            "details": "Counterfactual dependencies work, but signed-pair and median shortcuts bypass the intended reasoning and survive delivery and eligible easy-pool selection."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Selecting the unique positive choice with a negative counterpart reveals the correct area. Selecting the median also succeeds throughout the tested output. All three batch survivors remain vulnerable.",
+            "source_refs": [
+              "9de92581-00d5-5343-90be-3b5527bfab49",
+              "d5cbb250-8e64-5b66-b88a-3ef280b7ad9b",
+              "generate/principles.md: surface variation with a fixed decision structure"
+            ],
+            "reproduction": "Run the job Python on regression-shortcut.py; current exit is 1. easy/simple, seed 8191, parameters {a:1,h:1,k:0} produces choices 2, 2/3, -4/3, 4/3, 8/3. Both shortcuts select 4/3 without reading the prompt.",
+            "requested_change": "Revise the family-wide distractor construction to break signed-pair and fixed-rank cues. Retain strict regressions per template and replace the vulnerable batch."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "The historical raw replay does not match the current source contract: q-82874 returns two fields, including an unkeyed obsolete field, instead of one keyed field. Five additional current profiles are unsupported.",
+            "source_refs": [
+              "5371e22a-fae1-5a1c-87b6-2b32ed156fc8",
+              "57f9fe20-2df7-5d01-bf45-354e1e66779e",
+              "cfee0347-870f-5cb0-bd74-a4488b93243b",
+              "5e32ec93-9a95-5b63-b1e8-8733a4d5c7af",
+              "1b4091f0-4a95-54e5-98db-b30b1df1c475",
+              "b4c23fa9-f154-5b24-977d-0b5df3576acf"
+            ],
+            "reproduction": "audit.py calls generate('hard',97,profile='raw:q-82874',parameters={'scale':1}); source-replay.json records expected/actual field counts [1,2]. The five other profiles raise ValueError('source id').",
+            "requested_change": "Provide current-source replay with exact field ownership, keys, and complete banks; preserve historical replay separately and explicitly document unsupported families."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129197/review-0-policy-2-ab126a3860059c06"
+    }
+  ]
+}

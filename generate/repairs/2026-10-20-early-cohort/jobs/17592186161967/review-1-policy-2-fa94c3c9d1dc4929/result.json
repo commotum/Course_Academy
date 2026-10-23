@@ -1,0 +1,142 @@
+{
+  "verdict": "revise",
+  "summary": "The old generator shortcut is repaired, but every record in the exact five-question batch permits a new first-operation bypass. Regenerate the batch; the other seven checks pass. Package unchanged.",
+  "source_analysis": {
+    "skill": "Identify two elementary row additions that create zeros in one column of a 3x3 matrix using the specified unchanged pivot row.",
+    "reasoning_steps": [
+      "Identify the specified pivot row and the column cleared in B.",
+      "For each other row solve a_ic+k*a_pc=0; coefficients are small nonzero integers.",
+      "Apply the coefficient across the entire row and verify B.",
+      "Choose the unique matching pair from five radio choices."
+    ],
+    "invariants": [
+      "3x3 integer matrices; two additions using one unchanged nonzero pivot row; no row swaps, scaling, column operations, or full reduction.",
+      "Easy level and five-choice single-selection response in all ten assessed source questions.",
+      "Worked solution shows A, first intermediate matrix, B, and both operations."
+    ],
+    "permitted_variations": [
+      "Pivot row and zeroed column can each vary through all three positions.",
+      "Pivot sign/magnitude and both coefficient signs/magnitudes may vary independently within small exact integer arithmetic.",
+      "Non-target matrix entries and distractor order may vary; do not fix coefficient sign to pivot-row identity.",
+      "Equality or inequality of the two coefficients is incidental, not a required answer-bearing arrangement."
+    ],
+    "source_refs": [
+      "122850ae-d465-5748-ba36-b0dbdbbedca0",
+      "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+      "53a04721-1169-5bfc-a82b-bd17c3d28e6b",
+      "06935f3f-15fc-5327-b073-368a75317d06",
+      "be625aba-1e4a-556c-a78e-3cfc2c1b0666",
+      "5b61d5ca-7f09-5da1-b160-0e00fef59814",
+      "ee46ab50-1172-582c-9154-5604520f146c",
+      "fc4fe478-ecca-5d83-9a4b-47e34a0bc1c8",
+      "bc8df3f8-8c99-53c4-bedf-bdbc4a64bd8d",
+      "26e3c3e9-0f2f-55d8-b677-4d51648ddadf",
+      "399b7598-c793-5032-9f33-ac02c7b85fe1",
+      "tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0 (Introduction)",
+      "prerequisite f8417bbc-b748-519b-a997-fbb4aed755eb"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json",
+        "boundary-records.json"
+      ],
+      "details": "All ten complete source banks and keyed answers replay correctly; canonical matrices and operations match. Canonical source has no captured bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "helpers.py",
+        "math-results.json",
+        "grader-input.json"
+      ],
+      "details": "151 records independently checked with exact integer arithmetic, including every distractor and both solution stages."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-samples.json",
+        "shortcut-results.json",
+        "boundary-records.json",
+        "resampling.json",
+        "delivery-fresh/delivery.json"
+      ],
+      "details": "All ten profiles, four sign combinations and all nine pivot-column coordinates exercised. Sampling and numerical variety pass; the exact batch fails decision variation separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-review.json",
+        "packaging.json"
+      ],
+      "details": "Preserves the easy two-row-addition task, 3x3 integer matrices and five-choice radio response; unsupported levels rejected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "delivered-grader-report.json"
+      ],
+      "details": "Native grader: 199 accepted and 681 rejected across independent cases, plus five normalized-batch shortcut submissions accepted. Radio-only source has no free-entry equivalence contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "target-render/rendering.json",
+        "layout-render/rendering.json"
+      ],
+      "details": "Eight actual UI screenshots inspected, covering batch and counterfactuals. Mathematics and radio controls render; long solution chains are horizontally scrollable."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-before.json",
+        "relocated-output.json",
+        "retained-finding-results.json",
+        "author-old.log",
+        "author-current.log"
+      ],
+      "details": "Exact installed dependency versions, deterministic replay, explicit-parameter replay, relocation and rejection tests pass. Retained independent and author regression checks fail on old code and pass current code. Package files unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "reproduce_batch_shortcut.py",
+        "batch-reproduction.json",
+        "post-delivery-shortcuts.json",
+        "delivered-grader-report.json",
+        "selection.json",
+        "inventory-inspection.json",
+        "affected-inventory.json"
+      ],
+      "details": "Every surviving batch record reveals the first coefficient via opposite outlier sign. Controlled quartets refute a universal generator defect; regenerate the finite batch and retain a batch-level regression."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Batch-selection failure: all five runner-batch records allow the first operation to be recovered without inspecting its matrix row. Identify the unique magnitude-pattern outlier, use the common first magnitude with the opposite outlier first sign, and calculate only the second operation. The native grader accepts this strategy in 5/5 delivered records (unit-first subgroup 2/2; swapped-magnitude subgroup 3/3). Current generator controls admit counterexamples, so this is not a universal generator defect.",
+      "source_refs": [
+        "122850ae-d465-5748-ba36-b0dbdbbedca0",
+        "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+        "Introduction tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py` in evidence_root; expected exit 1. Minimal instance: profile q-42531, seed 1278010737, A=[[-1,4,7],[8,-5,-9],[10,-1,-9]], pivot=2, column=1, ks=[4,-5,0]. Bank pairs [(-1,5),(-4,-5),(4,5),(4,-5),(-4,5)]; outlier (-1,5) reveals +4 using the observed batch rule. Calculating only k2=-5 gives accepted (4,-5). Complete five-record proof: batch-reproduction.json; delivered native outcomes: delivered-grader-report.json.",
+      "requested_change": "Regenerate the candidate batch and change its acceptance/selection rule so the delivered pool does not make the first coefficient sign uniformly opposite the visible outlier sign. Retain this runnable batch regression and verify both cue-following and cue-breaking examples survive delivery. Preserve the repaired independent-sign generator construction, source families and full operation workload; no database or original-source edits are required."
+    }
+  ]
+}

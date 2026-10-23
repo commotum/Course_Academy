@@ -1,0 +1,1296 @@
+{
+  "learner_operation": "Infer two elementary column additions that create two zeros in one row of a 3x3 matrix, using a specified unchanged pivot column. Calculate each multiplier and check the whole column, rather than infer a key from answer-bank multiplicities.",
+  "fixed_features": [
+    {
+      "feature": "3x3 matrix, specified unchanged pivot column, two column additions",
+      "justification": "All ten questions and canonical e-8051 assess this operation and workload."
+    },
+    {
+      "feature": "Nonzero pivot and two nonzero integer multipliers",
+      "justification": "Two nontrivial exact-integer eliminations preserve the observed easy skill and avoid ambiguity/no-op distractors."
+    },
+    {
+      "feature": "Five radio choices, exactly one correct pair",
+      "justification": "Observed response contract in every source practice bank."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which pair in a recognizable bank is correct",
+      "eligible_variation": "All five entries can qualify when matching target-row evidence changes.",
+      "observed": "45 controlled records: each of nine fixed banks admits all five keys, before and after delivery."
+    },
+    {
+      "role": "Pivot column and zeroed row",
+      "eligible_variation": "All three columns and rows; B and solution must follow.",
+      "observed": "Nine explicit assignments plus same-A pivot counterfactual."
+    },
+    {
+      "role": "Signs, multiplier magnitudes and background entries",
+      "eligible_variation": "Positive/negative exact integer operations with comparable arithmetic. Background entries do not determine multipliers.",
+      "observed": "Fresh sample covers all four sign patterns; relevant and irrelevant pairs update or preserve response appropriately."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Retained frequency-shortcut failure",
+      "sample_refs": [
+        "old-counterexample.json",
+        "current-counterexample.json",
+        "strict-regression.json"
+      ],
+      "result": "Strict original test fails on old generator and passes on revision; isolated author preflight also passes."
+    },
+    {
+      "case": "Every answer-bearing role per profile",
+      "sample_refs": [
+        "roles.json",
+        "variation-results.json",
+        "delivery-samples/accepted.json"
+      ],
+      "result": "All five correct positions for each of nine complete fixed banks survive normalization and deduplication."
+    },
+    {
+      "case": "Fresh runtime and actual runner batch",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "shortcut-results.json"
+      ],
+      "result": "72 fresh records and exact five batch records; batch contains varied signs, rows, pivot columns and key positions, not sign-only repeats."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "A[0][0] 4 -> -4 with same pivot 2, same answer bank and remaining A entries.",
+      "expected": "First multiplier -2 -> +2; B, intermediate matrix, conclusion and grading change.",
+      "observed": "Native grade accepts new pair and rejects old pair. Exact visible-matrix checks and render/question-006.png vs 007 confirm changed prompt and solution.",
+      "status": "passed",
+      "justification": "k=-a_ri/a_rp from source e-8051 and q-91189.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Off-target A[1][0] 1 -> 8, with target row unchanged.",
+      "expected": "Operation pair preserved; corresponding B and worked-stage entries update.",
+      "observed": "Same pair accepted and other four rejected; screenshots 006 and 008 and independent stage arithmetic confirm changes.",
+      "status": "passed",
+      "justification": "Off-target entries do not change elimination multipliers; full-column application still changes them.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Same A, pivot column C1 -> C2.",
+      "expected": "Target column labels, zeroed columns, B and explanation follow pivot.",
+      "observed": "Native grading, parsed operation sequences and screenshots 009/010 follow the new pivot.",
+      "status": "passed",
+      "justification": "Column role is incidental: source q-130609 uses C1 and q-91189 C2.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Unique first component mode with frequency two and unique second component mode",
+      "subgroup": "fresh conditional signature",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the pair joining those modes; abstain otherwise.",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 guessing among five choices. Fresh result is 7/36 and fixed-bank controlled result 4/20. The batch has one applicable correct hit; it is not evidence of a reliable cue: fixed identical banks admit every key. Other four batch questions defeat application of this rule.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "fresh q-91189",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "fresh q-91186",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "fresh q-91187",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "fresh q-91192",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "fresh q-91188",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "fresh",
+      "scope": "overall",
+      "strategy": "Always choose stored index 0",
+      "correct": 13,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "fresh",
+      "scope": "overall",
+      "strategy": "Always choose stored index 1",
+      "correct": 19,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "fresh",
+      "scope": "overall",
+      "strategy": "Always choose stored index 2",
+      "correct": 13,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "fresh",
+      "scope": "overall",
+      "strategy": "Always choose stored index 3",
+      "correct": 17,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "fresh",
+      "scope": "overall",
+      "strategy": "Always choose stored index 4",
+      "correct": 10,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Unique first component mode with frequency two and unique second component mode",
+      "subgroup": "controlled conditional signature",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the pair joining those modes; abstain otherwise.",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 guessing among five choices. Fresh result is 7/36 and fixed-bank controlled result 4/20. The batch has one applicable correct hit; it is not evidence of a reliable cue: fixed identical banks admit every key. Other four batch questions defeat application of this rule.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "controlled q-91189",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "controlled q-91186",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "controlled q-91187",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "controlled q-91192",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "controlled",
+      "scope": "overall",
+      "strategy": "Always choose stored index 0",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "controlled",
+      "scope": "overall",
+      "strategy": "Always choose stored index 1",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "controlled",
+      "scope": "overall",
+      "strategy": "Always choose stored index 2",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "controlled",
+      "scope": "overall",
+      "strategy": "Always choose stored index 3",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "controlled",
+      "scope": "overall",
+      "strategy": "Always choose stored index 4",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "roles.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Unique first component mode with frequency two and unique second component mode",
+      "subgroup": "batch conditional signature",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the pair joining those modes; abstain otherwise.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 guessing among five choices. Fresh result is 7/36 and fixed-bank controlled result 4/20. The batch has one applicable correct hit; it is not evidence of a reliable cue: fixed identical banks admit every key. Other four batch questions defeat application of this rule.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Component-frequency signature",
+      "subgroup": "batch q-91189",
+      "scope": "within_template",
+      "strategy": "Join the unique component modes when first frequency is two.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.2. Small conditional counts are descriptive, not a reliability claim; every fixed bank has five valid different keys and matrix retries keep the selected key. Controlled groups give one success in five whenever applicable.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Always choose stored index 0",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Always choose stored index 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Always choose stored index 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Always choose stored index 3",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Always choose stored index 4",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is random choice 0.2. No single stored position answers all five batch records; positions are 1,2,4,4,3 (zero-based). UI additionally reorders choices, so this conservative stored-order probe does not imply fixed rendered positions.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "position-probes.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-42917",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91189",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130609",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130610",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-130611",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91186",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91187",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91192",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 0 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 1 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 2 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 3 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Identical entire answer bank",
+      "subgroup": "q-91188",
+      "scope": "within_template",
+      "strategy": "Choose fixed bank entry 4 without reading matrices",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every entry is correct once in five; baseline 0.2. This defeats any deterministic answer-producing action based solely on this fixed bank, its wording, component multiplicities or layout.",
+      "sample_refs": [
+        "roles.json",
+        "grader-report.json",
+        "delivery-samples/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "source-shaped bank eligibility before uniform key selection",
+      "matrix rejection/resampling and bounded exhaustion",
+      "requested easy difficulty",
+      "shared publisher normalization and identity validation",
+      "captured inventory and within-batch deduplication",
+      "fresh practice eligibility and weighted/history-dependent selection"
+    ],
+    "sample_refs": [
+      "sampler-rejection.json",
+      "rejection-records.json",
+      "delivery-input.json",
+      "delivery-samples/delivery.json",
+      "delivery-samples/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-review.json",
+      "inventory-review.json"
+    ],
+    "result": "131/131 independent runtime records and 5/5 exact batch records survive. Frequency counts unchanged by delivery. Bank/key retained across forced matrix retry; all 45 controlled role cases survive. Positive easy weight leaves all eligible records selectable; learner history can exclude seen/reserved records. No preparation.json exists, so shared read-only preparation was used at captured basis 5581."
+  },
+  "limitations": [
+    "Finite, targeted audit does not establish absence of every conceivable shortcut.",
+    "Only captured inventory basis 5581 examined; all ten entries are original sources, with zero generated historical records.",
+    "Future entity IDs, actual learner histories and changing live inventory cannot be predicted; selection rule tested with synthetic increasing IDs.",
+    "One batch item happens to satisfy the earlier predictor. Counterexamples within identical banks disprove a reliable generator-wide cue; the predictor cannot answer the other four batch records."
+  ]
+}

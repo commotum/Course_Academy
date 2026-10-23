@@ -1,0 +1,94 @@
+--- ../review-0-policy-2-8bbb1cdbe4d688a3/relocated/17592186161968.py	2026-10-14 15:17:10.508214545 -0700
++++ ../workspace/17592186161968.py	2026-10-22 21:38:26.004857998 -0700
+@@ -3,18 +3,15 @@
+ """
+ import argparse, hashlib, json, random, re, uuid
+ from pathlib import Path
+-try:
+- import sympy as sp
+-except ModuleNotFoundError:
+- import os,sys
+- os.execv(str(Path(__file__).resolve().parents[2]/'.venv/bin/python'),[str(Path(__file__).resolve().parents[2]/'.venv/bin/python'),str(Path(__file__).resolve()),*sys.argv[1:]])
++import sympy as sp
++from functools import lru_cache
+ KP_ID=17592186161968
+ KP_UUID='85e1fe3f-e85e-5ab4-a594-c55b84bb789a'
+ GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'column-zero-generator-v1'))
+ HERE=Path(__file__).with_suffix('')
+ SOURCES={q[':question/math-academy-id']:q for q in json.loads((HERE/'source.json').read_text())['record'][':knowledge-point/questions']}
+ SUPPORTED_LEVELS=('easy',)
+-PROFILES=tuple(SOURCES)
++PROFILES=tuple(k for k in SOURCES if k != 'q-130614')
+ def recipes(profile,a,b):
+  u=lambda z:1 if z>0 else -1
+  return {
+@@ -49,32 +46,61 @@
+ def eligible(profile,a,b):
+  bank=recipes(profile,a,b)
+  return len(set(bank))==5 and bank.count((a,b))==1 and all(sp.sympify(k).is_integer and k!=0 for pair in bank for k in pair)
+-def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile=None):
++@lru_cache(None)
++def anchor_banks(profile):
++ # Every complete bank admits every key: reject at bank level, before selecting a key.
++ out=[]
++ for a in range(-9,10):
++  for b in range(-9,10):
++   if not a or not b or not eligible(profile,a,b):continue
++   bank=tuple(tuple(int(k) for k in pair) for pair in recipes(profile,a,b))
++   if all(abs(k)<=9 for pair in bank for k in pair):out.append(((a,b),bank))
++ return tuple(out)
++def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile=None,bank_anchor=None):
+  if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty '+difficulty)
+  rng=random.Random(seed);profile=bank_profile or template or rng.choice(PROFILES)
++ if profile=='q-130614':profile='q-130609'
++ replay=parameters is not None and any(parameters==pars and (key==profile or key=='q-130614' and profile=='q-130609') for key,pars in ORIGINAL.items())
+  if parameters is None:
++  if bank_anchor is None:anchor,bank=rng.choice(anchor_banks(profile))
++  else:
++   anchor=tuple(bank_anchor);bank=tuple(tuple(int(k) for k in pair) for pair in recipes(profile,*anchor))
++   assert (anchor,bank) in anchor_banks(profile)
++  coeff=rng.choice(bank)
++  p=rng.randrange(3);r=rng.randrange(3);cols=[c for c in range(3) if c!=p]
++  ks=[0]*3
++  for c,k in zip(cols,coeff):ks[c]=k
+   for _ in range(200):
+-   p=rng.randrange(3);r=rng.randrange(3);cols=[c for c in range(3) if c!=p]
+-   ks=[rng.choice([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]) if c!=p else 0 for c in range(3)]
+-   if not eligible(profile,*[ks[c] for c in cols]):continue
+    A=sp.Matrix(3,3,[rng.randint(-9,9) for _ in range(9)]);A[r,p]=rng.choice([-5,-3,-2,-1,1,2,3,5])
+    for c in cols:A[r,c]=-ks[c]*A[r,p]
+    if any(A[z,p]!=0 and all(A[z,c]+ks[c]*A[z,p]==0 for c in cols) for z in range(3) if z!=r):continue
+    parameters={'A':A.tolist(),'row':r,'pivot':p,'ks':ks};break
+   else:raise ValueError('Bounded sampler exhausted')
++ else:
++  coeff=tuple(parameters['ks'][c] for c in range(3) if c!=parameters['pivot'])
++  if replay:
++   anchor=coeff;bank=tuple(tuple(int(k) for k in pair) for pair in recipes(profile,*anchor))
++  elif bank_anchor is not None:
++   anchor=tuple(bank_anchor);bank=tuple(tuple(int(k) for k in pair) for pair in recipes(profile,*anchor))
++   assert (anchor,bank) in anchor_banks(profile)
++  else:
++   compatible=[(anchor,bank) for anchor,bank in anchor_banks(profile) if coeff in bank]
++   if not compatible:raise ValueError('No source-shaped integer bank for these coefficients')
++   anchor,bank=rng.choice(compatible)
+  parameters=json.loads(json.dumps(parameters,default=int));A=sp.Matrix(parameters['A']);r=parameters['row'];p=parameters['pivot'];ks=parameters['ks'];cols=[c for c in range(3) if c!=p]
+  assert A.shape==(3,3) and 0<=r<3 and 0<=p<3 and A[r,p]!=0 and all(ks[c]!=0 and A[r,c]+ks[c]*A[r,p]==0 for c in cols)
+- coeff=tuple(ks[c] for c in cols);assert eligible(profile,*coeff)
+- bank=[tuple(int(k) for k in pair) for pair in recipes(profile,*coeff)]
++ coeff=tuple(ks[c] for c in cols)
++ assert len(set(bank))==5 and bank.count(coeff)==1
++ bank=list(bank)
+  B=A.copy();stages=[]
+  for c in cols:B[:,c]=B[:,c]+ks[c]*B[:,p];stages.append(B.copy())
+  prompt='$$\nA='+tex(A)+r',\,B='+tex(B)+'\n$$\n\nBy applying elementary column operations of the form $C_i:=C_i+kC_{'+str(p+1)+'},$ the matrix $A$ can be transformed into the matrix $B.$ What are the elementary column operations?'
+  direction='to the left of' if p==2 else 'to the right of' if p==0 else 'to the left and to the right of'
+  solution='To transform $A$ into $B,$ we need to make entries '+direction+' $a_{'+str(r+1)+str(p+1)+'}='+str(A[r,p])+'$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n'+r'\begin{aligned}A &='+tex(A)+'\n'+ '\n'.join(r'\\ &\xrightarrow{'+op(c,p,ks[c])+'}'+tex(stage) for c,stage in zip(cols,stages))+r'\\ &=B\end{aligned}'+'\n$$\n\nTherefore, the elementary column operations are\n\n'+pair(cols,p,coeff)+'.'
+- fp=fingerprint(prompt);qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),fp+profile));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
++ fp=fingerprint(prompt);qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),fp+profile+json.dumps(bank)));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(k))),':answer/type':':answer.type/text',':answer/value':pair(cols,p,k)} for k in bank]
+  question={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[bank.index(coeff)][':answer/id']]}]}
+- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Column Operations to Create a Row of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':1,'seed':seed,'template':'column-zero-3x3','bank_profile':profile,'parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
++ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Column Operations to Create a Row of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':2,'bank_anchor':list(anchor),'bank_policy':'source-replay' if replay else 'bank-first-any-key','seed':seed,'template':'column-zero-3x3','bank_profile':profile,'parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
+ def batch(difficulty,count,seed):return [generate(difficulty,seed+i,bank_profile=PROFILES[i%len(PROFILES)]) for i in range(count)]
+ def markdown(r):
+  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
