@@ -1,13 +1,13 @@
-# Current state — author 1315
+# Current state — author 1319
 
-Read feedback and both retained findings from repair-history.json (1315 events). Existing instructional account and repaired runtime preserved. No new generator defect or source change was reported.
+Read feedback, both retained findings, and the complete repair-history JSON (1319 events). Reused the existing instructional account and source analysis. No new generator defect or source change is alleged; runtime and manifest remain unchanged.
 
-First reproduced the latest failure: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1 at the original required report with `decision_variation has an unresolved decision shortcut`. The staged correction passes the actual schema/contract check and replays 26 visible records against the current generator. Evidence: `evidence/author-1315/latest-failure.log`, `report-results.json`, `report-staged-validation.json`.
+First reproduced `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`: exit 1. The required external report fails with `decision_variation has an unresolved decision shortcut`. The staged workspace report passes the real contract and schema and replays 26 records against the current generator. See `evidence/author-1319/latest-failure.log`, `report-results.json`, and `report-staged-validation.json`.
 
-Retained role regression passed: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1315/role`. Exact reorder, controlled role transfer, signed boundaries, conditional shortcut probes, shared delivery and 30 native-grader checks pass. Delivered mixed positions: 19 first, 17 second.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1319/role`: exit 0. Exact reorder, controlled role transfer, boundary, conditional shortcut, delivery, and native-grader checks pass. Both resonance positions survive delivery (19 first, 17 second); all 30 grader expectations match.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` passed: 55 staged artifact hashes, unchanged runtime/source, eight unaffected-family math cases. Reused unchanged source replay/rendering and visually inspected `evidence/corrected-review/render-regression/question-002.png`; no observed clipping or overlap.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`: exit 0. Verified 55 handoff artifacts, unchanged source/runtime hashes, and eight independently parsed mathematical cases. Earlier source replay and actual UI rendering evidence remain applicable to unchanged runtime.
 
-No runtime changes, external writes, publication, engine changes or database changes. Strict regression declarations remain unchanged. Commands/results: `evidence/author-1315/results.json`.
+Commands and results: `evidence/author-1319/results.json`. Both strict regressions are retained. No writes outside workspace, publication, database changes, engine changes, or runtime changes.
 
-Next unfinished action: runner installation at the prior-review destination using `evidence/review-installation-handoff.json`, followed by the strict default report regression and fresh independent review. That destination is outside this workspace and writable roots. An unchanged author retry cannot perform that action. Finding 645672a4cd3f9bf609ca remains unresolved; status unsupported.
+Next unfinished action: authorized runner installs the staged correction at the original review destination using `evidence/review-installation-handoff.json`, reruns the strict default report check, and obtains fresh independent review. The required destination is outside this session's authorized workspace. Finding 645672a4cd3f9bf609ca remains unresolved; status unsupported. Workspace-only retries cannot perform the installation.

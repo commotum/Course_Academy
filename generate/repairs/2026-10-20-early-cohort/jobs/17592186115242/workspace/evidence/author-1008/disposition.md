@@ -1,0 +1,15 @@
+# Author 1008 disposition
+
+The current generator retains all completed repairs. Four generator regressions pass; the strict historical-inventory regression fails on all five captured generated questions. Commands and individual exit codes are in commands.json; results.json records the current verified state. All protected runtime, manifest, source, and inventory hashes match the retained bindings.
+
+The learner must eliminate x, solve for the singular parameter, and interpret the residual equation. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe reduces to `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by absence of solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 has an interior correct choice, establishing that numeric extremity is not essential. The preserved instructional account and repaired bank construction implement these requirements. No new current-generator construction defect is demonstrated by the latest feedback.
+
+The exact latest failure was reproduced before other checks: five historical banks and 64/64 sign-extremum successes in the retained possible-history scenario. Complete prompts, solutions, banks, keys, IDs, and generation metadata match the captured inventory and archival replay. All five non-source generated inventory items were tested. This scenario is a possible learner history, not a statement about every actual history.
+
+Current validation also passed 17 practice-bank replays, independent visible-record checks, three finite batches totaling 14 records before and after shared delivery, relevant/irrelevant counterfactuals, native grading (7 accepted, 28 rejected), exact dependency checks, and relocated CLI execution. The verified replacement proposal remains at evidence/repair-3/inventory-repair-proposal.json, unapplied. Its proposed pool is not the captured selectable pool.
+
+The original defective construction made a signed extreme the answer. That rule has already been repaired in the candidate. The remaining failure is persistence of its historical output: question_selection.rs selects stored candidate IDs and does not invoke this Python generator to rebuild their banks. A workspace runtime edit cannot retire those records. The review itself requests the separate inventory-remediation workflow. Database changes are expressly prohibited in this task; source families, valid answers, and the strict failure were preserved.
+
+Reinspected retained actual-UI screenshot evidence/repair-3/render/question-001.png: prompt, five choices, augmented matrices, and worked solution are legible and unclipped. Also inspected the original classification flowchart. Rendering evidence was reused because runtime output is unchanged; no fresh renderer run is claimed.
+
+Status remains unsupported for finding 591f580cadb749294588. Resolution requires separately authorized remediation of the exact five generated identities, fresh inventory capture, and the strict recheck. No publication, database, engine, original-source, or other-job changes were performed.
