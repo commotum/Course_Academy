@@ -1,0 +1,74 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/review-1057-policy-2-e25f3b99e4e5cac8",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B review.py",
+      "result": "execution.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B supplement.py",
+      "result": "supplement-execution.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B retained-checks.py",
+      "result": "retained-check-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B acceptance-tests.py",
+      "result": "acceptance-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B acceptance-tests.py --package ../review-0-policy-2-7164cf0480f72dae/relocated",
+      "result": "acceptance-old-results.json",
+      "expected_exit": 1
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B retained-batch-checks.py --finding batch",
+      "result": "retained-batch/batch-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B retained-batch-checks.py --finding inventory",
+      "result": "retained-batch/inventory-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B inventory-negative-control.py",
+      "result": "inventory-negative-control-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B changed-batch-review.py",
+      "result": "changed-batch-results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+      "result": "grader-report.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B decisions-final.py",
+      "result": "pedagogical-variation.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root ./assets --math-root /media/jake/SSD/EDB/math",
+      "result": "delivery-batch/delivery.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input easy-samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-sample --asset-root ./assets --math-root /media/jake/SSD/EDB/math",
+      "result": "delivery-sample/delivery.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input fresh-selected-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-selected --asset-root ./assets --math-root /media/jake/SSD/EDB/math",
+      "result": "delivery-selected/delivery.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root ./assets --math-root /media/jake/SSD/EDB/math",
+      "result": "render/rendering.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-followup-records.json --output render-followup --asset-root ./assets --math-root /media/jake/SSD/EDB/math",
+      "result": "render-followup/rendering.json"
+    }
+  ],
+  "notes": [
+    "Review files copied from matched earlier independent review before adapting fresh seeds; provenance.json records originals.",
+    "Author checks are reused only with output redirection; independent failing controls separately establish defect sensitivity."
+  ]
+}

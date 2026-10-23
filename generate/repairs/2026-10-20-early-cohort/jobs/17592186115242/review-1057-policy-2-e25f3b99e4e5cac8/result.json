@@ -1,0 +1,118 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. Prior failures reproduce on negative controls and are resolved in the current generator and batch. The five historical defective records are retired and excluded from fresh practice. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Determine the parameter value making a two-equation linear system inconsistent or consistent dependent.",
+    "reasoning_steps": [
+      "Eliminate one variable.",
+      "Set the remaining affine coefficient to zero.",
+      "Interpret the residual equation as contradiction or redundancy.",
+      "Select the corresponding parameter value."
+    ],
+    "invariants": [
+      "One unique parameter answer.",
+      "Prompt, elimination, answer bank, key and solution agree.",
+      "Five-choice radio response."
+    ],
+    "permitted_variations": [
+      "Coefficients, signs, constants and affine offsets within comparable workload.",
+      "Integer, fractional and valid zero answers.",
+      "Correct-answer position and numeric rank."
+    ],
+    "source_refs": [
+      "f2c7cfd3-da43-5208-bd0e-21692357fabe",
+      "84cf8820-fa64-5d50-9d9c-d3a9404788a4",
+      "113efc76-e9d2-549d-b33e-b8de028f7ba5",
+      "Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2: consistency and dependence definitions",
+      "generate/principles.md sections 1\u20133"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-cases.json",
+      "lesson-classification.png"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-report.json",
+        "source-replays.json",
+        "solution-fidelity.json"
+      ],
+      "details": "All 18 source cases and 17 complete banks replay, with documented source corrections."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "supplement-math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "137 records pass independent exact checks of printed systems, roots, ranks, banks, matrices and conclusions."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "samples.json",
+        "boundary-records.json",
+        "resampling-results.json",
+        "acceptance-old-results.json",
+        "acceptance-results.json",
+        "changed-batch-results.json"
+      ],
+      "details": "Eight templates sampled. Zero-root and fractional-bare repairs pass; batch selection preserves contrasting answer roles."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "revision-scope.json",
+        "source-analysis.json"
+      ],
+      "details": "Batch selection preserves the source operation, response contract and arithmetic workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader accepts 43 correct choices and rejects 172 wrong choices, including counterfactual cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-followup/rendering.json",
+        "render-review.json"
+      ],
+      "details": "Actual UI rendered 11 records successfully; six screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-unchanged.json",
+        "changed-batch-results.json",
+        "commands.json"
+      ],
+      "details": "Exact dependencies, deterministic replay and relocation pass. Manifest-listed package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "delivery-selected/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json",
+        "inventory-negative-control-results.json"
+      ],
+      "details": "Both sign groups retain distinct roots, ranks and positions after delivery filtering. The prior sign-extremum shortcut succeeds on 0/5 runner records. All five historical weak records are retired at captured basis 5575; future inventory and actual learner histories remain outside this snapshot."
+    }
+  },
+  "findings": []
+}

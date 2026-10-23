@@ -1,0 +1,107 @@
+{
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "2ae998e48d7942c0251f",
+      "7b4665fd8b91055fbe6a",
+      "1da34d5a26f3852c108d",
+      "41b3562c0b46bafedeed"
+    ],
+    "checks": [
+      {
+        "script": "checks/regressions.py",
+        "args": [
+          "--finding",
+          "shortcut"
+        ],
+        "sha256": "ba8473426c2cddbfdbaec96ecd21524029b642d6974633168a83d87323d1dc8b",
+        "exit_code": 0,
+        "stdout": "{\"finding\": \"shortcut\", \"passed\": true}\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/regressions.py",
+        "args": [
+          "--finding",
+          "source"
+        ],
+        "sha256": "ba8473426c2cddbfdbaec96ecd21524029b642d6974633168a83d87323d1dc8b",
+        "exit_code": 0,
+        "stdout": "{\"finding\": \"source\", \"passed\": true}\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/regressions.py",
+        "args": [
+          "--finding",
+          "zero"
+        ],
+        "sha256": "ba8473426c2cddbfdbaec96ecd21524029b642d6974633168a83d87323d1dc8b",
+        "exit_code": 0,
+        "stdout": "{\"finding\": \"zero\", \"passed\": true}\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/batch_regressions.py",
+        "args": [
+          "--finding",
+          "batch"
+        ],
+        "sha256": "104441a1089744c50fc5b30cca3e6ddb2aa3b11dbfd67df90f213cd9c32ae6ff",
+        "exit_code": 0,
+        "stdout": "{\"finding\": \"41b3562c0b46bafedeed\", \"passed\": true, \"batches\": 3, \"delivered\": 14}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "retained_findings": [
+    {
+      "id": "2ae998e48d7942c0251f",
+      "kind": "decision_shortcut",
+      "description": "Easy banks always contain {t,-t,b,-b,0}, with |t|>|b|. If the numeric coefficient signs agree, choose the largest positive option; otherwise choose the most negative option. This skips the required magnitude calculation and answers every delivered batch item. Five stored generated questions have the same defect."
+    },
+    {
+      "id": "7b4665fd8b91055fbe6a",
+      "kind": "source_fidelity",
+      "description": "Source q-74691 requires fractional elimination with a bare parameter coefficient. Its profile is missing, and existing hard-template constraints exclude its parameters."
+    },
+    {
+      "id": "1da34d5a26f3852c108d",
+      "kind": "restriction",
+      "description": "Default banks contain both t and -t, so every valid t=0 case collides and is rejected or resampled away."
+    },
+    {
+      "id": "41b3562c0b46bafedeed",
+      "kind": "decision_shortcut",
+      "description": "Finite batch-selection failure: both opposite-sign items repeat one coefficient decision and make the smallest option correct. Changed RHS values and bank spacing preserve the shortcut throughout this recognizable subgroup."
+    },
+    {
+      "id": "591f580cadb749294588",
+      "kind": "inventory",
+      "description": "Five captured historical v2 easy records retain the sign-only extremum shortcut and remain learner-selection candidates. Their unresolved presence prevents a passing delivered-distribution claim."
+    }
+  ],
+  "assessment": [
+    "Three initial independent strict tests fail old code with the stated bank collision, unknown profile and 48/48 shortcut; all pass current code.",
+    "Author source regression fails old code first on missing bank_variant metadata; this is not evidence of the missing-source defect. Independent acceptance-tests.py separately reproduces Unknown profile at q-74691.",
+    "Prior five-item batch and two exact negative subgroup members reproduce the old finite-pool failure. Current CLI and runner batch pass the independently parsed contrasts; single-seed old counterexamples remain replayable.",
+    "Current inventory replays all five old defective records but excludes them through explicit retirement. Historical defect is preserved in generated-records.json; no eligible affected record remains.",
+    "Strict historical inventory check also fails on a local negative control with only the five retirement flags reset: affected=5 and shortcut=64/64. It passes actual captured basis 5575 with affected=0."
+  ],
+  "reproduction_files": [
+    "acceptance-tests.py",
+    "acceptance-old-results.json",
+    "acceptance-results.json",
+    "retained-checks.py",
+    "retained-check-results.json",
+    "changed-batch-review.py",
+    "changed-batch-results.json",
+    "retained-batch-checks.py",
+    "retained-batch/batch-results.json",
+    "inventory-review.py",
+    "inventory-audit.json",
+    "retained-batch/inventory-results.json",
+    "inventory-negative-control.py",
+    "inventory-negative-control-results.json"
+  ]
+}

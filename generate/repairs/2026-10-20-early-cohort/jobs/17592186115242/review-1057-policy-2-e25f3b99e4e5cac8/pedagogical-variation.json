@@ -1,0 +1,1877 @@
+{
+  "learner_operation": "Eliminate x (possibly swap rows); set the remaining affine y coefficient to zero; inspect the residual constant to distinguish contradiction from a redundant equation, then choose the resulting k.",
+  "fixed_features": [
+    {
+      "feature": "Two variables and one unique parameter answer",
+      "justification": "The observed elimination leaves one affine coefficient. A unique singular parameter fits the five-choice assignment response. Asking for independent systems would generally require all other k values and a different response contract."
+    },
+    {
+      "feature": "Inconsistency in the simpler band, dependence in the hard band",
+      "justification": "The authored easy simplification isolates a contradiction after one integer elimination. Hard source solutions additionally interpret a redundant equation and free variable, often with swaps/fractional arithmetic. Keeping these reasoning workloads within their source bands is an instructional constraint; it does not fix the numerical root, answer rank or position."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Singular k value",
+      "eligible_variation": "Signs and magnitudes of coefficients, and affine offset, determine integer/rational/zero roots.",
+      "observed": "18 source cases, eight zero-root boundaries, and fresh samples of all eight templates pass."
+    },
+    {
+      "role": "Correct numeric rank and answer position",
+      "eligible_variation": "All five roles may vary independently of the elimination result.",
+      "observed": "Raw easy controls span ranks; both sign groups in exact delivered batch retain distinct roots and interior/extreme rank contrasts. UI shuffles options."
+    },
+    {
+      "role": "Target classification",
+      "eligible_variation": "Inconsistency and dependence must follow nonzero/zero residual respectively in their source-supported difficulty families.",
+      "observed": "All observed targets preserved; easy remains one-step integer elimination with a contradiction."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source and profile fidelity",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-report.json",
+        "solution-fidelity.json"
+      ],
+      "result": "18/18 replay, including all 17 complete banks; three documented source corrections retained."
+    },
+    {
+      "case": "Changed batch selection",
+      "sample_refs": [
+        "prior-failing-batch.json",
+        "prior-counterexample.json",
+        "runner-batch.json",
+        "fresh-selected-batch.json",
+        "changed-batch-results.json"
+      ],
+      "result": "Prior repeated negative-root/minimum subgroup reproduces. Runner and independent fresh selected batch now defeat sign-extremum/fixed-rank/fixed-position rules within both signs."
+    },
+    {
+      "case": "Rejection and zero boundary coverage",
+      "sample_refs": [
+        "resampling-records.json",
+        "resampling-results.json",
+        "boundary-records.json"
+      ],
+      "result": "Eight zero-root profile/default cases accepted. Candidate rejection is confined to zero residual or incompatible fractional template; bank rank chosen before resampling."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Seed 822102: hold a=1,b=2,c=1,d=2,u=1,e=3 fixed and change v=3 to 1 and 4.",
+      "expected": "Root changes 1 to 3 and 0; prompts, equations, keys, solutions and grading follow.",
+      "observed": "Exact independent root/rank/matrix checks and native all-choice tests agree; old k=1 is present and rejected in changed-root bank. Actual UI inspected for base and both changed roots.",
+      "status": "passed",
+      "justification": "Elimination gives (k+v-4)y=1; coefficient offset changes the unique singular parameter.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render-followup/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold coefficients and seed fixed; change second RHS 3 to 4.",
+      "expected": "Root stays 1 while nonzero residual changes 1 to 2.",
+      "observed": "Printed prompt/solution residual updates; keyed value and actual native acceptance preserve k=1; rendered pair inspected.",
+      "status": "passed",
+      "justification": "Inconsistency requires nonzero residual, but its magnitude does not affect the singular coefficient.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-followup/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "runner_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "runner_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "runner_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "runner_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "runner_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "runner_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "runner_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "runner_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "runner_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_runner:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_runner:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_runner:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_runner:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_runner:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_runner:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_runner:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_runner:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_runner:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "fresh_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "fresh_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "fresh_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "fresh-selected-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_selected:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_selected:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient signs and numerical extrema",
+      "subgroup": "delivered_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum for same-sign coefficient product, minimum for opposite signs; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Stored choice position",
+      "subgroup": "delivered_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant zero-based stored position.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "delivered_selected:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the best observed constant rank among sorted choices.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is blind five-choice guessing. Counts retain each sign subgroup separately. Delivered easy groups have differing roots, ranks and positions, and counterexamples to the old sign-extremum cue. Small controls for unchanged other families are descriptive; isolated perfect tiny subsets do not establish a structural rule. Stored order is additionally shuffled by actual UI.",
+      "sample_refs": [
+        "delivery-selected/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator validation and parameter resampling",
+      "whole-window easy batch selection and old failing window",
+      "requested difficulty",
+      "publisher normalization/stable IDs",
+      "captured inventory and within-batch deduplication",
+      "retirement eligibility before fresh learner selection",
+      "difficulty-first selection and conditional easy history depletion"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "changed-batch-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-sample/delivery.json",
+      "delivery-selected/delivery.json",
+      "shortcut-results.json",
+      "inventory-audit.json",
+      "selection-results.json"
+    ],
+    "result": "At captured basis 5575, exact runner 5/5, raw easy 24/24 and independent selected 5/5 survive. Conditional contrasts preserved through delivery. All five archived defective records are retired and excluded; no eligible affected generated records remain."
+  },
+  "limitations": [
+    "Finite tests cannot exclude every possible shortcut.",
+    "Actual policy, learner histories, future inventory and publication identities are unavailable; selection scenarios are explicitly conditional.",
+    "No easy-labelled original exists: this band is a conservative authored integer-elimination simplification. Single-item requests and counts below four cannot express both sign-group contrasts; current review concerns requested five-item batch."
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass for the unchanged generator and exact five-question easy batch. The prior positional defect fails on the old implementation and passes current tests. All four affected historical mixed questions are retired and excluded from fresh practice.",
+  "source_analysis": {
+    "skill": "Solve a scalar first-order constant-coefficient exponential-forcing IVP, with complementary solution supplied, by undetermined coefficients and the initial value.",
+    "reasoning_steps": [
+      "Read h,k,K,v from y\u2032-hy=K exp(kx), y(0)=v and supplied Ae^(hx).",
+      "For k != h solve (k-h)alpha=K; for k=h use the x-multiplied ansatz and alpha=K.",
+      "Combine complementary and particular terms; impose y(0)=v (A=v-alpha in nonresonance, A=v in resonance).",
+      "Return an explicit expression, allowing equivalent ordering/factoring and cancellation of a zero complementary coefficient."
+    ],
+    "invariants": [
+      "At observed easy/moderate levels, one exponential forcing term with nonzero coefficient; supplied complementary solution consistent with the ODE.",
+      "Initial point remains 0 to preserve observed workload.",
+      "No second-order equation, multiple forcing terms, numerical integration or nonzero initial point needed.",
+      "Keep the rule for selecting trial form rather than fixing incidental coefficient signs or which coefficient vanishes."
+    ],
+    "permitted_variations": [
+      "h and k may vary in sign, magnitude and relative order within small integer arithmetic; easy preserves k!=h.",
+      "K and v can change sign and value, including v=0; alpha and A may be positive, negative, fractional or A=0.",
+      "Resonance k=h is supported at moderate difficulty; the specific positive or negative exponent and v are incidental.",
+      "Reorder or factor equivalent final answers without changing the blank-expression response.",
+      "Hard two-exponential extension is grounded in same-lesson examples 5e56989a-feb1-590a-8684-9442dee1b1cb (both nonresonant) and 1ea06d66-de30-514a-817f-8749abb4ab25 (mixed). Either mixed position can resonate; position is incidental."
+    ],
+    "source_refs": [
+      "d2382def-85b2-5002-9614-692f272355c8",
+      "5d6b3581-3918-5014-8781-891024445772",
+      "95f3da24-1dc4-5c26-969b-1c289b8f08a1",
+      "763c9ce2-0497-58af-9158-f2e84fa94267",
+      "edaf01e0-f315-5b89-a42e-b20571efeafe",
+      "d2ab99a3-e4ae-5ac2-9c7d-f216d0d60347",
+      "516804e6-9850-5a07-aeb9-4a07986f8eaa",
+      "1e7dd865-a056-5710-ab6d-c5eb9bf72fc6",
+      "d63971f5-c416-5771-8c44-552fcfc50a79",
+      "d4df5e5b-65c9-5002-87ac-cf021a213a55",
+      "ceb57bf0-d702-511f-a8e6-4fe4eee1bf79",
+      "d0bb4554-9b00-5a89-bf22-7eaf49db9dad",
+      "8b67c45f-7435-5b3b-b8a6-35875cc6d705",
+      "a04ef1bf-4028-5cae-b670-2200bafd2729",
+      "8c0d25a5-20ac-54d3-b942-54173b2e140e",
+      "6cac7352-0dbf-5dae-970e-a3b99343c574",
+      "5e56989a-feb1-590a-8684-9442dee1b1cb",
+      "1ea06d66-de30-514a-817f-8749abb4ab25"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "scope-results.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "source-analysis.json"
+      ],
+      "details": "All 15 practice cases reproduce available prompts, worked solutions and complete answer banks. Canonical IVP independently checked; two incomplete source captures remain documented gaps."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "targeted.py",
+        "hard-math-results.json"
+      ],
+      "details": "40 regression records satisfy displayed ODEs and initial values. All 37 focused hard records also pass independent derivative, substitution, coefficient and final-solution checks."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "hard-samples.json",
+        "retained-finding-results.json"
+      ],
+      "details": "Fresh 24 mixed seeds split 12/12 between resonant positions. Signed rates, coefficient signs, fractions, cancellation and original families remain represented."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "construction-review.json"
+      ],
+      "details": "Observed easy/moderate scope preserved. Two-forcing hard extension uses earlier same-lesson methods; role exchange adds no prerequisite or workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-delivered-input.json",
+        "grader-delivered-report.json",
+        "grader-command.json"
+      ],
+      "details": "Actual native grader matches 211 expectations: 71 accepted and 140 rejected, including factored equivalents, stale counterfactual keys and normalized delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "reused-render-provenance.json"
+      ],
+      "details": "15 actual-UI cases pass MathJax/control checks. Current screenshots inspected for easy batch, reordered resonance, transferred resonance and cancellation."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-integrity.json",
+        "runtime-results.json",
+        "relocation-results.json",
+        "retained-finding-results.json"
+      ],
+      "details": "Package unchanged. Exact installed dependency versions, deterministic replay, invalid inputs and relocation at all difficulties pass. Old report-installation failure is superseded by this independently validated report."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "controlled-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-eligibility.json",
+        "affected-inventory.json",
+        "evidence-contract.json"
+      ],
+      "details": "Controlled role transfer changes the answer; reorder preserves it through actual grading and rendering. Both mixed roles survive delivery and selection. Conditional sign/order probes do not reproduce the positional shortcut. Exact easy batch passes; prior affected stored records are retired."
+    }
+  },
+  "findings": []
+}
