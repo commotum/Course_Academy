@@ -1,12 +1,22 @@
 # Current repair result
 
-Completed generator repairs remain intact. Fresh CLI, source replay, mathematical, native-grading, delivery, inventory, shortcut and rendering-binding checks pass. Runtime hashes are unchanged.
+Preserved completed generator repairs and all runtime bytes. Targeted batch,
+delivery, native-grading, relocated CLI, source replay and render-binding checks
+pass. The corrected evidence bundle validates at its actual root and at relocated
+roots; wrong-root and missing-provenance controls fail as expected.
 
-The registered evidence regression remains nonzero because the installed runner rejects unchanged runtime before sampling, while retained finding 9b8cb52352b8ca3e790e requires preserving runtime. Its corrected evidence bundle passes path validation and relocation controls. The external runner correction remains staged, not installed.
+The registered evidence regression still exits 1: the installed runner rejects
+unchanged runtime before sampling, while finding 9b8cb52352b8ca3e790e requires
+preserving it. Its staged correction targets `scripts/generator_pipeline.py`,
+outside the authorized workspace. It has not been applied.
+
+The fresh-review route described in `runner-fix/README.md` does not require
+installing a historical acceptance as new approval. Corrected evidence already
+exists at `evidence/contract-correction`; the immediate blocker is runner routing.
 
 Commands and results: `evidence/current-author-verification.json`.
 Strict failure: `evidence/current-handoff-regression.json`.
-Corrected bundle: `evidence/contract-correction`.
-Staged external fix: `runner-fix/evidence-only-rejection.patch`.
+External correction: `runner-fix/evidence-only-rejection.patch`.
 
-Status is unsupported: the required runner correction and evidence installation are outside the authorized workspace. No package bytes were changed to evade the gate.
+Status: unsupported due to the unresolved handoff, not absent source support.
+No publication, database changes or writes outside this workspace were performed.

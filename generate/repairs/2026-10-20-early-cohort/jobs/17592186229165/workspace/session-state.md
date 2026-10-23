@@ -1,9 +1,13 @@
-# Current state — author 1329
+# Current state — author 1333
 
-Read latest feedback, both retained findings and prior session state. Reproduced strict external-report regression first; it still exits 1 with `decision_variation has an unresolved decision shortcut`. Workspace correction passes the real contract/schema and replays 26 current records. The required destination is outside this workspace; no external write was attempted.
+Latest feedback and both retained history findings read. No new generator defect or source change is reported. Instructional account, construction repair and strict regression declarations are preserved.
 
-Retained role regression exits 0: exact reorder/transfer counterexamples, boundaries, delivery, within-template shortcut checks and 30 native-grader checks pass. Retained-state check exits 0: 55 handoff artifact hashes, unchanged source/runtime and eight independently parsed mathematical cases verified. Completed runtime repairs, source replay/rendering evidence, historical inventory records and strict regression declarations remain intact.
+Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1 with `decision_variation has an unresolved decision shortcut` at the required original prior-review destination. The local corrected report validates and replays 26 current records. This does not close the external installation finding.
 
-Commands and results: `evidence/author-1329/results.json`; strict error: `evidence/author-1329/latest-failure.log`; delivered-role and grading details: `evidence/author-1329/role/results.json`. No runtime, engine, database or publication changes.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1333/role` exits 0. Exact reorder/transfer counterexamples, boundaries, within-template shortcut probes, shared delivery filtering and all 30 native-grader checks pass.
 
-Unfinished action: runner installation from `evidence/review-installation-handoff.json` into the original prior-review destination, followed by the unchanged strict regression and fresh independent review. Finding 645672a4cd3f9bf609ca cannot close through another unchanged workspace-only retry. Status: unsupported.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: 55 handoff artifact hashes, unchanged runtime/source and eight independently parsed mathematical cases pass. Existing source replay and actual UI rendering are retained because relevant files are unchanged.
+
+Commands/results: `evidence/author-1333/results.json`. No database, engine, runtime, publication or external file changes.
+
+Unfinished: runner installation from `evidence/review-installation-handoff.json` at the required prior-review destination, followed by the unchanged strict default regression and fresh independent review. That destination is outside the permitted workspace. Another unchanged workspace-only author retry cannot install it. Status remains unsupported; no acceptance criteria were weakened.
