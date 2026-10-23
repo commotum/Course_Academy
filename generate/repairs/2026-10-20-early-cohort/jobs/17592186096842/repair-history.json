@@ -1,0 +1,308 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "a68a8999b8ec7f376999",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "The production scale_bank makes answers consecutive multiples of a shared factor. Multiplying the common spacing by the visible linear coefficient yields the correct square-root derivative or slope; negating that multiplier handles reciprocal roots. This bypasses outer differentiation and target evaluation despite shuffled positions.",
+        "source_refs": [
+          "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+          "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+          "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_probe.py batch-records.json; exit 1 demonstrates failure. Minimal current case: seed 3173462203, easy, slope_sqrt_radio, parameters a=7,b=37,t=-4. For y=sqrt(37+7x), sorted choices are 1,7/6,4/3,3/2,5/3. Their spacing is 1/6, so choose 7\u00d71/6=7/6 without evaluating the radicand or target. The same record survives delivery.",
+        "requested_change": "Replace the family-wide coefficient-ladder bank construction with source-supported distractors that do not disclose the derivative through spacing. Preserve source families and deterministic replay. Retain the executable regression across applicable templates and delivered candidate batches; the script accepts an explicit candidate-records file. Regenerate the runner batch after package repair."
+      },
+      "source_hash": "6e866322f15a6a4b5ca570511f9d06c1197adc7d78b713fe7b940118f686554f",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260",
+      "attempt": 0
+    },
+    {
+      "id": "ab222f0376dcbf24176c",
+      "finding": {
+        "kind": "inventory",
+        "description": "Three eligible stored radios reproduce the same shortcut: 90db644a-fd4a-5c58-b43a-e0452a6336d1, ab67789f-4616-5914-aa8d-59736a54c4f6, and f48647ea-8ebd-5583-b713-aef1cac5a291. Their stable IDs and content fingerprints match independent generated reproductions.",
+        "source_refs": [
+          "Inventory basis 5644",
+          "98cde390-f268-5ffd-9f2f-31f016a0c432 (q-107303)",
+          "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)",
+          "0ce97e32-c8a9-5155-bb70-6cb7385360f5 (q-107291)"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B inventory_probe.py. Explicit parameters and matching complete records are retained in inventory-results.json and generated-records.json. affected-inventory.json identifies all three entities. Seed 70001 is an independent replay seed, not an asserted historical seed.",
+        "requested_change": "After generator repair, the runner should repair or retire these proven eligible generated records, refresh inventory and request independent review. Preserve original source questions and history; no author database write is required."
+      },
+      "source_hash": "6e866322f15a6a4b5ca570511f9d06c1197adc7d78b713fe7b940118f686554f",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "f2e28f3a0d0677c48b52dfa4d9467314a67845f5b1a52d46a7e19b565e72c024",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Radio answer spacing reveals the correct answer without the intended differentiation. The shortcut affects the actual batch and three eligible stored questions. Mathematics, grading, rendering and packaging checks passed; the package remains unchanged.",
+        "source_analysis": {
+          "skill": "Differentiate square-root and reciprocal-square-root functions using the chain rule, then evaluate at a specified point for tangent slopes.",
+          "reasoning_steps": [
+            "Identify the inner polynomial and outer power.",
+            "Differentiate both functions and multiply.",
+            "Substitute and simplify.",
+            "Evaluate at the stated point when requested."
+          ],
+          "invariants": [
+            "Preserve the observed function families, response formats and difficulty.",
+            "Require positive radicands at evaluation points.",
+            "Keep the inner-derivative factor, including legitimate zero slopes."
+          ],
+          "permitted_variations": [
+            "Vary coefficients, signs and valid evaluation points.",
+            "Vary positive, negative and zero slopes where supported.",
+            "Vary distractors and correct-choice positions without revealing the answer through bank construction."
+          ],
+          "source_refs": [
+            "8fcdb2c8-71ca-5bfa-b7fe-49f8f2c05bbb (e-182)",
+            "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+            "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+            "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate outer and inner functions, multiply, then substitute."
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replays.json",
+              "source-replay-results.json",
+              "scope-results.json",
+              "canonical-record.json"
+            ],
+            "details": "Replayed all 17 source questions and the canonical example. Radio banks and keys match. Missing source fields and historical blank-submission differences are documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "verify_saved.py"
+            ],
+            "details": "Independent differentiation verified all 102 tested records on their real domains."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "coverage-results.json",
+              "independent-samples.json",
+              "batch-records.json"
+            ],
+            "details": "Sampled all 15 layouts and every radio bank role. Parameter coverage is adequate, but does not cure the separate decision shortcut."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Observed function families, reasoning stages and response formats remain represented."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json"
+            ],
+            "details": "435 native-grader checks passed: 180 accepted and 255 rejected, including valid equivalent free entries."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-extra/rendering.json",
+              "visual-inspection.json"
+            ],
+            "details": "Rendered 15 records through the actual UI and inspected representative screenshots. No rendering failures found."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "package-before.json",
+              "evidence-contract.json",
+              "commands.md"
+            ],
+            "details": "Dependencies match exactly; deterministic replay, relocation and boundary rejection passed. Package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut--independent-samples.json",
+              "shortcut-delivery-batch-accepted.json",
+              "counterfactual-results.json",
+              "selection-results.json",
+              "inventory-results.json"
+            ],
+            "details": "The spacing strategy succeeds on all 30 tested simple linear-root radios, including all 10 independently delivered easy examples and the actual batch\u2019s radio. Relevant and irrelevant counterfactual checks passed, but delivery and selection do not remove the shortcut."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "The production scale_bank makes answers consecutive multiples of a shared factor. Multiplying the common spacing by the visible linear coefficient yields the correct square-root derivative or slope; negating that multiplier handles reciprocal roots. This bypasses outer differentiation and target evaluation despite shuffled positions.",
+            "source_refs": [
+              "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+              "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+              "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)"
+            ],
+            "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_probe.py batch-records.json; exit 1 demonstrates failure. Minimal current case: seed 3173462203, easy, slope_sqrt_radio, parameters a=7,b=37,t=-4. For y=sqrt(37+7x), sorted choices are 1,7/6,4/3,3/2,5/3. Their spacing is 1/6, so choose 7\u00d71/6=7/6 without evaluating the radicand or target. The same record survives delivery.",
+            "requested_change": "Replace the family-wide coefficient-ladder bank construction with source-supported distractors that do not disclose the derivative through spacing. Preserve source families and deterministic replay. Retain the executable regression across applicable templates and delivered candidate batches; the script accepts an explicit candidate-records file. Regenerate the runner batch after package repair."
+          },
+          {
+            "kind": "inventory",
+            "description": "Three eligible stored radios reproduce the same shortcut: 90db644a-fd4a-5c58-b43a-e0452a6336d1, ab67789f-4616-5914-aa8d-59736a54c4f6, and f48647ea-8ebd-5583-b713-aef1cac5a291. Their stable IDs and content fingerprints match independent generated reproductions.",
+            "source_refs": [
+              "Inventory basis 5644",
+              "98cde390-f268-5ffd-9f2f-31f016a0c432 (q-107303)",
+              "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)",
+              "0ce97e32-c8a9-5155-bb70-6cb7385360f5 (q-107291)"
+            ],
+            "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B inventory_probe.py. Explicit parameters and matching complete records are retained in inventory-results.json and generated-records.json. affected-inventory.json identifies all three entities. Seed 70001 is an independent replay seed, not an asserted historical seed.",
+            "requested_change": "After generator repair, the runner should repair or retire these proven eligible generated records, refresh inventory and request independent review. Preserve original source questions and history; no author database write is required."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260"
+    },
+    {
+      "attempt": 0,
+      "package_hash": "f2e28f3a0d0677c48b52dfa4d9467314a67845f5b1a52d46a7e19b565e72c024",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Radio answer spacing reveals the correct answer without the intended differentiation. The shortcut affects the actual batch and three eligible stored questions. Mathematics, grading, rendering and packaging checks passed; the package remains unchanged.",
+        "source_analysis": {
+          "skill": "Differentiate square-root and reciprocal-square-root functions using the chain rule, then evaluate at a specified point for tangent slopes.",
+          "reasoning_steps": [
+            "Identify the inner polynomial and outer power.",
+            "Differentiate both functions and multiply.",
+            "Substitute and simplify.",
+            "Evaluate at the stated point when requested."
+          ],
+          "invariants": [
+            "Preserve the observed function families, response formats and difficulty.",
+            "Require positive radicands at evaluation points.",
+            "Keep the inner-derivative factor, including legitimate zero slopes."
+          ],
+          "permitted_variations": [
+            "Vary coefficients, signs and valid evaluation points.",
+            "Vary positive, negative and zero slopes where supported.",
+            "Vary distractors and correct-choice positions without revealing the answer through bank construction."
+          ],
+          "source_refs": [
+            "8fcdb2c8-71ca-5bfa-b7fe-49f8f2c05bbb (e-182)",
+            "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+            "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+            "Tutorial 743ad997-8732-5c0f-9676-ff1d44f3b513: differentiate outer and inner functions, multiply, then substitute."
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replays.json",
+              "source-replay-results.json",
+              "scope-results.json",
+              "canonical-record.json"
+            ],
+            "details": "Replayed all 17 source questions and the canonical example. Radio banks and keys match. Missing source fields and historical blank-submission differences are documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "verify_saved.py"
+            ],
+            "details": "Independent differentiation verified all 102 tested records on their real domains."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "coverage-results.json",
+              "independent-samples.json",
+              "batch-records.json"
+            ],
+            "details": "Sampled all 15 layouts and every radio bank role. Parameter coverage is adequate, but does not cure the separate decision shortcut."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Observed function families, reasoning stages and response formats remain represented."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json"
+            ],
+            "details": "435 native-grader checks passed: 180 accepted and 255 rejected, including valid equivalent free entries."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-extra/rendering.json",
+              "visual-inspection.json"
+            ],
+            "details": "Rendered 15 records through the actual UI and inspected representative screenshots. No rendering failures found."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "package-before.json",
+              "evidence-contract.json",
+              "commands.md"
+            ],
+            "details": "Dependencies match exactly; deterministic replay, relocation and boundary rejection passed. Package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut--independent-samples.json",
+              "shortcut-delivery-batch-accepted.json",
+              "counterfactual-results.json",
+              "selection-results.json",
+              "inventory-results.json"
+            ],
+            "details": "The spacing strategy succeeds on all 30 tested simple linear-root radios, including all 10 independently delivered easy examples and the actual batch\u2019s radio. Relevant and irrelevant counterfactual checks passed, but delivery and selection do not remove the shortcut."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "The production scale_bank makes answers consecutive multiples of a shared factor. Multiplying the common spacing by the visible linear coefficient yields the correct square-root derivative or slope; negating that multiplier handles reciprocal roots. This bypasses outer differentiation and target evaluation despite shuffled positions.",
+            "source_refs": [
+              "c8b46779-d19f-5cca-987d-5f500a9de334 (q-107360)",
+              "67f07fb8-cc06-5cda-9a1f-cc029f68242d (q-107288)",
+              "854ec833-4bc0-54f0-9210-c708a9342fef (q-48730)"
+            ],
+            "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_probe.py batch-records.json; exit 1 demonstrates failure. Minimal current case: seed 3173462203, easy, slope_sqrt_radio, parameters a=7,b=37,t=-4. For y=sqrt(37+7x), sorted choices are 1,7/6,4/3,3/2,5/3. Their spacing is 1/6, so choose 7\u00d71/6=7/6 without evaluating the radicand or target. The same record survives delivery.",
+            "requested_change": "Replace the family-wide coefficient-ladder bank construction with source-supported distractors that do not disclose the derivative through spacing. Preserve source families and deterministic replay. Retain the executable regression across applicable templates and delivered candidate batches; the script accepts an explicit candidate-records file. Regenerate the runner batch after package repair."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096842/review-0-policy-2-707c0c642d91a260"
+    }
+  ]
+}

@@ -1,0 +1,1199 @@
+{
+  "learner_operation": "Calculate the exact tangent slope y'(t0)/x'(t0) from a parametric curve and a specified parameter.",
+  "fixed_features": [
+    {
+      "feature": "Compute finite dy/dx at a supplied t",
+      "justification": "The lesson explicitly derives y'(t)/x'(t); all captured practice asks for a finite slope."
+    },
+    {
+      "feature": "Single exact blank or five-option radio",
+      "justification": "These are the captured response contracts."
+    },
+    {
+      "feature": "Observed function-family structure and small exact target domains",
+      "justification": "Keeps the differentiation rules and workload within the original difficulty. No requirement for arbitrary target angles or new operators."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Evaluation target and resulting slope",
+      "eligible_variation": "Change t within domain and regularity constraints; signs and zero status follow the derivatives.",
+      "observed": "Targets vary in all 20 templates; explicit relevant pairs change sign, zero status or rational value."
+    },
+    {
+      "role": "Correct radio choice and bank coefficient role",
+      "eligible_variation": "Any position and eligible bank magnitude may carry the correct slope.",
+      "observed": "Palette key role randomized; no tested magnitude or position predictor persists after cue-focused follow-up. Four actual batch radio positions are distinct."
+    },
+    {
+      "role": "Coordinate translation",
+      "eligible_variation": "Polynomial x additive constant can vary without changing slope.",
+      "observed": "Changing c from 3 to -4 preserves 9/2 and the derivative solution; actual UI changes the displayed curve formula."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "double_sin_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"7*pi/12\", \"11*pi/12\"], \"keys\": [\"\\\\frac{\\\\sqrt{3}}{12}\", \"- \\\\frac{\\\\sqrt{3}}{4}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "double_cos_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"5*pi/6\", \"pi/6\"], \"keys\": [\"\\\\frac{\\\\sqrt{3}}{2}\", \"- \\\\frac{\\\\sqrt{3}}{4}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "poly5_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [3, 1], \"keys\": [\"\\\\frac{549}{2}\", \"\\\\frac{23}{12}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "trig_poly_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"pi/4\", \"3*pi/4\"], \"keys\": [\"\\\\frac{3 \\\\sqrt{2}}{2}\", \"- 3 \\\\sqrt{2}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "cubic_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [-2, 2], \"keys\": [\"- \\\\frac{3}{2}\", \"\\\\frac{1}{3}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "cubic_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [2, 1], \"keys\": [\"\\\\frac{3}{4}\", \"\\\\frac{6}{13}\"], \"rejections\": [[], [\"finite regular slope required\"]]}"
+    },
+    {
+      "case": "linear_trig_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"3*pi/2\", \"pi/2\"], \"keys\": [\"2\", \"1\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "poly4_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [3, 2], \"keys\": [\"\\\\frac{74}{3}\", \"\\\\frac{52}{15}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "harmonic_radio",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-followup-records.json"
+      ],
+      "result": "{\"targets\": [\"11*pi/6\", \"3*pi/4\", \"3*pi/4\"], \"keys\": [\"\\\\frac{10}{3}\", \"- \\\\frac{3}{4}\", \"0\"], \"rejections\": [[], [], []]}"
+    },
+    {
+      "case": "harmonic_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"5*pi/4\", \"4*pi/3\"], \"keys\": [\"0\", \"\\\\frac{2 \\\\sqrt{3}}{3}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "ellipse_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"4*pi/3\", \"5*pi/4\"], \"keys\": [\"- \\\\frac{3 \\\\sqrt{3}}{5}\", \"-1\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "exp_log_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [1, 1], \"keys\": [\"\\\\frac{1}{2 e}\", \"\\\\frac{1}{18 e^{6}}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "exp_product_radio",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-followup-records.json"
+      ],
+      "result": "{\"targets\": [-2, -2, 0], \"keys\": [\"- \\\\frac{6}{2 + e^{4}}\", \"- \\\\frac{1}{3 + 5 e^{4}}\", \"\\\\frac{3}{4}\"], \"rejections\": [[], [], []]}"
+    },
+    {
+      "case": "log_product_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [0, 0], \"keys\": [\"\\\\frac{2}{3}\", \"\\\\frac{1}{5}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "sec_csc_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"pi/6\", \"pi/6\"], \"keys\": [\"-45\", \"- \\\\frac{81}{5}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "exp_root_radio",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-followup-records.json"
+      ],
+      "result": "{\"targets\": [5, 5, 2, 3, 2], \"keys\": [\"- \\\\frac{12 \\\\sqrt{5} e^{5}}{5}\", \"- 8 \\\\sqrt{5} e^{5}\", \"- 3 \\\\sqrt{2} e^{2}\", \"- 4 \\\\sqrt{3} e^{3}\", \"- \\\\sqrt{2} e^{2}\"], \"rejections\": [[], [], [], [], []]}"
+    },
+    {
+      "case": "exp_root_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [5, 1], \"keys\": [\"- \\\\frac{32 \\\\sqrt{5} e^{5}}{15}\", \"0\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "reciprocal_exp_root_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [4, 3], \"keys\": [\"\\\\frac{320 \\\\sqrt{17}}{867 e^{\\\\frac{3}{4}}}\", \"\\\\frac{9 \\\\sqrt{2}}{64 e^{2}}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "reciprocal_exp_root_blank",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [2, 4], \"keys\": [\"\\\\frac{24 \\\\sqrt{7}}{49 e}\", \"\\\\frac{64 \\\\sqrt{17}}{1445 e^{\\\\frac{5}{4}}}\"], \"rejections\": [[], []]}"
+    },
+    {
+      "case": "nested_trig_radio",
+      "sample_refs": [
+        "samples-independent.json"
+      ],
+      "result": "{\"targets\": [\"log(pi/6)\", \"log(5*pi/6)\"], \"keys\": [\"- \\\\frac{16 \\\\sqrt{6}}{5}\", \"\\\\frac{16 \\\\sqrt{6}}{15}\"], \"rejections\": [[], []]}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "target reverses trig slope: {\"u\": \"pi/3\"}",
+      "expected": "Reevaluate slope; response changes",
+      "observed": "- \\frac{3 \\sqrt{3}}{4} -> \\frac{3 \\sqrt{3}}{4}. Prompt and worked evaluation follow changed parameter; native grader checks all radio options (and old blank responses), while actual-UI screenshots verify the pair. The cubic diagram stays identical because only the evaluation target changes, as in source plots without a target marker.",
+      "status": "passed",
+      "justification": "The source rule is dy/dx evaluated at the specified t, so changing t changes the evaluated derivatives.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-followup-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "horizontal target becomes positive: {\"u\": \"3*pi/2\"}",
+      "expected": "Reevaluate slope; response changes",
+      "observed": "0 -> 1. Prompt and worked evaluation follow changed parameter; native grader checks all radio options (and old blank responses), while actual-UI screenshots verify the pair. The cubic diagram stays identical because only the evaluation target changes, as in source plots without a target marker.",
+      "status": "passed",
+      "justification": "The source rule is dy/dx evaluated at the specified t, so changing t changes the evaluated derivatives.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-followup-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "translation preserves slope: {\"c\": -4}",
+      "expected": "Slope preserved",
+      "observed": "\\frac{9}{2} -> \\frac{9}{2}. Prompt and worked evaluation follow changed parameter; native grader checks all radio options (and old blank responses), while actual-UI screenshots verify the pair. The cubic diagram stays identical because only the evaluation target changes, as in source plots without a target marker.",
+      "status": "passed",
+      "justification": "A coordinate translation differentiates to zero.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-followup-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "illustrated cubic target changes slope: {\"u\": 3}",
+      "expected": "Reevaluate slope; response changes",
+      "observed": "\\frac{1}{5} -> \\frac{2}{13}. Prompt and worked evaluation follow changed parameter; native grader checks all radio options (and old blank responses), while actual-UI screenshots verify the pair. The cubic diagram stays identical because only the evaluation target changes, as in source plots without a target marker.",
+      "status": "passed",
+      "justification": "The source rule is dy/dx evaluated at the specified t, so changing t changes the evaluated derivatives.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-followup-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "hard horizontal target: {\"u\": 2}",
+      "expected": "Reevaluate slope; response changes",
+      "observed": "0 -> - \\sqrt{2} e^{2}. Prompt and worked evaluation follow changed parameter; native grader checks all radio options (and old blank responses), while actual-UI screenshots verify the pair. The cubic diagram stays identical because only the evaluation target changes, as in source plots without a target marker.",
+      "status": "passed",
+      "justification": "The source rule is dy/dx evaluated at the specified t, so changing t changes the evaluated derivatives.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "math-results.json",
+        "grader-followup-results.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first_option",
+      "subgroup": "double_sin_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "double_sin_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "double_sin_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "double_sin_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "double_cos_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "double_cos_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "double_cos_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "double_cos_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "poly5_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "poly5_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "poly5_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "poly5_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "trig_poly_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "trig_poly_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "trig_poly_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "trig_poly_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "cubic_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "cubic_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "cubic_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "cubic_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "linear_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "linear_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "linear_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "linear_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "poly4_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "poly4_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "poly4_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "poly4_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "harmonic_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "harmonic_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "harmonic_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json",
+        "shortcut-followup-records.json",
+        "shortcut-followup-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "harmonic_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "exp_product_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "exp_product_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "exp_product_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json",
+        "shortcut-followup-records.json",
+        "shortcut-followup-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "exp_product_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "sec_csc_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "sec_csc_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "sec_csc_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "sec_csc_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json",
+        "shortcut-followup-records.json",
+        "shortcut-followup-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "reciprocal_exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "reciprocal_exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "reciprocal_exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "reciprocal_exp_root_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_option",
+      "subgroup": "nested_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "nested_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "nested_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "nested_trig_radio",
+      "scope": "within_template",
+      "strategy": "Choose largest magnitude",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform random selection among five options succeeds with probability 0.2. No tested strategy perfectly predicts this subgroup after the targeted follow-up; small samples do not establish absence of other cues. Raw first-option probes refer to package order; actual UI order is separately tested.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "rendered answer position",
+      "subgroup": "runner batch radio questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose rendered option 1",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-option baseline is 0.2. Actual UI correct positions are [2, 5, 4, 3]. The remaining batch item is a blank; no position strategy answers the whole batch.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered answer position",
+      "subgroup": "runner batch radio questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose rendered option 2",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-option baseline is 0.2. Actual UI correct positions are [2, 5, 4, 3]. The remaining batch item is a blank; no position strategy answers the whole batch.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered answer position",
+      "subgroup": "runner batch radio questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose rendered option 3",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-option baseline is 0.2. Actual UI correct positions are [2, 5, 4, 3]. The remaining batch item is a blank; no position strategy answers the whole batch.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered answer position",
+      "subgroup": "runner batch radio questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose rendered option 4",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-option baseline is 0.2. Actual UI correct positions are [2, 5, 4, 3]. The remaining batch item is a blank; no position strategy answers the whole batch.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered answer position",
+      "subgroup": "runner batch radio questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose rendered option 5",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-option baseline is 0.2. Actual UI correct positions are [2, 5, 4, 3]. The remaining batch item is a blank; no position strategy answers the whole batch.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "zero",
+      "subgroup": "accepted runner batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose zero",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option random baseline 0.2; all four radio cases survive actual normalization/deduplication unchanged in mathematical content. None of these actions answers all four. Single-member template subgroups are not evidence of a recurring conditional shortcut.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "smallest_nonzero_magnitude",
+      "subgroup": "accepted runner batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose smallest nonzero magnitude",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option random baseline 0.2; all four radio cases survive actual normalization/deduplication unchanged in mathematical content. None of these actions answers all four. Single-member template subgroups are not evidence of a recurring conditional shortcut.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "largest_magnitude",
+      "subgroup": "accepted runner batch radio questions",
+      "scope": "overall",
+      "strategy": "Choose largest magnitude",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option random baseline 0.2; all four radio cases survive actual normalization/deduplication unchanged in mathematical content. None of these actions answers all four. Single-member template subgroups are not evidence of a recurring conditional shortcut.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter rejection and whole-bank collision resampling",
+      "requested difficulty",
+      "actual publisher normalization and inventory/within-batch deduplication",
+      "captured inventory eligibility",
+      "learner fresh/history and weighted-difficulty selection code",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "rejection-tests.json",
+      "samples-independent.json",
+      "batch.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "inventory-review.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "Runner batch: 5 input, 0 duplicates, 5 accepted. Independently sampled easy set: 16 input, 0 duplicates, 16 accepted. Measured keys, templates and cue counts are preserved across filtering. All five batch cases remain selectable under the stated fresh easy-band assumptions; actual UI ordering was read from rendered HTML."
+  },
+  "limitations": [
+    "Finite audit cannot prove absence of every shortcut.",
+    "Per-template random samples are deliberately small; three apparent perfect cues received targeted counterexamples rather than a broad search.",
+    "No live policy or learner history is supplied; selection analysis is conditional on fresh eligible candidates and positive easy weight. Captured inventory basis 5644 may later change.",
+    "Hard/moderate sampler checks do not imply delivery under this job's easy request.",
+    "The separate native grading failure for fractional exp arguments remains unresolved; decision variation checks do not waive it."
+  ]
+}

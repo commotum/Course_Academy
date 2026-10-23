@@ -1,0 +1,762 @@
+{
+  "learner_operation": "Identify the specified unchanged pivot row and cleared column, determine both integer cancellation coefficients from matrix entries, verify both complete row additions and select the matching pair.",
+  "fixed_features": [
+    {
+      "feature": "3x3 integer matrices, one unchanged pivot row, two row additions and five radio choices.",
+      "justification": "All ten assessed source cases and the Introduction tutorial teach this two-operation workload; changing operators or response type would change the skill."
+    },
+    {
+      "feature": "Four sign combinations of the principal magnitude pair plus one source-type magnitude distractor.",
+      "justification": "Retains source bank error types. A magnitude error can be rejected mathematically, but either operation sign still depends on the matrices."
+    },
+    {
+      "feature": "Small CLI batches use one visible bank shape; extra signs fixed inside that shape for one batch.",
+      "justification": "The four independent correct sign cases are exercised against the same cue, which prevents that cue predicting either sign. Across batches all three shapes and all source profiles remain available; this scheduling does not fix correct signs."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Unchanged pivot row and zeroed column",
+      "eligible_variation": "Any of the nine row-column coordinates while keeping nonzero pivot and integral coefficients.",
+      "observed": "All nine explicit boundaries; fixed A tested with changed column and changed pivot row; prompt, answer and solution follow targets."
+    },
+    {
+      "role": "Signed coefficients of the first and second target rows",
+      "eligible_variation": "Vary both signs independently, magnitudes including units, and equal magnitudes in unit-error profiles.",
+      "observed": "All four sign pairs in the exact five-record delivered batch and each shape in 26 fresh CLI records; all ten fixed-bank quartets change the correct answer without changing bank content."
+    },
+    {
+      "role": "Extra distractor magnitude coordinate and sign",
+      "eligible_variation": "Unit error in either coordinate or swapped magnitudes; independent signs subject to five distinct choices.",
+      "observed": "All three shapes survive fresh CLI delivery. Retained author test independently rerun covers every extra sign/role in 52 identical-bank groups."
+    },
+    {
+      "role": "Correct choice position",
+      "eligible_variation": "No fixed correct position.",
+      "observed": "Correct displayed positions range 1\u20135 in eight actual UI cases; authored bank order and UI order differ."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Original fidelity: ten questions, twelve complete captured banks and canonical example matrices/operations",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "boundary-records.json"
+      ],
+      "result": "All mathematical banks and keyed choices match. Canonical example has no captured answer bank; no claim of bank replay there."
+    },
+    {
+      "case": "Relevant sign and target changes; irrelevant non-target change",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "all-grader-input.json",
+        "grader-report.json",
+        "render-records.json",
+        "target-render-records.json"
+      ],
+      "result": "Answers, matrices, explanations and native grader outcomes follow the intended dependency."
+    },
+    {
+      "case": "Actual runner batch, seed 1278010737, easy, count 5",
+      "sample_refs": [
+        "batch.json",
+        "cli-replay.json",
+        "delivery-batch/accepted.json",
+        "post-delivery-shortcuts.json"
+      ],
+      "result": "All 5 survive filtering. Old opposite-outlier-first-sign shortcut succeeds 2/5, same-sign variant 3/5. All four coefficient-sign decisions survive."
+    },
+    {
+      "case": "Fresh CLI seeds 881901/881902/881903 with counts 5/9/12",
+      "sample_refs": [
+        "fresh-batches.json",
+        "batch-sampling.json",
+        "delivery-fresh-batches/accepted.json",
+        "post-delivery-shortcuts.json"
+      ],
+      "result": "26/26 survive delivery; each represented shape has all four sign pairs and counterexamples to both cue polarities."
+    },
+    {
+      "case": "Unscheduled direct-generator controls",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-fresh/accepted.json",
+        "post-delivery-shortcuts.json"
+      ],
+      "result": "30 direct samples collapse to 6 semantic prompts because the same three seeds were applied across profiles. The three swapped-magnitude survivors happen to share second-sign relationships. This diagnostic fixture bypasses the revised CLI batch scheduler; current emitted batches explicitly include counterexamples, so it does not demonstrate a current batch defect."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold seed=472, q-42531 bank, pivot and other entries fixed; change A[1][0] from 2 to -2 and the required first coefficient from -2 to +2.",
+      "expected": "First operation and B must change; prior (-2,+3) pair must be rejected.",
+      "observed": "Same bank, different correct pair and B. Native grader accepts base pair before change and rejects it afterward. Actual UI shows changed sign and solution operation.",
+      "status": "passed",
+      "justification": "Cancellation depends on the target entry, as demonstrated by source q-42531 and tutorial.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "all-grader-input.json",
+        "grader-report.json",
+        "render-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold cancellation entries, pivot and seed fixed; change A[1][1] from 5 to 6.",
+      "expected": "Correct row-operation pair unchanged; transformed non-target entry and intermediate matrix update.",
+      "observed": "(-2,+3) remains correct and native-accepted; intermediate and final row entries update from 1 to 2. Screenshot verified.",
+      "status": "passed",
+      "justification": "The ratio in the eliminated column determines the multiplier; non-target entries only change the resulting row.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep A=[[1,1,3],[2,1,5],[4,3,7]] fixed; change cleared column 0 to 1, then pivot row 0 to 1.",
+      "expected": "Cleared column, target rows, coefficients and B follow selected target; solutions name the new pivot.",
+      "observed": "Coefficient pairs (-2,-4), (-1,-3) and (-1,-3) with changed target rows; all displayed banks independently evaluated, accepted/rejected by native grader, and rendered target references inspected.",
+      "status": "passed",
+      "justification": "Sources include above, below, and above-and-below elimination and all three cleared columns.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "target-render-records.json",
+        "grader-report.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/all",
+      "scope": "overall",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/all",
+      "scope": "overall",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/all",
+      "scope": "overall",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/all",
+      "scope": "overall",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "batch/all",
+      "scope": "within_template",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "batch/all",
+      "scope": "within_template",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "batch/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/all",
+      "scope": "overall",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 12,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/all",
+      "scope": "overall",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 14,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/all",
+      "scope": "overall",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 12,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/all",
+      "scope": "overall",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 14,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "fresh-batches/all",
+      "scope": "within_template",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 13,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "fresh-batches/all",
+      "scope": "within_template",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 13,
+      "total": 26,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "fresh-batches/unit-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 6,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "fresh-batches/unit-second",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 1; calculate only the other operation.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use same outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Unique magnitude outlier sign",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use opposite outlier sign and modal magnitude for operation 2; calculate only the other operation.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 is guessing one unresolved sign after calculating the other operation. Both successes and failures occur within this visible bank shape; no deterministic bypass remains.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Sign of the other operation",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Calculate second coefficient; assign first coefficient the same sign and modal magnitude.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for the uncomputed sign. All four signed answers are represented; both same-sign and opposite-sign relationships survive delivery.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Most frequent first coefficient",
+      "subgroup": "fresh-batches/swap",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Take first-coordinate mode, breaking ties by displayed bank order; calculate second coefficient.",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/2 for an uncomputed sign. The original invariant modal-correct relationship is absent; ties and both outcomes occur. UI further reorders tied options.",
+      "sample_refs": [
+        "post-delivery-shortcuts.json",
+        "delivery-fresh-batches/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible option position",
+      "subgroup": "eight rendered examples",
+      "scope": "overall",
+      "strategy": "Always choose displayed first option.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 for five radio choices. Correct choices appear in positions 1 through 5; UI shuffling means authored position is not a stable cue.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render-records.json",
+        "target-render-records.json"
+      ]
+    },
+    {
+      "cue": "Identical bank wording, signs, order, and profile",
+      "subgroup": "four controlled sign cases for each of ten source profiles",
+      "scope": "within_template",
+      "strategy": "Use a fixed bank-only guess for the correct pair.",
+      "correct": 10,
+      "total": 40,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Even knowing the four plausible magnitudes gives a 1/4 baseline. Each unchanged bank supports all four correct sign pairs when matrix evidence changes; bank-only inference cannot recover either sign.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "math-results.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Single-instance bounded rejection/resampling",
+      "CLI batch sign/shape rejection and duplicate prevention",
+      "Requested easy difficulty",
+      "Actual publisher normalization and inventory/within-batch deduplication",
+      "Captured stored inventory eligibility",
+      "Question-selection positive-weight, zero-weight, absent-weight and history-exclusion rules"
+    ],
+    "sample_refs": [
+      "batch-sampling.json",
+      "resampling.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-fresh/delivery.json",
+      "delivery-fresh-batches/delivery.json",
+      "post-delivery-shortcuts.json",
+      "selection.json",
+      "inventory-inspection.json"
+    ],
+    "result": "Captured basis 5580: runner batch 5/5 and fresh CLI batches 26/26 survive. All intended sign counterexamples remain available. No stored generated question exists; original source questions are not generated-pool repair candidates. Selection preserves equal support within positive easy band; no live publication performed."
+  },
+  "limitations": [
+    "Finite audit does not exclude every imaginable shortcut.",
+    "No live learner policy/history or new database entity IDs supplied; selection is a faithful read-only model of the captured all-easy candidates, with ordering and history limits recorded.",
+    "A learner consuming only part of the finite pool is not guaranteed all four sign cases. Future inventory deduplication can alter delivered coverage.",
+    "Canonical source example has no captured answer bank; two assessed questions have duplicate selection fields, both complete banks checked.",
+    "No free-entry family is supported, so equivalent-entry notation tests are inapplicable; all radio choices and controlled response preservation/rejection were exercised."
+  ]
+}

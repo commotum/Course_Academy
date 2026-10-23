@@ -15,14 +15,18 @@ JS=r'''html=>{
  function go(n){
   const k=n.getAttribute('data-mml-node');
   if(leaves.has(k)){
-   const vals=[...n.querySelectorAll('[data-c]')].filter(x=>!x.closest('defs')).map(x=>[(stretchy[x.getAttribute('data-c')]||x.getAttribute('data-c')).toUpperCase(),color(x)]);
+   const vals=[...n.querySelectorAll('path[data-c],use[data-c]')].filter(x=>!x.closest('defs')).map(x=>[(stretchy[x.getAttribute('data-c')]||x.getAttribute('data-c')).toUpperCase(),color(x)]);
    if(!vals.length){for(const t of n.querySelectorAll('text'))for(const c of t.textContent)vals.push([c.codePointAt(0).toString(16).toUpperCase(),color(t)])}
-   const out=[];for(let [c,col] of vals){if(['20','A0','200B','2061','2062','2063','2064'].includes(c))continue;const v=c+':'+col;if(stretchy[[...n.querySelectorAll('[data-c]')][vals.indexOf([c,col])]?.getAttribute('data-c')]&&out.at(-1)===v)continue;out.push(v)}
+   if(vals.length&&vals.every(([c])=>parseInt(c,16)>=0xE150&&parseInt(c,16)<=0xE156))return [(n.parentElement.getAttribute('data-mml-node')==='munder'?'23DF':'23DE')+':'+color(n)];
+   const out=[];for(let [c,col] of vals){if(['20','A0','200B','2061','2062','2063','2064'].includes(c))continue;const v=c+':'+col;out.push(v)}
    // Stretchy delimiters consist of repeated pieces of the same fence.
    if(out.length>1&&out.every(x=>x===out[0])&&['28','29','5B','5D','7B','7D','7C','2016'].includes(out[0].split(':')[0]))return [out[0]];
    return out;
   }
-  const kids=[...n.children].filter(x=>!['defs','title'].includes(x.localName));
+  let kids=[...n.children].filter(x=>!['defs','title'].includes(x.localName));
+  if(k==='munderover'&&kids.length===3){const y=n=>+(n.getAttribute('transform')?.match(/translate\([^, )]+[, ]+([-\d.]+)/)?.[1]||0);kids=[kids[0],...kids.slice(1).sort((a,b)=>y(a)-y(b))]}
+  const bg=kids.find(x=>x.hasAttribute('data-bgcolor'));
+  if(bg)return [{k:'background',color:bg.getAttribute('fill').toLowerCase(),c:kids.filter(x=>x!==bg).flatMap(go)}];
   if(roles.has(k))return [{k,c:kids.filter(x=>x.localName==='g'||x.hasAttribute('data-mml-node')).map(x=>go(x)),
      rules:k==='menclose'?[...n.querySelectorAll('line')].map(x=>Math.sign((+x.getAttribute('x2')- +x.getAttribute('x1'))*(+x.getAttribute('y2')- +x.getAttribute('y1')))):undefined}];
   return kids.flatMap(go);

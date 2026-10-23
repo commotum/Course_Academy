@@ -4,11 +4,17 @@ from pathlib import Path
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[3];RAW=ROOT/'.local/edb/math-image-import-audit-2026-10-22'
 FIXED={'mfrac','msup','msub','msubsup','munder','mover','munderover','mroot'}
 def canonical(x):
- if isinstance(x,str):return x
+ if isinstance(x,str):
+  code,sep,color=x.partition(':')
+  code={'2C6':'5E','2225':'2016'}.get(code,code)
+  return code+sep+color
  if isinstance(x,list):return [v for child in x for v in (canonical(child) if isinstance(child,list) else [canonical(child)])]
  children=[canonical(c) for c in x['c']]
  if x['k'] not in FIXED:children=canonical(children)
+ if x['k']=='mtr':
+  while children and isinstance(children[-1],dict) and children[-1]['k']=='mtd' and not children[-1]['c']:children.pop()
  out={'k':x['k'],'c':children}
+ if 'color' in x:out['color']=x['color']
  if 'rules' in x:out['rules']=x['rules']
  return out
 def key(fp):return json.dumps(canonical(json.loads(fp)),separators=(',',':')) if fp else None

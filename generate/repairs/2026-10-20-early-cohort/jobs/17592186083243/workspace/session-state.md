@@ -1,0 +1,1 @@
+Latest failure reproduced with native check-engine; exit 1, fractional exp unresolved. Instructional account written before engine edits. Runtime package preserved. Next: engine normalization repair, narrow tests, harness rebuild, current-output regression and delivery/render checks.
