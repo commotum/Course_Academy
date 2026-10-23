@@ -1,1 +1,1 @@
-Source milestone: independently confirmed prior source account against all 11 source prompts/banks and lesson. Saved source-analysis.json before package inspection.
+Source replay and targeted mathematics complete. Prior counterexample and retained author regression fail old package, pass current. Delivery retains 5/5 batch and 21/26 independent samples. Native grading and UI render pending. Package unchanged so far.

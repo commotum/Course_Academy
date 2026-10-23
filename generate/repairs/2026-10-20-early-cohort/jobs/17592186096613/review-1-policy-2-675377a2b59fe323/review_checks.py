@@ -46,7 +46,7 @@ for profile,pvals in [('quotient',[(-1,2,0),(1,2,0),(-1,12,0),(1,12,0)]),('integ
 save('samples.json',records+directed)
 pairs=[]
 for profile,n,d,k in [('quotient',1,4,0),('canonical',1,4,0),('equivalent-entry',1,4,0),('integer',7,1,0),('fraction',2,3,0),('euler',2,1,1),('canonical',-11,1,0),('equivalent-entry',11,4,0)]:
- base=g.generate_easy(seed=53,profile=profile,parameters=dict(n=n,d=d,k=k));after=g.generate_easy(seed=53,profile=profile,parameters=dict(n=-n,d=d,k=k));shuffle=g.generate_easy(seed=54,profile=profile,parameters=dict(n=n,d=d,k=k))
+ base=g.generate_easy(seed=53,profile=profile,parameters=dict(n=n,d=d,k=k));after=g.generate_easy(seed=53,profile=profile,parameters=dict(n=n+2 if profile=='fraction' else -n,d=d,k=k));shuffle=g.generate_easy(seed=54,profile=profile,parameters=dict(n=n,d=d,k=k))
  pairs.append({'profile':profile,'before':base,'relevant_after':after,'irrelevant_after':shuffle})
 save('counterfactuals.json',pairs)
 allr=batch+records+directed+[r for p in pairs for k,r in p.items() if k!='profile']

@@ -1397,7 +1397,18 @@ impl Parser {
             // Subscripts name distinct formal variables. In particular, the
             // digits of a matrix index are labels, not an arithmetic value.
             // Braces around the base or individual index labels are cosmetic.
-            let index = self.subscript()?;
+            let mut index = self.subscript()?;
+            // For two atomic indices, the comma only separates the labels:
+            // a_{i,j} = a_{ij}, including a_{2,3} = a_{23}. Keep separators
+            // for longer components or tuples: a_{1,23} != a_{12,3}.
+            // Normalize the complete subscript, not intermediate brace groups.
+            if let Some((row, column)) = index.split_once(',') {
+                if row.len() == 1 && column.len() == 1
+                    && row.bytes().chain(column.bytes()).all(|c| c.is_ascii_alphanumeric())
+                {
+                    index = format!("{row}{column}");
+                }
+            }
             a = Ast::Symbol(format!("{name}_[{index}]"));
         }
         if self.mark('^') {
@@ -1878,13 +1889,41 @@ mod tests {
             ("b_{11}", "b_{12}"), ("a_{23}", "a_{32}"),
             ("a_{23}", "b_{23}"), ("b_{11}", "b"),
             ("b_{11}", "11*b"), ("b_{11}", "-2"),
-            ("b_{11}", "b_11"), ("a_{12}", "a_{1,2}"),
+            ("b_{11}", "b_11"),
             ("a_{12}", "a_{012}"),
         ] {
             assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
         }
         for a in ["a_{}", "a_{", "a_", "a_{1}_2", "(a+b)_{12}", "a_{1+2}"] {
             assert!(!supports(a, Context::default()), "{a}");
+        }
+    }
+    #[test]
+    fn comma_separated_atomic_indices_preserve_coordinates() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("c_{2,2}", "c_{22}"),
+            ("a_{1,2}", "{a}_{12}"),
+            ("{{b}}_{{2},{3}}", "b_{23}"),
+            ("a_{ i , j }", "a_{ij}"),
+            ("a_{i,2}", "a_{i2}"),
+            ("2*a_{1,2}+a_{12}", "3*a_{12}"),
+            ("a_{1,2}^2", "a_{12}*a_{1,2}"),
+            ("a_{{12},{3}}", "a_{12,3}"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, Context::default()), Ok(true), "{b} vs {a}");
+        }
+        for (a, b) in [
+            ("a_{1,2}", "a_{2,1}"), ("a_{1,2}", "a_{1,3}"),
+            ("a_{1,2}", "b_{1,2}"), ("a_{1,2}", "12"),
+            ("a_{1,2}", "a"), ("a_{1,2}", "a_12"),
+            ("a_{1,23}", "a_{12,3}"), ("a_{1,23}", "a_{123}"),
+            ("a_{1,2,3}", "a_{123}"), ("a_{01,2}", "a_{12}"),
+            ("a_{1,,2}", "a_{12}"), ("a_{,12}", "a_{12}"),
+            ("a_{12,}", "a_{12}"), ("a_{{1,2}3}", "a_{123}"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
         }
     }
     #[test]

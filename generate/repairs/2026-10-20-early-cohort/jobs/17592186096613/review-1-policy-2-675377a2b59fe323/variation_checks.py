@@ -9,7 +9,7 @@ def counts(rs):return {'count':len(rs),'profiles':dict(collections.Counter(r['ge
 sets={'raw_sample':load('samples.json'),'delivered_sample':load('delivery-samples/accepted.json'),'raw_batch':json.loads(args.candidate_records.read_text()),'delivered_batch':load('delivery-batch/accepted.json')}
 coverage={k:counts(v) for k,v in sets.items()};probes=[]
 for stage,rs in sets.items():
- for profile in ['all','integer','fraction','euler']:
+ for profile in ['all','integer','fraction','euler','quotient']:
   rr=[r for r in rs if f(r)[':answer-field/type'].endswith('/radio') and (profile=='all' or r['generation']['bank_profile']==profile)]
   if not rr:continue
   pos=[next(i for i,a in enumerate(f(r)[':answer-field/choices']) if a[':answer/id']==f(r)[':answer-field/correct'][1]) for r in rr]
@@ -22,7 +22,7 @@ for i,r in enumerate(render):
  ids=re.findall(r'<input type="radio"[^>]* value="([^"]+)"',html)
  assert len(ids)==5
  pos=ids.index(f(r)[':answer-field/correct'][1]);ui.append({'render_index':i,'profile':r['generation']['bank_profile'],'id':r['question'][':question/id'],'position_zero_based':pos,'displayed_answer_ids':ids})
-for profile in ['all','integer','fraction','euler']:
+for profile in ['all','integer','fraction','euler','quotient']:
  rr=[v for v in ui if profile=='all' or v['profile']==profile]
  probes.append({'stage':'actual UI batch and controlled pairs','profile':profile,'strategy':'choose first displayed option','correct':sum(v['position_zero_based']==0 for v in rr),'total':len(rr)})
 cf=[]
@@ -51,5 +51,5 @@ for excluded in [[],existing,new[:-1],existing+new[:-1]]:
  for i in range(128):
   seed='independent-review/'+str(i);h=hashlib.sha256(('course-academy/question-selection/v1/'+seed).encode()).digest();u=(int.from_bytes(h[8:16],'big')>>11)/2**53;draws.append(pool[int(u*len(pool))])
  sel.append({'excluded':excluded,'pool':pool,'draw_counts':dict(collections.Counter(draws))})
-save('selection-results.json',{'source':'engine/rust/question_selection.rs select and seen_before_task; engine/rust/learning.rs validate_practice_question','basis':inv['basis'],'assumptions':['easy band has positive configured weight; all eligible captured questions and candidates are easy','empty or explicitly modeled prior history','new entity IDs modeled contiguously because publication is absent'],'observations':sel,'conclusion':'With positive easy weight, selection is uniform within the fresh easy pool. All modeled candidates are reached. History removes seen records and does not enforce bank/profile balance. An unconfigured policy instead returns the lowest entity ID; no policy was captured, so actual learner draws are not claimed.','limits':['No actual learner history/policy or future entity IDs are captured. These affect individual draws, not the missing quotient family or all-five-candidates survival.']})
+save('selection-results.json',{'source':'engine/rust/question_selection.rs select and seen_before_task; engine/rust/learning.rs validate_practice_question','basis':inv['basis'],'assumptions':['easy band has positive configured weight; all eligible captured questions and candidates are easy','empty or explicitly modeled prior history','new entity IDs modeled contiguously because publication is absent'],'observations':sel,'conclusion':'With positive easy weight, selection is uniform within the fresh easy pool. All modeled candidates are reached. History removes seen records and does not enforce bank/profile balance. An unconfigured policy instead returns the lowest entity ID; no policy was captured, so actual learner draws are not claimed.','limits':['No actual learner history/policy or future entity IDs are captured. These affect individual draws, not all-five-candidates survival.']})
 print(json.dumps({'coverage':coverage,'counterfactuals':cf,'eligible_inventory':len(existing),'ui_first':[(x['profile'],x['correct'],x['total']) for x in probes if x['stage'].startswith('actual')]}))
