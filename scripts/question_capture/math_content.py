@@ -12,6 +12,7 @@ import uuid
 from core import ALLOWED, ensured, ref, stable_id, validate_question
 from edn import kw
 from math_format import normalize_capture_question
+from historical_context import require_activity_context
 
 
 def scalar(value):
@@ -79,6 +80,7 @@ def field_signature(field, stored=False):
 
 
 def build_math_content(content, topics, existing):
+    require_activity_context(content)
     transaction, retractions, changes = [], [], []
     points = {str(p[':knowledge-point/id']): p for t in topics.values()
               for p in t.get(':topic/knowledge-points', [])}

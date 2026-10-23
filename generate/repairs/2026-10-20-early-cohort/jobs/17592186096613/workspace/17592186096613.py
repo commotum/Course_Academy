@@ -17,6 +17,8 @@ VERSION='constant-ln-2.0'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 QS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
+QUOTIENT_SOURCE=json.loads((HERE/'quotient-source.json').read_text())
+QS.update(QUOTIENT_SOURCE['questions'])
 x=sp.Symbol('x',positive=True)
 LEVELS=('easy','moderate','hard')
 CASES={
@@ -29,10 +31,13 @@ CASES={
  'q-308849':('blank','canonical',8,1,0),
  'q-339949':('blank','equivalent-entry',11,4,0),
  'q-339950':('blank','equivalent-entry',-7,3,0),
+ 'q-70887':('quotient-radio','quotient',1,4,0),
+ 'q-70889':('radio-dot','euler',6,1,1),
 }
 TEMPLATES={'legacy-radio':('easy','radio',('integer','fraction')),
  'radio-dot':('easy','radio',('integer','euler')),
  'blank':('easy','blank',('canonical','equivalent-entry')),
+ 'quotient-radio':('easy','radio',('quotient',)),
  'authored-rational-e':('moderate','blank',('canonical',)),
  'authored-signed-rational-e-power':('hard','blank',('canonical',))}
 RAW_PROFILES={'raw-'+sid:sid for sid in CASES}
@@ -71,9 +76,11 @@ def coefficient(problem):
 
 def validate_parameters(p,level,bank,raw=False):
     if set(p)!={'n','d','k'} or any(type(p[a]) is not int for a in p):raise ValueError('Use exact integer n,d,k')
-    if not 2<=abs(p['n'])<=30 or not 1<=p['d']<=12 or math.gcd(abs(p['n']),p['d'])!=1:raise ValueError('Reduced coefficient |n|2..30, d1..12')
+    unit_allowed=bank in ('quotient','canonical','equivalent-entry') and p['d']>=2
+    if not (1 if unit_allowed else 2)<=abs(p['n'])<=30 or not 1<=p['d']<=12 or math.gcd(abs(p['n']),p['d'])!=1:raise ValueError('Reduced nonzero coefficient within profile bounds, d1..12')
     if not 0<=p['k']<=4:raise ValueError('Constant Euler exponent 0..4')
     if raw or level=='easy':
+        if bank=='quotient' and (abs(p['n'])!=1 or p['d']<2 or p['k']!=0):raise ValueError('Signed unit-fraction quotient profile')
         if bank=='integer' and (p['d']!=1 or p['k']!=0):raise ValueError('Integer profile')
         if bank in ('fraction','equivalent-entry') and (p['d']==1 or p['k']!=0):raise ValueError('Rational profile')
         if bank=='fraction' and p['n']<2:raise ValueError('Positive source fraction bank')
@@ -90,9 +97,10 @@ def bank_values(p,bank):
     if bank=='integer':v=[1/x,-c/x,1/(c*x),x/c,c/x]
     elif bank=='fraction':v=[c/x,1/(d*x),n/x,d/x,1/(c*x)]
     elif bank=='euler':v=[sp.E/(n*x),n/(sp.E*x),c/x,n+sp.E/x,sp.E+n/x]
+    elif bank=='quotient':v=[-c/x,c/x,-1/(c*x),1/x,1/(c*x)]
     elif bank=='none':return []
     else:v=[c/x]
-    if bank in ('integer','fraction','euler') and any(sp.simplify(a-b)==0 for i,a in enumerate(v) for b in v[:i]):raise ValueError('Whole bank rejected: equivalent options')
+    if bank in ('integer','fraction','euler','quotient') and any(sp.simplify(a-b)==0 for i,a in enumerate(v) for b in v[:i]):raise ValueError('Whole bank rejected: equivalent options')
     out=[latex(a) for a in v]
     if bank=='equivalent-entry':out.append(f'{n}/({d}x)')
     return out
@@ -107,6 +115,13 @@ def mask(text,original):
 def render_mask(text,p):return text.replace('@@DERIVATIVE@@',latex(constant(p)/x)).replace('@@COEFFICIENT@@',latex(constant(p)))
 def source_recipe(sid,p):
     source=QS[sid];_,_,n,d,k=CASES[sid];anchor={'n':n,'d':d,'k':k}
+    if sid=='q-70887':
+        # Mask the whole logarithm quotient before coefficient/derivative slots.
+        # A denominator is also present in the rewriting row and final answer.
+        original=r'\frac{\operatorname{ln}⁡x}{4}'
+        function=('-' if p['n']<0 else '')+r'\frac{\operatorname{ln}⁡x}{'+str(p['d'])+'}'
+        return {key:render_mask(mask(source[key].replace(original,'@@FUNCTION@@'),anchor),p).replace('@@FUNCTION@@',function)
+                for key in (':question/problem',':question/worked-solution')}
     result={':question/problem':render_mask(mask(source[':question/problem'],anchor),p)}
     if ':question/worked-solution' in source:result[':question/worked-solution']=render_mask(mask(source[':question/worked-solution'],anchor),p)
     return result
@@ -115,7 +130,7 @@ def authored_solution(p):
     c=latex(constant(p));a=latex(constant(p)/x)
     return ('The derivative of the natural logarithm is the reciprocal function:\n\n$$\n'+r'\frac{\text{d}}{\text{d}x}(\ln x)=\frac{1}{x}'+'\n$$\n\nWe apply our formula and get\n\n$$\n'+r'\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}}{\text{d}x}('+c+r'\ln x) \\  & ='+c+r'\frac{\text{d}}{\text{d}x}(\ln x) \\  & ='+c+r'\cdot \frac{1}{x} \\  & ='+a+r'.\end{aligned}'+'\n$$')
 
-def normalize_ln(text):return text.replace('ln\u2061',r'\ln ').replace(r'\operatorname{ln}x',r'\ln x')
+def normalize_ln(text):return text.replace('ln\u2061',r'\ln ').replace('\u2061','').replace(r'\operatorname{ln}x',r'\ln x')
 @functools.lru_cache(maxsize=None)
 def parameter_domain(level,bank,raw=False):
     domain=[]
@@ -135,7 +150,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if level not in LEVELS:raise ValueError('difficulty')
     rng=random.Random(seed);raw=profile in RAW_PROFILES
     sid=RAW_PROFILES[profile] if raw else None
-    if profile and not raw and profile not in ('integer','fraction','euler','canonical','equivalent-entry'):raise ValueError('Unknown profile')
+    if profile and not raw and profile not in ('integer','fraction','euler','canonical','equivalent-entry','quotient'):raise ValueError('Unknown profile')
     if raw:
         t,bank,*_=CASES[sid]
         if level!='easy' or template is not None and template!=t:raise ValueError('Raw profiles preserve captured easy/unrated scope')

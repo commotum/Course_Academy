@@ -1,0 +1,15 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186064206/review-0-policy-2-6273cf8765511f83",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression.py --candidate-records delivery-batch/accepted.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-samples --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input delivery-batch/accepted.json --output render-batch --asset-root delivery-batch/assets --math-root /media/jake/SSD/EDB/math"
+  ],
+  "regression_expected_exit": 1,
+  "repair_history": "No repair-history.json or repair-preflight.json present; no previous review supplied. Initial independent review.",
+  "reproduce_reports": "After delivery and rendering, run finish_evidence.py. All writes remain under evidence_root."
+}

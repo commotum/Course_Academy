@@ -23,6 +23,7 @@ SOURCE = ROOT / 'reference/mathacademy/history-question-import-2026-10-04'
 sys.path.insert(0, str(ROOT / 'scripts/question_capture'))
 from core import build_transaction, validate_question
 from edn import dumps, loads
+from historical_context import historical_task_type
 
 # Decompositions of saved conclusions; field labels specify response order.
 COMPONENTS = {
@@ -422,6 +423,8 @@ def prepare(source, output):
         question = copy.deepcopy(source_question)
         mid = question['math_academy_id']
         try:
+            if historical_task_type(question) == 'multistep':
+                raise ReviewNeeded('multistep-context: import the complete ordered activity, not individual parts')
             if mid in image_ids:
                 raise ReviewNeeded('image-reconstruction')
             answer = answers.get(mid)

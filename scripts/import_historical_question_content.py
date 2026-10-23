@@ -188,7 +188,9 @@ def prepare():
                 'answer_fields':r.fields,'extraction_errors':sorted(set(r.errors)),
                 'solution_formulas':solution_formulas,'prompt_formulas':prompt_formulas,'solution_paragraphs':paragraphs,
                 'assets':r.assets,'provenance':{'source_file':str(source_file.relative_to(ROOT)),'original_question_id':q['id'],
-                    'source_kind':'completed historical activity','answer_derivation':'Displayed correct response or reconstructed from worked solution; no learner answer used'}}
+                    'source_kind':'completed historical activity',
+                    'task_type':task['activity-type'].lower(), 'task_id':task['task-id'],
+                    'answer_derivation':'Displayed correct response or reconstructed from worked solution; no learner answer used'}}
         print('Prepared',len(records),'questions',flush=True) if len(records)%100<8 else None
     content=json.loads((ROOT/'reference/mathacademy/question-capture/13942892/content.json').read_text())
     for q in content['questions']:

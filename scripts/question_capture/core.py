@@ -11,6 +11,7 @@ import uuid
 from pathlib import Path
 
 from edn import kw
+from historical_context import require_activity_context
 from math_notation import identity as math_identity
 from math_format import normalize_capture_question
 
@@ -297,6 +298,7 @@ def validate_question(question, *, canonical=False, existing=None):
 
 def build_transaction(content, topic, existing, reconciler=None):
     """Fill gaps and replace only attributes attested by saved evidence."""
+    require_activity_context(content)
     if content['topic_id'] != topic[':topic/math-academy-id']:
         raise ValueError('Topic mismatch')
     kps = {str(k[':knowledge-point/id']): k for k in topic[':topic/knowledge-points']}

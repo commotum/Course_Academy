@@ -1,0 +1,130 @@
+{
+  "verdict": "revise",
+  "summary": "The generator excludes the sourced ln(x)/4 family. Sampled mathematics, grading, rendering and packaging passed. No stored-pool defect was demonstrated; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate a constant multiple of ln(x), preserving the entire signed constant.",
+    "reasoning_steps": [
+      "Identify the constant, rewriting ln(x)/d as (1/d)ln(x) when needed.",
+      "Apply the constant multiple rule and (ln x)' = 1/x.",
+      "Simplify c/x and select or enter an equivalent expression."
+    ],
+    "invariants": [
+      "One natural logarithm with argument x.",
+      "Easy constant-multiple differentiation without chain rules, sums or point evaluation.",
+      "Five-option radio or equivalent-expression blank response."
+    ],
+    "permitted_variations": [
+      "Signed integer and rational constants, including unit fractions.",
+      "Integer multiples of e.",
+      "Multiplier and quotient presentations.",
+      "Radio answer order."
+    ],
+    "source_refs": [
+      "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: derivative of ln(x) is 1/x.",
+      "Canonical 6624681a-bb00-59db-8df9-4d5a3cd00434: 5 ln(x) differentiates to 5/x.",
+      "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887): ln(x)/4, including the constant-factor rewriting step.",
+      "f8867c14-c978-5609-8feb-155bfedae13c (q-70889): 6e ln(x)."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "source-euler-replay.json",
+        "source-gap.json"
+      ],
+      "details": "Nine raw profiles reproduce captured prompts, solutions and complete banks. q-70889 also replays through the normal Euler family. q-70887 is unsupported."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_checks.py",
+        "math-results.json",
+        "batch.json",
+        "samples.json"
+      ],
+      "details": "Independent symbolic checks passed for 54 records, covering derivatives, keys, final worked equalities and answer-bank validity."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "rejections.json",
+        "source-gap.json",
+        "variation-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-samples/delivery.json"
+      ],
+      "details": "Existing profiles vary coefficients and signs, but the universal nonunit-numerator restriction excludes unit fractions and quotient presentation. Delivery retains 5/5 batch records and 32/34 independent samples."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Requested easy samples preserve the source operation and response contracts. Nonrequested difficulty levels are not certified."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-combined-input.json",
+        "grader-report.json",
+        "grader.log"
+      ],
+      "details": "Native grading passed 145 acceptance and 221 rejection checks, including equivalent blank notation, stale counterfactual answers and the historical generated record."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json",
+        "render-delivered/question-001.png"
+      ],
+      "details": "Actual UI rendering passed for 20 batch/counterfactual records and all five delivery-normalized records. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "cli-replay.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Dependencies match exact installed versions. Deterministic CLI replay and relocation passed. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "variation-results.json",
+        "selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes and tested shortcut probes behaved correctly, but the specification excludes the source quotient-rewriting case. Delivery and selection cannot restore that absent family. Live policy/history limitations are documented."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "Source q-70887 asks y=ln(x)/4, with derivative 1/(4x). The generator rejects parameters n=1,d=4,k=0 because every profile requires |n|>=2, and no quotient-by-a-constant family exists.",
+      "source_refs": [
+        "4890c920-695d-52f8-8b20-5f7886a5c8be (q-70887)",
+        "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948",
+        "generate/principles.md: source fidelity and meaningful variation"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_source_gap.py. It exits 1 and writes source-gap.json. Minimal failing call: generate_easy(seed=917, parameters={\"n\":1,\"d\":4,\"k\":0}).",
+      "requested_change": "Add the sourced quotient family to replay and normal easy sampling, including unit-fraction coefficients, its complete five-choice bank and the rewriting step. Use family-specific domain and distractor rules, retain the regression, and verify varied denominators through grading and delivery. No database or runner-owned batch edits are required."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096613/repair-history.json",
+  "instruction": "Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. If the required action belongs outside the author workspace, return blocked with the exact required action; do not repeat unchanged checks."
+}

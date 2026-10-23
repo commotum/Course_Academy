@@ -1,0 +1,140 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated failures: answer-bank cues solve every tested generated item, including all five delivered batch records; positive nonunit slopes taught by the source are excluded. Mathematics, native grading, rendering and runtime packaging passed their checks.",
+  "source_analysis": {
+    "skill": "Integrate a constant divided by a nonconstant affine expression using substitution; select its antiderivative from five math choices.",
+    "reasoning_steps": [
+      "Identify u=ax+b and slope a.",
+      "Use dx=du/a and factor the numerator n.",
+      "Integrate 1/u as ln|u| and substitute back, giving (n/a)ln|ax+b|+C.",
+      "Distinguish coefficient/sign errors and incorrect logarithm arguments."
+    ],
+    "invariants": [
+      "One constant numerator, one affine denominator, a nonzero; indefinite integration with +C and absolute value.",
+      "Easy radio response with one correct antiderivative among five choices.",
+      "No combining multiple integrals or absorbing C into a logarithm: these belong to adjacent KPs."
+    ],
+    "permitted_variations": [
+      "Small signed slopes, numerator sizes and signs, intercept signs, and affine term order; preserve easy arithmetic.",
+      "Correct coefficient can be positive/negative, unit/nonunit, integer/fractional; do not tie these roles to superficial bank signatures.",
+      "Vary distractor coefficient and argument roles and answer positions while preserving a unique answer.",
+      "Wording and term order can vary without changing the mathematical answer."
+    ],
+    "source_refs": [
+      "0fe299cc-e2f3-5032-a27f-6865f6c34c09",
+      "58fee417-01ff-5eb4-9db6-9bace2e941d9",
+      "33493dd3-c6fe-5889-a9fc-d8fc59aa44da",
+      "2da03267-825e-5f39-863f-d7f53abceed7",
+      "f7ef9efb-7fe5-57f8-b97b-c7d8ad3002b1",
+      "69e9c2db-c46a-594b-831a-b87a3d7f93fe",
+      "d6501a20-6ebd-5786-870e-3527423b6332",
+      "tutorial 539b2d2a-d59d-59a2-8b1b-cd7fbe582c04 Introduction",
+      "tutorial 933683cf-f7fa-50f2-9f11-4522ca637c77 The General Formula"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "regression-results.json"
+      ],
+      "details": "Five complete practice templates replay exact prompts, full banks and solutions. Canonical 3/(5x+2) is unsupported; q-49511 is excluded despite a complete captured bank and independently recoverable 2/3 coefficient."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "audit.py"
+      ],
+      "details": "Independently parsed rendered prompts and differentiated all five choices for 60 records. Each has exactly one valid antiderivative matching the key. Checked solutions and controlled coefficient changes."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples.json",
+        "source-replay.json",
+        "selection-analysis.json",
+        "shortcuts.json"
+      ],
+      "details": "All five supported templates and their bounds sampled, but the allowed domain excludes every positive nonunit slope and fixes answer-bearing roles within bank signatures."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Produced items retain easy single-affine-substitution integration and five-option radio responses; no unsupported additional reasoning stages."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Actual native grader: 60 independently verified correct choices accepted and 240 distractors rejected. No free-entry fields are present."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-batch/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Inspected six representative/counterfactual screenshots and all five delivered batch screenshots in the actual UI. Notation, controls and worked solutions display correctly; option order varies."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "evidence-validation.json"
+      ],
+      "details": "Python 3.13.5 and SymPy 1.14.0 exactly match the manifest. Deterministic runner-batch replay, runtime relocation, invalid-request rejection and manifest-file presence verified; no generated assets."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivered-shortcuts.json",
+        "delivery-batch/delivery.json",
+        "selection-analysis.json",
+        "regression-results.json"
+      ],
+      "details": "Bank-only strategy succeeds on 50/50 raw samples, 40/40 delivered samples and 5/5 actual batch records. Conditional bank-signature probes all succeed. Relevant and irrelevant counterfactual dependencies pass, but cannot cure fixed answer roles. All 31 nonempty candidate-history subsets retain the defect."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The four bank recipes reveal the correct answer without reading the integrand. Same-argument banks with two negative coefficients always key the largest positive coefficient; those with three negatives always key the sole negative proper fraction. Mixed-argument banks always key the sole positive unit-coefficient shifted logarithm. This is universal across current profiles, survives UI shuffling and delivery, and solves all five actual batch records.",
+      "source_refs": [
+        "0fe299cc-e2f3-5032-a27f-6865f6c34c09",
+        "2da03267-825e-5f39-863f-d7f53abceed7",
+        "33493dd3-c6fe-5889-a9fc-d8fc59aa44da",
+        "69e9c2db-c46a-594b-831a-b87a3d7f93fe",
+        "generate/principles.md: meaningful variety"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python regression.py --candidate-records delivery-batch/accepted.json (exit 1). Minimal explicit case: generate(seed=8301, template=\"q-15707\", parameters=[2,1,5]); among coefficients {2,1/2,-2,-1/2,1}, choose largest positive without inspecting the prompt. Full record is counterfactual-records.json[0]. audit.py --candidate-records FILE also accepts prospective batches.",
+      "requested_change": "Revise bank() and profile construction so correct coefficient/argument roles vary within recognizable bank signatures and require evidence from the integrand; retain original source replay separately. Revise batch() selection as needed to prevent the demonstrated cue from solving every delivered member or an identifiable recurring subgroup. Keep deterministic replay and executable regressions on prospective batches using seed 994860459, count 5, difficulty easy and actual delivery filtering. Do not merely shuffle options, change seed, or hand-pick a replacement runner batch."
+    },
+    {
+      "kind": "restriction",
+      "description": "allowed(), PROFILES and sampling never admit a positive nonunit slope. They exclude the central taught case 3/(5x+2), whose answer requires the positive 3/5 scaling, and captured q-49511, 2/(3x+5). Avoiding collisions in the existing distractor recipes does not justify removing this source-supported operation.",
+      "source_refs": [
+        "d6501a20-6ebd-5786-870e-3527423b6332",
+        "58fee417-01ff-5eb4-9db6-9bace2e941d9",
+        "tutorial 539b2d2a-d59d-59a2-8b1b-cd7fbe582c04 Introduction",
+        "tutorial 933683cf-f7fa-50f2-9f11-4522ca637c77 The General Formula"
+      ],
+      "reproduction": "Run audit.py or regression.py with the context venv Python. generate(seed=8301, template=\"q-15707\", parameters=[3,5,2]) raises ValueError: Outside validated parameter bounds. generate(template=\"q-49511\", parameters=[2,3,5]) raises KeyError. source-replay.json retains both failures and all supported replays.",
+      "requested_change": "Add source-supported positive nonunit-slope construction, deriving n/a, affine rendering, distractors and substitution solution together. Replay canonical [3,5,2] and all five captured q-49511 choices; document its missing key/solution as independently reconstructed. Preserve easy workload and bank uniqueness without excluding this family."
+    }
+  ]
+}

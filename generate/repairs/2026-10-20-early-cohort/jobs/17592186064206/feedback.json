@@ -1,0 +1,134 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated failures: answer-bank cues solve every tested generated item, including all five delivered batch records; source-supported positive nonunit slopes are excluded. Package files and database content were not changed.",
+  "source_analysis": {
+    "skill": "Integrate n/(ax+b) by substitution and select the correct antiderivative.",
+    "reasoning_steps": [
+      "Identify u=ax+b and its slope a.",
+      "Apply dx=du/a.",
+      "Integrate to obtain (n/a)ln|ax+b|+C.",
+      "Distinguish coefficient, sign and argument errors."
+    ],
+    "invariants": [
+      "One constant numerator and nonconstant affine denominator.",
+      "Easy five-choice radio response with one correct answer.",
+      "Absolute-value logarithm and additive integration constant."
+    ],
+    "permitted_variations": [
+      "Vary small coefficients, intercepts and slope signs while preserving workload.",
+      "Include positive nonunit slopes demonstrated by the canonical example.",
+      "Vary correct coefficient and argument roles within recognizable answer-bank structures."
+    ],
+    "source_refs": [
+      "d6501a20-6ebd-5786-870e-3527423b6332",
+      "58fee417-01ff-5eb4-9db6-9bace2e941d9",
+      "0fe299cc-e2f3-5032-a27f-6865f6c34c09",
+      "2da03267-825e-5f39-863f-d7f53abceed7",
+      "tutorial 539b2d2a-d59d-59a2-8b1b-cd7fbe582c04: Introduction",
+      "tutorial 933683cf-f7fa-50f2-9f11-4522ca637c77: The General Formula"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "regression-results.json"
+      ],
+      "details": "Five complete practice templates replay exactly. Canonical positive-slope parameters are rejected; q-49511 is excluded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "audit.py"
+      ],
+      "details": "Independent differentiation of all choices across 60 records found exactly one correct answer per record, matching its key."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples.json",
+        "shortcuts.json",
+        "selection-analysis.json"
+      ],
+      "details": "All supported profiles and boundaries were sampled, but positive nonunit slopes are absent and answer-bearing bank roles remain fixed."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json"
+      ],
+      "details": "Produced records preserve easy single-affine-substitution integration without additional prerequisites."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grader accepted 60 independently verified correct choices and rejected 240 distractors."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-batch/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Inspected six representative/counterfactual screenshots and all five delivered batch screenshots. Prompts, choices and solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, runtime relocation, invalid-request rejection and manifest-file presence verified."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "delivered-shortcuts.json",
+        "delivery-batch/delivery.json",
+        "selection-analysis.json",
+        "regression-results.json"
+      ],
+      "details": "Bank-only strategy succeeds on 50/50 raw samples, 40/40 delivered samples and 5/5 actual batch records. Conditional probes also succeed. Counterfactual dependencies pass, but fixed answer roles remain."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Answer-bank structure reveals the key without reading the integrand: same-argument banks with two negatives key the largest positive coefficient; those with three negatives key the negative proper fraction; mixed-argument banks key the sole positive unit-coefficient shifted logarithm. These rules survive UI shuffling and solve every delivered batch member.",
+      "source_refs": [
+        "0fe299cc-e2f3-5032-a27f-6865f6c34c09",
+        "2da03267-825e-5f39-863f-d7f53abceed7",
+        "33493dd3-c6fe-5889-a9fc-d8fc59aa44da",
+        "69e9c2db-c46a-594b-831a-b87a3d7f93fe",
+        "generate/principles.md: meaningful variety"
+      ],
+      "reproduction": "Run the context Python executable on regression.py --candidate-records delivery-batch/accepted.json; it exits 1. Minimal case: generate(seed=8301, template='q-15707', parameters=[2,1,5]). Choose the largest positive coefficient from {2,1/2,-2,-1/2,1}. Complete record: counterfactual-records.json[0].",
+      "requested_change": "Revise bank and profile construction so correctness depends on the integrand rather than a fixed bank signature. Preserve source replay separately. Add deterministic batch-construction regressions against prospective records and actual delivery filtering, including seed 994860459, count 5, difficulty easy. Shuffling options or changing the seed is insufficient."
+    },
+    {
+      "kind": "restriction",
+      "description": "The generator excludes every positive nonunit slope, including the canonical integral 3/(5x+2) and captured practice integral 2/(3x+5). Existing distractor collisions do not justify removing this taught operation.",
+      "source_refs": [
+        "d6501a20-6ebd-5786-870e-3527423b6332",
+        "58fee417-01ff-5eb4-9db6-9bace2e941d9",
+        "tutorial 539b2d2a-d59d-59a2-8b1b-cd7fbe582c04: Introduction"
+      ],
+      "reproduction": "Run audit.py with the context Python executable. generate(template='q-15707', parameters=[3,5,2]) raises ValueError; generate(template='q-49511', parameters=[2,3,5]) raises KeyError. Failures are retained in source-replay.json.",
+      "requested_change": "Support positive nonunit slopes by deriving n/a, denominator rendering, distractors and substitution solutions together. Replay canonical [3,5,2] and the complete q-49511 bank; explicitly document reconstruction of its missing key and solution."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186064206/repair-history.json",
+  "instruction": "Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. If the required action belongs outside the author workspace, return blocked with the exact required action; do not repeat unchanged checks."
+}
