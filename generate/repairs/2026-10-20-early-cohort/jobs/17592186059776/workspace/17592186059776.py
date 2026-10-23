@@ -20,7 +20,7 @@ import sympy as sp
 KP_ID = 17592186059776
 KP_UUID = '07abc1cc-5794-51a6-bad4-40565eae52be'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'gaussian-elimination-generator-v1'))
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 SUPPORTED_LEVELS = ('easy', 'moderate')
 HERE = Path(__file__).with_suffix('')
 SOURCE = json.loads((HERE / 'source.json').read_text())
@@ -175,14 +175,41 @@ def batch(difficulty, count, seed=0):
         return []
     candidates = [(s,p) for s,q in CASES.items() if q[':question/difficulty'][':db/ident'].endswith('/'+difficulty) for p in domain(s)]
     random.Random(seed).shuffle(candidates)
-    out, seen = [], set()
-    for sid, p in candidates:
-        r = generate(difficulty, seed, sid, p)
+    out, seen, groups = [], set(), {}
+
+    def select(r):
         fp = fingerprint(r['question'])
         if fp in seen:
-            continue
+            return
+        q = r['question']
+        m = matrices(q[':question/worked-solution'])[0]
+        family = (tuple(m[:, :2]), 'and then solve' in q[':question/problem'])
+        prior = groups.setdefault(family, [])
+        # Keep the selected mathematical task. If the first two banks in a
+        # visible family share a cue, resample only its incidental bank roles.
+        # Store the effective seed so ordinary generate() exactly replays it.
+        for attempt in range(1000):
+            field = r['question'][':question/answer-fields'][0]
+            choices = field[':answer-field/choices']
+            pos = next(i for i, a in enumerate(choices)
+                       if a[':answer/id'] == field[':answer-field/correct'][1])
+            ys = [matrices(a[':answer/value'])[0][1, 2] for a in choices]
+            role = (sorted(ys).index(ys[pos]), pos)
+            if len(prior) != 1 or all(a != b for a, b in zip(prior[0], role)):
+                break
+            meta = r['generation']
+            r = generate(difficulty, seed + attempt + 1, meta['template'], meta['parameters'])
+        else:
+            raise ValueError('Could not construct contrasting bank roles')
         seen.add(fp)
+        prior.append(role)
         out.append(r)
+
+    for sid, p in candidates:
+        # Original banks remain replayable, but are not fresh practice.
+        if p == [0, 0]:
+            continue
+        select(generate(difficulty, seed, sid, p))
         if len(out) == count:
             return out
     raise ValueError('Finite variant limit: '+str(len(out)))

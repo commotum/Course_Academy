@@ -1,0 +1,1 @@
+Completed source analysis, 120 fresh samples, batch math checks, replay, controlled pairs, package relocation and inventory classification. Defects: missing source profiles; bank-only singleton swapped-pair shortcut. Next: actual delivery, native grading, UI render and delivery selection analysis.

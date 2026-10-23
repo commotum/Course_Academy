@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are repaired. All eight checks pass for the current package and five-record batch. No new defect demonstrated; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Solve three-variable triangular systems by back substitution and select the ordered solution vector.",
+    "reasoning_steps": [
+      "Read the third variable.",
+      "Substitute into the second equation.",
+      "Substitute both values into the first equation.",
+      "Select the matching ordered vector."
+    ],
+    "invariants": [
+      "Three equations with unit leading coefficients.",
+      "Easy signed integer and rational arithmetic.",
+      "One correct vector among five radio choices."
+    ],
+    "permitted_variations": [
+      "Vary supported coefficients and small rational constants.",
+      "Vary solution signs, coordinate relationships and correct bank roles.",
+      "Use source-supported variable names and vector notation."
+    ],
+    "source_refs": [
+      "201a713a-83ca-5e31-9a4f-257795d7eb1b",
+      "3719eef8-ec9e-5d13-b3ad-dc6ee7926695",
+      "483bef09-2673-515c-b6c8-05e28c9a8828",
+      "Tutorial 4d84a9a0-94f9-57e2-a8e6-333ba26d72e4: start with the lowest equation and substitute upward."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reused-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "replays.json",
+        "strict-old-results.json",
+        "strict-current-results.json"
+      ],
+      "details": "All 12 complete source banks replay, including q-20450. Incomplete q-20451 remains explicitly documented. Both prior failures reproduce on the old package."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "review_current.py"
+      ],
+      "details": "Independent exact solutions, unique correct choices and displayed substitution equalities pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "shortcut-results.json"
+      ],
+      "details": "Each controlled bank supports all five correct roles; delivery preserves at least four. Batch-specific probes reveal no perfect tested common surface rule."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve the source reasoning, response format and arithmetic workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grader passes 720 acceptance/rejection checks, including controlled counterfactuals. All fields are radio."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-extra/rendering.json",
+        "render-observations.json",
+        "render-extra/question-002.png"
+      ],
+      "details": "Ten actual-UI previews pass. Representative screenshots confirm equations, vector choices, controls and explanations render correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and invalid-input rejection pass. Package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "selection-analysis.json",
+        "rejection-analysis.json",
+        "delivery-batch/delivery.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Changed evidence changes the answer, explanation and grading; irrelevant renaming preserves them. All five batch records survive delivery. Captured inventory contains 13 original sources and no generated historical records. Selection conclusions are conditional on documented eligibility and policy limits."
+    }
+  },
+  "findings": []
+}

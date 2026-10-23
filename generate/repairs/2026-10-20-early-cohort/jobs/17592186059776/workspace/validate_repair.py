@@ -44,8 +44,8 @@ save('source-replay.json',replay); assert all(all(x[k] for k in ['prompt','solut
 probes=json.loads((ROOT/'evidence/regressions/probe-records.json').read_text())
 retained=json.loads((ROOT/'evidence/regressions/retained-records.json').read_text())
 oldbatch=json.loads((ROOT.parent/'samples.json').read_text())
-batch=[g.generate('easy',r['generation']['seed'],r['generation']['template'],r['generation']['parameters']) for r in oldbatch]
-assert batch==g.batch('easy',5,oldbatch[0]['generation']['seed'])
+batch=g.batch('easy',5,oldbatch[0]['generation']['seed'])
+assert [(r['generation']['template'],r['generation']['parameters']) for r in batch] == [(r['generation']['template'],r['generation']['parameters']) for r in oldbatch]
 save('exact-batch.json',batch)
 # Hold the first equation and all coefficients fixed while changing the second
 # constant: q73544 first RHS changes by 2h-4k, so delta(h,k)=(2,1).

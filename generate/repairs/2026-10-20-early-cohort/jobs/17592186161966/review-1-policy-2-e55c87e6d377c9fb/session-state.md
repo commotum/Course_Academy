@@ -1,0 +1,1 @@
+Source and prior defects verified; old regressions fail on preserved old package and pass current. 60 fresh records, 5 batch, 60 controlled roles, 4 other counterfactuals and 13 source replays checked. Next: actual grading, delivery and rendering.
