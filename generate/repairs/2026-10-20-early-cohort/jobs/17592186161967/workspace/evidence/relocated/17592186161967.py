@@ -114,18 +114,46 @@ def batch(difficulty,count,seed):
  if count<0:raise ValueError('Count must be nonnegative')
  if count<2:return [generate(difficulty,seed)] if count else []
  rng=random.Random(str(seed)+':batch')
- for attempt in range(2000):
-  profiles=list(PROFILES);rng.shuffle(profiles)
-  selected=[profiles[i%len(profiles)] for i in range(count)]
-  # Both source bank families fit once each can have a cue-breaking pair.
-  if count>=4 and not 2<=sum(p in UNIT_PROFILES for p in selected)<=count-2:continue
-  rows=[generate(difficulty,rng.getrandbits(64),bank_profile=p) for p in selected]
-  if batch_has_counterexamples(rows):
-   rng.shuffle(rows)
-   for row in rows:
-    row['generation']['batch']={'version':1,'seed':seed,'count':count,'attempt':attempt}
-   return rows
- raise ValueError('Bounded batch sampler exhausted without sign-cue counterexamples')
+ # A full two-coefficient sign decision requires four cases in each visible
+ # bank shape. Small batches choose a shape, not a reduced source family.
+ shapes=[(True,False),(False,True),(True,True)]
+ if count<8:shapes=[rng.choice(shapes)]
+ elif count<12:shapes=[rng.choice(shapes[:2]),shapes[2]]
+ rng.shuffle(shapes)
+ sizes=[count//len(shapes)+(i<count%len(shapes)) for i in range(len(shapes))]
+ rows=[];fingerprints=set()
+ for shape,size in zip(shapes,sizes):
+  profiles=list(UNIT_PROFILES if shape!=(True,True) else tuple(p for p in PROFILES if p not in UNIT_PROFILES))
+  rng.shuffle(profiles)
+  # Choose the extra signs independently, then exercise all four possible
+  # correct sign pairs against that cue. This also defeats cross-coordinate
+  # sign inference, rather than merely reversing the old first-sign cue.
+  extra_signs=(rng.choice((-1,1)),rng.choice((-1,1)))
+  cases=[(-1,-1),(-1,1),(1,-1),(1,1)]
+  rng.shuffle(cases)
+  if size<4:
+   first=(rng.choice((-1,1)),rng.choice((-1,1)))
+   cases=[first,tuple(-v for v in first)]+cases
+  plan=cases[:size]+[rng.choice(cases[:4]) for _ in range(max(0,size-len(cases)))]
+  rng.shuffle(plan)
+  for i,signs in enumerate(plan):
+   profile=profiles[i%len(profiles)]
+   for attempt in range(10000):
+    row=generate(difficulty,rng.getrandbits(64),bank_profile=profile)
+    meta=row['generation'];params=meta['parameters']
+    correct=tuple(k for r,k in enumerate(params['ks']) if r!=params['pivot'])
+    if tuple(1 if k>0 else -1 for k in correct)!=signs:continue
+    bank=[tuple(o[2] for o in operations(a[':answer/value'])) for a in row['question'][':question/answer-fields'][0][':answer-field/choices']]
+    extra=next(z for z in bank if tuple(map(abs,z))!=tuple(map(abs,correct)))
+    if tuple(abs(extra[d])!=abs(correct[d]) for d in (0,1))!=shape:continue
+    if tuple(1 if k>0 else -1 for k in extra)!=extra_signs:continue
+    if meta['parameter_fingerprint'] in fingerprints:continue
+    fingerprints.add(meta['parameter_fingerprint']);rows.append(row);break
+   else:raise ValueError('Bounded batch sampler exhausted')
+ rng.shuffle(rows)
+ assert len(rows)==count and batch_has_counterexamples(rows)
+ for row in rows:row['generation']['batch']={'version':2,'seed':seed,'count':count}
+ return rows
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':

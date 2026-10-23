@@ -10,14 +10,22 @@ def probe(r):
  prompt=r['question'][':question/problem'].replace('y =','y='); y=latex(prompt.split('$y=',1)[1].split('$')[0].rstrip(',.'))
  # Restrict to linear root/reciprocal tasks; sum/quadratic require different analysis.
  if y.is_Add:return None
- inner=[p.base for p in s.preorder_traversal(y) if isinstance(p,s.Pow) and p.exp in [s.Rational(1,2),-s.Rational(1,2)]]
- if len(inner)!=1 or s.Poly(inner[0],X).degree()!=1:return None
- a=s.Poly(inner[0],X).coeff_monomial(X);recip=any(p.exp==-s.Rational(1,2) for p in s.preorder_traversal(y) if isinstance(p,s.Pow))
- vals=[latex(c[':answer/value']) for c in f[':answer-field/choices']]
- # Common positive denominator allows ordering scalar coefficients; a domain
- # witness orders these symbolic options only. Slope options are already numbers.
- witness=(1-inner[0].subs(X,0))/a
- vals=sorted(vals,key=lambda v:float(v.subs(X,witness)))
+ text=prompt.split('$y=',1)[1].split('$')[0].rstrip(',.')
+ start=text.index(r'\sqrt{')+6;depth=1;end=start
+ while depth:
+  if text[end]=='{':depth+=1
+  elif text[end]=='}':depth-=1
+  end+=1
+ inner=latex(text[start:end-1])
+ if s.Poly(inner,X).degree()!=1:return None
+ a=s.Poly(inner,X).coeff_monomial(X);recip=text.startswith(r'\frac')
+ choices=f[':answer-field/choices'];vals=[latex(c[':answer/value']) for c in choices]
+ # Sort by scalar ratios to a nonzero choice. The common radical denominator
+ # is positive on the problem domain. No radicand evaluation is used.
+ refindex=next(i for i,v in enumerate(vals) if v!=0)
+ refsign=-1 if choices[refindex][':answer/value'].startswith('-') else 1
+ ref=vals[refindex]
+ vals=sorted(vals,key=lambda v:float(s.simplify(s.powdenest(v/ref,force=True))*refsign))
  diffs=[s.simplify(vals[i+1]-vals[i]) for i in range(len(vals)-1)]
  equal=all(s.simplify(d-diffs[0])==0 for d in diffs)
  prediction=s.simplify((-1 if recip else 1)*a*diffs[0])

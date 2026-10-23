@@ -1,6 +1,6 @@
 """Exit 1 if every delivered record permits this first-operation bypass.
-Usage: context-python -B reproduce_batch_shortcut.py [records.json]
-Input defaults to independently normalized runner batch, not a newly sampled batch.
+Usage: context-python -B reproduce_batch_shortcut.py records.json
+An explicit input is required; the regression caller supplies current CLI output.
 """
 import sys,json,pathlib,collections
 sys.dont_write_bytecode=True

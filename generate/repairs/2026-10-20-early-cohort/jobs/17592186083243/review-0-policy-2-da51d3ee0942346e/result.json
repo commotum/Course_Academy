@@ -1,0 +1,134 @@
+{
+  "verdict": "revise",
+  "summary": "One demonstrated grading blocker: valid fractional-exp notation returns unresolved. The other seven checks pass within documented limits. Package unchanged; no affected generated inventory records demonstrated.",
+  "source_analysis": {
+    "skill": "Differentiate both parametric coordinates, form y'(t)/x'(t), and evaluate the exact tangent slope at the supplied parameter.",
+    "reasoning_steps": [
+      "Differentiate both coordinates.",
+      "Divide the derivatives, checking a nonzero denominator.",
+      "Evaluate at the specified parameter and simplify.",
+      "Select or enter the exact slope."
+    ],
+    "invariants": [
+      "Preserve finite-slope tasks, source difficulty, and exact-answer response profiles.",
+      "Keep targets within real domains and avoid singular derivatives.",
+      "Preserve the source differentiation rules and comparable workload."
+    ],
+    "permitted_variations": [
+      "Vary coefficients and valid exact-evaluation targets.",
+      "Allow slope signs, zero status, and correct-choice positions to follow the mathematics.",
+      "Vary additive coordinate constants without changing the derivative."
+    ],
+    "source_refs": [
+      "Tutorial 94a5a3d6-2fcd-522e-934f-f2bf8a8569c4: chain-rule derivation of dy/dx=y'(t)/x'(t).",
+      "Canonical 148e5378-9177-59ba-9b1e-3633c940babd: differentiate, divide, and evaluate at t=1.",
+      "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490): reciprocal exponential/root exact blank.",
+      "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363): reciprocal exponential/root exact blank."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-cases.json",
+      "source-scope-review.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-scope-review.json"
+      ],
+      "details": "All 22 supported practice cases reproduce complete mathematical answer banks and correct values. Two source domain errors are corrected. Canonical e-596 lacks captured answer-field evidence and is explicitly outside complete-bank replay claims."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-results.json",
+        "shortcut-followup-math.json",
+        "minimal-math-result.json",
+        "rejection-tests.json"
+      ],
+      "details": "Independent differentiation and displayed-equality checks pass for 82 sampled/replayed records and the minimal grading counterexample. Invalid-domain and singular targets reject."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "samples-independent.json",
+        "counterfactuals.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json"
+      ],
+      "details": "Twenty templates cover the captured practice profiles. Coefficients and targets vary. All five batch records and all 16 independently sampled easy records survive delivery filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-scope-review.json",
+        "samples-independent.json"
+      ],
+      "details": "No demonstrated drift in differentiation rules, response types, or difficulty."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "minimal-grading-record.json",
+        "minimal-grader-input.json",
+        "minimal-grader-execution.json",
+        "minimal-grader-controls-result.json",
+        "grading-counterexample-results.json",
+        "grader-followup-results.json"
+      ],
+      "details": "The native grader cannot establish equivalence for tested exp expressions with fractional arguments. Equivalent e-power notation passes. The remaining 356 main grading checks pass, without waiving the retained failure."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-hard/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twenty-one actual-UI renders pass. Inspected screenshots include plots, blanks, radio controls, all controlled pairs, and complex worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "determinism.json",
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation, and external asset output checks pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "shortcut-followup-results.json",
+        "counterfactuals.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant target changes alter responses; an irrelevant translation preserves the slope. Conditional cue follow-ups defeat apparent predictors. Actual batch radio positions are 2, 5, 4, 3. Inventory conclusions are limited to captured basis 5644."
+    }
+  },
+  "findings": [
+    {
+      "kind": "grading",
+      "description": "For x=e^(1/t), y=1/sqrt(t^2+1), t=2, the correct slope is 8*sqrt(5)/(25*e^(1/2)). The valid response 8/(5*sqrt(5)*exp(1/2)) returns unresolved. Equivalent e^(-1/2) notation is accepted. This is a shared-engine capability blocker affecting the hard blank family, not the five easy batch records.",
+      "source_refs": [
+        "ae92af54-aa04-5ea8-bfcd-575703012570 (q-363490)",
+        "282535b6-7f0b-5681-8ed7-3e9b8413bd06 (q-353363)",
+        "2399836b-91ff-571b-9534-908c753b0355 (q-15475)"
+      ],
+      "reproduction": "From evidence_root run: /home/jake/Developer/Course_Academy/generate/runs/current/check-engine minimal-grader-input.json minimal-grader-result.json. The record uses generate('hard',917,'reciprocal_exp_root_blank',parameters={'a':1,'b':1,'c':1,'u':2}). Exact failure output is saved in minimal-grader-execution.json.",
+      "requested_change": "Add shared-engine equivalence support between exp(q) and e^q for rational q, retaining strict acceptance and wrong-answer rejection tests. Engine repair is outside this job's authorized scope; route this as an engine blocker. Do not remove the source family or restrict valid learner notation."
+    }
+  ]
+}

@@ -1,0 +1,543 @@
+{
+  "learner_operation": "Decompose y=u^(+/-1/2), differentiate outer and inner, multiply and substitute; evaluate at target x for slopes, adding the observed cubic derivative when present.",
+  "fixed_features": [
+    {
+      "feature": "Square-root or reciprocal-square-root outer function and linear/quadratic inner polynomial",
+      "justification": "All captured KP questions and e-182 use these operations."
+    },
+    {
+      "feature": "Positive square radicand at evaluated point",
+      "justification": "Preserves real differentiability and source easy numeric arithmetic."
+    },
+    {
+      "feature": "Five radio options or a math blank",
+      "justification": "Observed response contracts. No need to fix which position or scalar role is correct."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Slope sign and zero/nonzero status",
+      "eligible_variation": "Change polynomial/target while maintaining real differentiability.",
+      "observed": "Positive, negative and zero cases in quadratic pool; controlled same-polynomial targets verified."
+    },
+    {
+      "role": "Correct radio scalar and position",
+      "eligible_variation": "Derive diverse credible error expressions; retain no incidental arithmetic relation identifying the key.",
+      "observed": "Ranks 0..4 and choice shuffles vary, but all production radios use scale_bank; coefficient-times-spacing predicts every tested simple linear-root radio."
+    },
+    {
+      "role": "Target x",
+      "eligible_variation": "Change target with fixed function and update response/evaluation.",
+      "observed": "x=1,5,9 for -x^2+10x produce 4/3,0,-4/3."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "reciprocal_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-5, 2, 3, 4, 6], \"b\": [-11, -9, 1, 12, 7], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [0, 2, 4, 0, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_spaced_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-4, -6, -7, 8], \"b\": [-4, -7, -8, 4, 5], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [0, 4, 1, 2, 3], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_constfirst_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -7, 2, 5, 7], \"b\": [-7, 11, 12, 5], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [1, 1, 0, 0, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -6, 2, 5], \"b\": [-11, 20, 4, 40], \"targets\": [-2, -4, 0, 1], \"answer_signs\": [-1, 1], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [4, 1, 3, 1, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, 2, 3, 5, 8], \"b\": [-1, -11, -3, 1, 9], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank_braced",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-6, -8, 2, 4, 7], \"b\": [-6, -7, 1, 2, 8], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-6, 4, 5, 6], \"b\": [-1, -5, 0, 1, 10], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -4, -5, 8], \"b\": [-4, -5, 2, 5], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_reciprocal_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-1, -5, 2], \"b\": [-18, -21, -4, -6, 8], \"targets\": [-2, -3, 4], \"answer_signs\": [-1, 0, 1], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_linear_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-6, -8, 2, 4, 7], \"b\": [-4, -8, 5, 7, 9], \"targets\": [null], \"answer_signs\": [], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [0, 1, 1, 4, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_positive_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -5, 2, 3, 6], \"b\": [19, 31, 33, 64, 76], \"targets\": [-4, 0, 1, 3], \"answer_signs\": [-1, 1], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [1, 0, 3, 3, 4], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_linear_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -6, -8, 2], \"b\": [-17, -31, 10, 25, 7], \"targets\": [-3, -4, 0, 1, 3], \"answer_signs\": [-1, 1], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_blank",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-1, -2, -4], \"b\": [-4, -5, -8, 12, 6], \"targets\": [-1, -2, -4, 3, 4], \"answer_signs\": [-1, 0, 1], \"bank_roles\": [null], \"positions\": [], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-2, -4, 3, 6], \"b\": [0], \"targets\": [-2, -4, 3, 4], \"answer_signs\": [-1, 1], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [2, 2, 3, 0, 0], \"attempts\": [1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sum_radio",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ],
+      "result": "{\"count\": 5, \"a\": [-3, -4, -7, 3], \"b\": [17, 25, 45, 71, 76], \"targets\": [-3, 0, 1, 3, 4], \"answer_signs\": [-1, 1], \"bank_roles\": [0, 1, 2, 3, 4], \"positions\": [2, 4, 2, 0, 3], \"attempts\": [1, 1, 1, 1, 1]}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold y=sqrt(-x^2+10x) fixed; change target x from 1 to 5 to 9.",
+      "expected": "Slope 4/3 to 0 to -4/3, with matching prompts, substitutions, keys and grading.",
+      "observed": "All relationships independently verified; native grader accepts valid equivalents and rejects shifted answers; actual-UI screenshots checked.",
+      "status": "passed",
+      "justification": "Target evaluation is explicit in easy source q-342792 and q-342789; zero is legitimate but need not be fixed.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-extra/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold polynomial, target and bank fixed; change seed 610 to 611, shuffling radio order.",
+      "expected": "Same answer 2/3 and same explanation; correct choice follows its value in reordered UI.",
+      "observed": "Prompt, solution and key preserved; option order changed; all options graded correctly and both renders inspected.",
+      "status": "passed",
+      "justification": "Source radio response tests derivative value, not position.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-extra/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first authored choice position",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "reciprocal_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "reciprocal_blank_braced",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "sqrt_quadratic_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "sqrt_linear_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "slope_reciprocal_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "slope_sqrt_linear_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "blank response shape",
+      "subgroup": "slope_sqrt_quadratic_blank",
+      "scope": "within_template",
+      "strategy": "Always enter 0.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Open numeric entry has no uniform random baseline; 0 denotes no uninformed exact-answer success assumption. Zero outcomes occur legitimately at stationary targets, not as a universal blank cue.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first authored choice position",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose the first authored option (UI may reorder it).",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "One of five radio choices gives 0.2 blind-guess baseline. Authored position is not stable; UI ordering further varies.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Multiply common positive answer spacing by the displayed x coefficient; negate for reciprocal roots.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Five choices imply 0.2 random-selection baseline. This learned bank-construction rule supplies the outer derivative and target evaluation; no power rule, square-root calculation or substitution is needed. Shuffling and random correct rank do not defeat it.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut--independent-samples.json"
+      ]
+    },
+    {
+      "cue": "arithmetic progression of option values",
+      "subgroup": "actual delivered batch, linear-root radio slope",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "7 times common spacing 1/6",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The single applicable radio in the exact five-record batch is bypassable; the other four blanks are not answered by this cue. Baseline is one of five choices, not one of five batch records. This is a generator bank defect present in the batch, not proof every batch member is bypassable.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-delivery-batch-accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling and profile selection",
+      "requested difficulty",
+      "publisher stable identities and captured-inventory deduplication",
+      "actual batch and independent easy survivors",
+      "retirement/validity eligibility",
+      "difficulty-first learner selection and history exclusions (code; conditional read-only distribution)"
+    ],
+    "sample_refs": [
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "coverage-results.json",
+      "selection-results.json",
+      "inventory-results.json"
+    ],
+    "result": "All 5 actual batch records and 30 independent easy records survive. The spacing shortcut survives in the actual radio item and all 10 sampled linear-root slope radios. Three matching eligible stored radios have the same defect. Within-band selection does not suppress the cue."
+  },
+  "limitations": [
+    "Finite seeds do not prove absence of all shortcuts.",
+    "Inventory basis 5644 is a snapshot; future publications and learner histories may change availability.",
+    "No observed runtime answer or native-grader failure; failing decision variation is independent of these passes."
+  ]
+}

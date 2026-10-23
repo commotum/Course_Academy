@@ -33,7 +33,10 @@ def node(n,soup):
    text=''.join(values)
    style=set(styles)-{None}
    if len(style)>1:raise ValueError('Mixed mathematical font within token')
-   if style:m['mathvariant']=next(iter(style))
+   if style:
+    variant=next(iter(style))
+    if variant=='bold-italic':text=glyphs(n) # exact mathematical Unicode is supported by the player
+    elif variant!='italic':m['mathvariant']=variant
    elif name=='mi' and len(text)==1 and text.isalpha() and text not in 'ℝℕℚℤℂ':m['mathvariant']='normal'
   m.string=text
  elif name=='mspace':m=soup.new_tag('mspace')
