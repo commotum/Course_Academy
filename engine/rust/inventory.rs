@@ -11,7 +11,7 @@ pub fn triggers(
 ) -> Result<BTreeMap<u64, BTreeSet<&'static str>>> {
     let mut triggers: BTreeMap<u64, BTreeSet<&str>> = BTreeMap::new();
     let scoped_lessons = if s.entity(l)?.get("learner/self-directed") == Some(&json!(true)) {
-        let learned = learning::learned_topics(s, l)?;
+        let learned = learning::known_lesson_topics(s, l)?;
         Some(learning::study_lesson_scope(s, l)?.difference(&learned).copied().collect::<BTreeSet<_>>())
     } else {
         None
@@ -398,6 +398,14 @@ mod tests {
         assert!(!demands.contains_key(&530),"depth-three preparation stays outside demand");
         assert!(!demands.contains_key(&532),"learned topics do not request new lessons");
         assert!(!demands.contains_key(&704),"hidden KP prerequisites do not widen graph scope");
+        s.entities.insert(801,json!({"progress/topic":533,"progress/learned":false,
+            "progress/repetitions":1.0}).as_object().unwrap().clone());
+        s.entities.insert(802,json!({"progress/topic":534,
+            "progress/repetitions":0.5}).as_object().unwrap().clone());
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([800,801,802]));
+        let demands = triggers(&s,1,Utc::now())?;
+        assert!(!demands.contains_key(&533),"band one never requests an ordinary new lesson");
+        assert!(demands[&534].contains("lesson"),"fractional progress below one remains new");
         Ok(())
     }
 

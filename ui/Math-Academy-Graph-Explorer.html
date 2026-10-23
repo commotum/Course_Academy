@@ -1424,7 +1424,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     const {activeNodes,activeLinks}=state.layout;
     const newTopics=targetsView?activeNodes.filter(node=>{
       const value=repetitions[node.id];
-      return snapshot?.learned?.[node.id]===false || !Number.isFinite(value) || value<1;
+      return snapshot?.learned?.[node.id]!==true && (!Number.isFinite(value) || value<1);
     }).length:0;
     $('scopeReadout').textContent=`${activeNodes.length} topics${targetsView?` · ${newTopics} new topics`:''} · ${activeLinks.length} links`;
   }

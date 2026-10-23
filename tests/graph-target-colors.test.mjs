@@ -22,7 +22,7 @@ function fixture() {
     return node;
   }
   for (const id of ['targetColorToggle', 'targetActions', 'statusColorLegend', 'targetMasteryRamp',
-    'completedTargetMasteryRamp', 'queueMasteryRamp', 'competencyFillDescription', ...nodes.map(node => 'topic-' + node.id)]) {
+    'completedTargetMasteryRamp', 'queueMasteryRamp', 'competencyFillDescription', 'scopeReadout', ...nodes.map(node => 'topic-' + node.id)]) {
     elements.set(id, createElement());
   }
   const fills = [], storage = new Map();
@@ -51,6 +51,21 @@ function fixture() {
   vm.runInContext(statusPaletteSource + colors + minimapSource + `\nfunction learnerChanged(learner) { ${changed} }\nfunction queueChanged(learner) { ${queueChanged} }`, c);
   return { c, elements, fills, storage };
 }
+
+test('new-topic count uses band one independently of an incomplete flag', () => {
+  const { c, elements } = fixture();
+  c.targetsView = true;
+  c.state.layout.activeNodes = [1, 2, 3, 4, 5].map(id => ({ id }));
+  c.repetitions = { 1: 1, 2: .999, 3: .5, 4: .5 };
+  c.snapshot.learned = { 1: false, 2: false, 4: true };
+  c.updateScopeReadout();
+  assert.equal(elements.get('scopeReadout').textContent, '5 topics · 3 new topics · 0 links');
+  assert.equal(c.competencyFor(1).level, 1);
+  assert.equal(c.competencyFor(2).level, 0);
+  c.targetsView = false;
+  c.updateScopeReadout();
+  assert.equal(elements.get('scopeReadout').textContent, '5 topics · 0 links');
+});
 
 test('returning from a completed lesson refreshes mastery without moving the graph', async () => {
   const { c, elements } = fixture();

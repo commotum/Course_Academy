@@ -1182,6 +1182,18 @@ fn topic_prerequisites(s: &EntitySnapshot) -> Result<BTreeMap<u64, BTreeSet<u64>
 /// Topics actually learned, without inferring mastery of their ancestors.
 /// An explicit false flag takes precedence over historical repetition counts.
 pub fn learned_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    learning_evidence(s, learner, false)
+}
+
+/// Exclusions from ordinary new lessons: graph band one or above, explicit
+/// learned status, or completed lesson/review evidence. Imported band progress
+/// remains evidence even when a local learned flag is false. Fractional progress
+/// below band one alone does not exclude a topic from first-learning work.
+pub fn known_lesson_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    learning_evidence(s, learner, true)
+}
+
+fn learning_evidence(s: &EntitySnapshot, learner: u64, graph_bands: bool) -> Result<BTreeSet<u64>> {
     let mut learned = BTreeSet::new();
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let record = s.entity(progress)?;
@@ -1190,7 +1202,8 @@ pub fn learned_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>>
             return Err("invalid imported repetition position".into());
         }
         if record.get("progress/learned") == Some(&json!(true))
-            || (!record.contains_key("progress/learned") && repetitions > 0.0)
+            || if graph_bands { repetitions >= 1.0 }
+                else { !record.contains_key("progress/learned") && repetitions > 0.0 }
         {
             learned.insert(s.reference(progress, "progress/topic")?);
         }
@@ -1233,7 +1246,7 @@ fn known_topic_ancestry(
 /// due dates do not turn already acquired lessons back into first-learning work.
 pub fn known_preparation_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
     if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
-        learned_topics(s, learner)
+        known_lesson_topics(s, learner)
     } else {
         known_topic_ancestry(s, learner, &topic_prerequisites(s)?)
     }
@@ -1467,7 +1480,7 @@ pub fn inventory_priorities(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>)
         }
     }
     let support = if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
-        bounded_lesson_support(s, learner, &learned_topics(s, learner)?)?
+        bounded_lesson_support(s, learner, &known_lesson_topics(s, learner)?)?
     } else {
         target_support(s, learner, &prerequisites, &ready)?
     };
@@ -1579,7 +1592,7 @@ fn plan_candidates_in_scope(
     }
     let prerequisites = if selection == StudyScope::Queue { BTreeMap::new() } else { topic_prerequisites(s)? };
     let support = if selection == StudyScope::Queue {
-        practiced = learned_topics(s, learner)?;
+        practiced = known_lesson_topics(s, learner)?;
         bounded_lesson_support(s, learner, &practiced)?
     } else if selection == StudyScope::Targets {
         target_support(s, learner, &prerequisites, &ready)?
@@ -3344,6 +3357,31 @@ pub(crate) mod tests {
         assert!(!learned_topics(&s,1).unwrap().contains(&81));
         assert!(!known_preparation_topics(&s,1).unwrap().contains(&81));
         assert_eq!(study_candidates(&s,1,5,planning_time()).unwrap().iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82]));
+    }
+
+    #[test]
+    fn new_lessons_use_graph_band_one_boundary_even_when_learned_flag_is_false() {
+        let mut s = study_planning_fixture(&[80,81,82,83,84,85,86]);
+        for topic in 80..87 { planning_lesson(&mut s,topic,&[]); }
+        for (eid,record) in [
+            (600,json!({"progress/topic":80,"progress/learned":false,"progress/repetitions":1.0})),
+            (601,json!({"progress/topic":81,"progress/learned":false,"progress/repetitions":0.999})),
+            (602,json!({"progress/topic":82,"progress/repetitions":0.5})),
+            (603,json!({"progress/topic":83,"progress/learned":true,"progress/repetitions":0.5})),
+            (604,json!({"progress/topic":84,"progress/repetitions":1.0})),
+            (605,json!({"progress/topic":85,"progress/learned":false,"progress/repetitions":6.5})),
+        ] { put(&mut s.entities,eid,record); }
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([600,601,602,603,604,605]));
+        let before = s.entities.clone();
+        let plan = study_candidates(&s,1,5,planning_time()).unwrap();
+        assert_eq!(plan.iter().map(|p|p.topic).collect::<BTreeSet<_>>(),BTreeSet::from([81,82,86]));
+        assert_eq!(known_preparation_topics(&s,1).unwrap(),BTreeSet::from([80,83,84,85]));
+        // This is a first-learning filter, never a mutation or reinterpretation
+        // of the operational learned flag used by course/review scheduling.
+        assert!(!learned_topics(&s,1).unwrap().contains(&80));
+        assert!(learned_topics(&s,1).unwrap().contains(&82));
+        assert_eq!(s.entities,before);
+        assert_eq!(selected_topic_candidates(&s,1,5,80,planning_time()).unwrap()[0].topic,80);
     }
 
     #[test]

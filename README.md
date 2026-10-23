@@ -64,8 +64,11 @@ lessons, due reviews, and assessments for topics in global graph layer 30 or abo
 In self-directed mode, new lessons come from `learner/targets`, `learner/queue`,
 and their prerequisites through two `topic/next` edges, matching the default
 Targets graph scope. Unlearned prerequisites never block an in-scope lesson or
-expand this boundary. Each topic's own learning history decides whether it needs
-a new lesson; faded retention stays in the review system.
+expand this boundary. New topics have no progress record or fewer than one
+repetition (below the graph's first color band). A topic at band one or above is
+excluded even if its local learned flag is false. Explicit learned status and
+completed lessons/reviews also prevent repeat new lessons; retention scheduling
+keeps its existing rules.
 Content without a supported grader or sufficient fresh practice is skipped
 individually, so unavailable earlier lessons never hold up later ones. When their
 question banks are replenished, they rejoin the ordinary selection automatically.

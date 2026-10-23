@@ -4016,6 +4016,27 @@ mod study_queue_tests {
     }
 
     #[test]
+    fn study_skips_band_one_with_false_learned_flag_and_serves_the_next_new_lesson() {
+        let mut s = fixture();
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(),json!([5]));
+        s.entities.insert(96,json!({"progress/topic":6,"progress/repetitions":1.0,
+            "progress/learned":false}).as_object().unwrap().clone());
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([90029,96]));
+        let before = s.entities.clone();
+        let at = Utc::now();
+        let view = home(&s,1).unwrap();
+        assert_eq!(view["activities"].as_array().unwrap().len(),1);
+        assert_eq!(view["activities"][0]["activityId"],50);
+        let (_, candidates) = queue_preparation(&s,1,at).unwrap();
+        assert_eq!(candidates.iter().map(|p|p.activity).collect::<Vec<_>>(),[50]);
+        assert!(check_activity_start(&s,1,50,None,at).is_ok());
+        assert!(check_activity_start(&s,1,51,None,at).is_err());
+        // Manual study and the learner's recorded progress remain untouched.
+        assert!(check_activity_start(&s,1,51,Some(6),at).is_ok());
+        assert_eq!(s.entities,before);
+    }
+
+    #[test]
     fn bounded_scope_home_preparation_and_start_skip_shortages_without_mastery_gates() {
         let mut s = fixture();
         // A <- B <- C <- D: C is the depth-two entry point, even though D is

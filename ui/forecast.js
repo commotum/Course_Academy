@@ -75,10 +75,11 @@ export function forecastGraph(f, learner) {
   };
 }
 
-// Same learned evidence and mode-specific ancestry as learning::known_preparation_topics.
+// Same lesson-known evidence and mode-specific ancestry as learning::known_preparation_topics.
 // Current coverage comes directly from that engine function; replay needs the
 // equivalent calculation over historical facts, without invoking a scheduler.
 export function knownPreparationTopics(f, learner) {
+  const selfDirected = f.get(learner, 'learner/self-directed') === true;
   const prerequisites = new Map(f.ids('topic/id').map(id => [id, new Set()]));
   for (const id of prerequisites.keys()) {
     for (const next of f.values(id, 'topic/next')) prerequisites.get(next)?.add(id);
@@ -90,7 +91,7 @@ export function knownPreparationTopics(f, learner) {
   for (const id of f.values(learner, 'learner/knowledge-profile')) {
     const learned = f.get(id, 'progress/learned'), repetitions = f.get(id, 'progress/repetitions') ?? 0;
     if (!Number.isFinite(repetitions) || repetitions < 0) throw new Error('Invalid imported repetition position.');
-    if (learned === true || (learned === undefined && repetitions > 0)) pending.push(f.get(id, 'progress/topic'));
+    if (learned === true || (selfDirected ? repetitions >= 1 : learned === undefined && repetitions > 0)) pending.push(f.get(id, 'progress/topic'));
   }
   for (const task of f.values(learner, 'learner/activity')) {
     const activity = f.get(task, 'learner-task/activity');
@@ -101,7 +102,7 @@ export function knownPreparationTopics(f, learner) {
   }
   // Scoped study may intentionally begin above an unlearned prerequisite.
   // Completing that lesson does not remove its ancestors from remaining work.
-  if (f.get(learner, 'learner/self-directed') === true) return new Set(pending);
+  if (selfDirected) return new Set(pending);
   const known = new Set();
   for (let i = 0; i < pending.length; i++) if (!known.has(pending[i])) {
     known.add(pending[i]); pending.push(...(prerequisites.get(pending[i]) || []));
@@ -231,6 +232,7 @@ export function topicDueDays(snapshot, scope, options, datedOnly = false) {
 }
 
 function preparationKnownAt(inputs, facts, learner, graph) {
+  const selfDirected = facts.get(learner, 'learner/self-directed') === true;
   const seeds = [], terminalDates = new Map();
   const ownedProgress = new Set(facts.values(learner, 'learner/knowledge-profile'));
   for (const event of inputs.history) {
@@ -244,7 +246,7 @@ function preparationKnownAt(inputs, facts, learner, graph) {
       if (!ownedProgress.has(id)) continue;
       const learned = facts.get(id, 'progress/learned');
       if ((attr === 'progress/learned' && value === true) ||
-        (attr === 'progress/repetitions' && positive(value) && learned === undefined)) {
+        (attr === 'progress/repetitions' && (selfDirected ? Number.isFinite(value) && value >= 1 : positive(value) && learned === undefined))) {
         const topic = facts.get(id, 'progress/topic');
         if (topic !== undefined) seeds.push([topic, at]);
       }
@@ -256,7 +258,7 @@ function preparationKnownAt(inputs, facts, learner, graph) {
     const at = inputs.finishedAt[task] ?? terminalDates.get(task), topic = facts.get(activity, 'activity/scope');
     if (Number.isFinite(at) && topic !== undefined) seeds.push([topic, at]);
   }
-  const parents = facts.get(learner, 'learner/self-directed') === true ? new Map()
+  const parents = selfDirected ? new Map()
     : new Map([...graph.inMap].map(([topic, ids]) => [topic, new Set(ids)]));
   for (const topic of parents.keys()) for (const kp of facts.values(topic, 'topic/knowledge-points')) {
     for (const previous of facts.values(kp, 'knowledge-point/key-prerequisites')) parents.get(topic).add(previous);

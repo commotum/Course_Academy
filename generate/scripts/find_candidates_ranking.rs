@@ -259,7 +259,7 @@ pub(super) fn annotate(
     let at = DateTime::<Utc>::from_timestamp_millis(now).ok_or("invalid ranking time")?;
     let priorities = learning::inventory_priorities(&s, learner, at)?;
     let scoped_lessons = if s.entity(learner)?.get("learner/self-directed") == Some(&json!(true)) {
-        let learned = learning::learned_topics(&s, learner)?;
+        let learned = learning::known_lesson_topics(&s, learner)?;
         Some(learning::study_lesson_scope(&s, learner)?.difference(&learned).copied().collect::<BTreeSet<_>>())
     } else {
         None

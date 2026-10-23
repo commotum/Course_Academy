@@ -236,6 +236,22 @@ test('known preparation uses explicit learned, legacy and completed evidence plu
   assert.ok(!known.has(134));
 });
 
+test('self-directed new lessons use graph band one and preserve explicit learning', () => {
+  const x = fixture({ tasks: false });
+  const profiles = [
+    [4000, 131, false, 1], [4001, 132, false, .999],
+    [4002, 133, undefined, .5], [4003, 134, true, .5],
+  ];
+  x.event(19, [[1, 'learner/self-directed', true, true], ...profiles.flatMap(([id, topic, learned, repetitions]) => [
+    [1, 'learner/knowledge-profile', id, true], ...changesFor(id, {
+      'progress/topic': topic, 'progress/repetitions': repetitions,
+      ...(learned === undefined ? {} : { 'progress/learned': learned }),
+    }),
+  ])]);
+  assert.deepEqual([...knownPreparationTopics(x.f, 1)].sort(), [131, 134]);
+  assert.equal(calculateForecast(x.inputs()).inventory.remainingTopics, 3);
+});
+
 test('self-directed forecasts count unlearned scoped ancestors after downstream learning', () => {
   const x = fixture({ tasks: false });
   x.event(19, [[1, 'learner/self-directed', true, true],
@@ -517,6 +533,28 @@ test('already learned prerequisites add zero growth, before applying missing-pri
   assert.equal(r.growth.total.baseXp, 10);
   assert.deepEqual(r.growth.total.estimatedTopics, []);
   assert.deepEqual(r.growth.total.unknownTopics, []);
+});
+
+test('self-directed historical demand uses the same band-one boundary', () => {
+  for (const [learned, repetitions, expected] of [[false, 1, 0], [false, .999, 1], [undefined, .5, 1], [true, .5, 0]]) {
+    const x = fixture({ tasks: false });
+    x.event(10, [[1, 'learner/self-directed', true, true],
+      ...[133, 134, 135].flatMap(topic => [[1, 'learner/knowledge-profile', 4000 + topic, true],
+        ...changesFor(4000 + topic, {
+          'progress/topic': topic,
+          ...(topic !== 135 ? { 'progress/learned': true } : {
+            'progress/repetitions': repetitions,
+            ...(learned === undefined ? {} : { 'progress/learned': learned }),
+          }),
+        }),
+      ]),
+    ]);
+    const inputs = x.inputs();
+    addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 30, 23).getTime());
+    addAssignment(inputs, 1, 6100, 135, at(11));
+    assert.equal(calculateForecast(inputs).growth.total.topics, expected,
+      `learned=${learned}, repetitions=${repetitions}`);
+  }
 });
 
 test('self-directed growth does not infer earlier learning for an unlearned ancestor', () => {
