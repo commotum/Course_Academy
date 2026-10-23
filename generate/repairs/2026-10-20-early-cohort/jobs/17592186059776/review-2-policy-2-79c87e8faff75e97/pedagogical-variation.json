@@ -1,0 +1,3595 @@
+{
+  "learner_operation": "Translate both equations into augmented rows, normalize the first pivot, eliminate x from row 2, normalize the remaining pivot and, for solve prompts, back-substitute. Recognize the correct complete response by its relationship to the equations, not its rank among choices.",
+  "fixed_features": [
+    {
+      "feature": "Nonsingular 2x2 system in x,y order with nonzero first pivot",
+      "justification": "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930 teaches this three-step forward-elimination procedure; no row exchange or singular-system classification is supplied."
+    },
+    {
+      "feature": "Unit pivots and one five-choice radio response",
+      "justification": "All ten source banks use this response contract. Tutorial ee4b134d-2908-5930-86bb-32537e0d8347 explains that unit pivots simplify back substitution even though REF is not unique."
+    },
+    {
+      "feature": "Ten source coefficient profiles; integer offsets h,k in [-3,3]",
+      "justification": "Conservative finite arithmetic families preserve pivot divisors, elimination steps and source difficulty. Coefficients are not essential mathematical constants; this unchanged domain supplies positive, negative and zero results and distinct normalization profiles. The targeted revision changes banks, not this previously reviewed domain."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct lower-right elimination constant",
+      "eligible_variation": "May be negative, zero or positive and occupy any numerical rank; source rank is incidental.",
+      "observed": "Sign, value, numerical rank and position vary. Exact delivered q-73544 pair has ranks 4 and 5. Every sampled family has contrasting ranks."
+    },
+    {
+      "role": "Correct matrix-and-solution option",
+      "eligible_variation": "Position and incorrect candidate values may change while each stated pair stays internally consistent.",
+      "observed": "Changed banks vary rank and authored order; all non-source solve options remain internally consistent, preventing a unique-consistency cue."
+    },
+    {
+      "role": "Response endpoint",
+      "eligible_variation": "REF only and REF plus back substitution are both sourced; target changes must change prompt, options and explanation together.",
+      "observed": "Both endpoints remain supported as source-specific profiles. No independent target-switch parameter exists; both profile endpoints were replayed and mathematically checked."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-73544 seed 920223: parameters [1,0] to [3,1]; hold all coefficients and first equation fixed, change second RHS 14 to 15.",
+      "expected": "Solution changes from (0,-2) to (2,-1); prompt, key and explanation follow. Previously correct response becomes wrong.",
+      "observed": "Exact equations and full responses agree; native grader checks every alternative in both banks. Actual UI displays the changed RHS, key and back substitution.",
+      "status": "passed",
+      "justification": "The second equation supplies the elimination constant after subtracting twice the first equation, as the source procedure requires.",
+      "sample_refs": [
+        "focused-counterfactual-records.json",
+        "focused-counterfactual-results.json",
+        "native-results.json",
+        "render-focused/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse all answer options in the first controlled instance.",
+      "expected": "Prompt, solution and correct mathematical response remain the same; grading follows answer IDs rather than positions.",
+      "observed": "Complete values and correct response preserved; all five native outcomes pass and actual UI displays unchanged mathematics.",
+      "status": "passed",
+      "justification": "Source radio response requires selecting mathematical content, not an authored position.",
+      "sample_refs": [
+        "focused-counterfactual-records.json",
+        "focused-counterfactual-results.json",
+        "native-results.json",
+        "render-focused/rendering.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All ten source profiles and complete answer banks",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "All ten prompts, solutions, complete banks and keys match after presentation normalization."
+    },
+    {
+      "case": "Fresh seed 820219; six boundary/interior parameters per source profile; 15-record easy control seed 920221",
+      "sample_refs": [
+        "samples.json",
+        "control.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "80 total sampled/control/batch records verified independently. Integer/fractional profiles and both endpoints retained; positive, zero and negative values covered."
+    },
+    {
+      "case": "Both retained failure predicates checked before and after their repairs",
+      "sample_refs": [
+        "repair-verification.json",
+        "verify-regressions.py",
+        "regression-fixtures/before1/evidence/regressions/retained-records.json",
+        "regression-fixtures/before2/evidence/repair-2/exact-records.json",
+        "regression-fixtures/current/evidence/repair-2/exact-records.json"
+      ],
+      "result": "Original rank-2 defect and subsequent rank-4 finite-batch defect cause the respective checks to exit 1. Current versions exit 0. Read preflight and both retained history findings; independently reconfirmed their claims."
+    },
+    {
+      "case": "Exact runner batch seed 3334594587 and effective resampled seeds",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "changed-path-results.json",
+        "batch-resampling-records.json"
+      ],
+      "result": "Seven generator calls produce five questions, all surviving delivery. Repeated q-73544 ranks are 4 and 5; original rank-4 strategy now scores 1/2. Effective seeds exactly reproduce all five records."
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 19,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "19/60 full questions answered correctly; unique-choice strategy applied to 60. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 8,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/60 full questions answered correctly; unique-choice strategy applied to 57. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 9,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/60 full questions answered correctly; unique-choice strategy applied to 60. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 12,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/60 full questions answered correctly; unique-choice strategy applied to 58. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 11,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/60 full questions answered correctly; unique-choice strategy applied to 59. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 10,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/60 full questions answered correctly; unique-choice strategy applied to 55. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/60 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/60 full questions answered correctly; unique-choice strategy applied to 8. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 5,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/60 full questions answered correctly; unique-choice strategy applied to 27. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/60 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/60 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 16,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "16/60 full questions answered correctly; unique-choice strategy applied to 60. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-20496",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-20497",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-20500",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-130912",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-73538",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-73551",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "samples.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "samples.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-batch/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-batch/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/15 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/15 full questions answered correctly; unique-choice strategy applied to 3. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/15 full questions answered correctly; unique-choice strategy applied to 8. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/15 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/15 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-control/accepted.json: all",
+      "scope": "overall",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15 full questions answered correctly; unique-choice strategy applied to 15. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-control/accepted.json: q-73544",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-control/accepted.json: q-10522",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 full questions answered correctly; unique-choice strategy applied to 4. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 full questions answered correctly; unique-choice strategy applied to 5. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-control/accepted.json: q-73555",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 full questions answered correctly; unique-choice strategy applied to 6. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_smallest",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_smallest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "second_largest",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying second_largest; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "smallest",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying smallest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "largest",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying largest; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "median",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying median; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_smallest_absolute",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_smallest_absolute; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_positive",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_positive; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_negative",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_negative; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_zero",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_zero; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 1. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_integer_pair",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_integer_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "unique_consistent_pair",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying unique_consistent_pair; abstain if ambiguous or unavailable.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 full questions answered correctly; unique-choice strategy applied to 0. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    },
+    {
+      "cue": "first_authored",
+      "subgroup": "delivery-control/accepted.json: q-73554",
+      "scope": "within_template",
+      "strategy": "Choose the unique option satisfying first_authored; abstain if ambiguous or unavailable.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 full questions answered correctly; unique-choice strategy applied to 2. Abstentions count as unsuccessful. Random choice among five is 0.2. No perfect repeatable subgroup predictor demonstrated; finite counts do not establish population rates. Authored positions are additionally shuffled by the UI.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "decision-probe-results.json",
+        "decision-probes.py"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Finite candidate enumeration and source-offset exclusion",
+      "Solution-fingerprint rejection and bank-seed resampling",
+      "Requested difficulty and publisher normalization/validation",
+      "Captured inventory and within-batch deduplication",
+      "Learner retirement/freshness and within-band hash selection; unconfigured fallback",
+      "Actual UI option ordering"
+    ],
+    "sample_refs": [
+      "batch-resampling-records.json",
+      "changed-path-results.json",
+      "sampler-attempts.json",
+      "delivery-analysis.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-control/delivery.json",
+      "delivery-control/accepted.json",
+      "decision-probe-results.json",
+      "render/rendering.json"
+    ],
+    "result": "Exact batch: 7 generation calls -> 5 outputs -> 5 accepted. Fresh control: 15 calls -> 15 outputs -> 15 accepted. Batch ranks [4,5,5,1,5], with q-73544 ranks [4,5]; all five easy families and negative/zero/positive solutions survive in control. Same-band selection uses record IDs/history, not answer rank; fixture samples fresh prefixes. Live learner histories and weights are not captured and can select smaller subsets."
+  },
+  "limitations": [
+    "Finite probes support the tested claims; they cannot exclude every possible shortcut.",
+    "Coefficient profiles and offset bounds are conservative finite practice, not exhaustive coverage of all nonsingular systems. Hard has no supported source bank.",
+    "Captured inventory basis 5576 contains exactly ten original source questions and no generated stored records. affected-inventory.json is verified empty for the demonstrated defects, not an untested pool.",
+    "Publication preparation absent; actual check_delivery reproduced filtering read-only. Concurrent inventory, future entity IDs, active band weights and learner history are unknown; all relevant rules were examined and selection fixtures are explicitly conditional.",
+    "Source-replay banks retain original examples; direct replay remains available but batch excludes [0,0]. Both supported response endpoints were checked; there is no target-switch parameter."
+  ]
+}

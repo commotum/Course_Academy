@@ -1,0 +1,115 @@
+{
+  "verdict": "accepted",
+  "summary": "Both prior defects are resolved. All eight checks pass for the revised generator and five-question batch. No remaining defect was demonstrated; package files are unchanged.",
+  "source_analysis": {
+    "skill": "Infer two missing additive column operations that zero the nonpivot entries of one row in a 4x4 matrix.",
+    "reasoning_steps": [
+      "Identify the unchanged source column and the row being zeroed.",
+      "Calculate each missing multiplier and verify the column transformation.",
+      "Select the corresponding operation pair."
+    ],
+    "invariants": [
+      "Three additive operations use one unchanged source column.",
+      "One operation is supplied and two are missing.",
+      "Exactly one radio choice gives the correct pair.",
+      "Intermediate and final matrices follow the stated operations."
+    ],
+    "permitted_variations": [
+      "Pivot row and column, supplied operation, integer multipliers and nonpivot entries.",
+      "Which bank member is correct, with dependent matrices and explanations updated."
+    ],
+    "source_refs": [
+      "cbf8e85c-ffa6-55b9-a087-2a5272f10f25",
+      "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+      "3848739a-fbe2-5165-96e8-1543cf1c6383",
+      "6a7661d7-492c-5a50-9552-67599c715cea",
+      "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: adding a multiple of one column to another",
+      "Lesson step cdb6468b-12bc-5624-9941-9d18a55ef6f9: zero entries beside the pivot"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replays.json",
+        "unrated-source-bank.json"
+      ],
+      "details": "All 12 rated source banks and the canonical example replay. Both missing profiles are restored. Documented source corrections and unrated-source limitations remain explicit."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "role-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent exact arithmetic verified 60 fresh records, five batch records, 60 controlled answer-role cases, four counterfactuals and source replays."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "role-results.json",
+        "rejection-summary.json"
+      ],
+      "details": "All rated profiles sampled. Target roles and all four coefficient-sign combinations vary; every bank member can become correct."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "samples.json",
+        "role-records.json"
+      ],
+      "details": "Observed variations preserve the source operation, matrix size, response contract and reasoning workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-grading.json"
+      ],
+      "details": "Native grader accepted 129 correct choices and rejected 516 wrong choices, with no unresolved cases. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render-scroll/rendering.json",
+        "render-scroll/question-002-scroll-1.png"
+      ],
+      "details": "Eight actual-UI previews passed. Screenshots confirmed counterfactual changes and readable notation; horizontal scrolling exposes the complete solution chain. Desktop only."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-cli.json",
+        "retained-regressions.json",
+        "package-integrity.json"
+      ],
+      "details": "Dependencies, determinism, relocation, CLI and rejection checks passed. Both retained regressions fail on the preserved old package and pass currently. All 145 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "choice-probes.json",
+        "batch-cue-analysis.json",
+        "delivery-stage-results.json",
+        "selection-analysis.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "The prior shortcut succeeds on 6/25 applicable fresh records and 0/3 batch records. Controlled identical-bank cases defeat fixed answer assignments. All 60 fresh and five batch records survive delivery filtering. Selection limits are documented; captured inventory contains no historical generated records."
+    }
+  },
+  "findings": []
+}

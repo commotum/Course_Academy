@@ -1,0 +1,1 @@
+Source reconstruction, complete source-bank replay, independent exact math, 216 seeded samples, 5 batch records, 5 controlled counterfactuals, nine row/pivot boundaries, dependency and relocation checks complete. Modal-component shortcut identified; native grader, delivery and UI rendering pending. All scripts/outputs inside evidence root.

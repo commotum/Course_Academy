@@ -1,0 +1,130 @@
+{
+  "verdict": "accepted",
+  "summary": "Both prior defects are resolved. All eight checks pass for the revised generator and exact five-question batch; no remaining defect was demonstrated. Package files are unchanged.",
+  "source_analysis": {
+    "skill": "Infer two missing additive elementary column operations that zero the nonpivot entries of one row in a 4x4 matrix.",
+    "reasoning_steps": [
+      "Identify the unchanged source column and row reduced to zeros in B.",
+      "For each missing target column solve a_ri + k a_rp = 0; confirm A[:,i]+k A[:,p]=B[:,i].",
+      "Select the pair of operations from five choices; follow three sequential matrices in the explanation."
+    ],
+    "invariants": [
+      "Source column remains unchanged and nonzero.",
+      "Three other columns each receive a multiple of the same source column.",
+      "Exactly two operations missing and one given; additive operations only.",
+      "Every displayed intermediate and final matrix follows the stated operations."
+    ],
+    "permitted_variations": [
+      "All four pivot rows and columns, which of the three operations is supplied, signs and magnitudes of integer multipliers, nonpivot entries, and distractor order.",
+      "Pivot signs and small nonunit pivots are supported; preserve integer arithmetic and comparable size.",
+      "The signs, equality of the missing multipliers, and correct option position are incidental assignments, not fixed instructional constraints."
+    ],
+    "source_refs": [
+      "44844b50-2f6e-5293-a5b6-be91cc0464d5",
+      "97cdc30d-8d5f-5b4f-9e85-7b81ebf9817c",
+      "7e684a1a-6db2-5d5b-a204-dfca2a03bad8",
+      "2ce8c9c4-6db5-5686-9935-94470a40d94f",
+      "52a8d12a-bf03-5861-a1ef-a22559dc318f",
+      "d8d2327d-fd59-5f70-be7f-347d32e9ba53",
+      "199e4c52-f83d-5049-8866-371a59fa8216",
+      "0568247a-0893-5a83-bb65-a32f42d7293a",
+      "0caa2d92-c312-53e1-9069-1f7c037c78ef",
+      "abd07e98-c7c9-5953-be97-025190235f0f",
+      "b9ef8afb-c422-57bc-a155-4bf0fc567ca9",
+      "3848739a-fbe2-5165-96e8-1543cf1c6383",
+      "6a7661d7-492c-5a50-9552-67599c715cea",
+      "cbf8e85c-ffa6-55b9-a087-2a5272f10f25",
+      "tutorial e947134c-e909-5a3b-85a6-d284e04816e0: Adding a multiple of one column to another column: C_j := C_j+k C_i, j != i",
+      "lesson step cdb6468b-12bc-5624-9941-9d18a55ef6f9: make entries to the left and to the right of a_32=1 equal to 0"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replays.json",
+        "unrated-source-bank.json",
+        "retained-regressions.json"
+      ],
+      "details": "All 12 rated banks and canonical backbone replay, including restored q-130617/q-130630 and the documented q-91210 source correction. Unrated q-91208 remains explicitly unsupported."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "role-results.json",
+        "counterfactual-results.json",
+        "source-replay.json"
+      ],
+      "details": "Exact arithmetic independently verifies 60 fresh records, all five batch records, 60 controlled bank roles, four counterfactuals and 13 source replays, including intermediate matrices and unique correct choices."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "role-results.json",
+        "rejection-summary.json",
+        "delivery-stage-results.json"
+      ],
+      "details": "All rated profiles sampled; pivot/target roles, integer values and all four sign combinations vary. Correct member varies independently within every tested fixed bank."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "samples.json",
+        "role-records.json"
+      ],
+      "details": "Observed variations retain 4x4 integer matrices, three additive column operations, one given/two missing operations and five-choice radio response."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-grading.json"
+      ],
+      "details": "Native grader accepts 129 independently correct choices and rejects 516 wrong choices; no unresolved cases. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-scroll/rendering.json",
+        "visual-inspection.json",
+        "render/question-005.png",
+        "render/question-008.png",
+        "render-scroll/question-002-scroll-1.png"
+      ],
+      "details": "Eight actual-UI previews pass. Screenshots and controlled changes inspected; horizontal scrolling exposes middle/final solution stages. Desktop only."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-cli.json",
+        "retained-regressions.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact Python/SymPy versions match manifest. Determinism, relocation, CLI, invalid input rejection and retained regressions verified. Both regressions fail on preserved old package and pass current. Package unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "choice-probes.json",
+        "batch-cue-analysis.json",
+        "delivery-stage-results.json",
+        "selection-analysis.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Prior shortcut no longer predicts answers: 6/25 fresh and 0/3 batch applicable cases. Identical-bank tests exercise every correct member in all 12 profiles. All delivery stages examined with stated history limits. No historical generated records in captured inventory."
+    }
+  },
+  "findings": []
+}
