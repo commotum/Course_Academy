@@ -1,15 +1,21 @@
-# Current repair result — author-260
+# Current repair result — author-269
 
-The installed runner rejects unchanged runtime bytes before regressions or
-sampling. Reproduced this exact failure first, then ran all retained checks.
-Generator, source replay, independent math, counterfactual, delivery, shortcut,
-native grading and inventory checks pass. Corrected evidence validates, but its
-registered strict handoff test exits 1. UI binding and visual reinspection pass.
+The generator's retained CLI, source fidelity, mathematical, native-grading,
+delivery and decision-variation checks pass. No runtime change was warranted.
+The corrected evidence bundle validates at its own root and arbitrary relocated
+roots, with strict missing-file and wrong-root controls.
 
-Commands and results: evidence/author260-regressions.json.
-The source-supported runtime and completed repairs are unchanged.
+The actual installed runner still rejects this unchanged package before those
+checks run. The registered evidence regression therefore correctly exits 1.
+The staged root-cause patch targets `scripts/generator_pipeline.py`, outside this
+workspace; it has not been installed. No acceptance criterion was weakened and
+no runtime bytes were changed to evade the gate.
 
-The existing root-cause patch runner-fix/evidence-only-rejection.patch remains
-staged, uninstalled. Applying it changes scripts/generator_pipeline.py, outside
-the authorized workspace. No database, publication, runner or other-job writes
-were performed. A fresh independent review is required after that fix.
+Exact commands and results: `evidence/current-author-verification.json`.
+Current failure: `evidence/current-handoff-regression.json`.
+Corrected bundle: `evidence/contract-correction`.
+Installation inventory: `evidence/contract-installation.json`.
+External correction: `runner-fix/evidence-only-rejection.patch`.
+
+The runner owner must apply an authorized correction and obtain fresh independent
+review. No database writes, publication, engine edits or other-job writes occurred.
