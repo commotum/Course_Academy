@@ -1,3 +1,5 @@
+> Historical source extraction. Runtime sampling and identity rules were revised on 2026-10-22; see ../instructional-account.md. The complete bank recipes and source corrections below remain the replay specification.
+
 # Two column additions in a 3x3 matrix
 
 Each source is described without generalization in source.json (verbatim prompt, fields, bank, solution and IDs) and source-components.json (exact matrices, selected row/pivot, both multipliers, every option's full operation object and recipe). All sources supply A and B and ask for both operations that retain a supplied pivot column. The correct pair is in ascending target-column order. No operation is supplied separately. Five choices contain pairs, one radio field `selection`, two successive intermediate transformations, and a final sentence state the same pair.

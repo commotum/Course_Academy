@@ -1,0 +1,7 @@
+Targeted repair ad4d9eb2e13fc5224721 implemented. Original exact minimal failure reproduced in evidence/reproduction.log and evidence/before-minimal*.json. Runtime now chooses a complete bank, then any of its five pairs as correct before matrix construction; all nine profiles and exact source banks retained. Manifest reduced to runtime files, dependency pinned, repository-relative interpreter fallback removed.
+
+Completed: `/home/jake/Developer/Course_Academy/.venv/bin/python evidence/check_repair.py` (182 exact matrix/solution checks, 10 sources/11 complete banks, 9 fixed-bank role families, runtime-only relocation); native `check-engine evidence/grader-input.json evidence/grader-report.json` (182 accepted, 728 rejected); shared check_delivery (171/171 accepted, no duplicates). Regression registered in repair-regressions.json. Inventory contains only ten original source records, no generated pool records to repair.
+
+Next: finish actual UI rendering and inspect screenshots, record final delivery/selection limits and commands.
+
+Completed actual UI renderer: 5/5 passed; all five screenshots visually inspected. After-delivery regression retained all nine complete fixed-bank families. Final commands and separate fidelity/correctness/grading/variation claims are in evidence/commands.md and evidence/summary.json. No author implementation work remains; fresh independent review/publication are runner stages. Learner-specific live selection was not executed (limits in evidence/selection-review.json). All author output is inside this workspace.

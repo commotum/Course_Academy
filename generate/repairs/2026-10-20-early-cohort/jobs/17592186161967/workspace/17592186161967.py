@@ -67,6 +67,7 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty '+difficulty)
  rng=random.Random(seed);profile=bank_profile or template or rng.choice(PROFILES)
  if profile not in PROFILES:raise ValueError('Unknown source profile')
+ source_replay=parameters is not None and parameters==ORIGINAL[profile]
  if parameters is None:
   for _ in range(300):
    p=rng.randrange(3);c=rng.randrange(3);targets=[r for r in range(3) if r!=p]
@@ -81,7 +82,6 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  assert all(isinstance(k,int) and k!=0 and A[r,c]+k*A[p,c]==0 for r,k in enumerate(ks) if r!=p)
  B=A.copy();stages=[]
  for r in targets:B[r,:]=B[r,:]+ks[r]*B[p,:];stages.append(B.copy())
- source_replay=parameters==ORIGINAL[profile]
  # Separate bank RNG keeps replay from explicit parameters identical to sampling.
  bank_rng=random.Random(str(seed)+':bank')
  bank=(recipes(profile,ks[targets[0]],ks[targets[1]]) if source_replay else generalized_bank(profile,ks[targets[0]],ks[targets[1]],bank_rng));assert len(set(bank))==5

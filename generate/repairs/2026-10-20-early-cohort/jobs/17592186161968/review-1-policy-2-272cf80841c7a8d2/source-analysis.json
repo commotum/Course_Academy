@@ -1,0 +1,49 @@
+{
+  "skill": "Infer two elementary column additions that create two zeros in one row of a 3x3 matrix, using a specified unchanged pivot column.",
+  "reasoning_steps": [
+    "Identify the unchanged column j and the row r with two zeros in B.",
+    "For each other column i calculate k_i=-a_ri/a_rj, with nonzero pivot.",
+    "Apply each operation to the whole column and check that the intermediate and final matrices match B.",
+    "Select the one correct pair among five radio choices."
+  ],
+  "invariants": [
+    "3x3 integer matrices, two nontrivial column additions sharing a nonzero pivot.",
+    "Two integer multipliers and a single correct pair; no swaps, scaling, row operations, systems solving, or 4x4 workload.",
+    "Worked solution identifies pivot location and shows both complete matrix transformations."
+  ],
+  "permitted_variations": [
+    "Any of three pivot columns and three zeroed rows; all signs of nonzero integral multipliers.",
+    "Nonzero positive and negative pivots, including magnitudes greater than one with divisible entries.",
+    "Off-target entries may change without changing multipliers; changing a target-row entry must update multiplier and B.",
+    "Correct option position, multiplier magnitudes/order, distractor profiles and non-pivot column roles are incidental answer-bearing assignments, not fixed constraints."
+  ],
+  "source_refs": [
+    "a68c2e7c-c605-5187-a1fa-13349acf01b6 (q-42917)",
+    "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
+    "20588ade-71ed-551a-be45-9c686e3a54a5 (q-130609)",
+    "f5b6d005-cac9-5d71-a15c-66f827fd6327 (q-130610)",
+    "999081e6-b687-59be-9094-b550515c9e09 (q-130611)",
+    "87fa5bad-fa31-5e99-bbba-02c007ce2d91 (q-91186)",
+    "8c748818-492d-57de-bb7c-4dda21885c24 (q-91187)",
+    "50d09abe-1ccb-5c67-80df-655b78fbf493 (q-91192)",
+    "e8820685-174a-5aac-b0a4-a6b54f80941e (q-91188)",
+    "5b007bca-ff70-5f72-b366-01bf0baa6ac8 (q-130614)",
+    "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051), lesson step 007cc686-090e-50a0-8170-5b1c5eb412f6: make entries to the left of a13=1 equal to 0; C1+=6C3 and C2+=5C3.",
+    "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0 (10652), Column Operations: Adding a multiple of one column to another column: C_j := C_j+k C_i, j != i."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "source_corrections": [
+    "q-91187 final summary reverses the first operation; matrix steps and correct choice establish C2:=C2-C1.",
+    "q-42917 contains duplicate equivalent choice banks, one without a key; use the keyed bank while preserving the complete mathematical bank."
+  ],
+  "difficulty": "easy; all ten source questions use integer multipliers; exact magnitude bounds are incidental but arithmetic workload should remain comparable.",
+  "evidence_limits": [
+    "Canonical example has no answer field; observed radio contract comes from the ten source questions. No images or explicit prerequisite records supplied."
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-0-policy-2-8bbb1cdbe4d688a3/source-analysis.json",
+    "verification": "Confirmed all ten IDs, canonical example and quoted lesson passages against unchanged source.json before inspecting package."
+  }
+}
