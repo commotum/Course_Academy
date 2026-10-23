@@ -236,7 +236,11 @@ pub fn lesson_shortages(
 ) -> Result<Vec<(u64, usize)>> {
     let mut shortages = vec![];
     for &kp in kps {
-        let count = practice_pool(s, &[kp], seen)?.len();
+        let count = s.refs(kp, "knowledge-point/questions")?
+            .into_iter()
+            .filter(|q| !seen.contains(q) && learning::validate_practice_question(s, *q).is_ok())
+            .take(5)
+            .count();
         if count < 5 {
             shortages.push((kp, count));
         }

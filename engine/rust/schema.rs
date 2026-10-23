@@ -126,6 +126,8 @@ pub struct SnapshotRecords {
     validated_questions: RefCell<BTreeSet<u64>>,
     #[serde(skip)]
     validated_practice_questions: RefCell<BTreeSet<u64>>,
+    #[serde(skip)]
+    lesson_routes: RefCell<BTreeMap<u64, Vec<crate::learning::LessonStep>>>,
 }
 impl Deref for SnapshotRecords {
     type Target = BTreeMap<u64, Record>;
@@ -140,6 +142,7 @@ impl DerefMut for SnapshotRecords {
         *self.topic_neighbors.get_mut() = None;
         self.validated_questions.get_mut().clear();
         self.validated_practice_questions.get_mut().clear();
+        self.lesson_routes.get_mut().clear();
         &mut self.records
     }
 }
@@ -158,6 +161,7 @@ impl From<BTreeMap<u64, Record>> for SnapshotRecords {
             topic_neighbors: RefCell::default(),
             validated_questions: RefCell::default(),
             validated_practice_questions: RefCell::default(),
+            lesson_routes: RefCell::default(),
         }
     }
 }
@@ -186,6 +190,14 @@ impl SnapshotRecords {
 
     pub(crate) fn mark_practice_question_validated(&self, question: u64) {
         self.validated_practice_questions.borrow_mut().insert(question);
+    }
+
+    pub(crate) fn lesson_route(&self, activity: u64) -> Option<Vec<crate::learning::LessonStep>> {
+        self.lesson_routes.borrow().get(&activity).cloned()
+    }
+
+    pub(crate) fn cache_lesson_route(&self, activity: u64, route: &[crate::learning::LessonStep]) {
+        self.lesson_routes.borrow_mut().insert(activity, route.to_vec());
     }
 
     pub fn with_attribute(&self, attribute: &str) -> Vec<u64> {
@@ -333,6 +345,7 @@ impl EntitySnapshot {
             }) {
                 self.entities.validated_questions.get_mut().clear();
                 self.entities.validated_practice_questions.get_mut().clear();
+                self.entities.lesson_routes.get_mut().clear();
             }
             let changed = |attr: &str| old.and_then(|r| r.get(attr)) != record.get(attr);
             // New ordinary retrieval routes do not affect question membership.
@@ -342,6 +355,17 @@ impl EntitySnapshot {
                     && !self.owners(eid, "multistep/steps")?.is_empty())
             {
                 self.entities.validated_practice_questions.get_mut().clear();
+            }
+            if old.into_iter().flat_map(|r| r.keys()).chain(record.keys()).any(|attr| changed(attr) && attr.starts_with("activity/")) {
+                self.entities.lesson_routes.get_mut().remove(&eid);
+            }
+            if ["step/content", "step/next"].iter().any(|attr| changed(attr)) && self.entities.records.contains_key(&eid) {
+                for activity in self.owners(eid, "activity/steps")? {
+                    self.entities.lesson_routes.get_mut().remove(&activity);
+                }
+            }
+            if changed("tutorial/content") || changed("topic/knowledge-points") || changed("tutorial/id") || changed("topic/id") {
+                self.entities.lesson_routes.get_mut().clear();
             }
             if ["topic/id", "topic/next"].iter().any(|attr| {
                 old.and_then(|r| r.get(*attr)) != record.get(*attr)

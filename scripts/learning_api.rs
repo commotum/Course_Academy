@@ -2783,7 +2783,9 @@ impl Application {
         let queue_error =
             if needs_queue_refresh(action, &status(&self.snapshot, t, "learner-task/status")?) {
                 let request = format!("queue-after-{l}-{}", self.snapshot.basis_t);
-                self.process(&json!({"action":"queue","background":true,"requestId":request}))
+                // Retain the freshly computed home at its new basis. Calling
+                // process directly discarded it and forced Home to plan again.
+                self.handle(json!({"action":"queue","background":true,"requestId":request}))
                     .err()
             } else {
                 None
@@ -3268,6 +3270,20 @@ mod study_queue_tests {
             let started = Instant::now();
             let view = app.handle(json!({"action":"home"}))?;
             eprintln!("Profile cached home run={run} elapsed={:.3} ms bytes={}", started.elapsed().as_secs_f64()*1000., serde_json::to_vec(&view)?.len());
+        }
+        // Simulate learner writes only in this held projection. Exercise the
+        // same replacement/invalidation path without committing to live EDB.
+        let task = app.snapshot.refs(l, "learner/activity")?[0];
+        for run in 0..3 {
+            let mut record = app.snapshot.entity(task)?.clone();
+            let elapsed = record.get("learner-task/elapsed-seconds").and_then(Json::as_f64).unwrap_or(0.0);
+            record.insert("learner-task/elapsed-seconds".into(), json!(elapsed + 1.0));
+            app.snapshot.replace_records(BTreeMap::from([(task, record)]), app.snapshot.basis_t + 1)?;
+            app.home_cache = None;
+            let started = Instant::now();
+            let (forms, candidates) = queue_preparation(&app.snapshot, l, Utc::now())?;
+            let view = home_with_candidates(&app.snapshot, l, Some(candidates))?;
+            eprintln!("Profile rebuild after learner update run={run} elapsed={:.3} ms speculative-forms={} bytes={}", started.elapsed().as_secs_f64()*1000., forms.len(), serde_json::to_vec(&view)?.len());
         }
         Ok(())
     }

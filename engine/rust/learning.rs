@@ -48,6 +48,9 @@ fn nonempty(s: &EntitySnapshot, eid: u64, attr: &str) -> Result<()> {
 /// The current learner player supports linear lessons, including adaptive KP
 /// expansion. Reject malformed routes instead of silently omitting content.
 pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>> {
+    if let Some(route) = s.entities.lesson_route(activity) {
+        return Ok(route);
+    }
     let kind = ident(s, activity, "activity/type")?;
     let retrieval = matches!(
         kind.as_str(),
@@ -133,6 +136,7 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
             }
         }
     }
+    s.entities.cache_lesson_route(activity, &result);
     Ok(result)
 }
 
@@ -1617,6 +1621,7 @@ fn plan_candidates_in_scope(
                 step.questions
                     .iter()
                     .filter(|q| !seen.contains(q) && validate_practice_question(s, **q).is_ok())
+                    .take(minimum_fresh)
                     .count()
                     < minimum_fresh
             }
@@ -2715,6 +2720,31 @@ pub(crate) mod tests {
     }
 
     #[test]
+    fn lesson_routes_survive_learner_updates_and_invalidate_on_route_or_content_edits() {
+        let mut s = fixture();
+        assert_eq!(lesson_steps(&s, 20).unwrap().len(), 2);
+        s.replace_records(BTreeMap::from([
+            (900, json!({"task-item/content":100,"task-item/status":1010}).as_object().unwrap().clone()),
+            (901, json!({"step/content":101}).as_object().unwrap().clone()),
+            (902, json!({"activity/steps":[901]}).as_object().unwrap().clone()),
+        ]), s.basis_t+1).unwrap();
+        assert!(s.entities.lesson_route(20).is_some());
+        let mut changed = s.clone();
+        let mut step = changed.entities[&30].clone();
+        step.insert("step/next".into(), json!(30));
+        changed.replace_records(BTreeMap::from([(30, step)]), changed.basis_t+1).unwrap();
+        assert!(changed.entities.lesson_route(20).is_none());
+        assert!(lesson_steps(&changed, 20).is_err());
+        assert!(s.entities.lesson_route(20).is_some());
+        assert_eq!(lesson_steps(&s, 20).unwrap().len(), 2);
+        let mut example = s.entities[&42].clone();
+        example.insert("question/worked-solution".into(), json!(""));
+        s.replace_records(BTreeMap::from([(42, example)]), s.basis_t+1).unwrap();
+        assert!(s.entities.lesson_route(20).is_none());
+        assert!(lesson_steps(&s, 20).is_err());
+    }
+
+    #[test]
     fn question_validation_survives_answers_and_completion_but_tracks_authored_edits() {
         let mut s = fixture();
         validate_practice_question(&s, 100).unwrap();
@@ -2751,6 +2781,17 @@ pub(crate) mod tests {
         ]), s.basis_t+1).unwrap();
         assert!(s.entities.question_validated(100));
         assert!(validate_practice_question(&s, 100).is_err());
+        validate_practice_question(&s, 101).unwrap();
+        s.replace_records(BTreeMap::from([
+            (950, json!({"step/content":101}).as_object().unwrap().clone()),
+        ]), s.basis_t+1).unwrap();
+        assert!(validate_practice_question(&s, 101).is_err());
+        validate_practice_question(&s, 102).unwrap();
+        s.replace_records(BTreeMap::from([
+            (952, json!({"assigned-problem/content":102}).as_object().unwrap().clone()),
+            (950, json!({"step/content":952}).as_object().unwrap().clone()),
+        ]), s.basis_t+1).unwrap();
+        assert!(validate_practice_question(&s, 102).is_err());
 
         let mut question = s.entities[&100].clone();
         question.insert("question/retired".into(), json!(true));

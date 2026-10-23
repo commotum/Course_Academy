@@ -1811,6 +1811,7 @@ fn durable_scheduler_lifecycle() -> Result<()> {
         assert!(view["step"]["fields"][0].get("grade").is_none());
         view = request(&mut app, "submit", json!({"taskId":task}))?;
         assert_eq!(view["assessmentScore"]["correct"], 1);
+        assert!(app.cached_home(true).is_some(), "completion must retain the freshly prepared home");
         loop {
             let queue = request(&mut app, "queue", json!({}))?;
             let h = course_academy_engine::scheduling::lifecycle(&app.snapshot, l)?;
@@ -1838,6 +1839,7 @@ fn durable_scheduler_lifecycle() -> Result<()> {
                 view = request(&mut app, "continue", json!({"taskId":t,"itemId":i}))?;
             }
             assert_eq!(view["status"], "completed");
+            assert!(app.cached_home(true).is_some(), "review completion must retain the newly planned home");
         }
         let s = &app.snapshot;
         let retake = s
