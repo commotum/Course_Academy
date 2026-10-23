@@ -58,7 +58,18 @@
         "delivery-batch/accepted.json",
         "delivery-analysis.json"
       ],
-      "result": "5/5 accepted: four radio questions in two contrasting bank groups and one symbolic blank. The symbolic field has the separately reported comma-index grading defect."
+      "result": "5/5 exact candidates survive current delivery: two radio bank groups each with contrasting targets, and one symbolic blank. Compact and comma-separated indices both grade correctly."
+    },
+    {
+      "case": "Fresh engine-repair regression sample",
+      "sample_refs": [
+        "current-fresh-batches.json",
+        "current-symbolic-controls.json",
+        "current-native-input.json",
+        "current-native-report.json",
+        "current-math.json"
+      ],
+      "result": "Fresh seeds 983041/983042, symbolic corners and off-diagonals, and source replays independently verified. 774 strict native checks pass, including retained expectations."
     }
   ],
   "counterfactuals": [
@@ -73,7 +84,7 @@
         "controlled-records.json",
         "controlled-pairs.json",
         "counterfactual-results.json",
-        "pair-grader-report.json",
+        "current-native-report.json",
         "render/question-015.png",
         "render/question-017.png"
       ]
@@ -89,9 +100,41 @@
         "controlled-records.json",
         "controlled-pairs.json",
         "counterfactual-results.json",
-        "pair-grader-report.json",
+        "current-native-report.json",
         "render/question-015.png",
         "render/question-016.png"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Move box from (2,3) to (3,2) in fixed A matrix.",
+      "expected": "Old a_{2,3} rejected; a_{3,2} accepted; prompt and explanation follow box.",
+      "observed": "Native outcomes meet expectations and rendered prompt, blank and worked solution track coordinates and values.",
+      "status": "passed",
+      "justification": "First subscript is row and second column; cell values do not define indices (tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9).",
+      "sample_refs": [
+        "current-symbolic-controls.json",
+        "current-native-input.json",
+        "current-native-report.json",
+        "current-render-controls/rendering.json",
+        "current-render-controls/question-001.png",
+        "current-render-controls/question-002.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace matrix entries by ones, retaining A and boxed coordinate (2,3).",
+      "expected": "a_{2,3} still accepted; solution value changes from -2 to 1.",
+      "observed": "Native outcomes meet expectations and rendered prompt, blank and worked solution track coordinates and values.",
+      "status": "passed",
+      "justification": "First subscript is row and second column; cell values do not define indices (tutorial 34f3a63d-a273-50fb-b26a-ae172c7e93e9).",
+      "sample_refs": [
+        "current-symbolic-controls.json",
+        "current-native-input.json",
+        "current-native-report.json",
+        "current-render-controls/rendering.json",
+        "current-render-controls/question-001.png",
+        "current-render-controls/question-003.png"
       ]
     }
   ],
@@ -679,6 +722,135 @@
         "rendered-batch-positions.json",
         "render/rendering.json"
       ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "exact_delivered ((4, 4), [(2, 2), (2, 3), (3, 2), (3, 3), (3, 4)], 'inline')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first serialized option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "smallest bank coordinate",
+      "subgroup": "exact_delivered ((4, 4), [(2, 2), (2, 3), (3, 2), (3, 3), (3, 4)], 'inline')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest row-major coordinate without inspecting box",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "exact_delivered ((4, 4), [(3, 5), (4, 3), (4, 4), (5, 6), (6, 5)], 'inline')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first serialized option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "smallest bank coordinate",
+      "subgroup": "exact_delivered ((4, 4), [(3, 5), (4, 3), (4, 4), (5, 6), (6, 5)], 'inline')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest row-major coordinate without inspecting box",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh_delivered ((3, 3), [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2)], 'display')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first serialized option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "smallest bank coordinate",
+      "subgroup": "fresh_delivered ((3, 3), [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2)], 'display')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest row-major coordinate without inspecting box",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. These small conditional probes have counterexamples and do not prove absence of other cues. Serialized order is distinguished from actual UI order.",
+      "sample_refs": [
+        "current-delivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "actual rendered position",
+      "subgroup": "exact delivered q-13489 visible bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose third displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline 0.2; each bank has a third-position and fourth-position correct answer. Live item-seeded order can differ.",
+      "sample_refs": [
+        "current-rendered-positions.json",
+        "current-render/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual rendered position",
+      "subgroup": "exact delivered q-13499 visible bank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose third displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline 0.2; each bank has a third-position and fourth-position correct answer. Live item-seeded order can differ.",
+      "sample_refs": [
+        "current-rendered-positions.json",
+        "current-render/rendering.json"
+      ]
+    },
+    {
+      "cue": "q13498 recognizable bank shape",
+      "subgroup": "fresh delivered matching banks",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose middle column in smallest row without locating highlight",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus five-choice random baseline 0.2; two counterexamples to formerly perfect shortcut. Exact runner batch has no matching bank, so this control is necessary.",
+      "sample_refs": [
+        "current-fresh-cue.json",
+        "current-delivery-fresh/accepted.json"
+      ]
     }
   ],
   "delivery": {
@@ -697,16 +869,19 @@
       "delivery-controls/delivery.json",
       "delivery-analysis.json",
       "selection-analysis.json",
-      "inventory-analysis.json"
+      "inventory-analysis.json",
+      "current-delivery-batch/delivery.json",
+      "current-delivery-fresh/delivery.json",
+      "current-delivery-analysis.json"
     ],
-    "result": "5/5 exact batch; 32/40 fresh batch records; 46/56 controls survive. Duplicate source-bank geometries and overlapping fixed-seed profile samples explain removals. Every surviving radio group retains contrasting targets. Selection may remove seen records and does not correct the grading defect."
+    "result": "Current exact batch 5/5 survives; fresh overlapping-seed candidates 7/10 survive with contrasting bank targets. Previous bound broader sample retains 32/40 fresh and 46/56 controlled records. Generator construction, requested difficulty, shared filtering, captured inventory and selection rules examined. Individual history may remove previously seen partners."
   },
   "limitations": [
     "No finite audit proves absence of all shortcuts. Conditional small groups are regression examples, not population estimates.",
     "Review targets easy only. Authored moderate/hard are not certified.",
     "No live learner histories, policy distribution or later inventory; selection claims are limited to captured basis5667 and inspected code.",
     "Source replay preserves original answer arrangement by design and is not itself a varied practice pool.",
-    "Native grading accepts tested bracing, numeric fractions and added zero, but rejects valid comma-separated matrix indices; reported separately as grading.",
-    "Serialized option-position probes are distinguished from actual preview UI order; learner item IDs are unavailable."
+    "Serialized option-position probes are distinguished from actual preview UI order; learner item IDs are unavailable.",
+    "Earlier broader evidence is reused with provenance because runtime/source/batch/inventory bindings match. Native outcomes were rerun against the changed engine; scope remains easy only."
   ]
 }

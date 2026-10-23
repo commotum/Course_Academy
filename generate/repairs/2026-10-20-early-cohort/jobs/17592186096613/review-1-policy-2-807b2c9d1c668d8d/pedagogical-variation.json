@@ -1,0 +1,777 @@
+{
+  "learner_operation": "Identify the entire signed constant multiplying ln(x), rewrite ln(x)/d as (1/d)ln(x), and apply the constant-multiple rule to produce c/x.",
+  "fixed_features": [
+    {
+      "feature": "Single ln(x), x>0, derivative with respect to x",
+      "justification": "Tutorial and canonical example teach this derivative; changing arguments or adding terms introduces other knowledge points."
+    },
+    {
+      "feature": "One correct answer in a five-option radio bank or an equivalent-expression blank",
+      "justification": "Captured response contracts. The count constrains the response format, not which option qualifies."
+    },
+    {
+      "feature": "Modest reduced nonzero constants and distinct choices",
+      "justification": "Preserves easy workload. Denominator 1 collapses quotient distractors; numerator 1 collides in the original fraction bank but is now reachable in quotient and blank families."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "coefficient sign and magnitude",
+      "eligible_variation": "Signed integers, fractions, unit fractions and multiples of e",
+      "observed": "Six profiles present; both quotient signs and distinct denominators survive delivery."
+    },
+    {
+      "role": "quotient denominator",
+      "eligible_variation": "Small denominators with a valid five-option bank",
+      "observed": "Independent boundaries 2,4,12 and controlled 4->5; author regression independently rerun across all 2..12 with both signs."
+    },
+    {
+      "role": "correct option position",
+      "eligible_variation": "Any option position; irrelevant to differentiation",
+      "observed": "Varied serialized and actual UI positions, separately measured."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 43, \"profiles\": {\"quotient\": 13, \"integer\": 6, \"euler\": 7, \"canonical\": 9, \"fraction\": 4, \"equivalent-entry\": 4}, \"signs\": {\"negative\": 18, \"positive\": 25}, \"unique_derivatives\": 34, \"quotient_form\": 13}"
+    },
+    {
+      "case": "delivered_sample",
+      "sample_refs": [
+        "variation-results.json",
+        "samples.json"
+      ],
+      "result": "{\"count\": 38, \"profiles\": {\"quotient\": 10, \"integer\": 6, \"euler\": 7, \"canonical\": 9, \"fraction\": 4, \"equivalent-entry\": 2}, \"signs\": {\"negative\": 15, \"positive\": 23}, \"unique_derivatives\": 34, \"quotient_form\": 10}"
+    },
+    {
+      "case": "raw_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"quotient\": 3, \"fraction\": 1, \"canonical\": 1}, \"signs\": {\"negative\": 1, \"positive\": 4}, \"unique_derivatives\": 5, \"quotient_form\": 3}"
+    },
+    {
+      "case": "delivered_batch",
+      "sample_refs": [
+        "variation-results.json",
+        "batch.json"
+      ],
+      "result": "{\"count\": 5, \"profiles\": {\"quotient\": 3, \"fraction\": 1, \"canonical\": 1}, \"signs\": {\"negative\": 1, \"positive\": 4}, \"unique_derivatives\": 5, \"quotient_form\": 3}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "quotient: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "quotient: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "integer: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "integer: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "fraction: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "fraction: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "euler: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "euler: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "canonical: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "canonical: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "equivalent-entry: change coefficient or sign at fixed seed",
+      "expected": "Prompt, every coefficient-dependent solution step and correct derivative change",
+      "observed": "{'relevant_prompt_changed': True, 'relevant_solution_changed': True, 'relevant_key_changed': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "equivalent-entry: change shuffle seed with coefficient fixed",
+      "expected": "Derivative and solution are preserved despite harmless choice-order variation",
+      "observed": "{'irrelevant_prompt_preserved': True, 'irrelevant_solution_preserved': True, 'irrelevant_key_preserved': True}; all choice responses and blank equivalents checked by native grader; UI renders all three records.",
+      "status": "passed",
+      "justification": "The source constant-multiple rule depends on the coefficient, not choice order or random seed. A one-answer blank has no meaningful choice-order change.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-pairs/rendering.json",
+        "variation-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold positive quotient form fixed; denominator 4 -> 5",
+      "expected": "1/(4x) -> 1/(5x), including rewriting row and final key",
+      "observed": "Visible prompts, solution rows, native radio acceptance/rejection and inspected rendered pair follow the new denominator.",
+      "status": "passed",
+      "justification": "q-70887 requires identifying the denominator as part of the constant.",
+      "sample_refs": [
+        "denominator-counterfactual.json",
+        "solution-rows.json",
+        "grader-report.json",
+        "render-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "answer position",
+      "subgroup": "raw_sample/all",
+      "scope": "overall",
+      "strategy": "choose first serialized option",
+      "correct": 4,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_sample/integer",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_sample/fraction",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_sample/euler",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_sample/quotient",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_sample/all",
+      "scope": "overall",
+      "strategy": "choose first serialized option",
+      "correct": 4,
+      "total": 27,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_sample/integer",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_sample/fraction",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_sample/euler",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_sample/quotient",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_batch/all",
+      "scope": "overall",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_batch/fraction",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "raw_batch/quotient",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_batch/all",
+      "scope": "overall",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_batch/fraction",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "delivered_batch/quotient",
+      "scope": "within_template",
+      "strategy": "choose first serialized option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "actual UI batch and controlled pairs/all",
+      "scope": "overall",
+      "strategy": "choose first displayed option",
+      "correct": 6,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "actual UI batch and controlled pairs/integer",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "actual UI batch and controlled pairs/fraction",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "actual UI batch and controlled pairs/euler",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "answer position",
+      "subgroup": "actual UI batch and controlled pairs/quotient",
+      "scope": "within_template",
+      "strategy": "choose first displayed option",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio alternatives give uniform guessing baseline 0.2. No tested first-position rule answers the batch or repeated family; single-item subgroups cannot establish or refute a systematic cue. Serialized order is not displayed order.",
+      "sample_refs": [
+        "variation-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "raw sample/quotient",
+      "scope": "within_template",
+      "strategy": "always positive unit reciprocal",
+      "correct": 6,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "raw sample/quotient",
+      "scope": "within_template",
+      "strategy": "preserve signed reciprocal constant",
+      "correct": 13,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "delivered sample/quotient",
+      "scope": "within_template",
+      "strategy": "always positive unit reciprocal",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "delivered sample/quotient",
+      "scope": "within_template",
+      "strategy": "preserve signed reciprocal constant",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "actual batch/quotient",
+      "scope": "within_template",
+      "strategy": "always positive unit reciprocal",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "actual batch/quotient",
+      "scope": "within_template",
+      "strategy": "preserve signed reciprocal constant",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "delivered batch/quotient",
+      "scope": "within_template",
+      "strategy": "always positive unit reciprocal",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "quotient presentation",
+      "subgroup": "delivered batch/quotient",
+      "scope": "within_template",
+      "strategy": "preserve signed reciprocal constant",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Random choice among five is 0.2. Ignoring sign fails on negative quotients. Reading the signed constant 1/d and replacing ln(x) by 1/x performs exactly the sourced differentiation; its perfect success is instructional, not incidental.",
+      "sample_refs": [
+        "samples.json",
+        "batch.json",
+        "delivery-samples/accepted.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "displayed position",
+      "subgroup": "delivered actual batch/all",
+      "scope": "overall",
+      "strategy": "choose first displayed answer",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 radio guessing. This records the actual UI shuffle; a singleton subgroup does not demonstrate a recurring shortcut.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "displayed position",
+      "subgroup": "delivered actual batch/quotient",
+      "scope": "within_template",
+      "strategy": "choose first displayed answer",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 radio guessing. This records the actual UI shuffle; a singleton subgroup does not demonstrate a recurring shortcut.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "displayed position",
+      "subgroup": "delivered actual batch/fraction",
+      "scope": "within_template",
+      "strategy": "choose first displayed answer",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform 1/5 radio guessing. This records the actual UI shuffle; a singleton subgroup does not demonstrate a recurring shortcut.",
+      "sample_refs": [
+        "delivered-ui-positions.json",
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "parameter rejection and finite-domain sampling",
+      "CLI deterministic seed sequence",
+      "requested difficulty",
+      "actual publisher normalization and deduplication",
+      "captured inventory eligibility and retirement",
+      "learner freshness exclusion and difficulty-first selection rules",
+      "actual UI option shuffle"
+    ],
+    "sample_refs": [
+      "rejections.json",
+      "packaging.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "selection-results.json",
+      "inventory-results.json",
+      "delivered-ui-positions.json"
+    ],
+    "result": "5/5 actual batch records and 38/43 independent samples survive. All six sampled profiles survive. Batch has five distinct derivatives and three quotient records with both signs and denominators 5,8,9; no tested cue answers all of it. Captured pool has nine keyed, nonretired ordinary records. Positive easy weight selects uniformly within the fresh easy band; unconfigured policy chooses lowest ID. No live draws claimed."
+  },
+  "limitations": [
+    "Captured inventory basis 5668; concurrent writes may alter deduplication.",
+    "No live learner history, policy weights or future database entity IDs supplied; selection rules and explicit modeled histories were examined read-only.",
+    "Singleton batch subgroups cannot support statistical shortcut claims; finite tests cannot exclude every heuristic.",
+    "Requested easy difficulty only."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "The quotient-family repair passes independent review. All eight checks passed. No current generator, batch, or stored-pool defect was demonstrated. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate a constant multiple of ln(x), preserving the entire signed constant.",
+    "reasoning_steps": [
+      "Identify the constant, rewriting ln(x)/d when necessary.",
+      "Apply the constant multiple rule and (ln x)' = 1/x.",
+      "Simplify c/x and select or enter an equivalent expression."
+    ],
+    "invariants": [
+      "One natural logarithm with argument x.",
+      "Easy constant-multiple differentiation.",
+      "Five-option radio or equivalent-expression blank response."
+    ],
+    "permitted_variations": [
+      "Signed integer and rational constants, including unit fractions.",
+      "Integer multiples of e.",
+      "Multiplier and quotient presentations.",
+      "Answer order."
+    ],
+    "source_refs": [
+      "Tutorial b1f46211-3766-53d0-bcc7-30bb9056b948: derivative of ln(x) is 1/x.",
+      "Canonical 6624681a-bb00-59db-8df9-4d5a3cd00434: constant-multiple differentiation.",
+      "4890c920-695d-52f8-8b20-5f7886a5c8be: quotient rewriting.",
+      "f8867c14-c978-5609-8feb-155bfedae13c: 6e ln(x)."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "repair-verification.json"
+      ],
+      "details": "All 11 source questions replay. Retained regressions fail the previous package and pass the revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-rows.json",
+        "review_checks.py",
+        "supplement_checks.py"
+      ],
+      "details": "66 records passed independent mathematical checks; 48 also passed every worked equality."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-analysis.json",
+        "variation-results.json",
+        "delivery-samples/delivery.json"
+      ],
+      "details": "All six easy profiles survive delivery, including signed quotient and unit-fraction cases."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Requested easy samples preserve the sourced operation and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-combined-input.json",
+        "grader-report.json",
+        "grader.log"
+      ],
+      "details": "Native grading passed 155 acceptance and 293 rejection checks, including equivalent blank entries."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json"
+      ],
+      "details": "Actual UI rendered 25 sampled/counterfactual records and five normalized batch records. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "cli-replay.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation, and package integrity passed."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "denominator-counterfactual.json",
+        "variation-results.json",
+        "selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes, conditional shortcut probes, delivery and selection rules passed. All five batch records survive; live inventory and learner-state limits are documented."
+    }
+  },
+  "findings": []
+}
