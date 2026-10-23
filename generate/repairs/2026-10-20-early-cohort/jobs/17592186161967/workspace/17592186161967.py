@@ -4,12 +4,7 @@ Moderate/hard are explicitly unsupported; no new mathematical stages invented.
 """
 import argparse, hashlib, json, random, re, uuid
 from pathlib import Path
-try:
- import sympy as sp
-except ModuleNotFoundError:
- import os,sys
- interpreter=Path(__file__).resolve().parents[2]/'.venv/bin/python'
- os.execv(str(interpreter),[str(interpreter),str(Path(__file__).resolve()),*sys.argv[1:]])
+import sympy as sp
 KP_ID=17592186161967
 KP_UUID='908b96db-9463-50b5-89a3-056072c930ba'
 GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'row-zero-generator-v1'))
@@ -31,6 +26,17 @@ def recipes(profile,a,b):
  'q-91157':[(-a,-b),(a,b),(a,-b),(-a,b),(-b,-a)],
  'q-91159':[(a,b),(a,-b),(-a,b),(-a,-b),(b,a)],
  }[profile]
+UNIT_PROFILES=('q-42531','q-130451','q-91162')
+def extra_options(profile,a,b):
+ """Source-derived magnitude errors with signs independent of the answer."""
+ a,b=abs(a),abs(b)
+ shapes=([(1,b)] if a>1 else [])+([(a,1)] if b>1 else []) if profile in UNIT_PROFILES else ([(b,a)] if a!=b else [])
+ return [(s*x,t*y) for x,y in shapes for s in (-1,1) for t in (-1,1)]
+def generalized_bank(profile,a,b,rng):
+ bank=[(s*abs(a),t*abs(b)) for s in (-1,1) for t in (-1,1)]
+ bank.append(rng.choice(extra_options(profile,a,b)))
+ rng.shuffle(bank)
+ return bank
 def matrices(text):
  return [sp.Matrix([[int(v.strip()) for v in row.split('&')] for row in raw.split(r'\\')]) for raw in re.findall(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',text,re.S)]
 def clean(text):return re.sub(r'\s+','',text).replace('{R}','R').replace(r'\,','').replace('$','')
@@ -67,8 +73,7 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
    ks=[rng.choice([*range(-9,0),*range(1,10)]) if r!=p else 0 for r in range(3)]
    A=sp.Matrix(3,3,[rng.randint(-10,12) for _ in range(9)]);A[p,c]=rng.choice([-3,-2,-1,1,2,3])
    for r in targets:A[r,c]=-ks[r]*A[p,c]
-   bank=recipes(profile,ks[targets[0]],ks[targets[1]])
-   if max(abs(A[r,c]) for r in targets)<=12 and len(set(bank))==5 and not any(z!=c and A[p,z]!=0 and all(A[r,z]+ks[r]*A[p,z]==0 for r in targets) for z in range(3)):break
+   if max(abs(A[r,c]) for r in targets)<=12 and extra_options(profile,ks[targets[0]],ks[targets[1]]) and not any(z!=c and A[p,z]!=0 and all(A[r,z]+ks[r]*A[p,z]==0 for r in targets) for z in range(3)):break
   else:raise ValueError('Bounded sampler exhausted')
   parameters={'A':A.tolist(),'pivot':p,'column':c,'ks':ks}
  parameters=json.loads(json.dumps(parameters,default=int));A=sp.Matrix(parameters['A']);p=parameters['pivot'];c=parameters['column'];ks=parameters['ks'];targets=[r for r in range(3) if r!=p]
@@ -76,15 +81,18 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  assert all(isinstance(k,int) and k!=0 and A[r,c]+k*A[p,c]==0 for r,k in enumerate(ks) if r!=p)
  B=A.copy();stages=[]
  for r in targets:B[r,:]=B[r,:]+ks[r]*B[p,:];stages.append(B.copy())
- bank=recipes(profile,ks[targets[0]],ks[targets[1]]);assert len(set(bank))==5
+ source_replay=parameters==ORIGINAL[profile]
+ # Separate bank RNG keeps replay from explicit parameters identical to sampling.
+ bank_rng=random.Random(str(seed)+':bank')
+ bank=(recipes(profile,ks[targets[0]],ks[targets[1]]) if source_replay else generalized_bank(profile,ks[targets[0]],ks[targets[1]],bank_rng));assert len(set(bank))==5
  correct=(ks[targets[0]],ks[targets[1]]);assert bank.count(correct)==1
  prompt='$$\nA='+tex(A)+r',\,B='+tex(B)+'\n$$\n\nBy applying elementary row operations of the form $R_{i}:=R_{i}+kR_{'+str(p+1)+'},$ the matrix $A$ can be transformed into the matrix $B.$ What are the elementary row operations?'
  direction=('above' if p==2 else 'below' if p==0 else 'above and below')
  solution='To transform $A$ into $B,$ we need to make the entries '+direction+' $a_{'+str(p+1)+str(c+1)+'}='+str(A[p,c])+'$ equal to $0.$\n\nTo do this, we can apply the following elementary row operations:\n\n$$\n'+tex(A)+'\n'+ '\n'.join(r'\xrightarrow{'+op(r,p,ks[r])+'}'+tex(stage) for r,stage in zip(targets,stages))+'=B\n$$\n\nTherefore, the elementary row operations are\n\n'+pair(targets,p,correct)+'.'
- fp=fingerprint(prompt);qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),fp+profile));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+ fp=fingerprint(prompt);qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),fp+profile+json.dumps(sorted(bank))));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(coeff))),':answer/type':':answer.type/text',':answer/value':pair(targets,p,coeff)} for coeff in bank]
  question={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[bank.index(correct)][':answer/id']]}]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Row Operations to Create a Column of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':1,'seed':seed,'template':'row-zero-3x3','bank_profile':profile,'parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Using Row Operations to Create a Column of Zeros in a 3x3 Matrix'},'question':question,'generation':{'version':2,'seed':seed,'template':'row-zero-3x3','bank_profile':profile,'bank_mode':'source-replay' if source_replay else 'independent-signs','parameters':parameters,'parameter_fingerprint':fp,'generator_id':GENERATOR_UUID,'sympy_version':sp.__version__}}
 def batch(difficulty,count,seed):return [generate(difficulty,seed+i,bank_profile=PROFILES[i%len(PROFILES)]) for i in range(count)]
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']

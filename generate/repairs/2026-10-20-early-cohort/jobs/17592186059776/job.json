@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186059776.py",
     "job_kind": "build"
   },
-  "stage": "validate",
+  "stage": "verified",
   "attempt": 2,
   "seed": 3334594587,
   "created": 1792727624.1182585,
-  "updated": 1792729519.8440611,
+  "updated": 1792729886.5954878,
   "source_hash": "972b0404057fe2106b6d7d80ed3e354a71ac757362a6b884688a44dfa91e96b2",
   "inventory_hash": "248e3a40f993a83a2109932091288ef1cbaf214d2cfd2f4c522044afce6e0af0",
   "manifest": "package.json",
@@ -32,11 +32,11 @@
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059776/review-2-policy-2-79c87e8faff75e97"
   ],
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059776/review-1-policy-2-33f27ec8b7c41b11",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059776/review-2-policy-2-79c87e8faff75e97",
     "binding": {
       "policy_version": 2,
-      "package_hash": "b46e0801ed467855b55a6cbc3351db5dd67cbf3d349d7396f0b38101e2b58eac",
-      "batch_hash": "32410ede044fdf02150e82619d6b09be3b0d1740b0f7420d445cf6e6271d87df",
+      "package_hash": "f20c7bad1a8dc88a564dec180d6a117f42acef5a265d9816bf3774945beeb8b1",
+      "batch_hash": "ebe473b6398b1e580f29db9c7d178398368d239d6bb36d1d3b6220651b64509d",
       "source_hash": "972b0404057fe2106b6d7d80ed3e354a71ac757362a6b884688a44dfa91e96b2",
       "inventory_hash": "248e3a40f993a83a2109932091288ef1cbaf214d2cfd2f4c522044afce6e0af0",
       "assets": {},
@@ -48,124 +48,28 @@
     "d8ee6884d2cb8cb0e0db423d0c52ea3cd5037955de01a9410dc2e6e42f333cef": 1,
     "a2f54397fcaf1ae48504eab126f3a422766a2f1464f021a283e8881f7552bf31": 1
   },
-  "needs_repair": true,
-  "error": {
-    "verdict": "revise",
-    "summary": "The earlier shortcut is repaired, but both delivered q-73544 questions can be answered by choosing the second-largest bottom-right entry. Revise batch selection. Package files are unchanged.",
-    "source_analysis": {
-      "skill": "Solve nonsingular 2\u00d72 systems using standard Gaussian elimination and back substitution when requested.",
-      "reasoning_steps": [
-        "Form the augmented matrix.",
-        "Normalize pivots and eliminate the lower-left entry.",
-        "Back-substitute when requested and select the complete correct response."
-      ],
-      "invariants": [
-        "Preserve source difficulty, elimination stages and response endpoint.",
-        "Each five-choice radio bank has exactly one correct complete response."
-      ],
-      "permitted_variations": [
-        "Vary manageable constants and solution values.",
-        "Vary correct numerical rank and option position; neither is instructional."
-      ],
-      "source_refs": [
-        "4e51e1e1-f4ea-594e-af90-cfd7caef02c6",
-        "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: elimination steps and back substitution",
-        "Tutorial ee4b134d-2908-5930-86bb-32537e0d8347: unit pivots simplify back substitution"
-      ],
-      "evidence_paths": [
-        "source-analysis.json"
-      ]
-    },
-    "checks": {
-      "source_replay": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-replay-results.json",
-          "source-replays.json"
-        ],
-        "details": "All ten complete source banks, prompts, solutions and keys replay."
-      },
-      "math": {
-        "status": "passed",
-        "evidence_paths": [
-          "audit.py",
-          "math-results.json"
-        ],
-        "details": "Independent exact arithmetic verified 105 sampled and batch records."
-      },
-      "variety": {
-        "status": "failed",
-        "evidence_paths": [
-          "decision-probe-results.json",
-          "batch-shortcut-results.json"
-        ],
-        "details": "Both repeated q-73544 questions in the delivered batch fix the correct numerical rank at fourth."
-      },
-      "scope": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-analysis.json",
-          "revision.diff",
-          "math-results.json"
-        ],
-        "details": "Revised banks preserve supported profiles, difficulty and response requirements."
-      },
-      "grading": {
-        "status": "passed",
-        "evidence_paths": [
-          "native-results.json",
-          "focused-native-results.json",
-          "delivered-native-results.json"
-        ],
-        "details": "Native grader produced 114 expected acceptances and 456 expected rejections."
-      },
-      "rendering": {
-        "status": "passed",
-        "evidence_paths": [
-          "render/rendering.json",
-          "render-focused/rendering.json",
-          "render-shortcut/rendering.json",
-          "visual-inspection.json"
-        ],
-        "details": "Actual UI screenshots inspected; notation, controls and solutions render correctly."
-      },
-      "packaging": {
-        "status": "passed",
-        "evidence_paths": [
-          "packaging-results.json",
-          "package-integrity.json",
-          "repair-verification.json"
-        ],
-        "details": "Dependencies, relocation, determinism and invalid-input rejection pass. Package unchanged."
-      },
-      "decision_variation": {
-        "status": "failed",
-        "evidence_paths": [
-          "pedagogical-variation.json",
-          "reproduce-batch-shortcut.py",
-          "batch-shortcut-records.json",
-          "batch-shortcut-results.json",
-          "delivery-analysis.json"
-        ],
-        "details": "Second-largest-entry strategy succeeds on 2/2 delivered q-73544 questions. Wider controls score 1/8, establishing a batch-specific failure."
-      }
-    },
-    "findings": [
-      {
-        "kind": "decision_shortcut",
-        "description": "The current delivered batch fixes the correct bottom-right entry at the second-largest value in both questions with coefficients 2x\u22124y and 4x\u22127y. This bypasses elimination within that recognizable subgroup and survives delivery filtering and UI shuffling. It is a finite-batch failure, not a universal sampler defect.",
-        "source_refs": [
-          "4e51e1e1-f4ea-594e-af90-cfd7caef02c6",
-          "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930",
-          "generate/principles.md: meaningful variation within delivered cue groups"
-        ],
-        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-batch-shortcut.py from evidence_root; it exits 1. Both cases use seed 3334594587 and template q-73544. Parameters [2,3] yield sorted candidate y values [-2,-1,0,1,2], with correct y=1. Parameters [-1,1] yield [-4,-3,-2,-1,0], with correct y=-1. Complete delivered records are in batch-shortcut-records.json.",
-        "requested_change": "Revise batch selection so repeated recognizable coefficient profiles do not all assign the key the same numerical rank. Regenerate and review the surviving batch while preserving source replay, supported families and semantic deduplication. No database repair is needed: the captured inventory contains only original source questions."
-      }
-    ]
-  },
+  "needs_repair": false,
+  "error": null,
   "last_rejected_package": "b46e0801ed467855b55a6cbc3351db5dd67cbf3d349d7396f0b38101e2b58eac",
   "last_rejected_source": "972b0404057fe2106b6d7d80ed3e354a71ac757362a6b884688a44dfa91e96b2",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "author_running": false
+  "author_running": false,
+  "review": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059776/review-2-policy-2-79c87e8faff75e97/result.json",
+  "review_policy_version": 2,
+  "review_binding": "79c87e8faff75e97ee922a47e800c79d6ea49a4dfe12bf65dcfc331a9804800a",
+  "approval_recorded": true,
+  "registration": "generators/f2/f20c7bad1a8dc88a564dec180d6a117f42acef5a265d9816bf3774945beeb8b1/17592186059776.py",
+  "publication": {
+    "status": "verified",
+    "passed": true,
+    "basis_before": 5581,
+    "basis_after": 5582,
+    "new_questions": 5,
+    "package_sha256": "f20c7bad1a8dc88a564dec180d6a117f42acef5a265d9816bf3774945beeb8b1",
+    "preparation_sha256": "f9a75ab560071e40f7cae2ec1e44436a0da21fbd8b757a31a721d350f85d1b95",
+    "request_key": "capture-8f98f8f0-16dc-446a-a961-5d5087831e18",
+    "generator_registration_verified": true,
+    "learner_and_engine_facts_unchanged": true
+  },
+  "completed": 1792729886.4172964
 }

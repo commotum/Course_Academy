@@ -1,0 +1,14 @@
+Run from evidence_root. PY=/home/jake/Developer/Course_Academy/.venv/bin/python
+$PY audit.py > audit.log
+$PY verify-regressions.py > regression-verification.log
+$PY /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root . --math-root /media/jake/SSD/EDB/math
+Repeat delivery with --input control.json --output delivery-control.
+$PY decision-probes.py > decision-probes.log
+$PY delivery-analysis.py > delivery-analysis.log
+$PY reproduce-batch-shortcut.py > batch-shortcut.log
+$PY changed-path-checks.py
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine all-native-input.json native-results.json
+$PY /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-input.json --output render --asset-root delivery-batch/assets --math-root /media/jake/SSD/EDB/math
+$PY /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input focused-counterfactual-records.json --output render-focused --asset-root . --math-root /media/jake/SSD/EDB/math
+python3 write-report.py
+Native combined input and renderer inputs are retained complete JSON arrays. Regression fixture copies redirect all author outputs below evidence_root. No package writes, publication or database writes.
