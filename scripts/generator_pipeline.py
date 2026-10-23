@@ -19,7 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from inventory_jobs import save
 from generator_packages import package_digest, publish_package, resolve_registered_script, check_dependencies, verify_package
-from generator_review import REVIEW_POLICY_VERSION, validate_review
+from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_only_review
+from generator_report_repair import generator_repair_findings, pending_report_repair
 from generator_progress import failure_signature, material_identity
 
 
@@ -140,7 +141,7 @@ class CodexSession:
         command = [executable, 'exec', '--ephemeral', '--skip-git-repo-check',
                    '--sandbox', 'workspace-write', '-c', 'approval_policy="never"',
                    '-c', 'sandbox_workspace_write.network_access=true',
-                   '-C', str(self.root if role == 'author' and context.get('engine_repair_allowed') else context['workspace'] if role == 'author' else directory),
+                   '-C', str(self.root if role == 'author' and context.get('engine_repair_allowed') else context['workspace'] if role == 'author' else context['evidence_root']),
                    '--output-schema', str(templates / (role + '.schema.json')),
                    '--output-last-message', str(output), '--json', '-']
         # Count before spawning so parent/process crashes cannot reset an
@@ -371,16 +372,36 @@ class Pipeline:
                 'engine_repair_allowed': any(row['finding']['kind'] == 'grading' for row in history['findings'])}
 
     def review_candidate(self, evidence):
-        """Let the reviewer fix its own report once without rebuilding a generator."""
+        """Repair reports in the reviewer's writable root with a durable budget."""
+        evidence.mkdir(parents=True, exist_ok=True)
+        binding_path = evidence / 'review-binding.json'
+        binding = self.review_binding()
+        previous = self.state.get('previous_review') or {}
+        recorded = read(binding_path) if binding_path.exists() else (
+            previous.get('binding') if previous.get('directory') == str(evidence) else None)
+        if recorded is not None and recorded != binding:
+            if self.state.get('report_repair_directory'):
+                self.persist(stage='validate', report_repair_directory=None,
+                             review_report_error=None, review_report_result_file=None)
+            else:
+                self.block('review_binding_changed', {'evidence_root': str(evidence),
+                           'expected': binding, 'recorded': recorded}, 'validate')
+            return None
+        if recorded is None and (evidence / 'result.json').exists():
+            self.block('review_binding_missing', {'evidence_root': str(evidence),
+                       'error': 'Cached review has no saved binding to current inputs.'}, 'validate')
+            return None
+        save(binding_path, binding)
         rounds = self.state.get('review_report_rounds', {})
         count = rounds.get(str(evidence), 0)
+        limit = self.state.get('review_report_limits', {}).get(str(evidence), 3)
         error = self.state.get('review_report_error') if count else None
-        for correction in range(2):
+        while count < limit:
             directory = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
             context = self.context(evidence)
             if error:
                 context['review_contract_feedback'] = {
-                    'error': error, 'result_file': str(evidence / 'result.json'),
+                    'error': error, 'result_file': self.state.get('review_report_result_file', str(evidence / 'result.json')),
                     'instruction': 'Correct your report/evidence in evidence_root; preserve the reviewed package and completed checks.'}
             result = self.session('review', context, directory)
             save(directory / 'result.json', result)
@@ -399,16 +420,51 @@ class Pipeline:
                 validate_review(result, evidence)
             except ValueError as invalid:
                 error = str(invalid)
-                count += 1
-                rounds[str(evidence)] = count
-                self.persist(review_report_rounds=rounds, review_report_error=error)
-                save(evidence / 'contract-feedback.json', {'error': error, 'correction': count})
-                continue
-            save(evidence / 'result.json', result)
-            return result
-        self.persist(stage='report-repair', needs_repair=True, error={'code': 'review_contract_invalid', 'error': error,
-                     'details': 'Report correction remains pending; generator, samples and independent checks are retained. No author rebuild is required.'})
+            else:
+                if not evidence_only_review(result):
+                    save(evidence / 'result.json', result)
+                    self.persist(review_report_error=None, review_report_result_file=None,
+                                 report_repair_directory=None)
+                    return result
+                error = {'code': 'review_evidence_correction', 'findings': result['findings'],
+                         'instruction': 'Fix the report and evidence under evidence_root; the generator does not need an author pass for these findings.'}
+                self.remember_repair(result)
+            count += 1
+            rounds[str(evidence)] = count
+            self.persist(review_report_rounds=rounds, review_report_error=error,
+                         review_report_result_file=str(directory / 'result.json'))
+            save(evidence / 'contract-feedback.json', {'error': error, 'correction': count})
+        self.block('review_report_correction_exhausted', {
+            'error': error, 'evidence_root': str(evidence), 'rounds': count,
+            'details': 'Independent report correction exhausted its saved budget; repair the reported cause before explicit resume.'}, 'validate')
         return None
+
+    def recover_report_handoff(self):
+        """Recover an old evidence-only rejection without another author pass."""
+        history = self.directory / 'repair-history.json'
+        if not history.exists():
+            return False
+        pending = pending_report_repair(self.state, read(history), self.review_binding())
+        if not pending:
+            return False
+        try:
+            self.verify_approval_inputs()
+        except EngineChanged:
+            self.sample()
+            self.persist(stage='validate', author_running=False)
+            return True
+        except (OSError, ValueError):
+            return False
+        evidence = inside(self.directory, pending['directory'])
+        rounds = self.state.get('review_report_rounds', {})
+        # The old root verdict is already known to require a correction. Move
+        # past its cached result, preserving existing correction launch counts.
+        rounds[str(evidence)] = max(1, rounds.get(str(evidence), 0))
+        self.persist(stage='validate', report_repair_directory=str(evidence),
+                     review_report_rounds=rounds, author_running=False,
+                     review_report_error=pending['reason'],
+                     review_report_result_file=str(evidence / 'result.json'))
+        return True
 
     def sample(self):
         source, manifest = self.manifest()
@@ -473,6 +529,8 @@ class Pipeline:
         save(self.directory / 'samples.json', records)
         self.persist(batch_hash=digest(records), runtime=str(runtime),
                      engine_hash=self.engine_identity(),
+                     report_repair_directory=None, review_report_error=None,
+                     review_report_result_file=None,
                      assets=asset_hashes(records, runtime, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
 
     def verify_approval_inputs(self):
@@ -528,7 +586,7 @@ class Pipeline:
     def check_repair_regressions(self):
         """Run retained counterexamples before spending another full review."""
         history = self.directory / 'repair-history.json'
-        required = read(history)['findings'] if history.exists() else []
+        required = generator_repair_findings(read(history)) if history.exists() else []
         if not required:
             return
         root = self.directory / 'workspace'
@@ -609,7 +667,8 @@ class Pipeline:
         return True
 
     def block(self, code, reason, resume_stage):
-        self.persist(stage='blocked', needs_repair=True, error={
+        self.persist(stage='blocked', needs_repair=True,
+                     repair_cycle=self.state.get('repair_cycle', 0) + 1, error={
             'code': code, 'cause': reason, 'resume_stage': resume_stage,
             'instruction': 'Resolve the recorded cause, then explicitly resume with --resume-reason. Automatic retries are disabled.'})
 
@@ -686,7 +745,7 @@ class Pipeline:
             if stage == 'report-repair':
                 self.persist(stage='validate')
                 continue
-            if stage in {'verified', 'failed', 'unsupported'}:
+            if stage in {'verified', 'failed', 'unsupported', 'blocked'}:
                 if stage == 'verified' and not self.is_refill:
                     if not self.has_current_review():
                         try:
@@ -733,6 +792,8 @@ class Pipeline:
                 except (ValueError, FileNotFoundError, subprocess.SubprocessError) as error:
                     self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
             elif stage == 'generate':
+                if self.recover_report_handoff():
+                    continue
                 attempt = self.state['attempt'] if self.state.get('author_running') else self.state['attempt'] + 1
                 if attempt > self._attempt_limit:
                     self.block('author_attempts_exhausted', self.state.get('error'), 'generate')
@@ -742,14 +803,8 @@ class Pipeline:
                 result = self.session('author', self.context(evidence), evidence)
                 save(evidence / 'result.json', result)
                 self.persist(author_running=False)
-                if result.get('status') == 'unsupported':
-                    source = read(self.directory / 'source/source.json')
-                    band = self.state['request']['difficulty']
-                    if source.get('available_difficulties') and (band == 'unclassified' or band in source['available_difficulties']):
-                        self.repair({'code': 'author_reported_limitation', 'error': result,
-                                     'instruction': 'The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses.'})
-                    else:
-                        self.persist(stage='unsupported', needs_repair=True, error=result)
+                if result.get('status') in {'unsupported', 'blocked'}:
+                    self.block('author_reported_limitation', result, 'generate')
                     continue
                 if result.get('status') != 'ready' or not isinstance(result.get('manifest'), str):
                     self.repair({'error': 'Author did not return a ready package', 'result': result})
@@ -762,7 +817,8 @@ class Pipeline:
                             and self.state.get('source_hash') == self.state.get('last_rejected_source')
                             and self.engine_identity() == self.state.get('last_rejected_engine')):
                         self.persist(repeated_candidate=True)
-                        raise ValueError('Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.')
+                        self.block('no_progress', {'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}, 'generate')
+                        return self.state
                     self.check_repair_regressions()
                     self.sample()
                     self.persist(stage='validate', package_hash=candidate)
@@ -778,10 +834,10 @@ class Pipeline:
                     self.verify_approval_inputs()
                 except EngineChanged:
                     self.sample()
-                evidence = self.review_directory()
+                evidence = Path(self.state['report_repair_directory']) if self.state.get('report_repair_directory') else self.review_directory()
                 result = self.review_candidate(evidence)
                 if result is None:
-                    if self.state['stage'] == 'report-repair':
+                    if self.state['stage'] in {'report-repair', 'blocked'}:
                         return self.state
                     continue
                 if result['verdict'] == 'accepted':
@@ -904,7 +960,8 @@ def main(argv=None):
             if (directory / 'job.json').exists():
                 request = read(directory / 'job.json')['request']
             result = Pipeline(directory, request, publisher, environment=env, max_attempts=args.max_attempts).run(args.stop_after, resume_reason=args.resume_reason)
-            print(json.dumps({'kp': kp, 'stage': result['stage'], 'directory': str(directory)}), flush=True)
+            print(json.dumps({'kp': kp, 'stage': result['stage'], 'directory': str(directory),
+                              **({'error': result.get('error')} if result['stage'] == 'blocked' else {})}), flush=True)
             if args.inventory_job:
                 save(args.inventory_job.with_suffix('.result'), {
                     'outcome': 'generated' if result['stage'] == 'verified' else 'blocked' if result['stage'] == 'blocked' else 'repair-pending' if result['stage'] in {'repair', 'report-repair'} else 'unsupported' if result['stage'] == 'unsupported' else 'failed',

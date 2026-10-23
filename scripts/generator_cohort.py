@@ -32,6 +32,8 @@ from inventory_jobs import save
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CUTOFF = '2026-10-16T14:51:26-07:00'
 TERMINAL = {'verified', 'skipped_current', 'needs_repair', 'failed', 'blocked'}
+STOP_EXIT = 78
+MAX_WORKER_RESTARTS = 3
 
 
 class CapacityUnavailable(RuntimeError):
@@ -175,6 +177,105 @@ class CohortPipeline(Pipeline):
         if isinstance(self.session,CodexSession):
             self.session=CohortSession(self.root,self.environment)
 
+    def repair_inventory(self, evidence=None):
+        """Resolve reviewed historical defects before reviewing fresh delivery.
+
+        Reports must come from an independently validated reviewer associated
+        with this source. Authors cannot nominate arbitrary database changes.
+        Retirement uses the existing exact-request/preview/readback transport.
+        """
+        roots=set()
+        if evidence is not None:
+            previous=self.state.get('previous_review',{})
+            if (Path(previous.get('directory','')).resolve()!=Path(evidence).resolve()
+                    or previous.get('binding',{}).get('source_hash')!=self.state.get('source_hash')):
+                raise ValueError('Inventory repair requires a review bound to this instructional source')
+            roots.add(Path(evidence).resolve())
+        history=self.directory/'repair-history.json'
+        if history.exists():
+            for row in read(history)['findings']:
+                if (row['finding']['kind']=='inventory' and row.get('source_hash')==self.state.get('source_hash')
+                        and row.get('review_directory')):
+                    roots.add(Path(row['review_directory']).resolve())
+        reports=[];inputs=[]
+        for root in sorted(roots):
+            if root.parent!=self.directory or not root.name.startswith('review-'):
+                raise ValueError('Inventory repair requires this job\'s independent review evidence')
+            validate_review(read(root/'result.json'),root)
+            report=root/'affected-inventory.json'
+            if not report.is_file() or not read(report).get('affected_questions'):continue
+            reports.append(report)
+            inputs.append({'report':str(report.relative_to(self.directory)),'sha256':digest(read(report))})
+        if not reports:return None
+        key=digest(inputs)
+        previous=self.state.get('pool_repair',{})
+        if self.state.get('pool_repair_input')==key and not previous.get('unresolved'):
+            return {**previous,'inventory_changed':False}
+        if (self.directory/'publication/request.json').exists():
+            raise ValueError('Resolve the saved publication request before changing inventory review inputs')
+        from generator_pool_repair import repair_pool
+        directory=self.directory/'pool-repair'
+        directory.mkdir(exist_ok=True)
+        inventory_path=self.directory/'source/inventory.json'
+        before=read(inventory_path)
+        baseline=directory/('inventory-before-'+digest(before)+'.json')
+        if not baseline.exists():save(baseline,before)
+        result=repair_pool(self.publisher,self.state['request']['kp'],reports,directory)
+        inventory=self.publisher.extract_inventory(self.state['request']['kp'],inventory_path.parent)
+        source=read(self.directory/'source/source.json')
+        if any(inventory.get(k)!=source.get(k) for k in ('database','lineage','kp_id')):
+            raise ValueError('Repaired inventory does not match the instructional source identity')
+        changed=digest(inventory)!=digest(before)
+        result={**result,'inventory_changed':changed,'baseline':str(baseline),
+                'reports':[str(p) for p in reports],'inventory_sha256':digest(inventory)}
+        save(directory/'review-handoff.json',result)
+        self.persist(pool_repair=result,pool_repair_input=key,inventory_hash=digest(inventory),
+                     approval_recorded=False)
+        return result
+
+    def block_inventory(self, result):
+        self.block('inventory_repair_blocked',{
+            'owner':'inventory',
+            'error':'Stored-question repair needs intervention; see pool-repair/verification.json.',
+            'unresolved':result.get('unresolved',[])},'validate')
+
+    def review_candidate(self, evidence):
+        result=super().review_candidate(evidence)
+        # An accepted report may still list demonstrated historical defects.
+        # Complete those repairs and review the changed delivery snapshot before
+        # allowing publication; never repair after declaring the job verified.
+        if result is not None and result['verdict']=='accepted':
+            repaired=self.repair_inventory(evidence)
+            if repaired and repaired.get('unresolved'):
+                self.block_inventory(repaired)
+                return None
+            if repaired and repaired['inventory_changed']:
+                self.persist(stage='validate',needs_repair=True)
+                return None
+        return result
+
+    def repair(self, reason):
+        findings=reason.get('findings',[])
+        if not any(row.get('kind')=='inventory' for row in findings):
+            return super().repair(reason)
+        self.remember_repair(reason)
+        repaired=self.repair_inventory()
+        if not repaired or repaired.get('unresolved'):
+            self.block_inventory(repaired or {'unresolved':['Missing reviewed affected-inventory.json evidence']})
+            return
+        content=[row for row in findings if row.get('kind')!='inventory']
+        if content:
+            return super().repair({**reason,'findings':content})
+        if not repaired['inventory_changed']:
+            self.block_inventory({'unresolved':['Review still rejects inventory already repaired; no delivery evidence changed.']})
+            return
+        # Inventory-only fixes do not require a runtime code change. Retain all
+        # actual generator counterexamples, then independently review the newly
+        # captured eligible pool under a different inventory binding.
+        self.check_repair_regressions()
+        self.sample()
+        self.persist(stage='validate',package_hash=self.candidate_hash(),needs_repair=True)
+
     def sample(self):
         root,manifest=self.manifest()
         default=self.state.get('adopted_default_difficulty')
@@ -200,7 +301,7 @@ class CohortPipeline(Pipeline):
         context['retrospective_review']={
             'purpose':'Review an existing generator for structural bypasses; repair only demonstrated failures.',
             'cohort_cutoff':DEFAULT_CUTOFF,
-            'existing_pool':'Also inspect inventory_file for already stored instances of any demonstrated weakness. Save affected-inventory.json as {"affected_questions": [{"question_id":"UUID", "entity_id":123, "finding":"specific defect", "reproduction":"exact command/parameters", "evidence_path":"generated-records.json"}]}. evidence_path must be relative to evidence_root and contain reproduced complete generated records with question/id and generation metadata matching the stored question. An empty array means none demonstrated; distinguish untested inventory from a verified absence. Do not modify the database or mark original source questions as generated.',
+            'existing_pool':'Also inspect inventory_file for already stored instances of any demonstrated weakness. Report historical stored-pool defects as kind inventory, separately from runtime generator findings. Save affected-inventory.json as {"affected_questions": [{"question_id":"UUID", "entity_id":123, "finding":"specific defect", "reproduction":"exact command/parameters", "evidence_path":"generated-records.json"}]}. evidence_path must be relative to evidence_root and contain reproduced complete generated records with question/id and generation metadata matching the stored question. The runner repairs proven eligible stored records, refreshes inventory, and requests a new independent review before publication. Retired questions are preserved history, not selectable practice; check actual eligibility. An empty array means none demonstrated; distinguish untested inventory from a verified absence. Do not modify the database or mark original source questions as generated.',
             'engine_limitations':'Do not remove source families or constrain valid learner notation to conceal an engine limitation. Retain strict failing acceptance/rejection tests and identify the missing engine capability.'}
         return context
 
@@ -221,6 +322,9 @@ def report(directory, campaign):
         'active':active_jobs[0] if active_jobs else None,'updated':time.time()}
     if active_jobs:value['active_pipeline']=active_jobs[0].get('pipeline_stage')
     if campaign.get('capacity_error'):value['capacity_error']=campaign['capacity_error']
+    if campaign.get('campaign_error'):value['campaign_error']=campaign['campaign_error']
+    value['blocked_jobs']=[{'kp':item['kp'],'state':item['state'],'error':item.get('error')}
+        for item in campaign['items'] if item['state'] in {'needs_repair','failed','blocked'}]
     save(directory/'status.json',value)
     return value
 
@@ -252,19 +356,38 @@ class CampaignStore:
             campaign.update(campaign_updates)
             return self.write(campaign)
 
-    def recover_attempt_limits(self):
+    def resume(self,kp,reason):
+        """Explicitly rearm one repaired job without starting any workers."""
+        if not isinstance(reason,str) or not reason.strip():
+            raise ValueError('Resume requires a nonempty reason describing the repair')
         with self.locked() as campaign:
-            for item in campaign['items']:
-                job=self.directory/'jobs'/str(item['kp'])/'job.json'
-                if item['state'] not in {'needs_repair','failed'} or not job.exists():continue
-                state=read(job);error=state.get('error')
-                if state['stage'] in {'repair','report-repair'} or (state['stage']=='failed' and isinstance(error,dict) and error.get('verdict')=='revise'):
-                    item.update(state='pending',recovered_attempt_limit=True)
-            self.write(campaign)
+            item=next((i for i in campaign['items'] if i['kp']==kp),None)
+            if item is None:raise ValueError('Knowledge point is not in this cohort')
+            if item['state'] not in {'blocked','needs_repair','failed'}:
+                raise ValueError('Only a blocked or failed cohort item can be resumed')
+            directory=self.directory/'jobs'/str(kp)
+            with (directory/'worker.lock').open('a') as lock:
+                fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                state=read(directory/'job.json')
+                pipeline=CohortPipeline(directory,state['request'],None,max_attempts=item.get('max_attempts',3))
+                pipeline.resume_blocked(reason)
+            item.update(state='pending',error=None,resumed=time.time(),resume_reason=reason.strip())
+            if campaign.get('campaign_error',{}).get('kp')==kp:
+                campaign.pop('campaign_error',None)
+            return self.write(campaign)
 
     def claim(self,locks,slot):
         with self.locked() as campaign:
-            if (self.directory/'stop-after-current').exists() or campaign.get('capacity_error'):return None
+            if ((self.directory/'stop-after-current').exists() or campaign.get('capacity_error')
+                    or campaign.get('campaign_error')):return None
+            blocked=next((item for item in campaign['items']
+                if item['state'] in {'needs_repair','failed','blocked'}),None)
+            if blocked is not None:
+                campaign['campaign_error']={'kp':blocked['kp'],'state':blocked['state'],
+                    'error':blocked.get('error'),'stopped':time.time(),
+                    'instruction':'A saved failure requires explicit repair and resume.'}
+                self.write(campaign)
+                return None
             for item in campaign['items']:
                 if item['state'] in TERMINAL:continue
                 kp_lock=(locks/f'kp-{item["kp"]}.lock').open('a')
@@ -325,35 +448,29 @@ def process_item(directory,item,publisher,worker,kp_lock,store):
         # Protect both slot and KP until the actual agent child exits.
         pipeline.inherited_lock_fds=(worker.fileno(),kp_lock.fileno())
         result=pipeline.run('push')
-        while result['stage'] in {'repair','report-repair'}:
-            item.update(state='running',repair_cycle=result.get('repair_cycle',0),error=result.get('error'))
-            store.update(item)
-            if (directory/'stop-after-current').exists():
-                item.update(state='pending');store.update(item);return
-            result=pipeline.run('push')
-        state='verified' if result['stage']=='verified' else 'needs_repair'
+        # A returned repair/blocked stage exhausted a durable pipeline budget or
+        # needs another owner. Calling run again cannot change that condition.
+        state='verified' if result['stage']=='verified' else 'blocked'
         item.update(state=state,pipeline=str(job),error=result.get('error'),registration=result.get('registration'),completed=time.time())
+        if state=='blocked' and not item['error']:
+            item['error']={'code':'pipeline_incomplete','stage':result['stage'],
+                           'error':'Pipeline stopped before verification; explicit repair and resume are required.'}
         if state=='verified':
             pool_reports=list(jobdir.glob('review-*/affected-inventory.json'))
             item['pool_review_reports']=[str(p) for p in pool_reports]
-            if any(read(p).get('affected_questions') for p in pool_reports):
-                from generator_pool_repair import repair_pool
-                result=repair_pool(publisher,item['kp'],pool_reports,jobdir/'pool-repair')
-                item['pool_repair']=result
-                if result['unresolved']:
-                    item.update(state='needs_repair',pool_followup_required=True,
-                        error='Generator published; unresolved stored-question repairs are retained in pool-repair/verification.json. History and source questions were not changed.')
+            if result.get('pool_repair'):item['pool_repair']=result['pool_repair']
     except CapacityUnavailable as error:
         item.update(state='pending',error=str(error),interrupted=time.time())
         store.update(item,capacity_error=str(error))
         print(str(error),flush=True);return
-    except (OSError,subprocess.SubprocessError) as error:
-        item.update(state='pending',error=str(error),interrupted=time.time())
-        store.update(item)
-        raise
     except Exception as error:
         item.update(state='failed',error=str(error),completed=time.time())
-    store.update(item)
+    updates={}
+    if item['state'] in {'needs_repair','failed','blocked'}:
+        updates['campaign_error']={'kp':item['kp'],'state':item['state'],
+            'error':item.get('error'),'stopped':time.time(),
+            'instruction':'Fix the saved blocker and explicitly resume; no new jobs will be claimed.'}
+    store.update(item,**updates)
     print(json.dumps({'kp':item['kp'],'state':item['state'],'worker_slot':item['worker_slot'],'error':item.get('error')},default=str),flush=True)
 
 
@@ -363,7 +480,6 @@ def run(directory,slot=0):
         fcntl.flock(worker,fcntl.LOCK_EX)
         save(directory/f'worker-{slot}.json',{'pid':os.getpid(),'slot':slot,'started':time.time()})
         publisher=Publisher.from_environment()
-        store.recover_attempt_limits()
         with store.locked() as campaign:
             locks=ROOT/'.local/learning/inventory'/publisher.config.database/campaign['learner']
         locks.mkdir(parents=True,exist_ok=True)
@@ -372,7 +488,8 @@ def run(directory,slot=0):
             if claim is None:break
             item,kp_lock=claim
             with kp_lock:process_item(directory,item,publisher,worker,kp_lock,store)
-        store.status()
+        status=store.status()
+        return STOP_EXIT if status.get('campaign_error') or status.get('capacity_error') else 0
 
 
 def supervise(directory,workers):
@@ -386,6 +503,7 @@ def supervise(directory,workers):
             campaign['worker_count']=workers
             store.write(campaign)
         children={};retry={slot:0 for slot in range(workers)}
+        restarts=Counter();stopped=False
         while retry or children:
             for slot,deadline in list(retry.items()):
                 if time.monotonic()<deadline:continue
@@ -396,19 +514,32 @@ def supervise(directory,workers):
                 code=child.poll()
                 if code is None:continue
                 del children[slot]
-                if code:
+                if code==STOP_EXIT:
+                    stopped=True;retry.clear()
+                elif code and not stopped:
+                    restarts[slot]+=1
+                    if restarts[slot]>MAX_WORKER_RESTARTS:
+                        with store.locked() as campaign:
+                            campaign['campaign_error']={'worker_slot':slot,'exit_code':code,
+                                'error':'Worker restart limit exhausted','restarts':MAX_WORKER_RESTARTS}
+                            store.write(campaign)
+                        stopped=True;retry.clear()
+                        continue
                     print(json.dumps({'worker_slot':slot,'exit_code':code,'restart_in_seconds':15}),flush=True)
                     retry[slot]=time.monotonic()+15
             if retry or children:time.sleep(1)
+        return STOP_EXIT if stopped else 0
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['init','run','status'])
+    parser.add_argument('action',choices=['init','run','status','resume'])
     parser.add_argument('--directory',type=Path,required=True)
     parser.add_argument('--cutoff',default=DEFAULT_CUTOFF)
     parser.add_argument('--workers',type=int,choices=range(1,4),default=1)
     parser.add_argument('--slot',type=int,choices=range(3))
+    parser.add_argument('--kp',type=int,help='One blocked knowledge point to explicitly resume')
+    parser.add_argument('--resume-reason',help='Describe the completed change that resolves its saved blocker')
     args=parser.parse_args();directory=args.directory.resolve()
     if args.action=='init':
         path=directory/'cohort.json'
@@ -423,8 +554,11 @@ def main():
         campaign={'cutoff':args.cutoff,'captured_basis':identity['basis'],'lineage':identity['lineage'],'learner':learners[0],'created':time.time(),'items':items}
         save(path,campaign);print(json.dumps(report(directory,campaign)))
     elif args.action=='run':
-        if args.slot is not None:run(directory,args.slot)
-        else:supervise(directory,args.workers)
+        if args.slot is not None:raise SystemExit(run(directory,args.slot))
+        else:raise SystemExit(supervise(directory,args.workers))
+    elif args.action=='resume':
+        if args.kp is None or not args.resume_reason:parser.error('resume requires --kp and --resume-reason')
+        print(json.dumps(CampaignStore(directory).resume(args.kp,args.resume_reason),indent=2))
     else:print(json.dumps(CampaignStore(directory).status(),indent=2))
 
 

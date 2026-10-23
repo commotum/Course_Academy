@@ -58,7 +58,7 @@ class InventoryJobTests(unittest.TestCase):
             for index in range(3):
                 with patch('inventory_jobs.time.time',return_value=100000000000+index*10000):
                     self.jobs.run_one()
-        self.assertEqual(self.records()[0]['state'],'pending')
+        self.assertEqual(self.records()[0]['state'],'blocked')
         self.assertFalse(self.jobs.run_one())
 
     def test_registered_generator_uses_pipeline_and_stale_result_is_not_reused(self):
@@ -77,24 +77,23 @@ class InventoryJobTests(unittest.TestCase):
         self.assertEqual(self.records()[0]['state'], 'awaiting-verification')
         self.assertTrue(path.with_suffix('.result.previous-1').exists())
 
-    def test_content_failure_remains_pending_and_old_cycle_cannot_finish_new_work(self):
+    def test_terminal_pipeline_failure_stays_blocked_across_refreshes(self):
         self.accept()
         path = next(p for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json')
         def rejected(*args, **kwargs):
-            path.with_suffix('.result').write_text(json.dumps({'outcome': 'failed'}))
+            path.with_suffix('.result').write_text(json.dumps({'outcome': 'blocked', 'reason': {'code': 'no_progress'}}))
             return subprocess.CompletedProcess(args[0], 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=rejected):
+        with patch('inventory_jobs.subprocess.run', side_effect=rejected) as run:
             self.jobs.run_one()
-        self.assertEqual(self.records()[0]['state'], 'pending')
-        self.assertEqual(self.records()[0].get('rejectedVariants'), [])
-        self.assertFalse(self.jobs.run_one())
-        self.accept(jobs=[])
-        self.accept()
-        self.jobs.finish(path, {'state': 'rejected'}, cycle=1)
-        self.assertEqual(self.records()[0]['state'], 'pending')
-        self.assertEqual(self.records()[0]['cycle'], 2)
+            self.accept(jobs=[])
+            self.accept()
+            self.assertFalse(self.jobs.run_one())
+        self.assertEqual(run.call_count, 1)
+        self.assertEqual(self.records()[0]['state'], 'blocked')
+        self.assertEqual(self.records()[0]['cycle'], 1)
+        self.assertEqual(self.records()[0]['outcome']['reason']['code'], 'no_progress')
 
-    def test_repair_pending_preserves_workspace_cycle_and_request_priority(self):
+    def test_legacy_repair_yield_stops_without_rearming_pipeline(self):
         self.accept()
         path = next(p for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json')
         before = json.loads(path.read_text())
@@ -103,11 +102,12 @@ class InventoryJobTests(unittest.TestCase):
             return subprocess.CompletedProcess(args[0], 1)
         with patch('inventory_jobs.subprocess.run', side_effect=repair):
             self.assertTrue(self.jobs.run_one())
+        self.accept()
         after = json.loads(path.read_text())
-        self.assertEqual(after['state'], 'pending')
+        self.assertEqual(after['state'], 'blocked')
         self.assertEqual(after['request'], before['request'])
         self.assertEqual(after['cycle'], before['cycle'])
-        self.assertEqual(after['rejectedVariants'], [])
+        self.assertFalse(self.jobs.run_one())
 
     def test_remaining_shortage_starts_new_cycle_after_verified_publication(self):
         self.accept()
@@ -198,7 +198,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertEqual(pending[0]['request']['difficulty'], 'unclassified')
         self.assertEqual(pending[0]['request']['jobKind'], 'build')
 
-    def test_old_content_failure_is_reopened_without_losing_its_cycle(self):
+    def test_old_content_failure_is_not_reopened_by_ranking_refresh(self):
         inventory = self.ranked(self.kp())
         self.jobs.accept(inventory)
         path = self.path_for(1)
@@ -207,9 +207,9 @@ class RankedInventoryJobTests(unittest.TestCase):
                                'rejectedVariants':['legacy-failure']})
         self.jobs.accept(inventory)
         after = json.loads(path.read_text())
-        self.assertEqual(after['state'], 'pending')
+        self.assertEqual(after['state'], 'rejected')
         self.assertEqual(after['cycle'], before['cycle'])
-        self.assertEqual(after['rejectedVariants'], [])
+        self.assertEqual(after['rejectedVariants'], ['legacy-failure'])
 
     def test_refresh_retains_pending_repair_inputs_and_workspace_cycle(self):
         self.jobs.accept(self.ranked(self.kp()))

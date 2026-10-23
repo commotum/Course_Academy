@@ -99,7 +99,7 @@ def capture_index(paths: list[Path], relevant_hashes: set[str]):
         if stats["files_read"] % 500 == 0:
             print(f'Capture evidence: {stats["files_read"]} unique files, {len(index)} relevant assets', file=sys.stderr, flush=True)
         for obj in objects(value):
-            if obj.get("tag") != "svg" or not isinstance(obj.get("html"), str):
+            if obj.get("tag") not in ("svg", "img") or not isinstance(obj.get("html"), str):
                 continue
             html = obj["html"]
             html_hash = hashlib.sha256(html.encode()).hexdigest()
@@ -111,15 +111,16 @@ def capture_index(paths: list[Path], relevant_hashes: set[str]):
             if not hashes:
                 continue
             if html_hash not in classifications:
-                classifications[html_hash] = svg_kind(html)
+                classifications[html_hash] = (svg_kind(html) if obj["tag"] == "svg" else
+                    ("source-image", "captured source was already an img element"))
             kind, reason = classifications[html_hash]
             info = {"file": str(path), "kind": kind, "reason": reason,
-                    "tag": "svg", "representation": obj.get("representation"),
+                    "tag": obj["tag"], "representation": obj.get("representation"),
                     "original_path": obj.get("path")}
             for digest in hashes:
                 if len(index[digest]) < 5 and info not in index[digest]:
                     index[digest].append(info)
-            stats["relevant_svg_records"] += 1
+            stats["relevant_asset_records"] += 1
     return index, dict(stats)
 
 
@@ -129,7 +130,7 @@ def read_facts(snapshot):
             yield json.loads(line)
 
 
-def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Path):
+def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Path, source_image_map: Path | None = None):
     records = defaultdict(dict)
     parents = defaultdict(set)
     uses = defaultdict(list)
@@ -157,11 +158,14 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
             for m in matches:
                 uses[m[0]].append((eid, attr))
         # Surface image syntaxes that a canonical-path scan would otherwise miss.
-        stripped = IMAGE.sub("", value)
-        if re.search(r'!\[[^\]]*\]\((?!\))|<(?:img|svg)\b|data:image/', stripped, re.I):
+        urls = [m[0] or m[1] for m in re.findall(r'!\[[^\]]*\]\(([^)]*)\)|<img\b[^>]*\bsrc=["\']([^"\']*)["\']', value, re.I)]
+        if any(not IMAGE.fullmatch(url.strip().strip('<>')) for url in urls) or re.search(r'<svg\b|data:image/', value, re.I):
             noncanonical.append({**row, "reason": "noncanonical or embedded image syntax"})
     hashes = {Path(p).stem for p in uses}
     evidence, evidence_stats = capture_index(evidence_paths, hashes)
+    original_images = set()
+    if source_image_map is not None:
+        original_images = set(json.loads(source_image_map.read_text())["by_source_path"].values())
     assets = {}
     for relative in sorted(uses):
         path = math_root / relative
@@ -179,7 +183,8 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
                 kinds = {e["kind"] for e in info["capture_evidence"]}
                 kind = ("math-raster" if "math-svg" in kinds else
                         "mixed-math-graphic" if "mixed-math-graphic" in kinds else
-                        "captured-non-math-raster" if "non-math-svg" in kinds else "unclassified-raster")
+                        "captured-non-math-raster" if "non-math-svg" in kinds else
+                        "source-raster" if "source-image" in kinds or relative in original_images else "unclassified-raster")
                 info.update(kind=kind, reason="linked original SVG metadata" if kinds else "no SVG evidence; retain for raster/source review")
         assets[relative] = info
 
@@ -200,7 +205,7 @@ def run(snapshot: Path, math_root: Path, evidence_paths: list[Path], output: Pat
     findings, review = [], []
     for fact in facts:
         affected = [m for m in fact["images"] if assets[m["path"]]["kind"] in ("math-svg", "math-raster")]
-        uncertain = [m for m in fact["images"] if assets[m["path"]]["kind"] not in ("math-svg", "math-raster", "non-math-svg", "captured-non-math-raster")]
+        uncertain = [m for m in fact["images"] if assets[m["path"]]["kind"] not in ("math-svg", "math-raster", "non-math-svg", "captured-non-math-raster", "source-raster")]
         if affected:
             findings.append({**fact, "math_images": affected, "context": context(fact["e"])})
         if uncertain:
@@ -244,8 +249,9 @@ def main():
     p.add_argument("--math-root", type=Path, default=Path("/media/jake/SSD/EDB/math"))
     p.add_argument("--evidence-list", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--source-image-map", type=Path)
     a = p.parse_args()
-    run(a.snapshot, a.math_root, [Path(line) for line in a.evidence_list.read_text().splitlines() if line], a.output)
+    run(a.snapshot, a.math_root, [Path(line) for line in a.evidence_list.read_text().splitlines() if line], a.output, a.source_image_map)
 
 
 if __name__ == "__main__":
