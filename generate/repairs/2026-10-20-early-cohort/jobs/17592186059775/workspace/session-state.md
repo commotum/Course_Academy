@@ -1,38 +1,41 @@
-# Current state — 2026-10-22, author-295
+# Current state — 2026-10-22, author-298
 
-Preserved completed repairs and all runtime files. Read feedback, both retained
-findings and latest history event, supplied lesson/prerequisite context, all 12
-source records, instructional account and required guidance.
+Preserved the existing generator, package and completed repairs. Read feedback,
+all retained findings and the latest history event; reused source analysis and
+checked the supplied lesson, canonical example, all 12 questions, and prerequisites.
+No instructional or runtime change is justified by the evidence-only finding.
 
-Reproduced latest failure first:
+Reproduced the exact latest failure first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed runner rejects unchanged runtime before regressions or sampling.
-The retained finding explicitly requests an evidence-only correction.
+exits 1. The installed runner at scripts/generator_pipeline.py:723–727 rejects
+runtime byte identity before regressions or sampling. The retained evidence-only
+finding requires preserving those bytes. This is an external orchestration defect,
+not missing source support or a generator construction failure.
 
-Ran every registered regression once and source/UI binding. Exact commands,
-results and logs: `evidence/author295-verification.json`.
+Ran the three registered regressions once and source/render binding. Commands,
+exit codes, logs and runtime hashes: `evidence/continuation-verification.json`.
 
-- check_all.py: PASS, including relocation/count, ten complete source banks,
-  independent mathematical readbacks, native grading, delivery and inventory.
-- check_batch_selection.py: PASS, ten profiles and controlled targets. Exact
-  reported seed scores 1/5 for the shortcut before and after shared filtering;
-  all five records survive, and 25 native responses pass.
-- check_evidence_contract.py: evidence bundle, relocation and negative controls
-  PASS; installed handoff still FAILS (exit 1). Strict failure retained.
-- check_render_binding.py: PASS, ten source banks and two unchanged UI records.
-  Reinspected evidence/author8-render/question-001.png; readable given matrix,
-  five radio choices and row operations. Reused render because runtime and
-  bound delivered records are unchanged.
+- `check_all.py`: PASS (relocated CLI, source replay, independent math, actual
+  native grader, shared delivery filter, captured inventory).
+- `check_batch_selection.py`: PASS (reported seed 4258185931, controlled target
+  changes, within-template shortcut checks, delivery and native grading).
+- `check_evidence_contract.py`: FAIL only on strict installed-runner handoff.
+  Bundle validation, relocation and negative controls pass.
+- `check_render_binding.py`: PASS. Reinspected retained actual-UI screenshot
+  `evidence/author8-render/question-001.png`; matrices and operations are readable.
+  Runtime/render inputs are unchanged, so no redundant rendering was run.
 
-Runtime hashes unchanged. Staged runner patch base still matches installed code.
-No engine, database, publication or other-job changes.
+All declared runtime files and package.json remain unchanged. Strict failing
+regressions remain registered. No database, publication, engine, external runner
+or other-job writes occurred.
 
-## Remaining external action
+## Next unfinished step
 
-The installed scripts/generator_pipeline.py lines 723–727 reject unchanged
-package/source/engine identity even for an evidence-only finding. The concrete
-correction is runner-fix/evidence-only-rejection.patch (not installed). Its target
-is outside this workspace and authorized writes. Runner owner must review/apply
-it, then rerun strict checks and fresh independent review. Corrected bundle:
-evidence/contract-correction. Installation map: evidence/contract-installation.json.
-Changing generator bytes solely to evade this gate would not repair the finding.
+The runner owner must resolve its byte-identity rejection for evidence-only
+repairs. Existing concrete proposal: `runner-fix/evidence-only-rejection.patch`.
+Applying it to scripts/generator_pipeline.py lies outside this workspace and is
+not authorized. The corrected evidence bundle remains staged under
+`evidence/contract-correction`, with `evidence/contract-installation.json`.
+After the external correction, rerun the strict installed handoff and registered
+regressions before fresh independent review. Do not change package bytes merely
+to evade the gate or describe an uninstalled proposal as fixed.

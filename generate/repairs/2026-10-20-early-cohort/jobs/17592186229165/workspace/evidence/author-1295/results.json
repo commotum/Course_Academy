@@ -1,0 +1,54 @@
+{
+  "status": "unsupported",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "result": "Required prior-review report remains stale; staged correction passes locally",
+      "evidence": "latest-failure.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1295/role",
+      "exit_code": 0,
+      "result": "passed",
+      "evidence": "role/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "result": "passed",
+      "evidence": "retained-state.log"
+    }
+  ],
+  "findings": {
+    "efa97df560cec8fee6e1": "Retained generator construction repair passes",
+    "645672a4cd3f9bf609ca": "Cannot install into the required prior-review directory under workspace-only authorization"
+  },
+  "source_and_runtime_unchanged": true,
+  "delivery_positions": {
+    "pre": {
+      "1": 19,
+      "2": 17,
+      "none": 5
+    },
+    "post": {
+      "1": 19,
+      "2": 17,
+      "none": 5
+    }
+  },
+  "semantic_instances": 37,
+  "native_grading": {
+    "status": "passed",
+    "checks": 30
+  },
+  "unaffected_math_cases": 8,
+  "handoff_artifacts_verified": 55,
+  "staged_report_replays": 26,
+  "visual_inspection": {
+    "path": "evidence/corrected-review/render-regression/question-002.png",
+    "result": "Existing unmodified UI screenshot inspected; equations, answer, and worked solution are legible. Runtime unchanged; rendering evidence reused."
+  },
+  "next_action": "Runner installs staged artifacts using evidence/review-installation-handoff.json, reruns strict default regression, and obtains fresh independent review. Another unchanged workspace-only author retry cannot complete this external step.",
+  "scope": "No runtime, engine, publication, database, or external-file changes. Both strict executable regressions preserved."
+}
