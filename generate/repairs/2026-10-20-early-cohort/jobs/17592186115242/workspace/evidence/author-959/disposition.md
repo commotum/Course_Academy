@@ -1,0 +1,13 @@
+# Author 959 disposition
+
+Preserved the repaired package and every strict regression. No new construction defect was demonstrated. The latest failure was reproduced first: finding 591f580cadb749294588 still affects all five historical generated questions, with 64/64 sign-extremum successes in the retained possible learner-history witness. This is a conditional scenario, not a claim about all learner histories.
+
+The learner must eliminate x, solve the remaining coefficient for k, and interpret contradiction or redundancy. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe obtains `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 has an interior correct choice. The retained instructional account specifies supported families, workload, complete radio banks, eligible numeric ranks, and conservative easy extensions. No new parameter restriction or family removal is justified.
+
+Commands and current results are in commands.json and results.json. Four generator regressions pass, including source q-74691, valid zero roots, within-sign subgroup ranks, and finite delivered batches. All 17 source banks replay, 14 records retain contrast through shared delivery, seven correct responses are accepted and 28 distractors rejected by the native grader, and package relocation/dependencies pass. Five replacement records and their mapping remain verified and unapplied. All five generated inventory records were tested; original source questions are excluded from generated-item findings.
+
+Retained actual-UI screenshot evidence/repair-3/render/question-001.png was visually inspected again: prompt, five choices, augmented matrices, row operation, residual equation and conclusion are legible and agree. The source tutorial flowchart was also inspected. Rendering was reused because the runtime and input hashes are unchanged; no new render was run.
+
+The failing inventory regression remains declared and exits nonzero. Generator edits cannot change already stored answer banks or the selector's independent inventory. The review expressly requests a separate inventory-remediation workflow; this task prohibits database changes, publication, and engine changes. Keep status unsupported until that workflow retires/replaces the five identified generated records, captures fresh inventory, and reruns the strict check. Further generator-only retries against this unchanged capture cannot resolve this finding.
+
+No runtime, manifest, source, engine, database, publication or other-job edits were performed. Only workspace evidence/session state was updated. The staged proposal is evidence/repair-3/inventory-repair-proposal.json; it is not an applied repair.

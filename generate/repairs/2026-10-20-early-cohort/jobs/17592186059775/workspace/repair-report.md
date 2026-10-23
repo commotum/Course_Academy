@@ -1,21 +1,19 @@
-# Current repair result — author-269
+# Current repair result — author-272
 
-The generator's retained CLI, source fidelity, mathematical, native-grading,
-delivery and decision-variation checks pass. No runtime change was warranted.
-The corrected evidence bundle validates at its own root and arbitrary relocated
-roots, with strict missing-file and wrong-root controls.
+Completed generator repairs are preserved. Fresh evidence validation, delivered
+shortcut probes, native grading, relocated CLI and source/render bindings pass.
+The strict evidence regression still fails at the installed runner gate.
 
-The actual installed runner still rejects this unchanged package before those
-checks run. The registered evidence regression therefore correctly exits 1.
-The staged root-cause patch targets `scripts/generator_pipeline.py`, outside this
-workspace; it has not been installed. No acceptance criterion was weakened and
-no runtime bytes were changed to evade the gate.
+The root cause remains `scripts/generator_pipeline.py:723-727`: unchanged runtime
+bytes trigger rejection before evidence corrections or retained checks are
+examined. The staged `runner-fix/evidence-only-rejection.patch` addresses that
+rule but requires writes outside the authorized workspace. It remains uninstalled.
+No acceptance criteria or runtime bytes were changed to bypass the failure.
 
-Exact commands and results: `evidence/current-author-verification.json`.
-Current failure: `evidence/current-handoff-regression.json`.
-Corrected bundle: `evidence/contract-correction`.
-Installation inventory: `evidence/contract-installation.json`.
-External correction: `runner-fix/evidence-only-rejection.patch`.
+Fresh commands and results: `evidence/author272-verification.json`.
+Failure: `evidence/current-handoff-regression.json`.
+Corrected evidence root: `evidence/contract-correction`.
+Retained affected inventory: `evidence/contract-correction/affected-inventory.json`.
 
-The runner owner must apply an authorized correction and obtain fresh independent
-review. No database writes, publication, engine edits or other-job writes occurred.
+The runner owner must resolve the external handoff failure before fresh
+independent review. No publication or database changes occurred.
