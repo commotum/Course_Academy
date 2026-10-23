@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "The prior answer-bank shortcut is resolved. All eight checks pass for the revised generator and exact batch. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Infer two column-addition multipliers that create two zeros in a row of a 3\u00d73 matrix.",
+    "reasoning_steps": [
+      "Identify the specified pivot column and cleared row.",
+      "Calculate both multipliers.",
+      "Verify the whole-column transformations.",
+      "Select the correct operation pair."
+    ],
+    "invariants": [
+      "Two nontrivial integer column additions sharing a nonzero pivot.",
+      "Five radio choices with exactly one correct pair.",
+      "Worked solution shows both matrix transformations."
+    ],
+    "permitted_variations": [
+      "Pivot column, cleared row, multiplier signs and magnitudes.",
+      "Background entries with corresponding matrix updates.",
+      "Correct-choice position and answer-bank relationships."
+    ],
+    "source_refs": [
+      "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051)",
+      "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
+      "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: Column Operations"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "Replayed all ten practice questions and complete answer banks, plus canonical parameters."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "focused_review.py",
+        "audit.py"
+      ],
+      "details": "147 records independently checked using exact integer operations, including every choice and worked matrix stage."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-results.json",
+        "roles.json",
+        "boundaries.json",
+        "sampler-rejection.json"
+      ],
+      "details": "Verified nine profiles, all nine row/pivot assignments, and all five correct roles within each controlled bank."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "source-analysis.json"
+      ],
+      "details": "Preserves the easy two-operation matrix task and radio response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grading accepted 147 correct choices and rejected 588 wrong choices."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Ten actual-UI renders passed; six screenshots visually inspected, including all controlled counterfactuals."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "relocated-records.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and rejection checks passed. All 134 package files remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "strict-regression.json",
+        "author-preflight-result.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "selection-review.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Original regression fails on old code and passes on the revision. Every controlled bank supports all five keys after delivery. The old predictor scored 7/36 on fresh samples. Exact batch and selection rules were checked separately. Captured inventory contains no historical generated records."
+    }
+  },
+  "findings": []
+}

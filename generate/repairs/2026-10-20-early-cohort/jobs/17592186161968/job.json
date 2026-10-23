@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186161968.py",
     "job_kind": "build"
   },
-  "stage": "validate",
+  "stage": "verified",
   "attempt": 1,
   "seed": 2967220664,
   "created": 1792729633.8585703,
-  "updated": 1792730497.5748885,
+  "updated": 1792730910.246384,
   "source_hash": "712ad1814f6931f4989bc782e083b2a9dfff897db0770c687e32f4c2a122d39f",
   "inventory_hash": "8716f73ce65f464a2fa9a90906b8acb4a5a6355342e5ff777c8371637c136405",
   "manifest": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/workspace/package.json",
@@ -31,11 +31,11 @@
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-1-policy-2-272cf80841c7a8d2"
   ],
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-0-policy-2-8bbb1cdbe4d688a3",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-1-policy-2-272cf80841c7a8d2",
     "binding": {
       "policy_version": 2,
-      "package_hash": "609a67046d295bcf2d0a1d9b0f8a0da0f62ac9fc815007254f2350fd0bcf7aa6",
-      "batch_hash": "1704289011a1bd399d4b2e3f456b5f56e39199bbe9705b40f64fb20af863eca8",
+      "package_hash": "ec9cbe7a88642cc6fa459989c70caf5be34e2f48693fa631c023e168121c8066",
+      "batch_hash": "afe435f62558aa322b937f5a738b2cf0d0aa6576d459c2a9840cff5d90b2cf57",
       "source_hash": "712ad1814f6931f4989bc782e083b2a9dfff897db0770c687e32f4c2a122d39f",
       "inventory_hash": "8716f73ce65f464a2fa9a90906b8acb4a5a6355342e5ff777c8371637c136405",
       "assets": {},
@@ -46,132 +46,28 @@
   "progress_failures": {
     "d6ed7c36dd83123247e7a0e19d3b013ee4c7fc71dd074a1f49e796b571a98140": 1
   },
-  "needs_repair": true,
-  "error": {
-    "verdict": "revise",
-    "summary": "An answer-option frequency shortcut bypasses matrix reasoning and affects one of the five delivered batch questions. Other checks passed. The package remained unchanged.",
-    "source_analysis": {
-      "skill": "Infer two column-addition multipliers that transform a 3\u00d73 matrix into a given matrix with two zeros in one row.",
-      "reasoning_steps": [
-        "Identify the specified unchanged pivot column and cleared row.",
-        "Calculate each multiplier from the target-row entries.",
-        "Verify both whole-column transformations.",
-        "Select the correct operation pair."
-      ],
-      "invariants": [
-        "Two nontrivial integer column additions sharing a nonzero pivot.",
-        "3\u00d73 integer matrices and one five-choice radio field.",
-        "Worked solutions show both matrix transformations."
-      ],
-      "permitted_variations": [
-        "Pivot column, cleared row, multiplier signs and magnitudes.",
-        "Off-target entries with corresponding matrix updates.",
-        "Distractor relationships and correct-choice position."
-      ],
-      "source_refs": [
-        "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051)",
-        "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
-        "Tutorial e947134c-e909-5a3b-85a6-d284e04816e0: adding a multiple of one column to another",
-        "Complete ten-question source analysis in source-analysis.json"
-      ],
-      "evidence_paths": [
-        "source-analysis.json",
-        "source-replay-results.json"
-      ]
-    },
-    "checks": {
-      "source_replay": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-replays.json",
-          "source-replay-results.json"
-        ],
-        "details": "Replayed all ten complete practice banks and canonical parameters. Verified the documented source-summary correction and equivalent bank alias."
-      },
-      "math": {
-        "status": "passed",
-        "evidence_paths": [
-          "audit.py",
-          "math-results.json"
-        ],
-        "details": "Independently checked 246 records using exact integer operations, including every choice and worked matrix stage."
-      },
-      "variety": {
-        "status": "passed",
-        "evidence_paths": [
-          "variation-results.json",
-          "boundaries.json",
-          "sampler-rejection.json"
-        ],
-        "details": "Exercised all nine row/pivot assignments, four multiplier-sign combinations and nine bank profiles. The separate decision-variation check fails."
-      },
-      "scope": {
-        "status": "passed",
-        "evidence_paths": [
-          "scope-review.json",
-          "source-analysis.json"
-        ],
-        "details": "Preserves the easy two-operation matrix task and radio response contract."
-      },
-      "grading": {
-        "status": "passed",
-        "evidence_paths": [
-          "grader-input.json",
-          "grader-report.json",
-          "counterfactual-results.json"
-        ],
-        "details": "Native grading accepted 246 correct choices and rejected 984 wrong choices, including controlled counterfactual cases."
-      },
-      "rendering": {
-        "status": "passed",
-        "evidence_paths": [
-          "render/rendering.json",
-          "render-extra/rendering.json",
-          "render-inspection.json"
-        ],
-        "details": "Fourteen actual-UI renders passed; seven representative screenshots were visually inspected."
-      },
-      "packaging": {
-        "status": "passed",
-        "evidence_paths": [
-          "packaging-results.json",
-          "package-integrity.json",
-          "relocated-records.json"
-        ],
-        "details": "Exact dependency versions, relocation, deterministic replay and invalid-input rejection passed. Package files remained unchanged."
-      },
-      "decision_variation": {
-        "status": "failed",
-        "evidence_paths": [
-          "pedagogical-variation.json",
-          "shortcut-results.json",
-          "shortcut_regression.py",
-          "minimal-failure.json",
-          "minimal-failure-results.json",
-          "delivery-batch/delivery.json",
-          "selection-review.json",
-          "inventory-review.json",
-          "affected-inventory.json"
-        ],
-        "details": "An option-only frequency strategy correctly answers 102/102 recognizably applicable sampled questions and one of five batch questions. The shortcut survives delivery and option permutation. Captured inventory contains only original source questions, with no generated historical records."
-      }
-    },
-    "findings": [
-      {
-        "kind": "decision_shortcut",
-        "description": "Fixed distractor recipes reveal the correct pair through repeated operation components. When the first operation has a unique mode occurring twice and the second operation also has a unique mode, selecting their combined pair succeeds on 102/102 sampled occurrences across five profiles. Delivered batch question dae1d6e6-8d41-5592-b4ba-d9ab62dba0c5, seed 2967220665, exhibits this defect.",
-        "source_refs": [
-          "63dc72f5-1b5e-509c-b30f-0a4ab5f385d0 (q-91189)",
-          "f9912357-1d1d-5413-917e-257dc5dfc0fe (e-8051)",
-          "generate/principles.md: meaningful variety and incidental shortcuts"
-        ],
-        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_regression.py; the strict regression fails. Minimal parameters: seed=842, bank_profile=\"q-91189\", A=[[4,2,-6],[1,3,4],[5,-1,2]], row=0, pivot=1, ks=[-2,0,3]. The coefficient bank is [(-1,3),(2,3),(-2,3),(-2,-3),(-3,2)]. Component frequencies identify the correct pair (-2,3) without reading either matrix. This succeeds under all 120 option permutations.",
-        "requested_change": "Revise runtime distractor construction across affected profiles so component-frequency patterns do not reliably identify correctness. Preserve source replay and legitimate matrix variation; shuffling options or suppressing affected profiles does not repair the rule. Retain the shortcut regression and regenerate the affected batch after repair."
-      }
-    ]
-  },
+  "needs_repair": false,
+  "error": null,
   "last_rejected_package": "609a67046d295bcf2d0a1d9b0f8a0da0f62ac9fc815007254f2350fd0bcf7aa6",
   "last_rejected_source": "712ad1814f6931f4989bc782e083b2a9dfff897db0770c687e32f4c2a122d39f",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "author_running": false
+  "author_running": false,
+  "review": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-1-policy-2-272cf80841c7a8d2/result.json",
+  "review_policy_version": 2,
+  "review_binding": "272cf80841c7a8d29714c284444d428c8f1131eebd7457e2aeabcb0b8df47be9",
+  "approval_recorded": true,
+  "registration": "generators/ec/ec9cbe7a88642cc6fa459989c70caf5be34e2f48693fa631c023e168121c8066/17592186161968.py",
+  "publication": {
+    "status": "verified",
+    "passed": true,
+    "basis_before": 5614,
+    "basis_after": 5615,
+    "new_questions": 5,
+    "package_sha256": "ec9cbe7a88642cc6fa459989c70caf5be34e2f48693fa631c023e168121c8066",
+    "preparation_sha256": "23ef608d1582605516e817a32c5aa455634e385e7ce0d702a59cddf3b864420d",
+    "request_key": "capture-f67f6449-8746-4cea-9a88-6bf650a95f0b",
+    "generator_registration_verified": true,
+    "learner_and_engine_facts_unchanged": true
+  },
+  "completed": 1792730910.1044843
 }

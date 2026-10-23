@@ -18,6 +18,23 @@
       "source_hash": "78c8fd6c39535a46710c8ebc41422d996fd9a007479691bd3b48287fb624c110",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-0-policy-2-b2ba6e2b0f4d64c5",
       "attempt": 0
+    },
+    {
+      "id": "79a24ab401bd284df93a",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Batch-selection failure: identify the unique magnitude-pattern outlier, take the dominant first magnitude with the opposite outlier first sign, and calculate only the second operation. This bypass succeeds on all five delivered records, including both recognizable bank subgroups: unit-first 2/2 and swapped-magnitude 3/3. Broader generator controls contain counterexamples.",
+        "source_refs": [
+          "122850ae-d465-5748-ba36-b0dbdbbedca0",
+          "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+          "Introduction tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0"
+        ],
+        "reproduction": "From evidence_root run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py`; expected exit 1. Minimal instance: q-42531, seed 1278010737, A=[[-1,4,7],[8,-5,-9],[10,-1,-9]], pivot=2, column=1. Bank pairs are [(-1,5),(-4,-5),(4,5),(4,-5),(-4,5)]. Outlier (-1,5) predicts first coefficient +4; calculating only the second coefficient gives accepted pair (4,-5). Complete batch and native-grader evidence are retained.",
+        "requested_change": "Regenerate the candidate batch and add a batch acceptance check preventing this uniform outlier-sign relationship across the delivered pool. Retain the runnable regression and verify cue-breaking examples survive delivery. Preserve the repaired independent-sign construction and source families; no database or original-source edits are required."
+      },
+      "source_hash": "78c8fd6c39535a46710c8ebc41422d996fd9a007479691bd3b48287fb624c110",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-1-policy-2-fa94c3c9d1dc4929",
+      "attempt": 1
     }
   ],
   "events": [
@@ -155,6 +172,141 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-0-policy-2-b2ba6e2b0f4d64c5"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "2af96be17dbacad0a3e102544b1b3f0578998de21a283d1e78699ef515e407a5",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The previous shortcut is repaired, but all five delivered batch records permit a first-operation bypass. Regenerate the batch. The other seven checks pass; package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Identify two row additions that create zeros in one column of a 3x3 matrix.",
+          "reasoning_steps": [
+            "Identify the unchanged pivot row and cleared column.",
+            "Calculate both cancellation coefficients.",
+            "Verify the complete transformed rows.",
+            "Select the matching operation pair."
+          ],
+          "invariants": [
+            "Two row additions using one unchanged pivot row.",
+            "Small integer arithmetic in 3x3 matrices.",
+            "Five-choice radio response with one correct pair."
+          ],
+          "permitted_variations": [
+            "Pivot row and cleared column.",
+            "Both coefficient signs and magnitudes.",
+            "Non-target matrix entries.",
+            "Distractor roles and order without predictable answer-bearing assignments."
+          ],
+          "source_refs": [
+            "399b7598-c793-5032-9f33-ac02c7b85fe1",
+            "122850ae-d465-5748-ba36-b0dbdbbedca0",
+            "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+            "Introduction tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replays.json",
+              "source-replay-results.json",
+              "boundary-records.json"
+            ],
+            "details": "All ten complete source banks replay correctly. Canonical matrices and operations match; its source answer bank is absent."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "review.py",
+              "helpers.py",
+              "math-results.json"
+            ],
+            "details": "151 records independently checked using exact arithmetic, including every choice and both solution stages."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "fresh-samples.json",
+              "shortcut-results.json",
+              "boundary-records.json",
+              "resampling.json",
+              "delivery-fresh/delivery.json"
+            ],
+            "details": "All ten profiles, four coefficient-sign combinations and nine pivot-column coordinates exercised. Numerical variety passes; batch decision variation fails separately."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-review.json",
+              "packaging.json"
+            ],
+            "details": "Preserves the easy two-operation workload and radio response contract. Unsupported difficulties are rejected."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-report.json",
+              "delivered-grader-report.json"
+            ],
+            "details": "Native grader produced 199 expected acceptances and 681 expected rejections, plus five accepted shortcut submissions after delivery normalization."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-inspection.json",
+              "render/rendering.json",
+              "target-render/rendering.json",
+              "layout-render/rendering.json"
+            ],
+            "details": "Eight actual UI screenshots inspected. Matrices, controls and counterfactual changes render correctly; long solution chains are horizontally scrollable."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "relocated-output.json",
+              "retained-finding-results.json",
+              "author-old.log",
+              "author-current.log",
+              "final-verification.json"
+            ],
+            "details": "Exact dependencies, deterministic replay, relocation and rejection tests pass. Retained checks fail on old code and pass current code. Package unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "reproduce_batch_shortcut.py",
+              "batch-reproduction.json",
+              "post-delivery-shortcuts.json",
+              "delivered-grader-report.json",
+              "selection.json",
+              "inventory-inspection.json",
+              "affected-inventory.json"
+            ],
+            "details": "All five surviving batch records reveal the first coefficient through the opposite outlier sign. Controlled variants refute a universal generator defect. Captured inventory contains only original source questions and no generated records."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Batch-selection failure: identify the unique magnitude-pattern outlier, take the dominant first magnitude with the opposite outlier first sign, and calculate only the second operation. This bypass succeeds on all five delivered records, including both recognizable bank subgroups: unit-first 2/2 and swapped-magnitude 3/3. Broader generator controls contain counterexamples.",
+            "source_refs": [
+              "122850ae-d465-5748-ba36-b0dbdbbedca0",
+              "200a95d9-6cef-55b2-a6a6-5c194d5765aa",
+              "Introduction tutorial 1e0cae18-aa8d-5b1d-9aab-4a5334dec0c0"
+            ],
+            "reproduction": "From evidence_root run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py`; expected exit 1. Minimal instance: q-42531, seed 1278010737, A=[[-1,4,7],[8,-5,-9],[10,-1,-9]], pivot=2, column=1. Bank pairs are [(-1,5),(-4,-5),(4,5),(4,-5),(-4,5)]. Outlier (-1,5) predicts first coefficient +4; calculating only the second coefficient gives accepted pair (4,-5). Complete batch and native-grader evidence are retained.",
+            "requested_change": "Regenerate the candidate batch and add a batch acceptance check preventing this uniform outlier-sign relationship across the delivered pool. Retain the runnable regression and verify cue-breaking examples survive delivery. Preserve the repaired independent-sign construction and source families; no database or original-source edits are required."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/review-1-policy-2-fa94c3c9d1dc4929"
     }
   ]
 }

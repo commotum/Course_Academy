@@ -164,7 +164,8 @@ def recipes(f,d,p,profile,candidates):
  bank=[other['A'] for _,other in candidates]
  # Explicit parameter calls retain the same bank whenever their area is a
  # member, allowing all five target assignments with the same choice values.
- if not any(eq(d['A'],value) for value in bank):bank[-1]=d['A']
+ if not any(eq(d['A'],value) for value in bank):
+  bank[-1]=d['A'];candidates[-1]=(dict(p),d)
  return bank
 RENDERER_VERSION='type-I-region-pixel-calibration-5'
 _PLOT_LOCK=threading.RLock()

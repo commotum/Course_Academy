@@ -2399,11 +2399,32 @@
         "Linear Algebra"
       ],
       "original_order": 580,
-      "state": "running",
+      "state": "blocked",
       "started": 1792729336.6822839,
       "claimed": 1792729336.6822844,
       "worker_slot": 0,
-      "worker_pid": 2685014
+      "worker_pid": 2685014,
+      "pipeline": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161967/job.json",
+      "error": {
+        "code": "author_reported_limitation",
+        "cause": {
+          "status": "blocked",
+          "manifest": "package.json",
+          "summary": "Reproduced the batch-selection failure: the shortcut succeeds on all five delivered records. Preserved the repaired generator unchanged.",
+          "evidence_paths": [
+            "evidence/author-2-batch-reproduction.json",
+            "session-state.md"
+          ],
+          "limitations": [
+            "Failing command: /home/jake/Developer/Course_Academy/.venv/bin/python -B ../review-1-policy-2-fa94c3c9d1dc4929/reproduce_batch_shortcut.py > evidence/author-2-batch-reproduction.json \u2014 exited 1, confirming finding 79a24ab401bd284df93a on 5/5 records.",
+            "Required runner action: regenerate ../samples.json, enforce the requested delivered-batch shortcut acceptance check, and obtain fresh independent review. The batch and runner implementation are outside the writable workspace. No outside-scope writes were attempted."
+          ]
+        },
+        "resume_stage": "generate",
+        "instruction": "Resolve the recorded cause, then explicitly resume with --resume-reason. Automatic retries are disabled."
+      },
+      "registration": null,
+      "completed": 1792730975.1426146
     },
     {
       "kp": 17592186161968,
@@ -2417,11 +2438,19 @@
         "Linear Algebra"
       ],
       "original_order": 580,
-      "state": "running",
+      "state": "verified",
       "started": 1792729631.407198,
       "claimed": 1792729631.4071982,
       "worker_slot": 2,
-      "worker_pid": 2685018
+      "worker_pid": 2685018,
+      "pipeline": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/job.json",
+      "error": null,
+      "registration": "generators/ec/ec9cbe7a88642cc6fa459989c70caf5be34e2f48693fa631c023e168121c8066/17592186161968.py",
+      "completed": 1792730910.2532465,
+      "pool_review_reports": [
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-0-policy-2-8bbb1cdbe4d688a3/affected-inventory.json",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186161968/review-1-policy-2-272cf80841c7a8d2/affected-inventory.json"
+      ]
     },
     {
       "kp": 17592186129197,
@@ -2449,7 +2478,11 @@
       "age_evidence": "git_first_seen",
       "priority_subjects": [],
       "original_order": 1,
-      "state": "pending"
+      "state": "running",
+      "started": 1792730910.2696252,
+      "claimed": 1792730910.2696257,
+      "worker_slot": 2,
+      "worker_pid": 2685018
     },
     {
       "kp": 17592186096842,
@@ -9184,5 +9217,29 @@
       "state": "pending"
     }
   ],
-  "worker_count": 3
+  "worker_count": 3,
+  "campaign_error": {
+    "kp": 17592186161967,
+    "state": "blocked",
+    "error": {
+      "code": "author_reported_limitation",
+      "cause": {
+        "status": "blocked",
+        "manifest": "package.json",
+        "summary": "Reproduced the batch-selection failure: the shortcut succeeds on all five delivered records. Preserved the repaired generator unchanged.",
+        "evidence_paths": [
+          "evidence/author-2-batch-reproduction.json",
+          "session-state.md"
+        ],
+        "limitations": [
+          "Failing command: /home/jake/Developer/Course_Academy/.venv/bin/python -B ../review-1-policy-2-fa94c3c9d1dc4929/reproduce_batch_shortcut.py > evidence/author-2-batch-reproduction.json \u2014 exited 1, confirming finding 79a24ab401bd284df93a on 5/5 records.",
+          "Required runner action: regenerate ../samples.json, enforce the requested delivered-batch shortcut acceptance check, and obtain fresh independent review. The batch and runner implementation are outside the writable workspace. No outside-scope writes were attempted."
+        ]
+      },
+      "resume_stage": "generate",
+      "instruction": "Resolve the recorded cause, then explicitly resume with --resume-reason. Automatic retries are disabled."
+    },
+    "stopped": 1792730975.1426218,
+    "instruction": "Fix the saved blocker and explicitly resume; no new jobs will be claimed."
+  }
 }
