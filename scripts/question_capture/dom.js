@@ -310,7 +310,8 @@ element => {
         }
         const centered = matrixTable(n) !== null;
         let columnCount = Math.max(...nodes.map(row => row.children.length));
-        if (centered && (environment || n.getAttribute('columnalign'))) {
+        if (centered && (environment || n.getAttribute('columnalign')) &&
+            !['columnlines', 'rowlines', 'frame'].some(attribute => (n.getAttribute(attribute) || 'none').split(/\s+/).some(value => value && value !== 'none'))) {
           const shortest = Math.min(...nodes.map(row => row.children.length));
           if (shortest !== columnCount) {
             // A saved rotation matrix has an accidental empty cell at the end

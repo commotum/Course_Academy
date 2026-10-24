@@ -26,6 +26,9 @@ def get_doc(r):
   soup=soup_cache[ck]
   if r.get('step_id'):soup=soup.find(id='step-'+str(r['step_id'])) or soup
   if attr=='tutorial/content':parts=[soup]
+  elif attr=='answer/value':
+   specific=soup.find(id=r.get('option_dom_id')) if r.get('option_dom_id') else None
+   parts=[specific] if specific else [p for cls in ['questionWidget-choiceText','choiceText','selectListOption'] for p in soup.find_all(class_=cls)]
   else:
    classes=['exampleQuestion','questionWidget-text','questionText'] if attr=='question/problem' else ['exampleExplanation','questionExplanation','questionWidget-explanation']
    parts=[p for cls in classes for p in soup.find_all(class_=cls)]

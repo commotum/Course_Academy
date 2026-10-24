@@ -33,6 +33,10 @@ class NativeComparisonTests(unittest.TestCase):
         for a,b in [('x/x','1'),('sqrt(x)^2','x')]:
             self.assertEqual(compare_answers(a,b)['outcome'],'unresolved')
         self.assertEqual(native.compare('1/2','0.5',prompt='Round to one decimal place')['outcome'],'different')
+        self.assertEqual(native.compare('1','1.000',prompt='Round to three decimal places')['outcome'],'equivalent')
+        self.assertEqual(native.compare('0.85','0.850',prompt='Round to three decimal places')['outcome'],'equivalent')
+        self.assertEqual(native.compare('0.8501','0.850',prompt='Round to three decimal places')['outcome'],'different')
+        self.assertEqual(native.compare('1','1.000',prompt='Give four significant figures')['outcome'],'different')
         self.assertEqual(compare_answers('2/4','1/2',prompt='Express in lowest terms')['outcome'],'different')
         self.assertNotEqual(value_hash('x+x'),value_hash('2*x'))
 

@@ -1894,8 +1894,8 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
         Ok(match ident(s, expected, "answer/type")?.as_str() {
             "answer.type/math" => {
                 // Form-sensitive prompts must match their authored answer
-                // representation. Numeric equivalence alone cannot verify
-                // rounding, significant figures, or reduced-form work.
+                // representation. Rounding accepts equivalent decimal numerals;
+                // significant figures and reduced-form work remain form-sensitive.
                 let prompt = s
                     .entity(question)?
                     .get("question/problem")
@@ -2173,10 +2173,51 @@ pub fn compare_math_in_context(
     context: symbolic::Context,
 ) -> Result<bool> {
     if requires_answer_form(prompt) {
-        Ok(normalize_answer_form(a) == normalize_answer_form(b))
+        let a = normalize_answer_form(a);
+        let b = normalize_answer_form(b);
+        if a == b {
+            return Ok(true);
+        }
+        if permits_equivalent_decimal_numerals(prompt)
+            && let (Some(a), Some(b)) = (plain_decimal_numeral(&a), plain_decimal_numeral(&b))
+        {
+            // Compare the submitted value exactly. Do not round it again or
+            // accept fractions/expressions in place of the requested numeral.
+            return Ok(a == b);
+        }
+        Ok(false)
     } else {
         compare_math(a, b, context)
     }
+}
+
+fn plain_decimal_numeral(text: &str) -> Option<num_rational::BigRational> {
+    let unsigned = text.strip_prefix('-').or_else(|| text.strip_prefix('+')).unwrap_or(text);
+    let mut digits = 0;
+    let mut points = 0;
+    for c in unsigned.bytes() {
+        if c.is_ascii_digit() { digits += 1; }
+        else if c == b'.' { points += 1; }
+        else { return None; }
+    }
+    if digits == 0 || points > 1 { return None; }
+    decimal_number(text).ok()
+}
+
+fn permits_equivalent_decimal_numerals(prompt: &str) -> bool {
+    use std::sync::LazyLock;
+    static ROUNDING: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(r"\b(?:round(?:ed|ing)?|decimal\s+places?)\b").unwrap()
+    });
+    static EXPLICIT_FORM: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(concat!(
+            r"\b(?:significant\s+(?:figures?|digits?)|simplest\s+form|lowest\s+terms|reduced\s+fraction|",
+            r"(?:include|retain|keep|show|write|display|use)\s+(?:the\s+|all\s+|any\s+)?trailing\s+zero(?:e?s)?|",
+            r"exactly\s+(?:\d+|one|two|three|four|five|six)\s+(?:decimal\s+places?|digits?\s+after\s+the\s+decimal))\b"
+        )).unwrap()
+    });
+    let prompt = prompt.to_lowercase();
+    ROUNDING.is_match(&prompt) && !EXPLICIT_FORM.is_match(&prompt)
 }
 
 fn requires_answer_form(prompt: &str) -> bool {
@@ -2192,7 +2233,7 @@ fn requires_answer_form(prompt: &str) -> bool {
     });
     static REQUIRED_FORM: LazyLock<regex::Regex> = LazyLock::new(|| {
         regex::Regex::new(
-            r"\b(?:round(?:ed|ing)?|decimal\s+places?|significant\s+(?:figures?|digits?)|simplest\s+form|lowest\s+terms|reduced\s+fraction)\b",
+            r"\b(?:round(?:ed|ing)?|decimal\s+places?|digits?\s+after\s+(?:the\s+)?decimal|significant\s+(?:figures?|digits?)|simplest\s+form|lowest\s+terms|reduced\s+fraction)\b",
         )
         .expect("valid answer form expression")
     });
@@ -4394,7 +4435,7 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn rounded_decimal_blanks_normalize_sign_and_integer_zeroes_without_changing_precision() {
+    fn rounded_decimal_blanks_accept_equivalent_numerals_without_rounding_again() {
         let mut s = fixture();
         s.entities.get_mut(&100).unwrap().insert(
             "question/problem".into(),
@@ -4415,6 +4456,18 @@ pub(crate) mod tests {
             ("0002.050", "2.050"),
             ("2.050", "+0002.050"),
             ("0.000", ".000"),
+            ("1.000", "1"),
+            ("1.000", "+001"),
+            ("1.000", "1.0"),
+            ("1.000", "1.0000"),
+            ("0.850", ".85"),
+            ("0.850", "0.8500"),
+            ("0.850", "+.8500"),
+            ("0.850", "00.85"),
+            ("0.850", "+.85"),
+            ("0.850", "00.8500"),
+            ("0.000", "0"),
+            ("0.000", "-0.0"),
         ] {
             s.entities
                 .get_mut(&300)
@@ -4423,7 +4476,7 @@ pub(crate) mod tests {
             assert_eq!(
                 grade(&s, 100, &BTreeMap::from([(200, accepted.into())])),
                 Ok(true),
-                "{accepted} must preserve the decimal form of {canonical}"
+                "{accepted} must equal the rounded numeral {canonical}"
             );
         }
         s.entities
@@ -4431,16 +4484,10 @@ pub(crate) mod tests {
             .unwrap()
             .insert("answer/value".into(), json!("0.850"));
         for rejected in [
-            ".85",
-            "0.85",
-            ".8500",
-            "+.85",
-            "+.8500",
-            "00.85",
-            "00.8500",
             "00.851",
             "0002.050",
-            "0.8500",
+            "0.8501",
+            "0.8499",
             ".851",
             "-.850",
             "17/20",
@@ -4454,6 +4501,22 @@ pub(crate) mod tests {
                 Ok(false),
                 "{rejected} must not satisfy the authored three-decimal answer"
             );
+        }
+    }
+
+    #[test]
+    fn significant_figures_and_explicit_decimal_format_keep_trailing_zeroes() {
+        for prompt in [
+            "Round to four significant figures.",
+            "Use four significant digits.",
+            "Round to three decimal places and include trailing zeros.",
+            "Round the result and write exactly three decimal places.",
+            "Write exactly three digits after the decimal point.",
+        ] {
+            let context = symbolic::Context::default();
+            assert_eq!(compare_math_in_context("1.000", "1.000", prompt, context), Ok(true));
+            assert_eq!(compare_math_in_context("1", "1.000", prompt, context), Ok(false), "{prompt}");
+            assert_eq!(compare_math_in_context("1.0000", "1.000", prompt, context), Ok(false), "{prompt}");
         }
     }
 
