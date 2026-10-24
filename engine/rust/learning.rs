@@ -4292,6 +4292,22 @@ pub(crate) mod tests {
     }
 
     #[test]
+    fn positive_trig_logarithm_antiderivatives_accept_optional_absolute_values() {
+        let mut s = fixture();
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),
+            json!(r"-3\left(\ln\left|\cos{\left(x\right)}+2\right|\right)"));
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),
+            json!(r"Find an antiderivative. $\int \frac{3\sin x}{\cos x+2}\,dx$ {{x}} $+C$"));
+        for answer in [r"-3\ln(\cos x+2)", "-3ln(2+cos(x))+7/3", "-3ln(abs(cos(x)+2))"] {
+            assert_eq!(grade_field(&s,100,200,answer),Ok(true),"{answer}");
+        }
+        for wrong in ["3ln(2+cos(x))", "-2ln(2+cos(x))", "-3ln(3+cos(x))"] {
+            assert_eq!(grade_field(&s,100,200,wrong),Ok(false),"{wrong}");
+        }
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("ln(abs(cos(x)))"));
+        assert_ne!(grade_field(&s,100,200,"ln(cos(x))"),Ok(true));
+    }
+    #[test]
     fn antiderivative_blanks_absorb_numeric_constants_only_when_displayed() {
         let mut s = fixture();
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("t^7/7+5*t"));

@@ -172,6 +172,18 @@ impl Poly {
     fn interval(&self) -> Option<(Q, Q)> {
         self.interval_at(None)
     }
+    /// Real on the domains already retained by evaluation. In particular, do
+    /// not apply real sine/cosine bounds to a hidden imaginary argument.
+    fn real_on_domain(&self) -> bool {
+        self.0.keys().all(|m| m.keys().all(|a| match a {
+            Atom::Variable(_) | Atom::Pi | Atom::E => true,
+            Atom::I => false,
+            Atom::Root(_, p) => p.real_on_domain(),
+            Atom::Function(name, v) => matches!(name.as_str(), "sin" | "cos" | "ln" | "exp" | "abs")
+                && v.real_on_domain(),
+            Atom::Power(base, exponent) => base.real_on_domain() && exponent.real_on_domain(),
+        }))
+    }
     fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
         if self.0.len() > 16
             || self.0.iter().any(|(m, c)| {
@@ -199,8 +211,16 @@ impl Poly {
                         (v.clone(), v)
                     }
                     Atom::Function(name, arg) => {
-                        let (l, h) = arg.interval_at(sample)?;
-                        function_interval(name, &l, &h)?
+                        if sample.is_none() && matches!(name.as_str(), "sin" | "cos")
+                            && arg.real_on_domain()
+                        {
+                            // A universal exact enclosure, not a sampled
+                            // witness. Argument domain guards remain intact.
+                            (-Q::one(), Q::one())
+                        } else {
+                            let (l, h) = arg.interval_at(sample)?;
+                            function_interval(name, &l, &h)?
+                        }
                     }
                     Atom::Power(base, exponent) => {
                         let (l, h) = base.interval_at(sample)?;
@@ -447,6 +467,9 @@ impl Value {
             num: self.num.scale(&Q::from_integer((-1).into())),
             den: self.den.clone(),
         }
+    }
+    fn real_on_domain(&self) -> bool {
+        self.num.real_on_domain() && self.den.real_on_domain()
     }
     fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
         let a = self.num.interval_at(sample)?;
@@ -762,6 +785,14 @@ impl Algebra {
         {
             return Ok(());
         }
+        if let Some((lo, hi)) = v.interval_at(None) {
+            if lo.is_positive() || (!positive && lo.is_zero()) {
+                return Ok(());
+            }
+            if hi.is_negative() || (positive && hi.is_zero()) {
+                return Err("expression is outside its real domain".into());
+            }
+        }
         if v.den.positive() && v.num.scale(&Q::from_integer((-1).into())).positive() {
             return Err("expression is outside its real domain".into());
         }
@@ -1052,6 +1083,14 @@ impl Algebra {
                 }
                 if x.num.nonnegative() && x.den.positive() {
                     return Ok(x.clone());
+                }
+                if let Some((lo, hi)) = x.interval_at(None) {
+                    if !lo.is_negative() {
+                        return Ok(x.clone());
+                    }
+                    if !hi.is_positive() {
+                        return Ok(x.neg());
+                    }
                 }
             }
             "sin" | "cos" => {
@@ -2037,6 +2076,38 @@ mod tests {
         }
         assert!(compare("exp(-x/x)", "exp(-1)", Context::default()).is_err());
         assert!(!supports("exp(-1/0)", Context::default()));
+    }
+    #[test]
+    fn bounded_real_trig_arguments_normalize_absolute_logarithms() {
+        let canonical = r"-3\left(\ln\left|\cos{\left(x\right)}+2\right|\right)";
+        for answer in [r"-3\ln(\cos x+2)", "-3ln(2+cos(x))", "-3ln(abs(cos(x)+2))"] {
+            assert_eq!(compare(answer, canonical, Context::default()), Ok(true), "{answer}");
+            assert_eq!(compare(canonical, answer, Context::default()), Ok(true), "{answer}");
+            assert_eq!(compare_up_to_constant(answer, canonical, Context::default()), Ok(true), "{answer}");
+            assert_eq!(compare_up_to_constant(&format!("({answer})+7/3"), canonical, Context::default()), Ok(true));
+        }
+        for (a, b) in [
+            ("ln(abs(3+2sin(2x+1)))", "ln(3+2sin(2x+1))"),
+            ("ln(abs(cos(x)-2))", "ln(2-cos(x))"),
+            ("ln(abs(1+cos(x)))", "ln(1+cos(x))"),
+            ("ln(abs((2+cos(x))/3))", "ln((2+cos(x))/3)"),
+            ("ln(abs(2+sin(ln(x))))", "ln(2+sin(ln(x)))"),
+        ] {
+            assert_eq!(compare(a,b,Context::default()),Ok(true),"{a} vs {b}");
+        }
+        for wrong in ["3ln(2+cos(x))", "-2ln(2+cos(x))", "-3ln(3+cos(x))", "-3ln(2+cos(2x))"] {
+            assert_eq!(compare_up_to_constant(wrong,canonical,Context::default()),Ok(false),"{wrong}");
+        }
+        // A bound valid only for real arguments cannot be used for complex ones.
+        for (a,b) in [
+            ("ln(abs(cos(x)))", "ln(cos(x))"),
+            ("ln(abs(1/2+sin(x)))", "ln(1/2+sin(x))"),
+            ("ln(abs(2+cos(i*x)))", "ln(2+cos(i*x))"),
+            ("ln(2+cos(x/x))", "ln(2+cos(1))"),
+        ] {
+            assert_ne!(compare_up_to_constant(a,b,Context::default()),Ok(true),"{a} vs {b}");
+        }
+        assert!(compare("ln(1+cos(x))/ln(1+cos(x))","1",Context::default()).is_err());
     }
     #[test]
     fn rearranged_trig_antiderivatives_absorb_back_substitution_constants() {
