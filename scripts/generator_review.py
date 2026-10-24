@@ -1,6 +1,7 @@
 """Small, fail-closed validation of an independent generator review."""
 import json
 from pathlib import Path
+import uuid
 
 
 REVIEW_POLICY_VERSION = 4
@@ -145,6 +146,38 @@ def _solution_path_evidence(check, root):
                 raise ValueError("solution path contains an unsupported or unshown conversion")
 
 
+def _inventory_evidence(root):
+    """Require the reviewer's handoff before any runner-owned pool action.
+
+    This validates evidence completeness, not retirement eligibility. Original
+    source and canonical questions may have valid defect reports but remain
+    protected by the pool repairer's separate live eligibility checks.
+    """
+    name = "affected-inventory.json"
+    _evidence([name], root, "inventory findings require affected-inventory.json", required=True)
+    try:
+        report = json.loads((Path(root) / name).read_text())
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError("affected-inventory.json must contain readable JSON") from error
+    rows = report.get("affected_questions") if isinstance(report, dict) else None
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("affected-inventory.json requires nonempty affected_questions")
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError("affected-inventory.json entries must be objects")
+        try:
+            if not isinstance(row.get("question_id"), str):
+                raise ValueError
+            uuid.UUID(row["question_id"])
+        except ValueError as error:
+            raise ValueError("affected-inventory.json requires exact question UUIDs") from error
+        if type(row.get("entity_id")) is not int or row["entity_id"] <= 0:
+            raise ValueError("affected-inventory.json requires positive integer entity IDs")
+        for key in ("finding", "reproduction"):
+            _text(row.get(key), "affected-inventory." + key)
+        _evidence([row.get("evidence_path")], root, "affected-inventory.evidence_path", required=True)
+
+
 def validate_review(result, evidence_root):
     """Validate structure and on-disk evidence; never infer pedagogical truth.
 
@@ -207,3 +240,5 @@ def validate_review(result, evidence_root):
         raise ValueError("accepted review cannot have unresolved findings")
     if verdict == "revise" and not findings:
         raise ValueError("revise requires actionable findings")
+    if any(finding["kind"] == "inventory" for finding in findings):
+        _inventory_evidence(evidence_root)

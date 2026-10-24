@@ -156,6 +156,52 @@ class ReviewEvidenceTests(unittest.TestCase):
         path.write_text(json.dumps(saved))
         validate_review(self.review, self.directory)
 
+    def inventory_report(self):
+        self.review.update(verdict='revise', findings=[{
+            'kind': 'inventory', 'description': 'Stored bank reveals its answer.',
+            'source_refs': ['q-original'], 'reproduction': 'Run the retained bank-only probe.',
+            'requested_change': 'Resolve the stored defect separately from package repair.'}])
+        return {'affected_questions': [{
+            'question_id': '77c551c0-c155-56eb-9f11-d8d660941796', 'entity_id': 17592186524997,
+            'finding': 'Bank-only shortcut', 'reproduction': 'Run retained probe.',
+            'evidence_path': 'stored-original.json'}]}
+
+    def test_inventory_finding_requires_complete_handoff_before_pool_repair(self):
+        report = self.inventory_report()
+        path = self.directory / 'affected-inventory.json'
+        with self.assertRaisesRegex(ValueError, 'affected-inventory.json'):
+            validate_review(self.review, self.directory)
+        for invalid in ('{', '[]', '{"affected_questions":[]}'):
+            path.write_text(invalid)
+            with self.assertRaisesRegex(ValueError, 'affected-inventory.json'):
+                validate_review(self.review, self.directory)
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'evidence_path'):
+            validate_review(self.review, self.directory)
+        (self.directory / 'stored-original.json').write_text(json.dumps({
+            ':db/id': 17592186524997, ':question/id': report['affected_questions'][0]['question_id'],
+            ':question/math-academy-id': 'q-107463'}))
+        for key, value in [('question_id', 'not-a-uuid'), ('entity_id', True),
+                           ('entity_id', 0), ('finding', ''), ('reproduction', ''),
+                           ('evidence_path', '../outside.json')]:
+            invalid = copy.deepcopy(report)
+            invalid['affected_questions'][0][key] = value
+            path.write_text(json.dumps(invalid))
+            with self.assertRaises(ValueError):
+                validate_review(self.review, self.directory)
+
+    def test_valid_original_source_report_does_not_authorize_retirement(self):
+        from generator_pool_repair import eligible, generated_proof
+        report = self.inventory_report()
+        question = {':db/id': 17592186524997,
+                    ':question/id': report['affected_questions'][0]['question_id'],
+                    ':question/math-academy-id': 'q-107463'}
+        (self.directory / 'stored-original.json').write_text(json.dumps(question))
+        (self.directory / 'affected-inventory.json').write_text(json.dumps(report))
+        validate_review(self.review, self.directory)
+        self.assertEqual(eligible(question), (False, 'original_source'))
+        self.assertFalse(generated_proof(report['affected_questions'][0], self.directory))
+
 
 
 class PedagogicalControlTests(unittest.TestCase):

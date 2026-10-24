@@ -299,6 +299,49 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual((self.job / 'samples.json').read_bytes(), cached_samples)
         self.assertEqual(result['attempt'], 1)
 
+    def test_missing_inventory_handoff_returns_to_reviewer_without_waiving_protected_record(self):
+        feedback = []
+        class MissingInventoryReport(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, context['evidence_root'] if role == 'review' else directory)
+                if role != 'review':
+                    return result
+                result['verdict'] = 'revise'
+                result['checks']['decision_variation']['status'] = 'failed'
+                result['findings'] = [{
+                    'kind': kind, 'description': 'The answer bank reveals the key.',
+                    'source_refs': ['q-original'], 'reproduction': 'Run retained bank-only probe.',
+                    'requested_change': 'Repair the package bank and separately resolve the stored source.'}
+                    for kind in ('decision_shortcut', 'inventory')]
+                if context.get('review_contract_feedback'):
+                    feedback.append(context['review_contract_feedback'])
+                    evidence = Path(context['evidence_root'])
+                    (evidence / 'stored-original.json').write_text(json.dumps({
+                        ':db/id': 7, ':question/id': '77c551c0-c155-56eb-9f11-d8d660941796',
+                        ':question/math-academy-id': 'q-original'}))
+                    (evidence / 'affected-inventory.json').write_text(json.dumps({'affected_questions': [{
+                        'question_id': '77c551c0-c155-56eb-9f11-d8d660941796', 'entity_id': 7,
+                        'finding': 'Bank-only shortcut', 'reproduction': 'Run retained probe.',
+                        'evidence_path': 'stored-original.json'}]}))
+                return result
+        session = MissingInventoryReport()
+        pipeline = self.pipeline(session)
+        with patch.object(pipeline, 'repair_inventory', return_value={
+                'unresolved': [{'question': 7, 'reason': 'original_source requires a separate content repair'}]}) as repair:
+            result = pipeline.run()
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review'])
+        self.assertEqual(result['attempt'], 1)
+        self.assertEqual(len(feedback), 1)
+        self.assertIn('affected-inventory.json', feedback[0]['error'])
+        repair.assert_called_once()
+        self.assertEqual(result['stage'], 'blocked')
+        self.assertEqual(result['error']['code'], 'inventory_repair_blocked')
+        self.assertIn('original_source', result['error']['cause']['unresolved'][0]['reason'])
+        history = json.loads((self.job / 'repair-history.json').read_text())
+        self.assertEqual({row['finding']['kind'] for row in history['findings']},
+                         {'decision_shortcut', 'inventory'})
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
     def test_a_reviewed_math_flaw_is_fixed_checked_and_published_within_budget(self):
         class RepairMath(FakeSession):
             def __call__(self, role, context, directory):

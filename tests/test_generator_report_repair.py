@@ -82,6 +82,12 @@ class ReportRepairRoutingTests(unittest.TestCase):
                                     "evidence_paths": []} for name in CHECKS},
                   "findings": [finding("inventory")]}
         with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'record.json').write_text('{"question": "retained evidence"}')
+            (root / 'affected-inventory.json').write_text(json.dumps({'affected_questions': [{
+                'question_id': '77c551c0-c155-56eb-9f11-d8d660941796', 'entity_id': 7,
+                'finding': 'Stored bank defect', 'reproduction': 'Run retained-check.py.',
+                'evidence_path': 'record.json'}]}))
             validate_review(result, directory)
             result["verdict"] = "accepted"
             with self.assertRaises(ValueError):
