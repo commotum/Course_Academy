@@ -6,6 +6,8 @@
 
 ## 1. Establish fidelity first
 
+Establish source eligibility before fidelity. Multistep parts belong to their full activity, and retired questions are not standalone generator templates. Generated copies do not inherit the original's structural containment, so trace their source lineage explicitly. Supplying missing prior context does not authorize converting an excluded part into standalone practice. Preserve the original activity and learner history; rebuild practice families from eligible teaching and standalone evidence.
+
 Reproduce the observed prompts, answer-field types, complete answer banks, and worked-solution templates at the original parameters. Preserve the shared wording, mathematical structure, and solution steps; mathematical correctness alone does not establish fidelity. Verify source replication before introducing extensions, and document source errors so they are not copied into generated questions.
 
 ## 2. Provide sufficient variety

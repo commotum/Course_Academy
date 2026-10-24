@@ -10,6 +10,7 @@ from urllib.parse import unquote, urlsplit
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 from scripts.generator_publish import ImageLibrary, enum, localize_record, prepare_records
+from scripts.generator_source_policy import reject_excluded_sources
 
 
 class AuditImages(ImageLibrary):
@@ -46,6 +47,7 @@ def audit(records, inventory, source, difficulty, output, asset_root, math_root)
     if any(enum(r['question'].get(':question/difficulty')) != ':question.difficulty/' + difficulty for r in records):
         raise ValueError('Input contains a record outside the requested difficulty; the runner rejects this batch')
     kp_uuid = source['material']['kp'][':knowledge-point/id']
+    reject_excluded_sources(records,source['material'].get('source_eligibility',{}).get('excluded_questions',[]))
     staged = output / 'assets'
 
     def localize(record, _math_root, _asset_root):

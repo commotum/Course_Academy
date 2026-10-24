@@ -1,5 +1,7 @@
 # Mathematical blank answers classified as text
 
+Committed and verified at **T6173**, source `:agent/codex`: five answer-type changes across four questions.
+
 The audit captured `math` at **T6164** and examined all **18,849 blank fields**.
 Of those, 16,179 had a math-typed correct answer, 48 had a text-typed correct
 answer, and 2,622 had no correct-answer link. Missing links were counted but are

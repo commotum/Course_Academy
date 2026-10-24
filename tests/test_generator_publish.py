@@ -12,7 +12,7 @@ import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from generator_publish import (Publisher, StaleBasis, VerificationError, content_fingerprint,
+from generator_publish import (Publisher, StaleBasis, SourceChanged, VerificationError, content_fingerprint,
     digest, dumps, enum, jsonable, kw, loads, normalized_question, stable_identities,
     validate_question, validate_report)
 from generator_packages import publish_package
@@ -194,6 +194,30 @@ class PublicationTests(unittest.TestCase):
         refreshed = self.publisher.extract_inventory(KP, self.root / 'inventory-refresh')
         self.assertEqual(refreshed, inventory)
         self.assertEqual(self.client.calls, [], 'delivery inventory extraction must not transact')
+
+    def test_source_capture_excludes_multistep_and_retired_parts_but_retains_inventory(self):
+        good=record()['question'];bad=record(3)['question']
+        good.update({':db/id':800,':question/math-academy-id':'q-800'})
+        bad.update({':db/id':801,':question/math-academy-id':'q-167637',':question/difficulty':':question.difficulty/hard'})
+        self.client.kp[':knowledge-point/questions']=[good,bad]
+        self.client.excluded_sources=[{':db/id':801,':question/id':bad[':question/id'],':question/math-academy-id':'q-167637'}]
+        source=self.publisher.extract_source(KP,self.root/'source-filtered')
+        self.assertEqual(source['material']['kp'][':knowledge-point/questions'],[good])
+        self.assertEqual(source['available_difficulties'],['easy'])
+        self.assertEqual(len(json.loads((self.root/'source-filtered/inventory.json').read_text())['questions']),2)
+        previous=copy.deepcopy(source)
+        previous['material'].pop('source_eligibility')
+        previous['material']['kp'][':knowledge-point/questions'].append(bad)
+        previous['source_sha256']=digest(previous['material'])
+        with self.assertRaises(SourceChanged):
+            self.publisher.prepare(KP,[record()],self.script,self.package,self.directory,source_snapshot=previous)
+
+    def test_manual_publication_also_rejects_a_multistep_descendant(self):
+        self.client.excluded_sources=[{':db/id':801,':question/id':str(uuid.uuid4()),':question/math-academy-id':'q-167637'}]
+        generated=record();generated['generation']['source_ids']=['q-167637']
+        with self.assertRaisesRegex(ValueError,'excluded standalone source'):
+            self.prepare([generated])
+        self.assertFalse(any(c[0]=='transact' for c in self.client.calls))
 
     def tearDown(self):
         self.temp.cleanup()

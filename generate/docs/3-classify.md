@@ -2,6 +2,8 @@
 
 When [Inventory](2-inventory.md) finds a shortage and no generator exists for the knowledge point:
 
+Use the current source-eligibility capture before classifying templates. Retired questions and questions structurally contained in a multistep activity (including assigned-problem wrappers and legacy placements) are excluded from standalone generator evidence. Keep their identities in an exclusion ledger. Do not repair an excluded part's prompt by supplying a function, derivative, diagram, or result from an earlier step. Classification of standalone practice starts from eligible examples; missing eligible difficulty coverage remains explicit.
+
 - Read all its source practice questions at one database basis, including difficulty, Markdown, answer fields, choices, correct values, worked solutions, and plot references.
 - Identify the answer-field types used at each difficulty level, preserving questions with multiple fields or mixed types.
 - Group questions into distinct Markdown/value templates within each difficulty level.

@@ -23,8 +23,9 @@ def main():
         path=(MATH if ref.startswith('generators/') else ROOT)/ref
         paths=[path]
         if ref.startswith('generators/'):
-            manifest=json.loads((path.parent/'generator-package.json').read_text())
-            paths=[path.parent/p for p in manifest['files'] if p.endswith(('.py','.json'))]
+            package=MATH/Path(*Path(ref).parts[:3])
+            manifest=json.loads((package/'generator-package.json').read_text())
+            paths=[package/p for p in manifest['files'] if p.endswith(('.py','.json'))]
         hits=[]
         for file in paths:
             text=file.read_text()

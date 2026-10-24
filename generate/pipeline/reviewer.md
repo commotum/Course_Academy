@@ -19,6 +19,8 @@ Use `generate/pipeline/validation-tools.md` for the shared delivery-filter, nati
 
 Then inspect the package and author evidence. Test these independent failure modes:
 
+First check source eligibility and lineage. The captured `material.source_eligibility.excluded_questions` ledger excludes retired questions and all structurally contained multistep parts from standalone template evidence. Trace current families and the actual batch back to their source IDs, including templates inherited from older packages. A generated copy loses structural membership; a self-contained prompt, recovered earlier derivative, or passing grader does not make that origin eligible. Reject families built from excluded parts rather than asking the author to reconstruct their missing context. Check the retained delivered inventory for descendants separately and report exact generated UUID/entity pairs as inventory findings. Legitimate extensions need independent support from eligible teaching or standalone evidence; do not waive a provenance failure because the mathematics is correct.
+
 * restriction: fixed example details, restricted targets, missing bank profiles, or narrow sampling suppress legitimate practice variation without an instructional reason;
 * drift: variations introduce unsupported operators, representations, prerequisites, response requirements, reasoning stages, or workload;
 * incidental shortcuts: surface variation preserves a fixed answer-bearing arrangement, allowing a recognizable cue to predict the answer or answer-producing action without the intended reasoning.
