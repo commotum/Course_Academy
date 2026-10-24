@@ -155,9 +155,19 @@ def prepare_investigation(publisher, source, directory):
     if input_file.exists() and reference_file.exists():
         saved = json.loads(input_file.read_text())
         if saved.get('preparation_key') == preparation_key:
-            # Reuse the script-selected reference, but derive admission flags
-            # from the current rule rather than an older cached decision.
-            return {**saved, **summary, 'investigation_file': str(input_file),
+            # Reuse the selected questions, but refresh derived decisions in
+            # both artifacts so later agents read the same facts as admission.
+            reference = json.loads(reference_file.read_text())
+            if (reference.get('preparation_key') != preparation_key
+                    or reference.get('basis') != basis):
+                raise ValueError('Cached reference belongs to a different source snapshot; preserve it and use a matching investigation directory')
+            current = {**saved, **summary}
+            refreshed_reference = {**reference, **summary}
+            if current != saved:
+                atomic_json(input_file, _json(current))
+            if refreshed_reference != reference:
+                atomic_json(reference_file, _json(refreshed_reference))
+            return {**current, 'investigation_file': str(input_file),
                     'reference_file': str(reference_file)}
     # Select IDs through the three observed refs before loading any metadata.
     # Global nested Pulls and KP x difficulty input products exceed the live

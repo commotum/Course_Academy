@@ -118,7 +118,7 @@ class InvestigationTests(unittest.TestCase):
             self.assertEqual(result['complete_examples'], dict.fromkeys(BANDS, 1))
             self.assertEqual(len(result['incomplete_imports']), 1)
 
-    def test_cached_reference_recomputes_admission_without_queries_or_snapshot_edits(self):
+    def test_cached_reference_persists_decisions_without_queries_or_source_edits(self):
         questions = [question(i + 1, b) for i, b in enumerate(BANDS)]
         partial = question(8, 'moderate')
         partial.pop(':question/worked-solution')
@@ -135,7 +135,10 @@ class InvestigationTests(unittest.TestCase):
                          complete_examples=dict.fromkeys(BANDS, 0))
             path.write_text(json.dumps(stale))
             reference_path = Path(initial['reference_file'])
-            before = (path.read_bytes(), reference_path.read_bytes())
+            reference_before = json.loads(reference_path.read_text())
+            reference_before.update(needs_exemplars=True, construction_needed=True,
+                                    complete_examples=dict.fromkeys(BANDS, 0))
+            reference_path.write_text(json.dumps(reference_before))
             calls = len(publisher.calls)
             result = prepare_investigation(publisher, saved_source, td)
             self.assertFalse(result['needs_exemplars'])
@@ -144,8 +147,34 @@ class InvestigationTests(unittest.TestCase):
             self.assertEqual(result['incomplete_imports'], initial['incomplete_imports'])
             self.assertEqual(result['reference_kp_id'], initial['reference_kp_id'])
             self.assertEqual(len(publisher.calls), calls)
-            self.assertEqual((path.read_bytes(), reference_path.read_bytes()), before)
+            for artifact in (path, reference_path):
+                persisted = json.loads(artifact.read_text())
+                for key in ('needs_exemplars', 'construction_needed', 'complete_examples', 'incomplete_imports'):
+                    self.assertEqual(persisted[key], result[key])
+            reference_after = json.loads(reference_path.read_text())
+            self.assertEqual(reference_after['questions'], reference_before['questions'])
+            self.assertEqual(reference_after['reference_kp'], reference_before['reference_kp'])
+            unchanged = (path.read_bytes(), reference_path.read_bytes())
+            prepare_investigation(publisher, saved_source, td)
+            self.assertEqual((path.read_bytes(), reference_path.read_bytes()), unchanged)
             self.assertEqual(saved_source, original_source)
+
+    def test_cached_reference_from_another_snapshot_is_not_overwritten(self):
+        publisher = References()
+        saved_source = source([question(i + 1, b) for i, b in enumerate(BANDS)])
+        with tempfile.TemporaryDirectory() as td:
+            initial = prepare_investigation(publisher, saved_source, td)
+            input_path = Path(initial['investigation_file'])
+            reference_path = Path(initial['reference_file'])
+            reference = json.loads(reference_path.read_text())
+            reference.update(basis=43, preparation_key='newer-snapshot')
+            reference_path.write_text(json.dumps(reference))
+            before = (input_path.read_bytes(), reference_path.read_bytes())
+            calls = len(publisher.calls)
+            with self.assertRaisesRegex(ValueError, 'different source snapshot'):
+                prepare_investigation(publisher, saved_source, td)
+            self.assertEqual((input_path.read_bytes(), reference_path.read_bytes()), before)
+            self.assertEqual(len(publisher.calls), calls)
 
     def test_missing_complete_band_requires_examples_even_with_observed_partial_and_stale_cache(self):
         for missing_band in BANDS:
