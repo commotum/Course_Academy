@@ -1,0 +1,4 @@
+[:find (pull ?q [:db/id :question/id :question/math-academy-id :question/retired {:knowledge-point/_questions [:db/id :knowledge-point/title]}])
+ :where [?q :question/math-academy-id _] (or-join [?q] [?q :question/retired true] (multipart ?q))
+ :rules [(multipart ?c) [?s :step/content ?c] [?m :multistep/steps ?s]]
+        [(multipart ?c) [?p :assigned-problem/content ?c] (multipart ?p)]]

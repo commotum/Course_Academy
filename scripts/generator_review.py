@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 
-REVIEW_POLICY_VERSION = 3
+REVIEW_POLICY_VERSION = 4
 CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
                  "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")

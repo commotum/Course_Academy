@@ -27,6 +27,7 @@ from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_js
 from scripts.generator_packages import resolve_registered_script
 from scripts.question_markers import validate_prompt_markers
 from scripts.question_capture.math_format import normalize_math_boundaries, validate_math_boundaries
+from scripts.generator_source_policy import exclusion_query, question_entities, filter_material, reject_excluded_sources, source_references
 
 
 class SourceChanged(ValueError):
@@ -402,6 +403,16 @@ class Publisher:
         kp = self.read_kp(kp_id, directory, basis)
         return self._source_from_kp(kp_id, directory, status, basis, kp)
 
+    def source_exclusions(self, directory, basis, entities=None):
+        from capture.scripts.database.edn import kw
+        if entities == []:
+            return []
+        attrs=self.client.query('[:find ?i :in $ [?i ...] :where [_ :db/ident ?i]]',
+            [[kw('multistep-step/question')]],directory,'source-membership-attributes',basis)
+        rows=self.client.query(exclusion_query(bounded=entities is not None,legacy=bool(attrs)),
+            [entities] if entities is not None else [],directory,'source-exclusions',basis)
+        return [r[0] for r in rows]
+
     def _source_from_kp(self, kp_id, directory, status, basis, kp):
         """Finish a source capture using the KP already read at this exact basis."""
         self.save_inventory(kp_id, kp, status, basis, directory)
@@ -415,6 +426,7 @@ class Publisher:
         material = {'kp': copy.deepcopy(kp), 'topics': [r[0] for r in topics], 'lessons': [r[0] for r in lessons],
                     'prerequisites': [r[0] for r in prerequisites]}
         material = instructional_material(material)
+        material = filter_material(material, self.source_exclusions(directory,basis,question_entities(material)))
         # Pull cardinality-many collection order is not instructional order; step/next is.
         def canonical(value):
             if isinstance(value, dict):
@@ -461,7 +473,7 @@ class Publisher:
                   'registered_generator': jsonable(kp.get(':knowledge-point/question-generator')),
                   'available_difficulties': [band for band in ('easy', 'moderate', 'hard')
                       if any(enum(q.get(':question/difficulty')) == ':question.difficulty/' + band
-                             for q in kp.get(':knowledge-point/questions', []))]}
+                             for q in material['kp'].get(':knowledge-point/questions', []))]}
         atomic_json(directory / 'source.json', result)
         return result
 
@@ -485,6 +497,10 @@ class Publisher:
             if (any(source_snapshot.get(k) != fresh[k] for k in ('database', 'lineage'))
                     or digest(instructional_material(source_snapshot['material'])) != digest(instructional_material(fresh['material']))):
                 raise SourceChanged('Original instructional source changed; review the generator again')
+        # This guard also covers manual publication and old metadata-based
+        # variants whose generated records have lost multistep containment.
+        if any(source_references(record) for record in records):
+            reject_excluded_sources(records,self.source_exclusions(directory/'source-lineage',basis))
         if len(package_hash) != 64 or any(c not in '0123456789abcdef' for c in package_hash):
             raise ValueError('Invalid package SHA-256')
         package_path = Path(generator_path)

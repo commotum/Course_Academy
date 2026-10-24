@@ -46,6 +46,7 @@ class FakeClient:
         self.reject_stale = False
         self.fail_readback = False
         self.lessons = []
+        self.excluded_sources = []
         self.entities = {}
         from generator_publish import ALLOWED
         refs = {'question/difficulty', 'question/answer-fields', 'answer-field/type', 'answer-field/choices',
@@ -66,6 +67,11 @@ class FakeClient:
 
     def query(self, query, inputs, directory, name, basis=None):
         Path(directory).mkdir(parents=True, exist_ok=True)
+        if name == 'source-membership-attributes':
+            return []
+        if name == 'source-exclusions':
+            return [[copy.deepcopy(q)] for q in self.excluded_sources
+                    if not inputs or q[':db/id'] in inputs[0]]
         if name == 'kp':
             if self.fail_readback and self.basis > 12 and basis == self.basis:
                 self.fail_readback = False
