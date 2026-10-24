@@ -70,7 +70,7 @@ from ca_source_runtime import install as _ca_source_install
 _ca_source_install(globals(),_ca_Path(__file__).with_name('17592186124569-source-policy.json'))
 
 if __name__=='__main__':
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--level',default='easy');ap.add_argument('--template',choices=sorted(CASES));ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--output',type=Path);a=ap.parse_args();records=[];seen=set()
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--level','--difficulty',dest='level',default='easy');ap.add_argument('--template',choices=sorted(CASES));ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--output',type=Path);ap.add_argument('--format',choices=['json'],default='json');a=ap.parse_args();records=[];seen=set()
  for i in range(1000):
   if len(records)>=a.count:break
   r=generate(a.level,a.seed+i,a.template)

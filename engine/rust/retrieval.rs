@@ -275,22 +275,19 @@ fn history(s: &EntitySnapshot, learner: u64) -> Result<crate::scheduling::Lifecy
     crate::scheduling::lifecycle(s, learner)
 }
 
-/// Study-eligible learned topics whose first successful lesson is at least
-/// 48 hours old. Use Study's layer floor before sampling: one out-of-scope
-/// question would otherwise hide the entire assembled quiz from Study.
-/// Reviews do not reset this clock and no prior review is required.
+/// Currently learned topics whose first successful lesson is at least 48 hours
+/// old, at any graph layer. Study's practice recommendation floor does not
+/// restrict assessment evidence. Reviews do not reset this clock.
 pub fn assessment_topics(
     s: &EntitySnapshot,
     learner: u64,
     at: DateTime<Utc>,
 ) -> Result<BTreeSet<u64>> {
     let h = history(s, learner)?;
-    let layers = learning::topic_layers(s)?;
     let mut topics = BTreeSet::new();
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
         if s.entity(progress)?.get("progress/learned") == Some(&json!(true))
-            && layers.get(&topic).is_some_and(|&layer| layer + 1 >= learning::MIN_STUDY_LAYER)
             && h.mastered.get(&topic).is_some_and(|learned| {
                 at - *learned >= chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS)
             })
@@ -488,6 +485,14 @@ pub fn candidates(
         }
         let status = state(s, task, "learner-task/status")?;
         let ongoing = matches!(status.as_str(), "started" | "paused");
+        // Queue refresh retires superseded offers by locking them at zero
+        // priority. An eligibility expansion must not revive an old quiz beside
+        // its replacement. Started routes always remain resumable.
+        if kind == "assessment" && status == "locked"
+            && s.entity(task)?.get("learner-task/priority").and_then(Value::as_f64) == Some(0.0)
+        {
+            continue;
+        }
         if !ongoing
             && (!matches!(status.as_str(), "locked" | "unlocked")
                 || kind != "lesson" && !fresh(s, learner, activity)?)
@@ -1243,7 +1248,7 @@ mod tests {
             .get_mut(&7)
             .unwrap()
             .insert("module/topics".into(), json!(topics));
-        // Assessment admission shares Study's L30 floor.
+        // Most fixture topics are at L30; separate tests cover lower layers.
         for layer in 0..learning::MIN_STUDY_LAYER - 1 {
             let next = if layer + 1 == learning::MIN_STUDY_LAYER - 1 {
                 (2000..2005).collect::<Vec<_>>()
@@ -1257,19 +1262,20 @@ mod tests {
     }
 
     #[test]
-    fn assessment_admission_excludes_topics_that_would_hide_the_quiz_from_study() {
+    fn assessment_admission_includes_learned_topics_below_the_practice_floor() {
         let (mut s, at) = assessment_fixture();
         assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 5);
-        // Move one learned topic to L29. The quiz must wait for eligible supply
-        // rather than prepare a route that Study will silently discard.
+        // Move one learned topic to L29. Its successful learning still makes
+        // it valid assessment evidence.
         let last = 30000 + learning::MIN_STUDY_LAYER as u64 - 2;
         s.entities.get_mut(&last).unwrap().insert("topic/next".into(), json!([2001,2002,2003,2004]));
         s.entities.get_mut(&(last - 1)).unwrap().insert("topic/next".into(), json!([last,2000]));
         assert_eq!(learning::topic_layers(&s).unwrap()[&2000] + 1, 29);
-        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 4);
-        assert!(assessment_definition(&s, 1, at).unwrap().is_none());
+        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 5);
+        let definition = assessment_definition(&s, 1, at).unwrap().unwrap();
+        assert!(definition.questions.iter().any(|q| s.topic_for_question(*q).unwrap() == 2000));
         let status = crate::inventory::assessment_status(&s, 1, at).unwrap();
-        assert_eq!(status["newEligibleTopics"], 4);
+        assert_eq!(status["newEligibleTopics"], 5);
         assert_eq!(status["ready"], false);
         assert_eq!(status["required"], false);
     }

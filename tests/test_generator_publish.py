@@ -69,6 +69,12 @@ class FakeClient:
         Path(directory).mkdir(parents=True, exist_ok=True)
         if name == 'source-membership-attributes':
             return []
+        if name == 'source-multipart-roots':
+            return [[q[':db/id']] for q in self.excluded_sources if not q.get(':question/retired')]
+        if name.startswith('source-multipart-wrappers-'):
+            return []
+        if name == 'source-retired':
+            return [[q[':db/id']] for q in self.excluded_sources if q.get(':question/retired')]
         if name == 'source-exclusions':
             return [[copy.deepcopy(q)] for q in self.excluded_sources
                     if not inputs or q[':db/id'] in inputs[0]]

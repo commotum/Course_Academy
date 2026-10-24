@@ -75,6 +75,6 @@ from ca_source_runtime import install as _ca_source_install
 _ca_source_install(globals(),_ca_Path(__file__).with_name('17592186064177-source-policy.json'))
 
 if __name__=='__main__':
- ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--output');a=ap.parse_args();r={'instances':batch(a.difficulty,a.count,a.seed),'supported_levels':SUPPORTED_LEVELS,'generator_id':GENERATOR_UUID};s=json.dumps(r,indent=2)
+ ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--output');ap.add_argument('--format',choices=['json'],default='json');a=ap.parse_args();r={'instances':batch(a.difficulty,a.count,a.seed),'supported_levels':SUPPORTED_LEVELS,'generator_id':GENERATOR_UUID};s=json.dumps(r,indent=2)
  if a.output:Path(a.output).write_text(s+'\n')
  else:print(s)

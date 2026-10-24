@@ -1,5 +1,6 @@
 """Trace excluded-source references in runtime closures and retained live records."""
 import ast
+import copy
 from collections import defaultdict
 import json
 from pathlib import Path
@@ -8,6 +9,8 @@ import sys
 H=Path(__file__).resolve().parent;ROOT=H.parents[3];MATH=Path('/media/jake/SSD/EDB/math')
 sys.path.insert(0,str(ROOT/'scripts'))
 from generator_source_policy import source_references
+from generator_publish import stable_identities
+from scripts.question_capture.math_format import normalize_math_boundaries
 
 
 def save(name,value):(H/name).write_text(json.dumps(value,indent=2)+'\n')
@@ -43,6 +46,7 @@ def main():
         if hits:runtime.append({'kp':row[':db/id'],'title':row[':knowledge-point/title'],'registration':reg,'hits':hits})
     save('runtime-candidates.json',runtime)
     current={q[':question/id']:q for q in json.loads((H/'generated-questions.json').read_text())}
+    risky={r['kp'] for r in json.loads((H/'installation-plan.json').read_text())}|{r['kp'] for r in runtime}
     proofs=defaultdict(list);affected={};errors=[];count=0
     paths=Path('/tmp/multistep-lineage-files.txt').read_text().splitlines()
     for filename in paths:
@@ -55,10 +59,25 @@ def main():
             if isinstance(item,dict):
                 question=item.get('question');generation=item.get('generation')
                 if isinstance(question,dict) and isinstance(generation,dict):
-                    qid=str(question.get(':question/id'))
-                    if qid in current:
+                    candidates={str(question.get(':question/id')):'retained-uuid'}
+                    kp=item.get('knowledge_point')
+                    if str(question.get(':question/id')) not in current and isinstance(kp,dict) and kp.get('id') and kp.get('db_id') in risky:
+                        for normalize in (False,True):
+                            try:
+                                variant=copy.deepcopy(question)
+                                if normalize:
+                                    for key in (':question/problem',':question/worked-solution'):
+                                        if key in variant:variant[key]=normalize_math_boundaries(variant[key])
+                                    for field in variant.get(':question/answer-fields',[]):
+                                        for answer in field.get(':answer-field/choices',[]):
+                                            answer[':answer/value']=normalize_math_boundaries(answer[':answer/value'])
+                                identity=stable_identities(variant,kp['id'])[':question/id']
+                                candidates[str(identity)]='publication-content-uuid'+('-normalized' if normalize else '')
+                            except (ValueError,KeyError,TypeError):pass
+                    for qid in candidates.keys() & current.keys():
                         refs=source_references(item);bad=sorted(refs & aliases.keys())
-                        evidence={'path':filename,'generation':generation,'source_refs':sorted(refs),'excluded_refs':bad}
+                        evidence={'path':filename,'generation':generation,'source_refs':sorted(refs),'excluded_refs':bad,
+                                  'identity_method':candidates[qid], 'retained_uuid':str(question.get(':question/id'))}
                         if evidence not in proofs[qid]:proofs[qid].append(evidence)
                         if bad:affected[qid]={**current[qid],'excluded_sources':sorted({aliases[r][':question/math-academy-id'] for r in bad})}
                         count+=1

@@ -60,7 +60,10 @@ the [Progress](http://127.0.0.1:8765/progress), or the
 and repetition values from EDB; browsing them leaves the study course unchanged.
 Lessons present one item at a time
 and save responses, active elapsed time, XP, and FIRe progress to EDB. Study serves
-lessons, due reviews, and assessments for topics in global graph layer 30 or above.
+ordinary lessons and due reviews for topics in global graph layer 30 or above.
+Assessments may include eligible learned topics at any layer, including topics
+studied through an explicit request. Quizzes and required follow-up practice for
+assessment misses remain visible regardless of their topics' layers.
 In self-directed mode, new lessons come from `learner/targets`, `learner/queue`,
 and their prerequisites through two `topic/next` edges, matching the default
 Targets graph scope. Unlearned prerequisites never block an in-scope lesson or

@@ -409,8 +409,30 @@ class Publisher:
             return []
         attrs=self.client.query('[:find ?i :in $ [?i ...] :where [_ :db/ident ?i]]',
             [[kw('multistep-step/question')]],directory,'source-membership-attributes',basis)
-        rows=self.client.query(exclusion_query(bounded=entities is not None,legacy=bool(attrs)),
-            [entities] if entities is not None else [],directory,'source-exclusions',basis)
+        # Walk the small structural graph first. A recursive rule joined to all
+        # question identities exceeds the live query budget on the full bank.
+        contained={r[0] for r in self.client.query(
+            '[:find ?c :where [?m :multistep/steps ?s] [?s :step/content ?c]]',
+            [],directory,'source-multipart-roots',basis)}
+        if attrs:
+            contained.update(r[0] for r in self.client.query(
+                '[:find ?c :where [?m :multistep/steps ?s] [?s :multistep-step/question ?c]]',
+                [],directory,'source-legacy-roots',basis))
+        frontier=contained.copy();depth=0
+        while frontier:
+            children={r[0] for r in self.client.query(
+                '[:find ?c :in $ [?p ...] :where [?p :assigned-problem/content ?c]]',
+                [sorted(frontier)],directory,f'source-multipart-wrappers-{depth}',basis)}-contained
+            contained.update(children);frontier=children;depth+=1
+        retired={r[0] for r in self.client.query(
+            '[:find ?q'+(' :in $ [?q ...]' if entities is not None else '')+' :where [?q :question/retired true]]',
+            [entities] if entities is not None else [],directory,'source-retired',basis)}
+        candidates=contained|retired
+        if entities is not None:candidates.intersection_update(entities)
+        if not candidates:return []
+        rows=self.client.query('[:find (pull ?q [:db/id :question/id :question/math-academy-id :question/retired])'
+            ' :in $ [?q ...] :where [?q :question/id _]]',
+            [sorted(candidates)],directory,'source-exclusions',basis)
         return [r[0] for r in rows]
 
     def _source_from_kp(self, kp_id, directory, status, basis, kp):

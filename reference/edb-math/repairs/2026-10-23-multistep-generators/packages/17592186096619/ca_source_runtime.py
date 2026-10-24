@@ -24,6 +24,8 @@ def _records(value):
         return [value]
     if isinstance(value,list):
         return [r for r in value if isinstance(r,dict) and isinstance(r.get('question'),dict)]
+    if isinstance(value,dict) and isinstance(value.get('instances'),list):
+        return _records(value['instances'])
     return []
 
 
@@ -46,7 +48,7 @@ def install(namespace,policy_file):
     """Guard public record/batch APIs; original archive packages stay unchanged."""
     policy=_policy(policy_file)
     blocked={str(row[k]) for row in policy['excluded'] for k in (':db/id',':question/id',':question/math-academy-id') if k in row}
-    selectors=('PROFILES','TEMPLATES','FAMILIES','CASES','SPECS','MODELS','BASE','DATA','LEVELS','LEVEL','NORMAL','FAMILY_IDS','SOURCE_REFERENCES','SOURCE_IDS')
+    selectors=('PROFILES','TEMPLATES','FAMILIES','CASES','SPECS','MODELS','BASE','DATA','LEVELS','LEVEL','NORMAL','FAMILY_IDS','SOURCE_REFERENCES','SOURCE_IDS','SOURCES','ORIGINALS','QUESTIONS','BY_ID')
     removed=set()
     def tied(value):
         if isinstance(value,(str,int)):return str(value) in blocked or str(value) in removed
@@ -56,8 +58,8 @@ def install(namespace,policy_file):
             refs=source_references({'generation':value})
             return bool(refs & blocked)
         return False
-    # Prune dispatch selectors, not archived source payloads or bulk citation
-    # lists. Propagate explicitly tied family names to level/normal selectors.
+    # Prune runtime dispatch tables; on-disk source evidence stays unchanged.
+    # Propagate explicitly tied family names to level/normal selectors.
     for _ in range(3):
         for name in selectors:
             value=namespace.get(name)
@@ -81,6 +83,9 @@ def install(namespace,policy_file):
         def wrap(original):
             @wraps(original)
             def guarded(*args,**kwargs):
+                band=kwargs.get('difficulty',kwargs.get('level',args[0] if args else None))
+                if band in policy.get('unsupported_bands',[]):
+                    raise ExcludedSource('No eligible standalone source family in band '+str(band))
                 for key in ('template','profile','source_id'):
                     if str(kwargs.get(key)) in blocked|removed:
                         raise ExcludedSource('Excluded standalone template: '+str(kwargs[key]))
@@ -104,20 +109,25 @@ def cli(entrypoint,policy_file):
         if key in argv:return argv[argv.index(key)+1]
         return default
     count=int(value('--count','1'));seed=int(value('--seed','0'));fmt=value('--format','json')
+    if value('--difficulty',value('--level','')) in policy.get('unsupported_bands',[]):
+        raise SystemExit('No eligible standalone source family in this difficulty band')
     output=value('--output',None)
     explicit=any(k in argv for k in ('--template','--profile','--parameters','--source-id'))
-    def command(n,s):
+    def command(n=None,s=None):
         args=list(argv)
         if '--output' in args:
             pos=args.index('--output');del args[pos:pos+2]
         for key,val in [('--count',str(n)),('--seed',str(s)),('--format','json')]:
+            if val=='None':continue
             if key in args:args[args.index(key)+1]=val
             else:args.extend([key,val])
         env=os.environ.copy();env['_CA_SOURCE_POLICY_CHILD']='1'
         return subprocess.run([sys.executable,str(entrypoint),*args],env=env,capture_output=True,text=True)
-    first=command(count,seed);rows=[];seen=set();last_error=''
+    first=command();rows=[];seen=set();last_error='';envelope=None
     def emit(records):
-        if fmt=='json':payload=json.dumps(records,indent=2,ensure_ascii=False)+'\n'
+        if fmt=='json':
+            result={**envelope,'instances':records} if envelope is not None else records
+            payload=json.dumps(result,indent=2,ensure_ascii=False)+'\n'
         else:
             pieces=[]
             for r in records:
@@ -131,7 +141,9 @@ def cli(entrypoint,policy_file):
     if first.returncode==0:
         try:
             original=json.loads(first.stdout)
-            values=original if isinstance(original,list) else [original]
+            if isinstance(original,dict) and isinstance(original.get('instances'),list):envelope=original
+            values=_records(original)
+            if '--count' not in argv and values:count=len(values)
             if values and all(_records(v) for v in values):
                 for record in values:check(record,policy)
                 emit(values);return  # Preserve all-band and finite-batch semantics.
@@ -143,10 +155,9 @@ def cli(entrypoint,policy_file):
         if result.returncode:
             last_error=result.stderr[-1800:]
             return
-        try:values=json.loads(result.stdout)
+        try:values=_records(json.loads(result.stdout))
         except ValueError:
             last_error='Generator did not emit the declared JSON record interface';return
-        values=values if isinstance(values,list) else [values]
         for record in values:
             try:check(record,policy)
             except ExcludedSource as error:last_error=str(error);continue

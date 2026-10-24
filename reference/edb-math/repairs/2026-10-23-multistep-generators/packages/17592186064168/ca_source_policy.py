@@ -61,19 +61,21 @@ def source_references(record):
             for child in value:
                 add(child)
         elif isinstance(value, dict):
-            for key in (':db/id', 'db_id', 'question_id', 'source_id', 'id', ':question/id', ':question/math-academy-id','math_academy_id'):
+            for key in (':db/id', 'db_id', 'entity_id', 'question_id', 'source_id', 'id', ':question/id', ':question/math-academy-id','math_academy_id', 'ma_id'):
                 if key in value:
                     add(value[key])
         elif value is not None:
             refs.add(str(value))
     for key in ('source_id', 'source_ids', 'source_question_id', 'source_question_ids',
-                'source_references', 'source_refs', 'source_questions', 'source_anchors', 'sources'):
+                'source_references', 'source_reference', 'source_refs', 'source_questions', 'source_question',
+                'source_anchors', 'source_anchor', 'sources', 'source_db_id', 'source_entity',
+                'source_math_academy_id', 'source_ma_id', 'bank_anchor', 'scope_anchor'):
         add(generation.get(key))
-    if isinstance(generation.get('source'),(str,list,tuple)):
-        add(generation['source'])
-    template = generation.get('template')
-    if isinstance(template, str) and re.fullmatch(r'[qe]-\d+', template):
-        add(template)
+    add(generation.get('source'))
+    for key in ('template', 'source_template'):
+        template = generation.get(key)
+        if isinstance(template, str) and re.fullmatch(r'[qe]-\d+', template):
+            add(template)
     return refs
 
 

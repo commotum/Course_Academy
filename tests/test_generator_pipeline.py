@@ -794,7 +794,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         def prepare(*args, **kwargs):
             attempts.append(True)
             if len(attempts) == 1:
-                self.publisher.material = {"question": "Square 9."}
+                self.publisher.material = {"question": "Square 9.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
                 raise SourceChanged("Source changed before publication")
             return original_prepare(*args, **kwargs)
         session = FakeSession()
@@ -876,12 +876,12 @@ class GeneratorPipelineTests(unittest.TestCase):
             with self.subTest(failure=failure):
                 self.job = self.root / ("refill-" + failure)
                 self.publisher.registered_generator = {":question-generator/script": request["registered_package"]}
-                self.publisher.material = {"question": "Square 7."}
+                self.publisher.material = {"question": "Square 7.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
                 current = dict(request)
                 if failure == "registration":
                     self.publisher.registered_generator = None
                 elif failure == "source":
-                    self.publisher.material = {"question": "Cube 7."}
+                    self.publisher.material = {"question": "Cube 7.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
                 elif failure == "band":
                     current["difficulty"] = "hard"
                 else:

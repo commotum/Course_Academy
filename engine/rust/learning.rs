@@ -918,9 +918,9 @@ pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
 
 pub const MIN_STUDY_LAYER: usize = 30;
 
-/// Study uses the graph's one-based L30 cutoff, including saved attempts and
-/// retrieval work. Apply it before scheduling so excluded required work cannot
-/// hide eligible activities. Direct topic study has its own selection path.
+/// Ordinary practice recommendations use the graph's one-based L30 cutoff.
+/// Assessments use learned history at every layer, as does required follow-up
+/// practice for assessment misses. Direct topic study has its own path.
 fn filter_study_layers(
     s: &EntitySnapshot,
     plan: Vec<PlannedActivity>,
@@ -929,6 +929,12 @@ fn filter_study_layers(
     let eligible = |topic: u64| layers.get(&topic).is_some_and(|&layer| layer + 1 >= MIN_STUDY_LAYER);
     let mut result = Vec::new();
     for candidate in plan {
+        if crate::retrieval::kind(s, candidate.activity)? == "assessment"
+            || candidate.priority >= 12000.0
+        {
+            result.push(candidate);
+            continue;
+        }
         if let Some(topic) = s.optional_ref(candidate.activity, "activity/scope")? {
             if eligible(topic) {
                 result.push(candidate);
@@ -3278,7 +3284,7 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn study_checks_every_assessment_topic_against_the_layer_cutoff() {
+    fn study_does_not_hide_assessments_with_topics_below_the_practice_floor() {
         let mut s = planning_fixture(&[]);
         put(&mut s.entities, 1100, json!({"db/ident":"activity.type/assessment"}));
         let mut s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
@@ -3294,7 +3300,7 @@ pub(crate) mod tests {
         let candidate = PlannedActivity { activity:700, topic:529, priority:11000.0,
             target_count:0, target_topics:vec![], remaining_topics:0,
             nearest_target_steps:None, due:None, reason:"Assessment".into() };
-        assert!(filter_study_layers(&s,vec![candidate.clone()]).unwrap().is_empty());
+        assert_eq!(filter_study_layers(&s,vec![candidate.clone()]).unwrap().len(),1);
         s.entities.get_mut(&700).unwrap().insert("activity/steps".into(), json!([30529,30530]));
         s.entities.get_mut(&30529).unwrap().insert("step/next".into(), json!(30530));
         assert_eq!(filter_study_layers(&s,vec![candidate]).unwrap().len(),1);

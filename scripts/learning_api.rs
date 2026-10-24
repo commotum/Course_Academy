@@ -966,8 +966,11 @@ fn queue_preparation(
         }
     }
     for (index, definition) in retrieval::schedule(s, l, c, at)?.into_iter().enumerate() {
-        if definition.topic.is_some_and(|topic| !study_topic(topic))
-            || definition.questions.iter().any(|q| !s.topic_for_question(*q).is_ok_and(&study_topic))
+        let assessment_followup = definition.remediation_for.iter()
+            .any(|origin| lifecycle.assessment_origin(s, *origin).unwrap_or(false));
+        if definition.kind != "assessment" && !assessment_followup
+            && (definition.topic.is_some_and(|topic| !study_topic(topic))
+                || definition.questions.iter().any(|q| !s.topic_for_question(*q).is_ok_and(&study_topic)))
         {
             continue;
         }
