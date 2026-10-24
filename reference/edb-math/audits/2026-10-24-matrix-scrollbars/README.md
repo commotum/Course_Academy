@@ -1,6 +1,6 @@
 # Individual matrix scrollbars — root-cause audit
 
-Read-only database investigation at **T6349**, with a local reproduction through the current quiz Markdown renderer, stylesheet, MathJax configuration and SVG output. No database or production UI changes were made.
+Read-only database investigation at **T6349**, with a local reproduction through the quiz Markdown renderer, stylesheet, MathJax configuration and SVG output. The shared CSS correction has now been applied and verified; no database changes were made. Original diagnostic measurements are preserved.
 
 All three reports have the same cause: **the independently scrollable matrix operand wrapper includes the layout bounds of MathJax's visually hidden accessibility MathML**. Short matrices fit visibly, but the hidden element is one pixel taller than the wrapper, triggering a vertical scrollbar.
 
@@ -40,7 +40,7 @@ Reproduced at viewport widths **1100, 768 and 390px**, with Chromium's native sc
   Short operands then measure approximately 18px, with no vertical overflow. Taller matrices remain intact. Every reported operand has zero false scroll range at all three viewport widths. A synthetic 30-column matrix still scrolls horizontally when necessary, with no vertical scroll range.
 - `overflow-y: hidden` hides the bar but leaves the hidden overflow; changing the SVG alone to `display: block` actually worsens the mismatch. Those address the symptom or the wrong element.
 
-The scoped line-height adjustment is verified **as a browser experiment only**. A shared UI change can address every question using this wrapper; these three database records do not require rewriting. The accessibility element should remain available to screen readers.
+The scoped line-height adjustment is now applied in `ui/learning.css`. Verification against the actual stylesheet, without experimental CSS overrides, confirms zero false scroll range for all 21 reported operands across the three viewport widths. All three wide-matrix cases retain necessary horizontal scrolling. The accessibility elements remain present and visually hidden. The running server serves the updated stylesheet with revalidation enabled; reloading the quiz loads the fix. See [post-fix verification](post-fix/verification.json) and the [corrected quiz rendering](post-fix/17592186634808-current.png).
 
 ## Why prior rendering checks missed it
 
