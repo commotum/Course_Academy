@@ -50,3 +50,5 @@ def validate_delivery_batch(records,kp_id):
  for band,rows in groups.items():
   # Scalars may vary within a family, but a full pool must exercise several substitutions.
   if len(rows)>=8 and len({r['generation']['model']['substitution']for r in rows})<3:raise ValueError('Delivered pool overconcentrates one substitution')
+
+  if band=="easy" and len(rows)>=8 and len({r["generation"].get("bank_correct_rank")for r in rows})<2:raise ValueError("A fixed numerical rank reveals the correct bank factor")

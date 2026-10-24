@@ -23,7 +23,7 @@ def main():
   d=H/str(kp);proof=json.loads((d/'verification.json').read_text());current=p.read_kp(kp,H/'live'/str(kp),basis)
   reference=current[':knowledge-point/question-generator'][':question-generator/script'];assert reference==proof['new_reference'];entry=resolve_registered_script(reference,ROOT,p.config.math_root);verify_package(entry.parent,Path(reference).parts[2])
   assert entry.read_bytes()==(ROOT/f'generate/scratch/{kp}.py').read_bytes();assert(entry.parent/'substitution_pedagogy.py').read_bytes()==(ROOT/'generate/substitution_pedagogy.py').read_bytes()
-  questions={q[':db/id']:q for q in current[':knowledge-point/questions']};prepared=json.loads((d/'publication/preparation.json').read_text());records={r['question'][':question/id']:r for r in prepared['records']};native={r['record']['question'][':question/id']:r for r in json.loads((d/'grader-input.json').read_text())};new=[]
+  questions={q[':db/id']:q for q in current[':knowledge-point/questions']};prepared=json.loads((d/'publication/preparation.json').read_text());records={r['question'][':question/id']:r for r in json.loads((d/'accepted-pool.json').read_text())};native={r['record']['question'][':question/id']:r for r in json.loads((d/'grader-input.json').read_text())};new=[]
   for row in proof['new_questions']:
    q=questions[row['entity']];assert not q.get(':question/retired')and not q.get(':question/math-academy-id');assert normalized_question(q)==normalized_question(records[row['uuid']]['question']);new.append(q);ids.append(q[':db/id']);counts[str(kp)+'/'+row['band'].split('/')[-1]]+=1
   for eid in proof['retired_old_questions']:assert questions[eid][':question/retired']is True;retired.append(eid)
@@ -41,6 +41,9 @@ def main():
  assert len(uses)==192
  unserved=all(not q.get(':task-item/_content')for[q]in uses)
  assert len(retired)==106 and imports==115
- result={'committed':True,'verified':True,'basis_readback':basis,'new_questions':192,'retired_questions':106,'imported_questions_preserved':imports,'canonicals_preserved':8,'all_new_questions_unserved':unserved,'knowledge_points':summaries,'live_grade_checks':len(grades)}
+ preview_retired=[eid for kp in CASES for eid in json.loads((H/str(kp)/'verification.json').read_text()).get('retired_unserved_preview_questions',[])]
+ assert len(preview_retired)==112
+ retired_rows=p.client.query('[:find ?q :in $ [?q ...] :where [?q :question/retired true]]',[preview_retired],H/'live','retired-preview-questions',basis);assert len(retired_rows)==112
+ result={'committed':True,'verified':True,'basis_readback':basis,'new_questions':192,'retired_questions':218,'retired_original_pool_questions':106,'retired_unserved_preview_questions':112,'imported_questions_preserved':imports,'canonicals_preserved':8,'all_new_questions_unserved':unserved,'knowledge_points':summaries,'live_grade_checks':len(grades)}
  atomic_json(H/'completion.json',result);atomic_json(H/'live-pool-verification.json',{'passed':True,'basis':basis,'counts':dict(counts),'all_new_questions_unserved':unserved,'retired':retired,'knowledge_points':summaries});atomic_json(H/'live-grading-verification.json',{'passed':True,'database_writes':0,'checks':grades});print(json.dumps({k:v for k,v in result.items()if k!='knowledge_points'}))
 if __name__=='__main__':main()
