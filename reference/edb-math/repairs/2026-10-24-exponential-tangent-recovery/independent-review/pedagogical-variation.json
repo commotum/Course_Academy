@@ -1,0 +1,205 @@
+{
+  "learner_operation": "Differentiate the general-base composite exponential, evaluate its tangent slope and ordinate, and match the resulting point-slope equation.",
+  "fixed_features": [
+    {
+      "feature": "Hard linear exponent and five tangent equations",
+      "justification": "Directly supported by source q107463; changing coefficient, point and base preserves response scope."
+    },
+    {
+      "feature": "Every candidate passes through the same target point",
+      "justification": "Matches repaired original bank. Point membership cannot select the key; the tangent slope remains necessary. This bank does not independently diagnose ordinate-evaluation errors."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Slope sign, rank and answer position",
+      "eligible_variation": "Both signs, all five slope ranks and positions",
+      "observed": "All occur in normal requested/fresh output; every bank keeps at least two slopes of either sign."
+    },
+    {
+      "role": "Unit and nonunit inner derivative",
+      "eligible_variation": "All guarded coefficients\u00b11..\u00b19",
+      "observed": "Normal unit keys and nonunit keys with unit distractors both occur; the coefficient pool is key-independent. Canonical e728 directly supports unit inner differentiation."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact requested4 and independent fresh8 plus author fresh24",
+      "result": "Correct visible mathematics, distinct complete banks, oldcueabsent, no singleton slope sign; requested/fresh delivery preserves content.",
+      "sample_refs": [
+        "requested.json",
+        "fresh.json",
+        "author-fresh.json",
+        "decision-results.json",
+        "delivery-analysis.json"
+      ]
+    },
+    {
+      "case": "All supported point/exponent coefficient groups",
+      "result": "14groups,25292accepted bank instances across groups; each eligible coefficient occurs and every accepted bank has five possible uniformly weighted keys under normal sampling.",
+      "sample_refs": [
+        "exchangeability.json"
+      ]
+    },
+    {
+      "case": "Actual same-bank changed-target controls",
+      "result": "Independently rebuilt15cases: requested bank, former sign-shortcut target and unit-coefficient target each support every bank option as a distinct correct tangent.",
+      "sample_refs": [
+        "same-bank-controls.json",
+        "same-bank-results.json"
+      ]
+    },
+    {
+      "case": "Stored original question",
+      "result": "Fresh6469 bank equals independently approved four-value repair, replays correctly, and no excluded-source descendants occur.",
+      "sample_refs": [
+        "source-audit.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ]
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change evaluation point or inner derivative sign; alternatively change the curve while holding a complete bank fixed.",
+      "expected": "Target tangent and corresponding key change with the displayed mathematics.",
+      "observed": "All controlled pairs and15same-bank rebuilds agree with independent differentiation.",
+      "status": "passed",
+      "justification": "These are answer-bearing changes within the source method.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "controlled.json",
+        "same-bank-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change random seed with fixed curve and point.",
+      "expected": "Correct tangent remains mathematically unchanged while order/distractors may change.",
+      "observed": "Controlled records0and5 have the same exact target and native accepted solution.",
+      "status": "passed",
+      "justification": "Seed is not a mathematical input.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "controlled.json",
+        "grader-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Old repeated-coefficient/majority-sign/positive-constant rule",
+      "subgroup": "All tested normal and controlled hard tangent banks",
+      "scope": "within_template",
+      "strategy": "Use only bank slope repetition, majority sign and rational constant sign; abstain when no unique candidate exists.",
+      "correct": 0,
+      "total": 43,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No repeated slopes remain; retained original negative still succeeds4/4.",
+      "sample_refs": [
+        "decision-results.json",
+        "original-negative-records.json"
+      ]
+    },
+    {
+      "cue": "Sole slope with monotonicity sign inferred from the displayed exponent coefficient",
+      "subgroup": "Normal hard output and explicit boundary controls",
+      "scope": "within_template",
+      "strategy": "Infer increasing/decreasing from the positive base and exponent coefficient, then select only if one line has that sign.",
+      "correct": 0,
+      "total": 43,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every bank has2or3choices of each sign, leaving at least two candidates. The rejected seed2 fixture selects the key by this rule and is retained.",
+      "sample_refs": [
+        "decision-results.json",
+        "sign-only-fresh-counterexample.json",
+        "exchangeability.json"
+      ]
+    },
+    {
+      "cue": "Always choose the numerically smallest slope",
+      "subgroup": "Normal CLI samples only",
+      "scope": "overall",
+      "strategy": "Order the visible x coefficients and choose the smallest; ignore the curve.",
+      "correct": 9,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed keys occupy every rank; exact complete-bank conditioning gives each member probability1/5 in normal sampling.",
+      "sample_refs": [
+        "decision-results.json",
+        "exchangeability.json"
+      ]
+    },
+    {
+      "cue": "Fixed smallest-slope bank role within a visible point subgroup",
+      "subgroup": "x=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "At this displayed point choose the smallest x coefficient without differentiating.",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The finite proof conditions on point and evaluated exponent, so the same1/5 bank-key result applies within this group; finite observed counts are not a claim of exact empirical balance.",
+      "sample_refs": [
+        "decision-results.json",
+        "exchangeability.json"
+      ]
+    },
+    {
+      "cue": "Fixed smallest-slope bank role within a visible point subgroup",
+      "subgroup": "x=0",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "At this displayed point choose the smallest x coefficient without differentiating.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The finite proof conditions on point and evaluated exponent, so the same1/5 bank-key result applies within this group; finite observed counts are not a claim of exact empirical balance.",
+      "sample_refs": [
+        "decision-results.json",
+        "exchangeability.json"
+      ]
+    },
+    {
+      "cue": "Fixed smallest-slope bank role within a visible point subgroup",
+      "subgroup": "x=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "At this displayed point choose the smallest x coefficient without differentiating.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The finite proof conditions on point and evaluated exponent, so the same1/5 bank-key result applies within this group; finite observed counts are not a claim of exact empirical balance.",
+      "sample_refs": [
+        "decision-results.json",
+        "exchangeability.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "normal parameter guard and whole-bank rejection",
+      "exact CLI request",
+      "actual preparation/deduplication against inventory6469",
+      "post-filter visible bank",
+      "question-selection code"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "delivery-analysis.json",
+      "exchangeability.json"
+    ],
+    "result": "All4requested and8independent fresh records survive with identical visible content; the author portable run separately confirms24fresh. Selector has no bank-aware transformation."
+  },
+  "limitations": [
+    "This scoped review does not prove absence of every conceivable human shortcut.",
+    "Normal sampling exchangeability does not claim uniform keys for an arbitrary externally fixed-parameter workload or an arbitrary history-conditioned inventory subset.",
+    "Recognizing monotonicity can eliminate opposite-sign distractors, but never uniquely selects an option in normal banks.",
+    "All options share the point, so this response primarily discriminates tangent slopes; the solution still teaches ordinate evaluation and point-slope construction.",
+    "Original-source automatic-retirement protections remain intact; the separately authorized four-value repair was verified, not waived."
+  ]
+}

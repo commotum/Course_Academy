@@ -22,7 +22,7 @@ from serve_graph_explorer import database_environment
 
 KP = 17592186092261
 KEY = '124d3377732774adeb259a577a79c4a975ed0862071ce485ddbbaa27d43ca62c'
-PACKAGE = 'c70c65a6f25f2cb7368ceb360bf9a1e63c72fc77236aa6e799f80fcef016fe9a'
+PACKAGE = 'e2ca3955a7b270ce380164e1b3c3cc57ead9373a27a1a51dfb85038a8bffe612'
 JOBS = ROOT / '.local/learning/inventory/math/59d5cf13-351c-4114-be19-4c3bb64ee051'
 JOB = JOBS / (KEY + '.json')
 DIRECTORY = JOB.with_suffix('.pipeline') / '2'
