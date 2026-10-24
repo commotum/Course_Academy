@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Seeded, relocatable exponential chain-rule questions, captured math basis 3948.
+"""Seeded exponential chain-rule questions, base capture 3948; bank repair 6468.
 
 Original banks are retained as historical profiles. Normal method profiles retain
 source demands and solution stages, with signed coefficient and point variations.
@@ -27,7 +27,7 @@ CANONICAL = RECORD[':knowledge-point/canonical-example']
 SOURCES[CANONICAL[':question/math-academy-id']] = CANONICAL
 X = sp.Symbol('x', real=True)
 U = sp.Symbol('u', real=True)
-VERSION = 'general-exponential-chain-2'
+VERSION = 'general-exponential-chain-3'
 KP = {'db_id': 17592186092261, 'id': RECORD[':knowledge-point/id'],
       'title': RECORD[':knowledge-point/title']}
 # c*b^(a*x^n + k*x^2 + l*x + d), source term order is kept separately.
@@ -279,7 +279,9 @@ def historical_bank(qid,p,field_index):
         t=sp.Rational(p['point']);z=u.subs(X,t);bv=b**z;values=[z,a*L,c*a*bv*L,bv,bv*L]
     elif q=='q-107463':
         t=sp.Rational(p['point']);ordinate=b**u.subs(X,t);m=sp.expand_log(a*ordinate*L,force=True)
-        values=[m*X-m*t+ordinate,2*m*X+2*m*t+ordinate,-m*X+m*t,-m*X+2*m*t+ordinate,m*X-ordinate]
+        # Repaired source bank at basis 6468; the original defective bank is
+        # archived outside the runtime package as a negative regression fixture.
+        values=[sp.expand(scale*m*(X-t)+ordinate) for scale in [1,2,-1,-2,sp.Rational(1,2)]]
     elif q=='q-340969':values=[target(p),target(p)]
     else:values=[target(p)]
     # Source-order shape masks are stored as component renderings, not answer strings.
@@ -309,6 +311,44 @@ def historical_bank(qid,p,field_index):
     return list(zip(strings,values,strict=True))
 
 
+def tangent_coefficients(p):
+    """Every bank slope can be the tangent of a supported alternate curve.
+
+    Fix the base, point and evaluated exponent. Changing the linear coefficient
+    while compensating its constant keeps the ordinate and changes the slope.
+    The ordinary sampler uses |a|>=2; explicit unit-coefficient controls retain
+    their existing supported domain without introducing never-keyed distractors.
+    """
+    t=sp.Rational(p['point']); evaluated=inner(p).subs(X,t)
+    minimum=1 if abs(p['a'])==1 else 2
+    eligible=[]
+    for coefficient in range(-9,10):
+        if abs(coefficient)<minimum:continue
+        alternate={**p,'a':coefficient,'d':int(evaluated-coefficient*t)}
+        try:guard('q-107463',alternate)
+        except ValueError:continue
+        eligible.append(coefficient)
+    return eligible
+
+
+def tangent_bank(p):
+    """Uniform complete-bank sampling; no slope/sign/intercept role is the key.
+
+    At a fixed base, point and ordinate, every eligible coefficient is equally
+    sampled by the existing parameter sampler. Each five-member bank containing
+    that coefficient has the same probability. Thus any of its five members can
+    be the key for another supported target, without changing the bank.
+    """
+    rng=random.Random(p['_bank_seed']); eligible=tangent_coefficients(p)
+    coefficients=sorted([p['a'],*rng.sample([a for a in eligible if a!=p['a']],4)])
+    t=sp.Rational(p['point']); ordinate=p['c']*p['b']**inner(p).subs(X,t)
+    values=[sp.expand_log(sp.expand(a*ordinate*sp.log(p['b'])*(X-t)+ordinate),force=True)
+            for a in coefficients]
+    p['_bank_role']='uniform-supported-tangent-slopes'
+    return [('y='+tex(value),value,'correct' if a==p['a'] else 'incorrect-inner-derivative-coefficient')
+            for a,value in zip(coefficients,values)]
+
+
 def method_bank(p):
     """Complete coefficient bank, grounded in source q-107459's shared factors.
 
@@ -318,9 +358,7 @@ def method_bank(p):
     """
     if p['kind']=='blank':return [(tex(target(p)),target(p),'correct')]
     if p.get('equation'):
-        # The observed complete tangent bank includes a second correct-slope
-        # candidate with the wrong ordinate. Retain that two-stage discrimination.
-        return [(text,v,'source-tangent-'+str(i)) for i,(text,v) in enumerate(historical_bank('q-107463',p,0))]
+        return tangent_bank(p)
     rng=random.Random(p['_bank_seed'])
     n=p['n'];u=inner(p);b=p['b'];c=p['c'];L=sp.log(b)
     coefficient=sp.Integer(c*n*p['a'])
@@ -453,7 +491,7 @@ def build(qid,p,seed,profile):
             if not source.get(':question/worked-solution'):repairs+=['independently inferred correct designation','authored completion of missing worked solution']
         if qid=='q-48565':repairs.append('one authoritative radio widget replaces duplicate legacy fields')
     return {'knowledge_point':KP.copy(),'question':question,'generation':{'version':VERSION,'template':qid,'profile':profile,'parameters':params,
-            'seed':seed,'bank_seed':p['_bank_seed'],'bank_role':p.get('_bank_role'),'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[qid] if source else [],
+            'seed':seed,'bank_seed':p['_bank_seed'],'bank_role':p.get('_bank_role'),'source':{**{k:CAPTURE[k] for k in ('database','basis','lineage')},'basis':CAPTURE.get('source_updates',{}).get(qid,{}).get('basis',CAPTURE['basis'])},'source_ids':[qid] if source else [],
             'difficulty_design':'observed' if source and not p.get('unrated') else 'authored',
             'answer_shape':'coefficient-fragment' if p.get('fragment') else demand,
             'evidence_only':raw or legacy,'eligible_for_learning':not(raw or legacy),

@@ -66,7 +66,11 @@ def prepare():
 
 
 def commit():
-    assert json.loads((HERE / 'independent-review.json').read_text())['accepted']
+    review = json.loads((HERE / 'independent-review.json').read_text())
+    assert review['accepted']
+    assert review['bindings']['before_question_hash'] == digest(OLD)
+    assert review['bindings']['candidate_question_hash'] == digest(candidate(OLD))
+    assert json.loads((HERE / 'candidate.json').read_text()) == candidate(OLD)
     assert json.loads((HERE / 'render/rendering.json').read_text())['passed']
     grade = json.loads((HERE / 'grader-verification.json').read_text())
     assert (grade['accepted_checks'], grade['rejected_checks'], grade['documented_unresolved_checks']) == (1, 4, 0)
