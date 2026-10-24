@@ -47,7 +47,18 @@ const { chromium } = require(config.playwright);
         await Promise.all([...document.images].map(image => image.decode().catch(() => {})));
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       });
-      const state = await page.evaluate(() => ({
+      const state = await page.evaluate(() => {
+        const root = document.querySelector('.lesson-content');
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const rawTex = [], codeMath = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.parentElement.closest('mjx-container,math,script,style,textarea,math-field')) continue;
+          if (/\\(?:begin|end)\{|\\(?:eqalign|dfrac|frac|sqrt)\b|\[\/?math\]/.test(node.textContent)) rawTex.push(node.textContent.slice(0,200));
+          if (node.parentElement.closest('pre,code') && /\$|\\(?:begin|dfrac|frac)/.test(node.textContent)) codeMath.push(node.textContent.slice(0,200));
+        }
+        return {
+        rawTex, codeMath,
         mathContainers:document.querySelectorAll('mjx-container').length,
         mathErrors:[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].map(node=>node.textContent),
         brokenImages:[...document.images].filter(image=>!image.complete || !image.naturalWidth).map(image=>image.src),
@@ -55,13 +66,13 @@ const { chromium } = require(config.playwright);
           .filter(href=>href?.startsWith('#') && !document.getElementById(href.slice(1))),
         text:document.querySelector('.lesson-content').innerText,
         fonts:document.fonts.status
-      }));
+      }});
       const stem = config.output + '/question-' + String(index + 1).padStart(3,'0');
       await page.screenshot({path:stem+'.png',fullPage:true,animations:'disabled'});
       fs.writeFileSync(stem+'.html',await page.content());
       state.index=index; state.screenshot=stem+'.png'; state.javascriptErrors=errors;
       state.passed=!errors.length && !state.mathErrors.length && !state.brokenImages.length
-        && !state.danglingGlyphs.length && state.fonts==='loaded'
+        && !state.danglingGlyphs.length && !state.rawTex.length && !state.codeMath.length && state.fonts==='loaded'
         && (!config.expectedMath[index] || state.mathContainers>0);
       reports.push(state);
       await context.close();
@@ -206,7 +217,7 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
         (output / "render-browser.cjs").write_text(BROWSER_SCRIPT)
         (output / "input.json").write_text(json.dumps(records, indent=2) + "\n")
         (output / "ui-hashes.json").write_text(json.dumps({name: hashlib.sha256((ui / name).read_bytes()).hexdigest()
-            for name in ("Learning.html", "learning.js", "question-fields.js", "mathjax-config.js")}, indent=2) + "\n")
+            for name in ("Learning.html", "learning.js", "math-protection.js", "question-fields.js", "mathjax-config.js")}, indent=2) + "\n")
         subprocess.run([node, str(output / "render-browser.cjs"), str(output / "browser-config.json")],
                        check=True, timeout=max(90, 45 * len(records)))
     finally:

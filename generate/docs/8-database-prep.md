@@ -3,7 +3,7 @@
 Python turns validated generator output into reviewable transactions for the configured `math` database. Follow [$edb](../../skills/edb/SKILL.md), reusing the project's integration and installed schema.
 
 1. Read the generated questions, plot assets, validation results, and current database at one recorded basis and lineage; batch identity and pool lookups with Datalog and Pull.
-2. Validate the difficulty, mathematics, complete answer fields, correct answers, worked solutions, and actual learner grading; return invalid instances to the generator for correction or resampling.
+2. Validate the difficulty, mathematics, complete answer fields, correct answers, worked solutions, and actual learner grading. Verify reviewed solution paths on the batch surviving delivery filters: the final shown result or blank fragment must lead to the key without an unshown or untaught conversion, preserving domain and branch restrictions. Return invalid instances to the generator for correction or resampling.
 3. Hash plot asset bytes with SHA-256, publish them through the existing content-addressed asset store, rewrite references relative to the database folder, and verify stored bytes and availability.
 4. Match stable generated identities and mathematical content against existing questions, reusing unchanged question, field, and field-owned answer UUIDs; changing seed or option order alone does not establish a new question.
 5. Convert review JSON into typed EDN using existing attributes, enum refs, UUIDs, and lookup refs; associate accepted questions with `:knowledge-point/questions` and their intended difficulty.

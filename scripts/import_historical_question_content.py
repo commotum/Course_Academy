@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
+from question_capture.math_format import normalize_math_boundaries
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
@@ -156,7 +157,7 @@ class Renderer:
         if t in ('i','em'):return '*'+children+'*'
         if t in ('p','div','ul','ol'):return '\n\n'+children+'\n\n'
         return children
-    def text(self,n,extract_fields=False):return re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip()
+    def text(self,n,extract_fields=False):return normalize_math_boundaries(re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip())
 
 def prepare():
     OUT.mkdir(parents=True,exist_ok=True)

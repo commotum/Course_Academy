@@ -14,7 +14,7 @@ X=s.Symbol('x',positive=True)
 KP_ID=17592186096618
 KP_UUID='f15a60dd-f6a7-577d-bdbc-148032de94c8'
 TITLE='Differentiating a Product Containing an Exponential or Logarithmic Function'
-VERSION='product-exp-log-2'
+VERSION='product-exp-log-3'
 SOURCE={'database':'math','basis':3950,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 # Shared helpers and immutable observed template specifications.
 TEMPLATES={
@@ -202,13 +202,26 @@ def derivative(e):
  if e==s.tan(X):return s.sec(X)**2
  return s.diff(e,X)
 
+def source_log_tex(e,t,p):
+ # SymPy verifies values in natural-log form; retain the given log base in
+ # each displayed product contribution instead of requiring change of base.
+ b=p['d'] if t.startswith('base_log') else 10 if t=='tan_log_blank' else p.get('b') if t in ('power_log_radio','cos_log_radio') else None
+ if b is not None:
+  display=s.Symbol(r'\mathcal{L}')
+  e=e.xreplace({s.log(X):s.log(b)*display})
+  return tex(e).replace(r'\mathcal{L}',r'\log_{'+str(b)+'}(x)')
+ return tex(e)
+
 
 def coefficient_bank(t,p,u,v,r,decision=None):
  """Whole-product banks: neither contribution alone identifies the key."""
  c=p.get('c',1);n=p.get('n',2);k=p.get('k',1);b=p.get('b',3)
  if t=='log_log_radio':
   truth=2*c;rank=decision[1];window=list(range(truth-rank,truth-rank+5));unit=s.log(X)/(X*s.log(b))
-  bank=[(r'\left('+str(a)+r'\right)\left('+tex(unit)+r'\right)',a*unit,'correct' if a==truth else 'total_coefficient_error') for a in window]
+  def shown(a):
+   half=s.Rational(a,2)
+   return r'\left('+tex(half)+r'\right)\left(\frac{\log_{'+str(b)+r'}(x)}{x}\right)+\left('+tex(half)+r'\right)\left(\frac{\ln(x)}{x\ln('+str(b)+r')}\right)'
+  bank=[(shown(a),a*unit,'correct' if a==truth else 'total_coefficient_error') for a in window]
   return bank,{'tested_role':'total','true_coefficient':truth,'coefficient_rank':rank,'window':window}
  if t=='power_log_radio':a=n;bb=1;L=X**(n-1)*v;R=X**(n-1)/s.log(b);stepA=1;stepB=1
  elif t=='linear_base_radio':a=c;bb=c;L=v;R=X*s.log(b)*v;stepA=1;stepB=1
@@ -221,26 +234,27 @@ def coefficient_bank(t,p,u,v,r,decision=None):
  far=2 if decision[1]%2 else -1
  extra_a=a if decision[2]==0 else a+da
  pairs=[(a,bb),(a+da,bb),(a,bb+db),(a+da,bb+db),(extra_a,bb+far*db)]
- def form(aa,bbb):return r'\left('+str(aa)+r'\right)\left('+tex(L)+r'\right)+\left('+str(bbb)+r'\right)\left('+tex(R)+r'\right)'
+ def form(aa,bbb):return r'\left('+str(aa)+r'\right)\left('+source_log_tex(L,t,p)+r'\right)+\left('+str(bbb)+r'\right)\left('+source_log_tex(R,t,p)+r'\right)'
  bank=[(form(aa,bbb),aa*L+bbb*R,'correct' if (aa,bbb)==(a,bb) else 'left_coefficient_error' if bbb==bb else 'right_coefficient_error' if aa==a else 'both_coefficients_error') for aa,bbb in pairs]
  return bank,{'tested_role':'both','true_coefficients':[a,bb],'coefficient_pairs':[list(pair) for pair in pairs],'coefficient_rank':sorted(pairs).index((a,bb)),'error_direction':direction,'far_error_multiplier':far,'extra_row':decision[2]}
 
 
-def remask(pr,u,v,target):
+def remask(pr,u,v,target,t,p):
  A=derivative(u)*v;B=u*derivative(v)
+ render=lambda e:source_log_tex(e,t,p)
  prefix=pr.split('\n\n${f}')[0]
  # Source prompt may use an ASCII prime; split by derivative line rather than copying its old mask.
  prefix=prefix.split('\n\n$f')[0]
  if '\n\n' in pr and 'Hint:' not in pr:prefix=pr.split('\n\n')[0]
  negative= B.could_extract_minus_sign()
  if target=='left':
-  tail=' $-\\,'+tex(-B)+'$' if negative else ' $+\\,'+tex(B)+'$'
+  tail=' $-\\,'+render(-B)+'$' if negative else ' $+\\,'+render(B)+'$'
   prompt_text=prefix+'\n\n$f^{\\prime}(x)=$\n{{field-1}}'+tail
   answer=A
  else:
-  prompt_text=prefix+'\n\n$f^{\\prime}(x)='+tex(A)+('\\,-$' if negative else '\\,+$')+'\n{{field-1}}'
+  prompt_text=prefix+'\n\n$f^{\\prime}(x)='+render(A)+('\\,-$' if negative else '\\,+$')+'\n{{field-1}}'
   answer=-B if negative else B
- return prompt_text,[(tex(answer),answer,'fragment')]
+ return prompt_text,[(render(answer),answer,'fragment')]
 
 @checked_math_content
 def generate(level='easy',seed=0,template=None,parameters=None,profile=None,target=None,replay=False):
@@ -269,7 +283,7 @@ def generate(level='easy',seed=0,template=None,parameters=None,profile=None,targ
    sol=opening(tex(u),tex(v))+aligned(['('+tex(u)+')^{′}('+tex(v)+')+('+tex(u)+')('+tex(v)+')^{′}', '('+tex(s.diff(u,X))+')('+tex(v)+')+('+tex(u)+')('+tex(s.diff(v,X))+')',tex(s.diff(u*v,X))])
  elif ft=='radio' and template in ('linear_base_radio','cos_log_radio','sqrt_exp_radio') and p!=defaults(template):
   raise ValueError('observed profile requires source parameters for this bank')
- if ft=='blank' and target is not None:pr,bank=remask(pr,u,v,target)
+ if ft=='blank' and target is not None:pr,bank=remask(pr,u,v,target,template,p)
  # Retain both mathematically valid captured alias values in exact replay.
  if replay and template=='power_exp_left_blank' and p==defaults(template):bank.append(('3x^2e^{x}',bank[0][1],'alias'))
  if replay and template=='base_log_negative_left_blank' and p==defaults(template):bank.append((r'-5^{-x}\ln5\left(\log_7x\right)',bank[0][1],'alias'))

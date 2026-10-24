@@ -22,6 +22,7 @@ from zoneinfo import ZoneInfo
 import yaml
 
 from import_school_assignments import LINK, PROBLEM, stable_id, tidy
+from question_capture.math_format import normalize_math_boundaries
 
 
 ALIASES = {
@@ -129,7 +130,7 @@ class Builder:
                 url += '#' + split.fragment
             return f'{image}[{label}]({url})'
 
-        return LINK.sub(replace, value)
+        return normalize_math_boundaries(LINK.sub(replace, value))
 
     def topic_links(self, tail, source):
         result = {'direct': [], 'supporting': [], 'notes': []}

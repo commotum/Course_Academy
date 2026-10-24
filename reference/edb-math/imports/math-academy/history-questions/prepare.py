@@ -19,6 +19,7 @@ OUT = Path('/tmp/math-history-authoritative-prepared')
 sys.path.insert(0, str(ROOT / 'scripts'))
 sys.path.insert(0, str(ROOT / 'scripts/question_capture'))
 from import_historical_question_content import Renderer
+from question_capture.math_format import normalize_math_boundaries
 from edn import dumps, loads, kw
 from bs4 import BeautifulSoup
 
@@ -124,7 +125,7 @@ def main():
                 problem += '\n\n' + renderer.text(body, True)
             assert not renderer.errors, (mid, renderer.errors)
             fields = renderer.fields
-            assert problem == source['problem'] and solution == source['worked_solution'], ('Captured content changed', mid)
+            assert problem == normalize_math_boundaries(source['problem']) and solution == normalize_math_boundaries(source['worked_solution']), ('Captured content changed', mid)
             assert fields == source.get('answer_fields', []), ('Captured controls changed', mid)
             difficulty = {'E': 'easy', 'M': 'moderate', 'H': 'hard'}[observed['difficulty']]
             assert difficulty == source['difficulty']

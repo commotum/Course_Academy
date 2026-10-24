@@ -210,10 +210,10 @@ def legacy_choice(text):
     return system(r' \\ '.join(rows)) if rows else text
 
 
-MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
+MATH = re.compile(r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
 
 
-def normalize_math_boundaries(value):
+def _normalize_math_boundary_pass(value):
     """Recover explicit legacy math boundaries without changing equations.
 
     This is deliberately narrower than normalize_tex: authored content, answer
@@ -222,16 +222,23 @@ def normalize_math_boundaries(value):
     table cells must not become display-math delimiters.
     """
     text = str(value)
+    # An empty source formula was sometimes prepended to an ordinary prompt.
+    # Restrict this repair to explicit prose openers, never a TeX expression.
+    text = re.sub(r'\A\$\$[ \t]*\n\s*(?=(?:Find|If|The|Calculate|Evaluate|First|Given|Consider|Note|Which)\b|[A-Z][a-z]+ (?:has|is|uses|buys)\b)', '', text)
     # The legacy dollar-to-[math] substitution also touched escaped currency.
     text = re.sub(r'\\\[/?math\]', lambda _: r'\$', text)
     # A source math box containing a dollar sign was wrapped once more in $...$.
     currency_or_math = re.compile(
-        r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|'
+        r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|'
         r'(?<!\\)\$\$(?P<currency>\d[^$\n]*?)(?<!\\)\$(?!\$)|'
         r'\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
     text = currency_or_math.sub(lambda m: ('$' + r'\$' + m['currency'] + '$')
                                 if m['currency'] is not None else m[0], text)
     text = re.sub(r'(?m)(\|[ \t]*)\$\$(?=[ \t]*\|)', lambda m: m[1], text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$\?(?=[ \t]*\|)', lambda m: m[1] + '?', text)
+    text = re.sub(r'(\{\{[^{}]+\}\}[ \t\n]*)\$\$(?=[,;:])', lambda m: m[1], text)
+    text = re.sub(r'\A\$\$[ \t]*\n[ \t\n]*(\$(?!\$)[^$\n]+\$)(?=\n|$)',
+                  lambda m: '$$\n' + m[1][1:-1] + '\n$$', text)
     # Triple dollars on their own lines are duplicated display wrappers. Other
     # triple-dollar uses in this corpus are a currency glyph beside a widget or
     # in a table header; do not reinterpret general unmatched dollars.
@@ -249,6 +256,16 @@ def normalize_math_boundaries(value):
         display = match[1] == 'displaymath' or r'\begin{' in body
         return ('$$\n' + body.strip() + '\n$$') if display else '$' + body.strip() + '$'
     text = re.sub(r'\[(math|latex|tex|displaymath)\]([\s\S]*?)\[/\1\]', bracket_math, text)
+
+    # Legacy flattened HTML tables used TeX row breaks between separately
+    # delimited formulas. A break outside math is HTML, not part of the next
+    # dollar opener. Do not touch any row break inside a recognized expression.
+    pieces, offset = [], 0
+    for match in MATH.finditer(text):
+        pieces += [re.sub(r'\\\\(?=\$)', '<br>', text[offset:match.start()]), match[0]]
+        offset = match.end()
+    pieces.append(re.sub(r'\\\\(?=\$)', '<br>', text[offset:]))
+    text = ''.join(pieces)
 
     spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
     changes, consumed = [], -1
@@ -296,6 +313,19 @@ def normalize_math_boundaries(value):
     # An indented formula opener otherwise becomes <pre><code>, which MathJax
     # explicitly skips. Indentation within a protected formula remains exact.
     text = re.sub(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', '', text)
+    return text
+
+
+def normalize_math_boundaries(value):
+    """Normalize explicit source encodings to a stable Markdown math boundary."""
+    text = str(value)
+    for _ in range(4):
+        result = _normalize_math_boundary_pass(text)
+        if result == text:
+            return text
+        text = result
+    if _normalize_math_boundary_pass(text) != text:
+        raise ValueError('Math boundary normalization did not converge')
     return text
 
 

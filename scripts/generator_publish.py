@@ -26,6 +26,7 @@ from capture.scripts.database.images import ImageLibrary
 from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_json
 from scripts.generator_packages import resolve_registered_script
 from scripts.question_markers import validate_prompt_markers
+from scripts.question_capture.math_format import normalize_math_boundaries, validate_math_boundaries
 
 
 class SourceChanged(ValueError):
@@ -141,7 +142,7 @@ def localize_record(record, math_root, assets_directory, *, library=None):
     q = result['question']
     for key in (':question/problem', ':question/worked-solution'):
         if key in q:
-            q[key] = library.text(q[key])
+            q[key] = normalize_math_boundaries(library.text(q[key]))
     for field in q.get(':question/answer-fields', []):
         for answer in field.get(':answer-field/choices', []):
             value = answer[':answer/value']
@@ -149,8 +150,10 @@ def localize_record(record, math_root, assets_directory, *, library=None):
                 answer[':answer/value'] = library.resolve(value)
             else:
                 answer[':answer/value'] = library.text(value)
+                if enum(answer[':answer/type']) == ':answer.type/text':
+                    answer[':answer/value'] = normalize_math_boundaries(answer[':answer/value'])
             if ':answer/feedback' in answer:
-                answer[':answer/feedback'] = library.text(answer[':answer/feedback'])
+                answer[':answer/feedback'] = normalize_math_boundaries(library.text(answer[':answer/feedback']))
     result['assets'] = library.saved
     return result
 
@@ -179,6 +182,7 @@ def validate_question(q):
     for key in (':question/problem', ':question/worked-solution'):
         if not isinstance(q.get(key), str) or not q[key].strip():
             raise ValueError('Generated question requires nonempty ' + key)
+        validate_math_boundaries(q[key])
     if ':question/math-academy-id' in q:
         raise ValueError('Generated content cannot claim a Math Academy source identity')
     if enum(q.get(':question/difficulty')) not in {':question.difficulty/' + x for x in ('easy', 'moderate', 'hard')}:
