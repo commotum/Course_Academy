@@ -2,7 +2,7 @@
 import collections,hashlib,json,re,sys
 from pathlib import Path
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[3];sys.path.insert(0,str(ROOT/'scripts'));sys.path.insert(0,str(ROOT/'scripts/question_capture'))
-from math_format import normalize_math_boundaries,validate_math_boundaries
+from math_format import MATH,normalize_math_boundaries,validate_math_boundaries
 from migrate_learner_history import dumps,kw
 ATTRS={'question/problem','question/worked-solution','tutorial/content','multistep/context','answer/feedback','answer-field/feedback','assigned-problem/instructions'}
 
@@ -22,8 +22,26 @@ def main():
   before=r['v'];source=before;special=[]
   if e in {17592186500361,17592186533979,17592186533981} and a=='question/worked-solution':
    source=re.sub(r'(?m)(\\end\{aligned\}\s*\n\$\$)\s*\n\$\$(?=\s*\n[A-Za-z])',r'\1',source)
-   source=re.sub(r'\$\$[ \t]*\n[ \t]*\$\$(?=\s*\n(?:\\begin|E=))','$$',source);special=['remove-source-duplicate-display-wrappers']
+   source=re.sub(r'\$\$[ \t]*\n[ \t\n]*\$\$(?=\s*\n(?:\\begin|E=))','$$',source);special=['remove-source-duplicate-display-wrappers']
   after=normalize_math_boundaries(source)
+  if e==17592186500361 and a=='question/worked-solution':
+   # This complete stand-alone source equation was stranded by duplicated
+   # currency/display boundaries. Preserve its exact mathematical expression.
+   after=re.sub(r'(?m)^(E=\\frac\{100\\,000\}\{300\}≈333)$',lambda m:'$$\n'+m[1]+'\n$$',after);special+=['restore-stranded-complete-source-equation']
+  if e in {17592186362465,17592186362511} and a=='question/problem':
+   def literal_sets(m):
+    body=m[0];stack=[];bad=[]
+    for t in re.finditer(r'\\.|[{}]',body):
+     if t[0]=='{':stack.append(t.start())
+     elif t[0]=='}':
+      if stack:stack.pop()
+      else:bad.append(t.start())
+    for i in sorted(stack+bad,reverse=True):body=body[:i]+'\\'+body[i:]
+    return body
+   after=MATH.sub(literal_sets,after);special+=['restore-source-literal-set-fences-across-answer-controls']
+  if e in {17592186138213,17592186203769}:
+   from arithmetic_recovery import repair_arithmetic
+   after=repair_arithmetic(e,a,before);special+=['recover-original-column-multiplication-layout']
   if e==17592186124792 and a=='question/problem':
    # Source asks for a missing radio word; $$ is an empty captured formula,
    # and the ordinary TeX group around its equivalence array lacks its close.

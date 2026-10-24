@@ -213,7 +213,7 @@ def legacy_choice(text):
 MATH = re.compile(r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
 
 
-def _normalize_math_boundary_pass(value):
+def _normalize_math_boundary_pass(value, *, wrap_environments=False):
     """Recover explicit legacy math boundaries without changing equations.
 
     This is deliberately narrower than normalize_tex: authored content, answer
@@ -287,6 +287,8 @@ def _normalize_math_boundary_pass(value):
     spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
     changes, consumed = [], -1
     for match in ENV.finditer(text):
+        if not wrap_environments:
+            break
         if match[1] != 'begin' or match.start() < consumed:
             continue
         if any(start <= match.start() < end for start, end in spans):
@@ -325,7 +327,8 @@ def _normalize_math_boundary_pass(value):
     # The MathML converters emitted e.g. 12%=12/100, silently commenting out
     # the rest of that formula in MathJax.
     def percentages(match):
-        return re.sub(r'(?<=\d)(?<!\\)%', lambda _: r'\%', match[0])
+        value = re.sub(r'(?<=\d)(?<!\\)%|(?<!\\)%(?=\\,error\b)', lambda _: r'\%', match[0])
+        return re.sub(r'(?<!\\)#(?=\s+[A-Za-z])', lambda _: r'\#', value)
     text = MATH.sub(percentages, text)
     def spacing(match):
         whole = match[0]
@@ -385,13 +388,17 @@ def _normalize_math_boundary_pass(value):
 def normalize_math_boundaries(value):
     """Normalize explicit source encodings to a stable Markdown math boundary."""
     text = str(value)
-    for _ in range(4):
-        result = _normalize_math_boundary_pass(text)
-        if result == text:
-            return text
-        text = result
-    if _normalize_math_boundary_pass(text) != text:
-        raise ValueError('Math boundary normalization did not converge')
+    # Settle delimiter/currency encodings before deciding which environments
+    # are bare. A transient malformed delimiter must not cause double wrapping.
+    for phase in (False, True, False):
+        for _ in range(4):
+            result = _normalize_math_boundary_pass(text, wrap_environments=phase)
+            if result == text:
+                break
+            text = result
+        else:
+            if _normalize_math_boundary_pass(text, wrap_environments=phase) != text:
+                raise ValueError('Math boundary normalization did not converge')
     return text
 
 
