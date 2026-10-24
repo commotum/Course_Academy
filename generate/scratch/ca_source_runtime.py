@@ -45,6 +45,35 @@ def check(value,policy):
 def install(namespace,policy_file):
     """Guard public record/batch APIs; original archive packages stay unchanged."""
     policy=_policy(policy_file)
+    blocked={str(row[k]) for row in policy['excluded'] for k in (':db/id',':question/id',':question/math-academy-id') if k in row}
+    selectors=('PROFILES','TEMPLATES','FAMILIES','CASES','SPECS','MODELS','BASE','DATA','LEVELS','LEVEL','NORMAL','FAMILY_IDS','SOURCE_REFERENCES','SOURCE_IDS')
+    removed=set()
+    def tied(value):
+        if isinstance(value,(str,int)):return str(value) in blocked or str(value) in removed
+        if isinstance(value,(tuple,list)):return any(tied(v) for v in value)
+        if isinstance(value,dict):
+            if value.get(':question/math-academy-id') in blocked:return True
+            refs=source_references({'generation':value})
+            return bool(refs & blocked)
+        return False
+    # Prune dispatch selectors, not archived source payloads or bulk citation
+    # lists. Propagate explicitly tied family names to level/normal selectors.
+    for _ in range(3):
+        for name in selectors:
+            value=namespace.get(name)
+            if isinstance(value,dict):
+                for key,entry in list(value.items()):
+                    if str(key) in blocked or str(key) in removed or (name not in ('LEVELS','NORMAL') and tied(entry)):
+                        removed.add(str(key));del value[key]
+                for key,entry in list(value.items()):
+                    if name in ('LEVELS','NORMAL') and isinstance(entry,list):value[key]=[v for v in entry if not tied(v)]
+            elif name in ('CASES','TEMPLATES','FAMILIES') and isinstance(value,(list,tuple)):
+                kept=[]
+                for entry in value:
+                    if tied(entry):
+                        if isinstance(entry,(list,tuple)) and entry:removed.add(str(entry[0]))
+                    else:kept.append(entry)
+                namespace[name]=type(value)(kept)
     for name,fn in list(namespace.items()):
         if not inspect.isfunction(fn) or not (name.startswith('generate') or name in ('batch','make_record')):
             continue
@@ -52,7 +81,17 @@ def install(namespace,policy_file):
         def wrap(original):
             @wraps(original)
             def guarded(*args,**kwargs):
-                return check(original(*args,**kwargs),policy)
+                for key in ('template','profile','source_id'):
+                    if str(kwargs.get(key)) in blocked|removed:
+                        raise ExcludedSource('Excluded standalone template: '+str(kwargs[key]))
+                try:result=original(*args,**kwargs)
+                except KeyError as error:
+                    if str(error.args[0]) in blocked|removed:raise ExcludedSource('Excluded standalone template: '+str(error.args[0])) from error
+                    raise
+                except IndexError as error:
+                    if 'empty sequence' in str(error):raise ExcludedSource('No eligible standalone source family in this band') from error
+                    raise
+                return check(result,policy)
             guarded._source_guarded=True
             return guarded
         namespace[name]=wrap(fn)
@@ -121,7 +160,7 @@ def cli(entrypoint,policy_file):
         raise SystemExit('Source-eligibility policy rejects this explicit request: '+last_error)
     # Preserve the original batch exactly when eligible. Retry only a batch
     # containing excluded parts; do not fabricate a replacement source family.
-    for offset in range(1,max(24,count*24)+1):
+    for offset in range(1,max(16,count*16)+1):
         if len(rows)>=count:break
         retain(command(1,seed+offset))
     if len(rows)<count:

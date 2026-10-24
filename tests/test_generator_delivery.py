@@ -37,7 +37,8 @@ class DeliveryTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.math = self.root / 'math'
         self.source = {'database': 'math', 'lineage': 'fixture', 'kp_id': KP,
-                       'material': {'kp': {':knowledge-point/id': str(KP_UUID)}}}
+                       'material': {'kp': {':knowledge-point/id': str(KP_UUID)},
+                                    'source_eligibility': {'policy_version':1,'excluded_questions':[]}}}
         self.inventory = {'database': 'math', 'lineage': 'fixture', 'kp_id': KP,
                           'basis': 12, 'fingerprints': [content_fingerprint(record(2)['question'])]}
 

@@ -792,6 +792,26 @@ class Pipeline:
                 # bytes before policy upgrades, review, or authoring touch inputs.
                 self.persist(stage='push')
                 continue
+            source_path=self.directory/'source/source.json'
+            if stage in {'source','generate','sample','validate','prepare','refill','repair','report-repair'} and source_path.exists():
+                from generator_source_policy import POLICY_VERSION
+                saved_source=read(source_path)
+                if saved_source.get('material',{}).get('source_eligibility',{}).get('policy_version')!=POLICY_VERSION:
+                    # Pending durable submissions were routed to recovery above.
+                    # Archive old evidence; never silently review a stale pool.
+                    archive=self.directory/'source/source-before-eligibility.json'
+                    if not archive.exists():save(archive,saved_source)
+                    fresh=self.publisher.extract_source(self.state['request']['kp'],source_path.parent)
+                    if fresh.get('material',{}).get('source_eligibility',{}).get('policy_version')!=POLICY_VERSION:
+                        raise ValueError('Source extractor did not establish current standalone eligibility')
+                    request=dict(self.state['request'])
+                    registered=(fresh.get('registered_generator') or {}).get(':question-generator/script')
+                    if request.get('registered_package') and registered and registered.startswith('generators/'):
+                        request['registered_package']=registered
+                    self.persist(stage='source',request=request,source_hash=digest(fresh),
+                                 review=None,review_binding=None,review_policy_version=None,approval_recorded=False,
+                                 source_eligibility_refreshed=True)
+                    continue
             error = self.state.get('error')
             if stage == 'failed' and isinstance(error, dict) and error.get('code') == 'review_contract_invalid':
                 rounds = self.state.get('review_report_rounds', {})

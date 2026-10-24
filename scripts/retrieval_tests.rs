@@ -250,6 +250,56 @@ impl Fixture {
 }
 
 #[test]
+fn required_assessment_stays_visible_with_learned_topics_below_study_floor() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let s = f.snapshot()?;
+    let original = f.available("assessment")?;
+    let learned = s.refs(f.learner, "learner/activity")?.into_iter()
+        .find(|t| matches!(status(&s, *t, "learner-task/status").as_deref(), Ok("completed"))).unwrap();
+    let progress = s.refs(f.learner, "learner/knowledge-profile")?.into_iter()
+        .find(|p| s.reference(*p, "progress/topic").is_ok_and(|t| s.refs(t, "topic/knowledge-points").is_ok_and(|k| !k.is_empty()))).unwrap();
+    let question = learning::lesson_steps(&s, original)?[0].content;
+    let first_step = s.reference(original, "activity/first-step")?;
+    let mut low_question = s.entity(question)?.clone();
+    low_question.insert("db/id".into(), json!("low-question"));
+    low_question.insert("question/id".into(), json!({"$uuid":uid()?}));
+    let mut low_progress = s.entity(progress)?.clone();
+    low_progress.insert("db/id".into(), json!("low-progress"));
+    low_progress.insert("progress/id".into(), json!("below-study-floor"));
+    low_progress.insert("progress/topic".into(), json!("low-topic"));
+    f.tx(vec![
+        json!(low_question), json!(low_progress),
+        json!({"db/id":"low-topic","topic/id":{"$uuid":uid()?},"topic/knowledge-points":["low-kp"]}),
+        json!({"db/id":"low-kp","knowledge-point/id":{"$uuid":uid()?},"knowledge-point/questions":["low-question"]}),
+        json!({"db/id":"low-lesson","activity/id":{"$uuid":uid()?},"activity/type":kw("activity.type/lesson"),"activity/scope":"low-topic"}),
+        json!({"db/id":"low-task","learner-task/id":{"$uuid":uid()?},"learner-task/activity":"low-lesson","learner-task/status":kw("learner-task.status/completed"),"learner-task/finished-at":{"$instant":f.now-3*86400000},"learner-task/xp-earned":0}),
+        add(json!(f.learner),"learner/activity",json!("low-task")),
+        add(json!(f.learner),"learner/knowledge-profile",json!("low-progress")),
+        add(json!(learned),"learner-task/xp-earned",json!(50)),
+        // Reproduce a saved quiz assembled before the layer floor was applied.
+        add(json!(first_step),"step/content",json!("low-question")),
+    ], f.now+1)?;
+    let s = f.snapshot()?;
+    let at = DateTime::from_timestamp_millis(f.now+2).unwrap();
+    assert_eq!(retrieval::assessment_pools(&s, f.learner, at)?.len(), 5);
+    assert!(!retrieval::ordinary_assessment_ready(&s, f.learner, original, at)?);
+    let (forms, _) = queue_preparation(&s, f.learner, at)?;
+    f.tx(forms, f.now+2)?;
+    let s = f.snapshot()?;
+    let home = home(&s, f.learner)?;
+    assert_eq!(home["assessmentStatus"]["required"], true);
+    let activities = home["activities"].as_array().unwrap();
+    assert_eq!(activities.len(), 1);
+    assert_eq!(activities[0]["type"], "assessment");
+    assert_ne!(activities[0]["activityId"], original);
+    let replacement = activities[0]["activityId"].as_u64().unwrap();
+    let layers = learning::topic_layers(&s)?;
+    assert!(learning::lesson_steps(&s, replacement)?.iter()
+        .all(|step| s.topic_for_question(step.content).is_ok_and(|topic| layers[&topic]+1 >= learning::MIN_STUDY_LAYER)));
+    Ok(())
+}
+
+#[test]
 fn stale_unstarted_multipart_routes_are_replaced_without_presenting_or_grading_them() -> Result<()> {
     for kind in ["review", "assessment"] {
         let mut f = Fixture::new(kind == "review")?;

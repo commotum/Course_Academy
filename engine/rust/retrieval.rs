@@ -275,18 +275,22 @@ fn history(s: &EntitySnapshot, learner: u64) -> Result<crate::scheduling::Lifecy
     crate::scheduling::lifecycle(s, learner)
 }
 
-/// Currently learned topics whose first successful lesson is at least 48 hours
-/// old. Reviews do not reset this clock and no prior review is required.
+/// Study-eligible learned topics whose first successful lesson is at least
+/// 48 hours old. Use Study's layer floor before sampling: one out-of-scope
+/// question would otherwise hide the entire assembled quiz from Study.
+/// Reviews do not reset this clock and no prior review is required.
 pub fn assessment_topics(
     s: &EntitySnapshot,
     learner: u64,
     at: DateTime<Utc>,
 ) -> Result<BTreeSet<u64>> {
     let h = history(s, learner)?;
+    let layers = learning::topic_layers(s)?;
     let mut topics = BTreeSet::new();
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
         if s.entity(progress)?.get("progress/learned") == Some(&json!(true))
+            && layers.get(&topic).is_some_and(|&layer| layer + 1 >= learning::MIN_STUDY_LAYER)
             && h.mastered.get(&topic).is_some_and(|learned| {
                 at - *learned >= chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS)
             })
@@ -1239,7 +1243,35 @@ mod tests {
             .get_mut(&7)
             .unwrap()
             .insert("module/topics".into(), json!(topics));
+        // Assessment admission shares Study's L30 floor.
+        for layer in 0..learning::MIN_STUDY_LAYER - 1 {
+            let next = if layer + 1 == learning::MIN_STUDY_LAYER - 1 {
+                (2000..2005).collect::<Vec<_>>()
+            } else {
+                vec![30000 + layer as u64 + 1]
+            };
+            put(&mut s, 30000 + layer as u64,
+                json!({"topic/id":format!("00000000-0000-4000-8000-{:012}",30000 + layer),"topic/next":next}));
+        }
         (s, at)
+    }
+
+    #[test]
+    fn assessment_admission_excludes_topics_that_would_hide_the_quiz_from_study() {
+        let (mut s, at) = assessment_fixture();
+        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 5);
+        // Move one learned topic to L29. The quiz must wait for eligible supply
+        // rather than prepare a route that Study will silently discard.
+        let last = 30000 + learning::MIN_STUDY_LAYER as u64 - 2;
+        s.entities.get_mut(&last).unwrap().insert("topic/next".into(), json!([2001,2002,2003,2004]));
+        s.entities.get_mut(&(last - 1)).unwrap().insert("topic/next".into(), json!([last,2000]));
+        assert_eq!(learning::topic_layers(&s).unwrap()[&2000] + 1, 29);
+        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 4);
+        assert!(assessment_definition(&s, 1, at).unwrap().is_none());
+        let status = crate::inventory::assessment_status(&s, 1, at).unwrap();
+        assert_eq!(status["newEligibleTopics"], 4);
+        assert_eq!(status["ready"], false);
+        assert_eq!(status["required"], false);
     }
 
     #[test]

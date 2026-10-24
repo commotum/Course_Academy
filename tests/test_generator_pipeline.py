@@ -136,7 +136,7 @@ class FakePublisher:
         self.prepares, self.publishes = 0, 0
         self.available_difficulties = ["moderate"] if available_difficulties is None else available_difficulties
         self.registered_generator = None
-        self.material = {"question": "Square 7."}
+        self.material = {"question": "Square 7.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
         self.prepare_options = None
         self.inventory_extractions = 0
 

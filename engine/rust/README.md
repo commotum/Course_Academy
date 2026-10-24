@@ -33,7 +33,10 @@ Assessments become available after 120 finalized practice XP since the
 last ordinary assessment completion or expiry and become required at 150 XP.
 Creation also requires at least five distinct never-assessed topics, each
 explicitly learned, with recorded successful learning at least 48 hours ago and
-a fresh rated standalone question. Every new ordinary assessment includes at
+a fresh rated standalone question, and meet Study's global layer-30 floor.
+Admission, readiness checks, and question sampling share that floor so a quiz
+cannot be prepared with a topic that would hide it from Study.
+Every new ordinary assessment includes at
 least five such topics; the remaining slots may sample previously assessed
 topics. If fewer than five are available, XP continues accumulating and study
 remains available even above 150 XP. The status reports the new-topic count and
