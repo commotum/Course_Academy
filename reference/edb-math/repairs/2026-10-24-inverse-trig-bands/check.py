@@ -3,6 +3,7 @@ from collections import Counter, defaultdict
 import copy
 import importlib.util
 import json
+import platform
 from pathlib import Path
 import re
 import subprocess
@@ -13,6 +14,7 @@ sys.path.insert(0,str(H));sys.path.insert(0,str(ROOT))
 from read_math import X, scalar, check, source_prompt, key
 from generate.pipeline.check_delivery import audit
 from scripts.generator_publish import normalized_question
+from scripts.generator_packages import build_manifest, manifest_digest
 
 KPS = (17592186064218,17592186064219,17592186064250,17592186064220)
 SEED = 864218
@@ -131,6 +133,9 @@ def main():
               'new_questions':len(pool),'delivery_accepted':sum(r['accepted_count'] for r in delivery),'delivery_duplicates':sum(r['duplicate_count'] for r in delivery),
               'coverage':coverage,'controls':controls,'source_fidelity':'All 79 original practice/canonical records archived exactly; new banks are explicitly authored, not claimed exact source-bank parameterizations.',
               'difficulty_calibration':'Sine/tangent hard, secant easy, and the uniform definite-hard contract are authored compositions, not externally calibrated labels.'}
+    import sympy
+    report['approved_package_hashes'] = {str(kp):manifest_digest(build_manifest(H/'packages'/str(kp),'generator.py',
+        ['generator.py','inverse_trig.py','evidence.json'],dependencies={'python':platform.python_version(),'packages':{'sympy':sympy.__version__}})) for kp in KPS}
     save(Path('generator-verification.json'),report);save(Path('delivery-verification.json'),delivery)
     print(json.dumps({k:v for k,v in report.items() if k not in ('coverage','controls')},indent=2),flush=True)
 

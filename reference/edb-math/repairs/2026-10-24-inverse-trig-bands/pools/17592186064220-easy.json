@@ -1,0 +1,854 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "8d27d9cf-cb74-5840-b365-e7db0c04fb39",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{6}} \\frac{7}{\\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=3 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3,\\qquad \\mathrm{d}x=(\\frac{1}{3})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(3)(0)=0 \\\\ x=\\frac{1}{6}&\\Longrightarrow u=(3)(\\frac{1}{6})=\\frac{1}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{6}} \\frac{7}{\\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x \\\\  &= 7\\int_{0}^{\\frac{1}{6}} \\frac{1}{\\sqrt{1-(3 x)^{2}}}\\,\\mathrm{d}x \\\\  &= 7(\\frac{1}{3})\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{7}{3}\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{7}{3}[\\operatorname{arcsin}{\\left(u \\right)}]_{0}^{\\frac{1}{2}} \\\\  &= \\frac{7}{3}(\\operatorname{arcsin}(\\frac{1}{2})-\\operatorname{arcsin}(0)) \\\\  &= \\frac{7}{3}((\\frac{\\pi}{6})-(0)) \\\\  &= \\frac{7 \\pi}{18}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b6d7a1bb-2b22-5fcb-95fb-9f44edd34200",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ea5e3f07-99ff-540a-9cb5-d65bfdb3deaa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\pi}{18}"
+            },
+            {
+              ":answer/id": "e43f83e7-80cb-56df-b32b-9031973aa5a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{3}"
+            },
+            {
+              ":answer/id": "755143cd-5ed9-5e1b-8d5b-5cda84267c28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\pi}{6}"
+            },
+            {
+              ":answer/id": "ff22cf23-2c43-5d63-aaa0-e07be7fbd843",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\pi}{54}"
+            },
+            {
+              ":answer/id": "2ed763b1-4372-543e-8ee2-dcc84046626c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{7 \\pi}{18}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ea5e3f07-99ff-540a-9cb5-d65bfdb3deaa"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 8608934310051875,
+      "template": "sine-special",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "1",
+        "B": "9",
+        "N": "7",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "58858363a517b28c3c0098f361e0a4e292868d1de3406428e0f14bb78337e7c3",
+      "bank_profile": "endpoint-and-extra-factor",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "wrong-endpoint",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "a497f451-04d7-5c60-a172-42abdf02370f",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{6}} \\frac{8}{36 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=6 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=6,\\qquad \\mathrm{d}x=(\\frac{1}{6})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(6)(0)=0 \\\\ x=\\frac{1}{6}&\\Longrightarrow u=(6)(\\frac{1}{6})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{6}} \\frac{8}{36 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 8\\int_{0}^{\\frac{1}{6}} \\frac{1}{1+(6 x)^{2}}\\,\\mathrm{d}x \\\\  &= 8(\\frac{1}{6})\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{3}\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{3}[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{1} \\\\  &= \\frac{4}{3}(\\operatorname{arctan}(1)-\\operatorname{arctan}(0)) \\\\  &= \\frac{4}{3}((\\frac{\\pi}{4})-(0)) \\\\  &= \\frac{\\pi}{3}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c0d68d01-8a42-57ff-b972-69003f4877c2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d36c10cf-131b-534c-8641-5d5e441d82eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{3}"
+            },
+            {
+              ":answer/id": "5802f692-c0cd-5a7e-897b-1371d250ef1e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{24}"
+            },
+            {
+              ":answer/id": "c7a337d6-4b80-5385-bb22-efe782a80c7b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{8 \\pi}{3}"
+            },
+            {
+              ":answer/id": "cdc8d03a-17cc-5e50-9b8a-ab499d73cb11",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\pi"
+            },
+            {
+              ":answer/id": "80d3531a-3427-5af4-ba44-51c4c3208105",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\pi"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d36c10cf-131b-534c-8641-5d5e441d82eb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 4421947239285,
+      "template": "tangent-special",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "36",
+        "N": "8",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "642e5520d374263c43b93cc57f7c6ded99dc8bec9852992b90e3494a2999e110",
+      "bank_profile": "differential-and-numerator",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "drop-numerator",
+        "double-numerator"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "24b61c76-ca28-5b5c-9a6e-51d22a7f675a",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{14}} \\frac{6}{49 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=7 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=7,\\qquad \\mathrm{d}x=(\\frac{1}{7})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(7)(0)=0 \\\\ x=\\frac{1}{14}&\\Longrightarrow u=(7)(\\frac{1}{14})=\\frac{1}{2}\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{14}} \\frac{6}{49 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 6\\int_{0}^{\\frac{1}{14}} \\frac{1}{1+(7 x)^{2}}\\,\\mathrm{d}x \\\\  &= 6(\\frac{1}{7})\\int_{0}^{\\frac{1}{2}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{6}{7}\\int_{0}^{\\frac{1}{2}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{6}{7}[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{\\frac{1}{2}} \\\\  &= \\frac{6}{7}(\\operatorname{arctan}(\\frac{1}{2})-\\operatorname{arctan}(0)) \\\\  &= \\frac{6}{7}((\\operatorname{arctan}{\\left(\\frac{1}{2} \\right)})-(0)) \\\\  &= \\frac{6 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{7}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "39a7f2e1-904a-5576-a7b2-3a71b7ec4a32",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3658debc-c4b0-50eb-b768-7e1015c693c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{7}"
+            },
+            {
+              ":answer/id": "297649ef-44df-588e-b84f-acc835a9587d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{49}"
+            },
+            {
+              ":answer/id": "093ea6db-39b4-540d-abdb-9f769f0d4190",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}"
+            },
+            {
+              ":answer/id": "59ced480-f5f7-5e7c-b714-da8fe15e0eec",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{36 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{7}"
+            },
+            {
+              ":answer/id": "dee94e97-9107-57cf-8abb-af0261012ca6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{6 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{7}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3658debc-c4b0-50eb-b768-7e1015c693c4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 3999248818386550,
+      "template": "tangent-general",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "49",
+        "N": "6",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "3596299d53aacbca441ea919feda1a874b1779883cc1028ea8311ff380524f47",
+      "bank_profile": "differential-directions",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "double-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "a2d73b9e-ded5-5263-8f8f-f603b91d7e83",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{10}} \\frac{4}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Use the linear substitution $u=5 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=5,\\qquad \\mathrm{d}x=(\\frac{1}{5})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(5)(0)=0 \\\\ x=\\frac{1}{10}&\\Longrightarrow u=(5)(\\frac{1}{10})=\\frac{1}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{10}} \\frac{4}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x \\\\  &= 4\\int_{0}^{\\frac{1}{10}} \\frac{1}{\\sqrt{1-(5 x)^{2}}}\\,\\mathrm{d}x \\\\  &= 4(\\frac{1}{5})\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{5}\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{5}[\\operatorname{arcsin}{\\left(u \\right)}]_{0}^{\\frac{1}{2}} \\\\  &= \\frac{4}{5}(\\operatorname{arcsin}(\\frac{1}{2})-\\operatorname{arcsin}(0)) \\\\  &= \\frac{4}{5}((\\frac{\\pi}{6})-(0)) \\\\  &= \\frac{2 \\pi}{15}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "aa4440e7-6f62-5402-bbe0-f2650309cdb7",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3e664b4d-38a8-5ddc-9c88-53307ae3c5bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{15}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3e664b4d-38a8-5ddc-9c88-53307ae3c5bd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 2089701915616026,
+      "template": "sine-special",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "1",
+        "B": "25",
+        "N": "4",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1/2"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "62fdd79cf16962e3b24dcca34ae5a3056afd6a167020b8e693c2f702f3d1831a",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "a7b41060-9701-5ac8-9406-41c43c4a9895",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{9}} \\frac{9}{81 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Use the linear substitution $u=9 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=9,\\qquad \\mathrm{d}x=(\\frac{1}{9})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(9)(0)=0 \\\\ x=\\frac{1}{9}&\\Longrightarrow u=(9)(\\frac{1}{9})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{9}} \\frac{9}{81 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 9\\int_{0}^{\\frac{1}{9}} \\frac{1}{1+(9 x)^{2}}\\,\\mathrm{d}x \\\\  &= 9(\\frac{1}{9})\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= 1\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= 1[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{1} \\\\  &= 1(\\operatorname{arctan}(1)-\\operatorname{arctan}(0)) \\\\  &= 1((\\frac{\\pi}{4})-(0)) \\\\  &= \\frac{\\pi}{4}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e3ea9054-3361-5bd8-b506-dcb0dcac388a",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2a0125b7-63f0-5ffe-9867-939dcd35b2af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a0125b7-63f0-5ffe-9867-939dcd35b2af"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 5726290729531011,
+      "template": "tangent-special",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "81",
+        "N": "9",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "e29982e6721553c2c83f4a6100fd6c03b28b0ef30dc4300c7577f3fbf9aad889",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "d5ffb59e-2be0-5b32-8138-13035a607668",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{2}{9}} \\frac{5}{81 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\n{{coefficient}} $\\operatorname{arctan}($ {{argument}} $)$",
+      ":question/worked-solution": "Use the linear substitution $u=9 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=9,\\qquad \\mathrm{d}x=(\\frac{1}{9})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(9)(0)=0 \\\\ x=\\frac{2}{9}&\\Longrightarrow u=(9)(\\frac{2}{9})=2\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{2}{9}} \\frac{5}{81 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 5\\int_{0}^{\\frac{2}{9}} \\frac{1}{1+(9 x)^{2}}\\,\\mathrm{d}x \\\\  &= 5(\\frac{1}{9})\\int_{0}^{2} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{5}{9}\\int_{0}^{2} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{5}{9}[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{2} \\\\  &= \\frac{5}{9}(\\operatorname{arctan}(2)-\\operatorname{arctan}(0)) \\\\  &= \\frac{5}{9}((\\operatorname{arctan}{\\left(2 \\right)})-(0)) \\\\  &= \\frac{5 \\operatorname{arctan}{\\left(2 \\right)}}{9}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8fcc298a-078c-5c60-b6a2-c6d4172da034",
+          ":answer-field/key": "coefficient",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2759c9ed-11ea-57ee-a0bd-9ad257122f12",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5}{9}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2759c9ed-11ea-57ee-a0bd-9ad257122f12"
+          ]
+        },
+        {
+          ":answer-field/id": "e5f1fd37-720c-5104-aaf1-071e70b68d8c",
+          ":answer-field/key": "argument",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ccc64ea2-8f5a-54f2-9e68-90e50c57bc59",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ccc64ea2-8f5a-54f2-9e68-90e50c57bc59"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 2593677934518036,
+      "template": "tangent-general",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "81",
+        "N": "5",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "2"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "d9a5e43ab3fb8b06970c6128129d04f98cd835a2aabe360df179af4576f3f09f",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "e1c5c6fb-e670-586e-8a39-d5d94b3f065f",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{16}} \\frac{3}{\\sqrt{1 - 64 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=8 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=8,\\qquad \\mathrm{d}x=(\\frac{1}{8})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(8)(0)=0 \\\\ x=\\frac{1}{16}&\\Longrightarrow u=(8)(\\frac{1}{16})=\\frac{1}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{16}} \\frac{3}{\\sqrt{1 - 64 x^{2}}}\\,\\mathrm{d}x \\\\  &= 3\\int_{0}^{\\frac{1}{16}} \\frac{1}{\\sqrt{1-(8 x)^{2}}}\\,\\mathrm{d}x \\\\  &= 3(\\frac{1}{8})\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3}{8}\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3}{8}[\\operatorname{arcsin}{\\left(u \\right)}]_{0}^{\\frac{1}{2}} \\\\  &= \\frac{3}{8}(\\operatorname{arcsin}(\\frac{1}{2})-\\operatorname{arcsin}(0)) \\\\  &= \\frac{3}{8}((\\frac{\\pi}{6})-(0)) \\\\  &= \\frac{\\pi}{16}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7f5c43e5-3673-5b00-8930-97762031a8dc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5f917a32-7963-5d6f-afcc-c9a117beb131",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\pi}{16}"
+            },
+            {
+              ":answer/id": "dbaa1cec-9fad-5c4c-9b41-008695f4e480",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{128}"
+            },
+            {
+              ":answer/id": "8b30ca6b-ec84-5558-804b-cffd2d66e216",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{16}"
+            },
+            {
+              ":answer/id": "ced38559-d73a-5251-a64c-bdd66fd6d35a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{2}"
+            },
+            {
+              ":answer/id": "168d4392-e6c0-51c7-a965-acadc2514a1c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arctan}{\\left(\\frac{1}{2} \\right)}}{8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8b30ca6b-ec84-5558-804b-cffd2d66e216"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 1891908422089147,
+      "template": "sine-special",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "1",
+        "B": "64",
+        "N": "3",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "38a2840d1bda2ab224b6b14d4dd0d22e00b05feada4b5cdc1bac9cb468711d6b",
+      "bank_profile": "endpoint-and-extra-factor",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "wrong-endpoint",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "6871a209-fee3-5a51-a701-ff2bbca02c0a",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{8}} \\frac{9}{64 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=8 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=8,\\qquad \\mathrm{d}x=(\\frac{1}{8})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(8)(0)=0 \\\\ x=\\frac{1}{8}&\\Longrightarrow u=(8)(\\frac{1}{8})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{8}} \\frac{9}{64 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 9\\int_{0}^{\\frac{1}{8}} \\frac{1}{1+(8 x)^{2}}\\,\\mathrm{d}x \\\\  &= 9(\\frac{1}{8})\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{9}{8}\\int_{0}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{9}{8}[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{1} \\\\  &= \\frac{9}{8}(\\operatorname{arctan}(1)-\\operatorname{arctan}(0)) \\\\  &= \\frac{9}{8}((\\frac{\\pi}{4})-(0)) \\\\  &= \\frac{9 \\pi}{32}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "234d093f-86d5-5259-9076-fc2ff176a74e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cbd0e262-e697-5db3-b587-5ac8bdb7b7be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\pi}{256}"
+            },
+            {
+              ":answer/id": "dfafb482-d854-543e-90ed-7b48a0404ff0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18 \\pi"
+            },
+            {
+              ":answer/id": "caff1140-af84-5fee-a20b-46dfa8dfd943",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\pi}{32}"
+            },
+            {
+              ":answer/id": "bcc765d0-19d2-52d4-8cae-2b1ce27c3960",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{32}"
+            },
+            {
+              ":answer/id": "35733d7a-08b3-5eb1-b623-b285be791351",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{9 \\pi}{32}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "caff1140-af84-5fee-a20b-46dfa8dfd943"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 7580101157688687,
+      "template": "tangent-special",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "64",
+        "N": "9",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "28f56337eb572bcdd8380b2592ba03fca3c0d0215f845030ee4c2f6b878cf583",
+      "bank_profile": "extra-differential",
+      "answer_recipes": [
+        "correct",
+        "double-dx",
+        "reverse-dx",
+        "drop-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "7f635271-ad06-57ec-ba14-197476f846bc",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{2}} \\frac{8}{36 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Use the linear substitution $u=6 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=6,\\qquad \\mathrm{d}x=(\\frac{1}{6})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(6)(0)=0 \\\\ x=\\frac{1}{2}&\\Longrightarrow u=(6)(\\frac{1}{2})=3\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{2}} \\frac{8}{36 x^{2} + 1}\\,\\mathrm{d}x \\\\  &= 8\\int_{0}^{\\frac{1}{2}} \\frac{1}{1+(6 x)^{2}}\\,\\mathrm{d}x \\\\  &= 8(\\frac{1}{6})\\int_{0}^{3} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{3}\\int_{0}^{3} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{4}{3}[\\operatorname{arctan}{\\left(u \\right)}]_{0}^{3} \\\\  &= \\frac{4}{3}(\\operatorname{arctan}(3)-\\operatorname{arctan}(0)) \\\\  &= \\frac{4}{3}((\\operatorname{arctan}{\\left(3 \\right)})-(0)) \\\\  &= \\frac{4 \\operatorname{arctan}{\\left(3 \\right)}}{3}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "708a5c04-84ae-5fc7-8d2f-1654bd8d1621",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fc523c34-26f5-5ee8-9c58-6eb37bbddad6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48 \\operatorname{arctan}{\\left(3 \\right)}"
+            },
+            {
+              ":answer/id": "356b89e1-d725-57e8-b073-eb5591c2bcc3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 \\operatorname{arctan}{\\left(3 \\right)}"
+            },
+            {
+              ":answer/id": "2984adf6-e7b5-5a90-8825-5cdf2f26581a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arctan}{\\left(3 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "10b98030-d11f-5f99-938a-5366d17d6d1d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{4 \\operatorname{arctan}{\\left(3 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "9d065717-78b1-5e32-873d-9ec56ea739b4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arctan}{\\left(\\frac{1}{3} \\right)}}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2984adf6-e7b5-5a90-8825-5cdf2f26581a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 7312066424928702,
+      "template": "tangent-general",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "1",
+        "B": "36",
+        "N": "8",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "3"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "827357731a7bfc1f28e7edf06a0317541753824a67a5f25bf5dd50dd9364977c",
+      "bank_profile": "endpoint-and-factor",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-endpoint",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "b8833921-cd55-5d33-86f3-5cb87a7b71f5",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{1}{10}} \\frac{2}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Use the linear substitution $u=5 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=5,\\qquad \\mathrm{d}x=(\\frac{1}{5})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=(5)(0)=0 \\\\ x=\\frac{1}{10}&\\Longrightarrow u=(5)(\\frac{1}{10})=\\frac{1}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{0}^{\\frac{1}{10}} \\frac{2}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x \\\\  &= 2\\int_{0}^{\\frac{1}{10}} \\frac{1}{\\sqrt{1-(5 x)^{2}}}\\,\\mathrm{d}x \\\\  &= 2(\\frac{1}{5})\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2}{5}\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2}{5}[\\operatorname{arcsin}{\\left(u \\right)}]_{0}^{\\frac{1}{2}} \\\\  &= \\frac{2}{5}(\\operatorname{arcsin}(\\frac{1}{2})-\\operatorname{arcsin}(0)) \\\\  &= \\frac{2}{5}((\\frac{\\pi}{6})-(0)) \\\\  &= \\frac{\\pi}{15}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0ee451c8-40b1-5552-b4a2-16770a8b9dcd",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1af8cc77-0bac-5940-b352-f949e5f99a1a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{15}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1af8cc77-0bac-5940-b352-f949e5f99a1a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 6738874713497273,
+      "template": "sine-special",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "1",
+        "B": "25",
+        "N": "2",
+        "D": "1",
+        "lower_u": "0",
+        "upper_u": "1/2"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-114074",
+        "q-49538",
+        "q-49536"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "4079a7d0ef170f52201e6f741ba0e51b6c367a2ac9e5e0caeb37739abfb93673",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Direct integer-factor substitution and zero lower endpoint; exact special values or retain arctan at an ordinary rational endpoint.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  }
+]

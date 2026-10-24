@@ -1,0 +1,838 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "31069773-e2d9-58b9-845a-c488f05a3fd1",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{2 \\sqrt{10}}{5}}^{\\frac{2 \\sqrt{30}}{5}} \\frac{6}{\\sqrt{64 - 10 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{64 - 10 x^{2}}=\\sqrt{64(1-(\\frac{5}{32})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{10} x}{8}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{10}}{8},\\qquad \\mathrm{d}x=(\\frac{4 \\sqrt{10}}{5})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{2 \\sqrt{10}}{5}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{8})(- \\frac{2 \\sqrt{10}}{5})=- \\frac{1}{2} \\\\ x=\\frac{2 \\sqrt{30}}{5}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{8})(\\frac{2 \\sqrt{30}}{5})=\\frac{\\sqrt{3}}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{- \\frac{2 \\sqrt{10}}{5}}^{\\frac{2 \\sqrt{30}}{5}} \\frac{6}{\\sqrt{64 - 10 x^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{3}{4}\\int_{- \\frac{2 \\sqrt{10}}{5}}^{\\frac{2 \\sqrt{30}}{5}} \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{10} x}{8})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{3}{4}(\\frac{4 \\sqrt{10}}{5})\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{10}}{5}\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{10}}{5}[\\operatorname{arcsin}{\\left(u \\right)}]_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\\\  &= \\frac{3 \\sqrt{10}}{5}(\\operatorname{arcsin}(\\frac{\\sqrt{3}}{2})-\\operatorname{arcsin}(- \\frac{1}{2})) \\\\  &= \\frac{3 \\sqrt{10}}{5}((\\frac{\\pi}{3})-(- \\frac{\\pi}{6})) \\\\  &= \\frac{3 \\sqrt{10} \\pi}{10}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "15535d36-569d-5a66-912f-4328e0b08515",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f6f4d4a4-75e2-54f0-a2b8-e12175ae170b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{10} \\pi}{10}"
+            },
+            {
+              ":answer/id": "66ab3c07-aed9-5048-be41-aa6b32baf7e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\sqrt{10} \\pi}{10}"
+            },
+            {
+              ":answer/id": "b2fb651a-cb3e-5812-8920-65d6a708aba9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{10} \\pi}{5}"
+            },
+            {
+              ":answer/id": "fd4d363a-e4b7-53bf-85fa-46bfd12b2ff3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{12 \\pi}{5}"
+            },
+            {
+              ":answer/id": "e3d3fca2-2f4b-5bb9-9152-d118b4c0a190",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f6f4d4a4-75e2-54f0-a2b8-e12175ae170b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 2178636701738305,
+      "template": "sine-cross-zero",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "64",
+        "B": "10",
+        "N": "6",
+        "D": "1",
+        "lower_u": "-1/2",
+        "upper_u": "sqrt(3)/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "47ce75a83f4347eb80ba209f1d9b235c9d3a2f839a85e47b4826802f2ed382eb",
+      "bank_profile": "differential-directions",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "double-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "4eddb1ed-78dc-5c0e-a58a-4f6c59d0a7cf",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{5 \\sqrt{21}}{21}}^{\\frac{5 \\sqrt{7}}{7}} \\frac{9}{7 x^{2} + 25}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n7 x^{2} + 25=25(1+(\\frac{7}{25})x^{2})\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{7} x}{5}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{7}}{5},\\qquad \\mathrm{d}x=(\\frac{5 \\sqrt{7}}{7})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{5 \\sqrt{21}}{21}&\\Longrightarrow u=(\\frac{\\sqrt{7}}{5})(\\frac{5 \\sqrt{21}}{21})=\\frac{\\sqrt{3}}{3} \\\\ x=\\frac{5 \\sqrt{7}}{7}&\\Longrightarrow u=(\\frac{\\sqrt{7}}{5})(\\frac{5 \\sqrt{7}}{7})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{\\frac{5 \\sqrt{21}}{21}}^{\\frac{5 \\sqrt{7}}{7}} \\frac{9}{7 x^{2} + 25}\\,\\mathrm{d}x \\\\  &= \\frac{9}{25}\\int_{\\frac{5 \\sqrt{21}}{21}}^{\\frac{5 \\sqrt{7}}{7}} \\frac{1}{1+(\\frac{\\sqrt{7} x}{5})^{2}}\\,\\mathrm{d}x \\\\  &= \\frac{9}{25}(\\frac{5 \\sqrt{7}}{7})\\int_{\\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7}}{35}\\int_{\\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7}}{35}[\\operatorname{arctan}{\\left(u \\right)}]_{\\frac{\\sqrt{3}}{3}}^{1} \\\\  &= \\frac{9 \\sqrt{7}}{35}(\\operatorname{arctan}(1)-\\operatorname{arctan}(\\frac{\\sqrt{3}}{3})) \\\\  &= \\frac{9 \\sqrt{7}}{35}((\\frac{\\pi}{4})-(\\frac{\\pi}{6})) \\\\  &= \\frac{3 \\sqrt{7} \\pi}{140}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "76e776ca-23c1-5993-b4b0-77109e7c5373",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8f897da0-c7c7-5ad7-bec0-4f2425e87fbe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{7} \\pi}{140}"
+            },
+            {
+              ":answer/id": "420aac5e-015a-5dcf-96c2-aa80b9e6f176",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\sqrt{7} \\pi}{140}"
+            },
+            {
+              ":answer/id": "f5aeea5c-ba27-5f18-85d7-6f9fc18ce357",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{7} \\pi}{420}"
+            },
+            {
+              ":answer/id": "8e4169e3-9262-5493-b315-2902bc48450b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{7} \\pi}{500}"
+            },
+            {
+              ":answer/id": "c74a561c-863a-573f-9341-b53ede55d47d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{28}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8f897da0-c7c7-5ad7-bec0-4f2425e87fbe"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 2295512097623445,
+      "template": "tangent-two-positive",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "25",
+        "B": "7",
+        "N": "9",
+        "D": "1",
+        "lower_u": "sqrt(3)/3",
+        "upper_u": "1"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "becac4e680ee5a8a477b6ef05d3bbc8b8d79231dfa9c7eca2a3ca0510ad463a2",
+      "bank_profile": "extra-differential",
+      "answer_recipes": [
+        "correct",
+        "double-dx",
+        "reverse-dx",
+        "drop-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "275ef93a-9e15-50cd-b072-9c822daf3676",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\sqrt{2}}{3}}^{\\frac{\\sqrt{6}}{3}} \\frac{2}{6 x^{2} + 4}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n6 x^{2} + 4=4(1+(\\frac{3}{2})x^{2})\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{6} x}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{6}}{2},\\qquad \\mathrm{d}x=(\\frac{\\sqrt{6}}{3})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\sqrt{2}}{3}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{2})(- \\frac{\\sqrt{2}}{3})=- \\frac{\\sqrt{3}}{3} \\\\ x=\\frac{\\sqrt{6}}{3}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{2})(\\frac{\\sqrt{6}}{3})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{- \\frac{\\sqrt{2}}{3}}^{\\frac{\\sqrt{6}}{3}} \\frac{2}{6 x^{2} + 4}\\,\\mathrm{d}x \\\\  &= \\frac{1}{2}\\int_{- \\frac{\\sqrt{2}}{3}}^{\\frac{\\sqrt{6}}{3}} \\frac{1}{1+(\\frac{\\sqrt{6} x}{2})^{2}}\\,\\mathrm{d}x \\\\  &= \\frac{1}{2}(\\frac{\\sqrt{6}}{3})\\int_{- \\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{6}}{6}\\int_{- \\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{6}}{6}[\\operatorname{arctan}{\\left(u \\right)}]_{- \\frac{\\sqrt{3}}{3}}^{1} \\\\  &= \\frac{\\sqrt{6}}{6}(\\operatorname{arctan}(1)-\\operatorname{arctan}(- \\frac{\\sqrt{3}}{3})) \\\\  &= \\frac{\\sqrt{6}}{6}((\\frac{\\pi}{4})-(- \\frac{\\pi}{6})) \\\\  &= \\frac{5 \\sqrt{6} \\pi}{72}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "943865ee-77d8-59f0-8739-263d0db8cbb9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8fe824ad-db88-5a89-a4f6-708549ce42b2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\sqrt{6} \\pi}{72}"
+            },
+            {
+              ":answer/id": "a7d547bc-cbd1-53b4-84fe-a0b07f98b84d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\sqrt{6} \\pi}{144}"
+            },
+            {
+              ":answer/id": "b2bb5d3e-7051-5abd-89a8-2b656aebf919",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\pi}{36}"
+            },
+            {
+              ":answer/id": "c87fae49-0f53-5df6-911f-e8c7a1db7141",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\sqrt{6} \\pi}{48}"
+            },
+            {
+              ":answer/id": "f4ca0d1e-aed4-5152-9954-1989b7c30009",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{5 \\sqrt{6} \\pi}{72}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8fe824ad-db88-5a89-a4f6-708549ce42b2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 1204066332113505,
+      "template": "tangent-cross-zero",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "4",
+        "B": "6",
+        "N": "2",
+        "D": "1",
+        "lower_u": "-sqrt(3)/3",
+        "upper_u": "1"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "21f53bfe2e5ec5f3f8a0f17300b91759da0bb51bdd6364dc079ddadf4236cff5",
+      "bank_profile": "extra-differential",
+      "answer_recipes": [
+        "correct",
+        "double-dx",
+        "reverse-dx",
+        "drop-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "a4a4dc8e-8a02-5ef0-a5ce-5526bba8d539",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{\\sqrt{6}}{2}}^{\\sqrt{3}} \\frac{5}{\\sqrt{36 - 6 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{36 - 6 x^{2}}=\\sqrt{36(1-(\\frac{1}{6})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{6} x}{6}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{6}}{6},\\qquad \\mathrm{d}x=(\\sqrt{6})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{\\sqrt{6}}{2}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{6})(\\frac{\\sqrt{6}}{2})=\\frac{1}{2} \\\\ x=\\sqrt{3}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{6})(\\sqrt{3})=\\frac{\\sqrt{2}}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{\\frac{\\sqrt{6}}{2}}^{\\sqrt{3}} \\frac{5}{\\sqrt{36 - 6 x^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{5}{6}\\int_{\\frac{\\sqrt{6}}{2}}^{\\sqrt{3}} \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{6} x}{6})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{5}{6}(\\sqrt{6})\\int_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{5 \\sqrt{6}}{6}\\int_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{5 \\sqrt{6}}{6}[\\operatorname{arcsin}{\\left(u \\right)}]_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\\\  &= \\frac{5 \\sqrt{6}}{6}(\\operatorname{arcsin}(\\frac{\\sqrt{2}}{2})-\\operatorname{arcsin}(\\frac{1}{2})) \\\\  &= \\frac{5 \\sqrt{6}}{6}((\\frac{\\pi}{4})-(\\frac{\\pi}{6})) \\\\  &= \\frac{5 \\sqrt{6} \\pi}{72}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c2f94dbd-24b0-502c-8bef-8dd471a94ea1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b534102c-0a28-5ffc-8498-8c551bd0cc23",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\sqrt{6} \\pi}{72}"
+            },
+            {
+              ":answer/id": "78ee06fb-d3bd-5699-be5d-99abba240a16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{5 \\sqrt{6} \\pi}{72}"
+            },
+            {
+              ":answer/id": "584e96b6-767c-5e14-899f-41a99d429ed3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{25 \\sqrt{6} \\pi}{72}"
+            },
+            {
+              ":answer/id": "ca8e45df-9845-509b-a95f-6c7724735b22",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\pi}{12}"
+            },
+            {
+              ":answer/id": "cd0beb08-add5-50bf-82af-696f8e97dadb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5 \\pi}{72}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b534102c-0a28-5ffc-8498-8c551bd0cc23"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 4060026101742520,
+      "template": "sine-two-positive",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "36",
+        "B": "6",
+        "N": "5",
+        "D": "1",
+        "lower_u": "1/2",
+        "upper_u": "sqrt(2)/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "85efb613d2d782904b8e6f0454f283376a0ae3c9af9d15b5a421083da5410cc3",
+      "bank_profile": "differential-directions",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "double-numerator",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "d97ef683-6715-5e81-a7d1-14b2ffc5e533",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\sqrt{6}}{4}}^{\\frac{3 \\sqrt{2}}{4}} \\frac{9}{\\sqrt{9 - 6 x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{9 - 6 x^{2}}=\\sqrt{9(1-(\\frac{2}{3})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{6} x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{6}}{3},\\qquad \\mathrm{d}x=(\\frac{\\sqrt{6}}{2})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\sqrt{6}}{4}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{3})(- \\frac{\\sqrt{6}}{4})=- \\frac{1}{2} \\\\ x=\\frac{3 \\sqrt{2}}{4}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{3})(\\frac{3 \\sqrt{2}}{4})=\\frac{\\sqrt{3}}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{- \\frac{\\sqrt{6}}{4}}^{\\frac{3 \\sqrt{2}}{4}} \\frac{9}{\\sqrt{9 - 6 x^{2}}}\\,\\mathrm{d}x \\\\  &= 3\\int_{- \\frac{\\sqrt{6}}{4}}^{\\frac{3 \\sqrt{2}}{4}} \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{6} x}{3})^{2}}}\\,\\mathrm{d}x \\\\  &= 3(\\frac{\\sqrt{6}}{2})\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{6}}{2}\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{6}}{2}[\\operatorname{arcsin}{\\left(u \\right)}]_{- \\frac{1}{2}}^{\\frac{\\sqrt{3}}{2}} \\\\  &= \\frac{3 \\sqrt{6}}{2}(\\operatorname{arcsin}(\\frac{\\sqrt{3}}{2})-\\operatorname{arcsin}(- \\frac{1}{2})) \\\\  &= \\frac{3 \\sqrt{6}}{2}((\\frac{\\pi}{3})-(- \\frac{\\pi}{6})) \\\\  &= \\frac{3 \\sqrt{6} \\pi}{4}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ee3d0bc0-f989-584a-ae0f-e17e36f20d73",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "094fa516-728f-5be6-a4fe-f67ece9b8145",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{6} \\pi}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "094fa516-728f-5be6-a4fe-f67ece9b8145"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 1124476129707651,
+      "template": "sine-cross-zero",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "9",
+        "B": "6",
+        "N": "9",
+        "D": "1",
+        "lower_u": "-1/2",
+        "upper_u": "sqrt(3)/2"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "228dbb738212f9be0ea9488447377eeda531bed80356d3bba87848e8f32e80d6",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "0372c2fd-66f2-541c-882f-7c71be7cc96e",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{3 \\sqrt{10}}{10}}^{\\frac{3 \\sqrt{30}}{10}} \\frac{1}{10 x^{2} + 9}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n10 x^{2} + 9=9(1+(\\frac{10}{9})x^{2})\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{10} x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{10}}{3},\\qquad \\mathrm{d}x=(\\frac{3 \\sqrt{10}}{10})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{3 \\sqrt{10}}{10}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{3})(\\frac{3 \\sqrt{10}}{10})=1 \\\\ x=\\frac{3 \\sqrt{30}}{10}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{3})(\\frac{3 \\sqrt{30}}{10})=\\sqrt{3}\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{\\frac{3 \\sqrt{10}}{10}}^{\\frac{3 \\sqrt{30}}{10}} \\frac{1}{10 x^{2} + 9}\\,\\mathrm{d}x \\\\  &= \\frac{1}{9}\\int_{\\frac{3 \\sqrt{10}}{10}}^{\\frac{3 \\sqrt{30}}{10}} \\frac{1}{1+(\\frac{\\sqrt{10} x}{3})^{2}}\\,\\mathrm{d}x \\\\  &= \\frac{1}{9}(\\frac{3 \\sqrt{10}}{10})\\int_{1}^{\\sqrt{3}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{10}}{30}\\int_{1}^{\\sqrt{3}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{10}}{30}[\\operatorname{arctan}{\\left(u \\right)}]_{1}^{\\sqrt{3}} \\\\  &= \\frac{\\sqrt{10}}{30}(\\operatorname{arctan}(\\sqrt{3})-\\operatorname{arctan}(1)) \\\\  &= \\frac{\\sqrt{10}}{30}((\\frac{\\pi}{3})-(\\frac{\\pi}{4})) \\\\  &= \\frac{\\sqrt{10} \\pi}{360}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b9486294-79c8-509d-84d4-b54229d994a1",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0a19f002-f394-581c-8a71-944f99d29f1c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{10} \\pi}{360}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0a19f002-f394-581c-8a71-944f99d29f1c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 7910719074100716,
+      "template": "tangent-two-positive",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "9",
+        "B": "10",
+        "N": "1",
+        "D": "1",
+        "lower_u": "1",
+        "upper_u": "sqrt(3)"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "272a1bf4e4e922cecf4b24142bf43b35485684cd4fadf9019959c1fa04cd71d5",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "5880c807-c10d-50e8-9d88-c434c7630fa9",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- 3 \\sqrt{3}}^{9} \\frac{6}{3 x^{2} + 81}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n3 x^{2} + 81=81(1+(\\frac{1}{27})x^{2})\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{3} x}{9}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{3}}{9},\\qquad \\mathrm{d}x=(3 \\sqrt{3})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- 3 \\sqrt{3}&\\Longrightarrow u=(\\frac{\\sqrt{3}}{9})(- 3 \\sqrt{3})=-1 \\\\ x=9&\\Longrightarrow u=(\\frac{\\sqrt{3}}{9})(9)=\\sqrt{3}\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{- 3 \\sqrt{3}}^{9} \\frac{6}{3 x^{2} + 81}\\,\\mathrm{d}x \\\\  &= \\frac{2}{27}\\int_{- 3 \\sqrt{3}}^{9} \\frac{1}{1+(\\frac{\\sqrt{3} x}{9})^{2}}\\,\\mathrm{d}x \\\\  &= \\frac{2}{27}(3 \\sqrt{3})\\int_{-1}^{\\sqrt{3}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{3}}{9}\\int_{-1}^{\\sqrt{3}} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{3}}{9}[\\operatorname{arctan}{\\left(u \\right)}]_{-1}^{\\sqrt{3}} \\\\  &= \\frac{2 \\sqrt{3}}{9}(\\operatorname{arctan}(\\sqrt{3})-\\operatorname{arctan}(-1)) \\\\  &= \\frac{2 \\sqrt{3}}{9}((\\frac{\\pi}{3})-(- \\frac{\\pi}{4})) \\\\  &= \\frac{7 \\sqrt{3} \\pi}{54}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d1b888f5-5707-53a5-b970-7313bcf41529",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fdc0d3f5-a51b-5597-9b0f-2b50228b93a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\sqrt{3} \\pi}{54}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fdc0d3f5-a51b-5597-9b0f-2b50228b93a1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 6041249764964571,
+      "template": "tangent-cross-zero",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "81",
+        "B": "3",
+        "N": "6",
+        "D": "1",
+        "lower_u": "-1",
+        "upper_u": "sqrt(3)"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "86464999a814256c7c8943c1bf14489fc827b377c88f1ae1510af01d1c2bd0e1",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "26a5ab0e-8ab0-5f06-8396-7feffadcde08",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{\\sqrt{6}}{3}}^{\\frac{2 \\sqrt{3}}{3}} \\frac{2}{\\sqrt{16 - 6 x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{16 - 6 x^{2}}=\\sqrt{16(1-(\\frac{3}{8})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{6} x}{4}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{6}}{4},\\qquad \\mathrm{d}x=(\\frac{2 \\sqrt{6}}{3})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{\\sqrt{6}}{3}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{4})(\\frac{\\sqrt{6}}{3})=\\frac{1}{2} \\\\ x=\\frac{2 \\sqrt{3}}{3}&\\Longrightarrow u=(\\frac{\\sqrt{6}}{4})(\\frac{2 \\sqrt{3}}{3})=\\frac{\\sqrt{2}}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{\\frac{\\sqrt{6}}{3}}^{\\frac{2 \\sqrt{3}}{3}} \\frac{2}{\\sqrt{16 - 6 x^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{1}{2}\\int_{\\frac{\\sqrt{6}}{3}}^{\\frac{2 \\sqrt{3}}{3}} \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{6} x}{4})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{1}{2}(\\frac{2 \\sqrt{6}}{3})\\int_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{6}}{3}\\int_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{6}}{3}[\\operatorname{arcsin}{\\left(u \\right)}]_{\\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\\\  &= \\frac{\\sqrt{6}}{3}(\\operatorname{arcsin}(\\frac{\\sqrt{2}}{2})-\\operatorname{arcsin}(\\frac{1}{2})) \\\\  &= \\frac{\\sqrt{6}}{3}((\\frac{\\pi}{4})-(\\frac{\\pi}{6})) \\\\  &= \\frac{\\sqrt{6} \\pi}{36}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0970acb4-17e3-5133-8c74-81024d88697a",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "dad5e5d4-f28a-5e3c-9d7d-2ef281b00081",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{6} \\pi}{36}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "dad5e5d4-f28a-5e3c-9d7d-2ef281b00081"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 8748090317637871,
+      "template": "sine-two-positive",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "16",
+        "B": "6",
+        "N": "2",
+        "D": "1",
+        "lower_u": "1/2",
+        "upper_u": "sqrt(2)/2"
+      },
+      "response": "blank",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "c3cffa307ac7df5b1cdb799e25be5d1771f858c6358866d7d8b985a6cfa7df4a",
+      "bank_profile": "exact-entry",
+      "answer_recipes": [],
+      "authored": true,
+      "authored_bank": false,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "4a24f09e-263b-5efe-ac71-a976bc84e3aa",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{9 \\sqrt{10}}{20}}^{\\frac{9 \\sqrt{5}}{10}} \\frac{8}{\\sqrt{81 - 10 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{81 - 10 x^{2}}=\\sqrt{81(1-(\\frac{10}{81})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{10} x}{9}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{10}}{9},\\qquad \\mathrm{d}x=(\\frac{9 \\sqrt{10}}{10})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{9 \\sqrt{10}}{20}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{9})(- \\frac{9 \\sqrt{10}}{20})=- \\frac{1}{2} \\\\ x=\\frac{9 \\sqrt{5}}{10}&\\Longrightarrow u=(\\frac{\\sqrt{10}}{9})(\\frac{9 \\sqrt{5}}{10})=\\frac{\\sqrt{2}}{2}\\end{aligned}\n$$\n\nBoth transformed endpoints lie strictly between $-1$ and $1$, so the integrand is continuous throughout the interval.\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{- \\frac{9 \\sqrt{10}}{20}}^{\\frac{9 \\sqrt{5}}{10}} \\frac{8}{\\sqrt{81 - 10 x^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{8}{9}\\int_{- \\frac{9 \\sqrt{10}}{20}}^{\\frac{9 \\sqrt{5}}{10}} \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{10} x}{9})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{8}{9}(\\frac{9 \\sqrt{10}}{10})\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{4 \\sqrt{10}}{5}\\int_{- \\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{4 \\sqrt{10}}{5}[\\operatorname{arcsin}{\\left(u \\right)}]_{- \\frac{1}{2}}^{\\frac{\\sqrt{2}}{2}} \\\\  &= \\frac{4 \\sqrt{10}}{5}(\\operatorname{arcsin}(\\frac{\\sqrt{2}}{2})-\\operatorname{arcsin}(- \\frac{1}{2})) \\\\  &= \\frac{4 \\sqrt{10}}{5}((\\frac{\\pi}{4})-(- \\frac{\\pi}{6})) \\\\  &= \\frac{\\sqrt{10} \\pi}{3}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c2f4f8ce-ed94-551d-89d9-8b2e56b37b4a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "35e36aac-75f3-5dc4-9fb4-3e6fa1d1db11",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\pi"
+            },
+            {
+              ":answer/id": "fd2d7aad-0c09-5ccd-bdf2-b741e87a396f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{10 \\pi}{27}"
+            },
+            {
+              ":answer/id": "cbf674a6-5283-5813-b916-60b747375328",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{10} \\pi}{3}"
+            },
+            {
+              ":answer/id": "27f548bb-c49c-5514-862f-6732a1a79088",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\sqrt{10} \\left(\\operatorname{arctan}{\\left(\\frac{1}{2} \\right)} + \\operatorname{arctan}{\\left(\\frac{\\sqrt{2}}{2} \\right)}\\right)}{5}"
+            },
+            {
+              ":answer/id": "07b08bd5-31bc-5c5a-ad01-1f39fa210754",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\sqrt{10} \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cbf674a6-5283-5813-b916-60b747375328"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 6532270213643747,
+      "template": "sine-cross-zero",
+      "family": "definite",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "81",
+        "B": "10",
+        "N": "8",
+        "D": "1",
+        "lower_u": "-1/2",
+        "upper_u": "sqrt(2)/2"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "a6352a56ed9732af1efb57519c09b65e36bea66308ff89eb83d50d67ee40803c",
+      "bank_profile": "endpoint-and-extra-factor",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "double-dx",
+        "wrong-endpoint",
+        "reverse-bounds"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "b7e7efd8-4daf-5a99-9901-08530da7dbd2",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{8}{3}}^{\\frac{8 \\sqrt{3}}{3}} \\frac{3}{3 x^{2} + 64}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n3 x^{2} + 64=64(1+(\\frac{3}{64})x^{2})\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{3} x}{8}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{3}}{8},\\qquad \\mathrm{d}x=(\\frac{8 \\sqrt{3}}{3})\\,\\mathrm{d}u.\n$$\n\nChange both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{8}{3}&\\Longrightarrow u=(\\frac{\\sqrt{3}}{8})(\\frac{8}{3})=\\frac{\\sqrt{3}}{3} \\\\ x=\\frac{8 \\sqrt{3}}{3}&\\Longrightarrow u=(\\frac{\\sqrt{3}}{8})(\\frac{8 \\sqrt{3}}{3})=1\\end{aligned}\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{1+u^{2}}\\,\\mathrm{d}u=\\operatorname{arctan}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}& \\int_{\\frac{8}{3}}^{\\frac{8 \\sqrt{3}}{3}} \\frac{3}{3 x^{2} + 64}\\,\\mathrm{d}x \\\\  &= \\frac{3}{64}\\int_{\\frac{8}{3}}^{\\frac{8 \\sqrt{3}}{3}} \\frac{1}{1+(\\frac{\\sqrt{3} x}{8})^{2}}\\,\\mathrm{d}x \\\\  &= \\frac{3}{64}(\\frac{8 \\sqrt{3}}{3})\\int_{\\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{3}}{8}\\int_{\\frac{\\sqrt{3}}{3}}^{1} \\frac{1}{1+u^{2}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{3}}{8}[\\operatorname{arctan}{\\left(u \\right)}]_{\\frac{\\sqrt{3}}{3}}^{1} \\\\  &= \\frac{\\sqrt{3}}{8}(\\operatorname{arctan}(1)-\\operatorname{arctan}(\\frac{\\sqrt{3}}{3})) \\\\  &= \\frac{\\sqrt{3}}{8}((\\frac{\\pi}{4})-(\\frac{\\pi}{6})) \\\\  &= \\frac{\\sqrt{3} \\pi}{96}\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a7792e2b-87fe-5b28-8d18-1c100112100d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b40c90ad-24fd-5084-80a0-31c0f725200f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{3} \\pi}{2048}"
+            },
+            {
+              ":answer/id": "b3fa66f7-e082-5e62-acfc-3e26bc6ee6e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{3} \\pi}{32}"
+            },
+            {
+              ":answer/id": "3e412948-a45d-5098-9434-a82895c83f16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{3} \\pi}{96}"
+            },
+            {
+              ":answer/id": "2303c723-3669-5376-b718-f0b6719d1697",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{3} \\pi}{288}"
+            },
+            {
+              ":answer/id": "193240cb-9bf1-5fc3-88c4-343eb2b3f61c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{256}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3e412948-a45d-5098-9434-a82895c83f16"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 4182773145600302,
+      "template": "tangent-two-positive",
+      "family": "definite",
+      "inverse_function": "tangent",
+      "parameters": {
+        "family": "tangent",
+        "A": "64",
+        "B": "3",
+        "N": "3",
+        "D": "1",
+        "lower_u": "sqrt(3)/3",
+        "upper_u": "1"
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-19395",
+        "q-351291",
+        "q-114084"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "e1d0b2f5d503f7586634aec2e5770c123fa6e0e05a88c9b8d6044c91fae46f61",
+      "bank_profile": "differential-and-numerator",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "drop-numerator",
+        "double-numerator"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored consistent workload: two nonunit coefficients, irrational substitution factor, and two unlike nonzero transformed endpoints. Both inverse values shown; every arcsine endpoint strictly internal.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  }
+]

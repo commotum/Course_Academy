@@ -388,9 +388,10 @@ class Generator:
         if parameters is not None:
             return self.build(difficulty, case, parameters, response=response, bank_profile=bank_profile, seed=seed)
         eligible_banks = tuple(DEFINITE_BANKS)
-        if case == 'tangent-special':
-            # At the fixed transformed endpoint one, reciprocal-endpoint errors
-            # coincide with the key. These whole profiles are inapplicable.
+        if case in ('tangent-special', 'tangent-two-positive'):
+            # At endpoint one the reciprocal is unchanged. For the positive
+            # (1,sqrt(3)) pair it instead duplicates the reverse-bounds error.
+            # These whole profiles are inapplicable to the two case catalogs.
             eligible_banks = tuple(v for v in eligible_banks if not v.startswith('endpoint-'))
         if bank_profile is not None and self.kind == 'definite' and response == 'radio' and bank_profile not in eligible_banks:
             raise ValueError('Complete bank profile is inapplicable to this endpoint case')
