@@ -2172,6 +2172,13 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    // Repeated-product exercises assess the base/exponent representation,
+    // rather than only its evaluated value. Grouping syntax is immaterial.
+    if requests_power_form(prompt)
+        && let Some(expected) = integer_power_form(b)
+    {
+        return Ok(integer_power_form(a).is_some_and(|actual| actual == expected));
+    }
     if requires_answer_form(prompt) {
         let a = normalize_answer_form(a);
         let b = normalize_answer_form(b);
@@ -2189,6 +2196,59 @@ pub fn compare_math_in_context(
     } else {
         compare_math(a, b, context)
     }
+}
+
+fn requests_power_form(prompt: &str) -> bool {
+    use std::sync::LazyLock;
+    static POWER_FORM: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(
+            r"\b(?:(?:exponent|exponential|power)\s+form|power\s+notation|as\s+a\s+(?:single\s+)?power|using\s+exponents)\b",
+        ).unwrap()
+    });
+    POWER_FORM.is_match(&prompt.to_lowercase())
+}
+
+/// A direct integer base and exponent, allowing harmless TeX/parenthesis groups.
+/// Do not evaluate expressions inside either slot: 7^(2+3) has not supplied
+/// the factor count, and 16807 or 49^(5/2) has lost the intended representation.
+/// Other canonical answer shapes retain their existing comparison semantics.
+fn integer_power_form(value: &str) -> Option<(num_bigint::BigInt, num_bigint::BigInt)> {
+    fn ungroup(mut text: &str) -> Option<&str> {
+        loop {
+            let closing = match text.as_bytes().first()? {
+                b'{' => b'}',
+                b'(' => b')',
+                _ => return Some(text),
+            };
+            let mut stack = Vec::new();
+            let mut end = None;
+            for (index, byte) in text.bytes().enumerate() {
+                match byte {
+                    b'{' => stack.push(b'}'),
+                    b'(' => stack.push(b')'),
+                    b'}' | b')' => {
+                        if stack.pop()? != byte { return None; }
+                        if stack.is_empty() { end = Some(index); break; }
+                    }
+                    _ => {}
+                }
+            }
+            if closing != *text.as_bytes().last()? || end != Some(text.len() - 1) {
+                return Some(text);
+            }
+            text = &text[1..text.len() - 1];
+        }
+    }
+    fn integer(text: &str) -> Option<num_bigint::BigInt> {
+        let text = ungroup(text)?;
+        let digits = text.strip_prefix('-').or_else(|| text.strip_prefix('+')).unwrap_or(text);
+        if digits.is_empty() || !digits.bytes().all(|c| c.is_ascii_digit()) { return None; }
+        text.parse().ok()
+    }
+    let normalized = normalize_math(value);
+    let text = ungroup(&normalized)?;
+    let (base, exponent) = text.split_once('^')?;
+    Some((integer(base)?, integer(exponent)?))
 }
 
 fn plain_decimal_numeral(text: &str) -> Option<num_rational::BigRational> {
@@ -4260,6 +4320,34 @@ pub(crate) mod tests {
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("3*x+6/x"));
         assert_eq!(grade_field(&s,100,200,"3*x+6/x+1"),Ok(true));
         assert_eq!(grade_field(&s,100,200,"0"),Ok(false));
+    }
+
+    #[test]
+    fn exponent_form_preserves_integer_base_and_factor_count() {
+        let mut s = fixture();
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("7^{5}"));
+        for prompt in [
+            "Express the product in exponent form. {{x}}",
+            "Write the repeated multiplication as a power. {{x}}",
+            "Write using exponents. {{x}}",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+            for value in ["7^5", "7^{5}", "{7}^{5}", "(7)^5", "7^(5)",
+                r"\left(7\right)^{5}", "{(7)^{5}}"] {
+                assert_eq!(grade_field(&s,100,200,value), Ok(true), "{prompt}: {value}");
+            }
+            for value in ["16807", "7*7*7*7*7", "7^4", "5^7", "49^(5/2)",
+                "7^(2+3)", "7^5+0", "7^5^1", "7^{5", "{7)^{5}"] {
+                assert_eq!(grade_field(&s,100,200,value), Ok(false), "{prompt}: {value}");
+            }
+        }
+        // An ordinary equivalent-value question still accepts evaluated values.
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Evaluate the product. {{x}}"));
+        assert_eq!(grade_field(&s,100,200,"16807"), Ok(true));
+        // A scaffolded numeric fragment is not forced to be a complete power.
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Exponent form: $7^?$; fill the exponent. {{x}}"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("5"));
+        assert_eq!(grade_field(&s,100,200,"5"), Ok(true));
     }
 
     #[test]
