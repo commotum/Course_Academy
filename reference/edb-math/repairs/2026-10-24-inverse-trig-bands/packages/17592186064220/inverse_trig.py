@@ -51,7 +51,9 @@ def display(value):
 
 
 def aligned(rows):
-    return display(r'\begin{aligned}' + rows[0] + r' \\ '.join(' &= ' + row for row in rows[1:]) + r'\end{aligned}')
+    # All rows use the same empty first column. Keeping the original integral
+    # above its first equality avoids reserving its width beside every RHS.
+    return display(r'\begin{aligned}& ' + rows[0] + r' \\ ' + r' \\ '.join(' &= ' + row for row in rows[1:]) + r'\end{aligned}')
 
 
 def integral(body, variable='x', lower=None, upper=None):
@@ -165,6 +167,10 @@ def validate_parameters(kind, band, case, p):
         if band == 'easy' and A != 1: raise ValueError('Easy requires a unit constant')
         if band == 'moderate' and not (A > 1 and B == 1): raise ValueError('Moderate requires constant normalization')
         if band == 'hard' and not (A > 1 and B > 1): raise ValueError('Hard requires both nonunit coefficients')
+        if band == 'hard':
+            outer = N/(sp.sqrt(A) if kind == 'sine' else A)
+            final = outer/sp.sqrt(B/A)
+            if outer == 1 or final == 1: raise ValueError('Hard cannot cancel away a normalization or substitution factor')
         if kind == 'sine' and band == 'hard' and sp.sqrt(B).is_Rational:
             raise ValueError('Sine hard requires the additional radical substitution factor')
         if case == 'integer-inner' and not sp.sqrt(B).is_Integer: raise ValueError('Integer-factor case requires a square coefficient')
@@ -381,12 +387,20 @@ class Generator:
         if case not in self.cases[difficulty]: raise ValueError('Unknown band case')
         if parameters is not None:
             return self.build(difficulty, case, parameters, response=response, bank_profile=bank_profile, seed=seed)
-        profile = bank_profile or (rng.choice(tuple(DEFINITE_BANKS)) if self.kind == 'definite' else 'authored-substitution-errors')
+        eligible_banks = tuple(DEFINITE_BANKS)
+        if case == 'tangent-special':
+            # At the fixed transformed endpoint one, reciprocal-endpoint errors
+            # coincide with the key. These whole profiles are inapplicable.
+            eligible_banks = tuple(v for v in eligible_banks if not v.startswith('endpoint-'))
+        if bank_profile is not None and self.kind == 'definite' and response == 'radio' and bank_profile not in eligible_banks:
+            raise ValueError('Complete bank profile is inapplicable to this endpoint case')
+        profile = bank_profile or (rng.choice(eligible_banks) if self.kind == 'definite' else 'authored-substitution-errors')
+        last_error = None
         for _ in range(300):
             p = sample(self.kind, difficulty, case, rng)
             try: return self.build(difficulty, case, p, response=response, bank_profile=profile, seed=seed)
-            except ValueError: continue
-        raise ValueError('No eligible instance for the requested complete bank and case')
+            except ValueError as error: last_error = str(error)
+        raise ValueError(f'No eligible instance: {self.kind}/{difficulty}/{case}/{profile}: {last_error}')
 
     def batch(self, difficulty='all', count=8, seed=0):
         if type(count) is not int or not 1 <= count <= 100 or type(seed) is not int:
