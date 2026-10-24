@@ -419,7 +419,7 @@ def _normalize_math_boundary_pass(value, *, wrap_environments=False):
         saved.append(match[0])
         return prefix + str(len(saved) - 1) + 'END'
     protected_text = MATH.sub(protect_for_indent, text)
-    protected_text = re.sub(r'(?m)^[ \t]{4,}(?=[^\n]*(?:' + prefix + r'|\{\{))', '', protected_text)
+    protected_text = re.sub(r'(?m)^[ \t]{4,}(?=[^\n]*(?:' + prefix + r'|\{\{|\\\$))', '', protected_text)
     text = re.sub(prefix + r'(\d+)END', lambda m: saved[int(m[1])], protected_text)
     # Empty formula artifacts outside complete math spans carry no equation.
     spans = [(m.start(), m.end()) for m in MATH.finditer(text)]

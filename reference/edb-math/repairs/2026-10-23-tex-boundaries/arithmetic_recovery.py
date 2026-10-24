@@ -14,7 +14,7 @@ def blocks(text):
  return out
 
 def repair_arithmetic(entity,attribute,before):
- example=json.loads((HERE/'arithmetic-sources.json').read_text())[str(entity)]['example'];data=json.loads((HERE/f'arithmetic-source-{example}.json').read_text());kind='example_question' if attribute=='question/problem' else 'example_explanation';section=next(s for s in data['sections'] if s['section_type']==kind);decls=blocks(section['readable_text']);spans=[m for m in MATH.finditer(before) if m[0].startswith('$$')];assert len(decls)==len(spans),(entity,attribute,len(decls),len(spans));after=before
+ example=json.loads((HERE/'arithmetic-sources.json').read_text())[str(entity)]['example'];data=json.loads((HERE/f'arithmetic-source-{example}.json').read_text());kind='example_question' if attribute=='question/problem' else 'example_explanation';section=next(s for s in data['sections'] if s['section_type']==kind);decls=blocks(section['readable_text']);spans=[m for m in MATH.finditer(before) if m[0].startswith('$$') and (r'\begin{' in m[0] or r'\lef' in m[0])];assert len(decls)==len(spans),(entity,attribute,len(decls),len(spans));after=before
  for match,body in reversed(list(zip(spans,decls))):after=after[:match.start()]+'$$\n'+source_multiplication_tex(body)+'\n$$'+after[match.end():]
  return normalize_math_boundaries(after)
 
@@ -57,7 +57,7 @@ _readable_repair=repair_arithmetic
 def repair_arithmetic(entity,attribute,before):
  example=json.loads((HERE/'arithmetic-sources.json').read_text())[str(entity)]['example']
  try:return _readable_repair(entity,attribute,before)
- except ValueError:
-  tex=source_mathml_tables(example,attribute);spans=[m for m in MATH.finditer(before) if m[0].startswith('$$')];assert len(tex)==len(spans),(entity,attribute,len(tex),len(spans));after=before
+ except (ValueError,AssertionError):
+  tex=source_mathml_tables(example,attribute);spans=[m for m in MATH.finditer(before) if m[0].startswith('$$') and (r'\begin{' in m[0] or r'\lef' in m[0])];assert len(tex)==len(spans),(entity,attribute,len(tex),len(spans));after=before
   for m,t in reversed(list(zip(spans,tex))):after=after[:m.start()]+'$$\n'+t+'\n$$'+after[m.end():]
   return normalize_math_boundaries(after)

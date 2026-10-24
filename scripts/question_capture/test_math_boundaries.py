@@ -52,6 +52,7 @@ class MathBoundaryTests(unittest.TestCase):
     def test_empty_cells_and_rows_remain_empty(self):
         self.check('| $x$ | $$ |\n| $$? | $y$ |', '| $x$ |  |\n| ? | $y$ |')
         self.check('$1$$9$\\\\$2$', '$1$$9$<br>$2$')
+        self.check('                            The total cost is \\$\n{{value}}', 'The total cost is \\$\n{{value}}')
 
     def test_unclosed_math_is_rejected_without_inventing_an_equation(self):
         for source in ('$x+1', r'\begin{align}x=1', r'\begin{align}x=1\end{matrix}'):

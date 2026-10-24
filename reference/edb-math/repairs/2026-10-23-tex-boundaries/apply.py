@@ -14,6 +14,8 @@ def committed(path):
  return r if isinstance(r,dict) and r.get(':edb/committed') is True else None
 
 def main():
+ fidelity=json.loads((HERE/'fidelity-verification.json').read_text());assert not fidelity['unexpected_changes']
+ processes=json.loads((HERE/'process-verification.json').read_text());assert processes['historical_html_import_verified'] and processes['current_capture_import_verified'] and processes['shared_publication_normalizes_before_identity']
  assert sys.argv[1:]==['--apply-user-authorized'];batches=json.loads((HERE/'batches.json').read_text());fields=json.loads((HERE/'fields.json').read_text());bykey={(f['entity'],f['attribute']):f for f in fields};render=json.loads((HERE/'render-verification.json').read_text());prep=json.loads((HERE/'preparation.json').read_text());assert not render['failed_fields'] and not render['page_errors'] and render['fields']==len(fields)
  checked={(r[0],r[1]):r[2:] for r in render['verified_field_hashes']}
  assert all(checked[f['entity'],f['attribute']]==[f['before_sha256'],f['after_sha256']] for f in fields)
