@@ -138,8 +138,6 @@ $$
 
 Find the slope of the tangent to the curve $y=\operatorname{sin}⁡(3x+5)$ at the point where $x=2.$
 
-{{selection}}
-
 3 \cos{\left(11 \right)} [correct]
 - 3 \cos{\left(11 \right)}
 5 \cos{\left(2 \right)}
@@ -177,8 +175,6 @@ Therefore, the slope of $y=f(x)$ at $x=2$ is $3\operatorname{cos}⁡11.$
 ### New variant
 
 Find the slope of the tangent to the curve $y=\operatorname{sin}⁡(3x+12)$ at the point where $x=2.$
-
-{{selection}}
 
 3 \cos{\left(18 \right)} [correct]
 - 3 \cos{\left(18 \right)}
@@ -218,13 +214,11 @@ Therefore, the slope of $y=f(x)$ at $x=2$ is $3\operatorname{cos}⁡18.$
 
 Calculate $\frac{\text{d}y}{\text{d}x}$ for $y=\operatorname{cos}⁡(11-2x)-6{x}^{3}.$
 
-{{selection}}
-
-- 9 x^{2} + 2 \sin{\left(2 x - 11 \right)}
-- 9 x^{2} - \cos{\left(2 x - 11 \right)}
-- 18 x^{2} - \sin{\left(2 x - 11 \right)}
-- 18 x^{2} + 2 \cos{\left(2 x - 11 \right)}
-- 18 x^{2} - 2 \sin{\left(2 x - 11 \right)} [correct]
+-2\sin(11-2x)-9x^{2}
+-\cos(11-2x)-9x^{2}
+\sin(11-2x)-18x^{2}
+2\cos(11-2x)-18x^{2}
+2\sin(11-2x)-18x^{2} [correct]
 
 Let $g(x)=\operatorname{cos}⁡(11-2x)$ and $h(x)=-6{x}^{3}.$ Then,
 
@@ -268,13 +262,11 @@ $$
 
 Calculate $\frac{\text{d}y}{\text{d}x}$ for $y=\operatorname{cos}⁡(18-2x)-6{x}^{3}.$
 
-{{selection}}
-
-- 9 x^{2} + 2 \sin{\left(2 x - 18 \right)}
-- 9 x^{2} - \cos{\left(2 x - 18 \right)}
-- 18 x^{2} - \sin{\left(2 x - 18 \right)}
-- 18 x^{2} + 2 \cos{\left(2 x - 18 \right)}
-- 18 x^{2} - 2 \sin{\left(2 x - 18 \right)} [correct]
+-2\sin(18-2x)-9x^{2}
+-\cos(18-2x)-9x^{2}
+\sin(18-2x)-18x^{2}
+2\cos(18-2x)-18x^{2}
+2\sin(18-2x)-18x^{2} [correct]
 
 Let $g(x)=\operatorname{cos}⁡(18-2x)$ and $h(x)=-6{x}^{3}.$ Then,
 
@@ -416,8 +408,6 @@ m = f'(1) = \bbox[4pt, border: 1px solid lightgray]{26 \pi}.
 
 Find the equation of the tangent to the curve $y=2\operatorname{cos}⁡(x-1)$ at the point $(1+\pi ,-2).$
 
-{{selection}}
-
 y=x - \pi - 3
 y=x - 2 + \pi
 y=-2 [correct]
@@ -459,8 +449,6 @@ $$
 ### New variant
 
 Find the equation of the tangent to the curve $y=12\operatorname{cos}⁡(x-1)$ at the point $(1+\pi ,-12).$
-
-{{selection}}
 
 y=x - 13 - \pi
 y=x - 12 + \pi

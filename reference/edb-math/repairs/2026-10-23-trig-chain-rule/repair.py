@@ -5,11 +5,16 @@ import importlib.util
 import json
 from pathlib import Path
 import re
+import subprocess
 import sys
+import threading
+from types import SimpleNamespace
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
+sys.path.insert(0, str(ROOT))
+from capture.scripts.database.preview import preview_executable
 from migrate_learner_history import connection, dumps, loads, kw
 sys.path.insert(0, str(ROOT / 'generate/scratch/17592186064281'))
 from db_support import PATTERN, plain
@@ -24,14 +29,19 @@ def save(name, value):
 
 
 def check_datoms(report, changes):
+    attributes = dict(loads((HERE / 'attributes.edn').read_text()))
+    instant = attributes[kw('db/txInstant')]
+    answer_value = attributes[kw('answer/value')]
     expected = collections.Counter(
         (r['entity'], value, added) for r in changes
         for value, added in [(r['before'], False), (r['after'], True)])
     datoms = report[':edb/tx-data']
     actual = collections.Counter((d[0], d[2], d[-1]) for d in datoms
-                                 if d[1] != kw('db/txInstant'))
+                                 if d[1] != instant)
     assert actual == expected
-    assert all(d[1] == kw('answer/value') for d in datoms if d[1] != kw('db/txInstant'))
+    assert all(d[1] == answer_value for d in datoms if d[1] != instant)
+    assert all(d[-2] == attributes[kw('agent/codex')] for d in datoms)
+    assert len(datoms) == len(changes) * 2 + 1
 
 
 def prepare():
@@ -70,7 +80,13 @@ def prepare():
     save('changes.json', changes)
     (HERE / 'transaction.edn').write_text(dumps(forms))
     db = connection()
-    preview = db.command('with', '--source', ':agent/codex', '--file', HERE / 'transaction.edn')
+    db.query('[:find ?ident ?e :in $ [?ident ...] :where [?e :db/ident ?ident]]',
+             [[kw('db/txInstant'), kw('answer/value'), kw('agent/codex')]], HERE, 'attributes')
+    executable = preview_executable(SimpleNamespace(math_root=Path('/media/jake/SSD/EDB/math'),
+                                    repo_root=ROOT, preview_bin=None), threading.Event())
+    preview = subprocess.run([str(executable), 'with', '--database', 'math', '--source', ':agent/codex',
+                              '--file', str(HERE / 'transaction.edn')],
+                             env=db.env, check=True, capture_output=True, text=True).stdout
     (HERE / 'preview.edn').write_text(preview)
     report = loads(preview)
     assert report[':edb/committed'] is False
