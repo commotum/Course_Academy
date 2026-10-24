@@ -85,8 +85,9 @@ def plan():
                         value_pairs.append((old, new))
                 elif kid == 17592186198361:
                     values, _, _ = g.bank(t, p, m['profile'])
+                    reader=generators[17592186124470]
                     for old in old_values.values():
-                        matches=[new for new in values if compare(old,new)['outcome']=='equivalent']
+                        matches=[new for new in values if g.sp.expand_log(reader.read_scalar(new)-reader.read_scalar(old))==0]
                         assert len(matches)==1,('Ratio bank mismatch',old,matches)
                         value_pairs.append((old,matches[0]))
                 elif kid == 17592186129268:
@@ -125,7 +126,7 @@ def plan():
                 if matches:
                     assert len(matches) == 1, ('Ambiguous repair', qid, old)
                     new = matches[0]
-                    if kid != 17592186124470:  # This radio family's TeX has its own strict scalar reader above.
+                    if kid not in (17592186124470,17592186198361):  # Radio families have exact scalar proofs above.
                         equivalent(old, new)
                     if old != new:
                         changes.append({'entity': answer[':db/id'], 'question': qid, 'attribute': 'answer/value', 'before': old, 'after': new})

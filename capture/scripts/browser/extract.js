@@ -99,7 +99,7 @@
   // Literal MathML brace glyphs are delimiters, not TeX grouping syntax.
   const literalFence = value => value === '{' ? '\\{' : value === '}' ? '\\}' : value;
   // A currency glyph inside MathML is content, not a TeX math delimiter.
-  const literalDollar = value => value.replace(/\$/g, '\\$');
+  const literalDollar = value => value.replace(/[$%]/g, glyph => '\\' + glyph);
   let formulaFields = new Map();
   const mathColor = value => /^(?:[a-z]+|#[0-9a-f]{3}|#[0-9a-f]{6})$/i.test(value || '') &&
     !/^(?:inherit|initial|unset|revert|revertlayer|currentcolor)$/i.test(value) && CSS.supports('color', value);

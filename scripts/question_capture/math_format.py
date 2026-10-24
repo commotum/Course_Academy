@@ -227,15 +227,24 @@ def _normalize_math_boundary_pass(value):
     text = re.sub(r'\A\$\$[ \t]*\n\s*(?=(?:Find|If|The|Calculate|Evaluate|First|Given|Consider|Note|Which)\b|[A-Z][a-z]+ (?:has|is|uses|buys)\b)', '', text)
     # The legacy dollar-to-[math] substitution also touched escaped currency.
     text = re.sub(r'\\\[/?math\]', lambda _: r'\$', text)
+    text = re.sub(r'\$-\s*\$((?:\\,\s*)*\d[^$\n]*)\$', lambda m: '$-' + r'\$' + m[1] + '$', text)
+    text = re.sub(r'\$-\$\$(?=\s*\{\{)', lambda _: '$-$' + r'\$', text)
+    text = re.sub(r'\(\$(?=\))', lambda _: '(' + r'\$', text)
+    if re.search(r'\b(?:investment|savings|account|money|pay|dollars|price|profit|cost|charge|paid|worth|bank|policy)\b', text, re.I):
+        text = re.sub(r'(\$(?:\\.|[^$\\\n])*=\s*)\$((?:\\,\s*)*\d[^$\n]*)\$',
+                      lambda m: m[1] + r'\$' + m[2] + '$', text)
+    text = re.sub(r'\\\$(?= and \$[01]\s*\\land)', '$', text)
+    text = re.sub(r'(?<!\\)\$(?=\s*\{\{[^{}]+\}\}\$(?:\\[,!])+\$)', lambda _: r'\$', text)
     # A source math box containing a dollar sign was wrapped once more in $...$.
     currency_or_math = re.compile(
         r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|'
-        r'(?<!\\)\$\$(?P<currency>\d[^$\n]*?)(?<!\\)\$(?!\$)|'
+        r'(?<!\\)\$\$(?P<currency>(?:\\,\s*)*\d[^$\n]*?)(?<!\\)\$(?!\$)|'
         r'\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
     text = currency_or_math.sub(lambda m: ('$' + r'\$' + m['currency'] + '$')
                                 if m['currency'] is not None else m[0], text)
     text = re.sub(r'(?m)(\|[ \t]*)\$\$(?=[ \t]*\|)', lambda m: m[1], text)
     text = re.sub(r'(?m)(\|[ \t]*)\$\$\?(?=[ \t]*\|)', lambda m: m[1] + '?', text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$([.:])(?=[ \t]*\|)', lambda m: m[1] + m[2], text)
     text = re.sub(r'(\{\{[^{}]+\}\}[ \t\n]*)\$\$(?=[,;:])', lambda m: m[1], text)
     text = re.sub(r'\A\$\$[ \t]*\n[ \t\n]*(\$(?!\$)[^$\n]+\$)(?=\n|$)',
                   lambda m: '$$\n' + m[1][1:-1] + '\n$$', text)
@@ -310,9 +319,48 @@ def _normalize_math_boundary_pass(value):
     def percentages(match):
         return re.sub(r'(?<=\d)(?<!\\)%', lambda _: r'\%', match[0])
     text = MATH.sub(percentages, text)
+    def spacing(match):
+        whole = match[0]
+        size = 2 if whole.startswith(('$$', r'\[', r'\(')) else 1
+        body = whole[size:-size]
+        fixed = _label_row_spacing(body)
+        length = r'\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\]'
+        gap = re.compile(r'(?<!\\)\\(' + length + ')')
+        if gap.search(fixed):
+            if not gap.sub('', fixed).strip().strip('\\ '):
+                fixed = gap.sub(lambda m: r'\rule{0pt}{' + m[1][1:-1].strip() + '}', fixed)
+            elif gap.search(fixed.rstrip()) and gap.search(fixed.rstrip()).end() == len(fixed.rstrip()):
+                fixed = gap.sub('', fixed)
+            else:
+                fixed = gap.sub(lambda m: r'\\' + m[1], fixed)
+                if r'\begin{' not in fixed:
+                    fixed = r'\begin{gathered}' + fixed + r'\end{gathered}'
+        return whole[:size] + fixed + whole[-size:]
+    text = MATH.sub(spacing, text)
     # An indented formula opener otherwise becomes <pre><code>, which MathJax
     # explicitly skips. Indentation within a protected formula remains exact.
     text = re.sub(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', '', text)
+    # Empty formula artifacts outside complete math spans carry no equation.
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    changes = []
+    for match in re.finditer(r'(?<!\\)\$\$', text):
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        before, after = text[:match.start()], text[match.end():]
+        if (not before.rsplit('\n', 1)[-1].strip() and not after.split('\n', 1)[0].strip()
+                or after.startswith(('?', ',"', '\n- '))
+                or before.endswith('.') and after.startswith('\n\n|')):
+            changes.append((match.start(), match.end(), ''))
+    for start, end, replacement in reversed(changes):
+        text = text[:start] + replacement + text[end:]
+    # A literal currency sign immediately before a widget has no closing math
+    # delimiter. Work only outside complete spans to preserve e.g. $x=$ {{x}}.
+    pieces, offset = [], 0
+    for match in MATH.finditer(text):
+        pieces += [re.sub(r'(?<!\\)\$(?=\s*\{\{)', lambda _: r'\$', text[offset:match.start()]), match[0]]
+        offset = match.end()
+    pieces.append(re.sub(r'(?<!\\)\$(?=\s*\{\{)', lambda _: r'\$', text[offset:]))
+    text = ''.join(pieces)
     return text
 
 
@@ -341,6 +389,9 @@ def validate_math_boundaries(value):
         raise ValueError('Unpaired math dollar delimiter; escape literal currency')
     if re.search(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', text):
         raise ValueError('Indented math becomes a Markdown code block')
+    for match in MATH.finditer(text):
+        if re.search(r'(?<=\d)(?<!\\)%', match[0]):
+            raise ValueError('Unescaped percentage glyph comments out math')
     return text
 
 

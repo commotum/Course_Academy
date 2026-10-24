@@ -3,9 +3,11 @@
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from question_capture.math_format import normalize_math_boundaries
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -65,7 +67,7 @@ class Renderer:
         # MathJax's hat disables stretching; widehat retains the default.
         return ('\\hat{' if stretchy=='false' else '\\widehat{')+body+'}'
     def m(self,n):
-        if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),str(n)))
+        if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%]',lambda m:'\\'+m[0],str(n))))
         if not isinstance(n,Tag):return ''
         t=n.name.lower()
         if t in ('mphantom','annotation','annotation-xml'):return ''
@@ -84,8 +86,8 @@ class Renderer:
         if t=='msqrt':return '\\sqrt{'+''.join(cs)+'}'
         if t=='mroot':return '\\sqrt['+cs[1]+']{'+cs[0]+'}'
         if t=='mspace':return '\\,'
-        if t=='mtext':return '\\text{'+n.get_text()+'}'
-        if t=='mo':return OPS.get(n.get_text(),GREEK.get(n.get_text(),n.get_text()))
+        if t=='mtext':return '\\text{'+re.sub(r'[$%]',lambda m:'\\'+m[0],n.get_text())+'}'
+        if t=='mo':return OPS.get(n.get_text(),GREEK.get(n.get_text(),re.sub(r'[$%]',lambda m:'\\'+m[0],n.get_text())))
         if t=='mi':
             nxt=n.find_next_sibling()
             if re.fullmatch('[A-Za-z]+',n.get_text()) and nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':return '\\operatorname{'+n.get_text()+'}'

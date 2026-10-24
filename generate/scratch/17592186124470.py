@@ -107,10 +107,23 @@ def read_scalar(s):
 
 def tex(e):return sp.latex(e).replace(r'\log',r'\ln')
 def choice_tex(e,name,p):
- # Expanding a sum must not expand the input of a trig function in the UI.
+ # Render the entire bank in the source's translated coordinate, including
+ # its exponential factors. Otherwise only the keyed choice looks source-like.
  if name=='exponential_cosine':
-  inner=(T+p['h'])**2
-  e=e.xreplace({fn(sp.expand(inner)):fn(inner,evaluate=False) for fn in (sp.sin,sp.cos)})
+  h=p['h'];inner=(T+h)**2
+  S,C,E1,E2,U=[sp.Symbol(r'\mathcal{'+s+'}') for s in ('S','C','P','Q','U')]
+  mapping={sp.sin(sp.expand(inner)):S,sp.cos(sp.expand(inner)):C}
+  for term in e.atoms(sp.exp):
+   exponent=term.args[0];k=exponent.coeff(T);constant=sp.expand(exponent-k*T)
+   if k in (1,2) and not constant.has(T):
+    mapping[term]=(E1 if k==1 else E2)*sp.exp(constant-k*h)
+  symbolic=sp.factor_terms(sp.expand(e.xreplace(mapping).subs(T,U-h)/p['c']))
+  tau='t' if h==0 else '('+tex(T+h)+')'
+  shown=tex(symbolic)
+  for token,value in [(S,r'\sin('+tau+r'^{2})'),(C,r'\cos('+tau+r'^{2})'),
+                      (E1,r'{e}^{'+tau+'}'),(E2,r'{e}^{2'+tau+'}'),(U,tau)]:
+   shown=shown.replace(tex(token),value)
+  return scale_tex(shown,p['c'])
  return tex(e)
 
 def final_solution_value(solution):

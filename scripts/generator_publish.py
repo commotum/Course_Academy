@@ -206,6 +206,10 @@ def validate_question(q):
             aid = str(a[':answer/id'])
             uuid.UUID(aid)
             value, atype = a.get(':answer/value'), enum(a.get(':answer/type'))
+            if atype == ':answer.type/text' and isinstance(value, str):
+                validate_math_boundaries(value)
+            if ':answer/feedback' in a:
+                validate_math_boundaries(a[':answer/feedback'])
             if not isinstance(value, str) or not value.strip() or atype not in {':answer.type/' + x for x in ('math', 'text', 'image')}:
                 raise ValueError('Generated answer is empty or has an unsupported type')
             if aid in ids or (atype, value) in typed_values:

@@ -106,6 +106,7 @@ element => {
   }
   const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
+  const literalMathGlyph = value => value.replace(/[$%]/g, glyph => '\\' + glyph);
   let formulaFields = new Map();
   // A fenced, centered MathML table is a matrix. Equation layouts have explicit
   // right/left column alignment and must keep their aligned environment.
@@ -281,8 +282,8 @@ element => {
       case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
       case 'mspace': return '\\,';
-      case 'mtext': return '\\text{' + n.textContent + '}';
-      case 'mo': return ops[n.textContent] || greek[n.textContent] || n.textContent;
+      case 'mtext': return '\\text{' + literalMathGlyph(n.textContent) + '}';
+      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalMathGlyph(n.textContent);
       case 'mi':
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
