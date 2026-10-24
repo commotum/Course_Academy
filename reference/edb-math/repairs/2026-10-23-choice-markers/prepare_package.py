@@ -7,7 +7,7 @@ def main():
  c=next(c for c in json.loads((HERE/'source-changes.json').read_text()) if c['kind']=='package-successor');source=ROOT/c['source'];old=Path('/media/jake/SSD/EDB/math')/c['path'];m=c['manifest'];manifest=build_manifest(source,m['entrypoint'],m['files'],dependencies=m['dependencies']);digest=manifest_digest(manifest)
  checked=json.loads((HERE/'generator-verification.json').read_text());assert checked['only_expected_presentation_changes'];assert any(r['reference']==c['path'] for r in checked['results'])
  # The user explicitly authorized these source changes and their publication.
- package=publish_package(source,Path('/media/jake/SSD/EDB/math'),m['entrypoint'],m['files'],dependencies=m['dependencies'],expected_digest=digest)
+ package=publish_package(source,m['entrypoint'],m['files'],Path('/media/jake/SSD/EDB/math'),dependencies=m['dependencies'],expected_digest=digest)
  prior=verify_package(old.parent)
  assert all(manifest['files'][n]==m['files'][n] for n in m['files'] if n!=m['entrypoint'])
  new_id=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:question-generator:'+digest))
