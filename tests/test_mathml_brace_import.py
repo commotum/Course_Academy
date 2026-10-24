@@ -28,6 +28,8 @@ class MathMLBraceImportTests(unittest.TestCase):
     def test_literal_currency_and_percent_are_escaped_by_every_importer(self):
         self.assert_formula('<mtext>$</mtext><mn>12</mn><mo>%</mo>', r'\text{\$}12\%')
         self.assert_formula('<mtext>12% off</mtext>', r'\text{12\% off}')
+        self.assert_formula('<mo>{</mo><mi>x</mi><mo>}</mo>', r'\{x\}')
+        self.assert_formula('<mtext># orders</mtext>', r'\text{\# orders}')
 
     @classmethod
     def setUpClass(cls):

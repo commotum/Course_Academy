@@ -64,3 +64,21 @@ class MathBoundaryTests(unittest.TestCase):
             validate_math_boundaries(r'\begin{align}x&=1\\y&=2\end{align}')
         with self.assertRaisesRegex(ValueError, 'percentage'):
             validate_math_boundaries('$12%=12/100$')
+
+class SourceColumnArithmeticTests(unittest.TestCase):
+    def test_source_columns_are_not_absolute_value_matrices(self):
+        from math_format import source_multiplication_tex
+        value = source_multiplication_tex(r'1|8|5|2; ×|7; 1|[math]\phantom{i}[/math]|9|[math]\phantom{i}[/math]|4')
+        self.assertIn(r'\begin{array}', value)
+        self.assertNotIn('vmatrix', value)
+        self.assertEqual(1852*7,12964)
+        with self.assertRaisesRegex(ValueError, 'digit disagrees'):
+            source_multiplication_tex('1|8|5|2; ×|7; 1|2|9|6|5')
+
+    def test_supplied_carries_are_checked_independently(self):
+        from math_format import source_multiplication_tex
+        value=source_multiplication_tex('_(5)|_(0)|_(0)|_(3); 7|9|0|0|6; ×|6; 4|7|4|0|3|6')
+        self.assertIn(r'\scriptstyle 5',value)
+        self.assertEqual(79006*6,474036)
+        with self.assertRaisesRegex(ValueError,'carries disagree'):
+            source_multiplication_tex('_(4)|_(0)|_(0)|_(3); 7|9|0|0|6; ×|6; 4|7|4|0|3|6')

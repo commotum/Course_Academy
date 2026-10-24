@@ -213,6 +213,66 @@ def legacy_choice(text):
 MATH = re.compile(r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
 
 
+def source_multiplication_tex(source):
+    """Recover the explicit digit columns in an archived MA arithmetic table.
+
+    Unlike ordinary algebra, these vertical bars separate digit columns. Check
+    every supplied result/carry against integer arithmetic before rendering.
+    Unsupported source layouts are rejected rather than converted as matrices.
+    """
+    parts = [p.strip() for p in source.split(';')]
+    carries = []
+    if parts and parts[0].startswith('_('):
+        carries = re.findall(r'_\((\d)\)', parts.pop(0))
+    if len(parts) < 3 or not re.fullmatch(r'\d(?:\|\d)+', parts[0]) or not re.fullmatch(r'[×⋅]\|\d', parts[1]):
+        raise ValueError('Unsupported source multiplication layout')
+    digits = parts[0].split('|');factor = int(parts[1][-1]);product = str(int(''.join(digits)) * factor)
+    tokens = parts[2].split('|');result=[];caption=[]
+    for i,t in enumerate(tokens):
+        clean = re.sub(r'\[/?math\]', '', t).strip()
+        if re.fullmatch(r'\d|\\phantom\{[\di]\}|\\color\{(?:red|blue)\}\d', clean):
+            result.append(clean)
+        else:
+            caption = ['|'.join(tokens[i:])] + parts[3:];break
+    if not result or len(result)>len(product):raise ValueError('Invalid source product width')
+    for shown,actual in zip(result,product[-len(result):]):
+        if r'\phantom{' not in shown and re.sub(r'\\color\{[^}]+\}', '', shown)!=actual:
+            raise ValueError('Source multiplication digit disagrees with arithmetic')
+    carry=0;expected=[]
+    for digit in reversed(digits):
+        carry=(int(digit)*factor+carry)//10;expected.append(str(carry))
+    expected=list(reversed(expected[:-1]))
+    if carries and carries!=expected[-len(carries):]:raise ValueError('Source multiplication carries disagree with arithmetic')
+    width=len(product)
+    def row(values,sign=''):
+        return ' & '.join([sign]+['']*(width-len(values))+values)
+    rows=[]
+    if carries:rows.append(row([r'\scriptstyle '+v for v in carries]+['']))
+    rows += [row(digits),row([str(factor)],r'\times'),r'\hline '+row(result)]
+    tex=r'\begin{array}{'+'r'*(width+1)+'}'+r' \\ '.join(rows)+r'\end{array}'
+    if caption:
+        body='; '.join(caption).replace('×',r'\times ').replace('−','-')
+        body=body.replace('and',r'\quad\text{and}\quad ')
+        body=re.sub(r'\b(Carry|Write):',lambda m:r'\quad\text{'+m[1]+r': }',body)
+        tex+=r'\qquad '+body
+    return tex
+
+
+def normalize_source_arithmetic(value):
+    text=str(value);offset=0
+    while (start:=text.find('[MATH:',offset))>=0:
+        depth,end=1,start+6
+        while end<len(text) and depth:
+            depth+=(text[end]=='[')-(text[end]==']');end+=1
+        if depth:raise ValueError('Unclosed source math placeholder')
+        body=text[start+6:end-1].strip()
+        if not re.search(r';\s*[×⋅]\|\d',body):
+            offset=end;continue
+        replacement='$$\n'+source_multiplication_tex(body)+'\n$$'
+        text=text[:start]+replacement+text[end:];offset=start+len(replacement)
+    return text
+
+
 def _normalize_math_boundary_pass(value, *, wrap_environments=False):
     """Recover explicit legacy math boundaries without changing equations.
 
@@ -387,7 +447,7 @@ def _normalize_math_boundary_pass(value, *, wrap_environments=False):
 
 def normalize_math_boundaries(value):
     """Normalize explicit source encodings to a stable Markdown math boundary."""
-    text = str(value)
+    text = normalize_source_arithmetic(value)
     # Settle delimiter/currency encodings before deciding which environments
     # are bare. A transient malformed delimiter must not cause double wrapping.
     for phase in (False, True, False):
@@ -399,17 +459,36 @@ def normalize_math_boundaries(value):
         else:
             if _normalize_math_boundary_pass(text, wrap_environments=phase) != text:
                 raise ValueError('Math boundary normalization did not converge')
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'(?m)^([^\n$]+)$', text))):
+        line = match[1].strip()
+        if not ('=' in line or '≈' in line) or not re.search(r'\\(?:frac|dfrac|sqrt|sum|int)\b', line):
+            continue
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        residual = re.sub(r'\\text\{[^{}]*\}|\\[A-Za-z]+', '', line)
+        if re.search(r'[A-Za-z]{4,}', residual) or r'\begin{' in line or r'\end{' in line:
+            continue
+        try:
+            validate_tex(line)
+        except ValueError:
+            continue
+        text = text[:match.start()] + '$$\n' + line + '\n$$' + text[match.end():]
     return text
 
 
-def validate_math_boundaries(value):
+def validate_math_boundaries(value, *, strict=False):
     """Catch unparsed TeX as well as errors inside recognized math spans."""
     text = str(value)
     outside = MATH.sub('', text)
+    if strict and re.search(r'\\(?:frac|dfrac|sqrt|eqalign)\b', outside):
+        raise ValueError('Unprotected TeX expression outside math delimiters')
     if re.search(r'\\(?:begin|end)\{|\\(?:eqalign|matrix)\s*\{', outside):
         raise ValueError('Unprotected TeX environment; use a delimited display block')
     if re.search(r'\[/?(?:math|latex|tex|displaymath)\]', text):
         raise ValueError('Legacy math delimiter; use $ or $$')
+    if '[MATH:' in text or re.search(r'\\lef\b', text):
+        raise ValueError('Unresolved or damaged legacy source layout')
     if re.search(r'(?<!\\)\$', outside):
         raise ValueError('Unpaired math dollar delimiter; escape literal currency')
     if re.search(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', text):

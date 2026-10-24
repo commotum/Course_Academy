@@ -182,7 +182,7 @@ def validate_question(q):
     for key in (':question/problem', ':question/worked-solution'):
         if not isinstance(q.get(key), str) or not q[key].strip():
             raise ValueError('Generated question requires nonempty ' + key)
-        validate_math_boundaries(q[key])
+        validate_math_boundaries(q[key], strict=True)
     if ':question/math-academy-id' in q:
         raise ValueError('Generated content cannot claim a Math Academy source identity')
     if enum(q.get(':question/difficulty')) not in {':question.difficulty/' + x for x in ('easy', 'moderate', 'hard')}:
@@ -207,9 +207,9 @@ def validate_question(q):
             uuid.UUID(aid)
             value, atype = a.get(':answer/value'), enum(a.get(':answer/type'))
             if atype == ':answer.type/text' and isinstance(value, str):
-                validate_math_boundaries(value)
+                validate_math_boundaries(value, strict=True)
             if ':answer/feedback' in a:
-                validate_math_boundaries(a[':answer/feedback'])
+                validate_math_boundaries(a[':answer/feedback'], strict=True)
             if not isinstance(value, str) or not value.strip() or atype not in {':answer.type/' + x for x in ('math', 'text', 'image')}:
                 raise ValueError('Generated answer is empty or has an unsupported type')
             if aid in ids or (atype, value) in typed_values:

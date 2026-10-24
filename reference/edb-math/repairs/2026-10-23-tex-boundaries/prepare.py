@@ -17,8 +17,12 @@ def main():
   if a=='answer-field/choices':refs[e].add(v)
   if a=='question-generator/script':gens[e]=v
   if a=='knowledge-point/question-generator':owners[e]=v
- out=[];unresolved=[];actions=collections.Counter()
+ out=[];unresolved=[];actions=collections.Counter();candidate_keys=None
+ if '--refine' in sys.argv:
+  candidates=json.loads((HERE/'candidate-inputs.json').read_text());candidate_keys={(r['e'],r['a']) for r in candidates}
+  candidate_keys.update((r['entity'],r['attribute']) for r in json.loads((HERE/'fields.json').read_text()))
  for (e,a),r in values.items():
+  if candidate_keys is not None and (e,a) not in candidate_keys:continue
   before=r['v'];source=before;special=[]
   if e in {17592186500361,17592186533979,17592186533981} and a=='question/worked-solution':
    source=re.sub(r'(?m)(\\end\{aligned\}\s*\n\$\$)\s*\n\$\$(?=\s*\n[A-Za-z])',r'\1',source)

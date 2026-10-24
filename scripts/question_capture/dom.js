@@ -106,7 +106,7 @@ element => {
   }
   const greek = {'α':'\\alpha ','β':'\\beta ','γ':'\\gamma ','δ':'\\delta ','θ':'\\theta ','λ':'\\lambda ','μ':'\\mu ','π':'\\pi ','ρ':'\\rho ','σ':'\\sigma ','φ':'\\phi ','ω':'\\omega ','∞':'\\infty '};
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
-  const literalMathGlyph = value => value.replace(/[$%]/g, glyph => '\\' + glyph);
+  const literalMathGlyph = value => value.replace(/[$%#{}]/g, glyph => '\\' + glyph);
   let formulaFields = new Map();
   // A fenced, centered MathML table is a matrix. Equation layouts have explicit
   // right/left column alignment and must keep their aligned environment.
