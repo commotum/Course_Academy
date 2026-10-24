@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 import sys
+import argparse
 
 H = Path(__file__).resolve().parent
 ROOT = H.parents[3]
@@ -15,6 +16,8 @@ KPS = (17592186068916, 17592186068917, 17592186068918)
 
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--install',action='store_true')
+    install=parser.parse_args().install
     spec = importlib.util.spec_from_file_location('old_printed', ROOT/'generate/scratch/17592186068918/printed.py')
     reader = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(reader)
@@ -73,7 +76,9 @@ def batch(level,count=8,seed=0,template=None):
     return model.batch(KP,level,count,seed,evidence=EVIDENCE,template=template)
 if __name__=='__main__': model.cli(KP,LOCAL)
 '''
-        for dest in (directory/'package', ROOT/f'generate/scratch/{kp}'):
+        destinations=[directory/'package']
+        if install:destinations.append(ROOT/f'generate/scratch/{kp}')
+        for dest in destinations:
             dest.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT/'generate/scratch/trig_substitution.py', dest/'trig_substitution.py')
             shutil.copy2(ROOT/'generate/scratch/17592186068915/trig_format.py', dest/'trig_format.py')
@@ -84,7 +89,7 @@ if __name__=='__main__': model.cli(KP,LOCAL)
             'band_origin': origin, 'band_contract': 'band-contract.json', 'implementation_version': engine.VERSION,
             'maximum_records_per_call': 200, 'unsupported_levels_filled': False,
             'sampling': contract['pool_policy'], 'response_policy': evidence['authored_response_extension']}
-        (ROOT/f'generate/scratch/{kp}/capabilities.json').write_text(json.dumps(capabilities, indent=2)+'\n')
+        if install:(ROOT/f'generate/scratch/{kp}/capabilities.json').write_text(json.dumps(capabilities, indent=2)+'\n')
         print(kp, 'packaged; exclusions', len(blocked), 'parse limitations', len(failed))
 
 

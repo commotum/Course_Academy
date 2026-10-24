@@ -271,6 +271,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
         seen.add(fingerprint)
     from scripts.integration_batch_policy import validate_delivery_batch
     validate_delivery_batch(accepted, kp_id)
+    from scripts.trig_substitution_batch_policy import validate_delivery_batch as validate_trig_batch
+    validate_trig_batch(accepted, kp_id)
     return accepted, duplicate_count
 
 

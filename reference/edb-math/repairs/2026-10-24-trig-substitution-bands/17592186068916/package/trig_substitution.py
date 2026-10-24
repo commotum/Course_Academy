@@ -261,12 +261,12 @@ def render(kp, band, case, instance, seed, evidence):
         answer_tex = times(r, r'\ln\left(' + tex(ratio) + r'\right)')
         answer = r*s.log(ratio)
         sol += 'Both new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n' + times(r, r'\left[\ln u\right]_{' + tex(u0) + '}^{' + tex(u1) + '}') + '=' + times(r, r'\ln\left(' + tex(u1) + r'\right)-\ln\left(' + tex(u0) + r'\right)') + '.\n$$\n\n'
-        sol += 'Using $\ln A-\ln B=\ln(A/B)$ gives\n\n$$\n' + answer_tex + '.\n$$'
+        sol += r'Using $\ln A-\ln B=\ln(A/B)$ gives' + '\n\n$$\n' + answer_tex + '.\n$$'
     else:
         first, last = (s.simplify(m['primitive_u'].subs(U, value)) for value in (u0, u1))
         answer = s.simplify(last-first)
         answer_tex = tex(answer)
-        sol += 'Integrate and evaluate at both bounds:\n\n$$\n' + r'\left[' + primitive_u_tex + r'\right]_{' + tex(u0) + '}^{' + tex(u1) + '}=' + r'\left(' + tex(last) + r'\right)-\left(' + tex(first) + r'\right).\n$$\n\n'
+        sol += 'Integrate and evaluate at both bounds:\n\n$$\n' + r'\left[' + primitive_u_tex + r'\right]_{' + tex(u0) + '}^{' + tex(u1) + '}=' + r'\left(' + tex(last) + r'\right)-\left(' + tex(first) + r'\right).' + '\n$$\n\n'
         sol += 'Simplifying gives\n\n$$\n' + answer_tex + '.\n$$'
     # An exact-entry answer is authored from this derivation, not scaled from
     # a second source bank. There is one canonical answer, hence no alias collision.
@@ -312,17 +312,25 @@ def batch(kp, band, count=8, seed=0, *, evidence, template=None):
     if band not in CASE[kp]:
         raise ValueError('Unsupported difficulty')
     seen = set(evidence['excluded_tasks'])
+    shapes = set()
     records = []
+    order = list(CASE[kp][band])
+    random.Random(f'{seed}:{kp}:{band}:families').shuffle(order)
     for index in range(count):
         for attempt in range(300):
-            record = generate(kp, band, seed, template, evidence=evidence, index=index, attempt=attempt)
+            record = generate(kp, band, seed, template or order[index % len(order)], evidence=evidence,
+                              index=index + (len(order) if seed % 2 else 0), attempt=attempt)
             m = record['generation']
             if m['mathematical_fingerprint'] in seen:
                 continue
+            shape = (m['family'], m['model']['substitution'], m['model']['lower'], m['model']['upper'])
+            if shape in shapes:
+                continue  # a changed amplitude alone is not fresh practice
             # Zero definite outcomes do not pad this practice pool.
             if m['model']['lower'] is not None and s.sympify(m['model']['result']) == 0:
                 continue
             seen.add(m['mathematical_fingerprint'])
+            shapes.add(shape)
             records.append(record)
             break
         else:
