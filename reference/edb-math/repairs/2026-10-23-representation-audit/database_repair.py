@@ -108,6 +108,8 @@ def apply():
     assert {(r[0],str(r[1])):r[2] for r in rows}=={(r['entity'],':'+r['attribute']):r['after'] for r in changes}
     before=loads((H/'before.edn').read_text());inequality=loads((H/'inequality-before.edn').read_text())
     expected={q[':db/id']:q for row in before+inequality for q in row[0][':knowledge-point/questions'] if q[':db/id'] in prep['questions']}
+    assignment=loads((H/'assignment-before.edn').read_text())[0][0]
+    expected[assignment[':db/id']]=assignment
     for q in expected.values():
         for r in changes:
             if r['entity']==q[':db/id']:q[kw(r['attribute'])]=r['after']

@@ -35,7 +35,8 @@ def equivalent(old, new):
 
 def current_record(kp, question):
     q = copy.deepcopy(question)
-    q[':question/difficulty'] = q[':question/difficulty'][':db/ident']
+    if ':question/difficulty' in q:
+        q[':question/difficulty'] = q[':question/difficulty'][':db/ident']
     for f in q[':question/answer-fields']:
         f[':answer-field/type'] = f[':answer-field/type'][':db/ident']
         f[':answer-field/correct'] = [':answer/id', f[':answer-field/correct'][':answer/id']]
@@ -147,6 +148,21 @@ def plan():
             prospective.append(record)
     assert {r['question'][':db/id'] for r in prospective} == targets
     assert {c['question'] for c in changes} == targets
+    # Imported assignment: logarithm laws are ordinary algebra here. Show the
+    # actual endpoint conversion, leaving the existing key and grading intact.
+    assignment=json.loads((H/'assignment-before.json').read_text())
+    record=current_record({':db/id':0,':knowledge-point/title':'Fundamental Theorem of Line Integrals'},assignment)
+    q=record['question'];old=q[':question/worked-solution']
+    suffix=('\n\nSince $557$ and $93$ are positive, the power and quotient rules for logarithms give\n\n'
+            r'$$\ln\sqrt{557}-\ln\sqrt{93}=\frac12\ln557-\frac12\ln93=\frac12\ln\left(\frac{557}{93}\right).$$')
+    q[':question/worked-solution']=old+suffix
+    sp=generators[17592186124470].sp
+    assert sp.expand_log(sp.log(sp.sqrt(557))-sp.log(sp.sqrt(93))-sp.log(sp.Rational(557,93))/2,force=True)==0
+    changes.append({'entity':q[':db/id'],'question':q[':db/id'],'attribute':'question/worked-solution','before':old,'after':old+suffix})
+    prospective.append(record)
+    grading.append({'label':str(q[':db/id']),'record':record,'checks':[
+        {'field_index':0,'submitted':keyed(record),'expected':'accepted'},
+        {'field_index':0,'submitted':'987654321','expected':'rejected'}]})
     (H / 'changes.json').write_text(json.dumps(changes, indent=2) + '\n')
     (H / 'prospective.json').write_text(json.dumps(prospective, indent=2) + '\n')
     (H / 'grading-input.json').write_text(json.dumps(grading, indent=2) + '\n')

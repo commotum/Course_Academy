@@ -97,11 +97,30 @@ def candidates(entities):
                            'No automatic repair; candidate differences require contextual review.']}
 
 
+def snapshot_index(path):
+    """Accept the project's current-value JSONL exports without querying storage."""
+    attributes = {'knowledge-point/title', 'knowledge-point/questions', 'knowledge-point/canonical-example',
+                  'question/problem', 'question/worked-solution', 'question/math-academy-id',
+                  'question/answer-fields', 'answer-field/correct', 'answer/value'}
+    entities = defaultdict(lambda: defaultdict(list))
+    with path.open() as stream:
+        for line in stream:
+            row = json.loads(line)
+            if row['a'] not in attributes:
+                continue
+            value = row['v'] if 'v' in row else row['ref_eid'] if row.get('ref_eid') is not None else row['raw_string']
+            entities[str(row['e'])][row['a']].append(value)
+    return entities
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--index', type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--index', type=Path)
+    source.add_argument('--snapshot', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    report = candidates(json.loads(args.index.read_text()))
+    entities = json.loads(args.index.read_text()) if args.index else snapshot_index(args.snapshot)
+    report = candidates(entities)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: v for k, v in report.items() if k != 'candidates'}))

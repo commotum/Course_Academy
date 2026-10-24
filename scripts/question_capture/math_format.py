@@ -227,14 +227,22 @@ def _normalize_math_boundary_pass(value):
     text = re.sub(r'\A\$\$[ \t]*\n\s*(?=(?:Find|If|The|Calculate|Evaluate|First|Given|Consider|Note|Which)\b|[A-Z][a-z]+ (?:has|is|uses|buys)\b)', '', text)
     # The legacy dollar-to-[math] substitution also touched escaped currency.
     text = re.sub(r'\\\[/?math\]', lambda _: r'\$', text)
-    text = re.sub(r'\$-\s*\$((?:\\,\s*)*\d[^$\n]*)\$', lambda m: '$-' + r'\$' + m[1] + '$', text)
+    protected = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'\$-\s*\$((?:\\,\s*)*\d[^$\n]*)\$', text))):
+        if not any(start < match.start() < end for start, end in protected):
+            text = text[:match.start()] + '$-' + r'\$' + match[1] + '$' + text[match.end():]
     text = re.sub(r'\$-\$\$(?=\s*\{\{)', lambda _: '$-$' + r'\$', text)
     text = re.sub(r'\(\$(?=\))', lambda _: '(' + r'\$', text)
     if re.search(r'\b(?:investment|savings|account|money|pay|dollars|price|profit|cost|charge|paid|worth|bank|policy)\b', text, re.I):
-        text = re.sub(r'(\$(?:\\.|[^$\\\n])*=\s*)\$((?:\\,\s*)*\d[^$\n]*)\$',
+        text = re.sub(r'(\$\d[\d.,{}]*\\(?:cdot|times)\s*)\$(\d[^$=\n]*=)\$(\d[^$\n]*)\$',
+                      lambda m: m[1] + r'\$' + m[2] + r'\$' + m[3] + '$', text)
+        text = re.sub(r'(?<![\\$])(\$(?:\\.|[^$\\\n])*=\s*)\$((?:\\,\s*)*\d[^$\n]*)\$',
                       lambda m: m[1] + r'\$' + m[2] + '$', text)
     text = re.sub(r'\\\$(?= and \$[01]\s*\\land)', '$', text)
-    text = re.sub(r'(?<!\\)\$(?=\s*\{\{[^{}]+\}\}\$(?:\\[,!])+\$)', lambda _: r'\$', text)
+    protected = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'(?<!\\)\$(?=\s*\{\{[^{}]+\}\}\$(?:\\[,!])+\$)', text))):
+        if not any(start < match.start() < end for start, end in protected):
+            text = text[:match.start()] + r'\$' + text[match.end():]
     # A source math box containing a dollar sign was wrapped once more in $...$.
     currency_or_math = re.compile(
         r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|'
