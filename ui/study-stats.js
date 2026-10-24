@@ -10,6 +10,29 @@ function node(tag, className, text) {
   if (text !== undefined) element.textContent = text;
   return element;
 }
+function renderSummary(card, heading, entries) {
+  card.replaceChildren(node('h2', 'stat-heading', heading));
+  const summary = node('dl', 'stat-xp-summary');
+  const exactDetails = node('p', 'stat-note stat-xp-details'); exactDetails.hidden = true;
+  const summaryButtons = [];
+  for (const [label, value, details] of entries) {
+    const metric = node('div', 'stat-xp-metric');
+    const term = node('dt', 'stat-xp-label', label);
+    const definition = node('dd', 'stat-xp-number');
+    const formatted = value == null ? '—' : Math.abs(value) >= 10000
+      ? new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(value).toLowerCase()
+      : number(value);
+    const amount = node('button', 'stat-xp-value', formatted); amount.type = 'button'; summaryButtons.push(amount);
+    amount.title = details; amount.setAttribute('aria-label', details); amount.setAttribute('aria-expanded', 'false');
+    amount.addEventListener('click', () => {
+      const expanded = amount.getAttribute('aria-expanded') !== 'true';
+      for (const sibling of summaryButtons) sibling.setAttribute('aria-expanded', 'false');
+      amount.setAttribute('aria-expanded', String(expanded)); exactDetails.textContent = details; exactDetails.hidden = !expanded;
+    });
+    definition.append(amount); metric.append(term, definition); summary.append(metric);
+  }
+  card.append(summary, exactDetails);
+}
 export function localWeek(now = new Date()) {
   const first = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   first.setDate(first.getDate() - (first.getDay() + 6) % 7);
@@ -25,10 +48,19 @@ export function createStudySidebar() {
   const sidebar = node('aside', 'study-sidebar'); sidebar.setAttribute('aria-label', 'Study statistics');
   const todayCard = node('section', 'study-stat-card');
   const weekCard = node('section', 'study-stat-card');
+  const activityCard = node('section', 'study-stat-card stat-activities');
   todayCard.append(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', 'Loading your progress…'));
   weekCard.append(node('h2', 'stat-heading', 'This week'));
   const forecast = createForecastSidebar({ signal: events.signal });
-  sidebar.append(todayCard, weekCard, ...forecast.cards);
+  sidebar.append(todayCard, weekCard, ...forecast.cards, activityCard);
+  function renderActivities(totals) {
+    renderSummary(activityCard, 'Activities', [
+      ['Lessons', totals?.lessons, 'completed lesson sessions'],
+      ['KPs', totals?.knowledgePoints, 'distinct knowledge points in completed lessons'],
+      ['Reviews', totals?.reviews, 'completed review sessions'],
+    ].map(([label, value, description]) => [label, value, value == null ? `${label}: unavailable` : `${number(value)} ${description}`]));
+  }
+  renderActivities();
   let generation = 0, midnightTimer, renderedDay;
   releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
   async function load({ refreshForecast = true } = {}) {
@@ -68,28 +100,9 @@ export function createStudySidebar() {
     // Each fixed weekday slot shows its latest occurrence, including today.
     const days = data.days.map((day, i) => ({ ...day, start: boundaries[i] }))
       .sort((a, b) => (new Date(a.start).getDay() + 6) % 7 - (new Date(b.start).getDay() + 6) % 7);
-    todayCard.replaceChildren(node('h2', 'stat-heading', 'XP earned'));
-    const summary = node('dl', 'stat-xp-summary');
-    const exactDetails = node('p', 'stat-note stat-xp-details'); exactDetails.hidden = true;
-    const summaryButtons = [];
-    for (const [label, value, missing] of [['Today', today.earnedXp, 0], ['This week', weekXp, 0], ['Total', data.totalEarnedXp, data.totalXpMissing || 0]]) {
-      const metric = node('div', 'stat-xp-metric');
-      const term = node('dt', 'stat-xp-label', label);
-      const definition = node('dd', 'stat-xp-number');
-      const formatted = value == null ? '—' : Math.abs(value) >= 10000
-        ? new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(value).toLowerCase()
-        : number(value);
-      const amount = node('button', 'stat-xp-value', formatted); amount.type = 'button'; summaryButtons.push(amount);
-      const details = value == null ? `${label}: XP unavailable` : `${label}: ${number(value)} XP${missing ? ` recorded; XP unavailable for ${number(missing)} past ${missing === 1 ? 'activity' : 'activities'}` : ''}`;
-      amount.title = details; amount.setAttribute('aria-label', details); amount.setAttribute('aria-expanded', 'false');
-      amount.addEventListener('click', () => {
-        const expanded = amount.getAttribute('aria-expanded') !== 'true';
-        for (const sibling of summaryButtons) sibling.setAttribute('aria-expanded', 'false');
-        amount.setAttribute('aria-expanded', String(expanded)); exactDetails.textContent = details; exactDetails.hidden = !expanded;
-      });
-      definition.append(amount); metric.append(term, definition); summary.append(metric);
-    }
-    todayCard.append(summary, exactDetails);
+    renderSummary(todayCard, 'XP earned', [['Today', today.earnedXp, 0], ['This week', weekXp, 0], ['Total', data.totalEarnedXp, data.totalXpMissing || 0]].map(([label, value, missing]) => [label, value,
+      value == null ? `${label}: XP unavailable` : `${label}: ${number(value)} XP${missing ? ` recorded; XP unavailable for ${number(missing)} past ${missing === 1 ? 'activity' : 'activities'}` : ''}`]));
+    renderActivities(data.activityTotals);
     if (goal && today.earnedXp >= goal) todayCard.append(node('p', 'stat-note stat-goal-reached', '✓ Daily goal reached'));
     weekCard.replaceChildren(node('h2', 'stat-heading', 'This week'));
     const chartGoal = goal || 200;

@@ -23,7 +23,7 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12), { storage = new Map
   f.setNow = date => { now = date.getTime(); };
   f.window = new EventTarget();
   const context = vm.createContext({ document, window: f.window, Intl, Number, AbortController, crypto,
-    createForecastSidebar: ({ signal }) => { f.forecastSignal = signal; return { cards: [],
+    createForecastSidebar: ({ signal }) => { f.forecastSignal = signal; f.forecastCard = new Element('section'); return { cards: [f.forecastCard],
       refresh(options) { f.forecastRefreshes++; f.forecastRequests.push(options); }, updateGoal(goal) { f.goals.push(goal); } }; },
     Date: class extends Date { constructor(...args) { super(...(args.length ? args : [now])); } static now() { return now; } },
     setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
@@ -34,7 +34,8 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12), { storage = new Map
       f.calls.push({ path });
       if (f.failRead) throw new Error('Offline');
       const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0 }));
-      f.data ||= { basis: 1, dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0 };
+      f.data ||= { basis: 1, dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0,
+        activityTotals: { lessons: 27, knowledgePoints: 54, reviews: 13 } };
       return { ok: true, json: async () => { if (pendingRead) await pendingRead; return structuredClone(f.data); } };
     },
     fetch: async (path, settings) => {
@@ -125,6 +126,19 @@ test('the XP row shows today, week, and compact lifetime totals with exact detai
   assert.match(f.calls[0].path, /^\/api\/study-stats\?/);
   assert.equal(f.forecastRequests[0].basis, 1);
   assert.equal(f.forecastRequests[0].dailyXpGoal, 200);
+});
+
+test('Activities follows estimated completion and uses the XP card layout with exact completion totals', async () => {
+  const f = fixture(); await flush();
+  const card = f.find('stat-activities');
+  assert.equal(f.sidebar.children.indexOf(card), f.sidebar.children.indexOf(f.forecastCard) + 1);
+  assert.equal(card.children[0].textContent, 'Activities');
+  const metrics = f.find('stat-xp-summary', card).children;
+  assert.deepEqual(metrics.map(metric => metric.children[0].textContent), ['Lessons', 'KPs', 'Reviews']);
+  assert.deepEqual(metrics.map(metric => metric.children[1].textContent), ['27', '54', '13']);
+  metrics[1].children[1].children[0].dispatchEvent(new Event('click'));
+  assert.equal(f.find('stat-xp-details', card).textContent, '54 distinct knowledge points in completed lessons');
+  assert.equal(f.calls.length, 1);
 });
 
 test('the sidebar only displays statistics and has no goal editor or activity link', async () => {

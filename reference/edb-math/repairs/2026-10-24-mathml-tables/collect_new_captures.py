@@ -2,7 +2,7 @@
 import collections,json,re
 from pathlib import Path
 from bs4 import BeautifulSoup
-from source_tables import tables,H,R
+from source_tables import tables,H,R,slim_dom
 from enrich_sources import fences
 W=R/'.local/edb/mathml-tables-work';meta=json.loads((W/'metadata.json').read_text());wanted={r['question/math-academy-id'] for r in meta.values() if 'question/math-academy-id' in r};wanted_t={str(r['tutorial/math-academy-id']) for r in meta.values() if 'tutorial/math-academy-id' in r};paths=[Path(p) for p in (W/'new-capture-html-paths.txt').read_text().splitlines()];groups=collections.defaultdict(list);lessons=[]
 for p in paths:
@@ -22,29 +22,31 @@ for i,(identity,options) in enumerate(groups.items()):
   needed={'question/problem','question/worked-solution','answer/value'}-selected
   if not needed:break
   raw=p.read_text();counts['observations_read']+=1
-  if '<mtable' not in raw or not any(k in raw for k in ['rowlines','columnlines','frame']):continue
-  soup=BeautifulSoup(raw,'html.parser')
+  if '<mtable' not in raw or not re.search(r'(?:columnlines|rowlines|frame)=[\"\'][^\"\']*(?:solid|dashed)',raw):continue
+  soup=BeautifulSoup(slim_dom(raw),'html.parser')
   if 'question/worked-solution' in needed:
    parts=soup.find_all(class_=['questionExplanation','questionWidget-explanation','exampleExplanation'])
    if parts:
-    if any(add_part(part,identity,'question/worked-solution',p) for part in parts):selected.add('question/worked-solution')
+    for part in parts:add_part(part,identity,'question/worked-solution',p)
+    if any(part.get_text(strip=True) for part in parts):selected.add('question/worked-solution')
   if 'question/problem' in needed:
    parts=soup.find_all(class_=['questionWidget-text','questionText'])
    if parts:
-    if any(add_part(part,identity,'question/problem',p) for part in parts):selected.add('question/problem')
+    for part in parts:add_part(part,identity,'question/problem',p)
+    selected.add('question/problem')
   if 'answer/value' in needed:
    parts=soup.find_all(class_=['questionWidget-choiceText','choiceText','selectListOption'])
    if parts:
     found=False
     for part in parts:found=add_part(part,identity,'answer/value',p,option_dom_id=part.get('id')) or found
-    if found:selected.add('answer/value')
- if i%2500==0:print('New capture questions',i,'/',len(groups),'ruled tables',len(out),flush=True)
+    selected.add('answer/value')
+ if i%1000==0:print('New capture questions',i,'/',len(groups),'ruled tables',len(out),flush=True)
 # Latest complete lesson copies provide tutorial and canonical-example evidence.
 seen=set()
 for p in sorted(lessons,key=lambda p:p.stat().st_mtime_ns,reverse=True):
  raw=p.read_text();counts['lesson_pages_read']+=1
- if '<mtable' not in raw or not any(k in raw for k in ['rowlines','columnlines','frame']):continue
- soup=BeautifulSoup(raw,'html.parser')
+ if '<mtable' not in raw or not re.search(r'(?:columnlines|rowlines|frame)=[\"\'][^\"\']*(?:solid|dashed)',raw):continue
+ soup=BeautifulSoup(slim_dom(raw),'html.parser')
  for step in soup.select('.step[contentid]'):
   kind=step.get('steptype');cid=step.get('contentid');identity='tutorial:'+cid if kind=='tutorial' else 'e-'+cid
   if kind=='tutorial':parts=[('tutorial/content',step)] if cid in wanted_t else []

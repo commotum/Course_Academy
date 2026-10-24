@@ -9,9 +9,16 @@ class LegacyRenderer(Renderer):
   if getattr(n,'name',None)=='mtable':return r'\begin{aligned}'+r' \\ '.join(self.m(c) for c in n.children)+r'\end{aligned}'
   return super().m(n)
 
+def slim_dom(markup):
+ def keep_svg(match):
+  titles=re.findall(r'<title\b[^>]*>[\s\S]*?</title>',match[0],re.I)
+  keep=[t for t in titles if '<math' in t or '<mtable' in t]
+  return '<svg>'+''.join(keep)+'</svg>' if keep else ''
+ return re.sub(r'<svg\b[\s\S]*?</svg>',keep_svg,markup,flags=re.I)
+
 def tables(markup,identity,attribute,path,**extra):
  if '<mtable' not in markup or not re.search(r'(?:columnlines|rowlines|frame)=["\'][^"\']*(?:solid|dashed)',markup):return []
- soup=BeautifulSoup(markup,'html.parser');out=[]
+ soup=BeautifulSoup(slim_dom(markup),'html.parser');out=[]
  for t in soup.find_all('mtable'):
   if not any(v not in ('none','') for k in ['frame','columnlines','rowlines'] for v in t.get(k,'none').split()):continue
   r=LegacyRenderer(None);old=r.m(t);rows=[]

@@ -14,10 +14,26 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
     // dates are unknown. Count each owned finished attempt exactly once.
     let mut total_xp=0.;
     let mut missing_xp=0usize;
+    let mut lessons=0usize;
+    let mut reviews=0usize;
+    let mut knowledge_points=BTreeSet::new();
     for task in &tasks {
         if !matches!(status(s,*task,"learner-task/status")?.as_str(),"completed"|"failed") { continue; }
         if let Some(earned)=s.entity(*task)?.get("learner-task/xp-earned").and_then(Json::as_f64).filter(|v|v.is_finite()) { total_xp+=earned; }
         else { missing_xp+=1; }
+        if status(s,*task,"learner-task/status")? != "completed" { continue; }
+        if let Some(activity)=s.optional_ref(*task,"learner-task/activity")? {
+            match status(s,activity,"activity/type")?.as_str() {
+                "lesson" => {
+                    lessons+=1;
+                    if let Some(topic)=s.optional_ref(activity,"activity/scope")? {
+                        knowledge_points.extend(s.refs(topic,"topic/knowledge-points")?);
+                    }
+                }
+                "review" => reviews+=1,
+                _ => {},
+            }
+        }
     }
     let mut item_ids = BTreeSet::new();
     for task in &tasks { item_ids.extend(s.refs(*task, "learner-task/items")?); }
@@ -59,12 +75,47 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
         }
     }
     let days: Vec<_> = (0..7).map(|i| json!({"start":starts[i],"earnedXp":xp[i],"workingSeconds":seconds[i],"completedActivities":completed[i]})).collect();
-    Ok(json!({"basis":s.basis_t,"dailyXpGoal":s.entity(learner)?.get("learner/daily-xp-goal"),"days":days,"earnedXp":xp.iter().sum::<f64>(),"totalEarnedXp":total_xp,"totalXpMissing":missing_xp,"workingSeconds":seconds.iter().sum::<f64>()}))
+    Ok(json!({"basis":s.basis_t,"dailyXpGoal":s.entity(learner)?.get("learner/daily-xp-goal"),"days":days,"earnedXp":xp.iter().sum::<f64>(),"totalEarnedXp":total_xp,"totalXpMissing":missing_xp,"workingSeconds":seconds.iter().sum::<f64>(),
+        "activityTotals":{"lessons":lessons,"knowledgePoints":knowledge_points.len(),"reviews":reviews}}))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn activity_totals_use_completed_attempts_and_deduplicate_their_knowledge_points() -> Result<()> {
+        let records=BTreeMap::from_iter([
+            (1,json!({"learner/id":"test","learner/activity":[2,3,4,5,6,7,2],"learner/knowledge-profile":[900]})),
+            (2,json!({"learner-task/status":11,"learner-task/activity":100})),
+            (3,json!({"learner-task/status":11,"learner-task/activity":100})),
+            (4,json!({"learner-task/status":11,"learner-task/activity":101})),
+            (5,json!({"learner-task/status":12,"learner-task/activity":101})),
+            (6,json!({"learner-task/status":13,"learner-task/activity":102})),
+            (7,json!({"learner-task/status":11,"learner-task/activity":103})),
+            (11,json!({"db/ident":kw("learner-task.status/completed")})),
+            (12,json!({"db/ident":kw("learner-task.status/failed")})),
+            (13,json!({"db/ident":kw("learner-task.status/paused")})),
+            (20,json!({"db/ident":kw("activity.type/lesson")})),
+            (21,json!({"db/ident":kw("activity.type/review")})),
+            (22,json!({"db/ident":kw("activity.type/assignment")})),
+            (100,json!({"activity/type":20,"activity/scope":200})),
+            (101,json!({"activity/type":21,"activity/scope":201})),
+            (102,json!({"activity/type":20,"activity/scope":202})),
+            (103,json!({"activity/type":22})),
+            (200,json!({"topic/knowledge-points":[300,301]})),
+            (201,json!({"topic/knowledge-points":[302]})),
+            (202,json!({"topic/knowledge-points":[303]})),
+            (203,json!({"topic/knowledge-points":[304,305]})),
+            (900,json!({"progress/topic":203,"progress/repetitions":6,"progress/learned":true})),
+        ].into_iter().map(|(id,value)|(id,value.as_object().unwrap().clone())));
+        let s=EntitySnapshot::new(records,1)?;
+        let before=s.entities.clone();
+        let day=86_400_000i64;
+        let result=summary(&s,1,&json!({"dayStarts":(0..8).map(|i|i*day).collect::<Vec<_>>()}),Utc::now())?;
+        assert_eq!(result["activityTotals"],json!({"lessons":2,"knowledgePoints":2,"reviews":1}));
+        assert_eq!(s.entities,before);
+        Ok(())
+    }
     #[test]
     fn goal_changes_validate_positive_integers_and_only_change_the_preference() -> Result<()> {
         let mut s=EntitySnapshot::new(BTreeMap::from([(1,json!({"learner/id":"test"}).as_object().unwrap().clone())]),1)?;

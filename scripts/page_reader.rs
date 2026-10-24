@@ -205,10 +205,20 @@ pub(super) fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(Entity
     for task in references(&entities[&learner],"learner/activity") {
         let task_record=record(db,task)?;
         for item in references(&task_record,"learner-task/items") { entities.insert(item,record(db,item)?); }
+        // Activity totals use completed attempts, never inferred repetitions.
+        let completed=task_record.get("learner-task/status").and_then(Json::as_u64).and_then(|id|db.ident(id))
+            .is_some_and(|ident|ident.qualified_name()=="learner-task.status/completed");
+        for activity in references(&task_record,"learner-task/activity").into_iter().filter(|_|completed) {
+            if !entities.contains_key(&activity) { entities.insert(activity,record(db,activity)?); }
+            for topic in references(&entities[&activity],"activity/scope") {
+                if !entities.contains_key(&topic) { entities.insert(topic,record(db,topic)?); }
+            }
+        }
         entities.insert(task,task_record);
     }
     for (ns,names) in [("learner-task.status",&["locked","unlocked","started","paused","completed","failed"][..]),
-        ("task-item.status",&["started","paused","completed","skipped","correct","incorrect"][..])] {
+        ("task-item.status",&["started","paused","completed","skipped","correct","incorrect"][..]),
+        ("activity.type",&["lesson","review","assessment","diagnostic","assignment"][..])] {
         for name in names {
             let ident=Keyword::new(ns,*name);
             entities.insert(db.entid(&ident).ok_or("Missing status ident")?,Record::from_iter([("db/ident".into(),kw(&ident.qualified_name()))]));

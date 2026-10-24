@@ -2,7 +2,7 @@ import json,collections
 from pathlib import Path
 from bs4 import BeautifulSoup
 from enrich_sources import fences
-from source_tables import H,R,LegacyRenderer
+from source_tables import H,R,LegacyRenderer,slim_dom
 cache={};soup_cache={}
 def get_doc(r):
  path=Path(r['path']);path=path if path.is_absolute() else R/path
@@ -26,7 +26,7 @@ def get_doc(r):
  for markup in docs:
   if not markup:continue
   ck=markup
-  if ck not in soup_cache:soup_cache[ck]=BeautifulSoup(markup,'html.parser')
+  if ck not in soup_cache:soup_cache[ck]=BeautifulSoup(slim_dom(markup),'html.parser')
   soup=soup_cache[ck]
   if r.get('step_id'):soup=soup.find(id='step-'+str(r['step_id'])) or soup
   if attr=='tutorial/content':parts=[soup]
