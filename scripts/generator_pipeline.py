@@ -133,6 +133,8 @@ class CodexSession:
                 output.unlink()
         execution_path = directory / 'execution.json'
         execution = read(execution_path) if execution_path.exists() else {'launches': 0}
+        from generator_lifecycle import begin_launch, credit_interruption
+        execution = credit_interruption(execution_path, execution, self.max_launches)
         launch_limit = execution.get('launch_limit', self.max_launches)
         if execution['launches'] >= launch_limit:
             raise SessionRetryExhausted(role, directory, execution)
@@ -148,7 +150,7 @@ class CodexSession:
         # unfinished ephemeral session's budget and launch it forever.
         execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running'}
         execution.pop('error', None)
-        save(execution_path, execution)
+        execution = begin_launch(execution_path, execution, self.environment)
         try:
             with (directory / 'events.jsonl').open('a') as log:
                 process = subprocess.Popen(command, stdin=subprocess.PIPE, text=True, stdout=log,
@@ -340,6 +342,25 @@ class Pipeline:
         root, manifest = self.manifest()
         return package_digest(root, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies'))
 
+    def interrupted_review_evidence(self, evidence):
+        """Offer compatible unfinished work as evidence, never as approval."""
+        current = {key: value for key, value in self.review_binding().items() if key != 'engine_hash'}
+        for saved in reversed(self.state.get('review_sessions', [])):
+            try:
+                directory = inside(self.directory, saved)
+                if directory == Path(evidence).resolve() or (directory / 'result.json').exists():
+                    continue
+                binding = read(directory / 'review-binding.json')
+            except (OSError, ValueError):
+                continue
+            if not isinstance(binding, dict) or {key: value for key, value in binding.items()
+                                                if key != 'engine_hash'} != current:
+                continue
+            if not any((directory / name).is_file() for name in ('source-analysis.json', 'session-state.md')):
+                continue
+            return {'directory': str(directory), 'binding': binding, 'status': 'incomplete'}
+        return None
+
     def context(self, evidence):
         self.ensure_inventory()
         request = self.state['request']
@@ -357,7 +378,8 @@ class Pipeline:
                 'publication_file': str(self.directory / 'publication/preparation.json'),
                 'existing_entrypoint': request.get('existing_entrypoint'),
                 'feedback_file': str(self.directory / 'feedback.json') if (self.directory / 'feedback.json').exists() else None,
-                'previous_review': previous_review, 'evidence_root': str(evidence),
+                'previous_review': previous_review,
+                'interrupted_review': self.interrupted_review_evidence(evidence), 'evidence_root': str(evidence),
                 'package_root': str((self.directory / 'workspace' / self.state.get('manifest', 'package.json')).parent),
                 'manifest_file': str(self.directory / 'workspace' / self.state.get('manifest', 'package.json')),
                 'requested_difficulty': self.state.get('effective_difficulty', request['difficulty']), 'count': request['count'],

@@ -335,6 +335,73 @@ class GeneratorPipelineTests(unittest.TestCase):
         with patch('generator_pipeline.REVIEW_POLICY_VERSION', REVIEW_POLICY_VERSION + 1):
             self.assertIsNone(pipeline.context(self.job / 'author-next')['previous_review'])
 
+    def test_interrupted_review_evidence_survives_engine_refresh_without_stale_approval(self):
+        class InterruptedReview(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == 'review':
+                    (Path(directory) / 'session-state.md').write_text('Saved a reproducible bank-only shortcut.\n')
+                    (Path(directory) / 'shortcut-results.json').write_text('{"correct":4,"total":4}\n')
+                    raise OSError('Service stopped before the final report')
+                return result
+        pipeline = self.pipeline(InterruptedReview())
+        with self.assertRaisesRegex(OSError, 'Service stopped'):
+            pipeline.run()
+        interrupted = pipeline.review_directory()
+        binding = json.loads((interrupted / 'review-binding.json').read_text())
+        limit = pipeline.state['review_session_limit']
+        self.assertFalse((interrupted / 'result.json').exists())
+        self.assertFalse(pipeline.has_current_review())
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+        engine = self.root / 'engine/rust/grader.rs'
+        engine.parent.mkdir(parents=True)
+        engine.write_text('// New grading engine after service restart.\n')
+        contexts = []
+        class FreshReview(FakeSession):
+            def __call__(self, role, context, directory):
+                contexts.append(context)
+                return super().__call__(role, context, directory)
+        session = FreshReview()
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['review'])
+        self.assertEqual(contexts[0]['interrupted_review'],
+                         {'directory': str(interrupted), 'binding': binding, 'status': 'incomplete'})
+        self.assertNotEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
+        self.assertNotEqual(Path(contexts[0]['evidence_root']), interrupted)
+        self.assertEqual(json.loads((interrupted / 'review-binding.json').read_text()), binding)
+        self.assertFalse((interrupted / 'result.json').exists())
+        self.assertEqual(result['review_session_limit'], limit)
+        self.assertEqual(len(result['review_sessions']), 2)
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_interrupted_review_hint_requires_matching_inputs_and_incomplete_other_directory(self):
+        pipeline = self.pipeline(FakeSession())
+        pipeline.run(stop_after='generate')
+        old = self.job / 'old-review'
+        old.mkdir()
+        pipeline.admit_review_session(old)
+        binding = pipeline.review_binding()
+        saved = old / 'review-binding.json'
+        saved.write_text(json.dumps(binding))
+        (old / 'session-state.md').write_text('Partial evidence checkpoint.\n')
+        target = self.job / 'new-review'
+        self.assertIsNotNone(pipeline.context(target)['interrupted_review'])
+        for field in ('package_hash', 'batch_hash', 'source_hash', 'inventory_hash', 'assets',
+                      'effective_difficulty', 'policy_version'):
+            with self.subTest(field=field):
+                saved.write_text(json.dumps({**binding, field: 'changed'}))
+                self.assertIsNone(pipeline.context(target)['interrupted_review'])
+        saved.write_text(json.dumps(binding))
+        self.assertIsNone(pipeline.context(old)['interrupted_review'])
+        (old / 'result.json').write_text('{"verdict":"accepted"}')
+        self.assertIsNone(pipeline.context(target)['interrupted_review'])
+        (old / 'result.json').unlink()
+        saved.write_text('{broken')
+        self.assertIsNone(pipeline.context(target)['interrupted_review'])
+        saved.unlink()
+        self.assertIsNone(pipeline.context(target)['interrupted_review'])
+
     def test_failed_regression_stops_before_another_independent_review(self):
         class FailingCheck(FakeSession):
             def __call__(self, role, context, directory):

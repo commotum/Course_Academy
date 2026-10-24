@@ -3,7 +3,7 @@
 KP 17592186059664: Finding an Exact Value Using the Sum and Difference Formulas for Tangent.
 Original blocked pipeline: `cea5ef8806843ed0b2bb5238a66a67bd04433f91f5a991d967ed98734da9438d.pipeline/2`.
 
-This folder is an isolated candidate and investigation. It is not a publication or an independent approval.
+The repaired generator was independently accepted and published at EDB basis 6424. Five new questions and the immutable generator registration passed exact native verification. A separate readback at basis 6431 confirmed their canonical IDs and the policy-4 moderate-band approval. See `publication-verification.json` and `independent-review/result.json` for the recorded results.
 
 ## What failed
 
@@ -19,13 +19,13 @@ The correct special-angle domain, sum/difference formulas, quadratic-surd ration
 
 ## Verification and limits
 
-`verify.py` uses independent exact SymPy calculations from displayed prompts and options, checks every displayed solution transition, reproduces both earlier defects, covers all 128 catalog cases, tests 250 additional five-question seeds, and creates a different-target/same-bank control for every catalog bank. The native grader and actual publication filter are used separately. The generated candidate's source and delivery evidence are the captured basis 6389; final publication must recheck current source and inventory.
+`verify.py` uses independent exact SymPy calculations from displayed prompts and options, checks every displayed solution transition, reproduces both earlier defects, covers all 128 catalog cases, tests 250 additional five-question seeds, and creates a different-target/same-bank control for every catalog bank. The native grader and actual publication filter are used separately. The initial investigation used captured basis 6389. Independent review used fresh source and delivery inventory at basis 6415; publication rechecked current instructional source and inventory before committing at basis 6424.
 
 The family-knowledge-plus-bounds strategy remains possible and is documented in `evidence/finite-family-proof.json`. This is not a claim that every shortcut or every possible future batch has been eliminated. A final-answer multiple-choice question cannot distinguish formula execution from correct recall of the finite exact-value identities. The fix prevents the demonstrated bank-only unique-shape cue and unique interval candidate; it does not invent a different mathematical task to defeat learned knowledge.
 
 ## Frozen candidate and completed checks
 
-The runtime package hash is `e7b15035bab20db925c7ca95b4898285773fae170428ca83c375a3bf94a3bd8e`. Only `package/generator.py` changes relative to the blocked package: the symmetric distractor-bank construction and generation version. Source replay banks, formatting helper, and manifest are unchanged. The independent reviewer must accept this exact candidate before it replaces the live workspace.
+The runtime package hash is `e7b15035bab20db925c7ca95b4898285773fae170428ca83c375a3bf94a3bd8e`. Only `package/generator.py` changes relative to the blocked package: the symmetric distractor-bank construction and generation version. Source replay banks, formatting helper, and manifest are unchanged. The independent reviewer accepted this exact candidate before it replaced the live workspace.
 
 - `evidence/verification.json`: exact mathematics for all 128 bounded cases, 128 different-target/same-bank controls, 1,250 further generated records, complete replay of both original five-choice banks, and retained negative examples.
 - `evidence/grader-verification.json`: actual `course_academy_engine::learning::grade_field`, 141 correct choices accepted, 564 distractors rejected, zero unresolved checks or database writes.

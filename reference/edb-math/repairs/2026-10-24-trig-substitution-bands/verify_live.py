@@ -43,7 +43,7 @@ def main():
             submissions=[(value,'correct'),('987654321','incorrect')]
             if band=='easy':submissions.append(('('+value+')+1','correct'))
             for submitted,expected in submissions:
-                payload={'activityId':17592186064411,'questionId':q[':db/id'],
+                payload={'topicId':17592186050489,'questionId':q[':db/id'],
                          'responses':[{'fieldId':field[':db/id'],'value':submitted}]}
                 request=urllib.request.Request('http://127.0.0.1:8765/api/preview-answer',
                     data=json.dumps(payload).encode(),headers={'Content-Type':'application/json','Origin':'http://127.0.0.1:8765'},method='POST')
@@ -54,7 +54,7 @@ def main():
             row=next(r for r in json.loads((d/'grader-input.json').read_text()) if r['record']['generation']['family']=='rearranged')
             q=next(q for q in new if str(q[':question/id'])==row['record']['question'][':question/id'])
             f=q[':question/answer-fields'][0]
-            payload={'activityId':17592186064411,'questionId':q[':db/id'],
+            payload={'topicId':17592186050489,'questionId':q[':db/id'],
                      'responses':[{'fieldId':f[':db/id'],'value':row['checks'][-1]['submitted']}]}
             request=urllib.request.Request('http://127.0.0.1:8765/api/preview-answer',data=json.dumps(payload).encode(),
                 headers={'Content-Type':'application/json','Origin':'http://127.0.0.1:8765'},method='POST')

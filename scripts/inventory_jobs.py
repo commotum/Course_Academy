@@ -13,6 +13,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, priority_key
 
@@ -174,6 +175,16 @@ class InventoryJobs:
         self.root, self.directory, self.learner = root, directory, learner
         self.environment = dict(os.environ if environment is None else environment)
         directory.mkdir(parents=True, exist_ok=True)
+        self._active_lock = threading.Lock()
+        self._active_owners = set()
+        self._stopping = False
+
+    def mark_service_interruption(self):
+        """Stop admissions and preserve exact launches owned by this supervisor."""
+        from generator_lifecycle import mark_stopped
+        with self._active_lock:
+            self._stopping = True
+            return [mark_stopped(owner) for owner in self._active_owners]
 
     def creator_executable(self) -> str:
         return (self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE')
@@ -489,11 +500,22 @@ class InventoryJobs:
             override = self.environment.get('COURSE_ACADEMY_GENERATOR_COMMAND')
             if override:
                 command = json.loads(override) + [str(path)]
+            from generator_lifecycle import create_owner, stopped, OWNER_ENV, INTERRUPTED_EXIT
+            with self._active_lock:
+                if self._stopping:
+                    kp_lock.close()
+                    return False
+                owner = create_owner(path, cycle)
+                self._active_owners.add(owner)
             try:
                 with path.with_suffix('.log').open('a') as log:
                     descriptors = (lock.fileno(), kp_lock.fileno())
                     completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
-                        env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors)}, pass_fds=descriptors)
+                        env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors),
+                             OWNER_ENV: str(owner)}, pass_fds=descriptors)
+                if completed.returncode == INTERRUPTED_EXIT and stopped(owner):
+                    self.finish(path, {'state': 'pending', 'retryAt': 0, 'error': None}, cycle=cycle)
+                    return True
                 outcome = json.loads(result_path.read_text()) if result_path.exists() else {}
                 state = ('blocked' if outcome.get('outcome') in {'blocked', 'failed', 'repair-pending'} else
                          'repair-needed' if lane == 'refill' and outcome.get('needs_repair') else
@@ -525,5 +547,7 @@ class InventoryJobs:
                     print(json.dumps({'event': 'generator_blocked', 'knowledgePoint': job['request']['knowledgePoint'],
                                       'job': str(path), 'reason': str(error)}), file=sys.stderr, flush=True)
             finally:
+                with self._active_lock:
+                    self._active_owners.discard(owner)
                 kp_lock.close()
             return True

@@ -725,6 +725,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
     Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker)
     Handler.scheduler_stop = scheduler_stop
+    Handler.mark_generator_interruption = staticmethod(inventory_jobs.mark_service_interruption)
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
     Handler.background = (scheduler_loop, *(build_loop(slot) for slot in range(builder_count)),
@@ -760,8 +761,11 @@ def main() -> None:
             continue
         threading.Thread(target=background, daemon=True).start()
     def stop(_signum, _frame):
+        server.RequestHandlerClass.scheduler_stop.set()
+        server.RequestHandlerClass.mark_generator_interruption()
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
+    signal.signal(signal.SIGINT, stop)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

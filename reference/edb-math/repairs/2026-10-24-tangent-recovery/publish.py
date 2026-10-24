@@ -4,6 +4,7 @@ No additional author/reviewer process is permitted. A queued worker may instead
 win the KP lock and complete the same durable pipeline normally.
 """
 from pathlib import Path
+from contextlib import nullcontext
 import fcntl
 import json
 import sys
@@ -28,22 +29,25 @@ def completed_review_only(role, context, directory):
 
 
 def main():
+    verify_only = sys.argv[1:] == ['--verify-only']
+    assert not sys.argv[1:] or verify_only
     environment = database_environment('math')
     publisher = Publisher.from_environment(environment=environment)
-    with (JOBS / f'kp-{KP}.lock').open('a') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    with (nullcontext() if verify_only else (JOBS / f'kp-{KP}.lock').open('a')) as lock:
+        if lock is not None:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         state = read(DIRECTORY / 'job.json')
         assert state['package_hash'] == PACKAGE
         assert state['stage'] in ('validate', 'prepare', 'push', 'verified')
         pipeline = Pipeline(DIRECTORY, state['request'], publisher,
                             environment=environment, session=completed_review_only)
-        result = pipeline.run()
+        result = state if verify_only else pipeline.run()
         assert result['stage'] == 'verified' and result['approval_recorded']
         outcome = {'outcome': 'generated', 'evidence': str(DIRECTORY / 'job.json'),
                    'generator': result['registration'], 'publication': result['publication'],
                    'needs_repair': False, 'difficulty': result['effective_difficulty'],
                    'package': None, 'reason': None}
-        if read(JOB).get('cycle') == 2:
+        if not verify_only and read(JOB).get('cycle') == 2:
             save(JOB.with_suffix('.result'), outcome)
             InventoryJobs(ROOT, JOBS, read(JOB)['learner'], environment).finish(
                 JOB, {'state': 'awaiting-verification', 'completedAt': time.time(),
