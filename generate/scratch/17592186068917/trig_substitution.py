@@ -99,6 +99,7 @@ def reciprocal(band, case, rng, index):
         a = rng.choice((R(1, 2), R(1, 3), R(2, 3), R(3, 2)))
         b = rng.choice((PI/6, -PI/6, PI/4, -PI/4))
         A = rng.choice((R(2, 3), R(3, 2), R(5, 3), R(5, 2)))
+    A *= rng.choice((-1, 1))
     # Sign is scheduled independently of family; each family sees both signs.
     a = s.sympify(a) * (-1 if index % 2 else 1)
     inner = a*X+b
@@ -134,8 +135,8 @@ def products(band, case, rng, index):
         outer = A/X**2
     else:
         if band == 'easy':
-            a = s.Integer(1)
-            A = sign*n*rng.choice((1, 2, 3))
+            a = s.Integer(rng.randint(1, 4))
+            A = sign*a*n*rng.choice((1, 2, 3))
         else:
             A = sign*s.Integer(rng.randint(1, 9))
             if A % (a*n) == 0:
@@ -159,11 +160,8 @@ def products(band, case, rng, index):
 def quotients(band, case, rng, index):
     a = s.Integer(rng.randint(2, 5))
     b = rng.choice((PI/6, -PI/6)) if case.startswith('shift_') else s.Integer(0)
-    if band == 'easy':
-        a *= -1 if index % 2 else 1
     theta = a*X**2 if case == 'nested_tan' else a*X+b
     d, e = s.Integer(rng.randint(2, 5)), s.Integer(rng.randint(1, 4))
-    r = rng.choice((R(1, 2), R(2, 3), R(3, 2), R(3, 4), R(5, 3))) * (-1 if index % 2 else 1)
     if band == 'easy':
         kind = case.removeprefix('shift_')
         inner = getattr(s, kind)(theta, evaluate=False)
@@ -188,6 +186,13 @@ def quotients(band, case, rng, index):
     du = s.diff(theta, X)*derivative_fn
     if band != 'easy' and not rearranged:
         du *= e*power*fn**(power-1)
+    # Choose a small displayed numerator coefficient, then derive the matching
+    # factor. Choosing the factor first creates gratuitous nested fractions and
+    # coefficients such as 160/3 in otherwise elementary f-prime/f questions.
+    scale = a if band == 'easy' or rearranged else a*e*(2 if case == 'nested_tan' else power)
+    choices = [s.Integer(n) for n in range(1,10) if band == 'easy' or n % scale != 0]
+    A = rng.choice(choices) * (-1 if index % 2 else 1)
+    r = s.cancel(A/scale)
     transformed = 1-d/U if rearranged else 1/U
     # The rational rearrangement is a separate supported reasoning case.
     body = r*du*(1-d/inner) if rearranged else r*du/inner
@@ -217,7 +222,7 @@ def quotients(band, case, rng, index):
         body_tex=r'\frac{' + tex(numerator) + '}{' + tex(inner) + '}',
         transformed=transformed, primitive_u=primitive_u, primitive=primitive, lo=lo, hi=hi,
         rearranged=rearranged, d=d, theta=theta,
-        slots={'a': str(a), 'b': str(b), 'offset': str(d), 'scale': str(e), 'factor': str(r), 'inner_role': 'quadratic' if case == 'nested_tan' else 'affine'},
+        slots={'a': str(a), 'b': str(b), 'offset': str(d), 'scale': str(e), 'numerator_coefficient': str(A), 'factor': str(r), 'inner_role': 'quadratic' if case == 'nested_tan' else 'affine'},
         support=['q-49557', 'q-113998', 'q-350887', 'q-350901', 'q-350904', 'q-350908', 'q-350892', 'q-113987', 'q-114004', 'q-73679', 'q-113997'])
 
 
@@ -240,7 +245,7 @@ def render(kp, band, case, instance, seed, evidence):
         d = m['d']
         sol += 'Since $' + tex(s.tan(m['theta'], evaluate=False)) + '=u-' + tex(d) + '$, the remaining quotient is\n\n$$\n' + r'\frac{u-' + tex(d) + r'}{u}=1-\frac{' + tex(d) + '}{u}.\n$$\n\n'
     transformed = integral(tex(m['transformed']), 'u', u0 if definite else None, u1 if definite else None)
-    sol += 'Substituting, including the required constant factor, gives\n\n$$\n' + task + '=' + times(r, transformed) + '.\n$$\n\n'
+    sol += 'Substituting, including the required constant factor, gives\n\n$$\n' + r'\begin{aligned}&' + task + r'\\&=' + times(r, transformed) + r'.\end{aligned}' + '\n$$\n\n'
     if quotient:
         if m.get('rearranged'):
             primitive_u_tex = times(r, 'u-' + times(m['d'], logabs(U)))
@@ -266,11 +271,19 @@ def render(kp, band, case, instance, seed, evidence):
         first, last = (s.simplify(m['primitive_u'].subs(U, value)) for value in (u0, u1))
         answer = s.simplify(last-first)
         answer_tex = tex(answer)
-        sol += 'Integrate and evaluate at both bounds:\n\n$$\n' + r'\left[' + primitive_u_tex + r'\right]_{' + tex(u0) + '}^{' + tex(u1) + '}=' + r'\left(' + tex(last) + r'\right)-\left(' + tex(first) + r'\right).\n$$\n\n'
+        sol += 'Integrate and evaluate at both bounds:\n\n$$\n' + r'\left[' + primitive_u_tex + r'\right]_{' + tex(u0) + '}^{' + tex(u1) + '}=' + r'\left(' + tex(last) + r'\right)-\left(' + tex(first) + r'\right).' + '\n$$\n\n'
         sol += 'Simplifying gives\n\n$$\n' + answer_tex + '.\n$$'
     # An exact-entry answer is authored from this derivation, not scaled from
     # a second source bank. There is one canonical answer, hence no alias collision.
-    problem = ('Evaluate exactly.' if definite else 'Find an antiderivative. Include the constant $C$.') + '\n\n$$\n' + task + '\n$$\n\n{{field-1}}'
+    problem = ('Evaluate exactly.' if definite else 'Find an antiderivative.') + '\n\n$$\n' + task + '\n$$\n\n{{field-1}}'
+    if not definite:
+        # The existing learner grader recognizes this external +C contract and
+        # accepts numeric constant shifts, including a constant absorbed after
+        # back-substitution. Asking for the whole F+C expression uses ordinary
+        # equality and would unfairly reject some valid antiderivative families.
+        problem += ' $+C$'
+        assert answer_tex.endswith('+C')
+        answer_tex = answer_tex[:-2]
     fp = task_key(m['body'], lo, hi)
     uid = lambda role: str(uuid.uuid5(uuid.UUID(evidence['kp']['id']), VERSION + ':' + fp + ':' + role))
     aid = uid('answer')
@@ -314,9 +327,12 @@ def batch(kp, band, count=8, seed=0, *, evidence, template=None):
     seen = set(evidence['excluded_tasks'])
     shapes = set()
     records = []
+    order = list(CASE[kp][band])
+    random.Random(f'{seed}:{kp}:{band}:families').shuffle(order)
     for index in range(count):
         for attempt in range(300):
-            record = generate(kp, band, seed, template, evidence=evidence, index=index, attempt=attempt)
+            record = generate(kp, band, seed, template or order[index % len(order)], evidence=evidence,
+                              index=index + (len(order) if seed % 2 else 0), attempt=attempt)
             m = record['generation']
             if m['mathematical_fingerprint'] in seen:
                 continue

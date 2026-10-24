@@ -50,6 +50,18 @@ def main():
                 with urllib.request.urlopen(request,timeout=60) as response:outcome=json.load(response)
                 assert outcome['status']==expected,outcome
                 grades.append({'kp':kp,'band':band,'entity':q[':db/id'],'status':outcome['status'],'basis':outcome.get('basis')})
+        if kp==17592186068918:
+            row=next(r for r in json.loads((d/'grader-input.json').read_text()) if r['record']['generation']['family']=='rearranged')
+            q=next(q for q in new if str(q[':question/id'])==row['record']['question'][':question/id'])
+            f=q[':question/answer-fields'][0]
+            payload={'activityId':17592186064411,'questionId':q[':db/id'],
+                     'responses':[{'fieldId':f[':db/id'],'value':row['checks'][-1]['submitted']}]}
+            request=urllib.request.Request('http://127.0.0.1:8765/api/preview-answer',data=json.dumps(payload).encode(),
+                headers={'Content-Type':'application/json','Origin':'http://127.0.0.1:8765'},method='POST')
+            with urllib.request.urlopen(request,timeout=60) as response:outcome=json.load(response)
+            assert outcome['status']=='correct',outcome
+            grades.append({'kp':kp,'band':'hard','entity':q[':db/id'],'status':outcome['status'],
+                           'purpose':'Expanded alternative with back-substitution constant absorbed','basis':outcome.get('basis')})
         summaries.append({'kp':kp,'basis_committed':proof['basis_after'],'new_questions':len(new),
             'new_fresh_counts':proof['fresh_generated_counts'],'retired_old_questions':proof['retired_old_questions'],
             'imported_preserved':proof['imported_questions_preserved'],'generator_reference':reference,

@@ -1,0 +1,40 @@
+commit 79608f3dbd76c756d2cfe3e5fdc432a185afa032
+Author: JP <jneilpeterson@gmail.com>
+Date:   Sat Oct 24 11:28:22 2026 -0700
+
+    autosave: 2026-10-24 11:28:22 -0700 (chunk 1)
+
+diff --git a/engine/rust/symbolic.rs b/engine/rust/symbolic.rs
+index 246731f49e2..a8a15803ea8 100644
+--- a/engine/rust/symbolic.rs
++++ b/engine/rust/symbolic.rs
+@@ -1749,7 +1749,12 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
+         }))
+     }
+     fn constant_value(v: &Value) -> bool {
+-        constant_poly(&v.num) && constant_poly(&v.den)
++        // A subtraction can retain a shared symbolic denominator, e.g.
++        // (-cos(x)/2)/cos(x). Proportional exact polynomials prove a rational
++        // constant without removing the original expressions' domain guards.
++        (constant_poly(&v.num) && constant_poly(&v.den))
++            || v.num.is_zero()
++            || (!v.den.is_zero() && v.num.monic() == v.den.monic())
+     }
+     if let (Answer::Expression(av, ac), Answer::Expression(bv, bc)) =
+         (parse(a, context)?, parse(b, context)?)
+@@ -1972,6 +1977,15 @@ mod tests {
+         assert!(!supports("exp(-1/0)", Context::default()));
+     }
+     #[test]
++    fn rearranged_trig_antiderivatives_absorb_back_substitution_constants() {
++        let a = r"-\frac14\left(\tan(4x)+2-2\ln|\tan(4x)+2|\right)";
++        let b = r"-\frac{\tan(4x)}4+\frac12\ln|\tan(4x)+2|";
++        assert_eq!(compare_up_to_constant(a,b,Context::default()),Ok(true));
++        assert_eq!(compare_up_to_constant(b,a,Context::default()),Ok(true));
++        assert_eq!(compare_up_to_constant("-tan(4x)/3+ln(abs(tan(4x)+2))/2",b,Context::default()),Ok(false));
++        assert!(compare_up_to_constant("tan(x)/tan(x)","1",Context::default()).is_err());
++    }
++    #[test]
+     fn antiderivative_families_preserve_domain_and_nonconstant_terms() {
+         use super::{compare, compare_up_to_constant, Context};
+         let canonical = "t^7/7+5*t";

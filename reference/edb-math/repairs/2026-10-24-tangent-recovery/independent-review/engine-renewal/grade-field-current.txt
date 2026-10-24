@@ -1,0 +1,60 @@
+pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &str) -> Result<bool> {
+    if submitted.trim().is_empty() {
+        return Err("answer every field before submitting".into());
+    }
+    if submitted.len() > 4096 {
+        return Err("answer exceeds 4096 bytes".into());
+    }
+    let expected = s.reference(field, "answer-field/correct")?;
+    let canonical = s
+        .entity(expected)?
+        .get("answer/value")
+        .and_then(|value| value.as_str())
+        .ok_or("Canonical answer needs a string value")?;
+    let field_kind = ident(s, field, "answer-field/type")?;
+    if field_kind != "answer-field.type/blank" {
+        let selected: u64 = submitted
+            .parse()
+            .map_err(|_| "selected answer must identify an authored choice")?;
+        if !s.refs(field, "answer-field/choices")?.contains(&selected) {
+            return Err("selected answer does not belong to this field".into());
+        }
+        Ok(selected == expected)
+    } else {
+        Ok(match ident(s, expected, "answer/type")?.as_str() {
+            "answer.type/math" => {
+                // Form-sensitive prompts must match their authored answer
+                // representation. Rounding accepts equivalent decimal numerals;
+                // significant figures and reduced-form work remain form-sensitive.
+                let prompt = s
+                    .entity(question)?
+                    .get("question/problem")
+                    .and_then(|value| value.as_str())
+                    .ok_or("Question needs a problem statement")?
+                    .to_lowercase();
+                let context = math_context(s, question)?;
+                let key = s.entity(field)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
+                if displayed_integration_constant(&prompt, key)
+                    || displayed_solution_family_constant(&prompt, key)
+                {
+                    symbolic::compare_up_to_constant(submitted, canonical, context)?
+                } else {
+                    compare_math_in_context(submitted, canonical, &prompt, context)?
+                }
+            }
+            "answer.type/text" => {
+                submitted
+                    .split_whitespace()
+                    .collect::<Vec<_>>()
+                    .join(" ")
+                    .to_lowercase()
+                    == canonical
+                        .split_whitespace()
+                        .collect::<Vec<_>>()
+                        .join(" ")
+                        .to_lowercase()
+            }
+            _ => submitted == canonical,
+        })
+    }
+}
