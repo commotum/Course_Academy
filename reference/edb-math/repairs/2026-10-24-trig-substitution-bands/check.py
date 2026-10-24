@@ -148,15 +148,17 @@ def main():
         for row in accepted:check(row)
         for index,row in enumerate(accepted):
             key,answer,_=check(row)
-            wrong=s.latex(answer+1) if row['generation']['model']['lower'] is not None else s.latex(2*answer)
+            wrong=s.latex(answer+1) if row['generation']['model']['lower'] is not None else r'2\left('+key+r'\right)'
             checks=[{'submitted':key,'expected':'accepted'},
                     {'submitted':r'\frac{2\left('+key+r'\right)}{2}','expected':'accepted'},
                     {'submitted':wrong,'expected':'rejected'}]
             if row['generation']['model']['lower'] is None:
                 checks.append({'submitted':'('+key+')+1','expected':'accepted','purpose':'Numeric constant can be absorbed into external C'})
                 if row['generation']['family']=='rearranged':
-                    m=row['generation'];constant=s.Rational(m['parameters']['factor'])*s.Rational(m['parameters']['offset'])
-                    checks.append({'submitted':'('+key+')-('+s.latex(constant)+')','expected':'accepted','purpose':'Back-substitution constant may be absorbed into C'})
+                    m=row['generation'];r=s.Rational(m['parameters']['factor']);d=s.Rational(m['parameters']['offset'])
+                    theta=s.Rational(m['parameters']['a'])*p.x
+                    alternative=s.latex(r*s.tan(theta))+('+' if -r*d>0 else '-')+s.latex(abs(r*d))+r'\ln\left|'+s.latex(s.tan(theta)+d)+r'\right|'
+                    checks.append({'submitted':alternative,'expected':'accepted','purpose':'Expanded answer with the back-substitution constant absorbed into C'})
             grader.append({'label':str(kp)+' '+str(index),'record':row,'checks':checks})
         negatives=[]
         bad=copy.deepcopy(pool[0]);bad['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']+=' + 1'

@@ -1,1 +1,1 @@
-Source material and principles read independently. Source account saved before package inspection. Candidate remains unchanged.
+Independent review COMPLETE: accepted exact frozen package and batch. Eight checks passed, native validator passed. Portable literal syntax regression tightened and independently controlled; both original batches still fail, candidate passes, synthetic fraction disguise fails. Full exact binding in reviewed-inputs.json. No live job or database mutation.

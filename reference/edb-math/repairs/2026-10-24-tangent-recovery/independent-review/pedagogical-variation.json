@@ -1,0 +1,404 @@
+{
+  "learner_operation": "Use the supplied angle decomposition, choose the correct tangent identity, substitute signed special-angle values, and rationalize to select the exact result.",
+  "fixed_features": [
+    {
+      "feature": "Five-option exact-value radio response and supplied angle decomposition.",
+      "justification": "Both standalone examples provide this contract; the target skill is evaluation, not discovering a decomposition."
+    },
+    {
+      "feature": "Special-angle operands, nonstandard first-revolution targets, and fraction-free radical answers.",
+      "justification": "The canonical/tutorial methods and signed unit-circle prerequisites support these operations. They give four unique exact outcome values, a finite family whose limits are retained."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which exact result is correct.",
+      "eligible_variation": "Four exact values determined by the angle; both signs and magnitude intervals.",
+      "observed": "Every class appears in requested five and fresh eight; catalog covers each of eight angles 16 times."
+    },
+    {
+      "role": "Which choice positions and bank members are keyed.",
+      "eligible_variation": "Shuffle positions and construct symmetric two-possible-key banks with wrong competitors.",
+      "observed": "All positions occur in each visible unit/operation subgroup; identical-bank counterfactual changes the keyed member."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Finite catalog and requested batch",
+      "sample_refs": [
+        "coverage.json",
+        "catalog.json",
+        "requested.json"
+      ],
+      "result": "128 supported decompositions; four unit/operation subgroups of 32; requested five include all four exact results."
+    },
+    {
+      "case": "Original standalone profiles and canonical example",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "Complete source banks preserved only in replay profiles; CLI practice uses repaired extension bank. Canonical difference method reproduced."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep all five exact option values and input order fixed; change 15 degrees to 105 degrees and its supplied decomposition.",
+      "expected": "Correct choice changes from 2-sqrt(3) to -2-sqrt(3), with matching new worked derivation.",
+      "observed": "Both choice sets are identical; exact math, native grader and actual UI accept the changed target/key relationship.",
+      "status": "passed",
+      "justification": "Changing target evidence must change the tangent; same bank prevents bank-only determination.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-result.json",
+        "render/question-001.png",
+        "render/question-004.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rewrite the same target and supplied decomposition in radians rather than degrees while preserving bank values.",
+      "expected": "Exact result remains 2-sqrt(3), and shown unit conversions do not change the tangent.",
+      "observed": "Exact math and native grader agree; actual UI pi/12=5pi/6-3pi/4 displays the same keyed value and worked steps.",
+      "status": "passed",
+      "justification": "Angle units are representational, not a different geometric angle. Both units are supported by source examples.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-result.json",
+        "render-irrelevant/question-001.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Fraction-free ±2 ± sqrt(3) syntactic singleton",
+      "subgroup": "requested",
+      "scope": "within_template",
+      "strategy": "Inspect option text only, without target/key/catalog. Select only if exactly one option has this literal form; otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected answers; every repaired bank contains two equally shaped possible exact keys. Baseline 0.2 is an uninformed five-choice guess; abstention is not scored as a wrong guess.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "requested.json"
+      ]
+    },
+    {
+      "cue": "Quadrant and coarse |tan|<1 bounds",
+      "subgroup": "requested",
+      "scope": "within_template",
+      "strategy": "Use only target quadrant and its location relative to 45 degrees modulo 180; compare all option numeric intervals. Select only a sole interval match.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected keys; each target interval contains a plausible wrong competitor. Baseline is random selection among five choices.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "requested.json"
+      ]
+    },
+    {
+      "cue": "Fraction-free formatting after coarse bounds",
+      "subgroup": "requested",
+      "scope": "within_template",
+      "strategy": "Use the same coarse target bounds and discard displayed fractions, without assuming exact-family constants.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero singleton successes. At least two fraction-free choices remain in the right interval.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "requested.json"
+      ]
+    },
+    {
+      "cue": "Exact answer family combined with bounds",
+      "subgroup": "requested",
+      "scope": "within_template",
+      "strategy": "Assume the correct value is one of ±2±sqrt(3), then identify its unique sign/magnitude interval.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "This succeeds but imports the complete exact outcome family. It also succeeds on both original banks. Four distinct values occupy four different intervals, so a unique-key radio bank cannot defeat this conjunction without changing the task. Baseline 0.2 is a five-option guess; this outcome is retained as a finite-family learning limitation, not claimed repaired.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "requested.json",
+        "finite-family-analysis.json"
+      ]
+    },
+    {
+      "cue": "Fraction-free ±2 ± sqrt(3) syntactic singleton",
+      "subgroup": "fresh",
+      "scope": "within_template",
+      "strategy": "Inspect option text only, without target/key/catalog. Select only if exactly one option has this literal form; otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected answers; every repaired bank contains two equally shaped possible exact keys. Baseline 0.2 is an uninformed five-choice guess; abstention is not scored as a wrong guess.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "fresh.json"
+      ]
+    },
+    {
+      "cue": "Quadrant and coarse |tan|<1 bounds",
+      "subgroup": "fresh",
+      "scope": "within_template",
+      "strategy": "Use only target quadrant and its location relative to 45 degrees modulo 180; compare all option numeric intervals. Select only a sole interval match.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected keys; each target interval contains a plausible wrong competitor. Baseline is random selection among five choices.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "fresh.json"
+      ]
+    },
+    {
+      "cue": "Fraction-free formatting after coarse bounds",
+      "subgroup": "fresh",
+      "scope": "within_template",
+      "strategy": "Use the same coarse target bounds and discard displayed fractions, without assuming exact-family constants.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero singleton successes. At least two fraction-free choices remain in the right interval.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "fresh.json"
+      ]
+    },
+    {
+      "cue": "Exact answer family combined with bounds",
+      "subgroup": "fresh",
+      "scope": "within_template",
+      "strategy": "Assume the correct value is one of ±2±sqrt(3), then identify its unique sign/magnitude interval.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "This succeeds but imports the complete exact outcome family. It also succeeds on both original banks. Four distinct values occupy four different intervals, so a unique-key radio bank cannot defeat this conjunction without changing the task. Baseline 0.2 is a five-option guess; this outcome is retained as a finite-family learning limitation, not claimed repaired.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "fresh.json",
+        "finite-family-analysis.json"
+      ]
+    },
+    {
+      "cue": "Fraction-free ±2 ± sqrt(3) syntactic singleton",
+      "subgroup": "catalog",
+      "scope": "within_template",
+      "strategy": "Inspect option text only, without target/key/catalog. Select only if exactly one option has this literal form; otherwise abstain.",
+      "correct": 0,
+      "total": 128,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected answers; every repaired bank contains two equally shaped possible exact keys. Baseline 0.2 is an uninformed five-choice guess; abstention is not scored as a wrong guess.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Quadrant and coarse |tan|<1 bounds",
+      "subgroup": "catalog",
+      "scope": "within_template",
+      "strategy": "Use only target quadrant and its location relative to 45 degrees modulo 180; compare all option numeric intervals. Select only a sole interval match.",
+      "correct": 0,
+      "total": 128,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero uniquely selected keys; each target interval contains a plausible wrong competitor. Baseline is random selection among five choices.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fraction-free formatting after coarse bounds",
+      "subgroup": "catalog",
+      "scope": "within_template",
+      "strategy": "Use the same coarse target bounds and discard displayed fractions, without assuming exact-family constants.",
+      "correct": 0,
+      "total": 128,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Zero singleton successes. At least two fraction-free choices remain in the right interval.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Exact answer family combined with bounds",
+      "subgroup": "catalog",
+      "scope": "within_template",
+      "strategy": "Assume the correct value is one of ±2±sqrt(3), then identify its unique sign/magnitude interval.",
+      "correct": 128,
+      "total": 128,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "This succeeds but imports the complete exact outcome family. It also succeeds on both original banks. Four distinct values occupy four different intervals, so a unique-key radio bank cannot defeat this conjunction without changing the task. Baseline 0.2 is a five-option guess; this outcome is retained as a finite-family learning limitation, not claimed repaired.",
+      "sample_refs": [
+        "shortcut-regressions.json",
+        "catalog.json",
+        "finite-family-analysis.json"
+      ]
+    },
+    {
+      "cue": "Fixed answer position",
+      "subgroup": "degrees/+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent displayed-input position within this subgroup; this is a generous post-hoc upper bound for any fixed-position guess.",
+      "correct": 9,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "All five positions occur; observed maximum is sampling imbalance, not a deterministic position rule. The actual UI independently hashes choice order. Baseline is 1/5.",
+      "sample_refs": [
+        "coverage.json",
+        "catalog.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "cue": "Fixed answer position",
+      "subgroup": "degrees/-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent displayed-input position within this subgroup; this is a generous post-hoc upper bound for any fixed-position guess.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "All five positions occur; observed maximum is sampling imbalance, not a deterministic position rule. The actual UI independently hashes choice order. Baseline is 1/5.",
+      "sample_refs": [
+        "coverage.json",
+        "catalog.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "cue": "Fixed answer position",
+      "subgroup": "radians/+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent displayed-input position within this subgroup; this is a generous post-hoc upper bound for any fixed-position guess.",
+      "correct": 10,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "All five positions occur; observed maximum is sampling imbalance, not a deterministic position rule. The actual UI independently hashes choice order. Baseline is 1/5.",
+      "sample_refs": [
+        "coverage.json",
+        "catalog.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "cue": "Fixed answer position",
+      "subgroup": "radians/-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent displayed-input position within this subgroup; this is a generous post-hoc upper bound for any fixed-position guess.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "All five positions occur; observed maximum is sampling imbalance, not a deterministic position rule. The actual UI independently hashes choice order. Baseline is 1/5.",
+      "sample_refs": [
+        "coverage.json",
+        "catalog.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "cue": "Shape or interval singleton within visible template",
+      "subgroup": "degrees/+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the independent syntactic-only and bounds-only probes separately in this recognizable unit/operation subgroup.",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Both probes have zero singleton success in this subgroup; aggregate results do not hide a conditional perfect cue. Baseline is a five-choice guess.",
+      "sample_refs": [
+        "catalog.json",
+        "shortcut-regressions.json"
+      ]
+    },
+    {
+      "cue": "Shape or interval singleton within visible template",
+      "subgroup": "degrees/-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the independent syntactic-only and bounds-only probes separately in this recognizable unit/operation subgroup.",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Both probes have zero singleton success in this subgroup; aggregate results do not hide a conditional perfect cue. Baseline is a five-choice guess.",
+      "sample_refs": [
+        "catalog.json",
+        "shortcut-regressions.json"
+      ]
+    },
+    {
+      "cue": "Shape or interval singleton within visible template",
+      "subgroup": "radians/+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the independent syntactic-only and bounds-only probes separately in this recognizable unit/operation subgroup.",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Both probes have zero singleton success in this subgroup; aggregate results do not hide a conditional perfect cue. Baseline is a five-choice guess.",
+      "sample_refs": [
+        "catalog.json",
+        "shortcut-regressions.json"
+      ]
+    },
+    {
+      "cue": "Shape or interval singleton within visible template",
+      "subgroup": "radians/-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the independent syntactic-only and bounds-only probes separately in this recognizable unit/operation subgroup.",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Both probes have zero singleton success in this subgroup; aggregate results do not hide a conditional perfect cue. Baseline is a five-choice guess.",
+      "sample_refs": [
+        "catalog.json",
+        "shortcut-regressions.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "finite sampler and explicit rejection",
+      "requested moderate difficulty",
+      "actual shared publication normalization and deduplication",
+      "actual learner-selection code and conditional band distribution",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "delivery-analysis.json",
+      "delivery-requested/delivery.json",
+      "delivery-fresh/delivery.json",
+      "coverage.json"
+    ],
+    "result": "Requested 5/5 and fresh 8/8 survive against basis 6415 with identical per-record decision probes; weighted selection is uniform within available moderate identities and does not inspect key shape."
+  },
+  "limitations": [
+    "The four exact values can be memorized; a learner who knows them plus coarse bounds can answer without recomputing the formula. The combined probe still succeeds and is not hidden.",
+    "A finite sample cannot rule out every possible learned shortcut.",
+    "Live history can remove identities and change available outcome frequencies; this review binds the captured input pool, not future task draws.",
+    "Standalone source worked solutions and key links are absent in capture; exact keys and method are reconstructed from canonical/tutorial evidence."
+  ]
+}

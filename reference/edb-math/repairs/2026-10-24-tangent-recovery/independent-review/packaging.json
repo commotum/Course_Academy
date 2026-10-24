@@ -1,0 +1,31 @@
+{
+  "package_sha256": "e7b15035bab20db925c7ca95b4898285773fae170428ca83c375a3bf94a3bd8e",
+  "dependencies": {
+    "python": "3.13.5",
+    "packages": {}
+  },
+  "relocation_equal": true,
+  "deterministic_requested_replay": true,
+  "rejections": [
+    {
+      "difficulty": "hard",
+      "count": 5,
+      "exit_code": 2,
+      "stderr": "usage: generator.py [-h] --difficulty DIFFICULTY --count COUNT --seed SEED\n                    --format {json}\ngenerator.py: error: Unsupported difficulty: hard\n"
+    },
+    {
+      "difficulty": "moderate",
+      "count": 129,
+      "exit_code": 2,
+      "stderr": "usage: generator.py [-h] --difficulty DIFFICULTY --count COUNT --seed SEED\n                    --format {json}\ngenerator.py: error: Count exceeds finite catalog of 128\n"
+    },
+    {
+      "difficulty": "moderate",
+      "count": -1,
+      "exit_code": 2,
+      "stderr": "usage: generator.py [-h] --difficulty DIFFICULTY --count COUNT --seed SEED\n                    --format {json}\ngenerator.py: error: Count exceeds finite catalog of 128\n"
+    }
+  ],
+  "empty_count": [],
+  "code_review": "Runtime imports are standard library plus declared math_format.py; source-banks.json is located relative to __file__. Output is JSON only. Catalog is finite and cycles all four result classes; no content rejection/resampling removes a class."
+}

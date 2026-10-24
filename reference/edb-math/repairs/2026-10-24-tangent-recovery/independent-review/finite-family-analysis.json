@@ -1,0 +1,62 @@
+{
+  "angles": [
+    15,
+    75,
+    105,
+    165,
+    195,
+    255,
+    285,
+    345
+  ],
+  "exact_tangents": {
+    "15": "2 - sqrt(3)",
+    "75": "sqrt(3) + 2",
+    "105": "-2 - sqrt(3)",
+    "165": "-2 + sqrt(3)",
+    "195": "2 - sqrt(3)",
+    "255": "sqrt(3) + 2",
+    "285": "-2 - sqrt(3)",
+    "345": "-2 + sqrt(3)"
+  },
+  "four_disjoint_intervals": {
+    "-2 + sqrt(3)": [
+      false,
+      true
+    ],
+    "-2 - sqrt(3)": [
+      false,
+      false
+    ],
+    "2 - sqrt(3)": [
+      true,
+      true
+    ],
+    "sqrt(3) + 2": [
+      true,
+      false
+    ]
+  },
+  "source_bank_combined_probe": [
+    {
+      "target": 75,
+      "key": "2 + \\sqrt{3}",
+      "key_position": 4,
+      "interval_candidates": 3,
+      "shape_candidates": 1,
+      "fraction_free_interval_candidates": 2,
+      "shape_plus_bounds_candidates": 1
+    },
+    {
+      "target": 285,
+      "key": "-\\sqrt{3} - 2",
+      "key_position": 1,
+      "interval_candidates": 2,
+      "shape_candidates": 2,
+      "fraction_free_interval_candidates": 2,
+      "shape_plus_bounds_candidates": 1
+    }
+  ],
+  "reasoning": "The combined shape-and-bounds rule uses the exact answer family {2±sqrt(3), -2±sqrt(3)}. Each member occupies a different sign/absolute-size interval. Any unique-key bank containing the correct value has exactly one member of that family in the correct interval. Another distinct value cannot both belong to that family and occupy the same interval. This also solves both complete original banks. Therefore that conjunction is not a repairable new bank-format leak while retaining the finite exact-answer task. The separate bank-only singleton and bounds-only singleton defects remain avoidable and are independently regressed.",
+  "limitation": "Learners who memorize the four exact outcomes can combine that knowledge with quadrant/reference-angle bounds; final-answer radio questions cannot force the formula once those outcomes are known."
+}

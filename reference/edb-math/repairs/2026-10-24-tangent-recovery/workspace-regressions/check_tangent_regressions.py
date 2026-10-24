@@ -91,6 +91,16 @@ EXPECTED = {15: (F(2), F(-1)), 75: (F(2), F(1)),
             105: (F(-2), F(-1)), 165: (F(-2), F(1))}
 
 
+def literal_family_shape(tex):
+    """Visible fraction-free two-term form, without algebraic simplification."""
+    compact = re.sub(r'\s+', '', tex)
+    for token in [r'\left', r'\right', r'\displaystyle']:
+        compact = compact.replace(token, '')
+    if compact.startswith('(') and compact.endswith(')'):
+        compact = compact[1:-1]
+    return bool(re.fullmatch(r'[+-]?2[+-]\\sqrt\{3\}|[+-]?\\sqrt\{3\}[+-]2', compact))
+
+
 def target(problem):
     first = re.search(r'\$(.*?)\$', problem, re.S)[1]
     first = first.replace(r'\tan', '').replace(r'\left', '').replace(r'\right', '').strip()
@@ -112,6 +122,7 @@ def bank_case(problem, choices, key):
     return {'target_degrees': degrees, 'interval_candidates': len(bounded),
             'fraction_free_interval_candidates': sum(r'\frac' not in c and r'\dfrac' not in c for c in bounded),
             'family_shape_candidates': sum(v in FAMILY for v in vals),
+            'literal_family_shape_candidates': sum(literal_family_shape(c) for c in choices),
             'family_and_bounds_candidates': sum(v in FAMILY and interval(v) == bucket for v in vals)}
 
 
@@ -133,6 +144,7 @@ def inspect(records):
         return {'count': len(rows), 'unique_interval': sum(r['interval_candidates'] == 1 for r in rows),
                 'unique_fraction_free_interval': sum(r['fraction_free_interval_candidates'] == 1 for r in rows),
                 'unique_family_shape': sum(r['family_shape_candidates'] == 1 for r in rows),
+                'unique_literal_family_shape': sum(r['literal_family_shape_candidates'] == 1 for r in rows),
                 'family_and_bounds_unique': sum(r['family_and_bounds_candidates'] == 1 for r in rows)}
     return {**counts(cases), 'cases': cases, 'groups': {name: counts(rows) for name, rows in groups.items()}}
 
@@ -142,6 +154,7 @@ def assert_repaired(report):
         assert case['interval_candidates'] >= 2, case
         assert case['fraction_free_interval_candidates'] >= 2, case
         assert case['family_shape_candidates'] >= 2, case
+        assert case['literal_family_shape_candidates'] >= 2, case
         # Report this remaining strategy honestly; it is not a repaired failure.
         assert case['family_and_bounds_candidates'] == 1, case
 
@@ -165,10 +178,30 @@ def main():
     historical = {str(i): inspect(json.loads((fixtures/f'review-{i}-batch.json').read_text())) for i in [1, 2]}
     assert historical['1']['unique_interval'] > 0, 'Lost the original interval counterexample'
     assert historical['2']['unique_family_shape'] > 0, 'Lost the original shape counterexample'
+    assert historical['2']['unique_literal_family_shape'] > 0
+    # A second mathematical family member in fractional notation must not hide
+    # the original bank-only formatting cue. This bank passes the algebraic,
+    # interval, and fraction-free interval guards while failing the syntax guard.
+    synthetic_shape = bank_case(r'What is $\tan\left(15^\circ\right)$?',
+                               [r'2-\sqrt{3}', r'\frac{4+2\sqrt{3}}{2}',
+                                r'4-2\sqrt{3}', r'\sqrt{3}', r'-1'],
+                               r'2-\sqrt{3}')
+    assert synthetic_shape['family_shape_candidates'] == 2
+    assert synthetic_shape['interval_candidates'] >= 2
+    assert synthetic_shape['fraction_free_interval_candidates'] >= 2
+    assert synthetic_shape['literal_family_shape_candidates'] == 1
+    try:
+        assert_repaired({'cases': [synthetic_shape]})
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError('Fractional second family member hid the shape defect')
+    assert literal_family_shape(r'-\sqrt{3} - 2'), 'Reversed source order is still a visible family shape'
     proof = [bank_case(s['original_prompt'], s['bank'], s['key']) for s in json.loads((fixtures/'source-banks.json').read_text())]
     assert len({interval(v) for v in FAMILY}) == 4
     assert all(r['family_and_bounds_candidates'] == 1 for r in proof)
     result = {'historical_negative_controls': historical, 'source_bank_proof': proof,
+              'fractional_family_negative_control': synthetic_shape,
               'criterion_classification': {
                   '0c0b5701fdc1e1f51385': 'Fixable: bounds or fraction-free bounds uniquely identify an option.',
                   '5177439f65fd0aa4269e': 'Fixable: prompt-blind unique canonical shape. Combined learned-family plus bounds is a finite-family limitation, also present in original source banks.'},
@@ -191,7 +224,7 @@ def main():
         result['sets'][name] = {'command': command, 'filter_command': filter_command, 'batch_sha256': hashlib.sha256(batch.read_bytes()).hexdigest(), 'generated': before, 'delivered': after}
     result['passed'] = True
     (output/'regression.json').write_text(json.dumps(result, indent=2)+'\n')
-    print(json.dumps({'passed': True, 'report': str(output/'regression.json'), 'sets': {name: {k: report['delivered'][k] for k in ['count', 'unique_interval', 'unique_family_shape', 'family_and_bounds_unique']} for name, report in result['sets'].items()}, 'limitation': result['limitation']}))
+    print(json.dumps({'passed': True, 'report': str(output/'regression.json'), 'sets': {name: {k: report['delivered'][k] for k in ['count', 'unique_interval', 'unique_family_shape', 'unique_literal_family_shape', 'family_and_bounds_unique']} for name, report in result['sets'].items()}, 'limitation': result['limitation']}))
 
 
 if __name__ == '__main__':

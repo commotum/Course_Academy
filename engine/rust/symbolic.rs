@@ -1749,7 +1749,12 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
         }))
     }
     fn constant_value(v: &Value) -> bool {
-        constant_poly(&v.num) && constant_poly(&v.den)
+        // A subtraction can retain a shared symbolic denominator, e.g.
+        // (-cos(x)/2)/cos(x). Proportional exact polynomials prove a rational
+        // constant without removing the original expressions' domain guards.
+        (constant_poly(&v.num) && constant_poly(&v.den))
+            || v.num.is_zero()
+            || (!v.den.is_zero() && v.num.monic() == v.den.monic())
     }
     if let (Answer::Expression(av, ac), Answer::Expression(bv, bc)) =
         (parse(a, context)?, parse(b, context)?)
@@ -1970,6 +1975,15 @@ mod tests {
         }
         assert!(compare("exp(-x/x)", "exp(-1)", Context::default()).is_err());
         assert!(!supports("exp(-1/0)", Context::default()));
+    }
+    #[test]
+    fn rearranged_trig_antiderivatives_absorb_back_substitution_constants() {
+        let a = r"-\frac14\left(\tan(4x)+2-2\ln|\tan(4x)+2|\right)";
+        let b = r"-\frac{\tan(4x)}4+\frac12\ln|\tan(4x)+2|";
+        assert_eq!(compare_up_to_constant(a,b,Context::default()),Ok(true));
+        assert_eq!(compare_up_to_constant(b,a,Context::default()),Ok(true));
+        assert_eq!(compare_up_to_constant("-tan(4x)/3+ln(abs(tan(4x)+2))/2",b,Context::default()),Ok(false));
+        assert!(compare_up_to_constant("tan(x)/tan(x)","1",Context::default()).is_err());
     }
     #[test]
     fn antiderivative_families_preserve_domain_and_nonconstant_terms() {
