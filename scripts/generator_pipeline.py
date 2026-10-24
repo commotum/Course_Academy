@@ -808,7 +808,8 @@ class Pipeline:
                     registered=(fresh.get('registered_generator') or {}).get(':question-generator/script')
                     if request.get('registered_package') and registered and registered.startswith('generators/'):
                         request['registered_package']=registered
-                    self.persist(stage='source',request=request,source_hash=digest(fresh),
+                    next_stage='validate' if self.state.get('review_after_publication') else 'source'
+                    self.persist(stage=next_stage,request=request,source_hash=digest(fresh),inventory_hash=None,
                                  review=None,review_binding=None,review_policy_version=None,approval_recorded=False,
                                  source_eligibility_refreshed=True)
                     continue
@@ -827,6 +828,13 @@ class Pipeline:
                 continue
             if stage in {'verified', 'failed', 'unsupported', 'blocked'}:
                 if stage == 'verified' and not self.is_refill:
+                    from generator_source_policy import POLICY_VERSION
+                    if (source_path.exists() and read(source_path).get('material',{}).get('source_eligibility',{}).get('policy_version')!=POLICY_VERSION):
+                        # The acknowledged write remains final. Refresh and
+                        # review its evidence without authoring or republishing.
+                        self.persist(stage='validate',review_after_publication=True,
+                                     review_binding=None,review_policy_version=None,approval_recorded=False)
+                        continue
                     if not self.has_current_review():
                         try:
                             self.verify_approval_inputs()

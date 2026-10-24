@@ -831,6 +831,39 @@ class GeneratorPipelineTests(unittest.TestCase):
         approval = json.loads((self.math / "generators/approvals" / result["package_hash"] / "123.json").read_text())
         self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
 
+    def test_pre_eligibility_source_is_archived_and_refreshed_before_authoring(self):
+        self.pipeline(FakeSession()).run('generate')
+        path=self.job/'source/source.json';legacy=json.loads(path.read_text())
+        legacy['material'].pop('source_eligibility')
+        legacy['source_sha256']=source_digest(legacy['material']);path.write_text(json.dumps(legacy))
+        class EligibilitySession(FakeSession):
+            def __call__(inner,role,context,directory):
+                source=json.loads(Path(context['source_file']).read_text())
+                self.assertEqual(source['material']['source_eligibility']['policy_version'],1)
+                return super().__call__(role,context,directory)
+        result=self.pipeline(EligibilitySession()).run()
+        self.assertEqual(result['stage'],'verified')
+        self.assertTrue(result['source_eligibility_refreshed'])
+        self.assertEqual(json.loads((self.job/'source/source-before-eligibility.json').read_text()),legacy)
+
+    def test_eligibility_upgrade_recovers_pending_bytes_before_refreshing_sources(self):
+        first=FakePublisher(self.root,lose_ack=True)
+        with self.assertRaises(ConnectionError):self.pipeline(FakeSession(),publisher=first).run()
+        request_path=self.job/'publication/request.json';saved=request_path.read_bytes()
+        path=self.job/'source/source.json';legacy=json.loads(path.read_text());legacy['material'].pop('source_eligibility')
+        path.write_text(json.dumps(legacy))
+        restarted=FakePublisher(self.root)
+        original=restarted.extract_source
+        def extract(*args,**kwargs):
+            self.assertEqual(restarted.publishes,1)
+            self.assertEqual(request_path.read_bytes(),saved)
+            return original(*args,**kwargs)
+        with patch.object(restarted,'extract_source',side_effect=extract):
+            result=self.pipeline(FakeSession(),publisher=restarted).run()
+        self.assertEqual(result['stage'],'verified')
+        self.assertEqual((restarted.prepares,restarted.publishes),(0,1))
+        self.assertEqual(request_path.read_bytes(),saved)
+
     def test_postcommit_policy_review_failure_keeps_receipt_and_requests_repair(self):
         first = FakePublisher(self.root, lose_ack=True)
         with self.assertRaises(ConnectionError):

@@ -411,13 +411,15 @@ class Publisher:
             [[kw('multistep-step/question')]],directory,'source-membership-attributes',basis)
         # Walk the small structural graph first. A recursive rule joined to all
         # question identities exceeds the live query budget on the full bank.
+        steps=[r[0] for r in self.client.query('[:find ?s :where [_ :multistep/steps ?s]]',
+            [],directory,'source-multipart-steps',basis)]
         contained={r[0] for r in self.client.query(
-            '[:find ?c :where [?m :multistep/steps ?s] [?s :step/content ?c]]',
-            [],directory,'source-multipart-roots',basis)}
-        if attrs:
+            '[:find ?c :in $ [?s ...] :where [?s :step/content ?c]]',
+            [steps],directory,'source-multipart-roots',basis)} if steps else set()
+        if attrs and steps:
             contained.update(r[0] for r in self.client.query(
-                '[:find ?c :where [?m :multistep/steps ?s] [?s :multistep-step/question ?c]]',
-                [],directory,'source-legacy-roots',basis))
+                '[:find ?c :in $ [?s ...] :where [?s :multistep-step/question ?c]]',
+                [steps],directory,'source-legacy-roots',basis))
         frontier=contained.copy();depth=0
         while frontier:
             children={r[0] for r in self.client.query(

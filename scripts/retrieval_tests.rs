@@ -260,42 +260,77 @@ fn required_assessment_stays_visible_with_learned_topics_below_study_floor() -> 
         .find(|p| s.reference(*p, "progress/topic").is_ok_and(|t| s.refs(t, "topic/knowledge-points").is_ok_and(|k| !k.is_empty()))).unwrap();
     let question = learning::lesson_steps(&s, original)?[0].content;
     let first_step = s.reference(original, "activity/first-step")?;
-    let mut low_question = s.entity(question)?.clone();
-    low_question.insert("db/id".into(), json!("low-question"));
-    low_question.insert("question/id".into(), json!({"$uuid":uid()?}));
+    let mut low_questions = vec![];
+    for slot in 0..6 {
+        let mut q = s.entity(question)?.clone();
+        q.insert("db/id".into(), json!(format!("low-question-{slot}")));
+        q.insert("question/id".into(), json!({"$uuid":uid()?}));
+        low_questions.push(json!(q));
+    }
     let mut low_progress = s.entity(progress)?.clone();
     low_progress.insert("db/id".into(), json!("low-progress"));
     low_progress.insert("progress/id".into(), json!("below-study-floor"));
     low_progress.insert("progress/topic".into(), json!("low-topic"));
-    f.tx(vec![
-        json!(low_question), json!(low_progress),
+    let mut forms = vec![
+        json!(low_progress),
         json!({"db/id":"low-topic","topic/id":{"$uuid":uid()?},"topic/knowledge-points":["low-kp"]}),
-        json!({"db/id":"low-kp","knowledge-point/id":{"$uuid":uid()?},"knowledge-point/questions":["low-question"]}),
+        json!({"db/id":"low-kp","knowledge-point/id":{"$uuid":uid()?},"knowledge-point/questions":(0..6).map(|slot|format!("low-question-{slot}")).collect::<Vec<_>>()}),
         json!({"db/id":"low-lesson","activity/id":{"$uuid":uid()?},"activity/type":kw("activity.type/lesson"),"activity/scope":"low-topic"}),
         json!({"db/id":"low-task","learner-task/id":{"$uuid":uid()?},"learner-task/activity":"low-lesson","learner-task/status":kw("learner-task.status/completed"),"learner-task/finished-at":{"$instant":f.now-3*86400000},"learner-task/xp-earned":0}),
         add(json!(f.learner),"learner/activity",json!("low-task")),
         add(json!(f.learner),"learner/knowledge-profile",json!("low-progress")),
         add(json!(learned),"learner-task/xp-earned",json!(50)),
-        // Reproduce a saved quiz assembled before the layer floor was applied.
-        add(json!(first_step),"step/content",json!("low-question")),
-    ], f.now+1)?;
+        // A quiz that includes a learned topic below the practice floor.
+        add(json!(first_step),"step/content",json!("low-question-0")),
+    ];
+    forms.extend(low_questions);
+    // A superseded offer must not revive when the topic pool expands.
+    let retired = retrieval::Definition {
+        kind: "assessment".into(), topic: None,
+        questions: learning::lesson_steps(&s, original)?.iter().map(|step|step.content).collect(),
+        title: "Retired quiz".into(), priority: 0.0, expected_seconds: 900.0,
+        remediation_for: vec![], retake_of: None, existing_activity: None,
+    };
+    forms.extend(definition_forms(&s, &retired, "retired-quiz", None)?);
+    forms.push(json!({"db/id":"retired-task","learner-task/id":{"$uuid":uid()?},"learner-task/activity":"retired-quiz","learner-task/status":kw("learner-task.status/locked"),"learner-task/priority":0.0}));
+    forms.push(add(json!(f.learner),"learner/activity",json!("retired-task")));
+    f.tx(forms, f.now+1)?;
     let s = f.snapshot()?;
     let at = DateTime::from_timestamp_millis(f.now+2).unwrap();
-    assert_eq!(retrieval::assessment_pools(&s, f.learner, at)?.len(), 5);
-    assert!(!retrieval::ordinary_assessment_ready(&s, f.learner, original, at)?);
+    assert_eq!(retrieval::assessment_pools(&s, f.learner, at)?.len(), 6);
+    assert!(retrieval::ordinary_assessment_ready(&s, f.learner, original, at)?);
     let (forms, _) = queue_preparation(&s, f.learner, at)?;
     f.tx(forms, f.now+2)?;
     let s = f.snapshot()?;
-    let home = home(&s, f.learner)?;
-    assert_eq!(home["assessmentStatus"]["required"], true);
+    for self_directed in [true, false] {
+        let mut view = s.clone();
+        view.entities.get_mut(&f.learner).unwrap().insert("learner/self-directed".into(), json!(self_directed));
+        let home = home(&view, f.learner)?;
+        assert_eq!(home["assessmentStatus"]["required"], true);
+        let activities = home["activities"].as_array().unwrap();
+        assert_eq!(activities.len(), 1);
+        assert_eq!(activities[0]["type"], "assessment");
+        assert_eq!(activities[0]["activityId"], original);
+    }
+    // Missing the low-layer question must produce visible required practice.
+    let (task, started) = f.start("assessment")?;
+    for (slot, step) in learning::lesson_steps(&started, original)?.iter().enumerate() {
+        let field = started.refs(step.content, "question/answer-fields")?[0];
+        f.act("navigate", json!({"taskId":task,"questionId":step.content}), f.now+200+slot as i64*10)?;
+        f.act("draft", json!({"taskId":task,"responses":[{"fieldId":field,"value":if slot==0 {"3"} else {"2"}}]}), f.now+201+slot as i64*10)?;
+    }
+    let submitted = f.act("submit", json!({"taskId":task}), f.now+300)?;
+    let (forms, _) = queue_preparation(&submitted, f.learner, DateTime::from_timestamp_millis(f.now+301).unwrap())?;
+    f.tx(forms, f.now+301)?;
+    let after = f.snapshot()?;
+    let home = home(&after, f.learner)?;
     let activities = home["activities"].as_array().unwrap();
     assert_eq!(activities.len(), 1);
-    assert_eq!(activities[0]["type"], "assessment");
-    assert_ne!(activities[0]["activityId"], original);
-    let replacement = activities[0]["activityId"].as_u64().unwrap();
-    let layers = learning::topic_layers(&s)?;
-    assert!(learning::lesson_steps(&s, replacement)?.iter()
-        .all(|step| s.topic_for_question(step.content).is_ok_and(|topic| layers[&topic]+1 >= learning::MIN_STUDY_LAYER)));
+    assert_eq!(activities[0]["type"], "review");
+    assert_eq!(activities[0]["reason"], "Required practice after assessment");
+    let review = activities[0]["activityId"].as_u64().unwrap();
+    let topic = after.reference(review, "activity/scope")?;
+    assert_eq!(learning::topic_layers(&after)?[&topic]+1, 1);
     Ok(())
 }
 
