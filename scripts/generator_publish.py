@@ -233,11 +233,11 @@ def validate_question(q):
     validate_prompt_markers(q)
 
 
-def stable_identities(question, kp_uuid):
+def stable_identities(question, kp_uuid, *, identity_key=None):
     """Content identities survive changed seeds and option ordering."""
     validate_question(question)
     q = copy.deepcopy(question)
-    qid = uuid.uuid5(uuid.UUID(str(kp_uuid)), 'generated-question:' + content_fingerprint(q))
+    qid = uuid.uuid5(uuid.UUID(str(kp_uuid)), identity_key or 'generated-question:' + content_fingerprint(q))
     q[':question/id'] = str(qid)
     for field in q[':question/answer-fields']:
         fid = uuid.uuid5(qid, 'field:' + field[':answer-field/key'])
@@ -249,6 +249,55 @@ def stable_identities(question, kp_uuid):
             if old_id == old_correct:
                 field[':answer-field/correct'] = [':answer/id', a[':answer/id']]
     return q
+
+
+def exemplar_content(question):
+    """Exact exemplar content, without IDs or later entered blank responses."""
+    content = normalized_question(question, identity=False)
+    for field in content[':question/answer-fields']:
+        if field[':answer-field/type'] == ':answer-field.type/blank':
+            correct = field.get(':answer-field/correct')
+            field[':answer-field/choices'] = [answer for answer in field[':answer-field/choices']
+                if {key: answer[key] for key in (':answer/type', ':answer/value')} == correct]
+    return content
+
+
+def question_forms(kp_id, records):
+    """Only append complete questions and their owned fields to a KP."""
+    forms, assertions = [], []
+    def add(entity, attr, value):
+        forms.append([kw('db/add'), entity, kw(attr), value])
+        assertions.append([entity, kw(attr), value])
+    for rec in records:
+        q = rec['question']
+        for field in q[':question/answer-fields']:
+            for answer in field[':answer-field/choices']:
+                aid = answer[':answer/id']
+                add(aid, 'answer/id', uuid.UUID(aid))
+                add(aid, 'answer/type', kw(enum(answer[':answer/type'])))
+                add(aid, 'answer/value', answer[':answer/value'])
+                if ':answer/feedback' in answer:
+                    add(aid, 'answer/feedback', answer[':answer/feedback'])
+                forms.append([kw('db/ensure'), aid, kw('answer/validate')])
+            fid = field[':answer-field/id']
+            add(fid, 'answer-field/id', uuid.UUID(fid))
+            add(fid, 'answer-field/key', field[':answer-field/key'])
+            add(fid, 'answer-field/type', kw(enum(field[':answer-field/type'])))
+            for answer in field[':answer-field/choices']:
+                add(fid, 'answer-field/choices', answer[':answer/id'])
+            add(fid, 'answer-field/correct', answer_id(field[':answer-field/correct']))
+            forms.append([kw('db/ensure'), fid, kw('answer-field/validate')])
+        qid = q[':question/id']
+        add(qid, 'question/id', uuid.UUID(qid))
+        for name in ('problem', 'worked-solution', 'requires-calculator'):
+            if ':question/' + name in q:
+                add(qid, 'question/' + name, q[':question/' + name])
+        add(qid, 'question/difficulty', kw(enum(q[':question/difficulty'])))
+        for field in q[':question/answer-fields']:
+            add(qid, 'question/answer-fields', field[':answer-field/id'])
+        forms.append([kw('db/ensure'), qid, kw('question/validate')])
+        add(int(kp_id), 'knowledge-point/questions', qid)
+    return forms, assertions
 
 
 def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_directory, *, localizer=localize_record):

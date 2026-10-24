@@ -36,6 +36,11 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Optional reference to a question-generator entity holding a Python script that produces new questions for this KP. The application invokes the generator when more questions are needed, validates its output, and adds accepted questions to the KP's pool."}
 
+ {:db/ident :knowledge-point/level-coverage
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Difficulty levels observed on imported Math Academy questions associated with this KP, independently of question completeness: question.difficulty/easy, /moderate, and /hard. Use question.difficulty/unobserved alone when no imported level is observed. Authored exemplars and generated practice do not add observed coverage. This records source evidence, not generator capability or a fourth served difficulty."}
+
  {:db/ident :knowledge-point/identity-validate
   :db.entity/attrs [:knowledge-point/id]
   :db/doc "Requires only identity for a placeholder knowledge point when explicitly ensured. Use knowledge-point/validate after filling in its required data."}
