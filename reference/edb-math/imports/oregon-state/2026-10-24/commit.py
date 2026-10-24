@@ -12,6 +12,7 @@ def main():
  a=json.loads((H/'source-audit.json').read_text());entities=json.loads((H/'entities.json').read_text());payload=H/'transaction.edn';sha=hashlib.sha256(payload.read_bytes()).hexdigest();assert sha==a['sha256']
  render=json.loads((H/'render/rendering.json').read_text());assert render['passed'] and len(render['cases'])==6
  assert len(entities)==37 and len(a['added_targets'])==5
+ assert json.loads((H/'native-preview-verification.json').read_text())['sha256']==sha
  for source in a['activities']:assert hashlib.sha256((Path('/home/jake/Developer/study/vault')/source['source']).read_bytes()).hexdigest()==source['sha256']
  db=connection();intent_path=H/'commit-intent.json'
  identities=[]
@@ -74,7 +75,8 @@ def main():
  assignments={r[':db/id'] for r in learner[':learner/assignments']};targets={r[':db/id'] for r in learner[':learner/targets']}
  assert assignments==set(a['old_assignment_eids'])|{byuid[x] for x in a['activity_ids']}
  assert targets==set(a['old_target_eids'])|{x['entity'] for x in a['all_requested_targets']}
- ds=receipt[':edb/tx-data'];assert all(d[-1] is True for d in ds),'An import must not retract existing data'
+ ds=receipt[':edb/tx-data'];source_id=resolve(a['source']);assert all(d[-2]==source_id for d in ds)
+ assert all(d[-1] is True for d in ds),'An import must not retract existing data'
  newids=set(byuid.values());assert newids.isdisjoint(set(a['old_assignment_eids']))
  # Every changed pre-existing entity must be precisely the two additive sets
  # on the learner. Other datoms are the 37 new records and transaction metadata.
