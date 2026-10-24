@@ -103,12 +103,31 @@ def solution_check(q):
   assert sp.simplify(expr(last)-expected)==0,last
  return expected
 
+def representation_check(q):
+ # Equivalence alone cannot catch an unexplained identity between the final
+ # solution line and the keyed choice. Read the displayed forms independently.
+ if 'h(x)' not in q[':question/worked-solution']:return
+ def notation(s):
+  s=re.sub(r'\\operatorname\{(sin|cos)\}',r'\\\1',s)
+  return re.sub(r'[\s{}\u2061.]','',s.replace(r'\left','').replace(r'\right',''))
+ problem=notation(q[':question/problem']);solution=notation(q[':question/worked-solution'])
+ inner=re.search(r'\\cos\(([^)]+)\)',problem)[1]
+ field=q[':question/answer-fields'][0];correct=field[':answer-field/correct']
+ cid=str(correct[':answer/id']) if isinstance(correct,dict) else correct[1]
+ for answer in field[':answer-field/choices']:
+  value=notation(answer[':answer/value'])
+  assert re.findall(r'\\(?:sin|cos)\(([^)]+)\)',value)==[inner],('Unexplained trig argument rewrite',value,inner)
+  if str(answer[':answer/id'])==cid:
+   final=solution.split('Hence,',1)[1].split('=')[-1].split('$$')[0]
+   assert value==final,('Keyed choice differs from final solution form',value,final)
+
 def independent(r):
  q=r['question'];m=r['generation'];profile=m['profile'];t=m['parameters']['t'];level=q[':question/difficulty'].split('/')[-1]
  assert r==g.generate(level,m['seed'],profile,t)
  assert r['knowledge_point']['db_id']==g.KP_ID and r['knowledge_point']['id']==g.KP_UUID
  assert fingerprint(q)==m['parameter_fingerprint']
  solution_check(q)
+ representation_check(q)
  assert q[':question/problem'].count('$')%2==0
  assert q[':question/worked-solution'].count('$')%2==0
  assert q[':question/problem'].count('{')==q[':question/problem'].count('}')
@@ -157,6 +176,6 @@ def main():
  bounds={level:len({r['generation']['parameter_fingerprint'] for r in rows if r['question'][':question/difficulty'].endswith('/'+level)}) for level in g.SUPPORTED_LEVELS}
  caps={'source_basis':g.SOURCE['basis'],'supported_levels':list(g.SUPPORTED_LEVELS),'finite_distinct_task_domain':bounds,'unsupported_levels':['easy'],'exceptions':{'easy':'No rated easy source evidence at captured basis. Two legacy unrated radio questions lack keys, solutions and difficulty; preserved and excluded. Absence is not impossibility: reopen on rated or reviewed source evidence.','incomplete_templates':'q-31241, q-48508 and q-48636 have no fields. Their mathematical results are described in classification but no answer-shape extensions are generated.','lexical_math_source':'q-310182 preserves its delimited text bank; actual learner grader rejects an equivalent -4*pi response. The unchanged source is excluded from validated availability; new variants use supported mathematical blanks. See reference/source-grading-summary.json.', 'narrow_sampling':'Only one observed coefficient varies per supported family, finite ranges in script; no claims beyond these ranges. tan requires cos(u) != 0. Signed -2 linear slope and -6 cubic retained.'},'plots':'none; no source diagrams or required new assets','new_source_evidence_reopens_classification':True}
  (H/'capabilities.json').write_text(json.dumps(caps,indent=2))
- result={'status':'pass','source_basis':g.SOURCE['basis'],'exhaustive_instances':len(rows),'source_replay':replay,'complete_banks_matched':len(replay),'total_supported_banks':len(g.PROFILES),'matched_distractors':sum(r['matched_distractors'] for r in replay),'total_supported_distractors':12,'fidelity':'All supported source banks matched completely with correct designation; source prompt and fixed solution exact at source parameters; generated blanks canonicalized to delimiter-free math; radio placeholder appended. Unsupported source records unchanged.','correctness':'Independent rendered prompt parsing, symbolic differentiation, slope/point evaluation, tangent equation RHS equivalence, distinct incorrect banks, printed substitution and final solution checks; all bounded parameters enumerated.','grading':{k:er[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'hashes':{str(p.relative_to(ROOT)):sha(p) for p in [H.with_suffix('.py'),Path(__file__),H/'source.json',H/'source.edn',H/'capabilities.json',H/'check-engine',H/'check-engine.rs',H/'replenish.py',H/'reference/source-grading-summary.json']}}
+ result={'status':'pass','source_basis':g.SOURCE['basis'],'exhaustive_instances':len(rows),'source_replay':replay,'complete_banks_matched':len(replay),'total_supported_banks':len(g.PROFILES),'matched_distractors':sum(r['matched_distractors'] for r in replay),'total_supported_distractors':12,'fidelity':'All supported source banks matched completely with correct designation; source prompt and fixed solution exact at source parameters; generated blanks use delimiter-free math; radio controls render separately. Unsupported source records unchanged.','correctness':'Independent rendered prompt parsing, symbolic differentiation, slope/point evaluation, tangent equation RHS equivalence, distinct incorrect banks, printed substitution and final solution checks; all bounded parameters enumerated.','representation':'Cosine-plus-cubic choices preserve the prompt inner argument; keyed choice matches the final worked-solution form without a parity identity.','grading':{k:er[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'hashes':{str(p.relative_to(ROOT)):sha(p) for p in [H.with_suffix('.py'),Path(__file__),H/'source.json',H/'source.edn',H/'capabilities.json',H/'check-engine',H/'check-engine.rs',H/'replenish.py',H/'reference/source-grading-summary.json']}}
  (H/'validation.json').write_text(json.dumps(result,indent=2));print(json.dumps({'status':result['status'],'instances':len(rows),'grading':result['grading'],'bounds':bounds}))
 if __name__=='__main__':main()

@@ -6,7 +6,7 @@ import sympy as sp
 H=Path(__file__).with_suffix('');SOURCE=json.loads((H/'source.json').read_text())
 KP_ID=17592186064281;KP_UUID=SOURCE['record'][':knowledge-point/id']
 GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
-VERSION='1.0.0';SUPPORTED_LEVELS=('moderate','hard')
+VERSION='1.0.1';SUPPORTED_LEVELS=('moderate','hard')
 X=sp.Symbol('x',real=True)
 ORIGINALS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
 PROFILES={
@@ -18,6 +18,17 @@ PROFILES={
  'q-51026':('hard','cos-horizontal-tangent-radio',2,tuple(range(2,13))),
 }
 def tex(e):return sp.latex(e).replace(r'\operatorname{sec}',r'\sec')
+def cos_cubic_inner(t):return str(t)+'-2x'
+def answer_values(profile,t,bank):
+ # Symbolic normal forms verify values and retain stable identities; they are
+ # not an instructional rendering. In particular, SymPy rewrites sin(t-2*x)
+ # to -sin(2*x-t), introducing a parity identity absent from this lesson.
+ if profile=='q-31163':
+  u=cos_cubic_inner(t)
+  return [r'-2\sin('+u+r')-9x^{2}',r'-\cos('+u+r')-9x^{2}',
+          r'\sin('+u+r')-18x^{2}',r'2\cos('+u+r')-18x^{2}',
+          r'2\sin('+u+r')-18x^{2}']
+ return [('y='+tex(b)) if profile=='q-51026' else tex(b) for b in bank]
 def replace_all(text,mapping):
  mapping={k:v for k,v in mapping.items() if k!=v}
  if not mapping:return text
@@ -56,7 +67,7 @@ def text_parts(profile,t):
   mapping={r'\frac{\pi }{6}':r'\frac{\pi }{'+str(2*t)+'}',r'3x':str(t)+'x',r'=3.':'='+str(t)+'.',r'\cdot 3':r'\cdot '+str(t),r'3\operatorname{cos}':str(t)+r'\operatorname{cos}',r'3\cdot ':str(t)+r'\cdot ',r'3\cdot 0':str(t)+r'\cdot 0'}
  elif profile=='q-31153':
   mapping={r'3x+5':'3x+'+str(t),r'3\cdot 2+5':r'3\cdot 2+'+str(t),r'\operatorname{cos}⁡11':r'\operatorname{cos}⁡'+str(6+t)}
- elif profile=='q-31163':mapping={'11-2x':str(t)+'-2x'}
+ elif profile=='q-31163':mapping={'11-2x':cos_cubic_inner(t)}
  elif profile=='q-310182':
   # All source spacing forms are recorded; replacement is simultaneous.
   a='' if t==1 else str(t);d=str(2*t);m=str(2*(t+1));sgn=str((-1)**t);final=tex(2*(t+1)*sp.pi*(-1)**t)
@@ -83,8 +94,7 @@ def generate(level,seed,profile=None,t=None):
  ftype=sf[':answer-field/type'][':db/ident'];key=sf[':answer-field/key']
  fp=task_key(profile,t);qid=str(uuid.uuid5(uuid.UUID(KP_UUID),fp));fid=str(uuid.uuid5(uuid.UUID(qid),key))
  choices=[];correct=None
- for b in bank:
-  val=('y='+tex(b)) if profile=='q-51026' else tex(b)
+ for b,val in zip(bank,answer_values(profile,t,bank),strict=True):
   aid=str(uuid.uuid5(uuid.UUID(fid),sp.srepr(b)))
   choices.append({':answer/id':aid,':answer/type':':answer.type/math',':answer/value':val})
   if sp.simplify(b-answer)==0:correct=aid
