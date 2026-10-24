@@ -36,6 +36,8 @@ def validate_delivery_batch(records,kp_id):
             raise ValueError('Displayed parameters exceed the reviewed arithmetic budget')
         if len(fields)!=1:raise ValueError('Scaffolded substitution has one assessed response')
         field=fields[0];choices=field[':answer-field/choices'];correct=field[':answer-field/correct']
+        if any(int(n)>12 for a in choices for n in re.findall(r'\d+',a[':answer/value'])):
+            raise ValueError('Displayed answer choices exceed the reviewed arithmetic budget')
         correct_id=str(correct.get(':answer/id'))if isinstance(correct,dict)else str(correct[1])
         key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==correct_id)
         easy=band=='easy'

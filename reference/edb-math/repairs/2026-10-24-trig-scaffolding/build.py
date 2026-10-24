@@ -2,6 +2,7 @@
 import argparse
 import importlib.util
 import json
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -25,6 +26,10 @@ def main():
             try:
                 text=q[':question/problem'].replace(r'{\int }',r'\int').replace(r'\text{d}x',r'\mathrm{d}x').replace(r'\textrm d x',r'\mathrm{d}x')
                 text=text.replace('y','x').replace('z','x').replace(r'\text{d}x',r'\mathrm{d}x')
+                text=text.replace(r'\textrm{d}x',r'\mathrm{d}x').replace(r'\textrm dx',r'\mathrm{d}x')
+                text=re.sub(r'(?<![A-Za-z])dx',lambda _:r'\mathrm{d}x',text)
+                text=re.sub(r'\\dfrac\s+(\\pi|x|\d+)\s+(\d+)',lambda m:r'\frac{'+m[1]+'}{'+m[2]+'}',text)
+                text=re.sub(r'\\int_(-?\d+)\^',lambda m:r'\int_{'+m[1]+'}^',text)
                 text=text[text.index(r'\int'):]
                 body,var,lo,hi,_=reader.integral(text)
                 excluded.append(engine.task_key(body,lo,hi))
