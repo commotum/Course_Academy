@@ -27,7 +27,9 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
                 "lesson" => {
                     lessons+=1;
                     if let Some(topic)=s.optional_ref(activity,"activity/scope")? {
-                        knowledge_points.extend(s.refs(topic,"topic/knowledge-points")?);
+                        // These persisted ref IDs are enough for a distinct
+                        // count; the small stats projection needs no KP content.
+                        knowledge_points.extend(page_reader::references(s.entity(topic)?,"topic/knowledge-points"));
                     }
                 }
                 "review" => reviews+=1,

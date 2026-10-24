@@ -44,6 +44,21 @@ pub(super) fn references(record: &Record, name: &str) -> Vec<u64> {
     }
 }
 
+// Only the metadata needed by completion totals; do not load activity routes.
+fn summary_record(db: &DatabaseValue, entity: u64, names: &[&str]) -> Result<Record> {
+    let mut record=Record::new();
+    for &name in names {
+        let attribute=attribute(db,name)?;
+        let many=db.schema().attribute(attribute)?.cardinality==Cardinality::Many;
+        for d in db.collect_datoms_with_prefix(&IndexPrefix::Eavt {entity,attribute:Some(attribute),value:None})? {
+            let v=value(&d.value)?;
+            if many { record.entry(name.to_owned()).or_insert(json!([])).as_array_mut().unwrap().push(v); }
+            else { record.insert(name.to_owned(),v); }
+        }
+    }
+    Ok(record)
+}
+
 fn capture(db: &DatabaseValue, learner: &str, assignments: bool) -> Result<(EntitySnapshot, u64)> {
     let learner = db
         .collect_datoms_with_prefix(&IndexPrefix::Avet {
@@ -209,9 +224,13 @@ pub(super) fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(Entity
         let completed=task_record.get("learner-task/status").and_then(Json::as_u64).and_then(|id|db.ident(id))
             .is_some_and(|ident|ident.qualified_name()=="learner-task.status/completed");
         for activity in references(&task_record,"learner-task/activity").into_iter().filter(|_|completed) {
-            if !entities.contains_key(&activity) { entities.insert(activity,record(db,activity)?); }
-            for topic in references(&entities[&activity],"activity/scope") {
-                if !entities.contains_key(&topic) { entities.insert(topic,record(db,topic)?); }
+            if !entities.contains_key(&activity) {
+                entities.insert(activity,summary_record(db,activity,&["activity/type","activity/scope"])?);
+            }
+            let lesson=entities[&activity].get("activity/type").and_then(Json::as_u64).and_then(|id|db.ident(id))
+                .is_some_and(|ident|ident.qualified_name()=="activity.type/lesson");
+            for topic in references(&entities[&activity],"activity/scope").into_iter().filter(|_|lesson) {
+                if !entities.contains_key(&topic) { entities.insert(topic,summary_record(db,topic,&["topic/knowledge-points"])?); }
             }
         }
         entities.insert(task,task_record);

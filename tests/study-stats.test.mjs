@@ -69,13 +69,15 @@ test('refresh shows saved XP immediately and replaces it with the fresh response
   const f = fixture(200, undefined, { storage, holdRead: true });
   assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '250');
   assert.equal(f.find('stat-week-chart').children.length, 7);
+  assert.equal(f.find('stat-xp-summary', f.find('stat-activities')).children[1].children[1].textContent, '54');
   assert.match(f.sidebar.title, /Refreshing/);
   assert.equal(f.calls.length, 1);
   assert.equal(f.forecastRefreshes, 0);
-  f.data.days[6].earnedXp = 300; f.data.totalEarnedXp = 12450;
+  f.data.days[6].earnedXp = 300; f.data.totalEarnedXp = 12450; f.data.activityTotals.knowledgePoints = 55;
   f.releaseRead(); await flush();
   assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '300');
   assert.equal(f.sidebar.title, '');
+  assert.equal(f.find('stat-xp-summary', f.find('stat-activities')).children[1].children[1].textContent, '55');
   assert.equal(f.forecastRefreshes, 1);
   assert.equal(JSON.parse(storage.get('course-academy.study-stats.v1')).data.totalEarnedXp, 12450);
 });
@@ -84,14 +86,14 @@ test('saved statistics from another day or malformed storage do not render', asy
   const storage = new Map();
   fixture(200, new Date(2026, 9, 13, 12), { storage }); await flush();
   const f = fixture(200, new Date(2026, 9, 14, 12), { storage, holdRead: true });
-  assert.equal(f.find('stat-xp-summary'), undefined);
+  assert.equal(f.find('stat-xp-summary', f.sidebar.children[0]), undefined);
   f.releaseRead(); await flush();
-  assert.ok(f.find('stat-xp-summary'));
+  assert.ok(f.find('stat-xp-summary', f.sidebar.children[0]));
   storage.set('course-academy.study-stats.v1', '{bad json');
   const broken = fixture(200, undefined, { storage, holdRead: true });
-  assert.equal(broken.find('stat-xp-summary'), undefined);
+  assert.equal(broken.find('stat-xp-summary', broken.sidebar.children[0]), undefined);
   broken.releaseRead(); await flush();
-  assert.ok(broken.find('stat-xp-summary'));
+  assert.ok(broken.find('stat-xp-summary', broken.sidebar.children[0]));
 });
 
 test('a failed refresh retains same-day XP and storage failures do not prevent fresh reads', async () => {
