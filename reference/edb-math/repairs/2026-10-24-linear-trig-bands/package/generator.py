@@ -194,6 +194,9 @@ def build(level, case, values, *, response='blank', seed=0):
     if level == 'hard' and response != 'blank':
         raise ValueError('The authored hard band uses independent exact entry')
     fn, a, b, c, lo, hi = values
+    a,b,c = map(sp.sympify,(a,b,c))
+    lo = None if lo is None else sp.sympify(lo)
+    hi = None if hi is None else sp.sympify(hi)
     if fn not in ('sin','cos') or a == 0 or b == 0 or (lo is not None and not lo < hi):
         raise ValueError('Invalid linear-substitution instance')
     if fn != ('sin' if 'sin' in case else 'cos'):
