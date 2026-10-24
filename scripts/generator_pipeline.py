@@ -133,7 +133,7 @@ class CodexSession:
                 output.unlink()
         execution_path = directory / 'execution.json'
         execution = read(execution_path) if execution_path.exists() else {'launches': 0}
-        from generator_lifecycle import begin_launch, credit_interruption
+        from generator_lifecycle import begin_launch, credit_interruption, finish_launch
         execution = credit_interruption(execution_path, execution, self.max_launches)
         launch_limit = execution.get('launch_limit', self.max_launches)
         if execution['launches'] >= launch_limit:
@@ -150,14 +150,14 @@ class CodexSession:
         # unfinished ephemeral session's budget and launch it forever.
         execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running'}
         execution.pop('error', None)
-        execution = begin_launch(execution_path, execution, self.environment)
         try:
             with (directory / 'events.jsonl').open('a') as log:
-                process = subprocess.Popen(command, stdin=subprocess.PIPE, text=True, stdout=log,
+                execution, process = begin_launch(execution_path, execution, self.environment,
+                    lambda: subprocess.Popen(command, stdin=subprocess.PIPE, text=True, stdout=log,
                                            stderr=subprocess.STDOUT, env={
                                                **{k: v for k, v in self.environment.items() if k != 'COURSE_ACADEMY_GENERATOR_LOCK_FDS'},
                                                'PYTHONDONTWRITEBYTECODE': '1'},
-                                           start_new_session=True, pass_fds=getattr(self, 'lock_fds', ()))
+                                           start_new_session=True, pass_fds=getattr(self, 'lock_fds', ())))
                 try:
                     process.communicate(prompt, timeout=self.timeout)
                 except BaseException:
@@ -169,11 +169,11 @@ class CodexSession:
             result = read(output)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             execution.update(status='failed', error=str(error))
-            save(execution_path, execution)
+            finish_launch(execution_path, execution)
             if execution['launches'] >= launch_limit:
                 raise SessionRetryExhausted(role, directory, execution) from error
             raise
-        save(execution_path, {**execution, 'status': 'completed'})
+        finish_launch(execution_path, {**execution, 'status': 'completed'})
         return result
 
 

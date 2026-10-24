@@ -243,6 +243,17 @@ remain repair tasks; a grading finding permits a scoped engine fix with acceptan
 and rejection regressions. Infrastructure interruptions retain exact state with bounded retry; three process failures without a structured result block the inventory job. Provider/session launch limits remain distinct from content
 repair and never cause uncertain publication requests to be replaced.
 
+A controlled UI service stop records the exact unfinished agent launches owned
+by that service before terminating its children. On restart, each matching launch
+receives one replacement launch; the original execution and shutdown evidence
+remain recorded. Completed results are reused. Failed agents, unmarked crashes,
+and ordinary process failures retain their existing retry limits, and logical
+author-attempt limits do not reset. Shutdown also closes new pipeline and agent
+admission, so it cannot start fresh work while stopping. Older interrupted jobs
+without ownership markers require explicit, evidence-backed recovery; a restart
+alone never grants them more attempts. Publication intents and approval state are
+not changed by this mechanism.
+
 Scoped campaigns use persistent user-service definitions installed by
 `scripts/generator_services.py`, with restart on unexpected process failure. The
 definition remains available after a clean boundary stop; resuming does not depend

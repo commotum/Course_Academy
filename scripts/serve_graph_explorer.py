@@ -756,16 +756,16 @@ def main() -> None:
     for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "home"}, {"action": "activity-history"})):
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
-    for background in server.RequestHandlerClass.background:
-        if background.__name__ in {'generator_build_loop', 'generator_refill_loop'} and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
-            continue
-        threading.Thread(target=background, daemon=True).start()
     def stop(_signum, _frame):
         server.RequestHandlerClass.scheduler_stop.set()
         server.RequestHandlerClass.mark_generator_interruption()
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
+    for background in server.RequestHandlerClass.background:
+        if background.__name__ in {'generator_build_loop', 'generator_refill_loop'} and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
+            continue
+        threading.Thread(target=background, daemon=True).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:

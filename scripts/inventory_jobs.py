@@ -186,6 +186,34 @@ class InventoryJobs:
             self._stopping = True
             return [mark_stopped(owner) for owner in self._active_owners]
 
+    def _run_pipeline(self, command, **kwargs):
+        """Spawn under the stop lock; wait without blocking controlled shutdown."""
+        from generator_lifecycle import mark_stopped, OWNER_ENV, INTERRUPTED_EXIT
+        owner = Path(kwargs['env'][OWNER_ENV])
+        timeout = kwargs.pop('timeout')
+        kwargs.pop('check', None)
+        with self._active_lock:
+            if self._stopping:
+                mark_stopped(owner)
+                return subprocess.CompletedProcess(command, INTERRUPTED_EXIT)
+            self._active_owners.add(owner)
+            try:
+                process = subprocess.Popen(command, **kwargs)
+            except BaseException:
+                self._active_owners.discard(owner)
+                raise
+        try:
+            try:
+                returncode = process.wait(timeout=timeout)
+            except BaseException:
+                process.kill()
+                process.wait()
+                raise
+            return subprocess.CompletedProcess(command, returncode)
+        finally:
+            with self._active_lock:
+                self._active_owners.discard(owner)
+
     def creator_executable(self) -> str:
         return (self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE')
                 or shutil.which('codex', path=self.environment.get('PATH', os.defpath))
@@ -501,16 +529,11 @@ class InventoryJobs:
             if override:
                 command = json.loads(override) + [str(path)]
             from generator_lifecycle import create_owner, stopped, OWNER_ENV, INTERRUPTED_EXIT
-            with self._active_lock:
-                if self._stopping:
-                    kp_lock.close()
-                    return False
-                owner = create_owner(path, cycle)
-                self._active_owners.add(owner)
+            owner = create_owner(path, cycle)
             try:
                 with path.with_suffix('.log').open('a') as log:
                     descriptors = (lock.fileno(), kp_lock.fileno())
-                    completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
+                    completed = self._run_pipeline(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
                         env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors),
                              OWNER_ENV: str(owner)}, pass_fds=descriptors)
                 if completed.returncode == INTERRUPTED_EXIT and stopped(owner):
@@ -547,7 +570,5 @@ class InventoryJobs:
                     print(json.dumps({'event': 'generator_blocked', 'knowledgePoint': job['request']['knowledgePoint'],
                                       'job': str(path), 'reason': str(error)}), file=sys.stderr, flush=True)
             finally:
-                with self._active_lock:
-                    self._active_owners.discard(owner)
                 kp_lock.close()
             return True

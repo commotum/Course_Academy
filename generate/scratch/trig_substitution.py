@@ -18,7 +18,7 @@ from trig_format import normalize_prose, normalize_tex
 
 X, U = s.symbols('x u', real=True)
 R, PI = s.Rational, s.pi
-VERSION = '3.0.0-substitution-models'
+VERSION = '3.1.0-substitution-models'
 TRIG = ('sin', 'cos', 'sec2', 'csc2', 'sec_tan', 'csc_cot')
 RECIP = TRIG[2:]
 CASE = {
@@ -122,6 +122,8 @@ def products(band, case, rng, index):
     kind = case.split('_', 1)[1] if root or inverse else case
     a = s.Integer(rng.randint(2, 5))
     n = rng.choice((2, 3))
+    if band == 'hard':
+        n = 2  # source-anchored definite workload; avoid incidental cube-root algebra
     b = rng.choice((-PI/6, -PI/4)) if band == 'hard' and not inverse else (
         rng.choice((0, PI/6, -PI/6)) if band == 'moderate' else s.Integer(0))
     sign = -1 if index % 2 else 1
@@ -149,7 +151,8 @@ def products(band, case, rng, index):
     lo = hi = None
     if band == 'hard' and not inverse:
         u0, u1 = endpoints(kind, 'hard', rng)
-        lo, hi = s.simplify(((u0-b)/a)**R(1, n)), s.simplify(((u1-b)/a)**R(1, n))
+        lo = s.Pow(s.simplify((u0-b)/a), R(1, n), evaluate=False)
+        hi = s.Pow(s.simplify((u1-b)/a), R(1, n), evaluate=False)
     return dict(kind=kind, inner=inner, du=du, factor=r,
         body=outer*g(kind, inner), transformed=g(kind, U), primitive_u=r*h(kind, U),
         primitive=r*h(kind, inner), lo=lo, hi=hi,

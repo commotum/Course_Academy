@@ -657,7 +657,9 @@ class GeneratorPipelineTests(unittest.TestCase):
                     self.assertEqual(CodexSession(root=repo, max_launches=1)(role, context, directory), expected)
                     self.assertEqual(start.call_count, 2)
                 execution = json.loads((directory / 'execution.json').read_text())
-                self.assertEqual(execution, {'launches': 2, 'status': 'completed'})
+                self.assertEqual({key: execution[key] for key in ('launches', 'status')},
+                                 {'launches': 2, 'status': 'completed'})
+                self.assertRegex(execution['launch_id'], r'^[0-9a-f]{32}$')
 
     def test_interrupted_session_budget_is_not_reset_by_new_process(self):
         directory = self.root / 'interrupted-review'

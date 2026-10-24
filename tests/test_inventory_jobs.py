@@ -46,14 +46,14 @@ class InventoryJobTests(unittest.TestCase):
         self.assertEqual(self.records()[0]['state'],'verified')
     def test_worker_exit_is_not_inventory_verification_and_transport_failures_resume(self):
         self.accept()
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode=0
             self.assertTrue(self.jobs.run_one())
         self.assertEqual(self.records()[0]['state'],'awaiting-verification')
         self.accept(jobs=[])
         self.assertEqual(self.records()[0]['state'],'verified')
         self.accept()
-        with patch('inventory_jobs.subprocess.run') as run, patch('inventory_jobs.time.time',return_value=100000000000):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run, patch('inventory_jobs.time.time',return_value=100000000000):
             run.return_value.returncode=1
             # Explicitly advance time between retries.
             for index in range(3):
@@ -69,7 +69,7 @@ class InventoryJobTests(unittest.TestCase):
         self.accept()
         path = next(p for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json')
         path.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value = subprocess.CompletedProcess(['pipeline'], 0)
             self.assertTrue(self.jobs.run_one())
         self.assertEqual(run.call_count, 1)
@@ -84,7 +84,7 @@ class InventoryJobTests(unittest.TestCase):
         def rejected(*args, **kwargs):
             path.with_suffix('.result').write_text(json.dumps({'outcome': 'blocked', 'reason': {'code': 'no_progress'}}))
             return subprocess.CompletedProcess(args[0], 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=rejected) as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=rejected) as run:
             self.jobs.run_one()
             self.accept(jobs=[])
             self.accept()
@@ -101,7 +101,7 @@ class InventoryJobTests(unittest.TestCase):
         def repair(*args, **kwargs):
             path.with_suffix('.result').write_text(json.dumps({'outcome': 'repair-pending', 'needs_repair': True}))
             return subprocess.CompletedProcess(args[0], 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=repair):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=repair):
             self.assertTrue(self.jobs.run_one())
         self.accept()
         after = json.loads(path.read_text())
@@ -138,7 +138,7 @@ class InventoryJobTests(unittest.TestCase):
         self.jobs.finish(path, {'state': 'running', 'attempts': 3})
         # Recover unknown work before starting a higher-ranked fresh job.
         self.accept(jobs=[self.request, {**self.request, 'knowledgePoint': 3, 'priority': 9999}])
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 0
             self.assertTrue(self.jobs.run_one())
         recovered = json.loads(path.read_text())
@@ -236,7 +236,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         def execute(command, **kwargs):
             claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
             return subprocess.CompletedProcess(command, 0)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             for _ in range(4):
                 self.assertTrue(self.jobs.run_one())
         self.assertEqual(claimed, [40, 20, 10, 30])
@@ -289,11 +289,11 @@ class RankedInventoryJobTests(unittest.TestCase):
             return subprocess.CompletedProcess(command, 0)
         with (self.jobs.directory / 'kp-20.lock').open('a') as busy:
             fcntl.flock(busy, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
                 self.assertTrue(self.jobs.run_one())
         self.assertEqual(claimed, [30])
         self.assertEqual(json.loads(blocked.read_text())['state'], 'blocked')
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one())
         self.assertEqual(claimed, [30, 20])
 
@@ -348,7 +348,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         requests = ranked_requests(self.ranked(speculative, review))
         self.assertEqual([r['knowledgePoint'] for r in requests], [1, 3])
         self.jobs.accept(self.ranked(speculative, review))
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(1))
@@ -361,7 +361,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.jobs.finish(draft, {'state': 'running', 'attempts': 2})
         direct = self.relevant(self.kp(1, topic=2, score=1), 1, topic_layer=38)
         self.jobs.accept(self.ranked(prerequisite, direct))
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(1))
@@ -380,7 +380,7 @@ class RankedInventoryJobTests(unittest.TestCase):
                 ranked = self.ranked(prerequisite, direct)
                 self.assertEqual(ranked_requests(ranked)[0]['knowledgePoint'], 1)
                 self.jobs.accept(ranked)
-                with patch('inventory_jobs.subprocess.run') as run:
+                with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
                     run.return_value.returncode = 1
                     self.assertTrue(self.jobs.run_one(lane))
                 selected = json.loads(Path(run.call_args.args[0][3]).read_text())
@@ -402,7 +402,7 @@ class RankedInventoryJobTests(unittest.TestCase):
                           (5, 'refill', 'moderate'), (5, 'refill', 'hard')})
         self.jobs.accept(closed)
         self.assertFalse(self.jobs.run_one('build'))
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.assertTrue(self.jobs.run_one('refill'))
         request = json.loads(Path(run.call_args.args[0][3]).read_text())['request']
@@ -491,7 +491,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         kept = json.loads(publication.read_text())
         self.assertEqual(kept['state'], 'running')
         self.assertTrue(kept['recoveryOnly'])
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), publication)
@@ -506,7 +506,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         request = ranked_requests(self.ranked(kp))[0]
         current = self.jobs.directory / 'refreshed.json'
         save(current, {'key': 'refreshed', 'request': request, 'state': 'pending', 'cycle': 1})
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), current)
@@ -572,7 +572,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.jobs.accept(self.ranked(self.kp(), self.kp(3, score=65000)))
         low_path = self.path_for(1)
         self.jobs.finish(low_path, {'state': 'running', 'attempts': 3})
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.assertTrue(self.jobs.run_one())
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
@@ -590,7 +590,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertEqual(preserved['cycle'], 1)
         for field in ('stage', 'missing', 'script', 'difficulty'):
             self.assertEqual(preserved['request'][field], before['request'][field])
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
@@ -618,7 +618,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         directory = pending.with_suffix('.pipeline') / '1'
         save(directory / 'job.json', {'stage': 'validate'})
         save(directory / 'publication/request.json', {'request_id': 'exact-intent'})
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), pending)
@@ -626,7 +626,7 @@ class RankedInventoryJobTests(unittest.TestCase):
                          {'request_id': 'exact-intent'})
         save(directory / 'job.json', {'stage': 'validate', 'review_after_publication': True})
         self.jobs.finish(pending, {'retryAt': 0})
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
@@ -640,7 +640,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         migrated = json.loads(path.read_text())
         self.assertEqual(migrated['request']['difficulty'], 'hard')
         self.assertEqual(migrated['cycle'], 1)
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             run.return_value.returncode = 1
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), path)
@@ -680,7 +680,7 @@ class RankedInventoryJobTests(unittest.TestCase):
             if len(lanes) == 1:
                 self.assertTrue(self.jobs.run_one(lane='refill'))
             return subprocess.CompletedProcess(command, 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one(lane='build'))
         self.assertEqual(lanes, ['build', 'refill'])
 
@@ -700,7 +700,7 @@ class RankedInventoryJobTests(unittest.TestCase):
                 errors.append('Timed out waiting for concurrent claims')
             return subprocess.CompletedProcess(command, 0)
         restarted = InventoryJobs(self.directory, self.jobs.directory, 'learner', self.jobs.environment)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute), ThreadPoolExecutor(max_workers=3) as pool:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute), ThreadPoolExecutor(max_workers=3) as pool:
             futures = [pool.submit(self.jobs.run_one, 'build', slot) for slot in range(3)]
             try:
                 self.assertTrue(entered.wait(3), 'Three builders did not run concurrently')
@@ -764,7 +764,7 @@ class RankedInventoryJobTests(unittest.TestCase):
                 errors.append('Timed out waiting for six concurrent claims')
             return subprocess.CompletedProcess(command, 0)
         restarted = InventoryJobs(self.directory, self.jobs.directory, 'learner', self.jobs.environment)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute), ThreadPoolExecutor(max_workers=6) as pool:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute), ThreadPoolExecutor(max_workers=6) as pool:
             futures = [pool.submit(self.jobs.run_one, 'build', slot) for slot in range(6)]
             try:
                 self.assertTrue(entered.wait(3), 'Six workers did not claim their jobs')
@@ -787,7 +787,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         def execute(command, **kwargs):
             claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
             return subprocess.CompletedProcess(command, 0)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one('build', 2))
             self.assertTrue(self.jobs.run_one('build', 2))
             self.assertTrue(self.jobs.run_one('build', 2))
@@ -804,10 +804,10 @@ class RankedInventoryJobTests(unittest.TestCase):
             return subprocess.CompletedProcess(command, 0)
         with (self.jobs.directory / 'kp-90.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
                 self.assertTrue(self.jobs.run_one('build', 2))
         self.jobs.finish(review, {'state': 'blocked', 'outcome': {'reason': 'unresolved source defect'}})
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one('build', 2))
         self.assertEqual(claimed, [1, 2])
         self.assertEqual(json.loads(review.read_text())['state'], 'blocked')
@@ -820,7 +820,7 @@ class RankedInventoryJobTests(unittest.TestCase):
             claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
             return subprocess.CompletedProcess(command, 0)
         self.jobs.environment['COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS'] = '0'
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one('build', 2))
             self.jobs.environment.pop('COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS')
             self.jobs.environment['COURSE_ACADEMY_GENERATOR_BUILD_WORKERS'] = '1'
@@ -846,7 +846,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         def fail(command, **kwargs):
             build.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
             return subprocess.CompletedProcess(command, 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
             self.assertTrue(self.jobs.run_one('build', 2))
         self.jobs.accept(inventory)
         self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], 'moderate')
@@ -866,7 +866,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         def execute(command, **kwargs):
             claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
             return subprocess.CompletedProcess(command, 0)
-        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=execute):
             self.assertTrue(self.jobs.run_one('build', 2))
             self.assertTrue(self.jobs.run_one('build', 2))
         self.assertEqual(claimed, [2, 1])
@@ -916,7 +916,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         path = self.path_for(1, 'refill', 'hard')
         self.jobs.finish(path, {'state': 'repair-needed', 'completedAt': 10})
         self.jobs.accept(self.ranked(self.kp(script='generators/aa/hash/main.py')))
-        with patch('inventory_jobs.subprocess.run') as run:
+        with patch('inventory_jobs.InventoryJobs._run_pipeline') as run:
             def execute(command, **kwargs):
                 self.assertFalse(self.jobs.run_one(lane='refill'))
                 return subprocess.CompletedProcess(command, 1)
@@ -1003,11 +1003,11 @@ class RankedInventoryJobTests(unittest.TestCase):
         def fail(command, **kwargs):
             build.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
             return subprocess.CompletedProcess(command, 1)
-        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
             self.jobs.run_one()
         self.jobs.accept(ranked)
         self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], first_band)
-        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+        with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
             self.jobs.run_one()
         self.jobs.accept(ranked)
         self.assertFalse(self.jobs.run_one())

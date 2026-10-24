@@ -26,6 +26,14 @@ def fingerprint(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
+def completed_result(directory):
+    try:
+        read(Path(directory) / 'result.json')
+        return True
+    except (OSError, ValueError):
+        return False
+
+
 @contextmanager
 def locked(owner):
     with (Path(owner) / 'owner.lock').open('a') as lock:
@@ -45,26 +53,64 @@ def create_owner(job, cycle):
     return owner
 
 
-def begin_launch(path, execution, environment):
+def process_identity(pid):
+    """Linux PID/start-time identity distinguishes exited agents and PID reuse."""
+    try:
+        fields = Path(f'/proc/{int(pid)}/stat').read_text().rsplit(')', 1)[1].split()
+        return {'pid': int(pid), 'start_ticks': fields[19], 'state': fields[0]}
+    except (OSError, TypeError, ValueError, IndexError):
+        return None
+
+
+def agent_running(execution):
+    expected = execution.get('agent_process')
+    if expected is None:
+        return False
+    observed = process_identity(expected['pid'])
+    return bool(observed and observed['start_ticks'] == expected['start_ticks']
+                and observed['state'] not in {'Z', 'X'})
+
+
+def begin_launch(path, execution, environment, spawn):
     """Serialize launch admission with controlled stop, before spending budget."""
     path = Path(path).resolve()
-    execution = {**execution, 'launch_id': os.urandom(16).hex()}
+    execution.update(launch_id=os.urandom(16).hex())
+    execution.pop('agent_process', None)
     owner_name = environment.get(OWNER_ENV)
+    def start(owner=None):
+        if owner is not None:
+            identity = read(owner / 'owner.json')
+            if not path.parent.is_relative_to(Path(identity['pipeline'])):
+                raise ValueError('Agent session is outside its owning pipeline')
+            if (owner / 'stopped.json').exists():
+                raise ControlledServiceStop()
+            execution.update(service_owner=str(owner), owner_id=identity['owner_id'])
+            identity['sessions'][str(path.parent)] = execution['launch_id']
+            save(owner / 'owner.json', identity)
+        save(path, execution)
+        process = spawn()
+        observed = process_identity(process.pid)
+        if observed:
+            execution['agent_process'] = {k: observed[k] for k in ('pid', 'start_ticks')}
+        else:
+            execution.pop('agent_process', None)
+        save(path, execution)
+        return execution, process
     if not owner_name:
+        execution.pop('service_owner', None)
+        execution.pop('owner_id', None)
+        return start()
+    with locked(Path(owner_name).resolve()):
+        return start(Path(owner_name).resolve())
+
+
+def finish_launch(path, execution):
+    owner = execution.get('service_owner')
+    if owner:
+        with locked(owner):
+            save(path, execution)
+    else:
         save(path, execution)
-        return execution
-    owner = Path(owner_name).resolve()
-    with locked(owner):
-        identity = read(owner / 'owner.json')
-        if not path.parent.is_relative_to(Path(identity['pipeline'])):
-            raise ValueError('Agent session is outside its owning pipeline')
-        if (owner / 'stopped.json').exists():
-            raise ControlledServiceStop()
-        execution.update(service_owner=str(owner), owner_id=identity['owner_id'])
-        identity['sessions'][str(path.parent)] = execution['launch_id']
-        save(owner / 'owner.json', identity)
-        save(path, execution)
-        return execution
 
 
 def mark_stopped(owner):
@@ -77,7 +123,7 @@ def mark_stopped(owner):
         sessions = []
         for directory, launch_id in identity['sessions'].items():
             directory = Path(directory)
-            if (directory / 'result.json').exists():
+            if completed_result(directory):
                 continue
             try:
                 execution = read(directory / 'execution.json')
@@ -85,7 +131,8 @@ def mark_stopped(owner):
                 continue
             if (execution.get('status') == 'running'
                     and execution.get('owner_id') == identity['owner_id']
-                    and execution.get('launch_id') == launch_id):
+                    and execution.get('launch_id') == launch_id
+                    and agent_running(execution)):
                 sessions.append({'directory': str(directory), 'launch_id': launch_id,
                                  'launches': execution['launches'],
                                  'execution_hash': fingerprint(execution)})
@@ -105,7 +152,7 @@ def credit_interruption(path, execution, default_limit):
     """A marked running launch gets one replacement; actual failures never do."""
     path = Path(path).resolve()
     owner_name = execution.get('service_owner')
-    if not owner_name or execution.get('status') != 'running' or (path.parent / 'result.json').exists():
+    if not owner_name or execution.get('status') != 'running' or completed_result(path.parent):
         return execution
     owner = Path(owner_name)
     if not (owner / 'stopped.json').is_file():
