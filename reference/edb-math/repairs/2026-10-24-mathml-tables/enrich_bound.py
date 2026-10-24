@@ -1,4 +1,4 @@
-import json,collections
+import json,collections,re
 from pathlib import Path
 from bs4 import BeautifulSoup
 from enrich_sources import fences
@@ -29,6 +29,12 @@ def get_doc(r):
   if ck not in soup_cache:soup_cache[ck]=BeautifulSoup(slim_dom(markup),'html.parser')
   soup=soup_cache[ck]
   if r.get('step_id'):soup=soup.find(id='step-'+str(r['step_id'])) or soup
+  elif identity.startswith('q-'):
+   number=identity[2:]
+   bound=soup.find(id='step-q'+number) or soup.find(id='question-'+number) or soup.find(id='questionExplanation-'+number)
+   # Whole step captures contain several questions. Never use their neighbors.
+   if bound is not None:soup=bound
+   elif soup.find(class_='questionWidget') or soup.find(id=re.compile(r'^(?:question-|questionExplanation-)\d+')):continue
   if attr=='tutorial/content':parts=[soup]
   elif attr=='answer/value':
    specific=soup.find(id=r.get('option_dom_id')) if r.get('option_dom_id') else None

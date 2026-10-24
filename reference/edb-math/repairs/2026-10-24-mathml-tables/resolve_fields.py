@@ -40,7 +40,7 @@ def context_records(source):
  return out
 
 def main():
- sources=sum([json.loads((H/f).read_text()) for f in ['archived-tables.json','capture-tables.json','choice-tables.json']],[])
+ sources=sum([json.loads((H/f).read_text()) for f in ['archived-tables.json','capture-tables.json','choice-tables.json','new-capture-tables.json']],[])
  registry=collections.defaultdict(dict)
  for s in sources:
   registry[s['identity'],s['attribute']][s['path'],s.get('step_id'),s.get('option_dom_id')]=s
