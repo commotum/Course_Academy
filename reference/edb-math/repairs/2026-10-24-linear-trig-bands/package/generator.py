@@ -1,0 +1,271 @@
+#!/usr/bin/env python3
+"""Linear trig substitution: controlled easy, moderate and authored hard cases."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import random
+import sys
+import uuid
+
+import sympy as sp
+
+# The same entrypoint also works at the retained legacy repository path.
+LOCAL = Path(__file__).with_suffix('')
+if not (LOCAL / 'trig_format.py').is_file():
+    LOCAL = Path(__file__).resolve().parent
+sys.path.insert(0, str(LOCAL))
+from trig_format import normalize_prose, normalize_tex
+
+KP = {'db_id': 17592186068915, 'id': '746d1bc6-98ec-59a1-bec6-9dcfb7081a5d',
+      'title': 'Integrating Trigonometric Functions With Linear Arguments'}
+VERSION = '2.0.0-structural-bands'
+R = sp.Rational
+PI = sp.pi
+X, U = sp.symbols('x u', real=True)
+EASY_SLOPES = tuple(map(sp.Integer, range(2, 9))) + (R(1, 2), R(1, 3), R(1, 4))
+RATIONAL_SLOPES = (R(2, 3), R(3, 2), R(3, 4), R(4, 3), R(5, 2), R(2, 5))
+AMPLITUDES = (R(2, 3), R(3, 2), R(4, 3), R(5, 3), R(5, 2), R(7, 3), R(3, 4), R(5, 4))
+SHIFTS = (PI/6, -PI/6, PI/3, -PI/3, PI/2, 2*PI/3, PI)
+CASES = {
+    'easy': ('indef_sin', 'indef_cos', 'def_sin', 'def_cos'),
+    'moderate': ('shift_sin', 'shift_cos', 'pi_sin', 'pi_cos', 'fraction_sin', 'fraction_cos'),
+    'hard': ('compound_sin_positive', 'compound_sin_negative', 'compound_cos_positive', 'compound_cos_negative'),
+}
+
+
+def tex(value):
+    return normalize_tex(sp.latex(sp.factor(value)))
+
+
+def trig(fn, argument):
+    return getattr(sp, fn)(argument, evaluate=False)
+
+
+def term(coefficient, fn, argument):
+    """Keep the chosen operator and input visible, including negative slopes."""
+    coefficient = sp.sympify(coefficient)
+    prefix = '' if coefficient == 1 else '-' if coefficient == -1 else tex(coefficient)
+    return prefix + '\\' + fn + r'\left(' + tex(argument) + r'\right)'
+
+
+def data(fn, a, b, c, lo=None, hi=None):
+    arg = b*X+c
+    primitive_fn, sign = ('cos', -1) if fn == 'sin' else ('sin', 1)
+    coefficient = sp.cancel(sign*a/b)
+    primitive = coefficient*trig(primitive_fn, arg)
+    if lo is None:
+        answer = primitive
+        u0 = u1 = None
+    else:
+        u0, u1 = sp.simplify(b*lo+c), sp.simplify(b*hi+c)
+        answer = sp.simplify(coefficient*(getattr(sp, primitive_fn)(u1)-getattr(sp, primitive_fn)(u0)))
+    return arg, primitive_fn, coefficient, primitive, answer, u0, u1
+
+
+def support(case):
+    if case.startswith('indef'):
+        return ['q-10061', 'q-10064', 'q-2191', 'e-464']
+    if case.startswith('def'):
+        return ['q-350039', 'q-350040', 'q-13644']
+    if case.startswith('shift'):
+        return ['q-10574', 'q-10575']
+    if case.startswith('pi'):
+        return ['q-346081', 'q-350036']
+    if case.startswith('fraction'):
+        return ['e-464', 'q-10574', 'q-10575']
+    return ['e-464', 'q-10064', 'q-10574', 'q-10575', 'q-350036']
+
+
+def parameters(case, rng, *, slope_sign=None, difference_kind=None):
+    fn = 'sin' if 'sin' in case else 'cos'
+    a = sp.Integer(rng.randint(1, 9))
+    c = sp.Integer(0)
+    if case.startswith('indef'):
+        b = rng.choice(EASY_SLOPES)*(slope_sign or rng.choice((-1, 1)))
+        c = sp.Integer(rng.randint(-4, 4))
+        return fn, a, b, c, None, None
+    if case.startswith('def'):
+        b = sp.Integer(rng.randint(2, 9))
+        angles = (0, PI/2, PI, 3*PI/2, 2*PI)
+        i = rng.randrange(4)
+        u0, u1 = angles[i:i+2]
+    elif case.startswith('shift'):
+        b = sp.Integer(rng.randint(2, 7))
+        c = rng.choice(SHIFTS)
+        pairs = ((PI/3, 2*PI/3), (0, PI/3), (PI/3, PI/2), (PI/6, 5*PI/6)) if fn == 'sin' else (
+            (-PI/6, PI/6), (PI/6, PI/2), (0, PI/3), (PI/3, 2*PI/3))
+        u0, u1 = rng.choice(pairs)
+    elif case.startswith('pi'):
+        b = PI*rng.choice((R(1, 2), R(1, 3), R(2, 3), R(3, 4), R(1, 4), R(2, 5)))
+        pairs = ((0, PI/2), (0, PI/3), (0, PI), (PI/2, PI)) if fn == 'sin' else (
+            (0, PI/6), (0, PI/3), (0, PI/2), (PI/2, PI))
+        u0, u1 = rng.choice(pairs)
+    elif case.startswith('fraction'):
+        b = rng.choice(RATIONAL_SLOPES)*rng.choice((-1, 1))
+        while sp.cancel(a/b).q == 1:
+            a = sp.Integer(rng.randint(1, 9))
+        pairs = ((PI/3, 2*PI/3), (0, PI/3), (PI/3, PI/2)) if fn == 'sin' else (
+            (-PI/6, PI/6), (PI/6, PI/2), (PI/6, 5*PI/6))
+        u0, u1 = rng.choice(pairs)
+        if b < 0:
+            u0, u1 = u1, u0
+    else:
+        b = rng.choice(RATIONAL_SLOPES)*(-1 if case.endswith('negative') else 1)
+        a = rng.choice([value for value in AMPLITUDES if sp.cancel(value/b).q != 1])
+        c = rng.choice(SHIFTS)
+        # The primitive has unlike, nonzero radical endpoint values. Choose
+        # their sign relation as a reasoning case before choosing endpoints.
+        first = (PI/4, 3*PI/4, 5*PI/4, 7*PI/4)
+        second = (PI/6, 5*PI/6, 7*PI/6, 11*PI/6) if fn == 'sin' else (PI/3, 2*PI/3, 4*PI/3, 5*PI/3)
+        primitive_fn = sp.cos if fn == 'sin' else sp.sin
+        kind = difference_kind or rng.choice(('same', 'opposite'))
+        pairs = [(left, right) for left in first for right in second
+                 if (sp.sign(primitive_fn(left)*primitive_fn(right)) == 1) == (kind == 'same')]
+        u0, u1 = sorted(rng.choice(pairs), key=float, reverse=bool(b < 0))
+    lo, hi = sp.simplify((u0-c)/b), sp.simplify((u1-c)/b)
+    return fn, a, b, c, lo, hi
+
+
+def wrong_answers(fn, a, b, c, lo, hi):
+    arg, pf, coefficient, primitive, answer, u0, u1 = data(fn, a, b, c, lo, hi)
+    if lo is None:
+        # Whole authored bank: sign error, multiply instead of divide by b,
+        # both errors together, and integrate to the wrong trig function.
+        return [(-coefficient*trig(pf, arg), term(-coefficient, pf, arg), 'reverse antiderivative sign'),
+                (coefficient*b*b*trig(pf, arg), term(coefficient*b*b, pf, arg), 'multiply by inner slope'),
+                (-coefficient*b*b*trig(pf, arg), term(-coefficient*b*b, pf, arg), 'multiply by inner slope and reverse sign'),
+                (coefficient*trig(fn, arg), term(coefficient, fn, arg), 'retain original trig function')]
+    p = getattr(sp, pf)
+    delta = p(u1)-p(u0)
+    return [(sp.simplify(-answer), tex(-answer), 'reverse endpoint subtraction'),
+            (sp.simplify(answer*b), tex(answer*b), 'omit reciprocal inner derivative'),
+            (sp.simplify(answer*b*b), tex(answer*b*b), 'multiply by inner derivative'),
+            (sp.simplify(coefficient*p(u1)), tex(coefficient*p(u1)), 'omit lower endpoint'),
+            (sp.simplify(coefficient*p(u0)), tex(coefficient*p(u0)), 'use lower endpoint only'),
+            (sp.simplify(coefficient*(p(u1)+p(u0))), tex(coefficient*(p(u1)+p(u0))), 'add endpoint values'),
+            (sp.simplify(delta), tex(delta), 'omit coefficient and derivative factor')]
+
+
+def worked(fn, a, b, c, lo, hi):
+    arg, pf, coefficient, primitive, answer, u0, u1 = data(fn, a, b, c, lo, hi)
+    scale = sp.cancel(a/b)
+    integral = r'\int ' + term(a, fn, arg) + r'\,\mathrm{d}x'
+    if lo is not None:
+        integral = r'\int_{'+tex(lo)+'}^{'+tex(hi)+'} '+term(a, fn, arg)+r'\,\mathrm{d}x'
+    solution = ('Let $u='+tex(arg)+r'.$ Then'+'\n\n$$\n'+r'\frac{\mathrm{d}u}{\mathrm{d}x}='+tex(b)
+                +r',\qquad \mathrm{d}x=\left('+tex(1/b)+r'\right)\mathrm{d}u.'+'\n$$\n\n')
+    if lo is not None:
+        solution += ('Transform both bounds using the same substitution:\n\n$$\n'+r'\begin{aligned}'
+            + 'x='+tex(lo)+r'&\quad\Longrightarrow\quad u='+tex(b)+r'\left('+tex(lo)+r'\right)+\left('+tex(c)+r'\right)='+tex(u0)
+            +r'\\ x='+tex(hi)+r'&\quad\Longrightarrow\quad u='+tex(b)+r'\left('+tex(hi)+r'\right)+\left('+tex(c)+r'\right)='+tex(u1)
+            +r'.\end{aligned}'+'\n$$\n\n')
+        if b < 0:
+            solution += 'The transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\n'
+    limits = '' if lo is None else '_{'+tex(u0)+'}^{'+tex(u1)+'}'
+    rows = [integral+r'&='+tex(a)+r'\left('+tex(1/b)+r'\right)\int'+limits+' '+term(1, fn, U)+r'\,\mathrm{d}u',
+            '&='+tex(scale)+r'\int'+limits+' '+term(1, fn, U)+r'\,\mathrm{d}u']
+    intrinsic = '-'+term(1, pf, U) if fn == 'sin' else term(1, pf, U)
+    if lo is None:
+        rows.extend(['&='+tex(scale)+r'\left('+intrinsic+r'\right)+C', '&='+term(coefficient, pf, arg)+'+C'])
+    else:
+        rows.extend(['&='+tex(scale)+r'\left['+intrinsic+r'\right]'+limits,
+            '&='+tex(coefficient)+r'\left('+term(1,pf,u1)+'-'+term(1,pf,u0)+r'\right)',
+            '&='+tex(coefficient)+r'\left(\left('+tex(getattr(sp,pf)(u1))+r'\right)-\left('+tex(getattr(sp,pf)(u0))+r'\right)\right)',
+            '&='+tex(answer)])
+    solution += 'Substitute and integrate:\n\n$$\n'+r'\begin{aligned}'+r'\\ '.join(rows)+r'.\end{aligned}'+'\n$$'
+    return integral, solution
+
+
+def build(level, case, values, *, response='blank', seed=0):
+    if case not in CASES.get(level, ()) or response not in ('blank', 'radio'):
+        raise ValueError('Unsupported band, case or response')
+    if level == 'hard' and response != 'blank':
+        raise ValueError('The authored hard band uses independent exact entry')
+    fn, a, b, c, lo, hi = values
+    if fn not in ('sin','cos') or a == 0 or b == 0 or (lo is not None and not lo < hi):
+        raise ValueError('Invalid linear-substitution instance')
+    arg, pf, coefficient, primitive, answer, u0, u1 = data(fn,a,b,c,lo,hi)
+    integral, solution = worked(fn,a,b,c,lo,hi)
+    correct = term(coefficient,pf,arg) if lo is None else tex(answer)
+    choices = [(answer, correct, 'correct')]
+    if response == 'radio':
+        for candidate, text, recipe in wrong_answers(fn,a,b,c,lo,hi):
+            if all(sp.simplify(candidate-existing[0]) != 0 for existing in choices):
+                choices.append((candidate,text,recipe))
+            if len(choices) == 5:
+                break
+        if len(choices) != 5:
+            raise ValueError('This instance has no complete distinct five-choice bank')
+    correct += '+C' if lo is None and response == 'radio' else ''
+    rendered = [(text+('+C' if lo is None and response=='radio' else ''),recipe) for _,text,recipe in choices]
+    prompt = 'Evaluate the integral. Give an exact answer.\n\n$$\n'+integral+'\n$$'
+    key = 'answer' if response == 'blank' else 'selection'
+    if response == 'blank':
+        prompt += '\n\n{{answer}}'+(' $+C$' if lo is None else '')
+    prompt, solution = normalize_prose(prompt), normalize_prose(solution)
+    # Mathematical identity ignores response format, bank and sampling seed.
+    f = a*trig(fn,arg)
+    fingerprint = hashlib.sha256(json.dumps([sp.srepr(sp.expand(sp.expand_trig(f))),None if lo is None else sp.srepr(lo),None if hi is None else sp.srepr(hi)]).encode()).hexdigest()
+    uid = lambda namespace,text: str(uuid.uuid5(uuid.UUID(namespace),text))
+    qid = uid(KP['id'],json.dumps([VERSION,fingerprint,response,sorted(v for v,_ in rendered)]))
+    fid = uid(qid,key)
+    answers = [{':answer/id':uid(fid,text),':answer/type':':answer.type/math',':answer/value':text} for text,_ in rendered]
+    correct_id = next(row[':answer/id'] for row in answers if row[':answer/value']==correct)
+    random.Random(seed).shuffle(answers)
+    params = dict(zip(('function','amplitude','slope','shift','lower','upper'),(fn,str(a),str(b),str(c),None if lo is None else str(lo),None if hi is None else str(hi))))
+    metadata = {'version':VERSION,'template':case,'source_ids':support(case),'parameters':params,'seed':seed,
+        'mathematical_fingerprint':fingerprint,'response':response,'bank_origin':'authored rule-error recipes' if response=='radio' else 'exact entry',
+        'bank_recipes':dict(rendered),'u_bounds':None if lo is None else [str(u0),str(u1)],
+        'difficulty_origin':'authored compound of established skills; no imported hard examples' if level=='hard' else 'source-supported workload; labels are not copied from individual templates',
+        'domain':'x real; constant nonzero inner derivative; exact special-angle endpoints'}
+    return {'knowledge_point':KP,'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,
+        ':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{
+            ':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+response,
+            ':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]},'generation':metadata}
+
+
+def batch(level, count=5, seed=0):
+    if level not in CASES or type(count) is not int or not 0 <= count <= 200:
+        raise ValueError('Use an available band and count 0..200; shortages are explicit')
+    rng = random.Random(seed)
+    schedule = list(CASES[level]);rng.shuffle(schedule)
+    records, seen = [], set()
+    indefinite_sign = rng.choice((-1,1))
+    pair_kind = rng.choice(('same','opposite'))
+    for index in range(count):
+        case = schedule[index % len(schedule)]
+        response = 'blank' if level=='hard' else ('blank' if index%2 == 0 else 'radio')
+        for attempt in range(100):
+            values = parameters(case,rng,slope_sign=indefinite_sign,
+                                difference_kind=pair_kind)
+            try:
+                record = build(level,case,values,response=response,seed=rng.getrandbits(64))
+            except ValueError:
+                continue
+            fingerprint = record['generation']['mathematical_fingerprint']
+            if fingerprint in seen:
+                continue
+            records.append(record);seen.add(fingerprint)
+            break
+        else:
+            raise ValueError('Finite compatible family exhausted; no duplicate padding')
+        if case.startswith('indef'):
+            indefinite_sign *= -1
+        pair_kind = 'opposite' if pair_kind=='same' else 'same'
+    rng.shuffle(records)
+    return records
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--difficulty',required=True,choices=tuple(CASES))
+    parser.add_argument('--count',type=int,default=5)
+    parser.add_argument('--seed',type=int,default=0)
+    parser.add_argument('--format',choices=('json',),default='json')
+    args=parser.parse_args()
+    print(json.dumps(batch(args.difficulty,args.count,args.seed),indent=2,ensure_ascii=False))
+
+
+if __name__=='__main__':
+    main()
