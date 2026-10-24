@@ -146,7 +146,8 @@ class CodexSession:
             raise SessionRetryExhausted(role, directory, execution)
         (directory / 'prompt.txt').write_text(prompt)
         executable = self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE') or shutil.which('codex', path=self.environment.get('PATH')) or str(Path.home() / '.local/bin/codex')
-        resume_id = context.get('resume_session_id') or (execution.get('thread_id') if execution.get('persistent_session') else None)
+        resume_id = context.get('resume_session_id') or (
+            execution.get('thread_id') or session_thread(directory) if execution.get('persistent_session') else None)
         command = [executable, 'exec',
                    '--sandbox', 'workspace-write', '-c', 'approval_policy="never"',
                    '-c', 'sandbox_workspace_write.network_access=true',
@@ -548,7 +549,10 @@ class Pipeline:
         save(path, self.review_binding())
         rounds = self.state.get('review_report_rounds', {})
         if (evidence / 'result.json').exists():
-            rounds[str(evidence)] = max(1, rounds.get(str(evidence), 0))
+            count = max(1, rounds.get(str(evidence), 0))
+            while (evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}') / 'result.json').exists():
+                count += 1
+            rounds[str(evidence)] = count
         self.persist(active_review_directory=str(evidence), report_repair_directory=str(evidence),
                      review_report_rounds=rounds,
                      review_report_error={'error': 'The shared engine changed since these checks.',
@@ -1060,7 +1064,13 @@ class Pipeline:
                 if not reference and current.get(':question-generator/script', '').startswith('generators/'):
                     reference = current[':question-generator/script']
                 if reference:
-                    self.load_registered_package(reference)
+                    manifest = self.directory / 'workspace' / self.state.get('manifest', 'package.json')
+                    if manifest.is_file():
+                        # A policy upgrade or interrupted investigation must not
+                        # replace completed repairs with the registered draft.
+                        self.persist(manifest=str(manifest.relative_to(self.directory / 'workspace')))
+                    else:
+                        self.load_registered_package(reference)
             elif stage == 'investigate':
                 self.investigate()
             elif stage == 'refill':
@@ -1084,7 +1094,13 @@ class Pipeline:
                     return self.state
                 self.persist(attempt=attempt, author_running=True)
                 evidence = self.directory / f'author-{attempt}'
-                result = self.session('author', self.context(evidence), evidence)
+                context = self.context(evidence)
+                if attempt > 1:
+                    previous = self.directory / f'author-{attempt - 1}'
+                    execution = read(previous / 'execution.json') if (previous / 'execution.json').exists() else {}
+                    if execution.get('persistent_session'):
+                        context['resume_session_id'] = execution.get('thread_id') or session_thread(previous)
+                result = self.session('author', context, evidence)
                 save(evidence / 'result.json', result)
                 self.reload_repaired_runner()
                 self.persist(author_running=False)

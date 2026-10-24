@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from generator_investigation import (BANDS, COVERAGE, COUNTS_QUERY, completeness,
     COVERAGE_INPUTS, coverage_inputs_unchanged, coverage_plan, migrate_coverage,
-    observed_coverage, prepare_investigation, _transact)
+    observed_coverage, prepare_investigation, _transact, _verify_coverage)
 from capture.scripts.database.client import StaleBasis
 from capture.scripts.database.edn import dumps, loads
 
@@ -126,7 +126,7 @@ class InvestigationTests(unittest.TestCase):
             def status(self): return {'database': 'math', 'lineage': 'test', 'basis': 42}
             def query(self, query, inputs, directory, name, basis):
                 if name == 'coverage-kps': return [[1], [2], [3]]
-                if name == 'coverage-before': return [[1, ':question.difficulty/unobserved'], [2, ':question.difficulty/easy']]
+                if name.startswith('coverage-before-'): return [[1, ':question.difficulty/unobserved'], [2, ':question.difficulty/easy']]
                 if name.startswith('coverage-observed-'):
                     return [[1, ':question.difficulty/moderate'], [2, ':question.difficulty/easy'], [2, ':question.difficulty/hard']]
                 raise AssertionError(name)
@@ -136,6 +136,25 @@ class InvestigationTests(unittest.TestCase):
         self.assertEqual(len(forms), 4)
         self.assertIn([':db/retract', 1, COVERAGE, ':question.difficulty/unobserved'], forms)
         self.assertTrue(all(form[2] == COVERAGE for form in forms))
+
+    def test_readback_is_bounded_at_exact_commit_basis_and_detects_missing_coverage(self):
+        class Client:
+            calls = []
+            omit = None
+            def query(self, query, inputs, directory, name, basis):
+                self.calls.append((inputs, basis))
+                self.asserted = query
+                return [[kp, ':question.difficulty/easy'] for kp in inputs[0] if kp != self.omit]
+        client = Client()
+        publisher = SimpleNamespace(client=client)
+        expected = {str(kp): [':question.difficulty/easy'] for kp in range(201)}
+        with tempfile.TemporaryDirectory() as td:
+            _verify_coverage(publisher, td, 6626, expected)
+            self.assertEqual([len(inputs[0]) for inputs, _ in client.calls], [100, 100, 1])
+            self.assertTrue(all(basis == 6626 for _, basis in client.calls))
+            client.omit = 200
+            with self.assertRaisesRegex(ValueError, 'readback differs'):
+                _verify_coverage(publisher, td, 6626, expected)
 
     def test_unknown_outcome_reuses_exact_saved_request_without_new_preview(self):
         class Client:

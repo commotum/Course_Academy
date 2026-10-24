@@ -407,6 +407,8 @@ class GeneratorPipelineTests(unittest.TestCase):
                 if role == 'review':
                     (Path(directory) / 'session-state.md').write_text('Saved a reproducible bank-only shortcut.\n')
                     (Path(directory) / 'shortcut-results.json').write_text('{"correct":4,"total":4}\n')
+                    (Path(directory) / 'events.jsonl').write_text(
+                        json.dumps({'type': 'thread.started', 'thread_id': 'interrupted-verifier'}) + '\n')
                     raise OSError('Service stopped before the final report')
                 return result
         pipeline = self.pipeline(InterruptedReview())
@@ -430,14 +432,16 @@ class GeneratorPipelineTests(unittest.TestCase):
         result = self.pipeline(session).run()
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual([role for role, _ in session.calls], ['review'])
-        self.assertEqual(contexts[0]['interrupted_review'],
-                         {'directory': str(interrupted), 'binding': binding, 'status': 'incomplete'})
+        self.assertIsNone(contexts[0]['interrupted_review'])
+        self.assertEqual(contexts[0]['resume_session_id'], 'interrupted-verifier')
+        self.assertIn('engine', str(contexts[0]['review_contract_feedback']).lower())
         self.assertNotEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
-        self.assertNotEqual(Path(contexts[0]['evidence_root']), interrupted)
-        self.assertEqual(json.loads((interrupted / 'review-binding.json').read_text()), binding)
-        self.assertFalse((interrupted / 'result.json').exists())
+        self.assertEqual(Path(contexts[0]['evidence_root']), interrupted)
+        self.assertEqual(json.loads((interrupted / 'review-binding.json').read_text()), contexts[0]['review_binding'])
+        self.assertTrue((interrupted / 'result.json').exists())
+        self.assertEqual(json.loads((interrupted / 'shortcut-results.json').read_text()), {'correct': 4, 'total': 4})
         self.assertEqual(result['review_session_limit'], limit)
-        self.assertEqual(len(result['review_sessions']), 2)
+        self.assertEqual(len(result['review_sessions']), 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_interrupted_review_hint_requires_matching_inputs_and_incomplete_other_directory(self):
@@ -623,7 +627,7 @@ class GeneratorPipelineTests(unittest.TestCase):
             (engine / 'grading.rs').write_text(f'// engine revision {revision}\n')
             state = self.pipeline(session, attempts=1).run()
         self.assertEqual(state['stage'], 'blocked')
-        self.assertEqual(state['error']['code'], 'review_sessions_exhausted')
+        self.assertEqual(state['error']['code'], 'verification_unfinished')
         self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review', 'review'])
         self.assertEqual(state['review_session_limit'], 3)
         for _ in range(2):
@@ -654,6 +658,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         first = FakeSession()
         state = self.pipeline(first).run('validate')
         old_review = state['review']
+        old_binding = json.loads((Path(old_review).parent / 'final-binding.json').read_text())
         engine = self.root / 'engine/rust'
         engine.mkdir(parents=True)
         (engine/'grading.rs').write_text('// independent fixture engine revision\n')
@@ -661,7 +666,10 @@ class GeneratorPipelineTests(unittest.TestCase):
         state = self.pipeline(second).run()
         self.assertEqual(state['stage'], 'verified')
         self.assertEqual([role for role, _ in second.calls], ['review'])
-        self.assertNotEqual(state['review'], old_review)
+        self.assertEqual(state['review'], old_review)
+        final_binding = json.loads((Path(state['review']).parent / 'final-binding.json').read_text())
+        self.assertNotEqual(final_binding['engine_hash'], old_binding['engine_hash'])
+        self.assertTrue(list(Path(old_review).parent.glob('engine-binding-before-*.json')))
         self.assertEqual(self.publisher.publishes, 1)
 
     def test_old_attempt_failure_requires_explicit_resume_with_feedback_and_workspace(self):

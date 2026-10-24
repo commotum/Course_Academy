@@ -209,6 +209,16 @@ def _schema_forms():
             if str(form.get(':db/ident')) in wanted]
 
 
+def _coverage_rows(client, directory, basis, kp_ids, prefix):
+    """Bind KPs first so enum lookup cannot scan the entire ident dictionary."""
+    query = ('[:find ?kp ?ident :in $ [?kp ...] :where [?d :db/ident ?ident] '
+             '[?kp :knowledge-point/level-coverage ?d]]')
+    kp_ids = sorted(set(map(int, kp_ids)))
+    for start in range(0, len(kp_ids), 100):
+        yield from client.query(query, [kp_ids[start:start + 100]], directory,
+                                f'{prefix}-{basis}-{start}', basis)
+
+
 def coverage_plan(client, directory, basis):
     """Compute an exact many-ref set replacement, without changing imports."""
     directory = Path(directory)
@@ -220,12 +230,11 @@ def coverage_plan(client, directory, basis):
                 and coverage_inputs_unchanged(client, directory, cached['basis'], basis)):
             return loads(cached['forms_edn']), cached['expected']
     rows = client.query('[:find ?kp :where [?kp :knowledge-point/id _]]', [], directory, 'coverage-kps', basis)
+    kp_ids = sorted(row[0] for row in rows)
     current = defaultdict(set)
-    for kp, ident in client.query('''[:find ?kp ?ident :where [?kp :knowledge-point/level-coverage ?d]
-                                   [?d :db/ident ?ident]]''', [], directory, 'coverage-before', basis):
+    for kp, ident in _coverage_rows(client, directory, basis, kp_ids, 'coverage-before'):
         current[int(kp)].add(str(ident))
     observed = defaultdict(set)
-    kp_ids = sorted(row[0] for row in rows)
     for start in range(0, len(kp_ids), 100):
         for kp, band in client.query(OBSERVED_QUERY, [kp_ids[start:start + 100]],
                                     directory, f'coverage-observed-{start}', basis):
@@ -337,9 +346,7 @@ def _verify_schema(publisher, directory, basis):
 
 def _verify_coverage(publisher, directory, basis, expected):
     actual = defaultdict(list)
-    for kp, ident in publisher.client.query(
-            '[:find ?kp ?ident :where [?kp :knowledge-point/level-coverage ?d] [?d :db/ident ?ident]]',
-            [], directory, 'coverage-readback', basis):
+    for kp, ident in _coverage_rows(publisher.client, directory, basis, expected, 'coverage-readback'):
         actual[str(kp)].append(str(ident))
     if {k: sorted(v) for k, v in actual.items()} != expected:
         raise ValueError('Coverage readback differs from the prepared sets')
@@ -378,6 +385,8 @@ def migrate_coverage(publisher, directory, *, apply=False, source=':agent/codex'
         expected = json.loads((backfill_dir / 'expected-coverage.json').read_text())
         _verify_coverage(publisher, backfill_dir, result['basis'], expected)
         _retire(publisher, backfill_dir, result)
+        atomic_json(directory / 'coverage-plan.json', {'database': status['database'], 'lineage': status['lineage'],
+            'basis': result['basis'], 'forms_edn': '[]', 'expected': expected})
     status = publisher.client.status()
     forms, expected = coverage_plan(publisher.client, directory, status['basis'])
     if forms:
@@ -388,6 +397,8 @@ def migrate_coverage(publisher, directory, *, apply=False, source=':agent/codex'
         after = result['basis']
         _verify_coverage(publisher, backfill_dir, after, expected)
         _retire(publisher, backfill_dir, result)
+        atomic_json(directory / 'coverage-plan.json', {'database': status['database'], 'lineage': status['lineage'],
+            'basis': after, 'forms_edn': '[]', 'expected': expected})
     else:
         after = status['basis']
     result = {'verified': True, 'basis': after, 'knowledge_points': len(expected), 'changes': len(forms)}

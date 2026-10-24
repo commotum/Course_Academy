@@ -90,7 +90,7 @@ export function blankInput(field, label, name, readOnly = false) {
   const input = document.createElement(kind === 'math' ? 'math-field' : 'input');
   input.className = kind === 'math' ? 'answer-math' : 'answer-input';
   // Standalone answers start wider; inline values get a compact minimum when
-  // mounted. These are presentation defaults, never inferred from the key.
+  // mounted. Defaults depend on layout, not the correct answer.
   input.dataset.inputSize = 'statement';
   input.setAttribute('name', String(name)); input.setAttribute('aria-label', label);
   if (kind === 'math') {

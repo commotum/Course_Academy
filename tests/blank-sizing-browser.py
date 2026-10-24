@@ -56,6 +56,8 @@ try:
    page.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');grown=page.evaluate('measure()')[0]
    assert grown['value']=='6p+2q-4p'and grown['width']>empty[0]['width']+20 and not grown['clipped']and not grown['pageOverflow'],grown
    page.evaluate("setValue('')");cleared=page.evaluate('measure()')[0];assert cleared['width']<grown['width']-20,cleared
+   page.evaluate('v=>setValue(v)', '+'.join(f'x_{{{i}}}'for i in range(30)))
+   wide=page.evaluate('measure()')[0];assert not wide['pageOverflow'],wide
    # Fractions and exact solutions grow vertically; a hidden correct answer
    # is never needed to choose either initial width.
    exact=r'\frac{-3+\sqrt{13}}{2}'
@@ -67,9 +69,15 @@ try:
    if width==1100:assert long['width']>medium['width']+80,(medium,long)
    assert not long['pageOverflow'],long
    page.evaluate("setValue('a')");short=page.evaluate('measure()')[0];assert short['width']<long['width']-20
+   if width==1100:
+    # Exercise the native size fallback for browsers without field-sizing.
+    page.evaluate("()=>content.querySelector('input').style.fieldSizing='fixed'")
+    page.evaluate("setValue('x'.repeat(32))");fallback_medium=page.evaluate('measure()')[0]
+    page.evaluate("setValue('x'.repeat(45))");fallback_long=page.evaluate('measure()')[0]
+    assert fallback_long['width']>fallback_medium['width']+80 and not fallback_long['pageOverflow'],(fallback_medium,fallback_long)
    page.evaluate('([p,f])=>show(p,f)',['Saved {{answer}}.',[{'id':11,'key':'answer','type':'blank','answerType':'math','readOnly':True,'response':{'value':'6p+2q-4p'}}]])
    saved=page.evaluate('measure()')[0];assert saved['disabled']and saved['width']>empty[0]['width']+20 and not saved['clipped']and not saved['pageOverflow'],saved
-   reports.append({'viewport_width':width,'empty':empty,'short_values':small,'typed_math':grown,'cleared_math':cleared,'restored_exact_solution':statement,'text_medium':medium,'text_long':long,'text_short':short,'read_only':saved})
+   reports.append({'viewport_width':width,'empty':empty,'short_values':small,'typed_math':grown,'cleared_math':cleared,'very_long_math':wide,'restored_exact_solution':statement,'text_medium':medium,'text_long':long,'text_short':short,'read_only':saved})
   assert not errors,errors
   browser.close()
 finally:server.shutdown();server.server_close()

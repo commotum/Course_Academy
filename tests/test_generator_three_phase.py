@@ -166,6 +166,23 @@ class ThreePhaseTests(unittest.TestCase):
         self.assertEqual(contexts[0]['evidence_root'], contexts[1]['evidence_root'])
         self.assertEqual(result['attempt'], 1)
 
+    def test_source_recovery_preserves_repaired_workspace_before_authorship(self):
+        fixtures.write_package(self.job / 'workspace')
+        helper = self.job / 'workspace/helper.py'
+        helper.write_text('def square(n): return n ** 2  # retained repair\n')
+        self.publisher.registered_generator = {':question-generator/script': 'generators/unavailable/old/generator.py'}
+        seen = []
+
+        class PreserveAuthor(fixtures.FakeSession):
+            def __call__(self, role, context, directory):
+                if role == 'author':
+                    seen.append((Path(context['workspace']) / 'helper.py').read_text())
+                return super().__call__(role, context, directory)
+
+        result = self.pipeline(PreserveAuthor()).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertIn('retained repair', seen[0])
+
     def test_shared_python_repair_reloads_worker_and_reuses_saved_author_result(self):
         class SharedRepairAuthor(fixtures.FakeSession):
             def __call__(self, role, context, directory):
