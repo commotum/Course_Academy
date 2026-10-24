@@ -28,7 +28,7 @@ def main():
     for r in page.evaluate(JS,pending[i:i+12]):cache[r['entity'],r['attribute'],r['before_sha256'],r['after_sha256']]=r;out.write(json.dumps(r,ensure_ascii=False)+'\n')
     out.flush()
     if i%120==0:print('Rendered',min(i+12,len(pending)),'/',len(pending),flush=True)
-  for eid in [17592186233932,17592186124792,17592186147850,17592186055388,17592186161864]:
+  for eid in [17592186233932,17592186124792,17592186147850,17592186055388,17592186161864,17592186138213,17592186203769,17592186203678,17592186203770]:
    selected=[f for f in fields if f['entity']==eid]
    if not selected:continue
    (HERE/'review').mkdir(exist_ok=True)
