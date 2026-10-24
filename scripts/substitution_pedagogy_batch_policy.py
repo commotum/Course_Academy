@@ -27,6 +27,17 @@ def validate_delivery_batch(records,kp_id):
   if final!=key+('+C'if not easy and m['model']['lower']is None and f[':answer-field/type']==':answer-field.type/blank'else ''):raise ValueError('Solution does not reach displayed key')
   if any(int(n)>25 for n in re.findall(r'\d+',problem)):raise ValueError('Rendered numbers exceed reviewed workload')
   p=m['parameters']
+  families={17592186064218:{'sine'},17592186064219:{'tangent'},17592186064250:{'secant'},17592186064220:{'sine','tangent'},17592186184349:{'square','cube'},17592186184350:{'square','cube'},17592186184351:({'power_e','power_base'}if easy else {'log_composite'}if band=='hard'else {'sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'}),17592186184352:({'square_e','linear_e'}if easy else {'log_e'}if band=='hard'else {'square_base','linear_base'})}
+  if m.get('family')not in families[kp]:raise ValueError('Family not supported in this band')
+  if kp in(17592186064218,17592186064219,17592186064220):
+   a,b=int(p['A']),int(p['B'])
+   if easy and not(a==1 and b>1)or band=='moderate'and not(a>1 and b==1):raise ValueError('Inverse band normalization mismatch')
+   if band=='hard'and not(a>1 and (b==1 if kp==17592186064220 else b>1 and a!=b)):raise ValueError('Hard must add only its declared normalization/bound challenge')
+  if kp==17592186064220 and not easy and ('Endpoint values:'not in problem or not m.get('provided_endpoint_values')):raise ValueError('Inverse endpoint facts required before feedback')
+  if kp==17592186064250 and not easy:
+   expected='absolute_value_normalization'if band=='hard'else'visible_linear_scaling'
+   if m.get('challenge')!=expected:raise ValueError('Secant band challenge mismatch')
+  if kp==17592186184352 and band=='hard'and 'Endpoint values:'not in problem:raise ValueError('Exponential endpoint facts required')
   if 'numerator'in p:
    if not 1<=Fraction(p['numerator'])<=4 or Fraction(p['numerator']).denominator!=1:raise ValueError('No fractional numerator composition')
    if int(p['A'])not in(1,4,9,16,25)or int(p['B'])not in(1,4,9,16,25):raise ValueError('Only small perfect-square inverse coefficients')

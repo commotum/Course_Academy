@@ -17,7 +17,7 @@ INV={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',1759
 EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
 for k in EXP[:2]:CASES[k]={b:('square','cube')for b in('easy','moderate','hard')}
-CASES[EXP[2]]={'easy':('power_e','power_base'),'moderate':('sqrt_e','root_e','sqrt_base','root_base'),'hard':('log_e','log_base','log_composite')}
+CASES[EXP[2]]={'easy':('power_e','power_base'),'moderate':('sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'),'hard':('log_composite',)}
 CASES[EXP[3]]={'easy':('square_e','linear_e'),'moderate':('square_base','linear_base'),'hard':('log_e',)}
 
 def tex(z):

@@ -954,25 +954,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "0e7d9b00-6cca-5e1a-a74a-ce816f005dba",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\sqrt{e^{x} + 4} e^{x}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C$.\n\nWork where $e^{x} + 4>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{x} + 4$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nWork where $e^{x} + 4>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\sqrt{e^{x} + 4} e^{x}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n3\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right)=3\\left(\\frac{2 u^{\\frac{3}{2}}}{3}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3\\left(\\frac{2 \\left(e^{x} + 4\\right)^{\\frac{3}{2}}}{3}\\right)+C.\n$$",
+      ":question/id": "eaed86d4-f4ba-55c4-8957-65e72c41413d",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 \\cdot 5^{x}}{5^{x} + 2}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=5^{x} + 2$. Then $\\mathrm{d}u=(5^{x} \\ln{\\left(5 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 \\cdot 5^{x}}{5^{x} + 2}\\,\\mathrm{d}x\\\\&=\\frac{2}{\\ln{\\left(5 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{2}{\\ln{\\left(5 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{2}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|5^{x} + 2\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "5843ba9d-2b08-5315-85fe-94199fc67eaa",
+          ":answer-field/id": "cd09eb4b-c664-50f9-8113-b56c9880d85e",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "479a5918-7203-5b9b-b488-2d662fe4ad41",
+              ":answer/id": "ec0420e0-bc5c-5ba5-bc50-0c2ecb853f02",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "3\\left(\\frac{2 \\left(e^{x} + 4\\right)^{\\frac{3}{2}}}{3}\\right)"
+              ":answer/value": "\\frac{2}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|5^{x} + 2\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "479a5918-7203-5b9b-b488-2d662fe4ad41"
+            "ec0420e0-bc5c-5ba5-bc50-0c2ecb853f02"
           ]
         }
       ]
@@ -980,27 +980,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "sqrt_e",
-      "family": "sqrt_e",
+      "template": "log_base",
+      "family": "log_base",
       "challenge": "root_outer_function",
       "parameters": {
-        "base": "E",
+        "base": "5",
         "slope": "1",
-        "offset": "4",
-        "amplitude": "3",
-        "outer": "sqrt"
+        "offset": "2",
+        "amplitude": "2",
+        "outer": "log"
       },
-      "mathematical_fingerprint": "4b4701f8e7d289cb433aa8b3e9b45ceb07c96cfe4dd1f2f5a17d92d8550a64de",
+      "mathematical_fingerprint": "cc76fd4774c5c16fc66affbc5bb6401d7d7c4b62ee7063e63abd767c7fbb954c",
       "model": {
-        "integrand": "3*sqrt(exp(x) + 4)*exp(x)",
-        "substitution": "exp(x) + 4",
-        "derivative": "exp(x)",
-        "factor": "3",
-        "transformed": "sqrt(u)",
-        "primitive": "2*(exp(x) + 4)**(3/2)",
+        "integrand": "2*5**x/(5**x + 2)",
+        "substitution": "5**x + 2",
+        "derivative": "5**x*log(5)",
+        "factor": "2/log(5)",
+        "transformed": "1/u",
+        "primitive": "2*log(5**x + 2)/log(5)",
         "lower": null,
         "upper": null,
-        "result": "2*(exp(x) + 4)**(3/2)"
+        "result": "2*log(5**x + 2)/log(5)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1038,25 +1038,193 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "81abc8ba-efc4-572d-9b9e-c496ff7b48e8",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\cdot 2^{x}}{\\sqrt{2^{x} + 3}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $2^{x} + 3>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=2^{x} + 3$. Then $\\mathrm{d}u=(2^{x} \\ln{\\left(2 \\right)})\\,\\mathrm{d}x$.\n\nWork where $2^{x} + 3>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\cdot 2^{x}}{\\sqrt{2^{x} + 3}}\\,\\mathrm{d}x\\\\&=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right)=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{u}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 3}\\right)+C.\n$$",
+      ":question/id": "234b841b-ddf2-5537-9f3b-c343ab766392",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4 e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=e^{x} + 1$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4 e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\\\\&=4\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n4\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=4\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n4\\left(\\ln\\left|e^{x} + 1\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "adc1623d-e74f-51bb-9fd2-482dcfa80dad",
+          ":answer-field/id": "e044980f-df8c-5ebc-9aab-7e314954a789",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "0e986994-bb11-5736-9537-6a74fff2d2e1",
+              ":answer/id": "d8ce16e4-e6e9-5770-bd52-c528f41d4c34",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 3}\\right)"
+              ":answer/value": "4\\left(\\ln\\left|e^{x} + 1\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "0e986994-bb11-5736-9537-6a74fff2d2e1"
+            "d8ce16e4-e6e9-5770-bd52-c528f41d4c34"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-pedagogy-1",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "root_outer_function",
+      "parameters": {
+        "base": "E",
+        "slope": "1",
+        "offset": "1",
+        "amplitude": "4",
+        "outer": "log"
+      },
+      "mathematical_fingerprint": "e8873512ca6ba12dfe17586cde3cb6f631093153a8dc32d04882402be5de27c8",
+      "model": {
+        "integrand": "4*exp(x)/(exp(x) + 1)",
+        "substitution": "exp(x) + 1",
+        "derivative": "exp(x)",
+        "factor": "4",
+        "transformed": "1/u",
+        "primitive": "4*log(exp(x) + 1)",
+        "lower": null,
+        "upper": null,
+        "result": "4*log(exp(x) + 1)"
+      },
+      "batch_contract": "substitution-pedagogy-1",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-113852",
+        "q-113876",
+        "q-73670",
+        "q-113873",
+        "q-31478",
+        "q-31480",
+        "q-49577",
+        "q-73669",
+        "q-49574",
+        "q-113875",
+        "q-73666",
+        "q-113872",
+        "e-14404"
+      ],
+      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": true,
+      "provided_endpoint_values": false,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184351,
+      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
+      "title": "More Complex Cases"
+    },
+    "question": {
+      ":question/id": "69d1eec5-81a3-5284-a785-7a97dc40fb64",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\sqrt{e^{2 x} + 1} e^{2 x}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C$.\n\nWork where $e^{2 x} + 1>0$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=e^{2 x} + 1$. Then $\\mathrm{d}u=(2 e^{2 x})\\,\\mathrm{d}x$.\n\nWork where $e^{2 x} + 1>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\sqrt{e^{2 x} + 1} e^{2 x}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n2\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right)=2\\left(\\frac{2 u^{\\frac{3}{2}}}{3}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2\\left(\\frac{2 \\left(e^{2 x} + 1\\right)^{\\frac{3}{2}}}{3}\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "947510be-5291-5029-825b-05037b47652f",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3320dec6-8b4f-590e-8dcb-0742047d4bbe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\frac{2 \\left(e^{2 x} + 1\\right)^{\\frac{3}{2}}}{3}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3320dec6-8b4f-590e-8dcb-0742047d4bbe"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-pedagogy-1",
+      "seed": 20261024,
+      "template": "sqrt_e",
+      "family": "sqrt_e",
+      "challenge": "root_outer_function",
+      "parameters": {
+        "base": "E",
+        "slope": "2",
+        "offset": "1",
+        "amplitude": "4",
+        "outer": "sqrt"
+      },
+      "mathematical_fingerprint": "97eda69074ffeb752cd2beb7264c4b6fb6dadbe2798db6634b34f6c0815777f8",
+      "model": {
+        "integrand": "4*sqrt(exp(2*x) + 1)*exp(2*x)",
+        "substitution": "exp(2*x) + 1",
+        "derivative": "2*exp(2*x)",
+        "factor": "2",
+        "transformed": "sqrt(u)",
+        "primitive": "4*(exp(2*x) + 1)**(3/2)/3",
+        "lower": null,
+        "upper": null,
+        "result": "4*(exp(2*x) + 1)**(3/2)/3"
+      },
+      "batch_contract": "substitution-pedagogy-1",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-113852",
+        "q-113876",
+        "q-73670",
+        "q-113873",
+        "q-31478",
+        "q-31480",
+        "q-49577",
+        "q-73669",
+        "q-49574",
+        "q-113875",
+        "q-73666",
+        "q-113872",
+        "e-14404"
+      ],
+      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": true,
+      "provided_endpoint_values": false,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184351,
+      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
+      "title": "More Complex Cases"
+    },
+    "question": {
+      ":question/id": "11ef6d40-0a09-58bb-8363-01217a52d0ea",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\cdot 2^{x}}{\\sqrt{2^{x} + 2}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $2^{x} + 2>0$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=2^{x} + 2$. Then $\\mathrm{d}u=(2^{x} \\ln{\\left(2 \\right)})\\,\\mathrm{d}x$.\n\nWork where $2^{x} + 2>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\cdot 2^{x}}{\\sqrt{2^{x} + 2}}\\,\\mathrm{d}x\\\\&=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right)=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{u}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 2}\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "82cc3620-0ac2-51ea-96d5-046a3c0a3a4f",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e180d782-4de4-56af-b422-90495e9d1e10",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 2}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e180d782-4de4-56af-b422-90495e9d1e10"
           ]
         }
       ]
@@ -1070,21 +1238,21 @@
       "parameters": {
         "base": "2",
         "slope": "1",
-        "offset": "3",
+        "offset": "2",
         "amplitude": "3",
         "outer": "root"
       },
-      "mathematical_fingerprint": "1504e6605f71b072675a08a95522e6a025cdac5802a5d585984bd03964ecb01c",
+      "mathematical_fingerprint": "0170e996f6b833e57424e0e3cbc3bc08d019929fca2ce3d284b37cecc11cfeed",
       "model": {
-        "integrand": "3*2**x/sqrt(2**x + 3)",
-        "substitution": "2**x + 3",
+        "integrand": "3*2**x/sqrt(2**x + 2)",
+        "substitution": "2**x + 2",
         "derivative": "2**x*log(2)",
         "factor": "3/log(2)",
         "transformed": "1/sqrt(u)",
-        "primitive": "6*sqrt(2**x + 3)/log(2)",
+        "primitive": "6*sqrt(2**x + 2)/log(2)",
         "lower": null,
         "upper": null,
-        "result": "6*sqrt(2**x + 3)/log(2)"
+        "result": "6*sqrt(2**x + 2)/log(2)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1122,25 +1290,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "e0fe51d3-e1c5-5c9b-8878-c7223ef10279",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 e^{2 x}}{\\sqrt{e^{2 x} + 4}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $e^{2 x} + 4>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{2 x} + 4$. Then $\\mathrm{d}u=(2 e^{2 x})\\,\\mathrm{d}x$.\n\nWork where $e^{2 x} + 4>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 e^{2 x}}{\\sqrt{e^{2 x} + 4}}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\sqrt{e^{2 x} + 4}+C.\n$$",
+      ":question/id": "79fd7a1c-f80b-5f30-b249-83e9987f33c8",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 e^{x}}{\\sqrt{e^{x} + 3}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $e^{x} + 3>0$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=e^{x} + 3$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nWork where $e^{x} + 3>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 e^{x}}{\\sqrt{e^{x} + 3}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right)=3\\left(2 \\sqrt{u}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3\\left(2 \\sqrt{e^{x} + 3}\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "df6b4988-0261-52c0-b336-8f85b7efabf5",
+          ":answer-field/id": "396dc548-1d55-579a-8b96-6c2d63e31740",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "0bf06cf2-5fa5-5e78-aeac-fac3d74f1a9f",
+              ":answer/id": "8156d017-3401-5bd3-a0d0-6313ab57906c",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "2 \\sqrt{e^{2 x} + 4}"
+              ":answer/value": "3\\left(2 \\sqrt{e^{x} + 3}\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "0bf06cf2-5fa5-5e78-aeac-fac3d74f1a9f"
+            "8156d017-3401-5bd3-a0d0-6313ab57906c"
           ]
         }
       ]
@@ -1153,22 +1321,22 @@
       "challenge": "root_outer_function",
       "parameters": {
         "base": "E",
-        "slope": "2",
-        "offset": "4",
-        "amplitude": "2",
+        "slope": "1",
+        "offset": "3",
+        "amplitude": "3",
         "outer": "root"
       },
-      "mathematical_fingerprint": "80a4216a9609c8511154cd26188bc7ab7baee97b55cfd41c8ca5ccbd2e24854e",
+      "mathematical_fingerprint": "bcdf244206f89002990ef993dd6822e2ba445abfc44fa84ae26ce9f3dea32502",
       "model": {
-        "integrand": "2*exp(2*x)/sqrt(exp(2*x) + 4)",
-        "substitution": "exp(2*x) + 4",
-        "derivative": "2*exp(2*x)",
-        "factor": "1",
+        "integrand": "3*exp(x)/sqrt(exp(x) + 3)",
+        "substitution": "exp(x) + 3",
+        "derivative": "exp(x)",
+        "factor": "3",
         "transformed": "1/sqrt(u)",
-        "primitive": "2*sqrt(exp(2*x) + 4)",
+        "primitive": "6*sqrt(exp(x) + 3)",
         "lower": null,
         "upper": null,
-        "result": "2*sqrt(exp(2*x) + 4)"
+        "result": "6*sqrt(exp(x) + 3)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1206,25 +1374,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "2b590da3-4f4a-52e6-ad79-889ccfd9d90b",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 5^{x} \\sqrt{5^{x} + 2}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C$.\n\nWork where $5^{x} + 2>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=5^{x} + 2$. Then $\\mathrm{d}u=(5^{x} \\ln{\\left(5 \\right)})\\,\\mathrm{d}x$.\n\nWork where $5^{x} + 2>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 5^{x} \\sqrt{5^{x} + 2}\\,\\mathrm{d}x\\\\&=\\frac{3}{\\ln{\\left(5 \\right)}}\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{\\ln{\\left(5 \\right)}}\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right)=\\frac{3}{\\ln{\\left(5 \\right)}}\\left(\\frac{2 u^{\\frac{3}{2}}}{3}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{\\ln{\\left(5 \\right)}}\\left(\\frac{2 \\left(5^{x} + 2\\right)^{\\frac{3}{2}}}{3}\\right)+C.\n$$",
+      ":question/id": "fbe42d09-6935-5167-af4a-642732c52ed7",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2^{x} \\sqrt{2^{x} + 3}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C$.\n\nWork where $2^{x} + 3>0$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=2^{x} + 3$. Then $\\mathrm{d}u=(2^{x} \\ln{\\left(2 \\right)})\\,\\mathrm{d}x$.\n\nWork where $2^{x} + 3>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2^{x} \\sqrt{2^{x} + 3}\\,\\mathrm{d}x\\\\&=\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\int \\sqrt{u}\\,\\mathrm{d}u\\right)=\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\frac{2 u^{\\frac{3}{2}}}{3}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\frac{2 \\left(2^{x} + 3\\right)^{\\frac{3}{2}}}{3}\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "b6f377a1-e963-5dc6-a3e5-aef082db15e7",
+          ":answer-field/id": "0db88b23-58cf-5ec3-87d8-e693487a62ba",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "589c891a-c556-5883-a748-f8574b601c7d",
+              ":answer/id": "cc74a0e7-44e2-5fae-a5db-8d69f134f85d",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{3}{\\ln{\\left(5 \\right)}}\\left(\\frac{2 \\left(5^{x} + 2\\right)^{\\frac{3}{2}}}{3}\\right)"
+              ":answer/value": "\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\frac{2 \\left(2^{x} + 3\\right)^{\\frac{3}{2}}}{3}\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "589c891a-c556-5883-a748-f8574b601c7d"
+            "cc74a0e7-44e2-5fae-a5db-8d69f134f85d"
           ]
         }
       ]
@@ -1236,191 +1404,23 @@
       "family": "sqrt_base",
       "challenge": "root_outer_function",
       "parameters": {
-        "base": "5",
-        "slope": "1",
-        "offset": "2",
-        "amplitude": "3",
-        "outer": "sqrt"
-      },
-      "mathematical_fingerprint": "6e150937c6f5004480530dcb2c958df9d23d1a0020b3e3c7ab309aaf8ebd59f2",
-      "model": {
-        "integrand": "3*5**x*sqrt(5**x + 2)",
-        "substitution": "5**x + 2",
-        "derivative": "5**x*log(5)",
-        "factor": "3/log(5)",
-        "transformed": "sqrt(u)",
-        "primitive": "2*(5**x + 2)**(3/2)/log(5)",
-        "lower": null,
-        "upper": null,
-        "result": "2*(5**x + 2)**(3/2)/log(5)"
-      },
-      "batch_contract": "substitution-pedagogy-1",
-      "source_basis": 6550,
-      "source_questions": [
-        "q-113852",
-        "q-113876",
-        "q-73670",
-        "q-113873",
-        "q-31478",
-        "q-31480",
-        "q-49577",
-        "q-73669",
-        "q-49574",
-        "q-113875",
-        "q-73666",
-        "q-113872",
-        "e-14404"
-      ],
-      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
-      "operation": "evaluate",
-      "provided_substitution": false,
-      "provided_primitive": true,
-      "provided_endpoint_values": false,
-      "bank_recipes": [
-        "correct"
-      ],
-      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
-    },
-    "assets": {}
-  },
-  {
-    "knowledge_point": {
-      "db_id": 17592186184351,
-      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
-      "title": "More Complex Cases"
-    },
-    "question": {
-      ":question/id": "25dbcbc8-780d-59eb-9164-c8145870b242",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\sqrt{e^{2 x} + 1} e^{2 x}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C$.\n\nWork where $e^{2 x} + 1>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{2 x} + 1$. Then $\\mathrm{d}u=(2 e^{2 x})\\,\\mathrm{d}x$.\n\nWork where $e^{2 x} + 1>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\sqrt{e^{2 x} + 1} e^{2 x}\\,\\mathrm{d}x\\\\&=\\int \\sqrt{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\sqrt{u}\\,\\mathrm{d}u=\\frac{2 u^{\\frac{3}{2}}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\left(e^{2 x} + 1\\right)^{\\frac{3}{2}}}{3}+C.\n$$",
-      ":question/difficulty": ":question.difficulty/moderate",
-      ":question/answer-fields": [
-        {
-          ":answer-field/id": "1654075a-a5b4-5601-ba93-2d1b1e1652cf",
-          ":answer-field/key": "answer",
-          ":answer-field/type": ":answer-field.type/blank",
-          ":answer-field/choices": [
-            {
-              ":answer/id": "83e17172-fc2b-5cac-8329-3174db1a97e1",
-              ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{2 \\left(e^{2 x} + 1\\right)^{\\frac{3}{2}}}{3}"
-            }
-          ],
-          ":answer-field/correct": [
-            ":answer/id",
-            "83e17172-fc2b-5cac-8329-3174db1a97e1"
-          ]
-        }
-      ]
-    },
-    "generation": {
-      "version": "substitution-pedagogy-1",
-      "seed": 20261024,
-      "template": "sqrt_e",
-      "family": "sqrt_e",
-      "challenge": "root_outer_function",
-      "parameters": {
-        "base": "E",
-        "slope": "2",
-        "offset": "1",
-        "amplitude": "2",
-        "outer": "sqrt"
-      },
-      "mathematical_fingerprint": "527b2b1e258ea68c89917172abd162e1ae1530e43c6db7cec727b1f901a47674",
-      "model": {
-        "integrand": "2*sqrt(exp(2*x) + 1)*exp(2*x)",
-        "substitution": "exp(2*x) + 1",
-        "derivative": "2*exp(2*x)",
-        "factor": "1",
-        "transformed": "sqrt(u)",
-        "primitive": "2*(exp(2*x) + 1)**(3/2)/3",
-        "lower": null,
-        "upper": null,
-        "result": "2*(exp(2*x) + 1)**(3/2)/3"
-      },
-      "batch_contract": "substitution-pedagogy-1",
-      "source_basis": 6550,
-      "source_questions": [
-        "q-113852",
-        "q-113876",
-        "q-73670",
-        "q-113873",
-        "q-31478",
-        "q-31480",
-        "q-49577",
-        "q-73669",
-        "q-49574",
-        "q-113875",
-        "q-73666",
-        "q-113872",
-        "e-14404"
-      ],
-      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
-      "operation": "evaluate",
-      "provided_substitution": false,
-      "provided_primitive": true,
-      "provided_endpoint_values": false,
-      "bank_recipes": [
-        "correct"
-      ],
-      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
-    },
-    "assets": {}
-  },
-  {
-    "knowledge_point": {
-      "db_id": 17592186184351,
-      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
-      "title": "More Complex Cases"
-    },
-    "question": {
-      ":question/id": "a8936e08-8fa9-5c68-820e-1eef72bf2e26",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2^{x}}{\\sqrt{2^{x} + 1}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $2^{x} + 1>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=2^{x} + 1$. Then $\\mathrm{d}u=(2^{x} \\ln{\\left(2 \\right)})\\,\\mathrm{d}x$.\n\nWork where $2^{x} + 1>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2^{x}}{\\sqrt{2^{x} + 1}}\\,\\mathrm{d}x\\\\&=\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{1}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right)=\\frac{1}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{u}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 1}\\right)+C.\n$$",
-      ":question/difficulty": ":question.difficulty/moderate",
-      ":question/answer-fields": [
-        {
-          ":answer-field/id": "8cfe0fdf-3754-5ad9-b5eb-dd34b413db1f",
-          ":answer-field/key": "answer",
-          ":answer-field/type": ":answer-field.type/blank",
-          ":answer-field/choices": [
-            {
-              ":answer/id": "3341c8db-21d4-5800-8824-cc5e6782e78f",
-              ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{1}{\\ln{\\left(2 \\right)}}\\left(2 \\sqrt{2^{x} + 1}\\right)"
-            }
-          ],
-          ":answer-field/correct": [
-            ":answer/id",
-            "3341c8db-21d4-5800-8824-cc5e6782e78f"
-          ]
-        }
-      ]
-    },
-    "generation": {
-      "version": "substitution-pedagogy-1",
-      "seed": 20261024,
-      "template": "root_base",
-      "family": "root_base",
-      "challenge": "root_outer_function",
-      "parameters": {
         "base": "2",
         "slope": "1",
-        "offset": "1",
+        "offset": "3",
         "amplitude": "1",
-        "outer": "root"
+        "outer": "sqrt"
       },
-      "mathematical_fingerprint": "1bef8d5632c8eb14abd2f8becf70fc46bc3da8612ffe7e759803132a19819191",
+      "mathematical_fingerprint": "ff5b214a5f8e0d89ccca964b3eeed6cd4db50960ada10ec78c5bf8b0749f7215",
       "model": {
-        "integrand": "2**x/sqrt(2**x + 1)",
-        "substitution": "2**x + 1",
+        "integrand": "2**x*sqrt(2**x + 3)",
+        "substitution": "2**x + 3",
         "derivative": "2**x*log(2)",
         "factor": "1/log(2)",
-        "transformed": "1/sqrt(u)",
-        "primitive": "2*sqrt(2**x + 1)/log(2)",
+        "transformed": "sqrt(u)",
+        "primitive": "2*(2**x + 3)**(3/2)/(3*log(2))",
         "lower": null,
         "upper": null,
-        "result": "2*sqrt(2**x + 1)/log(2)"
+        "result": "2*(2**x + 3)**(3/2)/(3*log(2))"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1458,109 +1458,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "db3637da-89fb-591c-bd06-138634ef60b2",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 e^{x}}{\\sqrt{e^{x} + 4}}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u=2 \\sqrt{u}+C$.\n\nWork where $e^{x} + 4>0$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{x} + 4$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nWork where $e^{x} + 4>0$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 e^{x}}{\\sqrt{e^{x} + 4}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u}}\\,\\mathrm{d}u\\right)=3\\left(2 \\sqrt{u}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3\\left(2 \\sqrt{e^{x} + 4}\\right)+C.\n$$",
+      ":question/id": "b600485f-2a8a-53d6-9f97-db58335a0f24",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{5^{x}}{5^{x} + 4}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=5^{x} + 4$. Then $\\mathrm{d}u=(5^{x} \\ln{\\left(5 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{5^{x}}{5^{x} + 4}\\,\\mathrm{d}x\\\\&=\\frac{1}{\\ln{\\left(5 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{1}{\\ln{\\left(5 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{1}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|5^{x} + 4\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "e9378a27-63b6-5e3e-b115-0b31853d6b22",
+          ":answer-field/id": "2670a155-a926-5568-96d3-f75f22455479",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "8c812083-6f47-5e0d-abd3-b981f25ee032",
+              ":answer/id": "6edf7752-6e76-549e-b7f5-cc968d4c1e6b",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "3\\left(2 \\sqrt{e^{x} + 4}\\right)"
+              ":answer/value": "\\frac{1}{\\ln{\\left(5 \\right)}}\\left(\\ln\\left|5^{x} + 4\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "8c812083-6f47-5e0d-abd3-b981f25ee032"
-          ]
-        }
-      ]
-    },
-    "generation": {
-      "version": "substitution-pedagogy-1",
-      "seed": 20261024,
-      "template": "root_e",
-      "family": "root_e",
-      "challenge": "root_outer_function",
-      "parameters": {
-        "base": "E",
-        "slope": "1",
-        "offset": "4",
-        "amplitude": "3",
-        "outer": "root"
-      },
-      "mathematical_fingerprint": "e033401ad7e6168b4161c8b80ec6b864a37fef5e1686b2c08bd23f9b43619a13",
-      "model": {
-        "integrand": "3*exp(x)/sqrt(exp(x) + 4)",
-        "substitution": "exp(x) + 4",
-        "derivative": "exp(x)",
-        "factor": "3",
-        "transformed": "1/sqrt(u)",
-        "primitive": "6*sqrt(exp(x) + 4)",
-        "lower": null,
-        "upper": null,
-        "result": "6*sqrt(exp(x) + 4)"
-      },
-      "batch_contract": "substitution-pedagogy-1",
-      "source_basis": 6550,
-      "source_questions": [
-        "q-113852",
-        "q-113876",
-        "q-73670",
-        "q-113873",
-        "q-31478",
-        "q-31480",
-        "q-49577",
-        "q-73669",
-        "q-49574",
-        "q-113875",
-        "q-73666",
-        "q-113872",
-        "e-14404"
-      ],
-      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
-      "operation": "evaluate",
-      "provided_substitution": false,
-      "provided_primitive": true,
-      "provided_endpoint_values": false,
-      "bank_recipes": [
-        "correct"
-      ],
-      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
-    },
-    "assets": {}
-  },
-  {
-    "knowledge_point": {
-      "db_id": 17592186184351,
-      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
-      "title": "More Complex Cases"
-    },
-    "question": {
-      ":question/id": "539313b3-a5d7-536f-bdad-fa3d94632c35",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4 \\cdot 3^{x}}{3^{x} + 1}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=3^{x} + 1$. Then $\\mathrm{d}u=(3^{x} \\ln{\\left(3 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4 \\cdot 3^{x}}{3^{x} + 1}\\,\\mathrm{d}x\\\\&=\\frac{4}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{4}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{4}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{4}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 1\\right|\\right)+C.\n$$",
-      ":question/difficulty": ":question.difficulty/hard",
-      ":question/answer-fields": [
-        {
-          ":answer-field/id": "21778632-fd03-58a2-a277-6fc5fe87123f",
-          ":answer-field/key": "answer",
-          ":answer-field/type": ":answer-field.type/blank",
-          ":answer-field/choices": [
-            {
-              ":answer/id": "b65493ac-1e12-5f13-8c4a-9d6daec124b4",
-              ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{4}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 1\\right|\\right)"
-            }
-          ],
-          ":answer-field/correct": [
-            ":answer/id",
-            "b65493ac-1e12-5f13-8c4a-9d6daec124b4"
+            "6edf7752-6e76-549e-b7f5-cc968d4c1e6b"
           ]
         }
       ]
@@ -1570,25 +1486,109 @@
       "seed": 20261024,
       "template": "log_base",
       "family": "log_base",
-      "challenge": "logarithmic_derivative",
+      "challenge": "root_outer_function",
       "parameters": {
-        "base": "3",
+        "base": "5",
         "slope": "1",
-        "offset": "1",
-        "amplitude": "4",
+        "offset": "4",
+        "amplitude": "1",
         "outer": "log"
       },
-      "mathematical_fingerprint": "4db741365f634f8484aa3ce577ceaf008f416f6ef30aa9b5d57b92dc9eaaeb72",
+      "mathematical_fingerprint": "bed342330b772b5fdb776e9abf5f4cdb008555bdda5a9640b83696e7c7f3a17f",
       "model": {
-        "integrand": "4*3**x/(3**x + 1)",
-        "substitution": "3**x + 1",
-        "derivative": "3**x*log(3)",
-        "factor": "4/log(3)",
+        "integrand": "5**x/(5**x + 4)",
+        "substitution": "5**x + 4",
+        "derivative": "5**x*log(5)",
+        "factor": "1/log(5)",
         "transformed": "1/u",
-        "primitive": "4*log(3**x + 1)/log(3)",
+        "primitive": "log(5**x + 4)/log(5)",
         "lower": null,
         "upper": null,
-        "result": "4*log(3**x + 1)/log(3)"
+        "result": "log(5**x + 4)/log(5)"
+      },
+      "batch_contract": "substitution-pedagogy-1",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-113852",
+        "q-113876",
+        "q-73670",
+        "q-113873",
+        "q-31478",
+        "q-31480",
+        "q-49577",
+        "q-73669",
+        "q-49574",
+        "q-113875",
+        "q-73666",
+        "q-113872",
+        "e-14404"
+      ],
+      "band_origin": "Authored supported full calculation using own imported families with small parameters and a supplied primitive.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": true,
+      "provided_endpoint_values": false,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184351,
+      "id": "ed3b6c3d-b840-50ef-9e6b-584bf14877b3",
+      "title": "More Complex Cases"
+    },
+    "question": {
+      ":question/id": "bc08d550-1e24-59f1-bab8-fa99a8cbf667",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 e^{2 x} + 3}{2 x + e^{2 x} + 1}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=2 x + e^{2 x} + 1$. Then $\\mathrm{d}u=(2 e^{2 x} + 2)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 e^{2 x} + 3}{2 x + e^{2 x} + 1}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{2}\\left(\\ln\\left|2 x + e^{2 x} + 1\\right|\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8b553907-b58e-5267-8715-e4778af79c9c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ac2c5013-33bd-5d19-9cc8-c4d9e9a915d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}\\left(\\ln\\left|2 x + e^{2 x} + 1\\right|\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ac2c5013-33bd-5d19-9cc8-c4d9e9a915d2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-pedagogy-1",
+      "seed": 20261024,
+      "template": "log_composite",
+      "family": "log_composite",
+      "challenge": "logarithmic_derivative",
+      "parameters": {
+        "base": "E",
+        "slope": "2",
+        "offset": "1",
+        "amplitude": "3",
+        "outer": "log"
+      },
+      "mathematical_fingerprint": "f6ba187f26cd5e765bf5ff5a4491d49b5244f02ed80f202aac4dcb26c70906e1",
+      "model": {
+        "integrand": "(3*exp(2*x) + 3)/(2*x + exp(2*x) + 1)",
+        "substitution": "2*x + exp(2*x) + 1",
+        "derivative": "2*exp(2*x) + 2",
+        "factor": "3/2",
+        "transformed": "1/u",
+        "primitive": "3*log(2*x + exp(2*x) + 1)/2",
+        "lower": null,
+        "upper": null,
+        "result": "3*log(2*x + exp(2*x) + 1)/2"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1626,25 +1626,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "97e2511e-9c71-570b-8d15-154792f955cf",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4 e^{2 x}}{e^{2 x} + 2}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{2 x} + 2$. Then $\\mathrm{d}u=(2 e^{2 x})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4 e^{2 x}}{e^{2 x} + 2}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=2\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2\\left(\\ln\\left|e^{2 x} + 2\\right|\\right)+C.\n$$",
+      ":question/id": "24ac3e9f-c431-5dd9-aaf4-0785964f442b",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 e^{x} + 2}{x + e^{x} + 3}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=x + e^{x} + 3$. Then $\\mathrm{d}u=(e^{x} + 1)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 e^{x} + 2}{x + e^{x} + 3}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=2\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2\\left(\\ln\\left|x + e^{x} + 3\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "47a5071e-d698-5610-983e-c7194294c439",
+          ":answer-field/id": "309b896d-0ed4-573b-ae38-151b2a7fd9ba",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "4db40ca9-097a-5701-afbf-04e826fe7bbc",
+              ":answer/id": "2e228d92-8e66-55f1-83eb-fa5d97e219e1",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "2\\left(\\ln\\left|e^{2 x} + 2\\right|\\right)"
+              ":answer/value": "2\\left(\\ln\\left|x + e^{x} + 3\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "4db40ca9-097a-5701-afbf-04e826fe7bbc"
+            "2e228d92-8e66-55f1-83eb-fa5d97e219e1"
           ]
         }
       ]
@@ -1652,27 +1652,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "log_e",
-      "family": "log_e",
+      "template": "log_composite",
+      "family": "log_composite",
       "challenge": "logarithmic_derivative",
       "parameters": {
         "base": "E",
-        "slope": "2",
-        "offset": "2",
-        "amplitude": "4",
+        "slope": "1",
+        "offset": "3",
+        "amplitude": "2",
         "outer": "log"
       },
-      "mathematical_fingerprint": "00fd2980ca3d8200f4096ae4f599576f91b358d5503739ca292cfcc2f362f8a3",
+      "mathematical_fingerprint": "2a7d0c5e0ab0e93eaec1103d7d6bf4ffd6d1fb455a6f48c8618c1516b5066d55",
       "model": {
-        "integrand": "4*exp(2*x)/(exp(2*x) + 2)",
-        "substitution": "exp(2*x) + 2",
-        "derivative": "2*exp(2*x)",
+        "integrand": "(2*exp(x) + 2)/(x + exp(x) + 3)",
+        "substitution": "x + exp(x) + 3",
+        "derivative": "exp(x) + 1",
         "factor": "2",
         "transformed": "1/u",
-        "primitive": "2*log(exp(2*x) + 2)",
+        "primitive": "2*log(x + exp(x) + 3)",
         "lower": null,
         "upper": null,
-        "result": "2*log(exp(2*x) + 2)"
+        "result": "2*log(x + exp(x) + 3)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1794,25 +1794,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "735320a2-78a9-5873-b1e5-b50084506f52",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3^{x + 1}}{3^{x} + 2}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=3^{x} + 2$. Then $\\mathrm{d}u=(3^{x} \\ln{\\left(3 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3^{x + 1}}{3^{x} + 2}\\,\\mathrm{d}x\\\\&=\\frac{3}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{\\ln{\\left(3 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{3}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 2\\right|\\right)+C.\n$$",
+      ":question/id": "1fbf42aa-0c2a-5aad-95e1-ee2ce4773cfc",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 e^{2 x} + 2}{2 x + e^{2 x} + 4}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=2 x + e^{2 x} + 4$. Then $\\mathrm{d}u=(2 e^{2 x} + 2)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 e^{2 x} + 2}{2 x + e^{2 x} + 4}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nSubstitute back:\n\n$$\n\\ln\\left|2 x + e^{2 x} + 4\\right|+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "abd4e86b-2001-5806-af05-f314137beccd",
+          ":answer-field/id": "dcf91abd-7972-5cdd-a9d1-a1b544bbffff",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "05ed6271-6243-566a-9cb9-728660f4255b",
+              ":answer/id": "6af84686-d09b-5aa3-ae4a-19ceb28d8a0a",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{3}{\\ln{\\left(3 \\right)}}\\left(\\ln\\left|3^{x} + 2\\right|\\right)"
+              ":answer/value": "\\ln\\left|2 x + e^{2 x} + 4\\right|"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "05ed6271-6243-566a-9cb9-728660f4255b"
+            "6af84686-d09b-5aa3-ae4a-19ceb28d8a0a"
           ]
         }
       ]
@@ -1820,27 +1820,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "log_base",
-      "family": "log_base",
+      "template": "log_composite",
+      "family": "log_composite",
       "challenge": "logarithmic_derivative",
       "parameters": {
-        "base": "3",
-        "slope": "1",
-        "offset": "2",
-        "amplitude": "3",
+        "base": "E",
+        "slope": "2",
+        "offset": "4",
+        "amplitude": "2",
         "outer": "log"
       },
-      "mathematical_fingerprint": "154d54fc0f66a4ef2b1ede783d67f73d915b7d0dd8116ef92fe8b8bca5380da8",
+      "mathematical_fingerprint": "f923db0df489695f0a37d81a4583209f01e97863cadb6075356118a50ae0962f",
       "model": {
-        "integrand": "3**(x + 1)/(3**x + 2)",
-        "substitution": "3**x + 2",
-        "derivative": "3**x*log(3)",
-        "factor": "3/log(3)",
+        "integrand": "(2*exp(2*x) + 2)/(2*x + exp(2*x) + 4)",
+        "substitution": "2*x + exp(2*x) + 4",
+        "derivative": "2*exp(2*x) + 2",
+        "factor": "1",
         "transformed": "1/u",
-        "primitive": "3*log(3**x + 2)/log(3)",
+        "primitive": "log(2*x + exp(2*x) + 4)",
         "lower": null,
         "upper": null,
-        "result": "3*log(3**x + 2)/log(3)"
+        "result": "log(2*x + exp(2*x) + 4)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -1878,25 +1878,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "42d0a209-a10f-58b4-8198-21f3a7deedd4",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 e^{2 x}}{e^{2 x} + 4}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{2 x} + 4$. Then $\\mathrm{d}u=(2 e^{2 x})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 e^{2 x}}{e^{2 x} + 4}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nSubstitute back:\n\n$$\n\\ln\\left|e^{2 x} + 4\\right|+C.\n$$",
+      ":question/id": "ad79e0bf-30a8-5a5e-8565-5721f911bb72",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{e^{2 x} - 1}{- 2 x + e^{2 x} + 4}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=- 2 x + e^{2 x} + 4$. Then $\\mathrm{d}u=(2 e^{2 x} - 2)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{e^{2 x} - 1}{- 2 x + e^{2 x} + 4}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{1}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{2}\\left(\\ln\\left|- 2 x + e^{2 x} + 4\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "726fb8c5-7474-5437-833b-964b276fc528",
+          ":answer-field/id": "72c51815-1bd0-5eb5-8b76-2f5b576ed2d6",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "564ff0e8-6647-5995-89c4-1d1a3cbc236f",
+              ":answer/id": "ef9d19b8-b764-5fc0-89ff-6ac72aea9d00",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\ln\\left|e^{2 x} + 4\\right|"
+              ":answer/value": "\\frac{1}{2}\\left(\\ln\\left|- 2 x + e^{2 x} + 4\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "564ff0e8-6647-5995-89c4-1d1a3cbc236f"
+            "ef9d19b8-b764-5fc0-89ff-6ac72aea9d00"
           ]
         }
       ]
@@ -1904,27 +1904,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "log_e",
-      "family": "log_e",
+      "template": "log_composite",
+      "family": "log_composite",
       "challenge": "logarithmic_derivative",
       "parameters": {
         "base": "E",
         "slope": "2",
         "offset": "4",
-        "amplitude": "2",
+        "amplitude": "1",
         "outer": "log"
       },
-      "mathematical_fingerprint": "9d43ebedb7b2ce5629dbf9a3cc5f156a0a8e8fb87d2faedb44e9490cfdd5f518",
+      "mathematical_fingerprint": "1e1bf7b905c238ed5c9f78e932431158fe88935d7accb4ff3bfec35f6a0693d8",
       "model": {
-        "integrand": "2*exp(2*x)/(exp(2*x) + 4)",
-        "substitution": "exp(2*x) + 4",
-        "derivative": "2*exp(2*x)",
-        "factor": "1",
+        "integrand": "(exp(2*x) - 1)/(-2*x + exp(2*x) + 4)",
+        "substitution": "-2*x + exp(2*x) + 4",
+        "derivative": "2*exp(2*x) - 2",
+        "factor": "1/2",
         "transformed": "1/u",
-        "primitive": "log(exp(2*x) + 4)",
+        "primitive": "log(-2*x + exp(2*x) + 4)/2",
         "lower": null,
         "upper": null,
-        "result": "log(exp(2*x) + 4)"
+        "result": "log(-2*x + exp(2*x) + 4)/2"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -2046,25 +2046,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "0c221565-eb90-5226-8dae-cb3fae555c9d",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\cdot 2^{x}}{2^{x} + 3}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=2^{x} + 3$. Then $\\mathrm{d}u=(2^{x} \\ln{\\left(2 \\right)})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\cdot 2^{x}}{2^{x} + 3}\\,\\mathrm{d}x\\\\&=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\ln\\left|2^{x} + 3\\right|\\right)+C.\n$$",
+      ":question/id": "ea1a7e25-e71f-582a-863b-88aa6d9cf7aa",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 e^{2 x} - 1}{- x + e^{2 x} + 3}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=- x + e^{2 x} + 3$. Then $\\mathrm{d}u=(2 e^{2 x} - 1)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 e^{2 x} - 1}{- x + e^{2 x} + 3}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nSubstitute back:\n\n$$\n\\ln\\left|- x + e^{2 x} + 3\\right|+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "95659e68-a2b6-5825-bb55-f1adc94df55f",
+          ":answer-field/id": "2aff0ff1-c58a-5dd9-a5c8-c85342df2e78",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "b6c494b2-0563-5852-8765-4f21cef7aae0",
+              ":answer/id": "85ea9013-4282-55bc-946e-30500a65a254",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{3}{\\ln{\\left(2 \\right)}}\\left(\\ln\\left|2^{x} + 3\\right|\\right)"
+              ":answer/value": "\\ln\\left|- x + e^{2 x} + 3\\right|"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "b6c494b2-0563-5852-8765-4f21cef7aae0"
+            "85ea9013-4282-55bc-946e-30500a65a254"
           ]
         }
       ]
@@ -2072,27 +2072,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "log_base",
-      "family": "log_base",
+      "template": "log_composite",
+      "family": "log_composite",
       "challenge": "logarithmic_derivative",
       "parameters": {
-        "base": "2",
-        "slope": "1",
+        "base": "E",
+        "slope": "2",
         "offset": "3",
-        "amplitude": "3",
+        "amplitude": "2",
         "outer": "log"
       },
-      "mathematical_fingerprint": "6345d717f1e3db0ec08086ab6192047beb4e690607d3b632c1422c9aecc996ee",
+      "mathematical_fingerprint": "ce3e0fb8761458cc12a189b5242d4ecbbc39ab39dc306b93f6f6f59dbaad05ab",
       "model": {
-        "integrand": "3*2**x/(2**x + 3)",
-        "substitution": "2**x + 3",
-        "derivative": "2**x*log(2)",
-        "factor": "3/log(2)",
+        "integrand": "(2*exp(2*x) - 1)/(-x + exp(2*x) + 3)",
+        "substitution": "-x + exp(2*x) + 3",
+        "derivative": "2*exp(2*x) - 1",
+        "factor": "1",
         "transformed": "1/u",
-        "primitive": "3*log(2**x + 3)/log(2)",
+        "primitive": "log(-x + exp(2*x) + 3)",
         "lower": null,
         "upper": null,
-        "result": "3*log(2**x + 3)/log(2)"
+        "result": "log(-x + exp(2*x) + 3)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,
@@ -2130,25 +2130,25 @@
       "title": "More Complex Cases"
     },
     "question": {
-      ":question/id": "74d362dd-799b-5de3-be35-9484918365d5",
-      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
-      ":question/worked-solution": "Let $u=e^{x} + 1$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nSubstitute back:\n\n$$\n\\ln\\left|e^{x} + 1\\right|+C.\n$$",
+      ":question/id": "65cd622a-f56e-5266-8bca-f7152ab8c719",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4 e^{2 x} - 4}{- 2 x + e^{2 x} + 1}\\,\\mathrm{d}x\n$$\n\nYou may use $\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C$.\n\n{{answer}} $+C$",
+      ":question/worked-solution": "Let $u=- 2 x + e^{2 x} + 1$. Then $\\mathrm{d}u=(2 e^{2 x} - 2)\\,\\mathrm{d}x$.\n\nUse a connected real interval on which the integrand is defined.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4 e^{2 x} - 4}{- 2 x + e^{2 x} + 1}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the supplied primitive:\n\n$$\n2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=2\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2\\left(\\ln\\left|- 2 x + e^{2 x} + 1\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "e199a3a8-90cc-537c-b0f5-0fa9bdddac40",
+          ":answer-field/id": "6fc081b0-2f19-5297-9456-fed742bd694e",
           ":answer-field/key": "answer",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "71891c93-db31-577a-a444-1389c5c807a5",
+              ":answer/id": "9fbb508d-92db-5035-8a17-fd24237b638d",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\ln\\left|e^{x} + 1\\right|"
+              ":answer/value": "2\\left(\\ln\\left|- 2 x + e^{2 x} + 1\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "71891c93-db31-577a-a444-1389c5c807a5"
+            "9fbb508d-92db-5035-8a17-fd24237b638d"
           ]
         }
       ]
@@ -2156,27 +2156,27 @@
     "generation": {
       "version": "substitution-pedagogy-1",
       "seed": 20261024,
-      "template": "log_e",
-      "family": "log_e",
+      "template": "log_composite",
+      "family": "log_composite",
       "challenge": "logarithmic_derivative",
       "parameters": {
         "base": "E",
-        "slope": "1",
+        "slope": "2",
         "offset": "1",
-        "amplitude": "1",
+        "amplitude": "4",
         "outer": "log"
       },
-      "mathematical_fingerprint": "15c3175a34ce178982d4c7ce46d5212970c6a7b36d89dd169a9872ae8158e0cb",
+      "mathematical_fingerprint": "0a4fb29137f8cb1d3f7885152ca6d4f0977990cb5577a2935a0feb262914d0c2",
       "model": {
-        "integrand": "exp(x)/(exp(x) + 1)",
-        "substitution": "exp(x) + 1",
-        "derivative": "exp(x)",
-        "factor": "1",
+        "integrand": "(4*exp(2*x) - 4)/(-2*x + exp(2*x) + 1)",
+        "substitution": "-2*x + exp(2*x) + 1",
+        "derivative": "2*exp(2*x) - 2",
+        "factor": "2",
         "transformed": "1/u",
-        "primitive": "log(exp(x) + 1)",
+        "primitive": "2*log(-2*x + exp(2*x) + 1)",
         "lower": null,
         "upper": null,
-        "result": "log(exp(x) + 1)"
+        "result": "2*log(-2*x + exp(2*x) + 1)"
       },
       "batch_contract": "substitution-pedagogy-1",
       "source_basis": 6550,

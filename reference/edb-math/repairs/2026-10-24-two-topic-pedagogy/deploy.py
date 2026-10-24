@@ -3,6 +3,7 @@ from collections import Counter
 import json
 from pathlib import Path
 import platform
+import os
 import subprocess
 import sys
 
@@ -37,7 +38,7 @@ def prepare(publisher):
     reproduced=[]
     for band,count in [('easy',8),('moderate',8),('hard',8)]:
         output=subprocess.run([sys.executable,str(entry),'--difficulty',band,'--count',str(count),'--seed','20261024','--format','json'],
-            check=True,capture_output=True,text=True,timeout=60)
+            check=True,capture_output=True,text=True,timeout=60,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
         reproduced.extend(json.loads(output.stdout))
     assert reproduced==records,'Published relocation changed the approved records'
     save('package-verification.json',{'digest':package.digest,'reference':package.reference,'manifest':manifest,
