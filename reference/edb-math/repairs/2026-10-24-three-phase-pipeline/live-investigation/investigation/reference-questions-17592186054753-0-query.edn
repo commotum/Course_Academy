@@ -1,0 +1,8 @@
+[:find (pull ?q [:db/id :question/id :question/math-academy-id :question/problem
+ :question/worked-solution :question/requires-calculator :question/retired
+ {:question/difficulty [:db/ident]}
+ {:knowledge-point/_canonical-example [:db/id]}
+ {[:question/answer-fields :limit nil] [:db/id :answer-field/id :answer-field/key
+  {:answer-field/type [:db/ident]}
+  {:answer-field/correct [:db/id :answer/id :answer/value {:answer/type [:db/ident]}]}
+  {[:answer-field/choices :limit nil] [:db/id :answer/id :answer/value {:answer/type [:db/ident]}]}]}]) :in $ [?q ...] :where [?q :question/id _]]

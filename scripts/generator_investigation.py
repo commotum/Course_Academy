@@ -154,19 +154,32 @@ def prepare_investigation(publisher, source, directory):
             return {**saved, 'investigation_file': str(input_file), 'reference_file': str(reference_file)}
     summary['preparation_key'] = preparation_key
     summary['needs_exemplars'] = summary['construction_needed']
-    # Metadata and observed coverage are small. Never join the whole corpus to
-    # worked-solution strings or form a KP x difficulty collection cross-product.
-    pattern = ('[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}'
-               ' {:knowledge-point/level-coverage [:db/ident]}]')
-    metadata = [r[0] for r in publisher.client.query(
-        '[:find (pull ?kp ' + pattern + ') :where [?kp :knowledge-point/id _]]',
-        [], directory, 'reference-kp-metadata', basis)]
-    metadata = [point for point in metadata if all(
-        ':question.difficulty/' + band in {_enum(v) for v in point.get(COVERAGE, [])} for band in BANDS)]
+    # Select IDs through the three observed refs before loading any metadata.
+    # Global nested Pulls and KP x difficulty input products exceed the live
+    # EDB allocation budget even when their final projection looks small.
+    levels = {str(ident): eid for eid, ident in publisher.client.query(
+        '[:find ?d ?i :in $ [?i ...] :where [?d :db/ident ?i]]',
+        [[kw('question.difficulty/' + b) for b in BANDS]], directory, 'reference-levels', basis)}
+    ids = sorted(row[0] for row in publisher.client.query(
+        '[:find ?kp :in $ ?easy ?moderate ?hard :where '
+        '[?kp :knowledge-point/level-coverage ?easy] '
+        '[?kp :knowledge-point/level-coverage ?moderate] '
+        '[?kp :knowledge-point/level-coverage ?hard]]',
+        [levels[':question.difficulty/' + b] for b in BANDS], directory, 'reference-candidate-ids', basis))
+    metadata = []
+    for start in range(0, len(ids), 100):
+        metadata.extend({':db/id': kp, ':knowledge-point/title': title} for kp, title in publisher.client.query(
+            '[:find ?kp ?title :in $ [?kp ...] :where [?kp :knowledge-point/title ?title]]',
+            [ids[start:start + 100]], directory, f'reference-titles-{start}', basis))
     metadata.sort(key=lambda value: _rank(value, target))
     def qualified_points():
         for start in range(0, len(metadata), 25):
-            group = metadata[start:start + 25]
+            group_ids = [point[':db/id'] for point in metadata[start:start + 25]]
+            pattern = '[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}]'
+            group = [row[0] for row in publisher.client.query(
+                '[:find (pull ?kp ' + pattern + ') :in $ [?kp ...] :where [?kp :knowledge-point/id _]]',
+                [group_ids], directory, f'reference-kp-metadata-{start}', basis)]
+            group.sort(key=lambda value: _rank(value, target))
             rows = publisher.client.query(COUNTS_QUERY, [[point[':db/id'] for point in group]],
                                           directory, f'candidate-counts-{start}', basis)
             counts = defaultdict(dict)

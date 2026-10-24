@@ -48,8 +48,15 @@ class References:
 
     def query(self, source, inputs, directory, name, basis=None):
         self.calls.append((source, inputs, name, basis))
-        if name == 'reference-kp-metadata':
-            return [[copy.deepcopy(point)] for point in self.points]
+        if name == 'reference-levels':
+            return [[i + 1, ':question.difficulty/' + b] for i, b in enumerate(BANDS)]
+        if name == 'reference-candidate-ids':
+            return [[point[':db/id']] for point in self.points]
+        if name.startswith('reference-titles-'):
+            return [[point[':db/id'], point[':knowledge-point/title']] for point in self.points if point[':db/id'] in inputs[0]]
+        if name.startswith('reference-kp-metadata-'):
+            assert len(inputs[0]) <= 25
+            return [[copy.deepcopy(point)] for point in self.points if point[':db/id'] in inputs[0]]
         if name.startswith('candidate-counts-'):
             return [[kp, ':question.difficulty/' + band, 2] for kp in inputs[0] for band in BANDS]
         if name.startswith('reference-question-ids-'):
