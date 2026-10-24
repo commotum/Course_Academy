@@ -144,16 +144,21 @@ def prepare_investigation(publisher, source, directory):
                'kp_id': int(source['kp_id']), 'observed_coverage': coverage,
                'complete_examples': {b: complete[b] for b in BANDS},
                'incomplete_imports': observations,
-               'construction_needed': bool(observations) or any(not complete[b] for b in BANDS)}
+               # Partial imports remain observations; only missing complete level
+               # coverage requires construction of additional examples.
+               'construction_needed': any(not complete[b] for b in BANDS)}
     reference_file = directory / 'reference.json'
     preparation_key = _hash(source)
     input_file = directory / 'investigation-input.json'
+    summary['preparation_key'] = preparation_key
+    summary['needs_exemplars'] = summary['construction_needed']
     if input_file.exists() and reference_file.exists():
         saved = json.loads(input_file.read_text())
         if saved.get('preparation_key') == preparation_key:
-            return {**saved, 'investigation_file': str(input_file), 'reference_file': str(reference_file)}
-    summary['preparation_key'] = preparation_key
-    summary['needs_exemplars'] = summary['construction_needed']
+            # Reuse the script-selected reference, but derive admission flags
+            # from the current rule rather than an older cached decision.
+            return {**saved, **summary, 'investigation_file': str(input_file),
+                    'reference_file': str(reference_file)}
     # Select IDs through the three observed refs before loading any metadata.
     # Global nested Pulls and KP x difficulty input products exceed the live
     # EDB allocation budget even when their final projection looks small.

@@ -104,7 +104,7 @@ class InvestigationTests(unittest.TestCase):
             self.assertEqual(prepare_investigation(publisher, source(), td), result)
             self.assertEqual(len(publisher.calls), calls)
 
-    def test_stored_coverage_and_partial_import_require_construction(self):
+    def test_partial_import_preserves_observations_without_requiring_construction(self):
         questions = [question(i + 1, b) for i, b in enumerate(BANDS)]
         partial = question(8, 'moderate')
         partial.pop(':question/worked-solution')
@@ -113,9 +113,64 @@ class InvestigationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             result = prepare_investigation(References(), saved, td)
             self.assertEqual(result['observed_coverage'], ['hard'])
-            self.assertTrue(result['needs_exemplars'])
+            self.assertFalse(result['needs_exemplars'])
+            self.assertFalse(result['construction_needed'])
             self.assertEqual(result['complete_examples'], dict.fromkeys(BANDS, 1))
             self.assertEqual(len(result['incomplete_imports']), 1)
+
+    def test_cached_reference_recomputes_admission_without_queries_or_snapshot_edits(self):
+        questions = [question(i + 1, b) for i, b in enumerate(BANDS)]
+        partial = question(8, 'moderate')
+        partial.pop(':question/worked-solution')
+        saved_source = source(questions + [partial])
+        original_source = copy.deepcopy(saved_source)
+        publisher = References()
+        with tempfile.TemporaryDirectory() as td:
+            initial = prepare_investigation(publisher, saved_source, td)
+            path = Path(initial['investigation_file'])
+            # Simulate a preparation made before partial imports stopped
+            # forcing reconstruction; even cached counts are derived evidence.
+            stale = json.loads(path.read_text())
+            stale.update(needs_exemplars=True, construction_needed=True,
+                         complete_examples=dict.fromkeys(BANDS, 0))
+            path.write_text(json.dumps(stale))
+            reference_path = Path(initial['reference_file'])
+            before = (path.read_bytes(), reference_path.read_bytes())
+            calls = len(publisher.calls)
+            result = prepare_investigation(publisher, saved_source, td)
+            self.assertFalse(result['needs_exemplars'])
+            self.assertFalse(result['construction_needed'])
+            self.assertEqual(result['complete_examples'], dict.fromkeys(BANDS, 1))
+            self.assertEqual(result['incomplete_imports'], initial['incomplete_imports'])
+            self.assertEqual(result['reference_kp_id'], initial['reference_kp_id'])
+            self.assertEqual(len(publisher.calls), calls)
+            self.assertEqual((path.read_bytes(), reference_path.read_bytes()), before)
+            self.assertEqual(saved_source, original_source)
+
+    def test_missing_complete_band_requires_examples_even_with_observed_partial_and_stale_cache(self):
+        for missing_band in BANDS:
+            with self.subTest(missing_band=missing_band), tempfile.TemporaryDirectory() as td:
+                questions = [question(i + 1, b) for i, b in enumerate(BANDS) if b != missing_band]
+                partial = question(8, missing_band)
+                partial.pop(':question/worked-solution')
+                saved_source = source(questions + [partial])
+                original_source = copy.deepcopy(saved_source)
+                publisher = References()
+                initial = prepare_investigation(publisher, saved_source, td)
+                self.assertEqual(initial['observed_coverage'], list(BANDS))
+                self.assertEqual(initial['complete_examples'][missing_band], 0)
+                self.assertTrue(initial['needs_exemplars'])
+                self.assertTrue(initial['construction_needed'])
+                path = Path(initial['investigation_file'])
+                stale = json.loads(path.read_text())
+                stale.update(needs_exemplars=False, construction_needed=False)
+                path.write_text(json.dumps(stale))
+                calls = len(publisher.calls)
+                result = prepare_investigation(publisher, saved_source, td)
+                self.assertTrue(result['needs_exemplars'])
+                self.assertTrue(result['construction_needed'])
+                self.assertEqual(len(publisher.calls), calls)
+                self.assertEqual(saved_source, original_source)
 
     def test_complete_three_band_source_does_not_require_new_examples(self):
         with tempfile.TemporaryDirectory() as td:
