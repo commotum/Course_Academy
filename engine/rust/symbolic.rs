@@ -151,6 +151,24 @@ impl Poly {
             .keys()
             .all(|m| m.keys().all(|a| matches!(a, Atom::Variable(_) | Atom::I)))
     }
+    /// Prove a difference nonzero using real/imaginary component bounds.
+    /// Each remaining atom must have real bounds; nested unsupported complex
+    /// functions therefore stay unresolved. These bounds only reject answers.
+    fn nonzero_at(&self, sample: Option<&Q>) -> bool {
+        let mut real = BTreeMap::new();
+        let mut imaginary = BTreeMap::new();
+        for (mono, coefficient) in &self.0 {
+            let mut mono = mono.clone();
+            let power = mono.remove(&Atom::I).unwrap_or(0) % 4;
+            let coefficient = if power >= 2 { -coefficient } else { coefficient.clone() };
+            let component = if power % 2 == 0 { &mut real } else { &mut imaginary };
+            *component.entry(mono).or_insert_with(Q::zero) += coefficient;
+        }
+        let (Some((rl, rh)), Some((il, ih))) =
+            (Poly(real).interval_at(sample), Poly(imaginary).interval_at(sample))
+        else { return false; };
+        rl.is_positive() || rh.is_negative() || il.is_positive() || ih.is_negative()
+    }
     fn interval(&self) -> Option<(Q, Q)> {
         self.interval_at(None)
     }
@@ -1795,6 +1813,33 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
 pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
+    // A leading plus/minus denotes two possible values. Against a scalar,
+    // both branches must equal it: an extra, provably distinct value is wrong.
+    // This does not claim support for arbitrary set-valued expressions.
+    fn plus_minus(source: &str) -> Option<&str> {
+        let source = source.trim();
+        source.strip_prefix('±').or_else(|| source.strip_prefix(r"\pm")
+            .filter(|rest| !rest.starts_with(|c: char| c.is_ascii_alphabetic())))
+            .map(str::trim)
+    }
+    let pair = match (plus_minus(a), plus_minus(b)) {
+        (Some(rest), None) => Some((rest, b)),
+        (None, Some(rest)) => Some((rest, a)),
+        _ => None,
+    };
+    if let Some((rest, scalar)) = pair {
+        let positive = compare_single(rest, scalar, context);
+        let negative = compare_single(&format!("-({rest})"), scalar, context);
+        return match (positive, negative) {
+            (Ok(false), _) | (_, Ok(false)) => Ok(false),
+            (Ok(true), Ok(true)) => Ok(true),
+            (Err(error), _) | (_, Err(error)) => Err(error),
+        };
+    }
+    compare_single(a, b, context)
+}
+
+fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
     let a = parse(a, context)?;
     let b = parse(b, context)?;
     match (a, b) {
@@ -1823,8 +1868,7 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
             if ca != cb {
                 for sample in counterexample_samples() {
                     if ca.iter().chain(cb.iter()).all(|c| condition_at(c, &sample))
-                        && diff.interval_at(Some(&sample)).is_some_and(|(lo, hi)|
-                            lo.is_positive() || hi.is_negative()) {
+                        && diff.nonzero_at(Some(&sample)) {
                         return Ok(false);
                     }
                 }
@@ -1833,20 +1877,14 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
             if diff.rational_variables_only() {
                 return Ok(false);
             }
-            if diff
-                .interval()
-                .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
-            {
+            if diff.nonzero_at(None) {
                 return Ok(false);
             }
             for sample in counterexample_samples() {
                 if !ca.iter().all(|c| condition_at(c, &sample)) {
                     continue;
                 }
-                if diff
-                    .interval_at(Some(&sample))
-                    .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
-                {
+                if diff.nonzero_at(Some(&sample)) {
                     return Ok(false);
                 }
             }
@@ -2023,6 +2061,39 @@ mod tests {
         assert!(compare("ln(x^2)", "2ln(x)", Context::default()).is_err());
         assert!(compare("ln(4)*x/x", "2ln(2)", Context::default()).is_err());
     }
+    #[test]
+    fn imaginary_radical_differences_have_exact_nonzero_components() {
+        for n in [2, 7, 11, 13] {
+            let correct = format!("i*sqrt({n})");
+            for wrong in [format!("sqrt({n})"), format!("-sqrt({n})"),
+                          format!("-i*sqrt({n})"), format!("{n}i"),
+                          "0".into(), "1".into()] {
+                assert_eq!(compare(&correct, &wrong, Context::default()), Ok(false));
+                assert_eq!(compare(&wrong, &correct, Context::default()), Ok(false));
+            }
+            eq(&correct, &format!("{n}i/sqrt({n})"));
+            eq(&correct, &format!("sqrt({n})*i"));
+        }
+        eq("(1+i)*sqrt(7)", "sqrt(7)+i*sqrt(7)");
+        assert_eq!(compare("i*sqrt(x)", "-i*sqrt(x)", Context::default()), Ok(false));
+        // Cancellation must retain the original domain obligation.
+        assert!(compare("i*sqrt(x)/sqrt(x)", "i", Context::default()).is_err());
+        // Splitting off a top-level i cannot treat hidden complex atoms as real.
+        assert!(!Poly::atom(Atom::Function("sin".into(),
+            Box::new(Value { num: Poly::atom(Atom::I), den: Poly::integer(1) }))).nonzero_at(None));
+    }
+
+    #[test]
+    fn leading_plus_minus_does_not_add_an_extra_scalar_root() {
+        for wrong in [r"\pm i\sqrt{7}", "±i*sqrt(7)"] {
+            assert_eq!(compare(wrong, "i*sqrt(7)", Context::default()), Ok(false));
+            assert_eq!(compare("i*sqrt(7)", wrong, Context::default()), Ok(false));
+        }
+        assert_eq!(compare(r"\pm 0", "0", Context::default()), Ok(true));
+        assert!(compare(r"\pm unknown(x)", "0", Context::default()).is_err());
+        assert!(compare(r"\pmod{7}", "7", Context::default()).is_err());
+    }
+
     #[test]
     fn fractional_counterexamples_reject_wrong_radical_answers() {
         for (a, b) in [("-x/sqrt(1-x^2)", "0"),
