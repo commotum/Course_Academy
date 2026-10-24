@@ -329,6 +329,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     graph_worker = NativeWorker([str(reader), database, learner, "--serve"], environment, "graph-worker")
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
     page_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "page-worker") if learning else None
+    stats_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "stats-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
@@ -484,7 +485,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         # a request cannot promote itself into developer mode.
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
-                    response = (page_worker if page_read else learning_worker).request(body)
+                    # XP must not wait behind a forecast or activity-history read.
+                    worker = stats_worker if body.get("action") == "study-stats" else page_worker if page_read else learning_worker
+                    response = worker.request(body)
                     finished = time.monotonic()
                     refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
@@ -719,7 +722,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         def do_HEAD(self) -> None:
             self.do_GET()
 
-    Handler.workers = (graph_worker, learning_worker, page_worker)
+    Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready

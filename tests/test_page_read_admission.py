@@ -7,7 +7,7 @@ import sys
 import tempfile
 import threading
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "generate/scripts"))
@@ -15,6 +15,36 @@ from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_xp_read_finishes_while_forecast_worker_is_busy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            entered, release = threading.Event(), threading.Event()
+            page, stats = Mock(), Mock()
+            def forecast(body):
+                entered.set()
+                release.wait(3)
+                return {"ok": True, "data": {"forecast": True}}
+            page.request.side_effect = forecast
+            stats.request.return_value = {"ok": True, "data": {"days": []}}
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), page, stats]):
+                cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
+            def read(action):
+                request = cls.__new__(cls)
+                replies = []
+                request.send_bytes = lambda status, body, content_type: replies.append(status)
+                request.learning_request({"action": action})
+                return replies
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                pending = executor.submit(read, "forecast-inputs")
+                try:
+                    self.assertTrue(entered.wait(1))
+                    self.assertEqual(executor.submit(read, "study-stats").result(timeout=1), [200])
+                    stats.request.assert_called_once_with({"action": "study-stats"})
+                finally:
+                    release.set()
+                    pending.result(timeout=2)
+            self.assertIn(stats, cls.workers)
+
     def test_forecast_get_uses_only_the_read_only_page_reader(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}

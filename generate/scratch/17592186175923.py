@@ -6,6 +6,16 @@ x-coordinate. Hard and unresolved source radio/diagram families are excluded.
 Mathematical identity is the resulting line, independent of seed, layout, or
 which pair of points describes the reference direction. No database writes.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186175923-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse
 import hashlib
 import json
@@ -197,5 +207,9 @@ def main():
     levels = SUPPORTED_LEVELS if args.difficulty == 'all' else (args.difficulty,)
     records = [r for level in levels for r in batch(level, args.count, args.seed, template=args.template)]
     print(json.dumps(records, indent=2) if args.format == 'json' else '\n\n---\n\n'.join(map(markdown, records)))
+
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186175923-source-policy.json'))
 
 if __name__ == '__main__': main()

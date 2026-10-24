@@ -12,6 +12,16 @@ exactly the same equation, linearity, chain rule, rearrangement, division method
 See sibling evidence README and template-extraction for domains and limitations.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186166865-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, re, subprocess, sys, tempfile, uuid
 from pathlib import Path
 import sympy as sp
@@ -183,6 +193,10 @@ def markdown(record):
   lines.append(f'{chr(65+i)}. $'+a[':answer/value']+'$'+mark)
  lines.append(q.get(':question/worked-solution','_Worked solution absent from raw source._'))
  return '\n\n'.join(lines)
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186166865-source-policy.json'))
+
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');z=a.parse_args()
  records=[generate(l,z.seed+i,template=z.template,profile=z.profile) for l in (['easy','moderate','hard'] if z.difficulty=='all' else [z.difficulty]) for i in range(z.count)]

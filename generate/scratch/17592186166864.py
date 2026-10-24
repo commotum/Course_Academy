@@ -3,6 +3,16 @@
 Each template has one bounded coefficient/frequency slot. No new operations,
 fields, solution stages or plots are introduced. See the adjacent extraction.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186166864-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, re, uuid
 from pathlib import Path
 import sympy as sp
@@ -77,6 +87,10 @@ def batch(difficulty,count,seed=0):
 def markdown(rec):
     q=rec['question'];f=q[':question/answer-fields'][0]
     return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186166864-source-policy.json'))
+
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--difficulty',default='easy');p.add_argument('--count',type=int,default=5);p.add_argument('--seed',type=int,default=0);p.add_argument('--format',choices=['json','markdown'],default='json');p.add_argument('--template');args=p.parse_args()
     records=batch(args.difficulty,args.count,args.seed) if not args.template else [generate(args.difficulty,args.seed,args.template)]

@@ -4,6 +4,16 @@ Multiply numerator and every source-bank value by m=2..6, retaining poles,
 bounds, factorization workload, source difficulty and field contract. m=1 is
 source replay. No seed, identity or order change establishes distinct content.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186068923-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,json,os,random,sys,uuid
 from functools import lru_cache
 from pathlib import Path
@@ -128,5 +138,9 @@ def batch(level,count,seed):
 def markdown(rec):
     q=rec['question'];f=q[':question/answer-fields'][0]
     return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$'+(' (correct)' if a[':answer/id']==f[':answer-field/correct'][1] else '') for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186068923-source-policy.json'))
+
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('--difficulty',required=True);a.add_argument('--count',type=int,default=5);a.add_argument('--seed',type=int,default=0);a.add_argument('--format',choices=['json','markdown'],default='json');args=a.parse_args();records=batch(args.difficulty,args.count,args.seed);print(json.dumps(records,indent=2) if args.format=='json' else '\n\n'.join(map(markdown,records)))

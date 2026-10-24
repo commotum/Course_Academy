@@ -8,6 +8,16 @@ Default five-option banks are complete method-derived integration operations.
 No database calls, assets, shared-file writes, or runtime source sampling.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186133931-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, re, sys, uuid
 from functools import lru_cache
 from itertools import product
@@ -361,6 +371,10 @@ def markdown(r):
   for a in f[':answer-field/choices']:text+='- $'+a[':answer/value']+'$\n'
  if ':question/worked-solution' in q:text+='\n'+q[':question/worked-solution']+'\n'
  return text
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186133931-source-policy.json'))
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
  records=[generate(l,a.seed+i,a.template,profile=a.profile) for l in (['easy','moderate','hard'] if a.difficulty=='all' else [a.difficulty]) for i in range(a.count)]

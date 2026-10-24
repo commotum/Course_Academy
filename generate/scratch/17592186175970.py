@@ -3,6 +3,16 @@
 Easy: normalized ellipse, sine component. Moderate: normalize positive integer
 coefficients, cosine or sine component. No hard template. See package extraction.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186175970-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,itertools,json,random,uuid
 from pathlib import Path
 try:
@@ -84,5 +94,9 @@ def batch(level,count,seed):
 def markdown(r):
  q=r['question'];f=q[':question/answer-fields'][0]
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$'+(' (correct)' if a[':answer/id']==f[':answer-field/correct'][1] else '') for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186175970-source-policy.json'))
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='json');args=ap.parse_args();r=batch(args.difficulty,args.count,args.seed);print(json.dumps(r,indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,r)))

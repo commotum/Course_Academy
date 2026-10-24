@@ -5,6 +5,16 @@ Easy: vary the coefficient of z² in q-105668. Moderate: vary the two
 curl-relevant coordinates in q-131340. Other complete profiles replay only.
 No hard source supports a hard-level claim. See the adjacent extraction.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186133877-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, copy, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 try:
@@ -66,6 +76,10 @@ def batch(difficulty,count,seed):
  random.Random(seed).shuffle(cases);return [generate(difficulty,seed,s,p) for s,p in cases[:count]]
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join('$'+a[':answer/value']+'$' for f in q[':question/answer-fields'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186133877-source-policy.json'))
+
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--difficulty',required=True);parser.add_argument('--count',type=int,default=1);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--format',choices=['json','markdown'],default='json');a=parser.parse_args()
  try:rows=batch(a.difficulty,a.count,a.seed)

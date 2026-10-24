@@ -6,6 +6,16 @@ endpoint, and variable. The coefficient varies; banks scale as complete observed
 profiles. This does not infer unobserved error algorithms. Hard is unsupported.
 Run with --difficulty easy|moderate --count N --seed S --format json|markdown.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186083195-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,json,random,sys,uuid
 from pathlib import Path
 try:
@@ -96,4 +106,8 @@ def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');ap.add_argument('--template');args=ap.parse_args()
  records=[generate(args.difficulty,args.seed,args.template)] if args.template else batch(args.difficulty,args.count,args.seed)
  print(json.dumps({'instances':records},ensure_ascii=False,indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186083195-source-policy.json'))
+
 if __name__=='__main__':main()

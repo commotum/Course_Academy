@@ -15,6 +15,16 @@ cross, omitted j-cofactor sign, first tangent, second tangent. Norm defaults
 supply the previously computed product and assess only its scalar magnitude.
 Source layouts are parameterized expression masks, never literal-payload returns.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186119887-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, importlib.util, json, random, re, sys, uuid
 from pathlib import Path
 sys.dont_write_bytecode=True
@@ -273,6 +283,10 @@ def markdown(r):
  for f in q[':question/answer-fields']:
   s+='Field '+f[':answer-field/key']+' ('+f[':answer-field/type']+')\n\n'+ '\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'
  return s+q.get(':question/worked-solution','[No captured worked solution]')
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186119887-source-policy.json'))
+
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=['markdown','json'],default='markdown');p.add_argument('--template');p.add_argument('--profile');p.add_argument('--parameters',type=json.loads);a=p.parse_args()
  rows=[generate(l,a.seed+i,a.template,parameters=a.parameters,profile=a.profile) for l in (['easy','moderate','hard'] if a.difficulty=='all' else [a.difficulty]) for i in range(a.count)]

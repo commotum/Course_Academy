@@ -3,6 +3,16 @@
 Moderate only. Complete source blank banks are preserved. Radio profiles and
 context-dependent fragments are explicitly excluded from this bounded version.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186092240-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, uuid
 from pathlib import Path
 import sympy as s
@@ -42,4 +52,8 @@ def main():
   if len(out)==z.count:break
  if z.count<1 or len(out)<z.count:raise ValueError('Bounded finite distinct capacity exceeded')
  print(json.dumps(out,indent=2) if z.format=='json' else '\n\n'.join(r['question'][':question/problem']+'\n\n'+r['question'][':question/worked-solution'] for r in out))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186092240-source-policy.json'))
+
 if __name__=='__main__':main()

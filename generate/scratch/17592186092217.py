@@ -9,6 +9,16 @@ plotting, registration, or unrelated radius recovery/angle conversion exercises.
 See the adjacent classification, extraction, validation and review evidence.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186092217-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,json,pathlib,random,re,sys,uuid
 import sympy as sp
 KP_ID=17592186092217
@@ -202,4 +212,8 @@ def main():
  levels=FAMILIES if a.difficulty=='all' else [a.difficulty]
  records=[generate(l,a.seed+i,a.template,profile=a.profile) for l in levels for i in range(a.count)]
  print(json.dumps(records,indent=2,ensure_ascii=False) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186092217-source-policy.json'))
+
 if __name__=='__main__':main()

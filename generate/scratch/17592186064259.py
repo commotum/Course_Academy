@@ -7,6 +7,16 @@ Normal typography is standardized; derivative -> slope equation -> solve ->
 branch selection is preserved. See package classification and extraction.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186064259-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, sys, uuid
 from pathlib import Path
 # Same dependency environment as application inventory jobs.
@@ -141,4 +151,8 @@ def main():
  if not 1<=args.count<=1000:ap.error('Count must be 1..1000')
  recs=[generate(args.difficulty,args.seed+i,args.template,json.loads(args.parameters) if args.parameters else None,args.profile) for i in range(args.count)]
  print(json.dumps(recs,indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,recs)))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186064259-source-policy.json'))
+
 if __name__=='__main__':main()

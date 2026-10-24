@@ -11,6 +11,16 @@ Plots: recurring coordinate graphs, Matplotlib; source rasters reused in replay.
 CLI --difficulty easy|moderate --count N --seed N --format json|markdown.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186175910-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,itertools,json,random,uuid,os,sys
 from pathlib import Path
 try:
@@ -136,5 +146,9 @@ def batch(level,count,seed):
  return [generate(level,seed,t,p) for p in ps[:count]]
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+ '\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186175910-source-policy.json'))
+
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',required=True);a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=('json','markdown'),default='json');args=a.parse_args();r=batch(args.difficulty,args.count,args.seed);print(json.dumps(r,indent=2) if args.format=='json' else '\n\n'.join(map(markdown,r)))

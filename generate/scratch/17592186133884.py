@@ -4,6 +4,16 @@ Moderate: q-108467 triangle, differential form. Hard: q-109263 parabola/line,
 vector form. Conservative coefficient slots a=1..12; fixed source geometry is
 an explicit narrower sampling policy (not an essential mathematical restriction).
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186133884-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,json,os,random,sys,uuid
 from pathlib import Path
 try:
@@ -66,6 +76,10 @@ def generate(difficulty='moderate',seed=0,parameters=None,**kwargs):
 def markdown(rec):
  q=rec['question'];f=q[':question/answer-fields'][0]
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$'+(' (correct)' if a[':answer/id']==f[':answer-field/correct'][1] else '') for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186133884-source-policy.json'))
+
 if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--difficulty',default='moderate',choices=['easy','moderate','hard']);p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',default='json',choices=['json','markdown']);args=p.parse_args()
  if args.difficulty not in SOURCES:p.error('easy unsupported: no source progression')

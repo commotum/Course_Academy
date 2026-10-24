@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 """Natural-log substitution. Bounded source bank profiles; no database writes."""
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186068724-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, random, sys, uuid
 from pathlib import Path
 try:
@@ -114,6 +124,10 @@ def batch(level,count,seed=0):
   if fp not in seen:records.append(r);seen.add(fp)
   if len(records)==count:return records
  return records
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186068724-source-policy.json'))
+
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',required=True);a.add_argument('--count',type=int,default=1);a.add_argument('--seed',type=int,default=0);a.add_argument('--template');a.add_argument('--format',choices=['json','markdown'],default='json');args=a.parse_args()
  try:

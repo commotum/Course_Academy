@@ -2,6 +2,7 @@ import { readRequest } from './requests.js';
 import { createForecastSidebar } from './forecast-sidebar.js';
 
 const changeKey = 'course-academy.daily-xp-goal-changed';
+const cacheKey = 'course-academy.study-stats.v1';
 let releaseSidebar = () => {};
 const number = value => Number(value).toLocaleString(undefined, { maximumFractionDigits: 1 });
 function node(tag, className, text) {
@@ -28,7 +29,7 @@ export function createStudySidebar() {
   weekCard.append(node('h2', 'stat-heading', 'This week'));
   const forecast = createForecastSidebar({ signal: events.signal });
   sidebar.append(todayCard, weekCard, ...forecast.cards);
-  let generation = 0, midnightTimer;
+  let generation = 0, midnightTimer, renderedDay;
   releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
   async function load({ refreshForecast = true } = {}) {
     const revision = ++generation;
@@ -40,10 +41,16 @@ export function createStudySidebar() {
       if (!response.ok || !Array.isArray(data.days) || data.days.length !== 7) throw new Error(data.error || 'Statistics are unavailable.');
       if (revision !== generation || !sidebar.isConnected) return;
       render(data, boundaries);
+      sidebar.title = '';
+      try { sessionStorage.setItem(cacheKey, JSON.stringify({ boundaries, data })); } catch { /* Storage is optional. */ }
       if (refreshForecast) void forecast.refresh({ basis: data.basis, dailyXpGoal: data.dailyXpGoal });
     } catch (error) {
       if (revision !== generation || !sidebar.isConnected) return;
       if (refreshForecast) void forecast.refresh();
+      if (renderedDay === lastSevenDays()[6]) {
+        sidebar.title = 'Showing saved statistics; refresh unavailable.';
+        return;
+      }
       todayCard.replaceChildren(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', error.message));
       const retry = node('button', 'small-button', 'Try again'); retry.type = 'button'; retry.addEventListener('click', load); todayCard.append(retry);
     }
@@ -113,6 +120,7 @@ export function createStudySidebar() {
       column.append(fill, zero); bar.append(column, node('span', 'stat-day-label', label)); chart.append(bar);
     });
     weekCard.append(chart, dayDetails, node('p', 'stat-note', `${number(today.workingSeconds / 60)} min working time today`));
+    renderedDay = boundaries[6];
   }
   window.addEventListener('storage', event => { if (event.key === changeKey && sidebar.isConnected) void load(); }, { signal: events.signal });
   window.addEventListener('course-academy:daily-xp-goal-changed', event => {
@@ -122,6 +130,16 @@ export function createStudySidebar() {
   }, { signal: events.signal });
   window.addEventListener('pageshow', () => { if (sidebar.isConnected) void load(); }, { signal: events.signal });
   document.addEventListener('visibilitychange', () => { if (!document.hidden && sidebar.isConnected) void load(); }, { signal: events.signal });
+  // Show this tab's last summary immediately; always refresh from the server.
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+    const boundaries = lastSevenDays();
+    if (cached?.boundaries?.length === 8 && cached.boundaries.every((at, i) => at === boundaries[i])
+      && Array.isArray(cached.data?.days) && cached.data.days.length === 7) {
+      render(cached.data, boundaries);
+      sidebar.title = 'Refreshing saved statistics…';
+    }
+  } catch { /* A missing or invalid cache falls back to the ordinary read. */ }
   void load();
   return sidebar;
 }

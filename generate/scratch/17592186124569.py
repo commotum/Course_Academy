@@ -1,6 +1,16 @@
 """Source-backed gradient reconstruction; easy only, bounded nonzero field scaling.
 Run --level easy --template q-35994 --seed 1 --count 5 [--output FILE].
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186124569-source-policy.json'))
+    raise SystemExit(0)
+
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,random,sys,uuid
 import sympy as s
@@ -55,6 +65,10 @@ def generate(level='easy',seed=0,template=None,parameters=None,profile=None):
  'Taking $\\frac{∂f}{∂y}='+tex(Q)+'$ into account, we obtain\n\n$$\n'+r'\begin{aligned}'+tex(s.diff(A,y))+r"+g'(y)&="+tex(Q)+r"\\g'(y)&="+tex(s.diff(H,y))+r'\\g(y)&='+tex(H)+r'+C,\end{aligned}'+'\n$$\n\n'+
  'where $C$ is a constant.\n\nFinally, substituting $g(y)='+tex(H)+'+C$ into our expression for $f(x,y),$ we get\n\n$$\n'+'f(x,y)='+tex(f)+'+C.\n$$')
  return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'field-1' if blank else 'selection',':answer-field/type':':answer-field.type/blank' if blank else ':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[correct][':answer/id']]}]},'generation':{'version':VERSION,'seed':seed,'parameters':{'scale':k},'template':template,'bank_profile':template+'-complete-bank','source_question':raw[':db/id'],'source_basis':SOURCE['basis'],'domain':'y>0 or y<0' if template=='q-81737' else 'R^2','eligible_for_learning':True,'evidence_only':False,'sympy':s.__version__}}
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186124569-source-policy.json'))
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--level',default='easy');ap.add_argument('--template',choices=sorted(CASES));ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--output',type=Path);a=ap.parse_args();records=[];seen=set()
  for i in range(1000):

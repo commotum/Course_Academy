@@ -7,6 +7,16 @@ Easy: supplied gradient or elementary 2D partials; moderate: two-term
 exponential/polynomial gradient and A-to-B; moderate also includes the nested-square chain-rule family. Current moderate
 source evidence supersedes the earlier authored hard claim; hard is unsupported.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186124458-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, copy, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as S
@@ -270,6 +280,10 @@ def markdown(rec):
     for fld in q.get(':question/answer-fields',[]):
         out+='\n'.join('- $'+a[':answer/value']+'$' for a in fld[':answer-field/choices'])+'\n\n'
     return out+q.get(':question/worked-solution','[Source omits worked solution.]')
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186124458-source-policy.json'))
+
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
     out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]

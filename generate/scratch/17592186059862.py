@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 """Bounded source-derived constant-multiple power derivative generator."""
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186059862-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,json,random,uuid
 from pathlib import Path
 import sympy as sp
@@ -56,5 +66,9 @@ def batch(difficulty,count,seed):
   if fp not in seen:out.append(r);seen.add(fp)
   if len(out)==count:return out
  raise ValueError('Unsupported level or finite distinct family exhausted')
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186059862-source-policy.json'))
+
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',default='easy');a.add_argument('--count',type=int,default=1);a.add_argument('--seed',type=int,default=0);a.add_argument('--format',default='json',choices=['json','markdown']);p=a.parse_args();r=batch(p.difficulty,p.count,p.seed);print(json.dumps(r,indent=2) if p.format=='json' else '\n\n---\n\n'.join(z['question'][':question/problem']+'\n\n'+z['question'][':question/worked-solution'] for z in r))

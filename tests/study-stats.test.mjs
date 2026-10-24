@@ -5,8 +5,9 @@ import vm from 'node:vm';
 
 const source = (await readFile(new URL('../ui/study-stats.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const flush = () => new Promise(resolve => setImmediate(resolve));
-function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
+function fixture(goal = 200, at = new Date(2026, 9, 14, 12), { storage = new Map(), holdRead = false } = {}) {
   const f = { calls: [], data: null, timers: new Map(), forecastRefreshes: 0, forecastRequests: [], goals: [] };
+  const pendingRead = holdRead ? new Promise(resolve => { f.releaseRead = resolve; }) : null;
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.dataset = {}; this.attrs = {}; this.style = {}; }
     append(...nodes) { for (const node of nodes) { node.parent = this; this.children.push(node); } }
@@ -28,12 +29,13 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
     setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
     clearTimeout: id => f.timers.delete(id),
     localStorage: { setItem() {} },
+    sessionStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
     readRequest: async path => {
       f.calls.push({ path });
       if (f.failRead) throw new Error('Offline');
       const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0 }));
       f.data ||= { basis: 1, dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0 };
-      return { ok: true, json: async () => structuredClone(f.data) };
+      return { ok: true, json: async () => { if (pendingRead) await pendingRead; return structuredClone(f.data); } };
     },
     fetch: async (path, settings) => {
       const body = JSON.parse(settings.body); f.calls.push({ path, body });
@@ -58,6 +60,49 @@ test('local week uses calendar midnights, including daylight-saving boundaries',
     assert.equal(new Date(days[0]).getHours(), 0);
     assert.equal(days[7] - days[6], 25 * 3_600_000);
   } finally { if (previous === undefined) delete process.env.TZ; else process.env.TZ = previous; }
+});
+
+test('refresh shows saved XP immediately and replaces it with the fresh response', async () => {
+  const storage = new Map();
+  fixture(200, undefined, { storage }); await flush();
+  const f = fixture(200, undefined, { storage, holdRead: true });
+  assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '250');
+  assert.equal(f.find('stat-week-chart').children.length, 7);
+  assert.match(f.sidebar.title, /Refreshing/);
+  assert.equal(f.calls.length, 1);
+  assert.equal(f.forecastRefreshes, 0);
+  f.data.days[6].earnedXp = 300; f.data.totalEarnedXp = 12450;
+  f.releaseRead(); await flush();
+  assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '300');
+  assert.equal(f.sidebar.title, '');
+  assert.equal(f.forecastRefreshes, 1);
+  assert.equal(JSON.parse(storage.get('course-academy.study-stats.v1')).data.totalEarnedXp, 12450);
+});
+
+test('saved statistics from another day or malformed storage do not render', async () => {
+  const storage = new Map();
+  fixture(200, new Date(2026, 9, 13, 12), { storage }); await flush();
+  const f = fixture(200, new Date(2026, 9, 14, 12), { storage, holdRead: true });
+  assert.equal(f.find('stat-xp-summary'), undefined);
+  f.releaseRead(); await flush();
+  assert.ok(f.find('stat-xp-summary'));
+  storage.set('course-academy.study-stats.v1', '{bad json');
+  const broken = fixture(200, undefined, { storage, holdRead: true });
+  assert.equal(broken.find('stat-xp-summary'), undefined);
+  broken.releaseRead(); await flush();
+  assert.ok(broken.find('stat-xp-summary'));
+});
+
+test('a failed refresh retains same-day XP and storage failures do not prevent fresh reads', async () => {
+  const storage = new Map();
+  const f = fixture(200, undefined, { storage }); await flush();
+  f.failRead = true;
+  f.window.dispatchEvent(new Event('pageshow')); await flush();
+  assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '250');
+  assert.match(f.sidebar.title, /refresh unavailable/);
+  const unavailable = { get() { throw new Error('Storage blocked'); }, set() { throw new Error('Storage blocked'); } };
+  const fresh = fixture(200, undefined, { storage: unavailable }); await flush();
+  assert.ok(fresh.find('stat-xp-summary'));
 });
 
 test('the XP row shows today, week, and compact lifetime totals with exact details', async () => {

@@ -8,6 +8,16 @@ Normal templates have independent bounded coefficients and operation-derived ban
 No EDB writes. See the private extraction/validation evidence for scope and repairs.
 """
 from __future__ import annotations
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186133876-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, copy, hashlib, json, math, random, re, uuid
 from pathlib import Path
 import sympy as sp
@@ -331,4 +341,8 @@ def main():
  try:rows=[generate(l,args.seed+i,args.template,args.field_type,profile=args.profile) for l in levels for i in range(args.count)]
  except ValueError as e:ap.error(str(e))
  print(json.dumps(rows,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,rows)))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186133876-source-policy.json'))
+
 if __name__=='__main__':main()

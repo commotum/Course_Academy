@@ -4,6 +4,16 @@ k=1 replays sources; k=2..9 multiplies the integrand and the entire bank by k.
 This explicit transport policy does not infer new misconception recipes.
 Real antiderivatives apply on each connected interval excluding denominator roots.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186068922-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse, hashlib, json, os, random, sys, uuid
 from pathlib import Path
 try:
@@ -99,4 +109,8 @@ def markdown(r):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args()
  rs=batch(a.difficulty,a.count,a.seed);print(json.dumps(rs,indent=2) if a.format=='json' else '\n\n'.join(map(markdown,rs)))
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186068922-source-policy.json'))
+
 if __name__=='__main__':main()

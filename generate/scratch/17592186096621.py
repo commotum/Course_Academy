@@ -9,6 +9,16 @@ Other templates remain source evidence, not supported generators. Hard
 is an explicitly authored sum-over-sum quotient with two multi-term derivatives. A changed scale changes function and
 answer; identities and task fingerprints ignore seed and choice order.
 """
+
+# Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+import sys as _ca_sys, os as _ca_os
+from pathlib import Path as _ca_Path
+_ca_sys.path.insert(0,str(_ca_Path(__file__).resolve().parent))
+if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
+    from ca_source_runtime import cli as _ca_source_cli
+    _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186096621-source-policy.json'))
+    raise SystemExit(0)
+
 import argparse,hashlib,json,random,uuid
 from pathlib import Path
 import sympy as s
@@ -92,6 +102,10 @@ def fingerprint(q):
   if 'slope of the tangent' in prompt:
    start=prompt.rindex('$x=')+3;end=prompt.index('$',start);point=scalar(prompt[start:end])
  return sha([s.srepr(function),str(point)])
+
+from ca_source_runtime import install as _ca_source_install
+_ca_source_install(globals(),_ca_Path(__file__).with_name('17592186096621-source-policy.json'))
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
  levels=SUPPORTED_LEVELS if a.difficulty=='all' else (a.difficulty,)
