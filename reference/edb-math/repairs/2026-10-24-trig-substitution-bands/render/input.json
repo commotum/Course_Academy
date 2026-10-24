@@ -1,0 +1,853 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186068916,
+      "id": "084eb4cc-2f84-5288-90a6-be84066922b6",
+      "title": "Integrating Reciprocal Trigonometric Functions With Linear Arguments"
+    },
+    "question": {
+      ":question/id": "4fd5b4c9-b830-5863-baab-d3cc1873310d",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int 7 \\tan{\\left(- 5 x \\right)} \\sec{\\left(- 5 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=- 5 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-5.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int 7 \\tan{\\left(- 5 x \\right)} \\sec{\\left(- 5 x \\right)}\\,\\mathrm{d}x=- \\frac{7}{5}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{7}{5}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{7 \\sec{\\left(u \\right)}}{5}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{7 \\sec{\\left(- 5 x \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "45a7e615-338f-56a6-8f46-4d984c7725ed",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "29eb06e6-1649-51df-bd05-d127a4808f44",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{7 \\sec{\\left(- 5 x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "29eb06e6-1649-51df-bd05-d127a4808f44"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "sec_tan",
+      "family": "sec_tan",
+      "parameters": {
+        "a": "-5",
+        "b": "0",
+        "A": "7"
+      },
+      "mathematical_fingerprint": "370f455bcdc32c3b6d5862f53632dae7bc6a3c989ed68b9e874d3a07d7e6de65",
+      "source_questions": [
+        "q-10143",
+        "q-2203",
+        "q-13663",
+        "q-350053",
+        "q-350055",
+        "q-13524",
+        "q-346368",
+        "q-350060"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored linear indefinite derivative families, extended to all four familiar primitives",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "7*tan(-5*x)*sec(-5*x)",
+        "substitution": "-5*x",
+        "derivative": "-5",
+        "transformed": "tan(u)*sec(u)",
+        "factor": "-7/5",
+        "primitive": "-7*sec(-5*x)/5",
+        "lower": null,
+        "upper": null,
+        "result": "-7*sec(-5*x)/5"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068916,
+      "id": "084eb4cc-2f84-5288-90a6-be84066922b6",
+      "title": "Integrating Reciprocal Trigonometric Functions With Linear Arguments"
+    },
+    "question": {
+      ":question/id": "26c83519-f3a7-54b4-b2b3-1a2aa8dd7981",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{- \\frac{\\pi}{15}}^{- \\frac{\\pi}{20}} 4 \\cot{\\left(- 5 x \\right)} \\csc{\\left(- 5 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=- 5 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-5.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=- \\frac{\\pi}{15}&\\Longrightarrow u=\\frac{\\pi}{3}\\\\x=- \\frac{\\pi}{20}&\\Longrightarrow u=\\frac{\\pi}{4}\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{- \\frac{\\pi}{15}}^{- \\frac{\\pi}{20}} 4 \\cot{\\left(- 5 x \\right)} \\csc{\\left(- 5 x \\right)}\\,\\mathrm{d}x=- \\frac{4}{5}\\left(\\int_{\\frac{\\pi}{3}}^{\\frac{\\pi}{4}} \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate and evaluate at both bounds:\n\n$$\n\\left[\\frac{4 \\csc{\\left(u \\right)}}{5}\\right]_{\\frac{\\pi}{3}}^{\\frac{\\pi}{4}}=\\left(\\frac{4 \\sqrt{2}}{5}\\right)-\\left(\\frac{8 \\sqrt{3}}{15}\\right).\n$$\n\nSimplifying gives\n\n$$\n- \\frac{8 \\sqrt{3}}{15} + \\frac{4 \\sqrt{2}}{5}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "882dcb49-af97-5213-9d25-562a01dab600",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "62d7b802-14a5-5960-b724-86d45c0da160",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{8 \\sqrt{3}}{15} + \\frac{4 \\sqrt{2}}{5}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "62d7b802-14a5-5960-b724-86d45c0da160"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "csc_cot",
+      "family": "csc_cot",
+      "parameters": {
+        "a": "-5",
+        "b": "0",
+        "A": "4"
+      },
+      "mathematical_fingerprint": "c274a7d16c19360b4207ed6d44050060af924e851556a914ab895bdf9942b342",
+      "source_questions": [
+        "q-10143",
+        "q-2203",
+        "q-13663",
+        "q-350053",
+        "q-350055",
+        "q-13524",
+        "q-346368",
+        "q-350060"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored definite linear arguments; integer slopes, both endpoint contributions",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "4*cot(-5*x)*csc(-5*x)",
+        "substitution": "-5*x",
+        "derivative": "-5",
+        "transformed": "cot(u)*csc(u)",
+        "factor": "-4/5",
+        "primitive": "4*csc(-5*x)/5",
+        "lower": "-pi/15",
+        "upper": "-pi/20",
+        "result": "-8*sqrt(3)/15 + 4*sqrt(2)/5"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068916,
+      "id": "084eb4cc-2f84-5288-90a6-be84066922b6",
+      "title": "Integrating Reciprocal Trigonometric Functions With Linear Arguments"
+    },
+    "question": {
+      ":question/id": "d119a2fc-5155-5ec7-86db-b74ffdebef60",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} \\frac{5 \\sec^{2}{\\left(- \\frac{2 x}{3} + \\frac{\\pi}{4} \\right)}}{2}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=- \\frac{2 x}{3} + \\frac{\\pi}{4}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{2}{3}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=\\frac{\\pi}{4}\\\\x=\\frac{\\pi}{8}&\\Longrightarrow u=\\frac{\\pi}{6}\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} \\frac{5 \\sec^{2}{\\left(- \\frac{2 x}{3} + \\frac{\\pi}{4} \\right)}}{2}\\,\\mathrm{d}x=- \\frac{15}{4}\\left(\\int_{\\frac{\\pi}{4}}^{\\frac{\\pi}{6}} \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate and evaluate at both bounds:\n\n$$\n\\left[- \\frac{15 \\tan{\\left(u \\right)}}{4}\\right]_{\\frac{\\pi}{4}}^{\\frac{\\pi}{6}}=\\left(- \\frac{5 \\sqrt{3}}{4}\\right)-\\left(- \\frac{15}{4}\\right).\n$$\n\nSimplifying gives\n\n$$\n\\frac{15}{4} - \\frac{5 \\sqrt{3}}{4}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0fd1dd19-b4fc-5234-9f9d-35d56706ed4b",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e621cd9a-0e6c-5d78-9a13-d2e1a723024e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{15}{4} - \\frac{5 \\sqrt{3}}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e621cd9a-0e6c-5d78-9a13-d2e1a723024e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "sec2",
+      "family": "sec2",
+      "parameters": {
+        "a": "-2/3",
+        "b": "pi/4",
+        "A": "5/2"
+      },
+      "mathematical_fingerprint": "8d6ba7754c6e14cf4aa8a584780232e22916eff487dd4de48b2edddd97543505",
+      "source_questions": [
+        "q-10143",
+        "q-2203",
+        "q-13663",
+        "q-350053",
+        "q-350055",
+        "q-13524",
+        "q-346368",
+        "q-350060"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored shifted/fractional slopes; authored combination with two nonzero endpoint values",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "5*sec(-2*x/3 + pi/4)**2/2",
+        "substitution": "-2*x/3 + pi/4",
+        "derivative": "-2/3",
+        "transformed": "sec(u)**2",
+        "factor": "-15/4",
+        "primitive": "-15*tan(-2*x/3 + pi/4)/4",
+        "lower": "0",
+        "upper": "pi/8",
+        "result": "15/4 - 5*sqrt(3)/4"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068917,
+      "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+      "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "82b201b5-a795-585b-877e-ea56da755e15",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int - 9 x^{2} \\cot{\\left(x^{3} \\right)} \\csc{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int - 9 x^{2} \\cot{\\left(x^{3} \\right)} \\csc{\\left(x^{3} \\right)}\\,\\mathrm{d}x=-3\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-3\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right)=3 \\csc{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\csc{\\left(x^{3} \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3ad2ea1c-8a71-5096-ab58-6ae7ae14181f",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7a9aacd7-d5d0-534b-a457-bc6b10c4678d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\csc{\\left(x^{3} \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7a9aacd7-d5d0-534b-a457-bc6b10c4678d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "csc_cot",
+      "family": "csc_cot",
+      "parameters": {
+        "a": "1",
+        "b": "0",
+        "A": "-9",
+        "power": 3,
+        "inner_role": "power"
+      },
+      "mathematical_fingerprint": "69f08e85ea670f257b12fd8bee9e131ae27b4171d3fde66f902a1e11cff22935",
+      "source_questions": [
+        "q-13461",
+        "q-13474",
+        "q-13464",
+        "q-13471",
+        "q-13460",
+        "q-13467",
+        "q-13470",
+        "q-2377",
+        "q-3038",
+        "q-13544",
+        "q-350883",
+        "q-350203"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Authored introductory band: integer multiples of an exact power-inner derivative; no imported easy anchor",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-9*x**2*cot(x**3)*csc(x**3)",
+        "substitution": "x**3",
+        "derivative": "3*x**2",
+        "transformed": "cot(u)*csc(u)",
+        "factor": "-3",
+        "primitive": "3*csc(x**3)",
+        "lower": null,
+        "upper": null,
+        "result": "3*csc(x**3)"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068917,
+      "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+      "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "54057b91-6ad4-5b83-896c-ed24c4d02bce",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int - 2 x \\cos{\\left(5 x^{2} + \\frac{\\pi}{6} \\right)}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=5 x^{2} + \\frac{\\pi}{6}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=10 x.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int - 2 x \\cos{\\left(5 x^{2} + \\frac{\\pi}{6} \\right)}\\,\\mathrm{d}x=- \\frac{1}{5}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{5}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{\\sin{\\left(u \\right)}}{5}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{\\sin{\\left(5 x^{2} + \\frac{\\pi}{6} \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "72efa456-d19b-5c02-8803-a1c57bb521bf",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f929bc02-0d04-593f-b7ba-0e6574513e72",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\sin{\\left(5 x^{2} + \\frac{\\pi}{6} \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f929bc02-0d04-593f-b7ba-0e6574513e72"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "cos",
+      "family": "cos",
+      "parameters": {
+        "a": "5",
+        "b": "pi/6",
+        "A": "-2",
+        "power": 2,
+        "inner_role": "power"
+      },
+      "mathematical_fingerprint": "af998e2a776dc7349f9f986e7d1ec4b4bcba5bb854c718c26684e3d51ac6eee7",
+      "source_questions": [
+        "q-13461",
+        "q-13474",
+        "q-13464",
+        "q-13471",
+        "q-13460",
+        "q-13467",
+        "q-13470",
+        "q-2377",
+        "q-3038",
+        "q-13544",
+        "q-350883",
+        "q-350203"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored nonunit reciprocal coefficient, shifted power arguments, and square-root substitution",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-2*x*cos(5*x**2 + pi/6)",
+        "substitution": "5*x**2 + pi/6",
+        "derivative": "10*x",
+        "transformed": "cos(u)",
+        "factor": "-1/5",
+        "primitive": "-sin(5*x**2 + pi/6)/5",
+        "lower": null,
+        "upper": null,
+        "result": "-sin(5*x**2 + pi/6)/5"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068917,
+      "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+      "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "a0c07bfa-aaff-5f36-a155-693cedb18214",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int - \\frac{2 \\sec^{2}{\\left(\\frac{5}{x} \\right)}}{x^{2}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=\\frac{5}{x}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{5}{x^{2}}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int - \\frac{2 \\sec^{2}{\\left(\\frac{5}{x} \\right)}}{x^{2}}\\,\\mathrm{d}x=\\frac{2}{5}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{5}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{2 \\tan{\\left(u \\right)}}{5}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\tan{\\left(\\frac{5}{x} \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "30d64696-7dac-56bb-8533-0774f100a2c0",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9db2c995-ca54-50fe-b342-c809e75f1deb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\tan{\\left(\\frac{5}{x} \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9db2c995-ca54-50fe-b342-c809e75f1deb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "reciprocal_sec2",
+      "family": "reciprocal_sec2",
+      "parameters": {
+        "a": "5",
+        "b": "0",
+        "A": "-2",
+        "power": 2,
+        "inner_role": "reciprocal"
+      },
+      "mathematical_fingerprint": "d70957c95274d7147a66eb66ec3059d27182a215d8f3c5c6219ed14f38231537",
+      "source_questions": [
+        "q-13461",
+        "q-13474",
+        "q-13464",
+        "q-13471",
+        "q-13460",
+        "q-13467",
+        "q-13470",
+        "q-2377",
+        "q-3038",
+        "q-13544",
+        "q-350883",
+        "q-350203"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored definite nonlinear substitution or reciprocal inner function; excludes zero-result repetition",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-2*sec(5/x)**2/x**2",
+        "substitution": "5/x",
+        "derivative": "-5/x**2",
+        "transformed": "sec(u)**2",
+        "factor": "2/5",
+        "primitive": "2*tan(5/x)/5",
+        "lower": null,
+        "upper": null,
+        "result": "2*tan(5/x)/5"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068918,
+      "id": "fc24eade-1b3d-5672-88fd-0bb48b371509",
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "171e750e-5df9-5505-a36b-e1ce95ce4147",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{4 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{4 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x=- \\frac{2}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{2}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{2}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{2}{3}\\left(\\ln\\left|\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "13b1f9f4-80c2-5662-8915-fc3510827ed6",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "83f5c787-5f90-54e9-9d57-d0727ebf2dae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{2}{3}\\left(\\ln\\left|\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "83f5c787-5f90-54e9-9d57-d0727ebf2dae"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "shift_sin",
+      "family": "shift_sin",
+      "parameters": {
+        "a": "-2",
+        "b": "pi/6",
+        "offset": "5",
+        "scale": "3",
+        "factor": "-2/3",
+        "inner_role": "affine"
+      },
+      "mathematical_fingerprint": "d078393602ba55c38b1a807803bfe7c10598278cab19e1cd225141ed4496c41b",
+      "source_questions": [
+        "q-49557",
+        "q-113998",
+        "q-350887",
+        "q-350901",
+        "q-350904",
+        "q-350908",
+        "q-350892",
+        "q-113987",
+        "q-114004",
+        "q-73679",
+        "q-113997"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Authored introductory f-prime/f recognition; sources have no easy labels",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "4*cos(-2*x + pi/6)/(3*sin(-2*x + pi/6))",
+        "substitution": "sin(-2*x + pi/6)",
+        "derivative": "-2*cos(-2*x + pi/6)",
+        "transformed": "1/u",
+        "factor": "-2/3",
+        "primitive": "-2*log(sin(-2*x + pi/6))/3",
+        "lower": null,
+        "upper": null,
+        "result": "-2*log(sin(-2*x + pi/6))/3"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068918,
+      "id": "fc24eade-1b3d-5672-88fd-0bb48b371509",
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "cd4da791-31bd-5bd8-8be5-1e164f196eda",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{24 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=2 \\cot^{2}{\\left(4 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 16 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{24 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "34d85074-2dc4-5063-80fa-4f42a2eb9b71",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "db13284c-92a1-5afb-a1de-706c1134c5c2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "db13284c-92a1-5afb-a1de-706c1134c5c2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "cot2",
+      "family": "cot2",
+      "parameters": {
+        "a": "4",
+        "b": "0",
+        "offset": "5",
+        "scale": "2",
+        "factor": "-3/2",
+        "inner_role": "affine"
+      },
+      "mathematical_fingerprint": "23aebec09dea993a15424b5d0cc44ca24a860a6fb3f2157739405f9c2de44262",
+      "source_questions": [
+        "q-49557",
+        "q-113998",
+        "q-350887",
+        "q-350901",
+        "q-350904",
+        "q-350908",
+        "q-350892",
+        "q-113987",
+        "q-114004",
+        "q-73679",
+        "q-113997"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Authored intermediate band: affine trig/power denominator plus coefficient adjustment; sources have no moderate labels",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "24*cot(4*x)*csc(4*x)**2/(2*cot(4*x)**2 + 5)",
+        "substitution": "2*cot(4*x)**2 + 5",
+        "derivative": "-16*cot(4*x)*csc(4*x)**2",
+        "transformed": "1/u",
+        "factor": "-3/2",
+        "primitive": "-3*log(2*cot(4*x)**2 + 5)/2",
+        "lower": null,
+        "upper": null,
+        "result": "-3*log(2*cot(4*x)**2 + 5)/2"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068918,
+      "id": "fc24eade-1b3d-5672-88fd-0bb48b371509",
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "8c80300b-2fd4-50d5-b9e9-5de4b7de0d87",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{16}} \\frac{- \\frac{160 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=4 \\tan^{2}{\\left(4 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=32 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\pi}{16}&\\Longrightarrow u=7\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\pi}{16}} \\frac{- \\frac{160 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x=- \\frac{5}{3}\\left(\\int_{3}^{7} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{5}{3}\\left(\\left[\\ln u\\right]_{3}^{7}\\right)=- \\frac{5}{3}\\left(\\ln\\left(7\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{5}{3}\\left(\\ln\\left(\\frac{7}{3}\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9892fb13-e3c6-581d-8570-0740ac8f1ee3",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0df6477d-5e80-56ba-8c13-496f82e4c91d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{5}{3}\\left(\\ln\\left(\\frac{7}{3}\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0df6477d-5e80-56ba-8c13-496f82e4c91d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "tan2",
+      "family": "tan2",
+      "parameters": {
+        "a": "4",
+        "b": "0",
+        "offset": "3",
+        "scale": "4",
+        "factor": "-5/3",
+        "inner_role": "affine"
+      },
+      "mathematical_fingerprint": "a1aab1c5d9a42868acc7583fad098f66c57e4b400da2d46afaecefb5d72e36a8",
+      "source_questions": [
+        "q-49557",
+        "q-113998",
+        "q-350887",
+        "q-350901",
+        "q-350904",
+        "q-350908",
+        "q-350892",
+        "q-113987",
+        "q-114004",
+        "q-73679",
+        "q-113997"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored definite log evaluation, nested substitution, or supported rational rearrangement",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-160*tan(4*x)*sec(4*x)**2/(3*(4*tan(4*x)**2 + 3))",
+        "substitution": "4*tan(4*x)**2 + 3",
+        "derivative": "32*tan(4*x)*sec(4*x)**2",
+        "transformed": "1/u",
+        "factor": "-5/3",
+        "primitive": "-5*log(4*tan(4*x)**2 + 3)/3",
+        "lower": "0",
+        "upper": "pi/16",
+        "result": "-5*log(7/3)/3"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068918,
+      "id": "fc24eade-1b3d-5672-88fd-0bb48b371509",
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "698a6f1c-6756-58a0-9b01-d254af933d8c",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 24 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=2 \\tan{\\left(4 x^{2} \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=16 x \\sec^{2}{\\left(4 x^{2} \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\sqrt{\\pi}}{4}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 24 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int_{3}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{2}\\left(\\left[\\ln u\\right]_{3}^{5}\\right)=- \\frac{3}{2}\\left(\\ln\\left(5\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a11c6c9f-f7a5-5231-8118-5982f10bc1ea",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "42ce9787-6956-56e5-a610-1fc479e3024d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "42ce9787-6956-56e5-a610-1fc479e3024d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "nested_tan",
+      "family": "nested_tan",
+      "parameters": {
+        "a": "4",
+        "b": "0",
+        "offset": "3",
+        "scale": "2",
+        "factor": "-3/2",
+        "inner_role": "quadratic"
+      },
+      "mathematical_fingerprint": "fb25c3b16647867e301b191866b0ca2c016cf368808967e07ea50c424e656f2f",
+      "source_questions": [
+        "q-49557",
+        "q-113998",
+        "q-350887",
+        "q-350901",
+        "q-350904",
+        "q-350908",
+        "q-350892",
+        "q-113987",
+        "q-114004",
+        "q-73679",
+        "q-113997"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored definite log evaluation, nested substitution, or supported rational rearrangement",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-24*x*sec(4*x**2)**2/(2*tan(4*x**2) + 3)",
+        "substitution": "2*tan(4*x**2) + 3",
+        "derivative": "16*x*sec(4*x**2)**2",
+        "transformed": "1/u",
+        "factor": "-3/2",
+        "primitive": "-3*log(2*tan(4*x**2) + 3)/2",
+        "lower": "0",
+        "upper": "sqrt(pi)/4",
+        "result": "-3*log(5/3)/2"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068918,
+      "id": "fc24eade-1b3d-5672-88fd-0bb48b371509",
+      "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
+    },
+    "question": {
+      ":question/id": "b22e9903-456a-57c4-b62c-d275063ac0da",
+      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 2 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=\\tan{\\left(4 x \\right)} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nSince $\\tan{\\left(4 x \\right)}=u-2$, the remaining quotient is\n\n$$\n\\frac{u-2}{u}=1-\\frac{2}{u}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 2 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x=- \\frac{1}{2}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{2}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{2}\\left(u-2\\left(\\ln\\left|u\\right|\\right)\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{2}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c9f19502-4091-5894-8d49-5f3f11b8aef6",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "787637d0-0bd0-586e-ad07-32861742edfd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{2}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "787637d0-0bd0-586e-ad07-32861742edfd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "3.0.0-substitution-models",
+      "seed": 24681357,
+      "template": "rearranged",
+      "family": "rearranged",
+      "parameters": {
+        "a": "4",
+        "b": "0",
+        "offset": "2",
+        "scale": "3",
+        "factor": "-1/2",
+        "inner_role": "affine"
+      },
+      "mathematical_fingerprint": "a8857b6a211a50d3fe6ab7331bf9c96ddbd2a41fad3e8a64fcfd7186d9545b72",
+      "source_questions": [
+        "q-49557",
+        "q-113998",
+        "q-350887",
+        "q-350901",
+        "q-350904",
+        "q-350908",
+        "q-350892",
+        "q-113987",
+        "q-114004",
+        "q-73679",
+        "q-113997"
+      ],
+      "source_basis": 6404,
+      "band_origin": "Source-anchored definite log evaluation, nested substitution, or supported rational rearrangement",
+      "batch_contract": "trig-substitution-v3",
+      "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
+      "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
+      "model": {
+        "integrand": "-2*tan(4*x)*sec(4*x)**2/(tan(4*x) + 2)",
+        "substitution": "tan(4*x) + 2",
+        "derivative": "4*sec(4*x)**2",
+        "transformed": "1 - 2/u",
+        "factor": "-1/2",
+        "primitive": "log(tan(4*x) + 2) - tan(4*x)/2 - 1",
+        "lower": null,
+        "upper": null,
+        "result": "log(tan(4*x) + 2) - tan(4*x)/2 - 1"
+      },
+      "dependencies": {
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  }
+]

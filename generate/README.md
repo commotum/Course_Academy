@@ -18,12 +18,16 @@ band. An explicit band is never silently replaced. Inventory classification
 requests likewise produce a reviewed initial batch; existing source questions
 are preserved.
 
-When generation is enabled, the learner application runs three concurrent generator
-builders and one independent refill worker. Each builder uses the
-[finder's urgency ordering](scripts/README.md), claiming the highest-priority
-unlocked KP through authoring and independent review. Shared KP locks prevent
-builders and refills from publishing competing versions. Builder slot locks also
-preserve the concurrency limit across service restarts.
+When generation is enabled, the learner application defaults to three concurrent
+generator builders and one independent refill worker. Builders use the
+[finder's urgency ordering](scripts/README.md). With two or more builders, one
+slot prefers queued reviews of existing packages, so a continuing lesson backlog
+cannot consume all approval-review capacity. Immediate activity deficits and
+unfinished publication recovery still come first. The review slot takes ordinary
+work when no eligible, unlocked review is waiting; the other builders retain the
+finder order. Shared KP locks prevent builders and refills from publishing
+competing versions. Builder slot locks preserve the total concurrency limit
+across service restarts.
 
 In self-directed mode, ordinary lesson preparation follows the same L30+ targets,
 queue, and depth-two prerequisite scope as Study, with the same below-band-one
@@ -207,6 +211,13 @@ contributor. Codex uses the user's existing login and model configuration.
   defaults to 3. Each pipeline alternates authoring and independent review. The
   refill worker runs separately. Set to 1 for sequential builds; restart the
   service after changing the setting.
+- `COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS`: builder slots that prefer pending
+  approval/repair reviews for existing packages; defaults to 1 with multiple
+  builders and 0 with a single builder. Valid values are 0 through the builder
+  count minus 1, preserving at least one builder for ordinary shortage ordering.
+  These slots are part of the configured builder total, not additional workers.
+  For example, six builders normally provide five priority slots and one review
+  slot. This preference neither retries blocked/rejected jobs nor waives review.
 - `EDB_MATH_ROOT`, `EDB_POSTGRES_URL`, `EDB_ENDPOINT`, `EDB_BIN`,
   `LEARNING_REQUEST_DIR`: existing database and asset configuration.
 - `--max-attempts`: durable author/repair budget, default 3, plus three review sessions per author attempt.

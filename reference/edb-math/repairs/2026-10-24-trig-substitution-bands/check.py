@@ -50,6 +50,8 @@ def integral(text):
 def equal(a,b):
     difference=s.trigsimp(s.expand(a-b))
     if difference==0:return True
+    if difference.has(s.sin,s.cos,s.tan,s.cot,s.sec,s.csc):
+        if s.trigsimp(difference.rewrite(s.sin))==0:return True
     if difference.has(s.log):return s.simplify(s.expand_log(difference,force=True))==0
     return s.simplify(difference)==0
 

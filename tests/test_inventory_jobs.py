@@ -10,7 +10,7 @@ import threading
 import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from inventory_jobs import InventoryJobs, build_worker_count, priority_key, ranked_requests, save
+from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count, priority_key, ranked_requests, save
 from generator_priority import PRIORITY_POLICY
 
 class InventoryJobTests(unittest.TestCase):
@@ -724,6 +724,108 @@ class RankedInventoryJobTests(unittest.TestCase):
         for lane, slot in (('build', 1), ('build', -1), ('refill', 1), ('build', True)):
             with self.subTest(lane=lane, slot=slot), self.assertRaises(ValueError):
                 self.jobs.run_one(lane, slot)
+
+    def admit_review_backlog(self, *lessons):
+        packaged = self.relevant(self.kp(90, topic=900, script='generators/aa/hash/main.py',
+                                         purpose='advance-build'), 1)
+        inventory = self.ranked(*lessons, packaged)
+        self.jobs.accept(inventory)
+        self.jobs.finish(self.path_for(90, 'refill', 'hard'),
+                         {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(inventory)
+        return self.path_for(90, 'build')
+
+    def test_review_capacity_uses_existing_slots_and_keeps_one_normal_builder(self):
+        self.assertEqual(review_worker_count({}), 1)
+        self.assertEqual(review_worker_count({'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '6'}), 1)
+        self.assertEqual(review_worker_count({'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '1'}), 0)
+        self.assertEqual(review_worker_count({'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS': '0'}), 0)
+        self.assertEqual(review_worker_count({'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS': '2'}), 2)
+        for value in ('-1', '3', 'nope', '1.5'):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                review_worker_count({'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS': value})
+        with self.assertRaises(ValueError):
+            review_worker_count({'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '1',
+                                 'COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS': '1'})
+
+    def test_six_builders_include_one_approval_review_without_displacing_five_shortages(self):
+        self.jobs.environment['COURSE_ACADEMY_GENERATOR_BUILD_WORKERS'] = '6'
+        self.admit_review_backlog(*(self.relevant(self.kp(i, topic=i), 1) for i in range(1, 9)))
+        claimed, errors = [], []
+        entered, release = threading.Event(), threading.Event()
+        guard = threading.Lock()
+        def execute(command, **kwargs):
+            request = json.loads(Path(command[3]).read_text())['request']
+            with guard:
+                claimed.append(request['knowledgePoint'])
+                if len(claimed) == 6:
+                    entered.set()
+            if not release.wait(5):
+                errors.append('Timed out waiting for six concurrent claims')
+            return subprocess.CompletedProcess(command, 0)
+        restarted = InventoryJobs(self.directory, self.jobs.directory, 'learner', self.jobs.environment)
+        with patch('inventory_jobs.subprocess.run', side_effect=execute), ThreadPoolExecutor(max_workers=6) as pool:
+            futures = [pool.submit(self.jobs.run_one, 'build', slot) for slot in range(6)]
+            try:
+                self.assertTrue(entered.wait(3), 'Six workers did not claim their jobs')
+                self.assertEqual(set(claimed), {1, 2, 3, 4, 5, 90})
+                for slot in range(6):
+                    self.assertFalse(restarted.run_one('build', slot))
+            finally:
+                release.set()
+            self.assertTrue(all(f.result(timeout=3) for f in futures))
+        self.assertEqual(errors, [])
+
+    def test_immediate_deficit_and_publication_recovery_precede_review_reservation(self):
+        self.admit_review_backlog(self.relevant(self.kp(1, topic=1), 0),
+                                 self.relevant(self.kp(2, topic=2), 1))
+        publication = self.path_for(2, 'build')
+        directory = publication.with_suffix('.pipeline') / '1'
+        save(directory / 'job.json', {'stage': 'push'})
+        save(directory / 'publication/request.json', {'request_id': 'exact-intent'})
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one('build', 2))
+            self.assertTrue(self.jobs.run_one('build', 2))
+            self.assertTrue(self.jobs.run_one('build', 2))
+        self.assertEqual(claimed, [2, 1, 90])
+        self.assertEqual(json.loads((directory / 'publication/request.json').read_text()),
+                         {'request_id': 'exact-intent'})
+
+    def test_review_slot_falls_back_when_review_is_locked_and_never_rearms_blocked_work(self):
+        review = self.admit_review_backlog(self.relevant(self.kp(1, topic=1), 1),
+                                          self.relevant(self.kp(2, topic=2), 1))
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        with (self.jobs.directory / 'kp-90.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            with patch('inventory_jobs.subprocess.run', side_effect=execute):
+                self.assertTrue(self.jobs.run_one('build', 2))
+        self.jobs.finish(review, {'state': 'blocked', 'outcome': {'reason': 'unresolved source defect'}})
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one('build', 2))
+        self.assertEqual(claimed, [1, 2])
+        self.assertEqual(json.loads(review.read_text())['state'], 'blocked')
+
+    def test_review_reservation_can_be_disabled_and_single_builder_keeps_normal_order(self):
+        self.admit_review_backlog(self.relevant(self.kp(1, topic=1), 1),
+                                 self.relevant(self.kp(2, topic=2), 1))
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        self.jobs.environment['COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS'] = '0'
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one('build', 2))
+            self.jobs.environment.pop('COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS')
+            self.jobs.environment['COURSE_ACADEMY_GENERATOR_BUILD_WORKERS'] = '1'
+            self.assertTrue(self.jobs.run_one('build', 0))
+        self.assertEqual(claimed, [1, 2])
 
     def test_shared_kp_lock_prevents_cross_lane_publication(self):
         self.jobs.accept(self.ranked(self.kp(script='generators/aa/hash/main.py')))

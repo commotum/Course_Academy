@@ -1,0 +1,122 @@
+{
+  "verdict": "revise",
+  "summary": "Distractor construction lets sign/magnitude bounds bypass the assessed tangent formula in 2/5 delivered questions and 98/128 catalog cases. Package unchanged.",
+  "source_analysis": {
+    "skill": "Find exact tangent values using special-angle sum/difference formulas and rationalization.",
+    "reasoning_steps": [
+      "Use the hinted special-angle decomposition.",
+      "Apply the appropriate tangent formula and substitute signed special-angle values.",
+      "Simplify, rationalize, and select the exact value."
+    ],
+    "invariants": [
+      "Defined component tangents and nonzero formula denominator.",
+      "Exact-value evaluation with comparable algebraic workload.",
+      "One five-choice math radio response."
+    ],
+    "permitted_variations": [
+      "Sum/difference, degrees/radians, operand roles, quadrant signs, targets and correct-choice position.",
+      "Distinct plausible distractors grounded in the same exact-value task."
+    ],
+    "source_refs": [
+      "652143ae-b765-5abe-a7e9-a90ec15dd38f: pi/12 difference formula and conjugate rationalization.",
+      "4d2cbf11-539c-5729-8b25-cb111d75ab70: 5pi/12 sum and complete answer bank.",
+      "a2938a8c-8f52-581f-8b4a-334518397013: 285-degree sum and complete answer bank.",
+      "Tutorial 2561, entity 17592186060890: special-angle decomposition, tangent formulas and rationalization."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "selection.json"
+      ],
+      "details": "Canonical and both standalone cases reproduced, including complete banks. No excluded origins or captured generated descendants."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "review.py"
+      ],
+      "details": "Independent exact arithmetic verified choices and every displayed aligned solution row."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-measurements.json",
+        "delivery-batch/delivery.json",
+        "delivery-catalog/delivery.json"
+      ],
+      "details": "Both operations, units, operand roles and all four result classes occur. Delivery retains 5/5 batch and 128/128 catalog cases."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-test.json",
+        "scope-negative-record.json"
+      ],
+      "details": "140 paths cover served shapes and boundaries. Necessary conversions are shown and licensed; an equivalent but unshown reciprocal fails the negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "interval-grader-report.json"
+      ],
+      "details": "Native grader matched 700 independent choice checks and accepted 100 demonstrated shortcut submissions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "boundaries.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-structure.json",
+        "visual-inspection.md"
+      ],
+      "details": "Shared boundary validation passed. Screenshots and independent expression/row counts confirm visible equations, choices, multiline breaks and italic hints. No exposed TeX or visible emphasis stars."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Runtime matches the manifest; relocated deterministic replay succeeds; invalid requests are rejected; package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "interval-probe.json",
+        "interval-regression.json",
+        "minimal-failing-case.json",
+        "probe_intervals.py",
+        "selection.json"
+      ],
+      "details": "Coarse tangent sign/magnitude bounds uniquely identify the exact choice in 98/128 catalog cases and 2/5 delivered questions, bypassing formula application and rationalization."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The extension bank contains four results occupying distinct sign/magnitude intervals plus an independently chosen extra distractor. When the extra misses the correct interval, prerequisite bounds alone uniquely identify the exact answer. Both original standalone banks retain multiple candidates in the correct interval.",
+      "source_refs": [
+        "652143ae-b765-5abe-a7e9-a90ec15dd38f: assessed difference-formula and rationalization work.",
+        "Tutorial 2561, entity 17592186060890: exact sum-formula evaluation.",
+        "4d2cbf11-539c-5729-8b25-cb111d75ab70 and a2938a8c-8f52-581f-8b4a-334518397013: complete source banks."
+      ],
+      "reproduction": "Generate moderate, count 5, seed 3750266970. Record index 3, UUID 4959922a-e466-5979-b297-3c69bce3f285, asks tan(11pi/12). Only -2+sqrt(3) lies between -1 and 0; native grading accepts choice 97a1ded7-b57b-540c-8de8-376370bf9b4d. Run probe_intervals.py --input batch.json --require-no-shortcut with the context Python: exit 1. See render/question-004.png.",
+      "requested_change": "Change extension distractor construction so coarse sign and magnitude bounds do not uniquely determine the exact response. Include plausible wrong candidates in the correct interval, preserve complete source replay banks, and adopt the explicit-candidate regression for generated and post-delivery samples. Regenerate through the package workflow; do not edit runner-owned samples or database records."
+    }
+  ]
+}

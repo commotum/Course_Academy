@@ -33,7 +33,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
-from inventory_jobs import InventoryJobs, build_worker_count
+from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
@@ -336,6 +336,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
     inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
     builder_count = build_worker_count(environment)
+    review_worker_count(environment, builder_count)
     scheduler_stop = threading.Event()
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()

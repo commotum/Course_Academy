@@ -134,8 +134,8 @@ def products(band, case, rng, index):
         outer = A/X**2
     else:
         if band == 'easy':
-            a = s.Integer(1)
-            A = sign*n*rng.choice((1, 2, 3))
+            a = s.Integer(rng.randint(1, 4))
+            A = sign*a*n*rng.choice((1, 2, 3))
         else:
             A = sign*s.Integer(rng.randint(1, 9))
             if A % (a*n) == 0:

@@ -50,7 +50,7 @@ def scalar(t):
         replacement=' ('+str(expr)+') ';t=t[:start]+replacement+t[stop:];position=start+len(replacement)
     t=t.replace('{','(').replace('}',')').replace('^','**')
     assert '\\' not in t,t
-    return sp.simplify(parse_expr(t,local_dict={'x':x,'u':u,'C':C,'pi':sp.pi,**{f:getattr(sp,f) for f in ('sin','cos','tan','cot','sec','csc','sqrt')}},transformations=standard_transformations+(implicit_multiplication_application,)))
+    return parse_expr(t,local_dict={'x':x,'u':u,'C':C,'pi':sp.pi,**{f:getattr(sp,f) for f in ('sin','cos','tan','cot','sec','csc','sqrt')}},transformations=standard_transformations+(implicit_multiplication_application,))
 def integral(prompt):
     t=prompt.replace('y','x').replace(r'\text{d}y','dx').replace(r'{\int }',r'\int').replace(r'\displaystyle','').replace(r'\text{d}x','dx').replace(r'\textrm d x','dx')
     t=t.replace(r'\textrm d x','dx').replace(r'\text{d}x','dx')

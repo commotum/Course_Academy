@@ -1,0 +1,129 @@
+{
+  "verdict": "revise",
+  "summary": "The interval repair passes, but revised distractor shapes expose 3/5 delivered answers without reading the target. Seven checks pass; decision variation fails. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Find exact tangent values using special-angle sum/difference formulas and rationalization.",
+    "reasoning_steps": [
+      "Read the hinted special-angle decomposition.",
+      "Apply the appropriate tangent formula and signed special-angle values.",
+      "Simplify, rationalize, and select the exact result."
+    ],
+    "invariants": [
+      "Defined component tangents and a nonzero formula denominator.",
+      "Comparable exact-arithmetic workload.",
+      "One five-choice math radio response."
+    ],
+    "permitted_variations": [
+      "Degrees/radians, sum/difference, operand roles, quadrants and target values.",
+      "Correct-choice position and plausible distractors that preserve the need for calculation."
+    ],
+    "source_refs": [
+      "652143ae-b765-5abe-a7e9-a90ec15dd38f (e-3521): difference formula and conjugate rationalization.",
+      "4d2cbf11-539c-5729-8b25-cb111d75ab70 (q-1759): radians sum and complete answer bank.",
+      "a2938a8c-8f52-581f-8b4a-334518397013 (q-43382): signed degree example and complete answer bank.",
+      "Tutorial 2561, entity 17592186060890: tangent formulas, exact substitution and rationalization."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "selection.json"
+      ],
+      "details": "Eligible origins confirmed; both complete source banks replayed with independently derived keys. No excluded origins or captured generated descendants."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "review.py"
+      ],
+      "details": "Independent exact arithmetic verified displayed solution rows, targets, hints and unique correct choices."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-measurements.json",
+        "delivery-batch/delivery.json",
+        "delivery-catalog/delivery.json",
+        "selection.json"
+      ],
+      "details": "Both operations, units and operand roles occur. All four result classes survive in the actual batch. Shared filtering retains 5/5 batch and 128/128 catalog records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-test.json",
+        "scope-negative-record.json",
+        "counterfactual-results.json"
+      ],
+      "details": "140 current solution paths cover served response profiles and sign boundaries. Necessary conversions are shown and licensed; the equivalent but unshown reciprocal negative control fails."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "shape-grader-input.json",
+        "shape-grader-report.json"
+      ],
+      "details": "Native grading matched 700 independent correct/wrong choice checks, including controlled pairs. It also accepted 484 demonstrated shortcut submissions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "boundaries.json",
+        "render/rendering.json",
+        "render-structure.json",
+        "visual-inspection.md"
+      ],
+      "details": "Shared boundary validation passed for all present prose and math choices; text choices and feedback are absent. All intended equations and multiline rows reach the actual UI. Representative screenshots show italic hints without visible stars or exposed TeX."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-batch.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "retained-finding-verification.json"
+      ],
+      "details": "Exact runtime matches the manifest. Relocated deterministic replay succeeds, invalid requests are rejected, and declared package files plus manifest remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shape-probe.json",
+        "probe_bank_shape.py",
+        "minimal-failing-case.json",
+        "shape-batch-regression.json",
+        "shape-batch-regression-status.json",
+        "retained-finding-verification.json",
+        "commands.md"
+      ],
+      "details": "The old interval-only defect is repaired. A target-blind option-shape strategy now answers 3/5 delivered records, 96/128 independently sampled catalog records and 8/12 fresh records. Adding only coarse sign/magnitude bounds answers every tested current batch/catalog record."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Revised extension banks frequently make the correct answer the sole fraction-free expression with constant term \u00b12 and unit radical coefficient. This recognizable bank shape identifies 3/5 delivered answers without inspecting the target or applying the tangent formula. The retained regression tests interval competition but misses this replacement cue.",
+      "source_refs": [
+        "652143ae-b765-5abe-a7e9-a90ec15dd38f: exact substitution and conjugate rationalization are assessed operations.",
+        "Tutorial 2561, entity 17592186060890: sum-formula evaluation and rationalization.",
+        "generate/principles.md section 2: recognizable shape cues must not predict the answer-producing action."
+      ],
+      "reproduction": "Run the current CLI with --difficulty moderate --count 5 --seed 3750266970 --format json. First record UUID 159ec86e-0b1b-5393-9516-c8bbc93103f6 asks tan(15 degrees), hint 15=150-135. Choices: 4-2sqrt(3), -4+sqrt(3), -1+sqrt(3), 2-sqrt(3), 1+sqrt(3). Only 2-sqrt(3) has constant term 2 and unit radical coefficient. Native grading accepts answer UUID 8a6c6f4c-94d2-5e0d-9b4f-1525bfe0eb79. Inspect minimal-failing-case.json and render/question-001.png. Run probe_bank_shape.py --input batch.json --require-no-shortcut with the context Python: exit 1.",
+      "requested_change": "Change extension_bank/candidate_pool so constant term, radical coefficient and fraction-free form cannot single out the correct response, including after coarse bounds. Preserve source replay and the justified workload. Adopt the explicit-record shape regression against generated and delivery-surviving records, including the required seed/count/difficulty and recognizable subgroups. Repair the construction rule; changing the seed or hand-picking a batch is insufficient. Do not edit runner-owned samples or database records."
+    }
+  ]
+}

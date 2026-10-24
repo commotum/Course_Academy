@@ -28,6 +28,24 @@ def build_worker_count(environment: dict) -> int:
     return count
 
 
+def review_worker_count(environment: dict, builders: int | None = None) -> int:
+    """Give existing-package reviews capacity without adding worker processes.
+
+    Keep at least one builder on the ordinary shortage ordering. A single
+    builder therefore has no reserved review slot; reviews still use its queue.
+    """
+    builders = build_worker_count(environment) if builders is None else builders
+    value = environment.get('COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS',
+                            '1' if builders > 1 else '0')
+    try:
+        count = int(value)
+    except (TypeError, ValueError):
+        raise ValueError('COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS must be an integer from 0 to build workers minus 1') from None
+    if not 0 <= count < builders:
+        raise ValueError('COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS must be an integer from 0 to build workers minus 1')
+    return count
+
+
 def ranked_reason(common: dict, reason: dict) -> dict:
     """A shared KP's demand may belong to a different topic than its winner."""
     result = {**common, **{field: reason[field] for field in
@@ -362,6 +380,8 @@ class InventoryJobs:
         limit = build_worker_count(self.environment) if lane == 'build' else 1
         if type(slot) is not int or not 0 <= slot < limit:
             raise ValueError(f'Invalid {lane} worker slot: {slot}')
+        review_slots = review_worker_count(self.environment, limit) if lane == 'build' else 0
+        prefer_reviews = lane == 'build' and slot >= limit - review_slots
         # Slot zero keeps the original lock so an inherited pre-upgrade worker
         # consumes one of the three slots until it finishes after a restart.
         lock_name = ('worker.lock' if slot == 0 else f'worker-build-{slot}.lock') if lane == 'build' else 'worker-refill.lock'
@@ -391,7 +411,16 @@ class InventoryJobs:
                         rank = (5, 1, job['state'] != 'running', request.get('urgency', 0),
                                 request.get('proximity', 0), -request.get('priority', 0),
                                 request['topic'], 0, request['knowledgePoint'], '')
-                    return (not self.publication_recovery(path, job), *rank, job['key'])
+                    # Some existing packages need independent review before the
+                    # inexpensive refill lane can run. Pure priority ordering
+                    # can starve them behind a continuous lesson backlog. Flex
+                    # slots service that queue while the remaining builders keep
+                    # the finder order. Immediate deficits and exact publication
+                    # recovery retain precedence on every slot. Busy/empty review
+                    # queues fall through to ordinary work below.
+                    preference = (0 if rank[0] == 0 else
+                                  1 if request.get('stage') == 'review-generator' else 2) if prefer_reviews else 0
+                    return (not self.publication_recovery(path, job), preference, *rank, job['key'])
                 for path, job in sorted(jobs, key=ordering):
                     candidate_lock = (self.directory / f'kp-{job["request"]["knowledgePoint"]}.lock').open('a')
                     try:
