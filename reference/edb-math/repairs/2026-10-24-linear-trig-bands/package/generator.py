@@ -174,7 +174,7 @@ def worked(fn, a, b, c, lo, hi):
         if b < 0:
             solution += 'The transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\n'
     limits = '' if lo is None else '_{'+tex(u0)+'}^{'+tex(u1)+'}'
-    rows = [integral+r'&='+tex(a)+r'\left('+tex(1/b)+r'\right)\int'+limits+' '+term(1, fn, U)+r'\,\mathrm{d}u',
+    rows = ['&'+integral,'&='+tex(a)+r'\left('+tex(1/b)+r'\right)\int'+limits+' '+term(1, fn, U)+r'\,\mathrm{d}u',
             '&='+tex(scale)+r'\int'+limits+' '+term(1, fn, U)+r'\,\mathrm{d}u']
     intrinsic = '-'+term(1, pf, U) if fn == 'sin' else term(1, pf, U)
     if lo is None:

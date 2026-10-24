@@ -1,0 +1,1566 @@
+[
+  {
+    "label": "published band/shape 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "5c8c0a1d-fde4-593c-828a-3cf455a54441",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{3 \\pi}{10}}^{\\frac{2 \\pi}{5}} 6\\sin\\left(5 x\\right)\\,\\mathrm{d}x\n$$",
+        ":question/worked-solution": "Let $u=5 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=5,\\qquad \\mathrm{d}x=\\left(\\frac{1}{5}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{3 \\pi}{10}&\\quad\\Longrightarrow\\quad u=5\\left(\\frac{3 \\pi}{10}\\right)+\\left(0\\right)=\\frac{3 \\pi}{2}\\\\ x=\\frac{2 \\pi}{5}&\\quad\\Longrightarrow\\quad u=5\\left(\\frac{2 \\pi}{5}\\right)+\\left(0\\right)=2 \\pi.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{3 \\pi}{10}}^{\\frac{2 \\pi}{5}} 6\\sin\\left(5 x\\right)\\,\\mathrm{d}x\\\\ &=6\\left(\\frac{1}{5}\\right)\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{6}{5}\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{6}{5}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{3 \\pi}{2}}^{2 \\pi}\\\\ &=- \\frac{6}{5}\\left(\\cos\\left(2 \\pi\\right)-\\cos\\left(\\frac{3 \\pi}{2}\\right)\\right)\\\\ &=- \\frac{6}{5}\\left(\\left(1\\right)-\\left(0\\right)\\right)\\\\ &=- \\frac{6}{5}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6e7f82de-b10f-5eb3-8fde-5dd05231be0b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1189c239-94a6-5f8c-8422-516a4d0cfaf5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-30"
+              },
+              {
+                ":answer/id": "b80eec8f-96b7-5050-be99-0c751ffcc46d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{6}{5}"
+              },
+              {
+                ":answer/id": "9cfa9d59-503e-5073-a70b-415b03835e7d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-6"
+              },
+              {
+                ":answer/id": "d698b6cc-804c-5edd-b801-ab88d70da77f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{6}{5}"
+              },
+              {
+                ":answer/id": "8928a316-1b51-5ab2-8669-bf7f8a17d20e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d698b6cc-804c-5edd-b801-ab88d70da77f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "def_sin",
+        "source_ids": [
+          "q-350039",
+          "q-350040",
+          "q-13644"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "6",
+          "slope": "5",
+          "shift": "0",
+          "lower": "3*pi/10",
+          "upper": "2*pi/5"
+        },
+        "seed": 11088604786531364427,
+        "mathematical_fingerprint": "c29767051e791a421db50118169d4be88700e4da71d20d268d7ab593e5f34f37",
+        "response": "radio",
+        "bank_origin": "authored rule-error recipes",
+        "bank_recipes": {
+          "- \\frac{6}{5}": "correct",
+          "\\frac{6}{5}": "reverse endpoint subtraction",
+          "-6": "omit reciprocal inner derivative",
+          "-30": "multiply by inner derivative",
+          "0": "use lower endpoint only"
+        },
+        "u_bounds": [
+          "3*pi/2",
+          "2*pi"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1189c239-94a6-5f8c-8422-516a4d0cfaf5",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b80eec8f-96b7-5050-be99-0c751ffcc46d",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "9cfa9d59-503e-5073-a70b-415b03835e7d",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d698b6cc-804c-5edd-b801-ab88d70da77f",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "8928a316-1b51-5ab2-8669-bf7f8a17d20e",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "b3322dae-81e1-5fc4-bc1e-3373a746c90c",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int 9\\cos\\left(2 - 6 x\\right)\\,\\mathrm{d}x\n$$",
+        ":question/worked-solution": "Let $u=2 - 6 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-6,\\qquad \\mathrm{d}x=\\left(- \\frac{1}{6}\\right)\\mathrm{d}u.\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int 9\\cos\\left(2 - 6 x\\right)\\,\\mathrm{d}x\\\\ &=9\\left(- \\frac{1}{6}\\right)\\int \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{2}\\int \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{2}\\left(\\sin\\left(u\\right)\\right)+C\\\\ &=- \\frac{3}{2}\\sin\\left(2 - 6 x\\right)+C.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a5ce895e-8c04-5166-8a16-f64b1ed6c891",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5d363715-5aa4-5b9e-b00c-5dd7111b1065",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-54\\sin\\left(2 - 6 x\\right)+C"
+              },
+              {
+                ":answer/id": "d03c8ca3-1c40-55b1-8cad-cf897dc93aa6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "54\\sin\\left(2 - 6 x\\right)+C"
+              },
+              {
+                ":answer/id": "cd248c8d-4c91-57d5-974d-6382dc14e413",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{2}\\cos\\left(2 - 6 x\\right)+C"
+              },
+              {
+                ":answer/id": "32b4fc48-df6b-5b8b-b542-afba6dc86574",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{2}\\sin\\left(2 - 6 x\\right)+C"
+              },
+              {
+                ":answer/id": "878029c4-ab8c-5839-a58a-5192ea1c07b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{2}\\sin\\left(2 - 6 x\\right)+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "32b4fc48-df6b-5b8b-b542-afba6dc86574"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "indef_cos",
+        "source_ids": [
+          "q-10061",
+          "q-10064",
+          "q-2191",
+          "e-464"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "9",
+          "slope": "-6",
+          "shift": "2",
+          "lower": null,
+          "upper": null
+        },
+        "seed": 12354085835147029958,
+        "mathematical_fingerprint": "b64f6ca3d52da5cbfc437c3f8cdef85089446b0bb27e88d998f9a5cf97d92e7b",
+        "response": "radio",
+        "bank_origin": "authored rule-error recipes",
+        "bank_recipes": {
+          "- \\frac{3}{2}\\sin\\left(2 - 6 x\\right)+C": "correct",
+          "\\frac{3}{2}\\sin\\left(2 - 6 x\\right)+C": "reverse antiderivative sign",
+          "-54\\sin\\left(2 - 6 x\\right)+C": "multiply by inner slope",
+          "54\\sin\\left(2 - 6 x\\right)+C": "multiply by inner slope and reverse sign",
+          "- \\frac{3}{2}\\cos\\left(2 - 6 x\\right)+C": "retain original trig function"
+        },
+        "u_bounds": null,
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "5d363715-5aa4-5b9e-b00c-5dd7111b1065",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d03c8ca3-1c40-55b1-8cad-cf897dc93aa6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "cd248c8d-4c91-57d5-974d-6382dc14e413",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "32b4fc48-df6b-5b8b-b542-afba6dc86574",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "878029c4-ab8c-5839-a58a-5192ea1c07b3",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "8cca5210-9cae-5a3f-83ff-fba55c5e7399",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{6}} 2\\sin\\left(9 x\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=9 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=9,\\qquad \\mathrm{d}x=\\left(\\frac{1}{9}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{9}&\\quad\\Longrightarrow\\quad u=9\\left(\\frac{\\pi}{9}\\right)+\\left(0\\right)=\\pi\\\\ x=\\frac{\\pi}{6}&\\quad\\Longrightarrow\\quad u=9\\left(\\frac{\\pi}{6}\\right)+\\left(0\\right)=\\frac{3 \\pi}{2}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{6}} 2\\sin\\left(9 x\\right)\\,\\mathrm{d}x\\\\ &=2\\left(\\frac{1}{9}\\right)\\int_{\\pi}^{\\frac{3 \\pi}{2}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{2}{9}\\int_{\\pi}^{\\frac{3 \\pi}{2}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{2}{9}\\left[-\\cos\\left(u\\right)\\right]_{\\pi}^{\\frac{3 \\pi}{2}}\\\\ &=- \\frac{2}{9}\\left(\\cos\\left(\\frac{3 \\pi}{2}\\right)-\\cos\\left(\\pi\\right)\\right)\\\\ &=- \\frac{2}{9}\\left(\\left(0\\right)-\\left(-1\\right)\\right)\\\\ &=- \\frac{2}{9}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "24d9c224-1e46-5317-a5f9-c5aa66e60edc",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6485c401-8c52-5297-ae15-086101ba50a7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2}{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6485c401-8c52-5297-ae15-086101ba50a7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "def_sin",
+        "source_ids": [
+          "q-350039",
+          "q-350040",
+          "q-13644"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "2",
+          "slope": "9",
+          "shift": "0",
+          "lower": "pi/9",
+          "upper": "pi/6"
+        },
+        "seed": 8741920709443090001,
+        "mathematical_fingerprint": "6a2bb542ea78745eac91e0fc2107b688b59bfdcaa1de1dc7cbd13d915669c6fa",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{2}{9}": "correct"
+        },
+        "u_bounds": [
+          "pi",
+          "3*pi/2"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{2}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{2}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{7}{9}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "09e653a5-6f73-55c5-b90d-810f6268cde9",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int 2\\sin\\left(2 x + 6\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 x + 6.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2,\\qquad \\mathrm{d}x=\\left(\\frac{1}{2}\\right)\\mathrm{d}u.\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int 2\\sin\\left(2 x + 6\\right)\\,\\mathrm{d}x\\\\ &=2\\left(\\frac{1}{2}\\right)\\int \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=1\\int \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=1\\left(-\\cos\\left(u\\right)\\right)+C\\\\ &=-\\cos\\left(2 x + 6\\right)+C.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "30b4ae0d-65f4-5330-941b-5c7234461fac",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d3a6e64c-55dc-5617-8862-3ee83cda1ab4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\cos\\left(2 x + 6\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d3a6e64c-55dc-5617-8862-3ee83cda1ab4"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "indef_sin",
+        "source_ids": [
+          "q-10061",
+          "q-10064",
+          "q-2191",
+          "e-464"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "2",
+          "slope": "2",
+          "shift": "6",
+          "lower": null,
+          "upper": null
+        },
+        "seed": 13308007075414717975,
+        "mathematical_fingerprint": "4c707ea2d5a67aefb064716163b31c82aed39a1bcec5cc83a0f52a0601820392",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "-\\cos\\left(2 x + 6\\right)": "correct"
+        },
+        "u_bounds": null,
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-\\cos\\left(2 x + 6\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\cos{\\left(2 x + 6 \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\cos{\\left(2 x + 6 \\right)}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "79e7f01d-51fd-5079-ae99-a45f7aff2485",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{\\pi}{7}} 3\\cos\\left(7 x\\right)\\,\\mathrm{d}x\n$$",
+        ":question/worked-solution": "Let $u=7 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=7,\\qquad \\mathrm{d}x=\\left(\\frac{1}{7}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\quad\\Longrightarrow\\quad u=7\\left(0\\right)+\\left(0\\right)=0\\\\ x=\\frac{\\pi}{7}&\\quad\\Longrightarrow\\quad u=7\\left(\\frac{\\pi}{7}\\right)+\\left(0\\right)=\\pi.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{7}} 3\\cos\\left(7 x\\right)\\,\\mathrm{d}x\\\\ &=3\\left(\\frac{1}{7}\\right)\\int_{0}^{\\pi} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{3}{7}\\int_{0}^{\\pi} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{3}{7}\\left[\\sin\\left(u\\right)\\right]_{0}^{\\pi}\\\\ &=\\frac{3}{7}\\left(\\sin\\left(\\pi\\right)-\\sin\\left(0\\right)\\right)\\\\ &=\\frac{3}{7}\\left(\\left(0\\right)-\\left(0\\right)\\right)\\\\ &=0.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "95e13707-a89f-585d-961c-2ef22b6c6e65",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c776ccf3-a9fe-519c-87a1-90d8b762958b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{7}"
+              },
+              {
+                ":answer/id": "f9d1a252-5bc7-54d3-8294-341317c825c3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "2228ea1f-7cb1-521e-8def-f8eaca9fbedd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              },
+              {
+                ":answer/id": "45cd34e6-9a9c-5ee3-b63a-033ccb6a0aab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1"
+              },
+              {
+                ":answer/id": "631e6134-3c17-5b26-8f2c-899a8a63dec7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2228ea1f-7cb1-521e-8def-f8eaca9fbedd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "def_cos",
+        "source_ids": [
+          "q-350039",
+          "q-350040",
+          "q-13644"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "3",
+          "slope": "7",
+          "shift": "0",
+          "lower": "0",
+          "upper": "pi/7"
+        },
+        "seed": 1486511616641086155,
+        "mathematical_fingerprint": "d63b3d53a3439942ac4b03c4055d3d6eb42b76397dad561ffddf1826438c7648",
+        "response": "radio",
+        "bank_origin": "authored rule-error recipes",
+        "bank_recipes": {
+          "0": "correct",
+          "\\frac{3}{7}": "replace endpoint difference by one",
+          "\\frac{1}{7}": "omit amplitude and replace endpoint difference by one",
+          "1": "report one",
+          "-1": "report negative one"
+        },
+        "u_bounds": [
+          "0",
+          "pi"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "c776ccf3-a9fe-519c-87a1-90d8b762958b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "f9d1a252-5bc7-54d3-8294-341317c825c3",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2228ea1f-7cb1-521e-8def-f8eaca9fbedd",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "45cd34e6-9a9c-5ee3-b63a-033ccb6a0aab",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "631e6134-3c17-5b26-8f2c-899a8a63dec7",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "8227a74e-de14-5278-a58d-517a3e75e5a9",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\pi}{9}}^{- \\frac{\\pi}{18}} 6\\cos\\left(6 x + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=6 x + \\frac{\\pi}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=6,\\qquad \\mathrm{d}x=\\left(\\frac{1}{6}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\pi}{9}&\\quad\\Longrightarrow\\quad u=6\\left(- \\frac{\\pi}{9}\\right)+\\left(\\frac{\\pi}{2}\\right)=- \\frac{\\pi}{6}\\\\ x=- \\frac{\\pi}{18}&\\quad\\Longrightarrow\\quad u=6\\left(- \\frac{\\pi}{18}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{\\pi}{6}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{\\pi}{9}}^{- \\frac{\\pi}{18}} 6\\cos\\left(6 x + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x\\\\ &=6\\left(\\frac{1}{6}\\right)\\int_{- \\frac{\\pi}{6}}^{\\frac{\\pi}{6}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=1\\int_{- \\frac{\\pi}{6}}^{\\frac{\\pi}{6}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=1\\left[\\sin\\left(u\\right)\\right]_{- \\frac{\\pi}{6}}^{\\frac{\\pi}{6}}\\\\ &=1\\left(\\sin\\left(\\frac{\\pi}{6}\\right)-\\sin\\left(- \\frac{\\pi}{6}\\right)\\right)\\\\ &=1\\left(\\left(\\frac{1}{2}\\right)-\\left(- \\frac{1}{2}\\right)\\right)\\\\ &=1.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3e973ef1-baa2-57ed-b8e1-66e177696510",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "86916c06-7539-5363-a4dc-f8ee852ada27",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "86916c06-7539-5363-a4dc-f8ee852ada27"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "shift_cos",
+        "source_ids": [
+          "q-10574",
+          "q-10575"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "6",
+          "slope": "6",
+          "shift": "pi/2",
+          "lower": "-pi/9",
+          "upper": "-pi/18"
+        },
+        "seed": 6646020401470195793,
+        "mathematical_fingerprint": "c0f15779c5491a4bc5091d5ca5c63c3057e913eb038a2d306c35f32a31f9c6c9",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "1": "correct"
+        },
+        "u_bounds": [
+          "-pi/6",
+          "pi/6"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "1",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "314b0835-9367-5177-83c1-c3e5adcc53d4",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{0}^{\\frac{3}{2}} 5\\cos\\left(\\frac{\\pi x}{3}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\frac{\\pi x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\pi}{3},\\qquad \\mathrm{d}x=\\left(\\frac{3}{\\pi}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=0&\\quad\\Longrightarrow\\quad u=\\frac{\\pi}{3}\\left(0\\right)+\\left(0\\right)=0\\\\ x=\\frac{3}{2}&\\quad\\Longrightarrow\\quad u=\\frac{\\pi}{3}\\left(\\frac{3}{2}\\right)+\\left(0\\right)=\\frac{\\pi}{2}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{3}{2}} 5\\cos\\left(\\frac{\\pi x}{3}\\right)\\,\\mathrm{d}x\\\\ &=5\\left(\\frac{3}{\\pi}\\right)\\int_{0}^{\\frac{\\pi}{2}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{15}{\\pi}\\int_{0}^{\\frac{\\pi}{2}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{15}{\\pi}\\left[\\sin\\left(u\\right)\\right]_{0}^{\\frac{\\pi}{2}}\\\\ &=\\frac{15}{\\pi}\\left(\\sin\\left(\\frac{\\pi}{2}\\right)-\\sin\\left(0\\right)\\right)\\\\ &=\\frac{15}{\\pi}\\left(\\left(1\\right)-\\left(0\\right)\\right)\\\\ &=\\frac{15}{\\pi}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e7c1863d-bfc6-5941-88b8-58f29c290de2",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "dd58f750-f22a-5b02-b82e-70a47ec9c826",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{\\pi}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dd58f750-f22a-5b02-b82e-70a47ec9c826"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "pi_cos",
+        "source_ids": [
+          "q-346081",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "5",
+          "slope": "pi/3",
+          "shift": "0",
+          "lower": "0",
+          "upper": "3/2"
+        },
+        "seed": 3730457614929273376,
+        "mathematical_fingerprint": "7a1c1448888b3f15185cec29aa373f8187fdbda8498e003720fabeb8b79bf870",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "\\frac{15}{\\pi}": "correct"
+        },
+        "u_bounds": [
+          "0",
+          "pi/2"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{15}{\\pi}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{15}{\\pi}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "1 + \\frac{15}{\\pi}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "92524dc9-df03-57c8-9189-bfcc335ffb79",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{3}{4}}^{\\frac{3}{2}} 8\\sin\\left(\\frac{2 \\pi x}{3}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\frac{2 \\pi x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{2 \\pi}{3},\\qquad \\mathrm{d}x=\\left(\\frac{3}{2 \\pi}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{3}{4}&\\quad\\Longrightarrow\\quad u=\\frac{2 \\pi}{3}\\left(\\frac{3}{4}\\right)+\\left(0\\right)=\\frac{\\pi}{2}\\\\ x=\\frac{3}{2}&\\quad\\Longrightarrow\\quad u=\\frac{2 \\pi}{3}\\left(\\frac{3}{2}\\right)+\\left(0\\right)=\\pi.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{3}{4}}^{\\frac{3}{2}} 8\\sin\\left(\\frac{2 \\pi x}{3}\\right)\\,\\mathrm{d}x\\\\ &=8\\left(\\frac{3}{2 \\pi}\\right)\\int_{\\frac{\\pi}{2}}^{\\pi} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{12}{\\pi}\\int_{\\frac{\\pi}{2}}^{\\pi} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{12}{\\pi}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{\\pi}{2}}^{\\pi}\\\\ &=- \\frac{12}{\\pi}\\left(\\cos\\left(\\pi\\right)-\\cos\\left(\\frac{\\pi}{2}\\right)\\right)\\\\ &=- \\frac{12}{\\pi}\\left(\\left(-1\\right)-\\left(0\\right)\\right)\\\\ &=\\frac{12}{\\pi}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6dc70829-b390-59c6-bd93-b9b3f17be955",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b2b3f9ad-c9ca-56de-bbcf-02c254fce502",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{12}{\\pi}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b2b3f9ad-c9ca-56de-bbcf-02c254fce502"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "pi_sin",
+        "source_ids": [
+          "q-346081",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "8",
+          "slope": "2*pi/3",
+          "shift": "0",
+          "lower": "3/4",
+          "upper": "3/2"
+        },
+        "seed": 9498894953130279041,
+        "mathematical_fingerprint": "d0dc9772c553ea49bee20160dc3b8fcea2fbefc14110fe4099aa798f0ca9ee99",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "\\frac{12}{\\pi}": "correct"
+        },
+        "u_bounds": [
+          "pi/2",
+          "pi"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{12}{\\pi}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{12}{\\pi}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "1 + \\frac{12}{\\pi}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "4aab43cb-14f3-5fa2-abcc-b2af38e5f07b",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\pi}{10}}^{\\frac{\\pi}{30}} 4\\sin\\left(5 x + \\frac{2 \\pi}{3}\\right)\\,\\mathrm{d}x\n$$",
+        ":question/worked-solution": "Let $u=5 x + \\frac{2 \\pi}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=5,\\qquad \\mathrm{d}x=\\left(\\frac{1}{5}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\pi}{10}&\\quad\\Longrightarrow\\quad u=5\\left(- \\frac{\\pi}{10}\\right)+\\left(\\frac{2 \\pi}{3}\\right)=\\frac{\\pi}{6}\\\\ x=\\frac{\\pi}{30}&\\quad\\Longrightarrow\\quad u=5\\left(\\frac{\\pi}{30}\\right)+\\left(\\frac{2 \\pi}{3}\\right)=\\frac{5 \\pi}{6}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{\\pi}{10}}^{\\frac{\\pi}{30}} 4\\sin\\left(5 x + \\frac{2 \\pi}{3}\\right)\\,\\mathrm{d}x\\\\ &=4\\left(\\frac{1}{5}\\right)\\int_{\\frac{\\pi}{6}}^{\\frac{5 \\pi}{6}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{4}{5}\\int_{\\frac{\\pi}{6}}^{\\frac{5 \\pi}{6}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{4}{5}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{\\pi}{6}}^{\\frac{5 \\pi}{6}}\\\\ &=- \\frac{4}{5}\\left(\\cos\\left(\\frac{5 \\pi}{6}\\right)-\\cos\\left(\\frac{\\pi}{6}\\right)\\right)\\\\ &=- \\frac{4}{5}\\left(\\left(- \\frac{\\sqrt{3}}{2}\\right)-\\left(\\frac{\\sqrt{3}}{2}\\right)\\right)\\\\ &=\\frac{4 \\sqrt{3}}{5}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e22d41b9-24e9-5721-bdc8-b275bf3ad08e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e4f029ae-4e55-576e-8c37-14d0dba428a7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4 \\sqrt{3}}{5}"
+              },
+              {
+                ":answer/id": "dc761ef5-bc53-5080-8b6d-7dc0838ecfb8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\sqrt{3}}{5}"
+              },
+              {
+                ":answer/id": "ad508cf0-b310-5173-910d-107398a08fc0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sqrt{3}}{5}"
+              },
+              {
+                ":answer/id": "6fbeb5b4-b32d-53af-b860-d2c477471810",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4 \\sqrt{3}"
+              },
+              {
+                ":answer/id": "35b2f33d-8d4d-5537-a1fa-60548674a9ac",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20 \\sqrt{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dc761ef5-bc53-5080-8b6d-7dc0838ecfb8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "shift_sin",
+        "source_ids": [
+          "q-10574",
+          "q-10575"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "4",
+          "slope": "5",
+          "shift": "2*pi/3",
+          "lower": "-pi/10",
+          "upper": "pi/30"
+        },
+        "seed": 16725035152044420793,
+        "mathematical_fingerprint": "ede58fcc74dcdde6167ef3289084268706b4ef31e50037fec5b59bbe9659c7a3",
+        "response": "radio",
+        "bank_origin": "authored rule-error recipes",
+        "bank_recipes": {
+          "\\frac{4 \\sqrt{3}}{5}": "correct",
+          "- \\frac{4 \\sqrt{3}}{5}": "reverse endpoint subtraction",
+          "4 \\sqrt{3}": "omit reciprocal inner derivative",
+          "20 \\sqrt{3}": "multiply by inner derivative",
+          "\\frac{2 \\sqrt{3}}{5}": "omit lower endpoint"
+        },
+        "u_bounds": [
+          "pi/6",
+          "5*pi/6"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "e4f029ae-4e55-576e-8c37-14d0dba428a7",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "dc761ef5-bc53-5080-8b6d-7dc0838ecfb8",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "ad508cf0-b310-5173-910d-107398a08fc0",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "6fbeb5b4-b32d-53af-b860-d2c477471810",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "35b2f33d-8d4d-5537-a1fa-60548674a9ac",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "f50d6061-18c1-5812-b06c-3228e07aac23",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\pi}{15}}^{\\frac{\\pi}{15}} \\cos\\left(- \\frac{5 x}{2}\\right)\\,\\mathrm{d}x\n$$",
+        ":question/worked-solution": "Let $u=- \\frac{5 x}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{5}{2},\\qquad \\mathrm{d}x=\\left(- \\frac{2}{5}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\pi}{15}&\\quad\\Longrightarrow\\quad u=- \\frac{5}{2}\\left(- \\frac{\\pi}{15}\\right)+\\left(0\\right)=\\frac{\\pi}{6}\\\\ x=\\frac{\\pi}{15}&\\quad\\Longrightarrow\\quad u=- \\frac{5}{2}\\left(\\frac{\\pi}{15}\\right)+\\left(0\\right)=- \\frac{\\pi}{6}.\\end{aligned}\n$$\n\nThe transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{\\pi}{15}}^{\\frac{\\pi}{15}} \\cos\\left(- \\frac{5 x}{2}\\right)\\,\\mathrm{d}x\\\\ &=1\\left(- \\frac{2}{5}\\right)\\int_{\\frac{\\pi}{6}}^{- \\frac{\\pi}{6}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{2}{5}\\int_{\\frac{\\pi}{6}}^{- \\frac{\\pi}{6}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{2}{5}\\left[\\sin\\left(u\\right)\\right]_{\\frac{\\pi}{6}}^{- \\frac{\\pi}{6}}\\\\ &=- \\frac{2}{5}\\left(\\sin\\left(- \\frac{\\pi}{6}\\right)-\\sin\\left(\\frac{\\pi}{6}\\right)\\right)\\\\ &=- \\frac{2}{5}\\left(\\left(- \\frac{1}{2}\\right)-\\left(\\frac{1}{2}\\right)\\right)\\\\ &=\\frac{2}{5}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8b4efe82-bb9d-5a92-b1b9-49302a8b50f4",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "81c15623-8964-567b-a0ff-ac0fa69f666b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{5}"
+              },
+              {
+                ":answer/id": "fa8915e9-f843-54b0-a2de-8983849fcff6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5}{2}"
+              },
+              {
+                ":answer/id": "74738466-2f4d-5714-a6bc-d3eff3b15519",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2}{5}"
+              },
+              {
+                ":answer/id": "d8cac9c6-3b0e-555d-a9a0-af01e922d053",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{5}"
+              },
+              {
+                ":answer/id": "37319b13-7d0a-552c-91b9-fc6cec9f6cb3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d8cac9c6-3b0e-555d-a9a0-af01e922d053"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "fraction_cos",
+        "source_ids": [
+          "e-464",
+          "q-10574",
+          "q-10575"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "1",
+          "slope": "-5/2",
+          "shift": "0",
+          "lower": "-pi/15",
+          "upper": "pi/15"
+        },
+        "seed": 2764625410211678701,
+        "mathematical_fingerprint": "3056acff6d4d45e4b21b7873c92272a90b7fbda1e6e848b449d598003809dda2",
+        "response": "radio",
+        "bank_origin": "authored rule-error recipes",
+        "bank_recipes": {
+          "\\frac{2}{5}": "correct",
+          "- \\frac{2}{5}": "reverse endpoint subtraction",
+          "-1": "omit reciprocal inner derivative",
+          "\\frac{5}{2}": "multiply by inner derivative",
+          "\\frac{1}{5}": "omit lower endpoint"
+        },
+        "u_bounds": [
+          "pi/6",
+          "-pi/6"
+        ],
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "81c15623-8964-567b-a0ff-ac0fa69f666b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "fa8915e9-f843-54b0-a2de-8983849fcff6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "74738466-2f4d-5714-a6bc-d3eff3b15519",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d8cac9c6-3b0e-555d-a9a0-af01e922d053",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "37319b13-7d0a-552c-91b9-fc6cec9f6cb3",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "4ce031a9-21bd-500b-ba60-5cc8a5b116d0",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{7 \\pi}{8}}^{\\frac{15 \\pi}{16}} \\frac{5}{3}\\cos\\left(\\frac{4 x}{3} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\frac{4 x}{3} + \\frac{\\pi}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{4}{3},\\qquad \\mathrm{d}x=\\left(\\frac{3}{4}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{7 \\pi}{8}&\\quad\\Longrightarrow\\quad u=\\frac{4}{3}\\left(\\frac{7 \\pi}{8}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{5 \\pi}{3}\\\\ x=\\frac{15 \\pi}{16}&\\quad\\Longrightarrow\\quad u=\\frac{4}{3}\\left(\\frac{15 \\pi}{16}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{7 \\pi}{4}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{7 \\pi}{8}}^{\\frac{15 \\pi}{16}} \\frac{5}{3}\\cos\\left(\\frac{4 x}{3} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{5}{3}\\left(\\frac{3}{4}\\right)\\int_{\\frac{5 \\pi}{3}}^{\\frac{7 \\pi}{4}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{5}{4}\\int_{\\frac{5 \\pi}{3}}^{\\frac{7 \\pi}{4}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{5}{4}\\left[\\sin\\left(u\\right)\\right]_{\\frac{5 \\pi}{3}}^{\\frac{7 \\pi}{4}}\\\\ &=\\frac{5}{4}\\left(\\sin\\left(\\frac{7 \\pi}{4}\\right)-\\sin\\left(\\frac{5 \\pi}{3}\\right)\\right)\\\\ &=\\frac{5}{4}\\left(\\left(- \\frac{\\sqrt{2}}{2}\\right)-\\left(- \\frac{\\sqrt{3}}{2}\\right)\\right)\\\\ &=- \\frac{5 \\sqrt{2}}{8} + \\frac{5 \\sqrt{3}}{8}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "049d1b5e-d9c1-53d8-9e56-d90db77b413b",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "78c528af-36a8-5dd3-a1df-9feb101973ea",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{5 \\sqrt{2}}{8} + \\frac{5 \\sqrt{3}}{8}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "78c528af-36a8-5dd3-a1df-9feb101973ea"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_cos_positive",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "5/3",
+          "slope": "4/3",
+          "shift": "pi/2",
+          "lower": "7*pi/8",
+          "upper": "15*pi/16"
+        },
+        "seed": 9498894953130279041,
+        "mathematical_fingerprint": "9347bba103b0214efacc384f649c38cc3238a86780604a0c7375041d9f1f5515",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{5 \\sqrt{2}}{8} + \\frac{5 \\sqrt{3}}{8}": "correct"
+        },
+        "u_bounds": [
+          "5*pi/3",
+          "7*pi/4"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{5 \\sqrt{2}}{8} + \\frac{5 \\sqrt{3}}{8}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{2}}{8} + \\frac{5 \\sqrt{3}}{8}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{2}}{8} + 1 + \\frac{5 \\sqrt{3}}{8}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "58b5d10d-cbeb-523e-b025-270cd7f1fc43",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{5 \\pi}{24}}^{\\frac{15 \\pi}{4}} \\frac{4}{3}\\sin\\left(\\frac{2 x}{5} + \\frac{\\pi}{3}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\frac{2 x}{5} + \\frac{\\pi}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{2}{5},\\qquad \\mathrm{d}x=\\left(\\frac{5}{2}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{5 \\pi}{24}&\\quad\\Longrightarrow\\quad u=\\frac{2}{5}\\left(- \\frac{5 \\pi}{24}\\right)+\\left(\\frac{\\pi}{3}\\right)=\\frac{\\pi}{4}\\\\ x=\\frac{15 \\pi}{4}&\\quad\\Longrightarrow\\quad u=\\frac{2}{5}\\left(\\frac{15 \\pi}{4}\\right)+\\left(\\frac{\\pi}{3}\\right)=\\frac{11 \\pi}{6}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{5 \\pi}{24}}^{\\frac{15 \\pi}{4}} \\frac{4}{3}\\sin\\left(\\frac{2 x}{5} + \\frac{\\pi}{3}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{4}{3}\\left(\\frac{5}{2}\\right)\\int_{\\frac{\\pi}{4}}^{\\frac{11 \\pi}{6}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{10}{3}\\int_{\\frac{\\pi}{4}}^{\\frac{11 \\pi}{6}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{10}{3}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{\\pi}{4}}^{\\frac{11 \\pi}{6}}\\\\ &=- \\frac{10}{3}\\left(\\cos\\left(\\frac{11 \\pi}{6}\\right)-\\cos\\left(\\frac{\\pi}{4}\\right)\\right)\\\\ &=- \\frac{10}{3}\\left(\\left(\\frac{\\sqrt{3}}{2}\\right)-\\left(\\frac{\\sqrt{2}}{2}\\right)\\right)\\\\ &=- \\frac{5 \\sqrt{3}}{3} + \\frac{5 \\sqrt{2}}{3}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "095fe2b7-0c82-569c-9770-e4329f29d0d0",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5f96fe9e-fafa-51b3-9615-2085eab0437d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{5 \\sqrt{3}}{3} + \\frac{5 \\sqrt{2}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5f96fe9e-fafa-51b3-9615-2085eab0437d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_sin_positive",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "4/3",
+          "slope": "2/5",
+          "shift": "pi/3",
+          "lower": "-5*pi/24",
+          "upper": "15*pi/4"
+        },
+        "seed": 6646020401470195793,
+        "mathematical_fingerprint": "587ef9f38c13e8461ba8ce47547fdf043800bede493d30088bfbf07ffd8935c9",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{5 \\sqrt{3}}{3} + \\frac{5 \\sqrt{2}}{3}": "correct"
+        },
+        "u_bounds": [
+          "pi/4",
+          "11*pi/6"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{3} + \\frac{5 \\sqrt{2}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{3} + \\frac{5 \\sqrt{2}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{3} + 1 + \\frac{5 \\sqrt{2}}{3}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "3d33dda7-75bb-5638-83e0-d057dce7fbe8",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{6}} \\frac{5}{3}\\cos\\left(\\frac{3 x}{2} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\frac{3 x}{2} + \\frac{\\pi}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{3}{2},\\qquad \\mathrm{d}x=\\left(\\frac{2}{3}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{9}&\\quad\\Longrightarrow\\quad u=\\frac{3}{2}\\left(\\frac{\\pi}{9}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{2 \\pi}{3}\\\\ x=\\frac{\\pi}{6}&\\quad\\Longrightarrow\\quad u=\\frac{3}{2}\\left(\\frac{\\pi}{6}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{3 \\pi}{4}.\\end{aligned}\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{6}} \\frac{5}{3}\\cos\\left(\\frac{3 x}{2} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{5}{3}\\left(\\frac{2}{3}\\right)\\int_{\\frac{2 \\pi}{3}}^{\\frac{3 \\pi}{4}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{10}{9}\\int_{\\frac{2 \\pi}{3}}^{\\frac{3 \\pi}{4}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=\\frac{10}{9}\\left[\\sin\\left(u\\right)\\right]_{\\frac{2 \\pi}{3}}^{\\frac{3 \\pi}{4}}\\\\ &=\\frac{10}{9}\\left(\\sin\\left(\\frac{3 \\pi}{4}\\right)-\\sin\\left(\\frac{2 \\pi}{3}\\right)\\right)\\\\ &=\\frac{10}{9}\\left(\\left(\\frac{\\sqrt{2}}{2}\\right)-\\left(\\frac{\\sqrt{3}}{2}\\right)\\right)\\\\ &=- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1798f6bf-089b-532a-a397-c568a4b0e7fd",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ec9f64d1-5db3-5a77-890f-6e7760eaeca0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ec9f64d1-5db3-5a77-890f-6e7760eaeca0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_cos_positive",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "5/3",
+          "slope": "3/2",
+          "shift": "pi/2",
+          "lower": "pi/9",
+          "upper": "pi/6"
+        },
+        "seed": 16232852466889630223,
+        "mathematical_fingerprint": "48b018e4be7e544e3ecb727289ed7246030900a559fb30350bd899c6b1ed04d6",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9}": "correct"
+        },
+        "u_bounds": [
+          "2*pi/3",
+          "3*pi/4"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{5 \\sqrt{3}}{9} + \\frac{5 \\sqrt{2}}{9} + 1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "c69faa47-d347-5ab5-981e-f631452b35b6",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{\\pi}{5}}^{\\frac{\\pi}{6}} \\frac{5}{4}\\sin\\left(- \\frac{5 x}{2} + \\frac{2 \\pi}{3}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=- \\frac{5 x}{2} + \\frac{2 \\pi}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{5}{2},\\qquad \\mathrm{d}x=\\left(- \\frac{2}{5}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{\\pi}{5}&\\quad\\Longrightarrow\\quad u=- \\frac{5}{2}\\left(- \\frac{\\pi}{5}\\right)+\\left(\\frac{2 \\pi}{3}\\right)=\\frac{7 \\pi}{6}\\\\ x=\\frac{\\pi}{6}&\\quad\\Longrightarrow\\quad u=- \\frac{5}{2}\\left(\\frac{\\pi}{6}\\right)+\\left(\\frac{2 \\pi}{3}\\right)=\\frac{\\pi}{4}.\\end{aligned}\n$$\n\nThe transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{\\pi}{5}}^{\\frac{\\pi}{6}} \\frac{5}{4}\\sin\\left(- \\frac{5 x}{2} + \\frac{2 \\pi}{3}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{5}{4}\\left(- \\frac{2}{5}\\right)\\int_{\\frac{7 \\pi}{6}}^{\\frac{\\pi}{4}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{1}{2}\\int_{\\frac{7 \\pi}{6}}^{\\frac{\\pi}{4}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{1}{2}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{7 \\pi}{6}}^{\\frac{\\pi}{4}}\\\\ &=\\frac{1}{2}\\left(\\cos\\left(\\frac{\\pi}{4}\\right)-\\cos\\left(\\frac{7 \\pi}{6}\\right)\\right)\\\\ &=\\frac{1}{2}\\left(\\left(\\frac{\\sqrt{2}}{2}\\right)-\\left(- \\frac{\\sqrt{3}}{2}\\right)\\right)\\\\ &=\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e3705a1a-be27-594b-b2d3-f4cbbc5d493c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a0c996f2-5d2b-5562-a23a-3af7cc11fcbd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a0c996f2-5d2b-5562-a23a-3af7cc11fcbd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_sin_negative",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "5/4",
+          "slope": "-5/2",
+          "shift": "2*pi/3",
+          "lower": "-pi/5",
+          "upper": "pi/6"
+        },
+        "seed": 14463427314341116545,
+        "mathematical_fingerprint": "8ac06d0683392ffcddf82b8c4777c6dd3247db21a2a43f3dfa453909e7c41a4b",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4}": "correct"
+        },
+        "u_bounds": [
+          "7*pi/6",
+          "pi/4"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{\\sqrt{2}}{4} + \\frac{\\sqrt{3}}{4} + 1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "73d53029-a5e9-573c-8d13-0d9abf29595c",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{- \\frac{15 \\pi}{16}}^{- \\frac{\\pi}{8}} \\frac{3}{4}\\cos\\left(- \\frac{4 x}{3} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=- \\frac{4 x}{3} + \\frac{\\pi}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{4}{3},\\qquad \\mathrm{d}x=\\left(- \\frac{3}{4}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=- \\frac{15 \\pi}{16}&\\quad\\Longrightarrow\\quad u=- \\frac{4}{3}\\left(- \\frac{15 \\pi}{16}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{7 \\pi}{4}\\\\ x=- \\frac{\\pi}{8}&\\quad\\Longrightarrow\\quad u=- \\frac{4}{3}\\left(- \\frac{\\pi}{8}\\right)+\\left(\\frac{\\pi}{2}\\right)=\\frac{2 \\pi}{3}.\\end{aligned}\n$$\n\nThe transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{- \\frac{15 \\pi}{16}}^{- \\frac{\\pi}{8}} \\frac{3}{4}\\cos\\left(- \\frac{4 x}{3} + \\frac{\\pi}{2}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{3}{4}\\left(- \\frac{3}{4}\\right)\\int_{\\frac{7 \\pi}{4}}^{\\frac{2 \\pi}{3}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{9}{16}\\int_{\\frac{7 \\pi}{4}}^{\\frac{2 \\pi}{3}} \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{9}{16}\\left[\\sin\\left(u\\right)\\right]_{\\frac{7 \\pi}{4}}^{\\frac{2 \\pi}{3}}\\\\ &=- \\frac{9}{16}\\left(\\sin\\left(\\frac{2 \\pi}{3}\\right)-\\sin\\left(\\frac{7 \\pi}{4}\\right)\\right)\\\\ &=- \\frac{9}{16}\\left(\\left(\\frac{\\sqrt{3}}{2}\\right)-\\left(- \\frac{\\sqrt{2}}{2}\\right)\\right)\\\\ &=- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "673f7e0f-77fd-5803-b9e6-951080dddb0f",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fcc9ad5f-3997-5dcb-a076-ab1d3a4ee51e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fcc9ad5f-3997-5dcb-a076-ab1d3a4ee51e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_cos_negative",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "3/4",
+          "slope": "-4/3",
+          "shift": "pi/2",
+          "lower": "-15*pi/16",
+          "upper": "-pi/8"
+        },
+        "seed": 16725035152044420793,
+        "mathematical_fingerprint": "3c2df829da6d30288a0211c5ac65b6634c5e0e99beae44942cabe85e2ade3751",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32}": "correct"
+        },
+        "u_bounds": [
+          "7*pi/4",
+          "2*pi/3"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{9 \\sqrt{3}}{32} - \\frac{9 \\sqrt{2}}{32} + 1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "ccb4f2fa-6a42-5335-9a55-dc602d69cdc2",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int 3\\sin\\left(5 - 4 x\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=5 - 4 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4,\\qquad \\mathrm{d}x=\\left(- \\frac{1}{4}\\right)\\mathrm{d}u.\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int 3\\sin\\left(5 - 4 x\\right)\\,\\mathrm{d}x\\\\ &=3\\left(- \\frac{1}{4}\\right)\\int \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{4}\\int \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{4}\\left(-\\cos\\left(u\\right)\\right)+C\\\\ &=\\frac{3}{4}\\cos\\left(5 - 4 x\\right)+C.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7e2cdb69-d655-5eea-a6a5-497917f4020b",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "694e8c22-cd1f-5c50-9758-3a6c9864ddfe",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{4}\\cos\\left(5 - 4 x\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "694e8c22-cd1f-5c50-9758-3a6c9864ddfe"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "indef_sin",
+        "source_ids": [
+          "q-10061",
+          "q-10064",
+          "q-2191",
+          "e-464"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "3",
+          "slope": "-4",
+          "shift": "5",
+          "lower": null,
+          "upper": null
+        },
+        "seed": 0,
+        "mathematical_fingerprint": "d2bdc99ba6df5619b707b6ec03ca8c52a873881bd3f3097c9c48f9a495ea2cf7",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "\\frac{3}{4}\\cos\\left(5 - 4 x\\right)": "correct"
+        },
+        "u_bounds": null,
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{3}{4}\\cos\\left(5 - 4 x\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{3 \\cos{\\left(5 - 4 x \\right)}}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{3 \\cos{\\left(5 - 4 x \\right)}}{4}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "fcfdc469-d9f4-5998-a763-c701a3cdd55a",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int 3\\cos\\left(5 - 4 x\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=5 - 4 x.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4,\\qquad \\mathrm{d}x=\\left(- \\frac{1}{4}\\right)\\mathrm{d}u.\n$$\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int 3\\cos\\left(5 - 4 x\\right)\\,\\mathrm{d}x\\\\ &=3\\left(- \\frac{1}{4}\\right)\\int \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{4}\\int \\cos\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{3}{4}\\left(\\sin\\left(u\\right)\\right)+C\\\\ &=- \\frac{3}{4}\\sin\\left(5 - 4 x\\right)+C.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2c3e1af6-73db-53e9-a4c8-f820ef90a6d4",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6cf8ffda-26fe-51b9-90b6-0aa6fcd48c9c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{4}\\sin\\left(5 - 4 x\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6cf8ffda-26fe-51b9-90b6-0aa6fcd48c9c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "indef_cos",
+        "source_ids": [
+          "q-10061",
+          "q-10064",
+          "q-2191",
+          "e-464"
+        ],
+        "parameters": {
+          "function": "cos",
+          "amplitude": "3",
+          "slope": "-4",
+          "shift": "5",
+          "lower": null,
+          "upper": null
+        },
+        "seed": 0,
+        "mathematical_fingerprint": "f5b46d187b85578338bbd6081a64d3db91c4412b77be80d18b9d55a7ee0ec14e",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "- \\frac{3}{4}\\sin\\left(5 - 4 x\\right)": "correct"
+        },
+        "u_bounds": null,
+        "difficulty_origin": "source-supported workload; labels are not copied from individual templates",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{3}{4}\\sin\\left(5 - 4 x\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "- \\frac{3 \\sin{\\left(5 - 4 x \\right)}}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{3 \\sin{\\left(5 - 4 x \\right)}}{4}",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "published band/shape 17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "15ec27df-bdc3-5328-93ac-8fd687dcd7ef",
+        ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{2}} \\frac{5}{3}\\sin\\left(\\pi - \\frac{3 x}{2}\\right)\\,\\mathrm{d}x =\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\pi - \\frac{3 x}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{3}{2},\\qquad \\mathrm{d}x=\\left(- \\frac{2}{3}\\right)\\mathrm{d}u.\n$$\n\nTransform both bounds using the same substitution:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{9}&\\quad\\Longrightarrow\\quad u=- \\frac{3}{2}\\left(\\frac{\\pi}{9}\\right)+\\left(\\pi\\right)=\\frac{5 \\pi}{6}\\\\ x=\\frac{\\pi}{2}&\\quad\\Longrightarrow\\quad u=- \\frac{3}{2}\\left(\\frac{\\pi}{2}\\right)+\\left(\\pi\\right)=\\frac{\\pi}{4}.\\end{aligned}\n$$\n\nThe transformed bounds decrease because the inner derivative is negative. Keep their order together with the negative substitution factor.\n\nSubstitute and integrate:\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{9}}^{\\frac{\\pi}{2}} \\frac{5}{3}\\sin\\left(\\pi - \\frac{3 x}{2}\\right)\\,\\mathrm{d}x\\\\ &=\\frac{5}{3}\\left(- \\frac{2}{3}\\right)\\int_{\\frac{5 \\pi}{6}}^{\\frac{\\pi}{4}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{10}{9}\\int_{\\frac{5 \\pi}{6}}^{\\frac{\\pi}{4}} \\sin\\left(u\\right)\\,\\mathrm{d}u\\\\ &=- \\frac{10}{9}\\left[-\\cos\\left(u\\right)\\right]_{\\frac{5 \\pi}{6}}^{\\frac{\\pi}{4}}\\\\ &=\\frac{10}{9}\\left(\\cos\\left(\\frac{\\pi}{4}\\right)-\\cos\\left(\\frac{5 \\pi}{6}\\right)\\right)\\\\ &=\\frac{10}{9}\\left(\\left(\\frac{\\sqrt{2}}{2}\\right)-\\left(- \\frac{\\sqrt{3}}{2}\\right)\\right)\\\\ &=\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "fa773846-e7d4-5ffb-b449-d8350247ab5c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c8da731f-1af2-5ccd-9ec7-533fac2ab060",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c8da731f-1af2-5ccd-9ec7-533fac2ab060"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "2.0.0-structural-bands",
+        "template": "compound_sin_negative",
+        "source_ids": [
+          "e-464",
+          "q-10064",
+          "q-10574",
+          "q-10575",
+          "q-350036"
+        ],
+        "parameters": {
+          "function": "sin",
+          "amplitude": "5/3",
+          "slope": "-3/2",
+          "shift": "pi",
+          "lower": "pi/9",
+          "upper": "pi/2"
+        },
+        "seed": 0,
+        "mathematical_fingerprint": "ca9a457ae14b9a29008d370b95e520e4230b33ff552865c00576b7119d54e131",
+        "response": "blank",
+        "bank_origin": "exact entry",
+        "bank_recipes": {
+          "\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9}": "correct"
+        },
+        "u_bounds": [
+          "5*pi/6",
+          "pi/4"
+        ],
+        "difficulty_origin": "authored compound of established skills; no imported hard examples",
+        "domain": "x real; constant nonzero inner derivative; exact special-angle endpoints"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{5 \\sqrt{2}}{9} + \\frac{5 \\sqrt{3}}{9} + 1",
+        "expected": "rejected"
+      }
+    ]
+  }
+]
