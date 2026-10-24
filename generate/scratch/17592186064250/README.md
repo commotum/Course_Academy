@@ -1,5 +1,18 @@
-# Inverse-secant substitution generator
+# Calculating Indefinite Integrals Using Substitution with Inverse Secant
 
-Run the repository-relative generate/scratch/17592186064250.py script with --difficulty moderate|hard --count N --seed S --format json|markdown. Validation uses the actual application grade_field entry point through an in-memory fixture, with no learner writes. All complete source banks are replayed, preserving prompt and solution source layouts while rendering mathematically equivalent canonical answer notation. Exponents, domains, answer ownership and difficulty are checked.
+The repaired role-based implementation is `generate/inverse_trig.py`; the numeric
+entrypoint delegates to it using `band-evidence.json`. All three difficulty bands
+are supported under the explicit operation contracts in `capabilities.json`.
 
-classification.md and template-extraction.md cover stages 3–5. The Python generator covers stage 6; stages 5/7 require no plots. validation.json freezes exhaustive correctness, complete-bank fidelity and native grading evidence. capability.json records the unsupported easy band and finite variant limits. reference/replenishment retains locked current reads, exact basis-guarded requests, native validation previews, receipts, attribution and exact-basis readback for stages 8–9. Only additive facts on this KP and its generator/content are permitted.
+Run `.venv/bin/python generate/scratch/17592186064250.py --difficulty all --count 5 --seed 17 --format json`.
+The registered immutable package is `generators/8a/8a0c90144a6646880afd310214594dfeb8ddcf955e4d1aa7a69b728cc305a94f/generator.py` (published at T6403).
+
+Normal banks are explicitly authored error-recipe profiles. Imported originals
+are preserved as evidence; they are not source-number replacement templates.
+`source_original(id)` retrieves the archived import and is outside normal generation.
+
+See `generate/inverse_trig.md` and
+`reference/edb-math/repairs/2026-10-24-inverse-trig-bands/README.md` for the band
+contracts, source coverage, mathematical checks, grading, rendering and pool refresh.
+The prior scripts and capability/readme documents are archived in that repair's
+`originals/` directory. Earlier local validation reports describe the old generator.

@@ -1,9 +1,18 @@
-# Inverse-tangent substitution generator
+# Calculating Indefinite Integrals Using Substitution with Inverse Tangent
 
-Script: `generate/scratch/17592186064219.py`. The stable generator identity is derived from the existing knowledge-point UUID; an already registered identity takes precedence on replenishment.
+The repaired role-based implementation is `generate/inverse_trig.py`; the numeric
+entrypoint delegates to it using `band-evidence.json`. All three difficulty bands
+are supported under the explicit operation contracts in `capabilities.json`.
 
-`validate.py` exhaustively checks the bounded family with SymPy and the actual application grader. It verifies exact source-bank replay, complete source wording, deterministic identity independent of seed, option distinctness, printed integrands, substitution coefficients and final derivatives. `review.md` places every original next to its replay and variant. No plots or new assets are required.
+Run `.venv/bin/python generate/scratch/17592186064219.py --difficulty all --count 5 --seed 17 --format json`.
+The registered immutable package is `generators/cf/cf5abaf1d5a4a7cb3dc47cd2081214a33752a2c515b04bac374bf14fb763103c/generator.py` (published at T6402).
 
-`replenish.py` reuses the configured database integration and application contributor. It acquires `.local/learning/requests/math/api.lock`, rechecks current basis, distinct unseen/unreserved stock, identities and source evidence, and holds the lock through preview, guarded submission, exact receipt readback and inventory recheck. Only this KP's generator registration and fresh validated questions can be added. Original source records, canonical content and all learner facts are preserved. Durable requests are retained and recovered under their original keys before new intent. Evidence lives in reference/replenishment.
+Normal banks are explicitly authored error-recipe profiles. Imported originals
+are preserved as evidence; they are not source-number replacement templates.
+`source_original(id)` retrieves the archived import and is outside normal generation.
 
-Sampling is deliberately bounded: observed denominator scale, restricted nonunit numerator variation, fixed unit/cancellation profiles. Unsupported hard and exhausted finite stock remain explicit. Seed, source profile, identity, and choice order are never counted as distinct tasks.
+See `generate/inverse_trig.md` and
+`reference/edb-math/repairs/2026-10-24-inverse-trig-bands/README.md` for the band
+contracts, source coverage, mathematical checks, grading, rendering and pool refresh.
+The prior scripts and capability/readme documents are archived in that repair's
+`originals/` directory. Earlier local validation reports describe the old generator.

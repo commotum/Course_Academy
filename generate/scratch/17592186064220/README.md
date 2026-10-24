@@ -1,9 +1,18 @@
-# KP 17592186064220 review bundle
+# Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions
 
-Run `.venv/bin/python generate/scratch/17592186064220.py --difficulty all --count 1 --seed 2275 --format json` for a JSON list of three normal records. Markdown preview uses `--format markdown`. Importing the generator and calling generate supports explicit source profile and h/k parameters. Only builtin integer seeds and positive builtin integer counts are accepted.
+The repaired role-based implementation is `generate/inverse_trig.py`; the numeric
+entrypoint delegates to it using `band-evidence.json`. All three difficulty bands
+are supported under the explicit operation contracts in `capabilities.json`.
 
-Run `.venv/bin/python generate/scratch/17592186064220/validate.py` for full source/changed rendered mathematics, complete source bank comparison, bounded profile collision checks, strict input and deterministic replay checks, corruption controls, and the actual frozen native grade_field runner. The validator probes native outcomes and records mathematical expected outcomes separately, retaining every normal blank parser or equivalence gap in native-gaps.json. No database or engine changes occur.
+Run `.venv/bin/python generate/scratch/17592186064220.py --difficulty all --count 5 --seed 17 --format json`.
+The registered immutable package is `generators/dc/dc2c6e81c814b35a099aef56a40e934ddf374d633dd99d5b40e34f758270a5a0/generator.py` (published at T6404).
 
-source-cases.json contains only the 22 MA originals; raw q-351839 and q-351850 are explicitly ineligible for serving because of captured bare arctan operators. review-cases.json holds 66 authored changed instances and their two separately labeled operator-name repairs. source-errors-and-repairs.json preserves the exact raw defect and repaired record. source.json is the byte-exact basis-2275 source wrapper, also retained in reference/sources.json. independent-inventory.json is the standard basis/lineage/questions wrapper with an empty questions array because the captured inventory contains 22 MA and zero non-MA records. diagnostic-blank-cases.json preserves the three separately authored blank grading fixtures and their relationship statements; they are not captured source inventory. Their native checks and outcomes remain in native-input.json and native-grading.json. source-and-changed.md places each original and a changed instance side by side. classification.md, template-extraction.md, choice-ledger.json, plot-extraction.md and lesson-scope.md document stages 3–7. Native grading and mathematical fidelity are reported separately.
+Normal banks are explicitly authored error-recipe profiles. Imported originals
+are preserved as evidence; they are not source-number replacement templates.
+`source_original(id)` retrieves the archived import and is outside normal generation.
 
-The numeric script and tree were absent before work; baseline.json captures that state and the manifest's has_generator=false evidence before private imports. No existing registered numeric artifact was imported or modified. The private formatter, parser and actual native binary are frozen in this owned tree. freeze.py recursively hashes the complete script/tree, excluding only freeze-manifest.json itself.
+See `generate/inverse_trig.md` and
+`reference/edb-math/repairs/2026-10-24-inverse-trig-bands/README.md` for the band
+contracts, source coverage, mathematical checks, grading, rendering and pool refresh.
+The prior scripts and capability/readme documents are archived in that repair's
+`originals/` directory. Earlier local validation reports describe the old generator.

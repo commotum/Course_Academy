@@ -1,0 +1,5 @@
+# Inverse-secant substitution generator
+
+Run the repository-relative generate/scratch/17592186064250.py script with --difficulty moderate|hard --count N --seed S --format json|markdown. Validation uses the actual application grade_field entry point through an in-memory fixture, with no learner writes. All complete source banks are replayed, preserving prompt and solution source layouts while rendering mathematically equivalent canonical answer notation. Exponents, domains, answer ownership and difficulty are checked.
+
+classification.md and template-extraction.md cover stages 3–5. The Python generator covers stage 6; stages 5/7 require no plots. validation.json freezes exhaustive correctness, complete-bank fidelity and native grading evidence. capability.json records the unsupported easy band and finite variant limits. reference/replenishment retains locked current reads, exact basis-guarded requests, native validation previews, receipts, attribution and exact-basis readback for stages 8–9. Only additive facts on this KP and its generator/content are permitted.
