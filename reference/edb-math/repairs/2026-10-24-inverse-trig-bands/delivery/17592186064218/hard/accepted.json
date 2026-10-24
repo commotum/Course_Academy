@@ -1,0 +1,754 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "a57f0d65-3f7b-5093-8b5d-c66248b0abe5",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{4}{\\sqrt{36 - 2 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{36 - 2 x^{2}}=\\sqrt{36(1-(\\frac{1}{18})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{2} x}{6}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{2}}{6},\\qquad \\mathrm{d}x=(3 \\sqrt{2})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{4}{\\sqrt{36 - 2 x^{2}}}\\,\\mathrm{d}x &= \\frac{2}{3}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{2} x}{6})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{2}{3}(3 \\sqrt{2})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= 2 \\sqrt{2}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= 2 \\sqrt{2} \\operatorname{arcsin}{\\left(u \\right)}+C \\\\  &= 2 \\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{6} \\right)}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "37ff69c9-ad83-5d1e-a355-4ef4c878b6bc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2efbd794-6227-5913-8df7-70d5c8da47e3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{6} \\right)}+C"
+            },
+            {
+              ":answer/id": "6e04e21b-66e6-59a9-8b1f-aba025a53a07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{2} \\operatorname{arctan}{\\left(\\frac{\\sqrt{2} x}{6} \\right)}+C"
+            },
+            {
+              ":answer/id": "df72e352-6d32-5afe-b916-4ad7a007f797",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{6} \\right)}}{9}+C"
+            },
+            {
+              ":answer/id": "1bf57845-5a4f-5b3e-870d-d444b93b35e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{2} \\operatorname{arcsin}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "c1833e8d-e7d3-51e6-bff2-4cd6f40213c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{6} \\right)}}{3}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2efbd794-6227-5913-8df7-70d5c8da47e3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 4649200600166405,
+      "template": "combined-integer-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "36",
+        "B": "2",
+        "N": "4",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "344ee309962fb78fef149d2fee51e8d4290a7ea93199bba8576f4ab302be95fa",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "5d1a2e08-17a0-5035-83a4-af508eb0495e",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{\\frac{6}{5}}{\\sqrt{49 - 2 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{49 - 2 x^{2}}=\\sqrt{49(1-(\\frac{2}{49})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{2} x}{7}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{2}}{7},\\qquad \\mathrm{d}x=(\\frac{7 \\sqrt{2}}{2})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{\\frac{6}{5}}{\\sqrt{49 - 2 x^{2}}}\\,\\mathrm{d}x &= \\frac{6}{35}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{2} x}{7})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{6}{35}(\\frac{7 \\sqrt{2}}{2})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{2}}{5}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{3 \\sqrt{2} \\operatorname{arcsin}{\\left(u \\right)}}{5}+C \\\\  &= \\frac{3 \\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{7} \\right)}}{5}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "24547e6f-5e45-537a-b8ff-884f262b7273",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "29ecfb90-4954-5354-9317-133f8d1b8c18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{7} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "34364745-85dd-5191-901a-8585d610c285",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{7} \\right)}}{35}+C"
+            },
+            {
+              ":answer/id": "5935e9d1-90a3-5934-943c-196a2cd9ab88",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{2} \\operatorname{arctan}{\\left(\\frac{\\sqrt{2} x}{7} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "57b3d13c-f606-5508-88bd-c21237120d7f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6 \\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{7} \\right)}}{245}+C"
+            },
+            {
+              ":answer/id": "3e0f4034-307c-544b-ba8b-61bda7a8cded",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\sqrt{2} \\operatorname{arcsin}{\\left(x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "29ecfb90-4954-5354-9317-133f8d1b8c18"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 6492705046014620,
+      "template": "combined-fractional-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "49",
+        "B": "2",
+        "N": "6/5",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "c87c42ad75785a16a19021c9c7f0b4236e05ec0eb1806e20ee768c5dde3eaed3",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "1df3778e-4e82-53f7-a9f2-51a498e80f46",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{4}{\\sqrt{25 - 10 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{25 - 10 x^{2}}=\\sqrt{25(1-(\\frac{2}{5})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{10} x}{5}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{10}}{5},\\qquad \\mathrm{d}x=(\\frac{\\sqrt{10}}{2})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{4}{\\sqrt{25 - 10 x^{2}}}\\,\\mathrm{d}x &= \\frac{4}{5}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{10} x}{5})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{4}{5}(\\frac{\\sqrt{10}}{2})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{10}}{5}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{10} \\operatorname{arcsin}{\\left(u \\right)}}{5}+C \\\\  &= \\frac{2 \\sqrt{10} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{10} x}{5} \\right)}}{5}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "19bcada3-da05-5238-a175-fffd984e8c80",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7b27ebf9-81c0-5186-b894-864e87744f47",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{10} \\operatorname{arctan}{\\left(\\frac{\\sqrt{10} x}{5} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "4f664ff5-8ad0-5fbb-a886-4102a1c3c4e3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{10} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{10} x}{5} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "af9ea903-410b-595e-b44f-e4a2c4960f1a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\sqrt{10} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{10} x}{5} \\right)}}{25}+C"
+            },
+            {
+              ":answer/id": "ee1773d2-c55c-5fa1-ab0f-590df321fdcd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{10} \\operatorname{arcsin}{\\left(x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "69ae4778-cd6b-5818-b92e-5784218e6a03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{10} x}{5} \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4f664ff5-8ad0-5fbb-a886-4102a1c3c4e3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 5042228637084636,
+      "template": "combined-integer-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "25",
+        "B": "10",
+        "N": "4",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "5d4f9c2d9229cd7ca8a2d8e46d1b80afffe3f536cfe9bda24d847c76622a0e6b",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "06700047-ad1d-5b16-8026-a95be4f4bee9",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{\\frac{7}{4}}{\\sqrt{25 - 5 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{25 - 5 x^{2}}=\\sqrt{25(1-(\\frac{1}{5})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{5} x}{5}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{5}}{5},\\qquad \\mathrm{d}x=(\\sqrt{5})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{\\frac{7}{4}}{\\sqrt{25 - 5 x^{2}}}\\,\\mathrm{d}x &= \\frac{7}{20}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{5} x}{5})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{7}{20}(\\sqrt{5})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{7 \\sqrt{5}}{20}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{7 \\sqrt{5} \\operatorname{arcsin}{\\left(u \\right)}}{20}+C \\\\  &= \\frac{7 \\sqrt{5} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{5} x}{5} \\right)}}{20}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "62aed248-e6f8-5802-92f0-41cfc63b825b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d9f32989-1267-56b3-88cb-4f9850104bb9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\sqrt{5} \\operatorname{arctan}{\\left(\\frac{\\sqrt{5} x}{5} \\right)}}{20}+C"
+            },
+            {
+              ":answer/id": "39952f53-b06e-5af0-b589-c1f02ec472cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\sqrt{5} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{5} x}{5} \\right)}}{20}+C"
+            },
+            {
+              ":answer/id": "a8655662-941b-56fe-9d9a-9ab0306c63a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\sqrt{5} \\operatorname{arcsin}{\\left(x \\right)}}{20}+C"
+            },
+            {
+              ":answer/id": "bbf69c40-a265-50fd-8f13-97eeaa5edcfa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\sqrt{5} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{5} x}{5} \\right)}}{100}+C"
+            },
+            {
+              ":answer/id": "11a0a2dd-94b9-53c9-acb5-8f1bb994d149",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{7 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{5} x}{5} \\right)}}{20}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "39952f53-b06e-5af0-b589-c1f02ec472cd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 2209039449301621,
+      "template": "combined-fractional-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "25",
+        "B": "5",
+        "N": "7/4",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "0a58039b4cb644544f0cbcd7d3d09fa2c0c3a72b03609208d2d07c2a0fd0c74d",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "c401b599-aeb3-532e-ad3b-4af24ac3d788",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{1}{\\sqrt{4 - 2 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{4 - 2 x^{2}}=\\sqrt{4(1-(\\frac{1}{2})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{2} x}{2}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{2}}{2},\\qquad \\mathrm{d}x=(\\sqrt{2})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{1}{\\sqrt{4 - 2 x^{2}}}\\,\\mathrm{d}x &= \\frac{1}{2}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{2} x}{2})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{1}{2}(\\sqrt{2})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{2}}{2}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(u \\right)}}{2}+C \\\\  &= \\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{2} \\right)}}{2}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d8e1c793-b298-5ef3-8a3d-aeb9c648f8f7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "39fb2c59-5643-5a74-9272-aca623e70e85",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{2} \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "1fbe9b1d-f277-5dc4-b54d-ce84ab329d1b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "b002eeca-bc61-5614-b62b-8eec96416915",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{2} \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "4061e863-62d3-504f-b147-21643eb671b3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{2} \\operatorname{arctan}{\\left(\\frac{\\sqrt{2} x}{2} \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "8d912bed-0479-5a8d-92b1-ddea3ed41c6f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{2} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{2} x}{2} \\right)}}{4}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b002eeca-bc61-5614-b62b-8eec96416915"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 982451999502167,
+      "template": "combined-integer-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "4",
+        "B": "2",
+        "N": "1",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "3699a22e763a558a424165c00fcf49215486b181c793a38ecb165b1210eaeced",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "a7ba47cf-596e-5b89-8f83-7c1f409bdcdd",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{\\frac{9}{5}}{\\sqrt{36 - 7 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{36 - 7 x^{2}}=\\sqrt{36(1-(\\frac{7}{36})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{7} x}{6}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{7}}{6},\\qquad \\mathrm{d}x=(\\frac{6 \\sqrt{7}}{7})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{\\frac{9}{5}}{\\sqrt{36 - 7 x^{2}}}\\,\\mathrm{d}x &= \\frac{3}{10}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{7} x}{6})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{3}{10}(\\frac{6 \\sqrt{7}}{7})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7}}{35}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(u \\right)}}{35}+C \\\\  &= \\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{6} \\right)}}{35}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d2203131-1971-567e-9dad-1a25974fd980",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "acf640ac-2120-5fb5-8cf7-f2e16ceb502a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arctan}{\\left(\\frac{\\sqrt{7} x}{6} \\right)}}{35}+C"
+            },
+            {
+              ":answer/id": "e1b083a2-8377-5d49-9b34-8079d5287b83",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{6} \\right)}}{10}+C"
+            },
+            {
+              ":answer/id": "62e8f05f-97cc-5d99-a0be-37e571eec26d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{6} \\right)}}{35}+C"
+            },
+            {
+              ":answer/id": "4a7dd127-f3c7-5b5f-b1d1-85ec960d67de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(x \\right)}}{35}+C"
+            },
+            {
+              ":answer/id": "04280869-47cd-51fb-bd56-21c6fc5838e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{6} \\right)}}{20}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "62e8f05f-97cc-5d99-a0be-37e571eec26d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 8081451342392037,
+      "template": "combined-fractional-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "36",
+        "B": "7",
+        "N": "9/5",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "ef453d17a247dc657ac99994e2e17c47b12d5d84cf8ab936db8e0c8710f1978a",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "c3725f6e-6465-5347-b4c3-9fbe02106733",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{9}{\\sqrt{9 - 7 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{9 - 7 x^{2}}=\\sqrt{9(1-(\\frac{7}{9})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{7} x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{7}}{3},\\qquad \\mathrm{d}x=(\\frac{3 \\sqrt{7}}{7})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{9}{\\sqrt{9 - 7 x^{2}}}\\,\\mathrm{d}x &= 3\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{7} x}{3})^{2}}}\\,\\mathrm{d}x \\\\  &= 3(\\frac{3 \\sqrt{7}}{7})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7}}{7}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(u \\right)}}{7}+C \\\\  &= \\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{3} \\right)}}{7}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6669c3de-2402-5ecc-b193-85ab401d4cad",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fcc4f02a-f8e8-5417-a314-b47a273aa821",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "6782df1e-4d03-5c54-bb1a-08d21c527b97",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arctan}{\\left(\\frac{\\sqrt{7} x}{3} \\right)}}{7}+C"
+            },
+            {
+              ":answer/id": "9975dc61-bc56-5617-a016-567a3ee1b51e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "a4b55f5c-24ff-5bef-83f9-11bd528fee90",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{7} x}{3} \\right)}}{7}+C"
+            },
+            {
+              ":answer/id": "fb6c7d4b-a0dd-5017-9269-39c7f5e82f17",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9 \\sqrt{7} \\operatorname{arcsin}{\\left(x \\right)}}{7}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a4b55f5c-24ff-5bef-83f9-11bd528fee90"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 3717328642107013,
+      "template": "combined-integer-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "9",
+        "B": "7",
+        "N": "9",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "57cf6180f35dde321286654a142476227f40c76f539f4840180f7b81db7b210a",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064218,
+      "id": "de1e3f3a-5a64-573f-8fb1-9952fa36a839",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Sine"
+    },
+    "question": {
+      ":question/id": "95936323-2406-5bb2-859c-74d73dc5a714",
+      ":question/problem": "Evaluate the integral. Give an exact answer.\n\n$$\n\\int \\frac{\\frac{6}{5}}{\\sqrt{9 - 3 x^{2}}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "First factor the constant in the denominator:\n\n$$\n\\sqrt{9 - 3 x^{2}}=\\sqrt{9(1-(\\frac{1}{3})x^{2})}\n$$\n\nUse the linear substitution $u=\\frac{\\sqrt{3} x}{3}.$ Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{\\sqrt{3}}{3},\\qquad \\mathrm{d}x=(\\sqrt{3})\\,\\mathrm{d}u.\n$$\n\nApply the basic inverse-trigonometric integral:\n\n$$\n\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u=\\operatorname{arcsin}{\\left(u \\right)}+C.\n$$\n\nSubstitute and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{\\frac{6}{5}}{\\sqrt{9 - 3 x^{2}}}\\,\\mathrm{d}x &= \\frac{2}{5}\\int \\frac{1}{\\sqrt{1-(\\frac{\\sqrt{3} x}{3})^{2}}}\\,\\mathrm{d}x \\\\  &= \\frac{2}{5}(\\sqrt{3})\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{3}}{5}\\int \\frac{1}{\\sqrt{1-u^{2}}}\\,\\mathrm{d}u \\\\  &= \\frac{2 \\sqrt{3} \\operatorname{arcsin}{\\left(u \\right)}}{5}+C \\\\  &= \\frac{2 \\sqrt{3} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{3} x}{3} \\right)}}{5}+C\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "679b27a5-90c8-5515-b2e2-800cae783b34",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "78711e5b-6114-5c41-a3f6-b0b103bd7cbc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{3} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{3} x}{3} \\right)}}{15}+C"
+            },
+            {
+              ":answer/id": "bc10dfc0-5725-5c3c-912b-175284c24be8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{3} \\operatorname{arctan}{\\left(\\frac{\\sqrt{3} x}{3} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "af3e7701-d510-5090-990a-82d54288ae3e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsin}{\\left(\\frac{\\sqrt{3} x}{3} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "4d38b5e3-3659-5a61-900d-e832f7846ae6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{3} \\operatorname{arcsin}{\\left(\\frac{\\sqrt{3} x}{3} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "b2540c98-63e3-50df-9fd4-f4149cfcdb93",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\sqrt{3} \\operatorname{arcsin}{\\left(x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4d38b5e3-3659-5a61-900d-e832f7846ae6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-trig-role-bands-1",
+      "seed": 4946942698096448,
+      "template": "combined-fractional-numerator",
+      "family": "sine",
+      "inverse_function": "sine",
+      "parameters": {
+        "family": "sine",
+        "A": "9",
+        "B": "3",
+        "N": "6/5",
+        "D": "1",
+        "lower_u": null,
+        "upper_u": null
+      },
+      "response": "radio",
+      "source_ids": [
+        "q-114024",
+        "q-114027",
+        "q-73712"
+      ],
+      "source_basis": 6393,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "49e603566e9737887f27eb7d0e41881677a47f99cafdf167a16c3bc76e06c375",
+      "bank_profile": "authored-substitution-errors",
+      "answer_recipes": [
+        "correct",
+        "omit-dx",
+        "reverse-dx",
+        "wrong-argument",
+        "wrong-function"
+      ],
+      "authored": true,
+      "authored_bank": true,
+      "relationship_to_source_templates": "Authored composition: extract a nonunit constant and handle a non-square x coefficient; same linear substitution and arcsine primitive. No imported hard calibration.",
+      "domain": "positive linear factor; principal real inverse functions; secant on each component |u|>1; definite arcsine strictly -1<u<1",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    },
+    "assets": {}
+  }
+]

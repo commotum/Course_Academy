@@ -93,6 +93,7 @@ def sample(kind, band, case, rng):
         elif band == 'moderate':
             p.update(A=a*a, B=sp.Integer(1))
             if case == 'unit-numerator': p['N'] = sp.Integer(1)
+            elif case == 'integer-numerator': p['N'] = sp.Integer(rng.randint(2, 9))
             elif case == 'fractional-numerator': p['N'] = ratio(rng, fractional=True)
             elif case == 'cancelling-numerator': p['N'] = a
             elif case == 'independent-numerator':
@@ -148,6 +149,7 @@ def validate_parameters(kind, band, case, p):
     if A == B and kind != 'secant': raise ValueError('Unit substitution would remove the target work')
     if kind == 'secant' and not (A == 1 and B > 1): raise ValueError('Secant requires a nonunit real linear factor')
     if kind == 'definite':
+        if p['family'] != ('sine' if case.startswith('sine-') else 'tangent'): raise ValueError('Case and inverse function disagree')
         lo, hi = p['lower_u'], p['upper_u']
         if lo is None or hi is None or (hi-lo).is_positive is not True: raise ValueError('Ordered real bounds required')
         if p['family'] == 'sine' and not (-1 < lo < hi < 1):
@@ -165,11 +167,26 @@ def validate_parameters(kind, band, case, p):
         if band == 'hard' and not (A > 1 and B > 1): raise ValueError('Hard requires both nonunit coefficients')
         if kind == 'sine' and band == 'hard' and sp.sqrt(B).is_Rational:
             raise ValueError('Sine hard requires the additional radical substitution factor')
+        if case == 'integer-inner' and not sp.sqrt(B).is_Integer: raise ValueError('Integer-factor case requires a square coefficient')
+        if case == 'radical-inner' and sp.sqrt(B).is_Rational: raise ValueError('Radical-factor case requires a nonsquare coefficient')
+        if case == 'unit-numerator' and N != 1: raise ValueError('Unit-numerator case requires numerator one')
+        if case == 'integer-numerator' and not (N.is_Integer and N >= 2): raise ValueError('Independent integer numerator required')
+        if case in ('fractional-numerator','combined-fractional-numerator') and N.q == 1: raise ValueError('Fractional numerator required')
+        if case == 'cancelling-numerator' and N != sp.sqrt(A): raise ValueError('Matching cancellation required')
+        if case == 'independent-numerator' and N == sp.sqrt(A): raise ValueError('Noncancelling numerator required')
+        if case == 'combined-integer-ratio' and not sp.sqrt(B/A).is_Integer: raise ValueError('Integer ratio required')
+        if case == 'combined-radical-ratio' and sp.sqrt(B/A).is_Rational: raise ValueError('Irrational ratio required')
     elif kind == 'secant':
         s = sp.sqrt(B)
         if band == 'easy' and not (N == s and D == 1 and s.is_Integer): raise ValueError('Easy requires a matching differential')
         if band == 'moderate' and not (s.is_Integer and N != s and D == 1): raise ValueError('Moderate requires a noncancelling visible factor')
         if band != 'hard' and D != 1: raise ValueError('Denominator normalization belongs to hard')
+        if case == 'unit-numerator' and N != 1: raise ValueError('Unit numerator required')
+        if case == 'integer-result' and not ((N/s).is_Integer and N/s>1): raise ValueError('Nonunit integer result required')
+        if case == 'fractional-result' and (N/s).is_Integer: raise ValueError('Fractional result required')
+        if case == 'integer-normalization' and not (s.is_Integer and D == 1): raise ValueError('Integer normalization required')
+        if case == 'radical-normalization' and not (s.is_Rational is False and D == 1): raise ValueError('Radical normalization required')
+        if case == 'denominator-normalization' and not (s.is_Integer and D>1 and N == 1): raise ValueError('Denominator normalization required')
 
 
 def mathematical_data(kind, band, p):
@@ -299,6 +316,7 @@ class Generator:
 
     def build(self, band, case, parameters, *, response='radio', bank_profile=None, seed=0):
         if type(seed) is not int: raise ValueError('Seed must be a builtin integer')
+        if any(type(v) is bool for v in parameters.values()): raise ValueError('Boolean parameters are not mathematical coefficients')
         p = {k: (v if k == 'family' or v is None else sp.sympify(v)) for k, v in parameters.items()}
         validate_parameters(self.kind, band, case, p)
         if response not in ('radio', 'blank') or (self.kind != 'definite' and response != 'radio'):
@@ -306,10 +324,16 @@ class Generator:
         d = mathematical_data(self.kind, band, p)
         key = task_key(d['body'], d['lower'], d['upper'])
         if key in self.excluded: raise ValueError('Existing imported or generated mathematical task')
-        bank_profile = bank_profile or ('differential-and-numerator' if self.kind == 'definite' else 'authored-substitution-errors')
+        if self.kind == 'definite' and response == 'radio':
+            canonical_profile = tuple(DEFINITE_BANKS)[int(key,16) % len(DEFINITE_BANKS)]
+            if bank_profile is not None and bank_profile != canonical_profile:
+                raise ValueError('Task belongs to a different complete bank profile; resample')
+            bank_profile = canonical_profile
+        else:
+            bank_profile = 'exact-entry' if response == 'blank' else 'authored-substitution-errors'
         I, worked = solution(self.kind, band, p, d)
         # Identities are independent of sampling seed and option permutation.
-        signature = [key, response, bank_profile]
+        signature = [key, band, response, bank_profile]
         qid = self.ident(signature)
         fields = []
         problem = 'Evaluate the integral. Give an exact answer.\n\n' + display(I)
@@ -331,8 +355,11 @@ class Generator:
             values, recipes = answer_bank(self.kind, band, p, d, bank_profile)
             fid = self.ident([qid, 'selection'])
             choices = [{':answer/id': self.ident([fid, tex(v)]), ':answer/type': ':answer.type/math', ':answer/value': tex(v) + ('' if self.kind == 'definite' else '+C')} for v in values]
-            correct = choices[0][':answer/id']
-            random.Random(int(digest([key, bank_profile]), 16)).shuffle(choices)
+            correct_choice, wrong_choices = choices[0], choices[1:]
+            correct = correct_choice[':answer/id']
+            random.Random(int(digest([key, bank_profile, seed]), 16)).shuffle(wrong_choices)
+            choices = wrong_choices
+            choices.insert(seed % 5, correct_choice)
             fields = [{':answer-field/id': fid, ':answer-field/key': 'selection', ':answer-field/type': ':answer-field.type/radio',
                        ':answer-field/choices': choices, ':answer-field/correct': [':answer/id', correct]}]
         return {'knowledge_point': {'db_id': self.kp, 'id': self.kp_uuid, 'title': self.evidence['title']},
@@ -372,7 +399,9 @@ class Generator:
                 case = cases[i % len(cases)]
                 response = 'blank' if self.kind == 'definite' and (i // len(cases)) % 2 else 'radio'
                 for _ in range(300):
-                    r = self.generate(band, rng.randrange(2**53), case, response=response)
+                    draw_seed = rng.randrange(2**53)
+                    draw_seed = draw_seed-draw_seed%5+(i//len(cases))%5
+                    r = self.generate(band, draw_seed, case, response=response)
                     key = r['generation']['mathematical_fingerprint']
                     if key not in seen:
                         rows.append(r);seen.add(key);break
