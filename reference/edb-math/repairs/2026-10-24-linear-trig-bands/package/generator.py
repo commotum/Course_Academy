@@ -85,7 +85,7 @@ def parameters(case, rng, *, slope_sign=None, difference_kind=None):
     c = sp.Integer(0)
     if case.startswith('indef'):
         b = rng.choice(EASY_SLOPES)*(slope_sign or rng.choice((-1, 1)))
-        c = sp.Integer(rng.randint(-4, 4))
+        c = sp.Integer(rng.randint(-6, 6))
         return fn, a, b, c, None, None
     if case.startswith('def'):
         b = sp.Integer(rng.randint(2, 9))
@@ -199,7 +199,7 @@ def build(level, case, values, *, response='blank', seed=0):
     if fn != ('sin' if 'sin' in case else 'cos'):
         raise ValueError('Function/case mismatch')
     if case.startswith('indef'):
-        valid = a.is_Integer and 1 <= a <= 9 and abs(b) in EASY_SLOPES and c.is_Integer and -4 <= c <= 4 and lo is None and hi is None
+        valid = a.is_Integer and 1 <= a <= 9 and abs(b) in EASY_SLOPES and c.is_Integer and -6 <= c <= 6 and lo is None and hi is None
     elif case.startswith('def'):
         valid = a.is_Integer and 1 <= a <= 9 and b.is_Integer and 2 <= b <= 9 and c == 0 and lo is not None
     elif case.startswith('shift'):
@@ -234,7 +234,7 @@ def build(level, case, values, *, response='blank', seed=0):
             raise ValueError('This instance has no complete distinct five-choice bank')
     correct += '+C' if lo is None and response == 'radio' else ''
     rendered = [(text+('+C' if lo is None and response=='radio' else ''),recipe) for _,text,recipe in choices]
-    prompt = 'Evaluate the integral. Give an exact answer.\n\n$$\n'+integral+'\n$$'
+    prompt = 'Evaluate the integral. Give an exact answer.\n\n$$\n'+integral+(' =' if response=='blank' else '')+'\n$$'
     key = 'answer' if response == 'blank' else 'selection'
     if response == 'blank':
         prompt += '\n\n{{answer}}'+(' $+C$' if lo is None else '')
@@ -249,7 +249,10 @@ def build(level, case, values, *, response='blank', seed=0):
     correct_id = next(row[':answer/id'] for row in answers if row[':answer/value']==correct)
     random.Random(seed).shuffle(answers)
     params = dict(zip(('function','amplitude','slope','shift','lower','upper'),(fn,str(a),str(b),str(c),None if lo is None else str(lo),None if hi is None else str(hi))))
-    metadata = {'version':VERSION,'template':case,'source_ids':support(case),'parameters':params,'seed':seed,
+    sources = support(case)
+    if response=='radio' and answer==0 and 'q-13644' not in sources:
+        sources.append('q-13644')
+    metadata = {'version':VERSION,'template':case,'source_ids':sources,'parameters':params,'seed':seed,
         'mathematical_fingerprint':fingerprint,'response':response,'bank_origin':'authored rule-error recipes' if response=='radio' else 'exact entry',
         'bank_recipes':dict(rendered),'u_bounds':None if lo is None else [str(u0),str(u1)],
         'difficulty_origin':'authored compound of established skills; no imported hard examples' if level=='hard' else 'source-supported workload; labels are not copied from individual templates',
@@ -260,14 +263,15 @@ def build(level, case, values, *, response='blank', seed=0):
             ':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]},'generation':metadata}
 
 
-def batch(level, count=5, seed=0):
+def batch(level, count=5, seed=0, exclude_fingerprints=()):
     if level not in CASES or type(count) is not int or not 0 <= count <= 200:
         raise ValueError('Use an available band and count 0..200; shortages are explicit')
     rng = random.Random(seed)
     schedule = list(CASES[level]);rng.shuffle(schedule)
     starts = {case:('blank' if index%2 == 0 else 'radio') for index,case in enumerate(schedule)}
     served = {case:0 for case in schedule}
-    records, seen = [], set()
+    evidence = json.loads((LOCAL/'source-evidence.json').read_text())
+    records, seen = [], set(evidence.get('excluded_practice_fingerprints', ())) | set(exclude_fingerprints)
     indefinite_sign = rng.choice((-1,1))
     pair_kind = rng.choice(('same','opposite'))
     for index in range(count):

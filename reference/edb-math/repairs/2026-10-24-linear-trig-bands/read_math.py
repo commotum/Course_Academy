@@ -1,5 +1,7 @@
 """Read the actual restricted TeX independently of generator metadata."""
 import re
+import hashlib
+import json
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 X,U,C=sp.symbols('x u C',real=True)
@@ -49,6 +51,20 @@ def integral(text):
 def prompt(problem):
     block=re.findall(r'\$\$\s*(.*?)\s*\$\$',problem,re.S)[0]
     return integral(block)
+
+
+def source_prompt(problem):
+    text=problem.replace('⁡','').replace(r'\operatorname{sin}',r'\sin').replace(r'\operatorname{cos}',r'\cos')
+    text=text.replace(r'\displaystyle','').replace(r'{\int }',r'\int').replace('z','x')
+    text=text.replace(r'\text{d}x',r'\mathrm{d}x').replace(r'\textrm{d}x',r'\mathrm{d}x')
+    text=re.sub(r'\\(?:textrm|mathrm)\s+d\s*x',lambda _:r'\mathrm{d}x',text)
+    text=re.sub(r'\\dfrac\s+([xu])\s+(\d+)',r'\\frac{\1}{\2}',text)
+    text=re.sub(r'(?<![A-Za-z])dx',lambda _:r'\mathrm{d}x',text)
+    return integral(text[text.index(r'\int'):])
+
+
+def mathematical_key(body,lo,hi):
+    return hashlib.sha256(json.dumps([sp.srepr(sp.expand(sp.expand_trig(body))),None if lo is None else sp.srepr(lo),None if hi is None else sp.srepr(hi)]).encode()).hexdigest()
 
 
 def integrate_linear(body,variable,lo=None,hi=None):
