@@ -66,6 +66,17 @@ the existing build priorities; no question from that band is published merely
 because another band passed. Existing usable questions remain available to the
 learner while this work waits.
 
+Review policy 4 requires standalone source eligibility before template fidelity.
+Source capture removes retired questions and every structurally contained multistep
+part, including assigned-problem wrappers and legacy placements. Their identities
+remain in an exclusion ledger. Supplying an earlier function, derivative, graph, or
+result does not turn a part into an eligible standalone template. Generated records
+retain their actual source references, which preparation checks against the live
+database. Existing generated descendants are audited separately because they do
+not inherit the source part's structural containment. Saved pre-policy captures
+are archived and refreshed before authoring or review; pending publications are
+recovered first, without changing their request or publishing the batch again.
+
 Review policy 2 separately requires **decision-relevant variation**. Reviewers must
 challenge unjustified fixed roles, test relevant and irrelevant counterfactuals,
 and probe shortcuts within recognizable templates, not merely count unique outputs.

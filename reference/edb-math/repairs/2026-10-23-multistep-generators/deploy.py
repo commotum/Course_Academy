@@ -44,7 +44,7 @@ def prepare():
     plan=json.loads((H/'installation-plan.json').read_text());pkgs=json.loads((H/'published-packages.json').read_text())
     rows=db.query('[:find (pull ?kp [:db/id {:knowledge-point/question-generator [*]}]) :in $ [?kp ...] :where [?kp :knowledge-point/question-generator _]]',
         [[r['kp'] for r in plan]],H,'registrations-before',basis)
-    actual={r[0][':db/id']:r[0][':knowledge-point/question-generator'] for r in rows}
+    actual={r[0][':db/id']:json.loads(json.dumps(r[0][':knowledge-point/question-generator'],default=str)) for r in rows}
     assert actual=={r['kp']:r['registration'] for r in plan},'Registration changed; reconcile current package before preparing'
     candidates=[r for r in json.loads((H/'question-dispositions.json').read_text()) if r['decision']=='retire-generated-descendant']
     rows=db.query('[:find (pull ?q [:db/id :question/id :question/math-academy-id :question/retired {:knowledge-point/_canonical-example [:db/id]} {:knowledge-point/_questions [:db/id]} {:task-item/_content [:db/id]}]) :in $ [?q ...] :where [?q :question/id _]]',
@@ -67,8 +67,7 @@ def prepare():
     save('preparation.json',{'basis':basis,'source':':agent/codex','retirements':retired,'packages':pkgs,
         'sha256':hashlib.sha256(payload.encode()).hexdigest(),'forms':len(forms),
         'authorization':'User: yeah, make the required fixes everywhere'})
-    attrs=db.query('[:find ?ident ?e :in $ [?ident ...] :where [?e :db/ident ?ident]]',
-        [[kw(n) for n in ['db/txInstant','question/retired','knowledge-point/question-generator','question-generator/id','question-generator/script','agent/codex']]],H,'transaction-attributes',basis)
+    db.query('[:find ?ident ?e :where [?e :db/ident ?ident]]',[],H,'transaction-attributes',basis)
     print('Prepared',len(retired),'retirements and',len(pkgs),'registrations at T'+str(basis))
 
 
@@ -124,7 +123,7 @@ def apply():
     for [q] in rows:
         old=next(r for r in prep['retirements'] if r[':db/id']==q[':db/id'])
         for attr in [':question/id',':knowledge-point/_questions',':task-item/_content']:
-            assert q.get(attr)==old.get(attr),(q[':db/id'],attr)
+            assert json.loads(json.dumps(q.get(attr),default=str))==old.get(attr),(q[':db/id'],attr)
     rows=db.query('[:find (pull ?kp [:db/id {:knowledge-point/question-generator [*]}]) :in $ [?kp ...] :where [?kp :knowledge-point/question-generator _]]',
         [[r['kp'] for r in prep['packages']]],H,'registrations-after',basis)
     for [kp] in rows:

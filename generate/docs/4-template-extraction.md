@@ -2,6 +2,12 @@
 
 Use the question families identified by [Classify](3-classify.md), analyzing each difficulty and answer-field combination separately.
 
+Use the filtered instructional capture and its current source-eligibility ledger.
+Archived multistep parts and retired questions cannot supply a standalone family.
+Do not reconstruct their omitted prior context during template extraction. An
+independent extension needs explicit support from eligible examples or teaching;
+record that support instead of citing the entire captured question pool.
+
 1. Describe each source question specifically: number forms and properties, expression structures, functions and operators, relations, variable roles, constraints, notation, Markdown layout, answer fields, choices, and solution sequence; do not generalize yet.
 2. Write one brief generalized description of the family's shared mathematical pattern, required response, and instructional purpose. State the learner's required operation before choosing random parameters.
 3. List each question's components, mapping every original choice to its source field, parameters, exact value, recipe, and choice-bank profile alongside the prompt and solution components.
