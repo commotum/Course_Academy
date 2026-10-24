@@ -79,7 +79,9 @@ if __name__=='__main__':model.cli(KP,LOCAL)
         for target in targets:
             target.mkdir(parents=True,exist_ok=True)
             shutil.copy2(ROOT/'generate/trig_scaffold.py',target/'trig_scaffold.py')
-            shutil.copy2(ROOT/'generate/scratch/17592186068915/trig_format.py',target/'trig_format.py')
+            fmt_source=ROOT/'generate/scratch/17592186068915/trig_format.py'
+            if fmt_source.resolve()!=(target/'trig_format.py').resolve():
+                shutil.copy2(fmt_source,target/'trig_format.py')
             (target/'source-evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
             (target/'band-contract.json').write_text(json.dumps(contract,indent=2)+'\n')
             (target/'generator.py'if target.name=='package'else ROOT/f'generate/scratch/{kp}.py').write_text(wrapper)

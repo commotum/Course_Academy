@@ -1,7 +1,13 @@
-# Linear trigonometric integrals generator
+# Scaffolded trig substitution — KP 17592186068915
 
-Run `python3 generate/scratch/17592186068915.py --difficulty easy --count 5 --seed 1915 --format json`; the script selects the repository SymPy runtime when necessary. Moderate is also supported; hard is explicitly unsupported.
+Current implementation: `../17592186068915.py`, using the bundled `trig_scaffold.py` helper.
+Version: 4.0.0-scaffolded-substitution. The registered immutable package is recorded in
+`reference/edb-math/repairs/2026-10-24-trig-scaffolding/`.
 
-Run `.venv/bin/python generate/scratch/17592186068915/validate.py` for exhaustive printed-math, exact source-bank replay and real engine grading; then `.venv/bin/python generate/scratch/17592186068915/replenish.py` for additive locked commits and receipt recovery. Source evidence, component recipes, classification, review and hashes remain in this package.
+Easy supplies u and assesses transformation. Moderate asks for the full calculation.
+Hard adds one relevant condition while keeping arithmetic simple. Full calculations
+provide the primitive and any required endpoint values. See `band-contract.json`.
 
-All questions use stable content/profile identities and field-owned answers. The fingerprint ignores seed, choice order, identities, variable renaming and solution prose. Source and canonical content and learner history remain intact. Native difficulty labels are preserved; the legacy completion is explicitly authored. See capabilities.json for finite counts and the unfilled hard exception.
+Older extraction, capacity, validation, and replay files remain historical evidence;
+they do not describe the current sampler. Imported questions and historical learner
+work are preserved. Newly sampled banks are explicitly authored, not source replays.

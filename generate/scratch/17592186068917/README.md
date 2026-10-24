@@ -1,11 +1,13 @@
-# Trigonometric substitution generator
+# Scaffolded trig substitution — KP 17592186068917
 
-Run from repository root:
+Current implementation: `../17592186068917.py`, using the bundled `trig_scaffold.py` helper.
+Version: 4.0.0-scaffolded-substitution. The registered immutable package is recorded in
+`reference/edb-math/repairs/2026-10-24-trig-scaffolding/`.
 
-```sh
-.venv/bin/python generate/scratch/17592186068917.py --difficulty moderate --count 3 --seed 1941 --format json
-.venv/bin/python generate/scratch/17592186068917/validate.py
-.venv/bin/python generate/scratch/17592186068917/replenish.py
-```
+Easy supplies u and assesses transformation. Moderate asks for the full calculation.
+Hard adds one relevant condition while keeping arithmetic simple. Full calculations
+provide the primitive and any required endpoint values. See `band-contract.json`.
 
-The package supports moderate and hard via a bounded positive amplitude policy. Easy remains unsupported. Source evidence, per-choice extraction, exact replay, actual grading, review and retained database requests are local to this KP. The replenisher rechecks inventory under api.lock, preserves source and history, uses application/ca-engine attribution and a basis guard, and verifies exact commit readback before reporting success. Repeated seeds never count as new content. Exhaustion of the finite domain must leave the shortage explicit.
+Older extraction, capacity, validation, and replay files remain historical evidence;
+they do not describe the current sampler. Imported questions and historical learner
+work are preserved. Newly sampled banks are explicitly authored, not source replays.

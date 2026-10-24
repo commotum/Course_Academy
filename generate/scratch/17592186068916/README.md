@@ -1,5 +1,13 @@
-# KP68916 local generator
+# Scaffolded trig substitution — KP 17592186068916
 
-Run `.venv/bin/python generate/scratch/17592186068916/validate.py`; preview `.venv/bin/python generate/scratch/17592186068916.py --difficulty all --count 1 --format json`. JSON all/count1 is a flat three-record list.
+Current implementation: `../17592186068916.py`, using the bundled `trig_scaffold.py` helper.
+Version: 4.0.0-scaffolded-substitution. The registered immutable package is recorded in
+`reference/edb-math/repairs/2026-10-24-trig-scaffolding/`.
 
-Frozen math basis2275; no prior registered generator or evidence directory existed. All10 MA source records are covered, including authored completion of unrated q-10157. Nine ordinary E/M/H source families and stage omissions are parameterized; the incompatible nonlinear source is an exact-parameter reference profile only; normal q10578 uses an explicitly authored method bank because the observed distractor intent is unresolved. The nonlinear easy source is excluded from ordinary inventory because lesson order and prerequisites do not establish it within the linear-argument scope. Raw captures are preserved. See classification, extraction, review, validation and hash manifest for measured results and limits. No shared files, engine, queue, registration or live DB changed.
+Easy supplies u and assesses transformation. Moderate asks for the full calculation.
+Hard adds one relevant condition while keeping arithmetic simple. Full calculations
+provide the primitive and any required endpoint values. See `band-contract.json`.
+
+Older extraction, capacity, validation, and replay files remain historical evidence;
+they do not describe the current sampler. Imported questions and historical learner
+work are preserved. Newly sampled banks are explicitly authored, not source replays.

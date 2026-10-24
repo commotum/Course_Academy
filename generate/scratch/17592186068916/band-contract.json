@@ -1,10 +1,5 @@
 {
-  "version": "3.0.0-substitution-models",
-  "band_origin": {
-    "easy": "Source-anchored linear indefinite derivative families, extended to all four familiar primitives",
-    "moderate": "Source-anchored definite linear arguments; integer slopes, both endpoint contributions",
-    "hard": "Source-anchored shifted/fractional slopes; authored combination with two nonzero endpoint values"
-  },
+  "version": "4.0.0-scaffolded-substitution",
   "families": {
     "easy": [
       "sec2",
@@ -13,19 +8,48 @@
       "csc_cot"
     ],
     "moderate": [
-      "sec2",
-      "csc2",
-      "sec_tan",
-      "csc_cot"
+      "indef_sec2",
+      "indef_csc2",
+      "indef_sec_tan",
+      "indef_csc_cot",
+      "def_sec2",
+      "def_csc2",
+      "def_sec_tan",
+      "def_csc_cot"
     ],
     "hard": [
-      "sec2",
-      "csc2",
-      "sec_tan",
-      "csc_cot"
+      "indef_sec2",
+      "indef_csc2",
+      "indef_sec_tan",
+      "indef_csc_cot",
+      "def_sec2",
+      "def_csc2",
+      "def_sec_tan",
+      "def_csc_cot"
     ]
   },
-  "pool_policy": "Structural family first, then valid parameters. No zero definite answers or old task reuse. Both coefficient signs within each family.",
-  "answer_form": "Render the canonical answer once, use it verbatim as the worked solution final result; preserve trig arguments and show log quotient conversion.",
-  "calibration_limit": "Source labels are evidence, not an external psychometric validation of authored bands."
+  "easy": {
+    "operation": "Choose the integral produced by the given substitution",
+    "provided_substitution": true,
+    "response": "radio",
+    "outside_coefficient_maximum": 3,
+    "displayed_bank_coefficient_maximum": 8
+  },
+  "moderate": {
+    "operation": "Choose the substitution and complete the calculation",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank"
+  },
+  "hard": {
+    "operation": "Authored negative affine derivative/decreasing-bounds condition across familiar reciprocal derivative families; no fractional slopes or radical evaluation.",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank",
+    "independent_extra_challenges": 1
+  },
+  "parameter_policy": "Small integer amplitudes/slopes; at most one small reciprocal factor. No independently compounded fractional amplitude, fractional slope, phase and radical bounds.",
+  "answer_policy": "Preserve trig arguments. Final solution exactly matches the answer fragment plus any externally displayed C. No unshown log conversion.",
+  "sampling_policy": "Seeded family-first sampling; no amplitude-only padding; exclude existing/retired mathematical task fingerprints; unsupported/short requests fail explicitly.",
+  "calibration": "Source-informed authored progression, not external psychometric calibration. Do not inherit difficulty from numeric magnitude or response shape alone."
 }

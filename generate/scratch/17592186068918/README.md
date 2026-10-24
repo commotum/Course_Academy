@@ -1,7 +1,13 @@
-# Trigonometric quotient generator
+# Scaffolded trig substitution — KP 17592186068918
 
-Run `.venv/bin/python generate/scratch/17592186068918/validate.py` for exact printed mathematics, full supported source-bank replay and real learner grading. Then run `replenish.py` for this scoped job. CLI: `python3 generate/scratch/17592186068918.py --difficulty hard --count 5 --seed 1949 --format json` (or markdown). API exposes generate(level, seed, template, parameters), candidates(level), and batch(level,count,seed).
+Current implementation: `../17592186068918.py`, using the bundled `trig_scaffold.py` helper.
+Version: 4.0.0-scaffolded-substitution. The registered immutable package is recorded in
+`reference/edb-math/repairs/2026-10-24-trig-scaffolding/`.
 
-Easy and hard are supported within positive amplitude m=2..12. Moderate remains unsupported and unfilled. Finite capacity is 11 easy and 66 hard genuinely changed integrands beyond source replay. Two defective source banks are explicitly excluded. Source questions and learner state are preserved; records use field-owned identities and no Math Academy IDs. Read classification, extraction, source-cases, review, capabilities, source-replay, native-grading and validation for the mathematical and fidelity limits.
+Easy supplies u and assesses transformation. Moderate asks for the full calculation.
+Hard adds one relevant condition while keeping arithmetic simple. Full calculations
+provide the primitive and any required endpoint values. See `band-contract.json`.
 
-Replenishment rechecks native inventory and source evidence under the application api.lock, saves exact basis-guarded requests, uses configured application/ca-engine attribution and installed validation specs, and holds the lock through submission and exact-basis readback. Generator registration uses the existing identity if present, UUID/script attributes and the KP reference. All additions are restricted to this KP.
+Older extraction, capacity, validation, and replay files remain historical evidence;
+they do not describe the current sampler. Imported questions and historical learner
+work are preserved. Newly sampled banks are explicitly authored, not source replays.

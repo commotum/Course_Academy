@@ -1,10 +1,5 @@
 {
-  "version": "3.0.0-substitution-models",
-  "band_origin": {
-    "easy": "Authored introductory band: integer multiples of an exact power-inner derivative; no imported easy anchor",
-    "moderate": "Source-anchored nonunit reciprocal coefficient, shifted power arguments, and square-root substitution",
-    "hard": "Source-anchored definite nonlinear substitution or reciprocal inner function; excludes zero-result repetition"
-  },
+  "version": "4.0.0-scaffolded-substitution",
   "families": {
     "easy": [
       "sin",
@@ -20,22 +15,41 @@
       "sec2",
       "csc2",
       "sec_tan",
-      "csc_cot",
-      "sqrt_cos",
-      "sqrt_sin"
+      "csc_cot"
     ],
     "hard": [
-      "sin",
-      "cos",
-      "sec2",
-      "csc2",
-      "sec_tan",
-      "csc_cot",
+      "reciprocal_sin",
+      "reciprocal_cos",
       "reciprocal_sec2",
-      "reciprocal_sin"
+      "reciprocal_csc2",
+      "reciprocal_sec_tan",
+      "reciprocal_csc_cot",
+      "sqrt_sin",
+      "sqrt_cos"
     ]
   },
-  "pool_policy": "Structural family first, then valid parameters. No zero definite answers or old task reuse. Both coefficient signs within each family.",
-  "answer_form": "Render the canonical answer once, use it verbatim as the worked solution final result; preserve trig arguments and show log quotient conversion.",
-  "calibration_limit": "Source labels are evidence, not an external psychometric validation of authored bands."
+  "easy": {
+    "operation": "Choose the integral produced by the given substitution",
+    "provided_substitution": true,
+    "response": "radio",
+    "outside_coefficient_maximum": 3,
+    "displayed_bank_coefficient_maximum": 8
+  },
+  "moderate": {
+    "operation": "Choose the substitution and complete the calculation",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank"
+  },
+  "hard": {
+    "operation": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients.",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank",
+    "independent_extra_challenges": 1
+  },
+  "parameter_policy": "Small integer amplitudes/slopes; at most one small reciprocal factor. No independently compounded fractional amplitude, fractional slope, phase and radical bounds.",
+  "answer_policy": "Preserve trig arguments. Final solution exactly matches the answer fragment plus any externally displayed C. No unshown log conversion.",
+  "sampling_policy": "Seeded family-first sampling; no amplitude-only padding; exclude existing/retired mathematical task fingerprints; unsupported/short requests fail explicitly.",
+  "calibration": "Source-informed authored progression, not external psychometric calibration. Do not inherit difficulty from numeric magnitude or response shape alone."
 }

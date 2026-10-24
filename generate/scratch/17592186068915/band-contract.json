@@ -1,73 +1,47 @@
 {
-  "knowledge_point": 17592186068915,
-  "version": "2.0.0-structural-bands",
-  "scope": "One sine or cosine of an affine argument, constant amplitude and a nonzero constant inner derivative. Exact entry or a complete authored five-choice bank.",
-  "easy": {
-    "evidence": [
-      "q-10061",
-      "q-10064",
-      "q-2191",
-      "q-13644",
-      "q-350039",
-      "q-350040",
-      "e-464"
+  "version": "4.0.0-scaffolded-substitution",
+  "families": {
+    "easy": [
+      "indef_sin",
+      "indef_cos",
+      "def_sin",
+      "def_cos"
     ],
-    "workload": "One reciprocal derivative and a basic trig integral. Indefinite integer shifts and signed integer/simple reciprocal slopes; definite quarter/half-turn endpoint values 0,+1,-1.",
-    "variation": [
-      "sine/cosine",
-      "amplitude",
-      "derivative sign for indefinite integrals",
-      "integer shift",
-      "indefinite/definite",
-      "zero/positive/negative definite outcomes",
-      "radio/blank"
+    "moderate": [
+      "indef_sin",
+      "indef_cos",
+      "def_sin",
+      "def_cos"
+    ],
+    "hard": [
+      "indef_sin",
+      "indef_cos",
+      "def_sin",
+      "def_cos"
     ]
+  },
+  "easy": {
+    "operation": "Choose the integral produced by the given substitution",
+    "provided_substitution": true,
+    "response": "radio",
+    "outside_coefficient_maximum": 3,
+    "displayed_bank_coefficient_maximum": 8
   },
   "moderate": {
-    "evidence": [
-      "q-10574",
-      "q-10575",
-      "q-346081",
-      "q-350036",
-      "e-464"
-    ],
-    "workload": "Shifted special-angle bounds, pi-scaled derivatives, or rational derivative factors with nonzero endpoint work. Complexity is tied to work, not an original template label.",
-    "variation": [
-      "sine/cosine",
-      "angular shifts",
-      "pi-scale and rational slopes",
-      "signed transformed bounds",
-      "exact rational/radical values",
-      "radio/blank"
-    ]
+    "operation": "Choose the substitution and complete the calculation",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank"
   },
   "hard": {
-    "evidence": [
-      "q-10064",
-      "q-10574",
-      "q-10575",
-      "q-350036",
-      "e-464"
-    ],
-    "origin": "Authored composition of already established skills; no imported hard question is claimed.",
-    "workload": "Fractional amplitude and signed nonunit rational slope, angular shift, both transformed endpoint values nonzero with unlike sqrt(2)/2 and sqrt(3)/2 magnitudes; independent exact entry.",
-    "variation": [
-      "sine/cosine",
-      "positive/negative slope",
-      "same-sign/opposite-sign endpoint values",
-      "root sum/root difference",
-      "positive/negative final values"
-    ],
-    "justification": "Requires coordinating factor/sign, two bound substitutions, two exact trig values, and signed radical subtraction without introducing a new integration method."
+    "operation": "Authored single negative-inner-derivative condition, with familiar endpoint values supplied; replaces the uncalibrated compound hard band.",
+    "provided_primitive": true,
+    "provided_endpoint_values": true,
+    "response": "blank",
+    "independent_extra_challenges": 1
   },
-  "sampling": "Shuffle structural cases first, sample compatible numbers second, alternate each family response shape on recurrence, shuffle delivered records, deduplicate mathematical tasks across response formats. Explicit finite count limit 200.",
-  "display": "Preserve the selected trig function and affine argument. Show derivative, reciprocal factor, both bound substitutions, integration sign, both exact endpoint values, and final simplified key.",
-  "bank_policy": "Complete authored rule-error bank supported by observed source errors; collision rejection. Zero-outcome banks generalize q-13644 rather than scaling every wrong value to zero.",
-  "exclusions": [
-    "nonlinear substitution",
-    "integration by parts",
-    "new trig identities",
-    "reciprocal-trig integration",
-    "hard labels applied to routine easy cases"
-  ]
+  "parameter_policy": "Small integer amplitudes/slopes; at most one small reciprocal factor. No independently compounded fractional amplitude, fractional slope, phase and radical bounds.",
+  "answer_policy": "Preserve trig arguments. Final solution exactly matches the answer fragment plus any externally displayed C. No unshown log conversion.",
+  "sampling_policy": "Seeded family-first sampling; no amplitude-only padding; exclude existing/retired mathematical task fingerprints; unsupported/short requests fail explicitly.",
+  "calibration": "Source-informed authored progression, not external psychometric calibration. Do not inherit difficulty from numeric magnitude or response shape alone."
 }
