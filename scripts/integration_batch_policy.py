@@ -13,7 +13,7 @@ FAMILIES={
  (17592186184153,'hard'):{'quarter-power-blank'},
  (17592186184154,'easy'):{'polynomial-pair'},
  (17592186184154,'moderate'):{'radical-product','power-quotient','direct-quotient-blank'},
- (17592186184155,'moderate'):{'polynomial-three','expanded-square'},
+ (17592186184155,'moderate'):{'polynomial-three','expanded-square','square-root-three','root-cube-three'},
  (17592186184155,'hard'):{'positive-fractional-three','negative-fractional-three'},
 }
 def clone_key(record):
@@ -37,7 +37,12 @@ def validate_delivery_batch(records,kp_id):
    elif m['family']=='radical-product':valid=powers==[F(1,2),F(3,2)]and all(abs(c)<=4 for c,p in terms)
    elif m['family']=='power-quotient':valid=powers[0]in(-3,-2)and powers[1]in(2,3,4)and all(abs(c)<=6 for c,p in terms)
    else:valid=powers==[-2,0]and all(abs(c)<=6 for c,p in terms)
-  elif difficulty=='moderate':valid=powers==([0,2,4]if m['family']=='expanded-square'else[0,1,2])
+  elif difficulty=='moderate':
+   profiles={'expanded-square':[0,2,4],'polynomial-three':[0,1,2],
+             'square-root-three':[0,F(1,2),2],'root-cube-three':[0,F(3,2),2]}
+   valid=powers==profiles[m['family']]
+   if m['family'] in ('square-root-three','root-cube-three'):
+    valid=valid and all(c.denominator==1 and abs(c)<=6 for c,p in terms)
   else:
    fractional=[p for c,p in terms if p.denominator>1];valid=len(fractional)==1 and fractional[0].denominator in(3,5,7)and (0<fractional[0]<1 if m['family']=='positive-fractional-three'else fractional[0]==F(-(fractional[0].denominator+1),fractional[0].denominator))and sum(p.denominator==1 and 1<=p<=5 for c,p in terms)==1 and sum(p in(-4,-3,-2)for c,p in terms)==1 and all(abs(c)<=6 for c,p in terms)
   if not valid:raise ValueError('Integration question crosses its source-bounded KP or difficulty')
