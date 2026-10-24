@@ -1,1 +1,1 @@
-Fresh source basis6469 independently checked; source account saved before inspecting repaired runtime. Source material differs from previous reviewed source only in four repaired q-107463 distractors. Await package freeze.
+Fresh source6469 independently checked. Initial frozen candidatec70c65a6 required revision: ordinary seed2 singleton sign, plus explicit unit-key asymmetric pool. Source account and negative controls saved before replacement review. Await replacement freeze; independent source/math/native/delivery/finite-kernel audit prepared. No live mutations.

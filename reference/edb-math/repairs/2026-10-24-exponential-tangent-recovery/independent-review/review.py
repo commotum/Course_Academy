@@ -91,6 +91,7 @@ def main():
         base, {**base, 'point': '0'}, {**base, 'a': -2, 'point': '0'},
         {**base, 'b': 4}, {**base, 'a': 1, 'point': '0'}])]
     controls.append(g.generate_hard(901, parameters=base))
+    controls.append(g.generate_hard(2, parameters=dict(b=4,c=1,a=4,n=1,k=0,l=0,d=-5,point='1')))
     save('controlled.json', controls)
     source = load(R / 'fresh-source/source.json')
     kp = source['material']['kp']

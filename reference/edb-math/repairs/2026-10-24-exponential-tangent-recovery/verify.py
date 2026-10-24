@@ -1,5 +1,8 @@
 """Focused independent regression of the exponential tangent bank repair."""
 from collections import Counter
+from fractions import Fraction
+from itertools import combinations
+from math import comb
 import importlib.util
 import json
 from pathlib import Path
@@ -31,6 +34,7 @@ def math_check(record):
     point=probe.parse(__import__('re').search(r'point where \$x=([^$]+)',problem)[1].rstrip('.'))
     slopes=[s.simplify(s.diff(v,probe.x)) for v in values]
     assert len(set(slopes))==5, 'A repeated coefficient must not encode the key'
+    assert sum(bool(v>0) for v in slopes) in (2,3), 'A singleton slope sign identifies its key'
     assert len(set(s.simplify(v.subs(probe.x,point)) for v in values))==1
     return values,slopes
 
@@ -44,6 +48,22 @@ def main():
     batch=[g.generate_hard(1072510293+i) for i in range(4)]
     fresh=[g.generate_hard(seed) for seed in range(800,824)]
     save('requested.json',batch);save('fresh.json',fresh)
+    sign_before=json.loads((HERE/'rejected-c70c65a6/sign-only-fresh-counterexample.json').read_text())['record']
+    old_slopes=[s.diff(probe.parse(c[':answer/value']),probe.x) for c in probe.choices(sign_before)]
+    assert sum(bool(v>0) for v in old_slopes)==1
+    unit_before=json.loads((HERE/'rejected-c70c65a6/unit-boundary-counterexample.json').read_text())
+    rejected=module('rejected_candidate',HERE/'rejected-c70c65a6/package/generator.py')
+    unit_params=unit_before['generation']['parameters']
+    nonunit={**unit_params,'a':2}
+    assert 1 not in rejected.tangent_coefficients(rejected.complete('q-107463',nonunit))
+    assert 1 in g.tangent_coefficients(g.complete('q-107463',nonunit))
+    explicit=[g.generate_hard(2,parameters=sign_before['generation']['parameters']),
+              g.generate_hard(72,parameters=unit_params)]
+    save('explicit-regressions.json',explicit)
+    for record in explicit:math_check(record)
+    save('new-negative-controls.json',{'prior_sign_only_success':True,
+         'prior_nonunit_pool_excludes_unit':True,'repaired_sign_case':explicit[0],
+         'repaired_explicit_unit_case':explicit[1]})
     cases=[];graders=[];ranks=Counter();positions=Counter();signs=Counter()
     for name,records in [('requested',batch),('fresh',fresh)]:
         assert probe.probes(records)['correct']==0
@@ -61,7 +81,7 @@ def main():
     # of its five equations correct. Search only the incidental bank seed for
     # these explicit controls; ordinary generation above uses unchanged seeds.
     controls=[]
-    for index,record in enumerate(batch):
+    for index,record in enumerate(batch+explicit):
         params=record['generation']['parameters'];p=g.complete('q-107463',params)
         t=s.Rational(params['point']);e=g.inner(p).subs(g.X,t)
         ordinate=p['b']**e; factor=ordinate*s.log(p['b'])
@@ -71,6 +91,7 @@ def main():
         for coefficient in wanted:
             alternate={**params,'a':coefficient,'d':int(e-coefficient*t)}
             other=g.complete('q-107463',alternate);g.guard('q-107463',other)
+            assert g.tangent_coefficients(other)==eligible, 'Pool depends on which bank member is the key'
             pool=[a for a in eligible if a!=coefficient]
             bank_seed=next(seed for seed in range(50000)
                            if sorted([coefficient,*random.Random(seed).sample(pool,4)])==wanted)
@@ -85,7 +106,7 @@ def main():
     changed=[r['changed_target_same_bank'] for r in controls]
     save('controls.json',changed)
     assert probe.probes(changed)['correct']==0
-    for index,record in enumerate(changed[:5]):
+    for index,record in enumerate(changed[:5]+explicit):
         graders.append({'label':'same-bank/'+str(index),'record':record,'checks':[
             {'submitted_answer_id':c[':answer/id'],'expected':'accepted' if c[':answer/id']==probe.correct(record) else 'rejected'}
             for c in probe.choices(record)]})
@@ -104,6 +125,41 @@ def main():
                     assert a in eligible and len(eligible)>=5
                     domains.append({'b':b,'point':point,'exponent':exponent,'a':a,'eligible_coefficients':eligible})
     save('bounded-domains.json',domains)
+    # Exhaust the finite bank families, using integer arithmetic. Raw joint
+    # weight is equal for every (target, containing bank); a predicate of the
+    # whole bank preserves equality, including asymmetric sign pools.
+    families={tuple(r['eligible_coefficients']) for r in domains}
+    symmetry=[]
+    for pool in sorted(families):
+        incidence=Counter();accepted=0
+        weight=Fraction(1,len(pool)*comb(len(pool)-1,4))
+        for bank in combinations(pool,5):
+            if sum(a>0 for a in bank) not in (2,3):continue
+            accepted+=1;incidence.update(bank)
+        assert set(incidence)==set(pool) and accepted>0
+        symmetry.append({'pool':list(pool),'balanced_banks':accepted,
+                         'target_incidence':dict(incidence),'conditional_key_probability':'1/5'})
+    save('bank-exchangeability.json',symmetry)
+    # A deliberately rejected first bank must resample BOTH target and bank in
+    # normal generation. Keeping the target fixed here would bias key roles.
+    original_sample,original_bank=g.sample,g.tangent_bank
+    retry_checks=[]
+    for parameters in [None,unit_params]:
+        calls={'samples':[],'banks':0}
+        def sample(qid,rng):
+            result=original_sample(qid,rng);calls['samples'].append(result);return result
+        def bank(p):
+            calls['banks']+=1
+            if calls['banks']==1:raise g.TangentBankResample('Intentional rejection control')
+            return original_bank(p)
+        g.sample,g.tangent_bank=sample,bank
+        try:record=g.generate_hard(72,parameters=parameters)
+        finally:g.sample,g.tangent_bank=original_sample,original_bank
+        math_check(record)
+        assert calls['banks']>=2
+        assert len(calls['samples'])==(calls['banks'] if parameters is None else 0)
+        retry_checks.append({'explicit_parameters':parameters is not None,**calls})
+    save('retry-symmetry-check.json',retry_checks)
     # Unrelated supported bands keep the same visible tasks and answer values.
     other_bands=[]
     for level in ['easy','moderate']:
@@ -117,6 +173,7 @@ def main():
     result={'passed':True,'negative_counts':{k:len(v['cases']) for k,v in negative.items()},
             'current_requested':4,'fresh':24,'same_bank_targets':len(controls),
             'source_supported_parameter_cases':len(domains),'rank_counts':dict(ranks),
+            'balanced_bank_families':len(symmetry),'balanced_complete_banks':sum(r['balanced_banks'] for r in symmetry),
             'position_counts':dict(positions),'slope_sign_counts':dict(signs),'cases':cases,
             'other_bands':other_bands,
             'limitation':'All lines pass through the target point; point membership alone does not identify an option. The learner must distinguish the correct tangent slope. Original source-bank repair is a separate guarded database action.'}

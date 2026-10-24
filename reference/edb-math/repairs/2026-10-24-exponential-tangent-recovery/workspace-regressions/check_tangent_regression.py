@@ -28,6 +28,7 @@ def inspect(records):
         values=[probe.parse(c[':answer/value']) for c in cs]
         slopes=[s.simplify(s.diff(v,probe.x)) for v in values]
         assert len(values)==len(set(slopes))==5
+        assert sum(bool(v>0) for v in slopes) in (2,3), 'A singleton slope sign identifies a choice'
         hits=[i for i,v in enumerate(values) if s.simplify(v-expected)==0]
         assert len(hits)==1 and cs[hits[0]][':answer/id']==probe.correct(record)
         positions[hits[0]]+=1
@@ -44,8 +45,13 @@ def inspect(records):
             tangent=s.diff(curve,probe.x).subs(probe.x,point)*(probe.x-point)+curve.subs(probe.x,point)
             assert s.simplify(tangent-value)==0
             alternatives.append({'coefficient':int(coefficient),'offset':int(offset),'equation':str(value)})
-        witnesses.append({'question':question[':question/id'],'same_bank_supported_targets':alternatives})
-    return {**report,'ranks':dict(ranks),'positions':dict(positions),'counterfactuals':witnesses}
+        witnesses.append({'question':question[':question/id'],'target_coefficient':int(s.diff(exponent,probe.x)),
+                          'same_bank_supported_targets':alternatives})
+    unit_targets=sum(abs(r['target_coefficient'])==1 for r in witnesses)
+    nonunit_with_unit=sum(abs(r['target_coefficient'])!=1 and any(abs(a['coefficient'])==1
+                           for a in r['same_bank_supported_targets']) for r in witnesses)
+    return {**report,'ranks':dict(ranks),'positions':dict(positions),'counterfactuals':witnesses,
+            'unit_targets':unit_targets,'nonunit_targets_with_unit_distractors':nonunit_with_unit}
 
 
 def main():
@@ -62,7 +68,12 @@ def main():
     out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
     negative=probe.probes(probe.load(here/'tangent-negative.json'))
     assert negative['correct']==negative['total']==4, 'Historical counterexample was lost'
-    reports={'historical_negative':negative,'current':{}}
+    sign_negative=probe.load(here/'sign-negative.json')
+    try:inspect([sign_negative])
+    except AssertionError as error:
+        assert 'singleton slope sign' in str(error), 'Wrong historical failure was reproduced'
+    else:raise AssertionError('Historical singleton-sign counterexample incorrectly passed')
+    reports={'historical_negative':negative,'historical_sign_negative_rejected':True,'current':{}}
     for name,count,seed in [('requested',4,1072510293),('fresh',24,800)]:
         assets=out/(name+'-assets');assets.mkdir(exist_ok=True)
         command=[sys.executable,str(package/'generator.py'),'--difficulty','hard','--count',str(count),'--seed',str(seed),'--format','json']
@@ -76,7 +87,10 @@ def main():
         (out/(name+'-delivery.log')).write_text(filtered.stdout+filtered.stderr)
         accepted=probe.load(delivery/'accepted.json');assert len(accepted)==count
         after=inspect(accepted)
-        if name=='fresh':assert len(after['ranks'])==len(after['positions'])==5
+        if name=='fresh':
+            assert len(after['ranks'])==len(after['positions'])==5
+            assert after['unit_targets']>0, 'Unit slopes must be possible normal keys'
+            assert after['nonunit_targets_with_unit_distractors']>0, 'A visible unit slope must not imply a unit key'
         reports['current'][name]={'command':command,'delivery_command':filter_command,'before':before,'after':after}
     reports['passed']=True
     probe.save(out/'regression.json',reports)

@@ -27,7 +27,7 @@ CANONICAL = RECORD[':knowledge-point/canonical-example']
 SOURCES[CANONICAL[':question/math-academy-id']] = CANONICAL
 X = sp.Symbol('x', real=True)
 U = sp.Symbol('u', real=True)
-VERSION = 'general-exponential-chain-3'
+VERSION = 'general-exponential-chain-4'
 KP = {'db_id': 17592186092261, 'id': RECORD[':knowledge-point/id'],
       'title': RECORD[':knowledge-point/title']}
 # c*b^(a*x^n + k*x^2 + l*x + d), source term order is kept separately.
@@ -143,6 +143,10 @@ def complete(qid,parameters):
 REJECTIONS = {'sampling': 0, 'bank': 0}
 
 
+class TangentBankResample(ValueError):
+    """A key-independent bank predicate requests a new sampling attempt."""
+
+
 def guard(qid,p):
     src=SPECS[qid]
     if not 2<=p['b']<=6 or not 1<=abs(p['a'])<=9 or not 1<=p['c']<=5:
@@ -173,7 +177,7 @@ def sample(qid,rng):
     # Decide the answer-bearing sign and evaluation case before incidental values.
     for _ in range(1000):
         p=default_params(qid)
-        sign=rng.choice([-1,1]);p['a']=sign*rng.randint(1 if SPECS[qid]['n']>1 or qid=='e-728' else 2,9)
+        sign=rng.choice([-1,1]);p['a']=sign*rng.randint(1 if SPECS[qid]['n']>1 or qid in ('e-728','q-107463') else 2,9)
         p['b']=rng.randint(2,6)
         if qid in ('e-728','q-107461'):p['c']=rng.randint(1,5)
         elif SPECS[qid]['c']!=1:p['c']=rng.randint(2,5)
@@ -316,14 +320,13 @@ def tangent_coefficients(p):
 
     Fix the base, point and evaluated exponent. Changing the linear coefficient
     while compensating its constant keeps the ordinate and changes the slope.
-    The ordinary sampler uses |a|>=2; explicit unit-coefficient controls retain
-    their existing supported domain without introducing never-keyed distractors.
+    The full existing guarded coefficient domain, including unit coefficients,
+    is shared by every target and by normal sampling.
     """
     t=sp.Rational(p['point']); evaluated=inner(p).subs(X,t)
-    minimum=1 if abs(p['a'])==1 else 2
     eligible=[]
     for coefficient in range(-9,10):
-        if abs(coefficient)<minimum:continue
+        if coefficient==0:continue
         alternate={**p,'a':coefficient,'d':int(evaluated-coefficient*t)}
         try:guard('q-107463',alternate)
         except ValueError:continue
@@ -334,13 +337,15 @@ def tangent_coefficients(p):
 def tangent_bank(p):
     """Uniform complete-bank sampling; no slope/sign/intercept role is the key.
 
-    At a fixed base, point and ordinate, every eligible coefficient is equally
-    sampled by the existing parameter sampler. Each five-member bank containing
-    that coefficient has the same probability. Thus any of its five members can
-    be the key for another supported target, without changing the bank.
+    Before rejection, the target coefficient and each containing five-bank have
+    equal joint weight. Accept only 2/3 sign splits; this predicate depends on the
+    bank, not its key. Normal generation retries both parameters and bank, so
+    conditioning on acceptance keeps all five possible keys equally weighted.
     """
     rng=random.Random(p['_bank_seed']); eligible=tangent_coefficients(p)
     coefficients=sorted([p['a'],*rng.sample([a for a in eligible if a!=p['a']],4)])
+    if sum(a>0 for a in coefficients) not in (2,3):
+        raise TangentBankResample('Tangent bank needs at least two slopes of each sign')
     t=sp.Rational(p['point']); ordinate=p['c']*p['b']**inner(p).subs(X,t)
     values=[sp.expand_log(sp.expand(a*ordinate*sp.log(p['b'])*(X-t)+ordinate),force=True)
             for a in coefficients]
@@ -514,11 +519,15 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if profile is None:profile='method:'+qid
     if profile not in ('method:'+qid,'historical:'+qid):raise ValueError('Unknown complete profile')
     if qid not in SOURCES and not profile.startswith('method:'):raise ValueError('Authored template has no historical profile')
-    for _ in range(1000 if parameters is None else 1):
+    for _ in range(1000):
         # Bank-role RNG is fixed before parameter sampling, independent of values.
         bank_seed=rng.randrange(2**63)
         p=complete(qid,sample(qid,rng) if parameters is None else parameters);p['_bank_seed']=bank_seed;guard(qid,p)
         try:return build(qid,p,seed,profile)
+        except TangentBankResample:
+            # Ordinary generation resamples the entire joint instance. Explicit
+            # parameter controls hold their target fixed and retry only its bank.
+            REJECTIONS['bank']+=1
         except ValueError:
             REJECTIONS['bank']+=1
             if parameters is not None:raise
