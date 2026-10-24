@@ -1,4 +1,4 @@
-"""The graph's module imports must be reachable through the real asset routes."""
+"""Frontend module imports must be reachable through the real asset routes."""
 from pathlib import Path
 import re
 import sys
@@ -25,8 +25,8 @@ class UIAssets(unittest.TestCase):
         request.do_GET()
         return request.send_bytes.call_args.args
 
-    def test_graph_and_forecast_module_dependencies_are_served_as_javascript(self):
-        pending = ["/ui/Math-Academy-Graph-Explorer.html", "/ui/forecast-worker.js", "/ui/study-stats.js"]
+    def test_graph_lesson_and_forecast_module_dependencies_are_served_as_javascript(self):
+        pending = ["/ui/Math-Academy-Graph-Explorer.html", "/ui/learning.js", "/ui/forecast-worker.js", "/ui/study-stats.js"]
         visited = set()
         while pending:
             path = pending.pop()
@@ -48,6 +48,7 @@ class UIAssets(unittest.TestCase):
         self.assertIn("/ui/target-weeks.js", visited)
         self.assertIn("/ui/requests.js", visited)
         self.assertIn("/ui/forecast-sidebar.js", visited)
+        self.assertIn("/ui/math-protection.js", visited)
 
     def test_non_asset_files_remain_private(self):
         for path in ["/ui/../scripts/serve_graph_explorer.py", "/ui/../course-academy-forecast-prd.md"]:
