@@ -220,6 +220,7 @@ def render(kp,level,case,m,seed,evidence,rng):
     inner,du,r,lo,hi=(m[k]for k in ('inner','du','factor','lo','hi'))
     definite=lo is not None;easy=level=='easy'
     body=m.get('body_tex',tex(m['body']));original=integral(body,lo=lo,hi=hi)
+    fp=task_key(m['body'],lo,hi)
     u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
     target=times(r,integral(tex(m['transformed']),'u',u0,u1))
     if easy:
@@ -248,7 +249,11 @@ def render(kp,level,case,m,seed,evidence,rng):
     sol+='Including the differential factor gives\n\n$$\n'+r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}'+'\n$$\n\n'
     if easy:
         sol+='The transformed integral is\n\n$$\n'+target+'.\n$$'
-        key=target;answer=None;bank=easy_bank(m,rng)
+        key=target;answer=None
+        # A different sampling seed must not turn one mathematical instance
+        # into fresh practice just by changing its distractors or their order.
+        bank_rng=random.Random('bank:'+fp+str(inner))
+        bank=easy_bank(m,bank_rng)
     elif not definite:
         pu=primitive_tex(m,U);key=primitive_tex(m,inner)
         sol+='Integrate with respect to $u$:\n\n$$\n'+target+'='+pu+'+C.\n$$\n\nSubstitute back:\n\n$$\n'+key+'+C.\n$$'
@@ -264,8 +269,7 @@ def render(kp,level,case,m,seed,evidence,rng):
         answer=s.simplify(last-first);key=tex(answer)
         sol+='Integrate and evaluate:\n\n$$\n'+r'\left['+primitive_tex(m,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}='+r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right).'+'\n$$\n\nThe answer is\n\n$$\n'+key+'.\n$$'
         bank=[(key,'correct')]
-    fp=task_key(m['body'],lo,hi)
-    uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+('transform'if easy else 'evaluate')+':'+role))
+    uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+('transform'if easy else 'evaluate')+':'+role))
     answers=[{':answer/id':uid('answer:'+text),':answer/type':':answer.type/math',':answer/value':normalize_tex(text)}for text,_ in bank]
     correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
     question={':question/id':uid('question'),':question/problem':normalize_prose(problem),

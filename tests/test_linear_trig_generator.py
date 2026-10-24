@@ -1,48 +1,41 @@
-"""Regressions for frozen subgroups and band-contract escape routes."""
-import importlib.util
-from pathlib import Path
+"""Linear-trig hard means negative inner derivative, not accumulated arithmetic."""
+import copy
 import unittest
-
-
-ROOT=Path(__file__).resolve().parents[1]
+from tests.test_trig_substitution_models import load_model,evidence
+from scripts.trig_substitution_batch_policy import validate_delivery_batch
 
 
 class LinearTrigGeneratorTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
-        path=ROOT/'generate/scratch/17592186068915.py'
-        spec=importlib.util.spec_from_file_location('linear_trig_public_generator',path)
-        cls.g=importlib.util.module_from_spec(spec);spec.loader.exec_module(cls.g)
+    def setUpClass(cls):cls.g=load_model()
 
-    def test_each_easy_family_covers_response_shapes_and_indefinite_signs_independently(self):
-        rows=self.g.batch('easy',16,17)
-        self.assertEqual(len({r['generation']['mathematical_fingerprint'] for r in rows}),16)
-        for case in self.g.CASES['easy']:
-            members=[r['generation'] for r in rows if r['generation']['template']==case]
-            self.assertEqual({r['response'] for r in members},{'radio','blank'})
-            if case.startswith('indef'):
-                roles={(r['response'],int(self.g.sp.sign(self.g.sp.sympify(r['parameters']['slope'])))) for r in members}
-                self.assertEqual(roles,{('radio',1),('radio',-1),('blank',1),('blank',-1)})
-        blanks=[r['generation']['parameters'] for r in rows if r['generation']['template'].startswith('def_') and r['generation']['response']=='blank']
-        self.assertEqual({p['function'] for p in blanks},{'sin','cos'})
-        self.assertGreater(len({p['amplitude'] for p in blanks}),1)
+    def test_all_full_linear_bands_keep_small_integer_coefficients(self):
+        kp=17592186068915
+        for band in('moderate','hard'):
+            rows=self.g.batch(kp,band,8,31,evidence=evidence(kp))
+            validate_delivery_batch(rows,kp)
+            for row in rows:
+                p=row['generation']['parameters'];a=self.g.s.Rational(p['slope']);A=self.g.s.Rational(p['amplitude'])
+                self.assertEqual(a.q,1);self.assertEqual(A.q,1)
+                self.assertLessEqual(abs(a),4);self.assertLessEqual(A,4)
+                self.assertEqual(a<0,band=='hard')
+                if row['generation']['model']['lower']is not None:
+                    self.assertNotIn(r'\sqrt',row['question'][':question/problem'])
 
-    def test_zero_outcome_has_a_complete_distinct_bank(self):
-        r=self.g.build('easy','def_cos',('cos',2,3,0,0,self.g.PI/3),response='radio')
-        field=r['question'][':question/answer-fields'][0]
-        choices=field[':answer-field/choices'];self.assertEqual(len({a[':answer/value'] for a in choices}),5)
-        correct=next(a for a in choices if a[':answer/id']==field[':answer-field/correct'][1])
-        self.assertEqual(correct[':answer/value'],'0')
-
-    def test_hard_requires_compounded_work_and_exact_entry(self):
+    def test_old_compound_hard_template_and_fractional_override_are_not_supported(self):
+        kp=17592186068915
         with self.assertRaises(ValueError):
-            self.g.build('hard','compound_sin_positive',('sin',2,3,0,0,self.g.PI/6))
-        g=self.g
-        values=('sin',g.R(5,3),g.R(-3,2),g.PI,g.PI/9,g.PI/2)
-        with self.assertRaises(ValueError):g.build('hard','compound_sin_negative',values,response='radio')
-        record=g.build('hard','compound_sin_negative',values)
-        self.assertEqual(record['question'][':question/difficulty'],':question.difficulty/hard')
-        self.assertEqual(record['question'][':question/answer-fields'][0][':answer-field/type'],':answer-field.type/blank')
+            self.g.generate(kp,'hard',0,'compound_sin_positive',evidence=evidence(kp))
+        row=self.g.batch(kp,'hard',1,0,evidence=evidence(kp))[0]
+        row=copy.deepcopy(row);row['generation']['parameters']['slope']='4/3';row['generation']['parameters']['amplitude']='3/4'
+        with self.assertRaisesRegex(ValueError,'fractional amplitude'):validate_delivery_batch([row],kp)
+
+    def test_whole_antiderivative_has_external_constant_support(self):
+        kp=17592186068915
+        row=self.g.generate(kp,'moderate',7,'indef_sin',evidence=evidence(kp))
+        key=row['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']
+        self.assertIn('{{answer}} $+C$',row['question'][':question/problem'])
+        self.assertNotIn('+C',key)
 
 
 if __name__=='__main__':unittest.main()
