@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from question_capture.math_format import normalize_math_boundaries, markdown_emphasis
+from question_capture.math_format import normalize_math_boundaries, markdown_emphasis, mathml_ruled_table
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
@@ -92,7 +92,13 @@ class Renderer:
             nxt=n.find_next_sibling()
             if re.fullmatch('[A-Za-z]+',n.get_text()) and nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':return '\\operatorname{'+n.get_text()+'}'
             return GREEK.get(n.get_text(),n.get_text())
-        if t=='mtable':return '\\begin{aligned}'+' \\\\ '.join(cs)+'\\end{aligned}'
+        if t=='mtable':
+            rows=[[self.m(cell) for cell in row.find_all('mtd',recursive=False)] for row in n.find_all('mtr',recursive=False)]
+            try:
+                ruled=mathml_ruled_table(rows,n.attrs)
+            except ValueError as error:
+                self.errors.append(str(error));ruled=None
+            return ruled or '\\begin{aligned}'+' \\\\ '.join(cs)+'\\end{aligned}'
         if t in ('mtr','mlabeledtr'):return ' & '.join(cs)
         if t=='menclose':
             if 'strike' in n.get('notation',''):return '\\cancel{'+''.join(cs)+'}'

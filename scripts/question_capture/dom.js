@@ -323,14 +323,16 @@ element => {
         }
         const values = attribute => (n.getAttribute(attribute) || 'none').trim().split(/\s+/);
         const columnlines = values('columnlines'), rowlines = values('rowlines'), frame = n.getAttribute('frame') || 'none';
-        if (centered && [...columnlines, ...rowlines, frame].some(value => value !== 'none')) {
+        if ([...columnlines, ...rowlines, frame].some(value => value && value !== 'none')) {
           for (const attribute of ['columnlines', 'rowlines', 'frame']) {
             if (values(attribute).some(value => !['none', 'solid'].includes(value))) errors.push('Unsupported MathML table ' + attribute);
           }
           const width = columnCount;
           const at = (items, index) => items[Math.min(index, items.length - 1)];
           let columns = frame === 'solid' ? '|' : '';
-          for (let i = 0; i < width; i++) columns += 'c' + (i < width - 1 && at(columnlines, i) === 'solid' || i === width - 1 && frame === 'solid' ? '|' : '');
+          const alignment = (n.getAttribute('columnalign') || 'center').trim().split(/\s+/);
+          if (alignment.some(value => !['left', 'center', 'right'].includes(value))) errors.push('Unsupported MathML table columnalign');
+          for (let i = 0; i < width; i++) columns += ({left:'l', center:'c', right:'r'}[at(alignment, i)] || 'c') + (i < width - 1 && at(columnlines, i) === 'solid' || i === width - 1 && frame === 'solid' ? '|' : '');
           let body = frame === 'solid' ? '\\hline ' : '';
           for (let i = 0; i < cs.length; i++) {
             body += cs[i];

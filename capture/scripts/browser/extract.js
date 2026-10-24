@@ -275,7 +275,32 @@
           return '\\operatorname{' + n.textContent + '}';
         }
         return greek[n.textContent] || literalDollar(n.textContent);
-      case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
+      case 'mtable': {
+        const values = attribute => (n.getAttribute(attribute) || 'none').trim().split(/\s+/);
+        const columnlines = values('columnlines'), rowlines = values('rowlines'), frame = n.getAttribute('frame') || 'none';
+        if ([...columnlines, ...rowlines, frame].some(value => value && value !== 'none')) {
+          for (const attribute of ['columnlines', 'rowlines', 'frame']) {
+            if (values(attribute).some(value => !['none', 'solid'].includes(value))) fail('Unsupported MathML table ' + attribute);
+          }
+          const rows = [...n.children].filter(row => row.localName === 'mtr').map(row => [...row.children].map(cell => m(cell)));
+          const width = Math.max(0, ...rows.map(row => row.length));
+          if (!width) { fail('Empty ruled MathML table'); return ''; }
+          const at = (items, index) => items[Math.min(index, items.length - 1)];
+          const alignment = (n.getAttribute('columnalign') || 'center').trim().split(/\s+/);
+          if (alignment.some(value => !['left', 'center', 'right'].includes(value))) fail('Unsupported MathML table columnalign');
+          let columns = frame === 'solid' ? '|' : '';
+          for (let i = 0; i < width; i++) columns += ({left:'l', center:'c', right:'r'}[at(alignment, i)] || 'c') +
+            (i < width - 1 && at(columnlines, i) === 'solid' || i === width - 1 && frame === 'solid' ? '|' : '');
+          let body = frame === 'solid' ? '\\hline ' : '';
+          for (let i = 0; i < rows.length; i++) {
+            body += [...rows[i], ...Array(width - rows[i].length).fill('')].join(' & ');
+            if (i < rows.length - 1) body += ' \\\\ ' + (at(rowlines, i) === 'solid' ? '\\hline ' : '');
+          }
+          if (frame === 'solid') body += ' \\\\ \\hline';
+          return '\\begin{array}{' + columns + '}' + body + '\\end{array}';
+        }
+        return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
+      }
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':
         // The two borders group the synthetic-division root; retain both.

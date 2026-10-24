@@ -26,6 +26,45 @@ def markdown_emphasis(body, marker):
     end = len(body.rstrip())
     return body[:start] + marker + body[start:end] + marker + body[end:]
 
+
+def mathml_ruled_table(rows, attributes):
+    """Preserve explicit MathML table rules and alignment as a TeX array.
+
+    A table with no rules is outside this helper's scope: its caller must
+    distinguish equation alignment, matrices and other layouts. Short MathML
+    attribute lists repeat their last value. Missing cells remain empty.
+    """
+    def values(name, default='none'):
+        return str(attributes.get(name) or default).split()
+
+    rules = {name: values(name) for name in ('columnlines', 'rowlines', 'frame')}
+    if all(v == 'none' for items in rules.values() for v in items):
+        return None
+    for name, items in rules.items():
+        if any(v not in ('none', 'solid') for v in items):
+            raise ValueError('Unsupported MathML table ' + name)
+    align = values('columnalign', 'center')
+    if any(v not in ('left', 'right', 'center') for v in align):
+        raise ValueError('Unsupported MathML table columnalign')
+    if not rows or not max(map(len, rows)):
+        raise ValueError('Empty ruled MathML table')
+    width = max(map(len, rows))
+    at = lambda items, index: items[min(index, len(items) - 1)]
+    frame = rules['frame'][0] == 'solid'
+    columns = '|' if frame else ''
+    for i in range(width):
+        columns += {'left': 'l', 'right': 'r', 'center': 'c'}[at(align, i)]
+        if (i < width - 1 and at(rules['columnlines'], i) == 'solid') or (i == width - 1 and frame):
+            columns += '|'
+    body = r'\hline ' if frame else ''
+    for i, row in enumerate(rows):
+        body += ' & '.join(row + [''] * (width - len(row)))
+        if i < len(rows) - 1:
+            body += r' \\ ' + (r'\hline ' if at(rules['rowlines'], i) == 'solid' else '')
+    if frame:
+        body += r' \\ \hline'
+    return r'\begin{array}{' + columns + '}' + body + r'\end{array}'
+
 ENV = re.compile(r'\\(begin|end)\{([^{}]+)\}')
 
 def environment(text, start):
