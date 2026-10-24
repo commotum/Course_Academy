@@ -6,6 +6,19 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_ruled_mathml_tables_keep_cells_rules_and_alignment(self):
+        from math_format import mathml_ruled_table
+        rows = [['x', '-1', '2'], ['u', '1', '10']]
+        self.assertEqual(mathml_ruled_table(rows, {'columnalign': 'center center',
+            'columnlines': 'solid', 'rowlines': 'solid', 'frame': 'solid'}),
+            r'\begin{array}{|c|c|c|}\hline x & -1 & 2 \\ \hline u & 1 & 10 \\ \hline\end{array}')
+        self.assertEqual(mathml_ruled_table([['a', 'b', 'c'], ['d', 'e', 'f']],
+            {'columnalign': 'right left', 'columnlines': 'none solid'}),
+            r'\begin{array}{rl|l}a & b & c \\ d & e & f\end{array}')
+        self.assertIsNone(mathml_ruled_table(rows, {'columnalign': 'right left'}))
+        with self.assertRaisesRegex(ValueError, 'columnlines'):
+            mathml_ruled_table(rows, {'columnlines': 'dashed'})
+
     def test_html_emphasis_moves_padding_outside_markers(self):
         from math_format import markdown_emphasis
         self.assertEqual(markdown_emphasis(' Step 1', '**'), ' **Step 1**')

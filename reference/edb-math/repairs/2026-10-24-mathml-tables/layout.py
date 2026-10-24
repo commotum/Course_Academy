@@ -13,7 +13,10 @@ def key_cell(text):
  s=re.sub(r'\{([A-Za-z0-9])\}(?=[_^])',r'\1',s)
  s=s.replace(r'\dfrac',r'\frac').replace(r'\tfrac',r'\frac')
  return re.sub(r'\s+','',s)
-def grid_key(rows):return tuple(tuple(key_cell(c) for c in row) for row in rows)
+def grid_key(rows):
+ clean=list(rows)
+ if clean and all(not key_cell(c) for c in clean[-1]) and any(r'\hline' in c for c in clean[-1]):clean.pop()
+ return tuple(tuple(key_cell(c) for c in row) for row in clean)
 def expected_layout(source):
  a=source['source_attributes'];rows=source['rows'];placeholder=[[str(i)+'Z'+str(j) for j in range(len(r))] for i,r in enumerate(rows)];tex=mathml_ruled_table(placeholder,a)
  return tex
