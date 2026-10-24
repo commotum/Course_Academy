@@ -55,7 +55,7 @@ class FakeClient:
         self.attributes = [[i + 1, kw(n), kw('db.type/ref' if n in refs else 'db.type/string')] for i, n in enumerate(names)]
         enums = [':application/ca-engine', ':question.difficulty/easy', ':question.difficulty/moderate',
                  ':question.difficulty/hard', ':answer-field.type/blank', ':answer.type/math', ':answer.type/image',
-                 ':answer.type/text', ':answer-field.type/radio']
+                 ':answer.type/text', ':answer-field.type/radio', ':agent/codex']
         self.idents = [[100 + i, kw(n)] for i, n in enumerate(enums)]
         self.kp = {':db/id': KP, ':knowledge-point/id': KP_UUID, ':knowledge-point/title': 'Add one',
                    ':knowledge-point/canonical-example': {':db/id': 99, ':question/id': uuid.uuid4(), ':question/problem': 'Compute 1+1.', ':question/worked-solution': 'Two.'},
@@ -131,8 +131,8 @@ class FakeClient:
             aid, atype = attrs[str(attr)]
             value = resolve(value) if atype == ':db.type/ref' else value
             if str(attr) == ':knowledge-point/question-generator' and kp.get(str(attr)):
-                data.append([eid, aid, kp[str(attr)][':db/id'], self.basis + 1, idents[':application/ca-engine'], False])
-            data.append([eid, aid, value, self.basis + 1, idents[':application/ca-engine'], True])
+                data.append([eid, aid, kp[str(attr)][':db/id'], self.basis + 1, idents[flags['--source']], False])
+            data.append([eid, aid, value, self.basis + 1, idents[flags['--source']], True])
             target = entities.setdefault(eid, {':db/id': eid})
             if str(attr) in (':answer-field/choices', ':question/answer-fields', ':knowledge-point/questions'):
                 target.setdefault(str(attr), []).append(value)
@@ -523,6 +523,110 @@ class NonemptyCheckboxPublicationTests(unittest.TestCase):
                 aid = f[':answer-field/correct'][1]
                 f[':answer-field/correct'] = next(a for a in f[':answer-field/choices'] if a[':answer/id'] == aid)
             validate_question(q)
+
+
+class ExemplarPublicationTests(unittest.TestCase):
+    setUp = PublicationTests.setUp
+    tearDown = PublicationTests.tearDown
+    make_package = PublicationTests.make_package
+
+    def records(self):
+        result = [record(number) for number in (21, 32, 43)]
+        for item, band in zip(result, ('easy', 'moderate', 'hard')):
+            item['question'][':question/difficulty'] = ':question.difficulty/' + band
+        return result
+
+    def publish_exemplars(self, records=None, directory=None):
+        return self.publisher.publish_exemplars(KP, self.records() if records is None else records,
+            directory or self.directory)
+
+    def test_three_complete_questions_use_agent_provenance_without_registration_or_original_edits(self):
+        original = {':db/id': 410, ':question/id': uuid.uuid4(), ':question/math-academy-id': 'q-410',
+            ':question/problem': 'An incomplete imported question', ':question/difficulty': ':question.difficulty/moderate',
+            ':question/answer-fields': [{':db/id': 411, ':answer-field/choices': [{':db/id': 412}]}]}
+        self.client.kp[':knowledge-point/questions'].append(original)
+        registration = {':db/id': 500, ':question-generator/id': uuid.uuid4(), ':question-generator/script': self.script}
+        self.client.kp[':knowledge-point/question-generator'] = registration
+        before = copy.deepcopy(self.client.kp)
+        result = self.publish_exemplars()
+        self.assertEqual(result['new_questions'], 3)
+        self.assertEqual(result['source'], ':agent/codex')
+        self.assertEqual(self.client.kp[':knowledge-point/questions'][0], before[':knowledge-point/questions'][0])
+        self.assertEqual(self.client.kp[':knowledge-point/question-generator'], before[':knowledge-point/question-generator'])
+        self.assertEqual(len(result['questions']), 3)
+        self.assertEqual({enum(q[':question/difficulty']) for q in result['questions']},
+            {':question.difficulty/' + band for band in ('easy', 'moderate', 'hard')})
+        for question in result['questions']:
+            validate_question(question)
+            self.assertNotIn(':question/math-academy-id', question)
+            self.assertTrue(all(key.startswith((':question/', ':db/')) for key in question))
+        self.assertEqual(result['fresh_source']['material']['kp'][':knowledge-point/questions'], jsonable([original]))
+        self.assertEqual(result['fresh_source']['available_difficulties'], ['moderate'])
+        transaction = next(call for call in self.client.calls if call[0] == 'transact')
+        self.assertEqual(transaction[2]['--source'], ':agent/codex')
+        self.assertNotIn(':question-generator/', transaction[1])
+        self.assertNotIn(':db/retract', transaction[1])
+
+    def test_identical_exemplars_reuse_questions_across_new_directories_and_random_input_ids(self):
+        first = self.publish_exemplars()
+        count = sum(call[0] == 'transact' for call in self.client.calls)
+        second = self.publish_exemplars(directory=self.root / 'next-investigation')
+        self.assertEqual(second['status'], 'no_changes')
+        self.assertEqual(second['new_questions'], 0)
+        self.assertEqual([q[':question/id'] for q in first['questions']], [q[':question/id'] for q in second['questions']])
+        self.assertEqual(sum(call[0] == 'transact' for call in self.client.calls), count)
+        self.assertEqual(len(self.client.kp[':knowledge-point/questions']), 3)
+
+    def test_lost_reply_recovers_exact_saved_exemplars_before_new_input(self):
+        self.client.lose_reply = True
+        with self.assertRaises(TimeoutError):
+            self.publish_exemplars()
+        request = json.loads((self.directory / 'request.json').read_text())
+        changed = self.records()
+        changed[0]['question'][':question/worked-solution'] = 'Changed after the unknown outcome.'
+        result = self.publish_exemplars(changed)
+        submissions = [call for call in self.client.calls if call[0] == 'transact']
+        self.assertEqual(submissions[0], submissions[1])
+        self.assertEqual(result['request_key'], request['request_key'])
+        self.assertEqual(len(self.client.kp[':knowledge-point/questions']), 3)
+        self.assertNotEqual(result['questions'][0][':question/worked-solution'], changed[0]['question'][':question/worked-solution'])
+
+    def test_exemplar_readback_failure_recovers_confirmed_receipt_without_second_write(self):
+        self.client.fail_readback = True
+        with self.assertRaises(ConnectionError):
+            self.publish_exemplars()
+        self.assertTrue((self.directory / 'request.json').exists())
+        result = self.publish_exemplars()
+        self.assertTrue(result['passed'])
+        self.assertEqual(sum(call[0] == 'transact' for call in self.client.calls), 1)
+
+    def test_incomplete_exemplar_is_rejected_without_changing_incomplete_imports(self):
+        records = self.records()
+        records[1]['question'][':question/answer-fields'][0].pop(':answer-field/correct')
+        with self.assertRaisesRegex(ValueError, 'Canonical answer'):
+            self.publish_exemplars(records)
+        self.assertFalse(any(call[0] == 'transact' for call in self.client.calls))
+
+    def test_exactly_one_of_each_difficulty_is_required(self):
+        records = self.records()
+        records[2]['question'][':question/difficulty'] = ':question.difficulty/moderate'
+        with self.assertRaisesRegex(ValueError, 'exactly one easy, moderate, and hard'):
+            self.publish_exemplars(records)
+        self.assertEqual(self.client.calls, [])
+
+    def test_missing_agent_source_cannot_silently_use_application_source(self):
+        self.client.idents = [row for row in self.client.idents if row[1] != ':agent/codex']
+        with self.assertRaisesRegex(ValueError, 'Investigator contributor does not exist'):
+            self.publish_exemplars()
+        self.assertFalse(any(call[0] == 'transact' for call in self.client.calls))
+
+    def test_changed_existing_exemplar_is_not_overwritten(self):
+        self.publish_exemplars()
+        self.client.kp[':knowledge-point/questions'][0][':question/worked-solution'] = 'Externally changed.'
+        count = sum(call[0] == 'transact' for call in self.client.calls)
+        with self.assertRaisesRegex(VerificationError, 'different content'):
+            self.publish_exemplars(directory=self.root / 'new-attempt')
+        self.assertEqual(sum(call[0] == 'transact' for call in self.client.calls), count)
 
 
 if __name__ == '__main__':

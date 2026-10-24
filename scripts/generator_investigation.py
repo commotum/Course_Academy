@@ -34,17 +34,14 @@ QUESTION_PULL = '''[:db/id :question/id :question/math-academy-id :question/prob
   {:answer-field/type [:db/ident]}
   {:answer-field/correct ''' + ANSWER_PULL + '''}
   {[:answer-field/choices :limit nil] ''' + ANSWER_PULL + '''}]}]'''
-COUNTS_QUERY = '''[:find ?kp ?band (count-distinct ?q) :in $ [?band ...]
- :where [?d :db/ident ?band] [?q :question/difficulty ?d]
- [?q :question/math-academy-id _] [?q :question/problem _]
- [?q :question/worked-solution _] [?q :question/answer-fields _]
- [?kp :knowledge-point/questions ?q]]'''
-OBSERVED_QUERY = '''[:find ?kp ?band :in $ [?band ...]
- :where [?d :db/ident ?band] [?q :question/difficulty ?d]
+COUNTS_QUERY = """[:find ?kp ?band (count-distinct ?q) :in $ [?kp ...]
+ :where [?q :question/difficulty ?d] [?d :db/ident ?band]
+ [?q :question/math-academy-id _] [?kp :knowledge-point/questions ?q]]"""
+OBSERVED_QUERY = """[:find ?kp ?band :in $ [?kp ...]
+ :where [?q :question/difficulty ?d] [?d :db/ident ?band]
  [?q :question/math-academy-id _]
  (or-join [?kp ?q] [?kp :knowledge-point/questions ?q]
-                         [?kp :knowledge-point/canonical-example ?q])]
-'''
+                         [?kp :knowledge-point/canonical-example ?q])]"""
 
 
 def _enum(value):
@@ -141,34 +138,50 @@ def prepare_investigation(publisher, source, directory):
     complete = Counter(_band(q) for q in questions if not completeness(q))
     observations = [{'question_id': str(q.get(':question/id', '')), 'entity_id': q.get(':db/id'),
                      'missing': completeness(q)} for q in questions if completeness(q)]
+    recorded = {_enum(value).rsplit('/', 1)[-1] for value in target.get(COVERAGE, [])}
+    coverage = [b for b in BANDS if b in recorded] or (['unobserved'] if 'unobserved' in recorded else observed_coverage(coverage_questions))
     summary = {'database': source['database'], 'lineage': source['lineage'], 'basis': basis,
-               'kp_id': int(source['kp_id']), 'observed_coverage': observed_coverage(coverage_questions),
+               'kp_id': int(source['kp_id']), 'observed_coverage': coverage,
                'complete_examples': {b: complete[b] for b in BANDS},
                'incomplete_imports': observations,
                'construction_needed': bool(observations) or any(not complete[b] for b in BANDS)}
     reference_file = directory / 'reference.json'
-    # All phases receive a progression reference, including source-rich jobs.
-    rows = publisher.client.query(COUNTS_QUERY, [[kw('question.difficulty/' + b) for b in BANDS]],
-                                  directory, 'candidate-counts', basis)
-    counts = defaultdict(dict)
-    for kp, band, count in rows:
-        counts[int(kp)][str(band).rsplit('/', 1)[-1]] = int(count)
-    candidates = sorted(kp for kp, bands in counts.items() if all(bands.get(b, 0) >= 2 for b in BANDS))
-    if not candidates:
-        raise ValueError('No imported KP with at least two complete candidates per level; inspect candidate-counts.edn')
-    metadata = []
-    pattern = '[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}]'
-    for start in range(0, len(candidates), 100):
-        metadata += [r[0] for r in publisher.client.query(
-            '[:find (pull ?kp ' + pattern + ') :in $ [?kp ...] :where [?kp :knowledge-point/id _]]',
-            [candidates[start:start + 100]], directory, f'candidate-kps-{start}', basis)]
-    for point in sorted(metadata, key=lambda value: _rank(value, target)):
+    preparation_key = _hash(source)
+    input_file = directory / 'investigation-input.json'
+    if input_file.exists() and reference_file.exists():
+        saved = json.loads(input_file.read_text())
+        if saved.get('preparation_key') == preparation_key:
+            return {**saved, 'investigation_file': str(input_file), 'reference_file': str(reference_file)}
+    summary['preparation_key'] = preparation_key
+    summary['needs_exemplars'] = summary['construction_needed']
+    # Metadata and observed coverage are small. Never join the whole corpus to
+    # worked-solution strings or form a KP x difficulty collection cross-product.
+    pattern = ('[:db/id :knowledge-point/title {:knowledge-point/key-prerequisites [:db/id]}'
+               ' {:knowledge-point/level-coverage [:db/ident]}]')
+    metadata = [r[0] for r in publisher.client.query(
+        '[:find (pull ?kp ' + pattern + ') :where [?kp :knowledge-point/id _]]',
+        [], directory, 'reference-kp-metadata', basis)]
+    metadata = [point for point in metadata if all(
+        ':question.difficulty/' + band in {_enum(v) for v in point.get(COVERAGE, [])} for band in BANDS)]
+    metadata.sort(key=lambda value: _rank(value, target))
+    def qualified_points():
+        for start in range(0, len(metadata), 25):
+            group = metadata[start:start + 25]
+            rows = publisher.client.query(COUNTS_QUERY, [[point[':db/id'] for point in group]],
+                                          directory, f'candidate-counts-{start}', basis)
+            counts = defaultdict(dict)
+            for kp, band, count in rows:
+                counts[int(kp)][str(band).rsplit('/', 1)[-1]] = int(count)
+            yield from (point for point in group if all(counts[point[':db/id']].get(b, 0) >= 2 for b in BANDS))
+    for point in qualified_points():
         kp = int(point[':db/id'])
         ids = sorted({r[0] for r in publisher.client.query(
             '''[:find ?q :in $ ?kp :where [?kp :knowledge-point/questions ?q]
              [?q :question/math-academy-id _] [?q :question/worked-solution _]
              [?q :question/difficulty _] [?q :question/answer-fields _]]''',
             [kp], directory, f'reference-question-ids-{kp}', basis)})
+        excluded = {q[':db/id'] for q in publisher.source_exclusions(directory / f'eligibility-{kp}', basis, ids)}
+        ids = [eid for eid in ids if eid not in excluded]
         selected = {b: [] for b in BANDS}
         for start in range(0, len(ids), 100):
             pulled = publisher.client.query('[:find (pull ?q ' + QUESTION_PULL +
@@ -205,9 +218,12 @@ def coverage_plan(client, directory, basis):
                                    [?d :db/ident ?ident]]''', [], directory, 'coverage-before', basis):
         current[int(kp)].add(str(ident))
     observed = defaultdict(set)
-    for kp, band in client.query(OBSERVED_QUERY, [[kw('question.difficulty/' + b) for b in BANDS]],
-                                directory, 'coverage-observed', basis):
-        observed[int(kp)].add(str(band))
+    kp_ids = sorted(row[0] for row in rows)
+    for start in range(0, len(kp_ids), 100):
+        for kp, band in client.query(OBSERVED_QUERY, [kp_ids[start:start + 100]],
+                                    directory, f'coverage-observed-{start}', basis):
+            if str(band).rsplit('/', 1)[-1] in BANDS:
+                observed[int(kp)].add(str(band))
     expected, forms = {}, []
     for (kp,) in sorted(rows):
         wanted = observed[kp] or {':question.difficulty/unobserved'}
@@ -243,59 +259,87 @@ def _transact(publisher, directory, forms, basis, source, apply):
         atomic_json(committer.intent_path, request)
     if not apply:
         return {'prepared': True, 'request_key': request['request_key'], 'basis': request['basis']}
-    receipt = committer.submit(request)
+    try:
+        receipt = committer.submit(request)
+    except StaleBasis:
+        committer.retire(request, 'rejected_stale_basis', {'reason': 'Confirmed basis rejection; next run recomputes coverage'})
+        raise
     if receipt.get(':edb/db-before-t') != request['basis']:
         raise ValueError('Coverage receipt does not match its saved basis')
     after = int(receipt[':edb/db-after-t'])
     # Verify all transaction datoms have the requested contributor. Schema
     # changes have generated metadata, so final shape is read back separately.
     source_rows = publisher.client.query('[:find ?s :in $ ?ident :where [?s :db/ident ?ident]]',
-        [kw(source)], directory, 'transaction-source', after)
+        [kw(request['source'])], directory, 'transaction-source', after)
     if len(source_rows) != 1 or any(row[4] != source_rows[0][0] for row in receipt.get(':edb/tx-data', [])):
         raise ValueError('Coverage receipt contributor differs from the requested agent')
     return {'committed': True, 'basis': after, 'request_key': request['request_key']}
 
 
+def _verify_schema(publisher, directory, basis):
+    rows = publisher.client.query('[:find (pull ?a [* {:db/valueType [:db/ident]} {:db/cardinality [:db/ident]}])'
+        ' :in $ [?i ...] :where [?a :db/ident ?i]]', [[kw(COVERAGE), kw('question.difficulty/unobserved')]],
+        directory, 'schema-readback', basis)
+    declaration = next((r[0] for r in rows if str(r[0][':db/ident']) == COVERAGE), {})
+    if len(rows) != 2 or _enum(declaration.get(':db/valueType')) != ':db.type/ref' or _enum(declaration.get(':db/cardinality')) != ':db.cardinality/many':
+        raise ValueError('Coverage schema readback differs from many/ref declaration')
+
+
+def _verify_coverage(publisher, directory, basis, expected):
+    actual = defaultdict(list)
+    for kp, ident in publisher.client.query(
+            '[:find ?kp ?ident :where [?kp :knowledge-point/level-coverage ?d] [?d :db/ident ?ident]]',
+            [], directory, 'coverage-readback', basis):
+        actual[str(kp)].append(str(ident))
+    if {k: sorted(v) for k, v in actual.items()} != expected:
+        raise ValueError('Coverage readback differs from the prepared sets')
+
+
+def _retire(publisher, directory, result):
+    committer = Committer(publisher.config, publisher.client, directory)
+    committer.retire(committer.pending(), 'verified', result)
+
+
 def migrate_coverage(publisher, directory, *, apply=False, source=':agent/codex'):
-    """Install the two declarations, then backfill every KP at a guarded basis."""
+    """Install declarations and backfill; recover each saved request first."""
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     status = publisher.client.status()
-    rows = publisher.client.query('[:find (pull ?a [* {:db/valueType [:db/ident]} {:db/cardinality [:db/ident]}])'
-        ' :in $ [?i ...] :where [?a :db/ident ?i]]',
+    rows = publisher.client.query('[:find ?ident :in $ [?ident ...] :where [_ :db/ident ?ident]]',
         [[kw(COVERAGE), kw('question.difficulty/unobserved')]], directory, 'schema-before', status['basis'])
-    existing = {str(row[0][':db/ident']): row[0] for row in rows}
-    pending_schema = (directory / 'schema/request.json').exists()
-    if len(existing) < 2 or pending_schema:
-        result = _transact(publisher, directory / 'schema',
+    existing = {str(row[0]) for row in rows}
+    schema_dir, backfill_dir = directory / 'schema', directory / 'backfill'
+    if len(existing) < 2 or (schema_dir / 'request.json').exists():
+        result = _transact(publisher, schema_dir,
             [form for form in _schema_forms() if str(form[kw('db/ident')]) not in existing],
             status['basis'], source, apply)
         if not apply:
             return {'stage': 'schema', **result}
-        status = {**status, 'basis': result['basis']}
+        _verify_schema(publisher, schema_dir, result['basis'])
+        _retire(publisher, schema_dir, result)
+    else:
+        _verify_schema(publisher, schema_dir, status['basis'])
+    # A lost reply is reconciled against the original expected sets before any
+    # fresh source reads may replace the saved plan.
+    if (backfill_dir / 'request.json').exists():
+        result = _transact(publisher, backfill_dir, [], status['basis'], source, apply)
+        if not apply:
+            return {'stage': 'backfill', **result}
+        expected = json.loads((backfill_dir / 'expected-coverage.json').read_text())
+        _verify_coverage(publisher, backfill_dir, result['basis'], expected)
+        _retire(publisher, backfill_dir, result)
+    status = publisher.client.status()
     forms, expected = coverage_plan(publisher.client, directory, status['basis'])
-    atomic_json(directory / 'expected-coverage.json', expected)
-    pending = (directory / 'backfill/request.json').exists()
-    if forms or pending:
-        result = _transact(publisher, directory / 'backfill', forms, status['basis'], source, apply)
+    if forms:
+        atomic_json(backfill_dir / 'expected-coverage.json', expected)
+        result = _transact(publisher, backfill_dir, forms, status['basis'], source, apply)
         if not apply:
             return {'stage': 'backfill', 'knowledge_points': len(expected), 'changes': len(forms), **result}
         after = result['basis']
-        saved_expected = json.loads((directory / 'expected-coverage.json').read_text())
-        verify = defaultdict(list)
-        for kp, ident in publisher.client.query('''[:find ?kp ?ident :where [?kp :knowledge-point/level-coverage ?d]
-                                                [?d :db/ident ?ident]]''', [], directory, 'coverage-readback', after):
-            verify[str(kp)].append(str(ident))
-        if {k: sorted(v) for k, v in verify.items()} != saved_expected:
-            raise ValueError('Coverage readback differs from the prepared sets')
+        _verify_coverage(publisher, backfill_dir, after, expected)
+        _retire(publisher, backfill_dir, result)
     else:
         after = status['basis']
-    schema = publisher.client.query('[:find (pull ?a [* {:db/valueType [:db/ident]} {:db/cardinality [:db/ident]}])'
-        ' :in $ [?i ...] :where [?a :db/ident ?i]]', [[kw(COVERAGE), kw('question.difficulty/unobserved')]],
-        directory, 'schema-readback', after)
-    declaration = next((r[0] for r in schema if str(r[0][':db/ident']) == COVERAGE), {})
-    if len(schema) != 2 or _enum(declaration.get(':db/valueType')) != ':db.type/ref' or _enum(declaration.get(':db/cardinality')) != ':db.cardinality/many':
-        raise ValueError('Coverage schema readback differs from many/ref declaration')
     result = {'verified': True, 'basis': after, 'knowledge_points': len(expected), 'changes': len(forms)}
     atomic_json(directory / 'verification.json', result)
     return result
@@ -309,7 +353,14 @@ def main():
     args = parser.parse_args()
     from scripts.generator_publish import Publisher
     publisher = Publisher.from_environment(source=args.source)
-    print(json.dumps(migrate_coverage(publisher, args.directory, apply=args.apply, source=args.source), sort_keys=True))
+    for attempt in range(3):
+        try:
+            result = migrate_coverage(publisher, args.directory, apply=args.apply, source=args.source)
+            break
+        except StaleBasis:
+            if attempt == 2:
+                raise
+    print(json.dumps(result, sort_keys=True))
 
 
 if __name__ == '__main__':

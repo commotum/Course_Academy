@@ -75,6 +75,14 @@ def write_package(directory, *, image=False, difficulty=None, declare_helper=Tru
     return manifest
 
 
+def fixture_investigation(publisher, source, directory):
+    """Existing pipeline fixtures have adequate source and need no EDB donor."""
+    path = Path(directory) / 'investigation.json'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({'fixture': True, 'needs_exemplars': False}))
+    return {'investigation_file': str(path), 'needs_exemplars': False}
+
+
 class FakeSession:
     """Structured agent fixtures test admission, not pedagogical judgement."""
     def __init__(self, *, reject=False, interrupt_author=False, image=False,
@@ -85,8 +93,11 @@ class FakeSession:
         self.default_difficulty = default_difficulty
 
     def __call__(self, role, context, directory):
+        if role == 'investigate':
+            return {'status': 'ready', 'exemplars_file': None, 'summary': 'Complete fixture source.',
+                    'evidence_paths': [], 'limitations': []}
         self.calls.append((role, str(directory)))
-        directory = Path(directory)
+        directory = Path(context['evidence_root'] if role == 'review' else directory)
         directory.mkdir(parents=True, exist_ok=True)
         if role == "author":
             if self.interrupt_author:
@@ -124,6 +135,8 @@ class FakeSession:
             findings = [{"kind": kind, "description": "Fixture counterexample requires repair.",
                          "source_refs": ["fixture-source-1"], "reproduction": "seed=17; compare source operation",
                          "requested_change": "Restore the source-supported sampling domain."}]
+        if not self.reject:
+            (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
         return {"verdict": "revise" if self.reject else "accepted", "summary": "Structured review fixture.",
                 "source_analysis": analysis, "checks": checks, "findings": findings}
 
@@ -139,6 +152,14 @@ class FakePublisher:
         self.material = {"question": "Square 7.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
         self.prepare_options = None
         self.inventory_extractions = 0
+        self.exemplar_publications = []
+
+    def publish_exemplars(self, kp, records, directory, *, assets_directory=None):
+        self.exemplar_publications.append((kp, records, str(directory)))
+        questions = [{':db/id': index + 1000, **record['question']} for index, record in enumerate(records)]
+        return {'passed': True, 'status': 'verified', 'basis_after': 1, 'new_questions': len(questions),
+                'questions': questions, 'source': ':agent/codex',
+                'fresh_source': self.extract_source(kp, Path(directory) / 'source')}
 
     def extract_inventory(self, kp, directory):
         self.inventory_extractions += 1
@@ -208,7 +229,8 @@ class GeneratorPipelineTests(unittest.TestCase):
 
     def pipeline(self, session, *, publisher=None, attempts=2, request=None):
         return Pipeline(self.job, request or self.request, publisher or self.publisher,
-                        root=self.root, environment=self.environment, session=session, max_attempts=attempts)
+                        root=self.root, environment=self.environment, session=session, max_attempts=attempts,
+                        investigation_preparer=fixture_investigation)
 
     def approve_for_refill(self, **options):
         result = self.pipeline(FakeSession(**options)).run()

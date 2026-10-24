@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Restartable generator authoring, independent review, and deterministic publication."""
+"""Restartable investigation, authorship, verification/repair, and publication."""
 from __future__ import annotations
 
 import argparse
@@ -22,6 +22,8 @@ from generator_packages import package_digest, publish_package, resolve_register
 from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_only_review
 from generator_report_repair import generator_repair_findings, pending_report_repair
 from generator_progress import failure_signature, material_identity
+
+PHASE_POLICY_VERSION = 2
 
 
 def read(path):
@@ -121,7 +123,7 @@ class CodexSession:
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         templates = self.root / 'generate/pipeline'
-        template = templates / ('reviewer.md' if role == 'review' else 'author.md')
+        template = templates / {'investigate': 'investigator.md', 'review': 'reviewer.md', 'author': 'author.md'}[role]
         prompt = template.read_text().replace('{{context}}', json.dumps(context, indent=2))
         output = directory / 'result.json'
         # A completed structured result survives a parent crash. The caller
@@ -140,15 +142,24 @@ class CodexSession:
             raise SessionRetryExhausted(role, directory, execution)
         (directory / 'prompt.txt').write_text(prompt)
         executable = self.environment.get('COURSE_ACADEMY_CODEX_EXECUTABLE') or shutil.which('codex', path=self.environment.get('PATH')) or str(Path.home() / '.local/bin/codex')
-        command = [executable, 'exec', '--ephemeral', '--skip-git-repo-check',
+        resume_id = context.get('resume_session_id') or (execution.get('thread_id') if execution.get('persistent_session') else None)
+        command = [executable, 'exec',
                    '--sandbox', 'workspace-write', '-c', 'approval_policy="never"',
                    '-c', 'sandbox_workspace_write.network_access=true',
-                   '-C', str(self.root if role == 'author' and context.get('engine_repair_allowed') else context['workspace'] if role == 'author' else context['evidence_root']),
+                   '-C', str(self.root)]
+        for extra in dict.fromkeys((context['workspace'], context.get('evidence_root', directory))):
+            command += ['--add-dir', str(extra)]
+        if resume_id:
+            command += ['resume']
+        command += ['--skip-git-repo-check', '--model', 'gpt-6.1-sol',
+                   '-c', 'model_reasoning_effort="high"',
                    '--output-schema', str(templates / (role + '.schema.json')),
-                   '--output-last-message', str(output), '--json', '-']
+                   '--output-last-message', str(output), '--json']
+        command += [resume_id, '-'] if resume_id else ['-']
         # Count before spawning so parent/process crashes cannot reset an
         # unfinished ephemeral session's budget and launch it forever.
-        execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running'}
+        execution = {**execution, 'launches': execution['launches'] + 1, 'status': 'running',
+                     'persistent_session': True}
         execution.pop('error', None)
         try:
             with (directory / 'events.jsonl').open('a') as log:
@@ -168,18 +179,38 @@ class CodexSession:
                     raise subprocess.CalledProcessError(process.returncode, command)
             result = read(output)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
+            execution.update(thread_id=session_thread(directory) or resume_id)
             execution.update(status='failed', error=str(error))
             finish_launch(execution_path, execution)
             if execution['launches'] >= launch_limit:
                 raise SessionRetryExhausted(role, directory, execution) from error
             raise
-        finish_launch(execution_path, {**execution, 'status': 'completed'})
+        finish_launch(execution_path, {**execution, 'status': 'completed',
+                                     'thread_id': session_thread(directory) or resume_id})
         return result
+
+
+def session_thread(directory):
+    """Read the last started thread without loading large tool-event bodies."""
+    path = Path(directory) / 'events.jsonl'
+    found = None
+    if path.exists():
+        with path.open() as stream:
+            for line in stream:
+                if '"thread.started"' not in line[:120]:
+                    continue
+                try:
+                    row = json.loads(line)
+                    if row.get('type') == 'thread.started':
+                        found = row.get('thread_id')
+                except ValueError:
+                    continue
+    return found
 
 
 class Pipeline:
     def __init__(self, directory, request, publisher, *, root=ROOT, environment=None,
-                 session=None, max_attempts=3):
+                 session=None, max_attempts=3, investigation_preparer=None):
         self.directory, self.root = Path(directory).resolve(), Path(root).resolve()
         self.directory.mkdir(parents=True, exist_ok=True)
         self.environment = dict(os.environ if environment is None else environment)
@@ -187,6 +218,7 @@ class Pipeline:
         if max_attempts < 1:
             raise ValueError('max_attempts must be positive')
         self.max_attempts = max_attempts
+        self.investigation_preparer = investigation_preparer
         inherited = json.loads(self.environment.get('COURSE_ACADEMY_GENERATOR_LOCK_FDS', '[]'))
         if not isinstance(inherited, list) or any(type(fd) is not int or fd < 0 for fd in inherited):
             raise ValueError('Inherited generator locks must be a list of file descriptors')
@@ -199,7 +231,7 @@ class Pipeline:
             if self.state['request'] != request:
                 raise ValueError('Saved job has different inputs; use a new job directory')
         else:
-            self.state = {'request': request, 'stage': 'source', 'attempt': 0,
+            self.state = {'request': request, 'stage': 'source', 'attempt': 0, 'phase_policy_version': PHASE_POLICY_VERSION,
                           'seed': int.from_bytes(os.urandom(4), 'big'), 'created': time.time()}
             self.persist()
 
@@ -392,17 +424,109 @@ class Pipeline:
                 'repair_mode': 'root_cause' if self.state.get('repair_cycle', 0) or self.state.get('repeated_candidate') else 'targeted',
                 'repair_regressions_file': str(self.directory / 'workspace/repair-regressions.json'),
                 'repair_preflight_file': str(self.directory / 'repair-preflight.json'),
-                'engine_repair_allowed': any(row['finding']['kind'] == 'grading' for row in history['findings'])}
+                'engine_repair_allowed': True,
+                'investigation_file': self.state.get('investigation_file'),
+                'investigation_result': self.state.get('investigation_result'),
+                'exemplars_file': self.state.get('exemplars_file'),
+                'assets_directory': self.state.get('assets_directory'),
+                'finalize_review_command': [python_executable(self.root, self.environment),
+                    str(self.root / 'scripts/finalize_generator_review.py'), '--job', str(self.directory),
+                    '--evidence-root', str(evidence)],
+                'shared_repair_command': [python_executable(self.root, self.environment),
+                    str(self.root / 'scripts/generator_shared_repair.py')]}
+
+    def investigate(self):
+        """Let one investigator finish the source account and publish its examples."""
+        from generator_investigation import prepare_investigation
+        evidence = self.directory / 'investigation'
+        evidence.mkdir(exist_ok=True)
+        source = read(self.directory / 'source/source.json')
+        prepare = self.investigation_preparer or prepare_investigation
+        prepared = prepare(self.publisher, source, evidence)
+        self.persist(investigation_file=prepared.get('investigation_file'))
+        attempts = self.state.get('investigation_rounds', 0)
+        while attempts < self.max_attempts:
+            directory = evidence if attempts == 0 else evidence / f'correction-{attempts}'
+            context = {**self.context(evidence), **prepared,
+                       'investigation_feedback': self.state.get('investigation_error')}
+            if attempts:
+                context['resume_session_id'] = session_thread(evidence)
+            result = self.session('investigate', context, directory)
+            save(directory / 'result.json', result)
+            if result.get('status') != 'ready':
+                error = {'error': 'Finish the investigation and construct the missing examples using the supplied reference. Repair relevant tools yourself.',
+                         'result': result}
+            else:
+                try:
+                    filename = result.get('exemplars_file')
+                    if prepared.get('needs_exemplars') and not filename:
+                        raise ValueError('This source needs three complete exemplar questions; save exemplars_file before returning ready')
+                    if filename:
+                        path = inside(self.directory / 'workspace', filename)
+                        records = read(path)
+                        if isinstance(records, dict):
+                            records = records.get('records', records.get('questions'))
+                        from generator_publish import StaleBasis
+                        for publication_attempt in range(6):
+                            try:
+                                published = self.publisher.publish_exemplars(self.state['request']['kp'], records,
+                                    evidence / 'publication', assets_directory=path.parent)
+                                break
+                            except StaleBasis:
+                                if publication_attempt == 5:
+                                    raise
+                        # This is a separate normal question publication, attributed
+                        # to the investigator. Original imports stay untouched.
+                        save(evidence / 'published-exemplars.json', published['questions'])
+                        save(self.directory / 'source/source.json', published['fresh_source'])
+                        self.publisher.extract_inventory(self.state['request']['kp'], self.directory / 'source')
+                        self.persist(exemplars_file=str(evidence / 'published-exemplars.json'),
+                                     exemplar_publication={k: v for k, v in published.items()
+                                                           if k not in {'questions', 'fresh_source'}},
+                                     source_hash=digest(published['fresh_source']), inventory_hash=None)
+                    self.persist(stage='generate', investigation_result=str(directory / 'result.json'),
+                                 investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
+                                 investigation_error=None)
+                    return
+                except (OSError, ValueError) as invalid:
+                    # Never replace an unresolved database request. The publisher
+                    # recovers it before evaluating any fresh exemplar proposal.
+                    error = {'error': str(invalid), 'instruction': 'Correct the exemplar records or helper, then finish the same investigation. Do not edit imported questions.'}
+            attempts += 1
+            self.persist(investigation_rounds=attempts, investigation_error=error)
+            save(evidence / 'feedback.json', error)
+        self.block('investigation_unfinished', error, 'investigate')
+
+    def finalize_review(self, evidence):
+        """Refresh final bytes before the verifier checks and accepts its repair."""
+        evidence = inside(self.directory, evidence)
+        previous_hash = self.state.get('package_hash')
+        self.check_repair_regressions()
+        self.sample()
+        candidate = self.candidate_hash()
+        if self.state.get('review_after_publication') and candidate != previous_hash:
+            publication = self.directory / 'publication'
+            if not (publication / 'verification.json').exists() and not self.state.get('publication', {}).get('passed'):
+                raise ValueError('Recover the existing publication before repairing a published package')
+            if publication.exists():
+                publication.rename(self.directory / ('publication-before-repair-' + str(time.time_ns())))
+            self.persist(review_after_publication=False, publication=None, registration=None)
+        self.persist(package_hash=candidate, stage='validate', approval_recorded=False)
+        self.ensure_inventory()
+        binding = self.review_binding()
+        save(evidence / 'final-binding.json', binding)
+        return {'binding': binding, 'batch_file': str(self.directory / 'samples.json'),
+                'assets_directory': self.state['assets_directory'],
+                'instruction': 'Check this final batch, including delivery, grading and visible rendering, before returning accepted.'}
 
     def review_candidate(self, evidence):
-        """Repair reports in the reviewer's writable root with a durable budget."""
+        """Keep verification, repairs, and report corrections with one agent."""
         evidence.mkdir(parents=True, exist_ok=True)
         binding_path = evidence / 'review-binding.json'
         binding = self.review_binding()
-        previous = self.state.get('previous_review') or {}
-        recorded = read(binding_path) if binding_path.exists() else (
-            previous.get('binding') if previous.get('directory') == str(evidence) else None)
-        if recorded is not None and recorded != binding:
+        recorded = read(binding_path) if binding_path.exists() else None
+        finalized = read(evidence / 'final-binding.json') if (evidence / 'final-binding.json').exists() else None
+        if recorded is not None and recorded != binding and finalized != binding:
             if self.state.get('report_repair_directory'):
                 self.persist(stage='validate', report_repair_directory=None,
                              review_report_error=None, review_report_result_file=None)
@@ -414,10 +538,11 @@ class Pipeline:
             self.block('review_binding_missing', {'evidence_root': str(evidence),
                        'error': 'Cached review has no saved binding to current inputs.'}, 'validate')
             return None
-        save(binding_path, binding)
+        if recorded is None:
+            save(binding_path, binding)
         rounds = self.state.get('review_report_rounds', {})
         count = rounds.get(str(evidence), 0)
-        limit = self.state.get('review_report_limits', {}).get(str(evidence), 3)
+        limit = self.state.get('review_report_limits', {}).get(str(evidence), self.max_attempts * 3)
         error = self.state.get('review_report_error') if count else None
         while count < limit:
             directory = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
@@ -425,51 +550,48 @@ class Pipeline:
             if error:
                 context['review_contract_feedback'] = {
                     'error': error, 'result_file': self.state.get('review_report_result_file', str(evidence / 'result.json')),
-                    'instruction': 'Correct your report/evidence in evidence_root; preserve the reviewed package and completed checks.'}
+                    'instruction': 'Finish the repair yourself, including relevant shared tools or engine. Finalize the package, check the final batch and correct your report before returning accepted.'}
+                context['resume_session_id'] = session_thread(evidence)
             if not self.admit_review_session(directory):
                 return None
             result = self.session('review', context, directory)
             save(directory / 'result.json', result)
-            # A changed candidate is a separate failure, never a report repair.
+            # The verifier's finalization helper may have resampled and saved
+            # new package/asset/engine identities during this same session.
+            self.state = read(self.path)
             try:
                 self.verify_approval_inputs()
+                if result.get('verdict') == 'accepted':
+                    final_path = evidence / 'final-binding.json'
+                    if not final_path.exists() or read(final_path) != self.review_binding():
+                        raise ValueError('Run finalize_review_command, check its final batch, then return acceptance bound to final-binding.json.')
+                validate_review(result, evidence)
             except EngineChanged:
                 self.sample()
                 self.persist(stage='validate')
                 return None
-            except ValueError as changed:
-                self.repair({'code': 'reviewed_inputs_changed', 'error': str(changed)})
-                return None
-            self.persist(previous_review={'directory': str(evidence), 'binding': self.review_binding()})
-            try:
-                validate_review(result, evidence)
-            except ValueError as invalid:
+            except (OSError, ValueError) as invalid:
                 error = str(invalid)
             else:
-                if not evidence_only_review(result):
+                self.persist(previous_review={'directory': str(evidence), 'binding': self.review_binding()})
+                if result['verdict'] == 'accepted':
                     save(evidence / 'result.json', result)
+                    save(binding_path, self.review_binding())
                     self.persist(review_report_error=None, review_report_result_file=None,
                                  report_repair_directory=None)
-                    if result['verdict'] == 'accepted':
-                        repaired = self.repair_inventory(evidence)
-                        if repaired and repaired.get('unresolved'):
-                            self.block_inventory(repaired)
-                            return None
-                        if repaired and repaired['inventory_changed']:
-                            self.persist(stage='validate', needs_repair=True)
-                            return None
                     return result
-                error = {'code': 'review_evidence_correction', 'findings': result['findings'],
-                         'instruction': 'Fix the report and evidence under evidence_root; the generator does not need an author pass for these findings.'}
                 self.remember_repair(result)
+                error = {'code': 'verification_unfinished', 'findings': result.get('findings', []),
+                         'instruction': 'Repair and recheck in this verification session. Incomplete imports are observations, never repair obligations. Earlier requirements may be revised with evidence.'}
             count += 1
             rounds[str(evidence)] = count
             self.persist(review_report_rounds=rounds, review_report_error=error,
+                         report_repair_directory=str(evidence),
                          review_report_result_file=str(directory / 'result.json'))
             save(evidence / 'contract-feedback.json', {'error': error, 'correction': count})
-        self.block('review_report_correction_exhausted', {
+        self.block('verification_unfinished', {
             'error': error, 'evidence_root': str(evidence), 'rounds': count,
-            'details': 'Independent report correction exhausted its saved budget; repair the reported cause before explicit resume.'}, 'validate')
+            'details': 'Verification did not converge within its durable session budget; completed work and exact failure are retained.'}, 'validate')
         return None
 
     def recover_report_handoff(self):
@@ -541,7 +663,7 @@ class Pipeline:
             if result.returncode:
                 raise ValueError(f'Generator exited {result.returncode}; {runtime}/run-{len(outputs)}.stderr:\n' + result.stderr[-4000:])
             outputs.append(json.loads(result.stdout))
-            images.append(asset_hashes(outputs[-1], runtime, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
+            images.append(asset_hashes(outputs[-1], output, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
         if outputs[0] != outputs[1] or images[0] != images[1]:
             raise ValueError('Generator is not deterministic for the saved seed')
         records = outputs[0]
@@ -560,11 +682,11 @@ class Pipeline:
         if self.candidate_hash() != package_digest(runtime, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies')):
             raise ValueError('Running generator modified its declared package files')
         save(self.directory / 'samples.json', records)
-        self.persist(batch_hash=digest(records), runtime=str(runtime),
+        self.persist(batch_hash=digest(records), runtime=str(runtime), assets_directory=str(output),
                      engine_hash=self.engine_identity(),
                      report_repair_directory=None, review_report_error=None,
                      review_report_result_file=None,
-                     assets=asset_hashes(records, runtime, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
+                     assets=asset_hashes(records, output, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
 
     def verify_approval_inputs(self):
         if self.candidate_hash() != self.state['package_hash'] or digest(read(self.directory / 'samples.json')) != self.state['batch_hash']:
@@ -670,28 +792,18 @@ class Pipeline:
         findings = reason.get('findings', [])
         if any(row.get('kind') == 'inventory' for row in findings):
             self.remember_repair(reason)
-            repaired = self.repair_inventory()
-            content = [row for row in findings if row.get('kind') not in {'inventory', 'evidence'}]
-            if not repaired or (repaired.get('unresolved') and not content):
-                self.block_inventory(repaired or {'unresolved': ['Missing reviewed affected-inventory.json evidence']})
-                return
-            # A protected stored record must not prevent an independently
-            # repairable package defect from reaching its author. The runner
-            # retains the inventory finding and pool_repair.unresolved; an
-            # accepted package review rechecks that history before publication.
+            # Imported incompleteness and historical observations never create
+            # a database-repair prerequisite for this generator.
+            content = [row for row in findings if row.get('kind') != 'inventory']
             if not content:
-                if not repaired['inventory_changed']:
-                    self.block_inventory({'unresolved': ['Review still rejects inventory already repaired; no delivery evidence changed.']})
-                    return
-                self.check_repair_regressions()
-                self.sample()
-                self.persist(stage='validate', package_hash=self.candidate_hash(), needs_repair=True)
+                self.persist(stage='validate', needs_repair=True, error=None)
                 return
             reason = {**reason, 'findings': content}
+
         self.remember_repair(reason)
         save(self.directory / 'feedback.json', {**reason,
             'repair_history_file': str(self.directory / 'repair-history.json'),
-            'instruction': 'Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. If the required action belongs outside the author workspace, return blocked with the exact required action; do not repeat unchanged checks.'})
+            'instruction': 'Fix the concrete generator defect, retain earlier counterexamples, and declare executable checks in repair-regressions.json. Repair relevant shared tools, policy or engine yourself, and verify the result; earlier requirements may be corrected with evidence.'})
         if self.is_refill or self.state.get('review_after_publication'):
             self.persist(stage='unsupported', needs_repair=True, error=reason)
         else:
@@ -785,6 +897,7 @@ class Pipeline:
             # A caller may have constructed this object before another worker
             # finished. Always make launch decisions from the locked state.
             self.state = read(self.path)
+            self.upgrade_phases()
             if isinstance(self.session, CodexSession):
                 self.session.lock_fds = (*getattr(self, 'inherited_lock_fds', ()), lock.fileno())
             if 'author_attempt_limit' not in self.state:
@@ -806,12 +919,33 @@ class Pipeline:
                 self.block('agent_session_retry_exhausted', reason, self.state['stage'])
                 return self.state
 
+    def upgrade_phases(self):
+        """One evidence-changing migration; retain drafts and unresolved writes."""
+        if self.is_refill or self.state.get('phase_policy_version', 0) >= PHASE_POLICY_VERSION:
+            return
+        if self.state['stage'] == 'verified' or (self.directory / 'publication/request.json').exists():
+            return
+        save(self.directory / 'job-before-three-phase.json', self.state)
+        source = self.directory / 'source/source.json'
+        if source.exists():
+            save(source.with_name('source-before-three-phase.json'), read(source))
+            fresh = self.publisher.extract_source(self.state['request']['kp'], source.parent)
+            save(source, fresh)
+        self.persist(stage='source', phase_policy_version=PHASE_POLICY_VERSION,
+                     author_running=False, investigation_complete=False, inventory_hash=None,
+                     review=None, review_binding=None, review_policy_version=None,
+                     review_after_publication=False, approval_recorded=False,
+                     report_repair_directory=None, review_report_error=None,
+                     error=None, progress_failures={},
+                     author_attempt_limit=self.state['attempt'] + self.max_attempts,
+                     review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3)
+
     def _run(self, stop_after):
         stale_retries = 0
         while True:
             stage = self.state['stage']
             publication = self.directory / 'publication'
-            if (stage in {'source', 'generate', 'sample', 'repair', 'report-repair', 'failed', 'validate', 'prepare'}
+            if (stage in {'source', 'investigate', 'generate', 'sample', 'repair', 'report-repair', 'failed', 'validate', 'prepare'}
                     and not self.state.get('review_after_publication')
                     and (publication / 'request.json').exists()):
                 # A durable intent can already have committed. Resolve its exact
@@ -819,7 +953,7 @@ class Pipeline:
                 self.persist(stage='push')
                 continue
             source_path=self.directory/'source/source.json'
-            if stage in {'source','generate','sample','validate','prepare','refill','repair','report-repair'} and source_path.exists():
+            if stage in {'source','investigate','generate','sample','validate','prepare','refill','repair','report-repair'} and source_path.exists():
                 from generator_source_policy import POLICY_VERSION
                 saved_source=read(source_path)
                 if saved_source.get('material',{}).get('source_eligibility',{}).get('policy_version')!=POLICY_VERSION:
@@ -879,7 +1013,7 @@ class Pipeline:
                     snapshot = self.publisher.extract_source(self.state['request']['kp'], source.parent)
                     save(source, snapshot)
                 (self.directory / 'workspace').mkdir(exist_ok=True)
-                self.persist(stage='refill' if self.is_refill else 'generate', source_hash=digest(read(source)))
+                self.persist(stage='refill' if self.is_refill else 'investigate', source_hash=digest(read(source)))
                 if self.is_refill:
                     continue
                 reference = self.state['request'].get('registered_package')
@@ -887,12 +1021,9 @@ class Pipeline:
                 if not reference and current.get(':question-generator/script', '').startswith('generators/'):
                     reference = current[':question-generator/script']
                 if reference:
-                    package = self.load_registered_package(reference)
-                    try:
-                        self.sample()
-                        self.persist(stage='validate', package_hash=package.digest)
-                    except (OSError, ValueError, subprocess.SubprocessError) as error:
-                        self.repair({'error': str(error)})
+                    self.load_registered_package(reference)
+            elif stage == 'investigate':
+                self.investigate()
             elif stage == 'refill':
                 try:
                     reference = self.state['request'].get('registered_package')
@@ -918,7 +1049,8 @@ class Pipeline:
                 save(evidence / 'result.json', result)
                 self.persist(author_running=False)
                 if result.get('status') in {'unsupported', 'blocked'}:
-                    self.block('author_reported_limitation', result, 'generate')
+                    self.repair({'code': 'author_unfinished', 'result': result,
+                                 'error': 'Take responsibility for the source or tool limitation, use investigation exemplars, and finish the generator. Relevant shared repairs are authorized.'})
                     continue
                 if result.get('status') != 'ready' or not isinstance(result.get('manifest'), str):
                     self.repair({'error': 'Author did not return a ready package', 'result': result})
@@ -978,7 +1110,7 @@ class Pipeline:
                     self.publisher.prepare(self.state['request']['kp'], self.publication_records(),
                                            package.reference, package.digest, self.directory / 'publication',
                                            source_snapshot=read(self.directory / 'source/source.json'),
-                                           assets_directory=self.state['runtime'],
+                                           assets_directory=self.state.get('assets_directory', self.state['runtime']),
                                            **({'expected_registered_generator': package.reference} if self.is_refill else {}))
                 except SourceChanged as error:
                     if not self.is_refill:

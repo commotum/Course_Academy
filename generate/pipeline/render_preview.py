@@ -15,11 +15,44 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 REPO = Path(__file__).resolve().parents[2]
 
+VISIBLE_DOM_AUDIT = r"""() => {
+        const root = document.querySelector('.lesson-content');
+        const visible = element => {
+          // The native select stores TeX values for the rich UI; learners see
+          // its rendered trigger/menu instead. aria-hidden alone is not a
+          // visibility test, so keep this exception specific to that control.
+          if (element.closest('select.answer-select-native[aria-hidden="true"]')) return false;
+          const style = getComputedStyle(element);
+          return style.visibility !== 'hidden' && style.visibility !== 'collapse'
+            && style.display !== 'none' && element.getClientRects().length > 0;
+        };
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const rawTex = [], codeMath = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          if (!visible(node.parentElement) || node.parentElement.closest('mjx-container,math,script,style,textarea,math-field')) continue;
+          if (/\\(?:begin|end)\{|\\(?:eqalign|dfrac|frac|sqrt)\b|\[\/?math\]/.test(node.textContent)) rawTex.push(node.textContent.slice(0,200));
+          if (node.parentElement.closest('pre,code') && /\$|\\(?:begin|dfrac|frac)/.test(node.textContent)) codeMath.push(node.textContent.slice(0,200));
+        }
+        return {
+        rawTex, codeMath,
+        internalFieldLabels:[...root.querySelectorAll('.answer-field legend,.response-summary')]
+          .filter(visible).map(node=>node.textContent.trim()).filter(text=>/^Answer:\s*(answer|selection)(?:\s|[·:]|$)/i.test(text)),
+        mathContainers:document.querySelectorAll('mjx-container').length,
+        mathErrors:[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].filter(visible).map(node=>node.textContent),
+        brokenImages:[...document.images].filter(image=>!image.complete || !image.naturalWidth).map(image=>image.src),
+        danglingGlyphs:[...document.querySelectorAll('mjx-container use')].map(node=>node.getAttribute('href') || node.getAttribute('xlink:href'))
+          .filter(href=>href?.startsWith('#') && !document.getElementById(href.slice(1))),
+        text:document.querySelector('.lesson-content').innerText,
+        fonts:document.fonts.status
+      }}"""
+
 # Use the installed browser driver; do not install a second rendering stack.
 BROWSER_SCRIPT = r"""
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const { chromium } = require(config.playwright);
+const audit = __VISIBLE_DOM_AUDIT__;
 (async () => {
   const browser = await chromium.launch({headless:true, executablePath:config.browser,
     args:['--disable-dev-shm-usage']});
@@ -47,36 +80,49 @@ const { chromium } = require(config.playwright);
         await Promise.all([...document.images].map(image => image.decode().catch(() => {})));
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       });
-      const state = await page.evaluate(() => {
-        const root = document.querySelector('.lesson-content');
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-        const rawTex = [], codeMath = [];
-        let node;
-        while ((node = walker.nextNode())) {
-          if (node.parentElement.closest('mjx-container,math,script,style,textarea,math-field')) continue;
-          if (/\\(?:begin|end)\{|\\(?:eqalign|dfrac|frac|sqrt)\b|\[\/?math\]/.test(node.textContent)) rawTex.push(node.textContent.slice(0,200));
-          if (node.parentElement.closest('pre,code') && /\$|\\(?:begin|dfrac|frac)/.test(node.textContent)) codeMath.push(node.textContent.slice(0,200));
-        }
-        return {
-        rawTex, codeMath,
-        internalFieldLabels:[...root.querySelectorAll('.answer-field legend,.response-summary')]
-          .map(node=>node.textContent.trim()).filter(text=>/^Answer:\s*(answer|selection)(?:\s|[·:]|$)/i.test(text)),
-        mathContainers:document.querySelectorAll('mjx-container').length,
-        mathErrors:[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].map(node=>node.textContent),
-        brokenImages:[...document.images].filter(image=>!image.complete || !image.naturalWidth).map(image=>image.src),
-        danglingGlyphs:[...document.querySelectorAll('mjx-container use')].map(node=>node.getAttribute('href') || node.getAttribute('xlink:href'))
-          .filter(href=>href?.startsWith('#') && !document.getElementById(href.slice(1))),
-        text:document.querySelector('.lesson-content').innerText,
-        fonts:document.fonts.status
-      }});
+      const state = await page.evaluate(audit);
       const stem = config.output + '/question-' + String(index + 1).padStart(3,'0');
       await page.screenshot({path:stem+'.png',fullPage:true,animations:'disabled'});
       fs.writeFileSync(stem+'.html',await page.content());
+      state.dropdowns = [];
+      // The completed preview intentionally disables inputs. Load an active
+      // presentation through the same unmodified UI to exercise real menus.
+      if (await page.locator('.answer-select-trigger').count()) {
+        await page.goto(config.origin + '/learn?activityId=' + index + '-active', {waitUntil:'networkidle'});
+        await page.locator('.lesson-content').waitFor();
+        await page.evaluate(async () => {
+          for (const image of document.images) image.loading = 'eager';
+          if (window.MathJax?.startup?.promise) await MathJax.startup.promise;
+          if (window.MathJax?.typesetPromise) await MathJax.typesetPromise();
+          await document.fonts.ready;
+          await Promise.all([...document.images].map(image => image.decode().catch(() => {})));
+        });
+        const triggers = page.locator('.answer-select-trigger');
+        for (let optionIndex = 0; optionIndex < await triggers.count(); optionIndex++) {
+          const trigger = triggers.nth(optionIndex);
+          if (await trigger.isDisabled()) throw new Error('Active preview dropdown is disabled');
+          await trigger.click();
+          await page.evaluate(async () => {
+            if (window.MathJax?.typesetPromise) await MathJax.typesetPromise();
+            await document.fonts.ready;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          });
+          const menu = await page.evaluate(audit);
+          menu.screenshot = stem + '-dropdown-' + (optionIndex + 1) + '.png';
+          menu.open = await trigger.getAttribute('aria-expanded') === 'true';
+          await page.screenshot({path:menu.screenshot,fullPage:true,animations:'disabled'});
+          state.dropdowns.push(menu);
+          await page.keyboard.press('Escape');
+        }
+      }
       state.index=index; state.screenshot=stem+'.png'; state.javascriptErrors=errors;
       state.passed=!errors.length && !state.mathErrors.length && !state.brokenImages.length
         && !state.danglingGlyphs.length && !state.rawTex.length && !state.codeMath.length
         && !state.internalFieldLabels.length && state.fonts==='loaded'
-        && (!config.expectedMath[index] || state.mathContainers>0);
+        && (!config.expectedMath[index] || state.mathContainers>0)
+        && state.dropdowns.every(menu => menu.open && !menu.rawTex.length && !menu.codeMath.length
+          && !menu.mathErrors.length && !menu.brokenImages.length && !menu.danglingGlyphs.length
+          && !menu.internalFieldLabels.length && menu.fonts === 'loaded');
       reports.push(state);
       await context.close();
     }
@@ -87,7 +133,7 @@ const { chromium } = require(config.playwright);
   console.log(JSON.stringify({passed:report.passed,count:reports.length,report:config.output+'/rendering.json'}));
   if (!report.passed) process.exitCode=1;
 })().catch(error=>{console.error(error);process.exitCode=1});
-"""
+""".replace("__VISIBLE_DOM_AUDIT__", VISIBLE_DOM_AUDIT)
 
 
 def enum(value):
@@ -102,7 +148,7 @@ def answer_id(value):
     return str(value)
 
 
-def preview(record, index):
+def preview(record, index, *, active=False):
     question = record.get("question", record)
     fields = []
     for number, field in enumerate(question[":question/answer-fields"]):
@@ -117,6 +163,10 @@ def preview(record, index):
                        "correctAnswer": correct, "response": {"value": correct["value"], "choiceId": correct_id}})
     step = {"kind": "question", "contentId": index + 1, "status": "correct", "problem": question[":question/problem"],
             "solution": question.get(":question/worked-solution", ""), "fields": fields}
+    if active:
+        step['status'] = 'started'
+        for field in fields:
+            field.pop('response', None)
     return {"activityId": str(index), "title": "Generator review", "type": "lesson", "steps": [step],
             "courseId": "review", "learner": {"id": 1, "name": "Offline review"}}
 
@@ -171,8 +221,10 @@ def render(records, output, asset_roots, browser=None, playwright=None, node=Non
                 data, kind = json.dumps({"enabled": True}).encode(), "application/json"
             elif path == "/api/preview":
                 try:
-                    index = int(parse_qs(parsed.query)["activityId"][0])
-                    data, kind = json.dumps(preview(records[index], index)).encode(), "application/json"
+                    identity = parse_qs(parsed.query)["activityId"][0]
+                    active = identity.endswith('-active')
+                    index = int(identity.removesuffix('-active'))
+                    data, kind = json.dumps(preview(records[index], index, active=active)).encode(), "application/json"
                 except (IndexError, KeyError, ValueError):
                     self.send_error(400); return
             else:

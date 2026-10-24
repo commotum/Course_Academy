@@ -1,10 +1,12 @@
-"""Small, fail-closed validation of an independent generator review."""
+"""Validate a verifier's final report and its recorded evidence."""
+import argparse
 import json
 from pathlib import Path
+import sys
 import uuid
 
 
-REVIEW_POLICY_VERSION = 4
+REVIEW_POLICY_VERSION = 5
 CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
                  "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")
@@ -236,9 +238,31 @@ def validate_review(result, evidence_root):
         for key in ("description", "reproduction", "requested_change"):
             _text(finding.get(key), f"finding.{key}")
         _strings(finding.get("source_refs"), "finding.source_refs")
-    if accepted and findings:
+    if accepted and any(finding['kind'] != 'inventory' for finding in findings):
         raise ValueError("accepted review cannot have unresolved findings")
     if verdict == "revise" and not findings:
         raise ValueError("revise requires actionable findings")
-    if any(finding["kind"] == "inventory" for finding in findings):
-        _inventory_evidence(evidence_root)
+    # Historical inventory observations are not publication prerequisites.
+    # In particular, an incomplete import is valid partial evidence, not a
+    # database repair request. A real pool mutation validates its separate
+    # exact-question evidence at the mutation boundary.
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--result', required=True, type=Path)
+    parser.add_argument('--evidence-root', required=True, type=Path)
+    args = parser.parse_args(argv)
+    try:
+        result = json.loads(args.result.read_text())
+        validate_review(result, args.evidence_root)
+    except (OSError, UnicodeError, ValueError) as error:
+        print(json.dumps({'valid': False, 'error': str(error)}), file=sys.stderr)
+        return 1
+    print(json.dumps({'valid': True, 'verdict': result['verdict'],
+                      'review_policy_version': REVIEW_POLICY_VERSION}))
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

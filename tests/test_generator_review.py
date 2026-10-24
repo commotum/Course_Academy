@@ -9,7 +9,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from generator_review import CHECKS, validate_review
+from generator_review import CHECKS, validate_review, _inventory_evidence, main
 from generator_review_fixtures import write_decision_evidence
 
 
@@ -166,18 +166,18 @@ class ReviewEvidenceTests(unittest.TestCase):
             'finding': 'Bank-only shortcut', 'reproduction': 'Run retained probe.',
             'evidence_path': 'stored-original.json'}]}
 
-    def test_inventory_finding_requires_complete_handoff_before_pool_repair(self):
+    def test_explicit_pool_action_requires_complete_handoff(self):
         report = self.inventory_report()
         path = self.directory / 'affected-inventory.json'
         with self.assertRaisesRegex(ValueError, 'affected-inventory.json'):
-            validate_review(self.review, self.directory)
+            _inventory_evidence(self.directory)
         for invalid in ('{', '[]', '{"affected_questions":[]}'):
             path.write_text(invalid)
             with self.assertRaisesRegex(ValueError, 'affected-inventory.json'):
-                validate_review(self.review, self.directory)
+                _inventory_evidence(self.directory)
         path.write_text(json.dumps(report))
         with self.assertRaisesRegex(ValueError, 'evidence_path'):
-            validate_review(self.review, self.directory)
+            _inventory_evidence(self.directory)
         (self.directory / 'stored-original.json').write_text(json.dumps({
             ':db/id': 17592186524997, ':question/id': report['affected_questions'][0]['question_id'],
             ':question/math-academy-id': 'q-107463'}))
@@ -188,7 +188,31 @@ class ReviewEvidenceTests(unittest.TestCase):
             invalid['affected_questions'][0][key] = value
             path.write_text(json.dumps(invalid))
             with self.assertRaises(ValueError):
-                validate_review(self.review, self.directory)
+                _inventory_evidence(self.directory)
+
+    def test_historical_inventory_observation_does_not_block_acceptance(self):
+        self.inventory_report()
+        self.review['verdict'] = 'accepted'
+        validate_review(self.review, self.directory)
+        self.assertFalse((self.directory / 'affected-inventory.json').exists())
+        self.review['findings'][0]['kind'] = 'math'
+        with self.assertRaisesRegex(ValueError, 'unresolved findings'):
+            validate_review(self.review, self.directory)
+
+    def test_report_cli_detects_omission_and_accepts_same_session_correction(self):
+        from contextlib import redirect_stdout, redirect_stderr
+        from io import StringIO
+        result = self.directory / 'final-result.json'
+        invalid = copy.deepcopy(self.review)
+        invalid['checks']['math']['evidence_paths'] = ['missing.json']
+        result.write_text(json.dumps(invalid))
+        with redirect_stdout(StringIO()), redirect_stderr(StringIO()) as errors:
+            self.assertEqual(main(['--result', str(result), '--evidence-root', str(self.directory)]), 1)
+        self.assertIn('missing.json', errors.getvalue())
+        result.write_text(json.dumps(self.review))
+        with redirect_stdout(StringIO()) as output:
+            self.assertEqual(main(['--result', str(result), '--evidence-root', str(self.directory)]), 0)
+        self.assertTrue(json.loads(output.getvalue())['valid'])
 
     def test_valid_original_source_report_does_not_authorize_retirement(self):
         from generator_pool_repair import eligible, generated_proof

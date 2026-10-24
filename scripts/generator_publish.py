@@ -39,6 +39,7 @@ QUESTION_PULL = '''[* {:question/difficulty [:db/ident]}
  {:answer-field/correct [* {:answer/type [:db/ident]}]}
  {:answer-field/choices [* {:answer/type [:db/ident]}]}]}]'''
 KP_PULL = ('[* {:knowledge-point/key-prerequisites [*]}'
+           ' {:knowledge-point/level-coverage [:db/ident]}'
            ' {:knowledge-point/question-generator [*]}'
            ' {:knowledge-point/canonical-example ' + QUESTION_PULL + '}'
            ' {[:knowledge-point/questions :limit nil] ' + QUESTION_PULL + '}]')
@@ -134,6 +135,19 @@ def content_fingerprint(question):
             # turn the same mathematical prompt into a new practice identity.
             field.pop(':answer-field/choices', None)
     return digest(value)
+
+
+def inventory_fingerprints(questions):
+    """Incomplete imports remain evidence, never a prerequisite for generation."""
+    fingerprints = set()
+    for question in questions:
+        try:
+            fingerprints.add(content_fingerprint(question))
+        except (KeyError, TypeError, ValueError):
+            # Missing captured fields are not a repair request. Such a record
+            # cannot establish that a newly complete question is a duplicate.
+            continue
+    return fingerprints
 
 
 def localize_record(record, math_root, assets_directory, *, library=None):
@@ -435,9 +449,7 @@ class Publisher:
         """Read-only delivery evidence, separate from instructional identity."""
         questions = kp.get(':knowledge-point/questions', [])
         canonical = kp.get(':knowledge-point/canonical-example')
-        fingerprints = {content_fingerprint(q) for q in questions}
-        if canonical:
-            fingerprints.add(content_fingerprint(canonical))
+        fingerprints = inventory_fingerprints([*questions, *([canonical] if canonical else [])])
         inventory = {'database': status['database'], 'lineage': status['lineage'],
                      'basis': basis, 'kp_id': int(kp_id), 'questions': jsonable(questions),
                      'canonical_example': jsonable(canonical), 'fingerprints': sorted(fingerprints)}
@@ -554,6 +566,94 @@ class Publisher:
         atomic_json(directory / 'source.json', result)
         return result
 
+    def prepare_exemplars(self, kp_id, records, directory, *, assets_directory=None, source=':agent/codex'):
+        """Prepare three ordinary questions without changing generator registration."""
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        if (directory / 'request.json').exists():
+            raise ValueError('Recover pending exemplar publication before preparing new content')
+        if not isinstance(records, list) or len(records) != 3:
+            raise ValueError('Investigation must supply exactly three exemplar records')
+        bands = [enum(record.get('question', {}).get(':question/difficulty')) for record in records]
+        if sorted(bands) != [':question.difficulty/' + band for band in ('easy', 'hard', 'moderate')]:
+            raise ValueError('Exemplars require exactly one easy, moderate, and hard question')
+        status = self.client.status()
+        basis = status['basis']
+        kp = self.read_kp(kp_id, directory / 'before', basis)
+        current = {str(q[':question/id']): q for q in kp.get(':knowledge-point/questions', [])}
+        exemplars, accepted = [], []
+        for record in records:
+            validate_knowledge_point(record.get('knowledge_point'), kp_id, kp[':knowledge-point/id'])
+            localized = localize_record(record, self.config.math_root, assets_directory or directory)
+            validate_question(localized['question'])
+            identity_key = 'question:' + digest(exemplar_content(localized['question']))
+            localized['question'] = stable_identities(localized['question'], kp[':knowledge-point/id'], identity_key=identity_key)
+            qid = localized['question'][':question/id']
+            if qid in current:
+                stored = current[qid]
+                if (stored.get(':question/retired') or ':question/math-academy-id' in stored
+                        or exemplar_content(stored) != exemplar_content(localized['question'])):
+                    raise VerificationError('Existing exemplar identity has different content; no question may be overwritten')
+            else:
+                accepted.append(localized)
+            exemplars.append(localized)
+        identities = [uuid.UUID(value) for record in accepted for value in
+            [record['question'][':question/id']]
+            + [field[':answer-field/id'] for field in record['question'][':question/answer-fields']]
+            + [answer[':answer/id'] for field in record['question'][':question/answer-fields'] for answer in field[':answer-field/choices']]]
+        if identities and self.client.query(
+                '[:find ?e ?id :in $ [?id ...] :where (or-join [?e ?id] [?e :question/id ?id] [?e :answer-field/id ?id] [?e :answer/id ?id])]',
+                [identities], directory, 'identity-collisions', basis):
+            raise VerificationError('Existing identities require reconciliation; no question may be overwritten')
+        forms, assertions = question_forms(kp_id, accepted)
+        if forms:
+            forms.append([kw('db/ensure'), int(kp_id), kw('knowledge-point/validate')])
+        attributes = self.client.query('[:find ?a ?ident ?type :where [?a :db/ident ?ident] [?a :db/valueType ?v] [?v :db/ident ?type]]', [], directory, 'attributes', basis)
+        idents = self.client.query('[:find ?e ?ident :where [?e :db/ident ?ident]]', [], directory, 'idents', basis)
+        if source not in {str(ident) for _, ident in idents}:
+            raise ValueError('Investigator contributor does not exist: ' + source)
+        snapshot = {'basis': basis, 'lineage': status['lineage'], 'attributes': attributes, 'idents': idents}
+        batch = {'source': source, 'forms': forms, 'assertions': assertions, 'retractions': []}
+        prepared = {'kind': 'exemplars', 'database': status['database'], 'lineage': status['lineage'],
+            'basis': basis, 'kp_id': int(kp_id), 'source': source,
+            'new_questions': len(accepted), 'duplicates': len(exemplars) - len(accepted),
+            'batch_edn': dumps(batch), 'snapshot_edn': dumps(snapshot), 'before_edn': dumps(kp),
+            'records': jsonable(accepted), 'exemplar_records': jsonable(exemplars)}
+        atomic_json(directory / 'preparation.json', prepared)
+        verify_assets(exemplars, self.config.math_root)
+        return prepared
+
+    def publish_exemplars(self, kp_id, records, directory, *, assets_directory=None, source=':agent/codex'):
+        """Recover or commit the investigator's questions with exact readback.
+
+        The returned source remains imported evidence. Explicit question entities
+        are returned separately for the next phases; they are not import labels.
+        """
+        directory = Path(directory)
+        pending = directory / 'request.json'
+        if not pending.exists():
+            self.prepare_exemplars(kp_id, records, directory, assets_directory=assets_directory, source=source)
+        else:
+            prepared = read_json(directory / 'preparation.json')
+            if not prepared or prepared.get('kind') != 'exemplars' or prepared['kp_id'] != int(kp_id):
+                raise VerificationError('Pending request is not this KP exemplar publication')
+        result = self.publish(directory)
+        fresh = self.extract_source(kp_id, directory / 'source', basis=result['basis_after'])
+        return {**result, 'fresh_source': fresh}
+
+    @staticmethod
+    def _verified_exemplars(kp, prepared):
+        questions = {str(q[':question/id']): q for q in kp.get(':knowledge-point/questions', [])}
+        result = []
+        for record in prepared['exemplar_records']:
+            expected = record['question']
+            actual = questions.get(expected[':question/id'])
+            if (actual is None or ':question/math-academy-id' in actual or actual.get(':question/retired')
+                    or exemplar_content(actual) != exemplar_content(expected)):
+                raise VerificationError('Exemplar readback differs from prepared content')
+            result.append(jsonable(actual))
+        return result
+
     def prepare(self, kp_id, records, generator_path, package_hash, directory, *, source_snapshot=None, assets_directory=None,
                 expected_registered_generator=None):
         directory = Path(directory)
@@ -584,10 +684,8 @@ class Publisher:
         if package_path.is_absolute() or '..' in package_path.parts or package_path.parts[:2] != ('generators', package_hash[:2]) or package_hash not in package_path.parts:
             raise ValueError('Registration must identify the immutable generator package')
         existing = kp.get(':knowledge-point/questions', [])
-        seen = {content_fingerprint(q) for q in existing}
         canonical = kp.get(':knowledge-point/canonical-example')
-        if canonical:
-            seen.add(content_fingerprint(canonical))
+        seen = inventory_fingerprints([*existing, *([canonical] if canonical else [])])
         accepted, duplicate_count = prepare_records(
             records, kp_id, kp[':knowledge-point/id'], seen,
             self.config.math_root, assets_directory or directory)
@@ -599,39 +697,11 @@ class Publisher:
         generator_uuid = uuid.uuid5(uuid.UUID(str(kp[':knowledge-point/id'])), 'generator-package:' + package_hash)
         generator_rows = self.client.query('[:find (pull ?g [*]) :in $ ?id :where [?g :question-generator/id ?id]]', [generator_uuid], directory, 'generator-identity', basis)
         old_generator = kp.get(':knowledge-point/question-generator')
-        forms, assertions, retractions = [], [], []
+        forms, assertions = question_forms(kp_id, accepted)
+        retractions = []
         def add(entity, attr, value):
             forms.append([kw('db/add'), entity, kw(attr), value])
             assertions.append([entity, kw(attr), value])
-        for rec in accepted:
-            q = rec['question']
-            for field in q[':question/answer-fields']:
-                for a in field[':answer-field/choices']:
-                    aid = a[':answer/id']
-                    add(aid, 'answer/id', uuid.UUID(aid))
-                    add(aid, 'answer/type', kw(enum(a[':answer/type'])))
-                    add(aid, 'answer/value', a[':answer/value'])
-                    if ':answer/feedback' in a:
-                        add(aid, 'answer/feedback', a[':answer/feedback'])
-                    forms.append([kw('db/ensure'), aid, kw('answer/validate')])
-                fid = field[':answer-field/id']
-                add(fid, 'answer-field/id', uuid.UUID(fid))
-                add(fid, 'answer-field/key', field[':answer-field/key'])
-                add(fid, 'answer-field/type', kw(enum(field[':answer-field/type'])))
-                for a in field[':answer-field/choices']:
-                    add(fid, 'answer-field/choices', a[':answer/id'])
-                add(fid, 'answer-field/correct', answer_id(field[':answer-field/correct']))
-                forms.append([kw('db/ensure'), fid, kw('answer-field/validate')])
-            qid = q[':question/id']
-            add(qid, 'question/id', uuid.UUID(qid))
-            for name in ('problem', 'worked-solution', 'requires-calculator'):
-                if ':question/' + name in q:
-                    add(qid, 'question/' + name, q[':question/' + name])
-            add(qid, 'question/difficulty', kw(enum(q[':question/difficulty'])))
-            for field in q[':question/answer-fields']:
-                add(qid, 'question/answer-fields', field[':answer-field/id'])
-            forms.append([kw('db/ensure'), qid, kw('question/validate')])
-            add(int(kp_id), 'knowledge-point/questions', qid)
         if generator_rows:
             if len(generator_rows) != 1 or generator_rows[0][0].get(':question-generator/script') != generator_path:
                 raise ValueError('Immutable generator identity has different registered content')
@@ -671,12 +741,14 @@ class Publisher:
                 raise ValueError('Publication requires a saved preparation')
             if prepared['database'] != self.config.database:
                 raise ValueError('Preparation belongs to a different database')
+            exemplars = prepared.get('kind') == 'exemplars'
             request = committer.pending()
             if request is None:
-                resolve_registered_script(prepared['generator_path'], Path(self.config.repo_root), Path(self.config.math_root))
+                if not exemplars:
+                    resolve_registered_script(prepared['generator_path'], Path(self.config.repo_root), Path(self.config.math_root))
                 verify_assets(prepared['records'], self.config.math_root)
                 verified = read_json(directory / 'verification.json')
-                if verified and verified.get('package_sha256') == prepared['package_sha256'] and verified.get('preparation_sha256') == digest(prepared):
+                if verified and verified.get('package_sha256') == prepared.get('package_sha256') and verified.get('preparation_sha256') == digest(prepared):
                     return verified
                 batch, snapshot = loads(prepared['batch_edn']), loads(prepared['snapshot_edn'])
                 if not batch['forms']:
@@ -686,11 +758,17 @@ class Publisher:
                     if status['basis'] != prepared['basis']:
                         raise StaleBasis('Database advanced after no-change preparation')
                     current = self.read_kp(prepared['kp_id'], directory / 'readback', prepared['basis'])
-                    gen = current.get(':knowledge-point/question-generator', {})
-                    if str(gen.get(':question-generator/id')) != prepared['generator_id'] or gen.get(':question-generator/script') != prepared['generator_path']:
-                        raise VerificationError('No-change registration differs from the approved package')
+                    if not exemplars:
+                        gen = current.get(':knowledge-point/question-generator', {})
+                        if str(gen.get(':question-generator/id')) != prepared['generator_id'] or gen.get(':question-generator/script') != prepared['generator_path']:
+                            raise VerificationError('No-change registration differs from the approved package')
                     result = {'status': 'no_changes', 'passed': True, 'basis_after': prepared['basis'], 'new_questions': 0,
-                              'package_sha256': prepared['package_sha256'], 'preparation_sha256': digest(prepared)}
+                              'preparation_sha256': digest(prepared)}
+                    if exemplars:
+                        result.update(questions=self._verified_exemplars(current, prepared), source=prepared['source'])
+                        verify_assets(prepared['exemplar_records'], self.config.math_root)
+                    else:
+                        result['package_sha256'] = prepared['package_sha256']
                     atomic_json(directory / 'verification.json', result)
                     return result
                 committer.preview(batch, snapshot)
@@ -710,23 +788,32 @@ class Publisher:
             now = {str(q[':question/id']): q for q in kp.get(':knowledge-point/questions', [])}
             if len(now) != len(old) + prepared['new_questions'] or any(now.get(qid) != q for qid, q in old.items()):
                 raise VerificationError('Readback changed existing question content or pool membership')
-            excluded = {':knowledge-point/questions', ':knowledge-point/question-generator'}
+            excluded = {':knowledge-point/questions'}
+            if not exemplars:
+                excluded.add(':knowledge-point/question-generator')
             if {k: v for k, v in before.items() if k not in excluded} != {k: v for k, v in kp.items() if k not in excluded}:
                 raise VerificationError('Readback changed unrelated knowledge-point content')
-            gen = kp.get(':knowledge-point/question-generator', {})
-            if str(gen.get(':question-generator/id')) != prepared['generator_id'] or gen.get(':question-generator/script') != prepared['generator_path']:
-                raise VerificationError('Registered generator does not identify the approved package')
+            if not exemplars:
+                gen = kp.get(':knowledge-point/question-generator', {})
+                if str(gen.get(':question-generator/id')) != prepared['generator_id'] or gen.get(':question-generator/script') != prepared['generator_path']:
+                    raise VerificationError('Registered generator does not identify the approved package')
             for rec in prepared['records']:
                 qid = rec['question'][':question/id']
                 actual = now.get(qid)
                 if actual is None or ':question/math-academy-id' in actual or normalized_question(actual) != normalized_question(rec['question']):
                     raise VerificationError('Readback question differs from prepared content')
             verify_assets(prepared['records'], self.config.math_root)
-            resolve_registered_script(prepared['generator_path'], Path(self.config.repo_root), Path(self.config.math_root))
             result = {'status': 'verified', 'passed': True, 'basis_before': request['basis'], 'basis_after': basis,
-                      'new_questions': prepared['new_questions'], 'package_sha256': prepared['package_sha256'],
+                      'new_questions': prepared['new_questions'],
                       'preparation_sha256': digest(prepared), 'request_key': request['request_key'],
-                      'generator_registration_verified': True, 'learner_and_engine_facts_unchanged': True}
+                      'learner_and_engine_facts_unchanged': True}
+            if exemplars:
+                result.update(questions=self._verified_exemplars(kp, prepared), source=prepared['source'],
+                              existing_questions_and_generator_unchanged=True)
+                verify_assets(prepared['exemplar_records'], self.config.math_root)
+            else:
+                resolve_registered_script(prepared['generator_path'], Path(self.config.repo_root), Path(self.config.math_root))
+                result.update(package_sha256=prepared['package_sha256'], generator_registration_verified=True)
             atomic_json(directory / 'verification.json', result)
             committer.retire(request, 'verified', result)
             return result
