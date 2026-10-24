@@ -93,6 +93,49 @@ class CohortTests(unittest.TestCase):
             pipeline.session.assert_not_called()
             pipeline.publisher.publish.assert_not_called()
 
+    def test_unresolved_inventory_does_not_hide_separate_generator_work(self):
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,_,result,_,_=self.inventory_pipeline(t)
+            generator={**result['findings'][0],'kind':'decision_shortcut',
+                       'description':'The generated bank exposes the key.'}
+            evidence={**result['findings'][0],'kind':'evidence',
+                      'description':'Additional reviewer-owned evidence work.'}
+            result={**result,'findings':[*result['findings'],generator,evidence]}
+            unresolved=[{'question':7,'reason':'original_source requires a separate content repair'}]
+            with patch('generator_pool_repair.repair_pool',return_value={
+                    'retired':[],'unresolved':unresolved}), \
+                    patch.object(pipeline,'engine_identity',return_value='fixture-engine'):
+                pipeline.repair(result)
+            self.assertEqual(pipeline.state['stage'],'generate')
+            self.assertEqual(pipeline.state['pool_repair']['unresolved'],unresolved)
+            self.assertEqual(json.loads((Path(t)/'feedback.json').read_text())['findings'],[generator])
+            history=json.loads((Path(t)/'repair-history.json').read_text())
+            self.assertEqual({row['finding']['kind'] for row in history['findings']},
+                             {'inventory','decision_shortcut','evidence'})
+            pipeline.publisher.publish.assert_not_called()
+
+    def test_accepted_package_still_blocks_on_deferred_protected_inventory(self):
+        from test_generator_pipeline import FakeSession
+        with tempfile.TemporaryDirectory() as t:
+            pipeline,_,result,_,_=self.inventory_pipeline(t)
+            generator={**result['findings'][0],'kind':'decision_shortcut'}
+            unresolved=[{'question':7,'reason':'original_source requires a separate content repair'}]
+            with patch('generator_pool_repair.repair_pool',return_value={
+                    'retired':[],'unresolved':unresolved}), \
+                    patch.object(pipeline,'engine_identity',return_value='fixture-engine'):
+                pipeline.repair({**result,'findings':[*result['findings'],generator]})
+                review=Path(t)/'review-2-package-fixed';review.mkdir()
+                pipeline.session.return_value=FakeSession()('review',{},review)
+                pipeline.persist(stage='validate')
+                with patch.object(pipeline,'context',return_value={}), \
+                        patch.object(pipeline,'verify_approval_inputs'):
+                    self.assertIsNone(pipeline.review_candidate(review))
+            self.assertEqual(pipeline.state['stage'],'blocked')
+            self.assertEqual(pipeline.state['error']['code'],'inventory_repair_blocked')
+            self.assertEqual(pipeline.state['pool_repair']['unresolved'],unresolved)
+            pipeline.publisher.prepare.assert_not_called()
+            pipeline.publisher.publish.assert_not_called()
+
     def test_inventory_repair_requires_valid_bound_review_and_preserves_publication_intent(self):
         with tempfile.TemporaryDirectory() as t:
             pipeline,review,_,_,_=self.inventory_pipeline(t)

@@ -671,10 +671,14 @@ class Pipeline:
         if any(row.get('kind') == 'inventory' for row in findings):
             self.remember_repair(reason)
             repaired = self.repair_inventory()
-            if not repaired or repaired.get('unresolved'):
+            content = [row for row in findings if row.get('kind') not in {'inventory', 'evidence'}]
+            if not repaired or (repaired.get('unresolved') and not content):
                 self.block_inventory(repaired or {'unresolved': ['Missing reviewed affected-inventory.json evidence']})
                 return
-            content = [row for row in findings if row.get('kind') not in {'inventory', 'evidence'}]
+            # A protected stored record must not prevent an independently
+            # repairable package defect from reaching its author. The runner
+            # retains the inventory finding and pool_repair.unresolved; an
+            # accepted package review rechecks that history before publication.
             if not content:
                 if not repaired['inventory_changed']:
                     self.block_inventory({'unresolved': ['Review still rejects inventory already repaired; no delivery evidence changed.']})

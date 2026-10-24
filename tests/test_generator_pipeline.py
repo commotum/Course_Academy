@@ -303,8 +303,11 @@ class GeneratorPipelineTests(unittest.TestCase):
         feedback = []
         class MissingInventoryReport(FakeSession):
             def __call__(self, role, context, directory):
+                self.reject = role == 'author' and bool(self.calls)
                 result = super().__call__(role, context, context['evidence_root'] if role == 'review' else directory)
                 if role != 'review':
+                    return result
+                if len([r for r, _ in self.calls if r == 'review']) > 2:
                     return result
                 result['verdict'] = 'revise'
                 result['checks']['decision_variation']['status'] = 'failed'
@@ -329,17 +332,19 @@ class GeneratorPipelineTests(unittest.TestCase):
         with patch.object(pipeline, 'repair_inventory', return_value={
                 'unresolved': [{'question': 7, 'reason': 'original_source requires a separate content repair'}]}) as repair:
             result = pipeline.run()
-        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review'])
-        self.assertEqual(result['attempt'], 1)
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review', 'author', 'review'])
+        self.assertEqual(result['attempt'], 2)
         self.assertEqual(len(feedback), 1)
         self.assertIn('affected-inventory.json', feedback[0]['error'])
-        repair.assert_called_once()
+        self.assertEqual(repair.call_count, 2)
         self.assertEqual(result['stage'], 'blocked')
         self.assertEqual(result['error']['code'], 'inventory_repair_blocked')
         self.assertIn('original_source', result['error']['cause']['unresolved'][0]['reason'])
         history = json.loads((self.job / 'repair-history.json').read_text())
         self.assertEqual({row['finding']['kind'] for row in history['findings']},
                          {'decision_shortcut', 'inventory'})
+        author_feedback = json.loads((self.job / 'feedback.json').read_text())
+        self.assertEqual([row['kind'] for row in author_feedback['findings']], ['decision_shortcut'])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
 
     def test_a_reviewed_math_flaw_is_fixed_checked_and_published_within_budget(self):

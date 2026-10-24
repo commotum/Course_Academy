@@ -1,0 +1,141 @@
+{
+  "verdict": "revise",
+  "summary": "A bank-only shortcut answers all 4 delivered candidates and all 24 fresh hard samples without using the curve. The sole captured hard inventory entry has the same defect. Other checks passed; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Differentiate a general-base composite exponential using the chain rule, then evaluate the slope and ordinate and construct a tangent equation.",
+    "reasoning_steps": [
+      "Identify the inner polynomial and differentiate the outer exponential.",
+      "Multiply the derivatives using the chain rule.",
+      "Evaluate the derivative and function at the supplied point.",
+      "Use point-slope form and match the resulting tangent equation."
+    ],
+    "invariants": [
+      "Hard source q-107463 requires a tangent equation in a five-choice radio bank.",
+      "The derivative, evaluation point, ordinate and keyed equation must agree.",
+      "The captured source-exclusion ledger is empty."
+    ],
+    "permitted_variations": [
+      "Vary bases, coefficients, translations and evaluation points within comparable exact-arithmetic workload.",
+      "Vary slope signs, intercepts, correct-choice positions and distractor roles.",
+      "The source example's fixed answer-bearing bank arrangement is incidental."
+    ],
+    "source_refs": [
+      "e-728 / 775dfc95-df31-5198-aeb2-4603b8386957",
+      "q-107463 / 77c551c0-c155-56eb-9f11-d8d660941796",
+      "Lesson 9ed557a5-e06f-5f5a-9230-32a93a80b727, step a8a87a08-8a33-5f7d-a2ee-3bb4f46035fe",
+      "generate/principles.md, section 2"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-results.json",
+        "inventory-results.json"
+      ],
+      "details": "Replayed all 14 source/canonical profiles. Captured complete banks match mathematically. Missing source fields and supported presentation corrections are documented; no excluded-source descendants were found."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "All 48 independently checked records agree with exact differentiation, evaluation and tangent construction. Radio alternatives were checked individually."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh.json",
+        "sampling-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Fresh hard samples cover both slope signs, bases 2 through 6 and all three evaluation points. Controlled relevant changes update the tangent; irrelevant order changes preserve it. This does not waive the separate shortcut failure."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json",
+        "complete-evidence.py"
+      ],
+      "details": "Paths cover source response shapes, tested hard boundaries and every batch record. Necessary logarithm rewrites are source-supported and displayed. An equivalent answer requiring an omitted conversion fails the negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "grader.log"
+      ],
+      "details": "The native grader produced 50 accepted and 175 rejected submissions, with no unresolved outcomes. Tests include every hard choice, independent equivalent blank entries, plausible wrong entries and controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "boundary-results.json",
+        "render/rendering.json",
+        "render-boundary-results.json",
+        "render/question-001.png",
+        "render/question-002.png",
+        "render/question-004.png",
+        "render/question-008.png",
+        "render/question-011.png"
+      ],
+      "details": "Rendered 11 records through the actual UI and inspected representative screenshots. Every expected equation container and multiline row appears in the DOM. Shared prose-boundary checks passed; no exposed TeX or code-trapped formulas appeared. Text choices, feedback, emphasis wrappers and tables are absent from this hard family."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "relocated-batch.json",
+        "evidence-contract.json"
+      ],
+      "details": "Installed dependency versions exactly match the manifest. Relocated CLI execution reproduces the batch, invalid parameter boundaries are rejected, and package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-regression.py",
+        "minimal-failing-case.json",
+        "minimal-regression.json",
+        "shortcut-results.json",
+        "delivery-analysis.json",
+        "shortcut-proof.md",
+        "same-method-bank-witness-results.json"
+      ],
+      "details": "A bank-only coefficient/sign/constant rule succeeds on 24/24 fresh, 6/6 controlled and 4/4 delivered records, including every tested point subgroup. It also succeeds on the original complete bank. A same-method witness demonstrates that this fixed arrangement is avoidable without changing the assessed skill."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The hard bank encodes its key: identify the majority slope sign, take its repeated x coefficient, then choose that coefficient's option with a positive standalone rational constant. This selects the correct equation without consulting the curve. The cue also exists in the original bank, but retaining that incidental arrangement is unnecessary.",
+      "source_refs": [
+        "q-107463 / 77c551c0-c155-56eb-9f11-d8d660941796, complete bank",
+        "generate/principles.md, section 2"
+      ],
+      "reproduction": "Generate hard with seed 72 and parameters {b:3,c:1,a:2,n:1,k:0,l:0,d:1,point:\"0\"}. For y=3^(2x+1) at x=0, bank slopes are 6ln3, -6ln3, -6ln3, 12ln3 and 6ln3. The rule selects y=6x ln3+3. Question UUID: 68b2825f-3857-5c32-8ef8-b848aea295ca. Run the context Python on shortcut-regression.py --candidate-records minimal-failing-case.json --output prospective-probe.json; it exits 1. The accepted batch similarly fails 4/4.",
+      "requested_change": "Change the hard tangent distractor-construction rule so correct slope/intercept roles cannot be inferred from bank repetition, signs and constant structure. Preserve five distinct equations, one correct answer and the existing chain-rule/point-slope workload. Retain an executable regression and test a prospective deterministic batch using seed 1072510293, count 4 and hard difficulty through actual delivery filtering. Do not edit runner-owned samples.json or substitute another seed."
+    },
+    {
+      "kind": "inventory",
+      "description": "Stored question UUID 77c551c0-c155-56eb-9f11-d8d660941796, entity 17592186524997, has the same shortcut. It is the sole captured hard inventory entry, so a generator repair alone leaves the stored-pool defect unresolved.",
+      "source_refs": [
+        "Inventory basis 6415",
+        "q-107463 / question UUID 77c551c0-c155-56eb-9f11-d8d660941796 / entity 17592186524997"
+      ],
+      "reproduction": "Run the context Python on shortcut-regression.py --candidate-records inventory-hard.json --output prospective-probe.json; it exits 1 with 1/1 correct. The native grader accepts the independently predicted option; see inventory-hard-bank-only-action in grader-results.json.",
+      "requested_change": "The runner should replace or revise this stored bank after package repair, preserve the original instructional evidence, and verify the stored pool separately. This database repair must not be assigned to the generator author."
+    }
+  ]
+}
