@@ -272,15 +272,22 @@ def batch(level, count=5, seed=0, exclude_fingerprints=()):
     served = {case:0 for case in schedule}
     evidence = json.loads((LOCAL/'source-evidence.json').read_text())
     records, seen = [], set(evidence.get('excluded_practice_fingerprints', ())) | set(exclude_fingerprints)
-    indefinite_sign = rng.choice((-1,1))
-    pair_kind = rng.choice(('same','opposite'))
+    first_sign = rng.choice((-1,1))
+    indefinite_starts = {'indef_sin':first_sign,'indef_cos':-first_sign}
+    pair_starts = {case:rng.choice(('same','opposite')) for case in schedule}
     for index in range(count):
         case = schedule[index % len(schedule)]
         response = 'blank' if level=='hard' else starts[case]
         if level != 'hard' and served[case] % 2:
             response = 'radio' if response=='blank' else 'blank'
+        # Period four for slope signs and period two for response forms cover
+        # their cross-product instead of locking a sign to a field type.
+        slope_sign = indefinite_starts.get(case,1)*(1 if served[case]%4 in (0,3) else -1)
+        pair_kind = pair_starts[case]
+        if served[case]%2:
+            pair_kind = 'opposite' if pair_kind=='same' else 'same'
         for attempt in range(100):
-            values = parameters(case,rng,slope_sign=indefinite_sign,
+            values = parameters(case,rng,slope_sign=slope_sign,
                                 difference_kind=pair_kind)
             try:
                 record = build(level,case,values,response=response,seed=rng.getrandbits(64))
@@ -294,9 +301,6 @@ def batch(level, count=5, seed=0, exclude_fingerprints=()):
             break
         else:
             raise ValueError('Finite compatible family exhausted; no duplicate padding')
-        if case.startswith('indef'):
-            indefinite_sign *= -1
-        pair_kind = 'opposite' if pair_kind=='same' else 'same'
     rng.shuffle(records)
     return records
 

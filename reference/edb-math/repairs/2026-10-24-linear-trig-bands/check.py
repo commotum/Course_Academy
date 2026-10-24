@@ -51,7 +51,8 @@ def main():
                 all_rows.append(row);mathematical_keys.add(meta['mathematical_fingerprint'])
         assert coverage[band]['function:sin'] and coverage[band]['function:cos']
         assert coverage[band]['slope:negative'] and coverage[band]['slope:positive']
-        assert coverage[band]['outcome:1'] and coverage[band]['outcome:-1']
+        assert coverage[band]['outcome:1']
+        if band!='moderate':assert coverage[band]['outcome:-1']
         if band!='hard':assert coverage[band]['response:radio'] and coverage[band]['response:blank']
         if band=='easy':assert coverage[band]['indefinite'] and coverage[band]['outcome:0']
         if band=='hard':
@@ -97,7 +98,16 @@ def main():
     explicit=g.build('hard','compound_sin_negative',('sin',sp.Rational(5,3),sp.Rational(-3,2),sp.pi,sp.pi/9,sp.pi/2))
     verified=check(explicit);assert sp.simplify(verified['result']-sp.Rational(5,9)*(sp.sqrt(2)+sp.sqrt(3)))==0
     all_rows.append(explicit)
-    pool=[r for band in g.CASES for r in g.batch(band,5,24681357)]
+    # Source moderate integrals are all positive. Test a supported negative
+    # cosine interval explicitly rather than demanding a sign quota from a
+    # finite random sample or rejecting legitimate source-like cases.
+    negative_mod=g.build('moderate','pi_cos',('cos',sp.Integer(3),sp.pi/4,sp.Integer(0),sp.Integer(2),sp.Integer(4)))
+    verified=check(negative_mod);assert sp.simplify(verified['result']+12/sp.pi)==0
+    all_rows.append(negative_mod);coverage['moderate']['controlled-negative-outcome']+=1
+    # Eight easy records cover both response shapes of all four cases; six
+    # moderate records cover all six families; five hard records cover all four
+    # function/sign cases and repeat one with the other endpoint sign relation.
+    pool=[r for band,count in [('easy',8),('moderate',6),('hard',5)] for r in g.batch(band,count,24681357)]
     for row in pool:check(row)
     save('candidate-pool.json',pool);save('regression-samples.json',all_rows)
     save('render-input.json',[next(r for r in pool if r['generation']['template'].startswith('indef')),
@@ -107,7 +117,7 @@ def main():
         next(r for r in pool if r['generation']['template'].startswith('compound_sin_negative')),
         next(r for r in pool if r['generation']['template'].startswith('compound_cos_positive'))])
     grader=[]
-    for index,row in enumerate(pool+[before,after,explicit]):
+    for index,row in enumerate(pool+[before,after,explicit,negative_mod]):
         checks=[];field=row['question'][':question/answer-fields'][0]
         if field[':answer-field/type']==':answer-field.type/radio':
             for answer in field[':answer-field/choices']:
