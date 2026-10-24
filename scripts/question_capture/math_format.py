@@ -51,6 +51,9 @@ def mathml_ruled_table(rows, attributes):
     width = max(map(len, rows))
     at = lambda items, index: items[min(index, len(items) - 1)]
     frame = rules['frame'][0] == 'solid'
+    if not frame and not any(at(rules['columnlines'], i) == 'solid' for i in range(width - 1)) \
+            and not any(at(rules['rowlines'], i) == 'solid' for i in range(len(rows) - 1)):
+        return None  # Extra attribute-list entries do not create columns/rows.
     columns = '|' if frame else ''
     for i in range(width):
         columns += {'left': 'l', 'right': 'r', 'center': 'c'}[at(align, i)]

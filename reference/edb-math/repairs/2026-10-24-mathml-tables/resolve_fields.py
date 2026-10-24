@@ -67,7 +67,10 @@ def main():
      if len(spans)==len(source_spans):pairs=list(zip(spans,source_spans));confidence=2
      elif len(set(kinds))==1 and len({tuple(s['source_fences']) for s in source_spans})==1:pairs=[(span,source_spans[0]) for span in spans];confidence=1
      else:continue
-     for span,s in pairs:options[span['start'],span['end']].append((confidence,s))
+     for span,s in pairs:
+      strict=lambda rows:tuple(tuple(key_cell(c.replace(r'\,','CASPACEPOS').replace(r'\!','CASPACENEG')) for c in row) for row in rows)
+      score=confidence+(10 if strict(span['rows'])==strict(s['rows']) else 0)
+      options[span['start'],span['end']].append((score,s))
   for span in r['spans']:
    possible_options=options.get((span['start'],span['end']),[])
    if not possible_options:continue
@@ -86,7 +89,7 @@ def main():
     f=s['source_fences']
     if f:new=r'\left'+f[0]+new+r'\right'+f[1]
    if re.sub(r'\s+','',new)==re.sub(r'\s+','',span['tex']):retained.append({'e':r['e'],'a':r['a'],'span':span,'reason':'source-rules-already-preserved'});continue
-   resolved.append({'e':r['e'],'a':r['a'],'span':span,'source':s,'new_tex':new,'confidence':'ordered-source-occurrence' if best==2 else 'uniform-source-layout'})
+   resolved.append({'e':r['e'],'a':r['a'],'span':span,'source':s,'new_tex':new,'confidence':'ordered-source-occurrence' if best%10==2 else 'uniform-source-layout'})
   if number%4000==0:print('Fields',number,'resolved',len(resolved),flush=True)
  (H/'resolved-layouts.json').write_text(json.dumps(resolved,indent=2)+'\n');(H/'unresolved-layouts.json').write_text(json.dumps(unresolved,indent=2)+'\n');(H/'retained-layouts.json').write_text(json.dumps(retained,indent=2)+'\n');print('Resolved',len(resolved),'fields',len({(r['e'],r['a']) for r in resolved}),'retained',len(retained),'unresolved',len(unresolved),'contexts',len(context_cache));print('attrs',dict(collections.Counter(r['a'] for r in resolved)))
 if __name__=='__main__':main()

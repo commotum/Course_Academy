@@ -15,8 +15,12 @@ def get_doc(r):
     if q['id'].replace('question-','q-')==identity:docs.append(q.get('problem_html' if attr=='question/problem' else 'worked_solution_html',''))
  elif path.name=='state.json':
   record=d.get('questions',{}).get(identity,{})
-  for k in ['before','history','after']:
-   if isinstance(record.get(k),dict):docs.append(record[k].get('html') or record[k].get('raw_html') or '')
+  keys=['history','after','before'] if attr=='question/worked-solution' else ['before','history','after']
+  for k in keys:
+   if isinstance(record.get(k),dict):
+    markup=record[k].get('html') or record[k].get('raw_html') or ''
+    if markup:docs.append(markup)
+    if attr=='question/worked-solution' and markup and any(cls in markup for cls in ['questionExplanation','questionWidget-explanation','exampleExplanation']):break
  else:docs=[d.get('html') or d.get('raw_html') or '']
  result=[]
  for markup in docs:
