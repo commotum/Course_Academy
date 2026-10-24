@@ -89,7 +89,7 @@ def instance(kp,band,case,rng):
    factor=n/(slope*(1 if base==s.E else s.log(base)))
    outer=s.simplify(factor*du)
    body=outer*trans.subs(U,inner)
-   challenge='provided_substitution'if band=='easy'else 'root_outer_function'if band=='moderate'else 'logarithmic_derivative'
+   challenge='provided_substitution'if band=='easy'else 'simple_outer_function'if band=='moderate'else 'logarithmic_derivative'
    params={'base':str(base),'slope':str(slope),'offset':str(c),'amplitude':str(n),'outer':role}
    notes.append('Use a connected real interval on which the integrand is defined.'if role=='log'else 'Work where $'+tex(inner)+'>0$.')
   else:
@@ -137,19 +137,27 @@ def render(kp,band,case,m,seed,evidence):
  if easy:
   key=target;answer=None
   # Deterministic full authored bank; every distractor has a distinct nonzero factor.
-  coefficients=[r,-r,2*r,r/2,3*r];bank=[(times(c,integral(tex(trans),'u',u0,u1)),'correct'if i==0 else ['wrong_sign','double_factor','extra_half','triple_factor'][i-1])for i,c in enumerate(coefficients)]
-  random.Random(mathfp).shuffle(bank)
+  bank_rng=random.Random('factor-bank-v2:'+mathfp)
+  errors=[(s.Integer(-3),'negative_triple'),(s.Integer(-2),'negative_double'),(s.Integer(-1),'wrong_sign'),(s.Rational(1,4),'extra_quarter'),(s.Rational(1,3),'extra_third'),(s.Rational(1,2),'extra_half'),(s.Integer(2),'double_factor'),(s.Integer(3),'triple_factor'),(s.Integer(4),'quadruple_factor')]
+  selected=bank_rng.sample(errors,4)
+  while {a for a,b in selected}=={s.Integer(-1),s.Integer(2),s.Rational(1,2),s.Integer(3)}:selected=bank_rng.sample(errors,4)
+  bank_rank=sum(bool(a<1)for a,b in selected)
+  bank=[(target,'correct')]+[(times(r*multiple,integral(tex(trans),'u',u0,u1)),label)for multiple,label in selected]
+  bank_rng.shuffle(bank)
   sol+='\n\nThe transformed integral is\n\n'+block(key+'.')
  elif not definite:
   key=times(r,primtex(prim,inner));answer=m['primitive'];bank=[(key,'correct')]
   if inverse_choice:
-   bank=[];seen_options=set()
-   for c,arg,label in [(r,inner,'correct'),(2*r,inner,'double_factor'),(-r,inner,'wrong_sign'),(r,X,'omit_inner_scale'),(r,2*inner,'double_inner_scale'),(r,3*inner,'triple_inner_scale')]:
+   bank_rng=random.Random('primitive-bank-v2:'+mathfp);options=[];seen_options={(str(r),str(inner))}
+   for c,arg,label in [(2*r,inner,'double_factor'),(-r,inner,'wrong_sign'),(r/2,inner,'extra_half'),(r,X,'omit_inner_scale'),(2*r,X,'double_factor_omit_inner'),(-r,X,'negative_omit_inner'),(r,2*inner,'double_inner_scale'),(r/2,2*inner,'half_factor_double_inner'),(2*r,2*inner,'double_factor_double_inner'),(r,inner/2,'half_inner_scale')]:
     token=(str(c),str(arg))
     if token in seen_options:continue
-    seen_options.add(token);bank.append((times(c,primtex(prim,arg))+'+C',label))
-    if len(bank)==5:break
-   random.Random(mathfp).shuffle(bank)
+    seen_options.add(token);options.append((c,arg,label))
+   while True:
+    selected=bank_rng.sample(options,4)
+    if any(arg==inner for c,arg,label in selected)and any(arg!=inner for c,arg,label in selected)and {label for c,arg,label in selected}!={'double_factor','wrong_sign','omit_inner_scale','double_inner_scale'}:break
+   bank=[(key+'+C','correct')]+[(times(c,primtex(prim,arg))+'+C',label)for c,arg,label in selected]
+   bank_rng.shuffle(bank)
   sol+='\n\nUse the supplied primitive:\n\n'+block(target+'='+times(r,primtex(prim,U))+'+C.')+'\n\nSubstitute back:\n\n'+block(key+'+C.')
  else:
   first,last=(s.simplify(prim.subs(U,v))for v in(u0,u1));answer=s.simplify(r*(last-first))
@@ -162,7 +170,7 @@ def render(kp,band,case,m,seed,evidence):
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
  q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
- return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':not easy,'provided_endpoint_values':bool(m['facts'])and not easy,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
+ return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':not easy,'provided_endpoint_values':bool(m['facts'])and not easy,'bank_correct_rank':int(bank_rank)if easy else None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
 def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if kp not in CASES or level not in CASES[kp]:raise ValueError('Unsupported KP/band')
@@ -176,14 +184,15 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  raise ValueError('Bounded variant capacity exhausted')
 def batch(kp,level,count=8,seed=0,*,evidence,template=None):
  if not 1<=count<=100:raise ValueError('Count must be 1..100')
- cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};rows=[]
+ cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};ranks={};rows=[]
  for index in range(count):
   for attempt in range(300):
    record=generate(kp,level,seed,template or cases[index%len(cases)],evidence=evidence,index=index,attempt=attempt)
    key=record['generation']['mathematical_fingerprint']
    shape=record['generation']['model']['substitution']
-   if key in seen or count>=8 and shapes.get(shape,0)>=(count+2)//3:continue
-   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;break
+   rank=record['generation']['bank_correct_rank']
+   if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 or level=='easy'and ranks.get(rank,0)>=(count+1)//2):continue
+   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;ranks[rank]=ranks.get(rank,0)+1;break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows
 

@@ -115,6 +115,38 @@ const question = (itemId, status = 'started') => ({
     choices: [{ id: 41, type: 'text', value: 'Correct option' }, { id: 42, type: 'text', value: 'Other option' }] }],
 });
 
+test('generic answer keys do not become visible labels above radio choices', async () => {
+  for (const key of ['answer', 'selection', undefined]) {
+    const f = fixture(), step = question(1);
+    step.fields[0].key = key;
+    await f.h.render(activity(1, 1, { step }));
+    const legend = f.h.view.current.querySelector('legend');
+    assert.equal(legend.className, 'sr-only');
+    assert.equal(legend.textContent, 'Choose an answer');
+    assert.doesNotMatch(f.h.view.current.textContent, /Answer: answer/);
+    assert.equal(f.h.view.current.querySelector('.choices').querySelectorAll('input').length, 2);
+  }
+});
+
+test('generic blank labels stay accessible and numbered fields retain their labels', async () => {
+  for (const [key, label] of [['answer', 'Answer'], ['field-2', 'Answer 2']]) {
+    const f = fixture(), step = question(1);
+    step.fields = [{ id: 30, key, type: 'blank', answerType: 'text' }];
+    await f.h.render(activity(1, 1, { step }));
+    assert.equal(f.h.view.current.querySelector('legend').textContent, label);
+    assert.equal(f.h.view.current.querySelector('.answer-input').getAttribute('aria-label'), label);
+  }
+});
+
+test('preview solutions do not expose the generic answer key', async () => {
+  const f = fixture(), step = question(1, 'correct');
+  step.fields[0].key = 'answer';
+  step.fields[0].correctAnswer = step.fields[0].choices[0];
+  await f.h.preview({ activityId: 456, steps: [step] }, 0);
+  assert.equal(f.h.view.current.querySelector('.response-summary').textContent, 'Answer · correct value:');
+  assert.doesNotMatch(f.h.view.current.textContent, /Answer: answer/);
+});
+
 test('lesson frame has a compact progress bar and timer, and hides the topic heading', async () => {
   const f = fixture();
   await f.h.render(activity(1));
