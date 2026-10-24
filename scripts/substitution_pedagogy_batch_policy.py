@@ -17,12 +17,14 @@ def validate_delivery_batch(records,kp_id):
   if easy:
    if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 or not problem.startswith('Use the substitution $u='):raise ValueError('Easy must supply u and assess transformation')
    if any(r'\int'not in a[':answer/value']for a in choices):raise ValueError('Transformed-integral choices required')
+  elif kp in(17592186064218,17592186064219,17592186064250):
+   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 or 'You may use $'not in problem:raise ValueError('Inverse full calculations require the supported five-choice response and primitive')
   else:
    if f[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1 or 'You may use $'not in problem:raise ValueError('Full calculation needs supplied primitive and exact blank')
    if m['model']['lower']is None and '{{answer}} $+C$'not in problem:raise ValueError('Indefinite C must be external')
    if kp in(17592186064220,17592186184352)and m.get('provided_endpoint_values')and 'Endpoint values:'not in problem:raise ValueError('Required endpoint support absent')
   final=re.findall(r'\$\$\s*(.*?)\s*\$\$',sol,re.S)[-1].strip().rstrip('.')
-  if final!=key+('+C'if not easy and m['model']['lower']is None else ''):raise ValueError('Solution does not reach displayed key')
+  if final!=key+('+C'if not easy and m['model']['lower']is None and f[':answer-field/type']==':answer-field.type/blank'else ''):raise ValueError('Solution does not reach displayed key')
   if any(int(n)>25 for n in re.findall(r'\d+',problem)):raise ValueError('Rendered numbers exceed reviewed workload')
   p=m['parameters']
   if 'numerator'in p:

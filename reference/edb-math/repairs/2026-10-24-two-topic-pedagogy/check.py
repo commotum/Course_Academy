@@ -23,7 +23,7 @@ def check(row):
  if lo is not None:
   assert lo<hi and equal(inner.subs(X,lo),u0)and equal(inner.subs(X,hi),u1)
  f=q[':question/answer-fields'][0];key=next(a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1])
- easy=f[':answer-field/type']==':answer-field.type/radio'
+ easy=row['question'][':question/difficulty'].endswith('/easy')
  if easy:
   vals=[];matches=[]
   for a in f[':answer-field/choices']:
@@ -44,12 +44,16 @@ def check(row):
   else:assert equal(derivative,tf),(derivative,tf)
   factor=s.simplify(trans/tf);assert not factor.has(U)
   if lo is None:
-   value=scalar(key);expected=factor*primitive.subs(U,inner)
+   value=scalar(key.removesuffix('+C'));expected=factor*primitive.subs(U,inner)
    assert equal(value,expected),(key,expected)
    answer=value
+   if f[':answer-field/type']==':answer-field.type/radio':
+    values=[scalar(a[':answer/value'].removesuffix('+C'))for a in f[':answer-field/choices']]
+    assert len({str(s.simplify(v/expected))for v in values})==5
+    assert sum(equal(v,expected)for v in values)==1
   else:
    answer=factor*(primitive.subs(U,u1)-primitive.subs(U,u0));assert equal(scalar(key),answer),(key,answer)
- assert blocks[-1].strip().rstrip('.')==key+('+C'if not easy and lo is None else '')
+ assert blocks[-1].strip().rstrip('.')==key+('+C'if not easy and lo is None and f[':answer-field/type']==':answer-field.type/blank'else '')
  return key,lo,answer
 
 def main():

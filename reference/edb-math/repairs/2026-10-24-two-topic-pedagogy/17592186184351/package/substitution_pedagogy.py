@@ -18,7 +18,7 @@ EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
 for k in EXP[:2]:CASES[k]={b:('square','cube')for b in('easy','moderate','hard')}
 CASES[EXP[2]]={'easy':('power_e','power_base'),'moderate':('sqrt_e','root_e','sqrt_base','root_base'),'hard':('log_e','log_base','log_composite')}
-CASES[EXP[3]]={'easy':('square_e','cube_e'),'moderate':('square_base','linear_base'),'hard':('log_e',)}
+CASES[EXP[3]]={'easy':('square_e','linear_e'),'moderate':('square_base','linear_base'),'hard':('log_e',)}
 
 def tex(z):
  return s.latex(s.sympify(z)).replace(r'\log',r'\ln').replace(r'\operatorname{asin}',r'\arcsin').replace(r'\operatorname{atan}',r'\arctan').replace(r'\operatorname{asec}',r'\operatorname{arcsec}')
@@ -54,10 +54,12 @@ def instance(kp,band,case,rng):
    if A!=1:notes.append('Factor the constant in the denominator:\n\n'+block((r'\sqrt{'+tex(A-B*X*X)+r'}='+tex(s.sqrt(A))+r'\sqrt{1-('+tex(inner)+')^2}'if fn=='sine'else tex(A+B*X*X)+'='+tex(A)+r'\left(1+('+tex(inner)+r')^2\right)')+'.'))
   if definite:
    u0=s.Integer(0);u1=s.Rational(1,2)if fn=='sine'else s.Integer(1)
-   if band=='hard':u0=-u1 if rng.choice((True,False))else (s.Rational(1,4)if fn=='sine'else s.Rational(1,2))
+   if band=='hard':u0=-u1
    lo,hi=s.simplify(u0/scale),s.simplify(u1/scale)
    facts=[tex(getattr(s,{'sine':'asin','tangent':'atan'}[fn])(v,evaluate=False))+'='+tex(s.simplify(inverse(fn,v)))for v in(u0,u1)]
    # Nonstandard inverse values may stay exact; no decimal rounding task.
+  pref=(n*scale if band=='hard'else n)if fn=='secant'else n/(s.sqrt(A)if fn=='sine'else A)
+  notes.append('The differential is $\\mathrm{d}x='+tex(1/scale)+r'\,\mathrm{d}u$. The outside factor is $'+tex(pref)+r'\cdot '+tex(1/scale)+'='+tex(factor)+'$.')
   challenge='provided_substitution'if band=='easy'else 'visible_linear_scaling'if fn=='secant'and band=='moderate'else 'absolute_value_normalization'if fn=='secant'else 'two_nonzero_bounds'if definite and band=='hard'else 'combined_square_normalization'if band=='hard'else 'constant_normalization'
   params={'A':str(A),'B':str(B),'numerator':str(n),'scale':str(scale)}
  else:
@@ -97,7 +99,7 @@ def instance(kp,band,case,rng):
     body=n*du/inner;lo=s.log(2);hi=s.log(3)
     facts=[r'e^{\ln 2}=2',r'e^{\ln 3}=3'];params={'scale':str(c),'offset':str(d),'amplitude':str(n),'base':'E'}
    else:
-    power=3 if case=='cube_e'else 1 if case=='linear_base'else 2
+    power=3 if case=='cube_e'else 1 if case.startswith('linear_')else 2
     slope=s.Integer(rng.choice((1,2)));shift=s.Integer(rng.randint(0,2));inner=slope*X**power+shift;du=s.diff(inner,X)
     factor=n/(slope*power);body=n*X**(power-1)*base**inner;trans=base**U;prim=base**U if base==s.E else base**U/s.log(base)
     lo=s.Integer(0);hi=s.log(2)**s.Rational(1,power)if base==s.E else s.Integer(1)
@@ -105,7 +107,6 @@ def instance(kp,band,case,rng):
     params={'power':power,'slope':str(slope),'shift':str(shift),'amplitude':str(n),'base':str(base)}
    challenge='provided_substitution'if band=='easy'else 'base_exponential_bounds'if band=='moderate'else 'logarithmic_derivative_bounds'
   body_tex=tex(body)
-  if base!=s.E and kp in EXP[:2]+(EXP[3],)and band!='hard':pass
  factor=s.simplify(factor);primitive=s.simplify(factor*prim.subs(U,inner))
  return dict(body=body,body_tex=body_tex,inner=inner,du=du,factor=factor,trans=trans,prim=prim,primitive=primitive,lo=lo,hi=hi,notes=notes,facts=facts,params=params,challenge=challenge)
 
@@ -115,7 +116,7 @@ def primtex(expr,z):
  return tex(expr.subs(U,z))
 
 def render(kp,band,case,m,seed,evidence):
- easy=band=='easy';lo,hi=m['lo'],m['hi'];definite=lo is not None
+ easy=band=='easy';lo,hi=m['lo'],m['hi'];definite=lo is not None;inverse_choice=kp in INV and not definite and not easy
  inner,du,r,trans,prim=(m[k]for k in('inner','du','factor','trans','prim'))
  u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
  original=integral(m['body_tex'],lo=lo,hi=hi);target=times(r,integral(tex(trans),'u',u0,u1))
@@ -126,7 +127,8 @@ def render(kp,band,case,m,seed,evidence):
   if definite and m['facts']:problem+='\n\nEndpoint values: $'+r',\quad '.join(m['facts'])+'$.'
   if kp==17592186064250:problem+='\n\nWork on a connected interval where $|'+tex(inner)+'|>1$.'
   if kp==EXP[2]and not case.startswith('log'):problem+='\n\nWork where $'+tex(inner)+'>0$.'
-  problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
+  if not inverse_choice:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
+  else:problem+='\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.'
  sol='Let $u='+tex(inner)+'$. Then $'+r'\mathrm{d}u=('+tex(du)+r')\,\mathrm{d}x$.'
  if m['notes']:sol+='\n\n'+'\n\n'.join(m['notes'])
  if definite:sol+='\n\nTransform both bounds:\n\n'+block(r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}')
@@ -140,6 +142,14 @@ def render(kp,band,case,m,seed,evidence):
   sol+='\n\nThe transformed integral is\n\n'+block(key+'.')
  elif not definite:
   key=times(r,primtex(prim,inner));answer=m['primitive'];bank=[(key,'correct')]
+  if inverse_choice:
+   bank=[];seen_options=set()
+   for c,arg,label in [(r,inner,'correct'),(2*r,inner,'double_factor'),(-r,inner,'wrong_sign'),(r,X,'omit_inner_scale'),(r,2*inner,'double_inner_scale'),(r,3*inner,'triple_inner_scale')]:
+    token=(str(c),str(arg))
+    if token in seen_options:continue
+    seen_options.add(token);bank.append((times(c,primtex(prim,arg))+'+C',label))
+    if len(bank)==5:break
+   random.Random(mathfp).shuffle(bank)
   sol+='\n\nUse the supplied primitive:\n\n'+block(target+'='+times(r,primtex(prim,U))+'+C.')+'\n\nSubstitute back:\n\n'+block(key+'+C.')
  else:
   first,last=(s.simplify(prim.subs(U,v))for v in(u0,u1));answer=s.simplify(r*(last-first))
@@ -150,7 +160,7 @@ def render(kp,band,case,m,seed,evidence):
  uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+mathfp+':'+('transform'if easy else 'evaluate')+':'+role))
  answers=[{':answer/id':uid('answer:'+v),':answer/type':':answer.type/math',':answer/value':v}for v,_ in bank]
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
- q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
+ q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
  return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':not easy,'provided_endpoint_values':bool(m['facts'])and not easy,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
@@ -166,13 +176,14 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  raise ValueError('Bounded variant capacity exhausted')
 def batch(kp,level,count=8,seed=0,*,evidence,template=None):
  if not 1<=count<=100:raise ValueError('Count must be 1..100')
- cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();rows=[]
+ cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};rows=[]
  for index in range(count):
   for attempt in range(300):
    record=generate(kp,level,seed,template or cases[index%len(cases)],evidence=evidence,index=index,attempt=attempt)
    key=record['generation']['mathematical_fingerprint']
-   if key in seen:continue
-   rows.append(record);seen.add(key);break
+   shape=record['generation']['model']['substitution']
+   if key in seen or count>=8 and shapes.get(shape,0)>=(count+2)//3:continue
+   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows
 
