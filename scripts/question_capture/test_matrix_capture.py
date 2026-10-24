@@ -40,6 +40,14 @@ class MatrixCaptureTests(unittest.TestCase):
         self.assertEqual(item['errors'], [])
         self.assertEqual(item['problem'], r'$\begin{bmatrix}2 & -1 & 0 \\ -5 & 0 & -2 \\ -1 & 8 & 1 \\ 0 & 3 & -7\end{bmatrix}$')
 
+    def test_percent_identifier_is_literal_content_in_mathml(self):
+        # Math Academy emits the percent as mi, not only mo or mtext.
+        item = self.extract('<div class="questionText">A 30% discount is '
+                            '<math><mn>30</mn><mi mathvariant="normal">%</mi></math>.'
+                            '</div>')
+        self.assertEqual(item['errors'], [])
+        self.assertEqual(item['problem'], r'A 30% discount is $30\%$.')
+
     def test_legacy_example_recovers_systems_without_images(self):
         self.page.set_content((FIXTURES / 'example-4683.html').read_text())
         item = self.page.locator('#step-17170').evaluate(self.source)

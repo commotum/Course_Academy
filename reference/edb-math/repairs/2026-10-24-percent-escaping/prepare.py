@@ -52,11 +52,15 @@ def main():
  for offset in range(0,len(fields),200):
   chunk=fields[offset:offset+200];folder=H/f'batch-{offset//200+1:02}';folder.mkdir(exist_ok=True)
   forms=[[kw('db/cas'),f['entity'],kw(f['attribute']),f['before'],f['after']]for f in chunk]
-  ensured=sorted({field for f in chunk for field in f.get('answer_fields',[])})
+  affected=sorted({field for f in chunk for field in f.get('answer_fields',[])})
+  # Seven imported fields already have no correct-answer link. Do not invent
+  # keys as part of a display repair; native preview verifies their state stays
+  # incomplete for exactly that preexisting reason.
+  ensured=[field for field in affected if 'answer-field/correct'in meta[str(field)]]
   forms.extend([kw('db/ensure'),field,kw('answer-field/validate')]for field in ensured)
   payload=dumps(forms)+'\n';assert len(payload.encode())<3_500_000;(folder/'transaction.edn').write_text(payload);save(folder/'fields.json',chunk)
   (folder/'read-query.edn').write_text('[:find ?e ?a ?v :in $ [[?e ?a]] :where [?e ?a ?v]]\n');(folder/'read-inputs.edn').write_text(dumps([[[f['entity'],kw(f['attribute'])]for f in chunk]])+'\n')
-  batches.append({'name':folder.name,'fields':len(chunk),'sha256':hashlib.sha256(payload.encode()).hexdigest(),'field_keys':[[f['entity'],f['attribute']]for f in chunk],'ensured_fields':ensured})
+  batches.append({'name':folder.name,'fields':len(chunk),'sha256':hashlib.sha256(payload.encode()).hexdigest(),'field_keys':[[f['entity'],f['attribute']]for f in chunk],'ensured_fields':ensured,'preexisting_incomplete_fields':[field for field in affected if field not in ensured]})
  save(H/'fields.json',fields);save(H/'token-review.json',review);save(H/'batches.json',batches)
  report={'database':'math','basis_t':json.loads((W/'current.manifest.json').read_text())['basis_t'],'fields':len(fields),'entities':len({f['entity']for f in fields}),'percent_edits':sum(f['percent_edits']for f in fields),'attributes':dict(collections.Counter(f['attribute']for f in fields)),'answer_fields':len(affected_fields),'retained_comment_tokens':sum(r['decision']=='retain-comment'for r in review),'retained_comment_fields':len(COMMENTS),'batches':len(batches),'only_backslashes_inserted_at_reviewed_percent_glyphs':True,'answer_value_changes_only_in_id_graded_selection_fields':True,'checkbox_labels_have_no_problem_placeholders':True}
  save(H/'preparation.json',report);print(json.dumps(report,indent=2))

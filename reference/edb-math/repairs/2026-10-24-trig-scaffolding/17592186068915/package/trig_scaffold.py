@@ -38,7 +38,7 @@ def tex(z):return normalize_tex(s.latex(z))
 
 def times(a,body):
     a=s.sympify(a)
-    return body if a==1 else '-'+body if a==-1 else tex(a)+r'\left('+body+r'\right)'
+    return body if a==1 else r'-\left('+body+r'\right)'if a==-1 else tex(a)+r'\left('+body+r'\right)'
 
 
 def fun(name,z):return getattr(s,name)(z,evaluate=False)
