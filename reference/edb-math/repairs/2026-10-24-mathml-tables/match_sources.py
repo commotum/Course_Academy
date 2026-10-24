@@ -2,18 +2,20 @@ import collections,json
 from pathlib import Path
 from layout import H,R,grid_key,expected_layout
 W=R/'.local/edb/mathml-tables-work'
-sources=json.loads((H/'archived-tables.json').read_text())+json.loads((H/'capture-tables.json').read_text())
+sources=json.loads((H/'archived-tables.json').read_text())+json.loads((H/'capture-tables.json').read_text())+json.loads((H/'choice-tables.json').read_text())
 index=collections.defaultdict(list)
 for r in sources:
- if r['errors']:continue
+ # Source warnings are recorded; matching never replaces cell contents.
  try:layout=expected_layout(r)
  except ValueError:continue
  if layout:index[r['identity'],r['attribute'],grid_key(r['rows'])].append(r)
 rows=json.loads((W/'inventory-all.json').read_text());out=[];ambiguous=[];retained=[]
+answer_owners=json.loads((W/'answer-question-identities.json').read_text())
 for r in rows:
  identity='tutorial:'+str(r['metadata']['tutorial/math-academy-id']) if 'tutorial/math-academy-id' in r['metadata'] else r['metadata'].get('question/math-academy-id')
  for s in r['spans']:
-  found=index.get((identity,r['a'],grid_key(s['rows'])),[])
+  identities=answer_owners.get(str(r['e']),[]) if r['a']=='answer/value' else [identity]
+  found=[f for ident in identities for f in index.get((ident,r['a'],grid_key(s['rows'])),[])]
   if not found:continue
   # Different frames/rules for identical cells require individual review.
   layouts={expected_layout(f) for f in found}

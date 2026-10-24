@@ -12,6 +12,7 @@ def key_cell(text):
   s=s.replace('\\begin{'+env+'}',f[0]+r'\begin{TABLE}').replace('\\end{'+env+'}',r'\end{TABLE}'+f[1])
  s=re.sub(r'\{([A-Za-z0-9])\}(?=[_^])',r'\1',s)
  s=s.replace(r'\dfrac',r'\frac').replace(r'\tfrac',r'\frac')
+ s=re.sub(r'\\enclose\{bottom right\}\{([^{}]*)\}',r'\1',s)
  return re.sub(r'\s+','',s)
 def grid_key(rows):
  clean=list(rows)
