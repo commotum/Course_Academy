@@ -273,6 +273,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
     validate_delivery_batch(accepted, kp_id)
     from scripts.trig_substitution_batch_policy import validate_delivery_batch as validate_trig_batch
     validate_trig_batch(accepted, kp_id)
+    from scripts.substitution_pedagogy_batch_policy import validate_delivery_batch as validate_supported_substitution
+    validate_supported_substitution(accepted, kp_id)
     return accepted, duplicate_count
 
 
