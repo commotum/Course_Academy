@@ -1599,6 +1599,17 @@ impl Parser {
                 let b = self.group_or_tex_atom()?;
                 Ok(Ast::Binary('/', Box::new(a), Box::new(b)))
             }
+            // Captured imaginary-unit notation also uses prose font commands.
+            // Accept only the constant i here, never arbitrary text as algebra.
+            Token::Command(n) if n == "text" || n == "textrm" => {
+                if !self.mark('{')
+                    || self.take()? != Token::Word("i".into())
+                    || !self.mark('}')
+                {
+                    return Err("text math notation only supports the imaginary unit i".into());
+                }
+                Ok(Ast::Symbol("i".into()))
+            }
             Token::Command(n) if n == "operatorname" || n == "mathrm" => {
                 if !self.mark('{') {
                     return Err("operator name needs braces".into());
@@ -1914,6 +1925,19 @@ fn condition_at(c: &Condition, sample: &Q) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn source_imaginary_unit_font_variants() {
+        use super::{compare, supports, Context};
+        for unit in [r"\text{i}", r"\textrm{i}", r"\text{ i }", r"\mathrm{i}"] {
+            let value = format!(r"-\sqrt{{8}}{unit}");
+            assert_eq!(compare(&value, "-2sqrt(2)i", Context::default()), Ok(true));
+            assert_eq!(compare(&value, "2sqrt(2)i", Context::default()), Ok(false));
+            assert_eq!(compare(&value, "-sqrt(8)", Context::default()), Ok(false));
+        }
+        for invalid in [r"\text{x}", r"\textrm{ii}", r"\text{i+1}", r"\text{i", r"\text{}"] {
+            assert!(!supports(invalid, Context::default()), "{invalid}");
+        }
+    }
     #[test]
     fn indexed_symbols_preserve_base_and_subscript() {
         use super::{compare, supports, Context};
