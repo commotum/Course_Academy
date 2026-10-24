@@ -2,6 +2,7 @@ import json,re,collections,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];sys.path.insert(0,str(R/'scripts/question_capture'));from math_format import environment,cells
 SNAP=R/'.local/edb/mathml-tables-current.jsonl'
+W=R/'.local/edb/mathml-tables-work';W.mkdir(exist_ok=True)
 attrs={'tutorial/content','question/problem','question/worked-solution','multistep/context','answer/feedback','answer-field/feedback','assigned-problem/instructions','answer/value'}
 values={};meta=collections.defaultdict(dict);owners=collections.defaultdict(set)
 for line in SNAP.open():
@@ -20,6 +21,6 @@ for (e,a),r in values.items():
   width=max(map(len,grid));counts[m[1]]+=1
   if m[1]=='aligned':spans.append({'start':m.start(),'end':end,'tex':r['v'][m.start():end],'rows':grid,'width':width})
  if spans:out.append({**r,'spans':spans,'metadata':meta[e]})
-(H/'inventory.json').write_text(json.dumps(out,indent=2)+'\n');(H/'metadata.json').write_text(json.dumps(meta)+'\n');(H/'owners.json').write_text(json.dumps({str(k):list(v) for k,v in owners.items()})+'\n');(H/'all-values.json').write_text(json.dumps(list(values.values()))+'\n')
+(W/'inventory.json').write_text(json.dumps(out,indent=2)+'\n');(W/'metadata.json').write_text(json.dumps(meta)+'\n');(W/'owners.json').write_text(json.dumps({str(k):list(v) for k,v in owners.items()})+'\n');(W/'all-values.json').write_text(json.dumps(list(values.values()))+'\n')
 report={'basis_t':json.loads(SNAP.with_suffix('.manifest.json').read_text())['basis_t'],'fields_scanned':len(values),'aligned_fields':len(out),'aligned_tables':sum(len(r['spans']) for r in out),'environment_counts':dict(counts),'attributes':dict(collections.Counter(r['a'] for r in out))};(H/'inventory-summary.json').write_text(json.dumps(report,indent=2)+'\n');print(report)
 print('x/u tables',sum(bool(re.match(r'\\begin\{aligned\}\s*x\s*&',s['tex'])) for r in out for s in r['spans']))
