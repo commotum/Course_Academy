@@ -89,6 +89,9 @@ export function blankInput(field, label, name, readOnly = false) {
   const kind = answerKind(field);
   const input = document.createElement(kind === 'math' ? 'math-field' : 'input');
   input.className = kind === 'math' ? 'answer-math' : 'answer-input';
+  // Standalone answers start wider; inline values get a compact minimum when
+  // mounted. These are presentation defaults, never inferred from the key.
+  input.dataset.inputSize = 'statement';
   input.setAttribute('name', String(name)); input.setAttribute('aria-label', label);
   if (kind === 'math') {
     input.mathVirtualKeyboardPolicy = 'auto';
@@ -98,6 +101,12 @@ export function blankInput(field, label, name, readOnly = false) {
     input.placeholder = '';
   }
   input.value = field.response?.value ?? '';
+  if (kind !== 'math') {
+    // field-sizing handles rendered text where supported. The native size is
+    // a fallback, with no artificial maximum on the entered answer length.
+    const fit = () => { input.size = Math.max(1, Array.from(input.value).length + 1); };
+    input.addEventListener('input', fit); fit();
+  }
   input.disabled = readOnly;
   // MathLive owns keyboard events inside its shadow root. Capture Enter so
   // both visual math and text blanks use the form's normal submit checks.
@@ -182,11 +191,9 @@ export function mountInlineFields(prompt, fieldList, fields, makeControl, idOf =
       if (child.tagName.toLowerCase() !== 'legend' && !child.classList.contains('input-help')) inline.append(child);
     }
     slots[0].replaceChildren(inline);
-    const blank = inline.querySelector('input');
+    const blank = inline.querySelector('.answer-input,.answer-math');
     if (fieldType(field) === 'blank' && blank) {
-      blank.placeholder = '';
-      const fit = () => { blank.style.width = `${Math.min(30, Math.max(8, String(blank.value || '').length + 2))}ch`; };
-      blank.addEventListener('input', fit); fit();
+      blank.dataset.inputSize = 'value';
     }
     // Repeated references show the same answer without creating a second field.
     const sync = () => {

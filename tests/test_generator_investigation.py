@@ -10,7 +10,10 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from generator_investigation import (BANDS, COVERAGE, COUNTS_QUERY, completeness,
-    coverage_plan, migrate_coverage, observed_coverage, prepare_investigation, _transact)
+    COVERAGE_INPUTS, coverage_inputs_unchanged, coverage_plan, migrate_coverage,
+    observed_coverage, prepare_investigation, _transact)
+from capture.scripts.database.client import StaleBasis
+from capture.scripts.database.edn import dumps, loads
 
 
 def question(eid=1, band='easy', imported=True):
@@ -120,13 +123,15 @@ class InvestigationTests(unittest.TestCase):
 
     def test_coverage_plan_replaces_sentinel_and_preserves_other_observed_levels(self):
         class Client:
+            def status(self): return {'database': 'math', 'lineage': 'test', 'basis': 42}
             def query(self, query, inputs, directory, name, basis):
                 if name == 'coverage-kps': return [[1], [2], [3]]
                 if name == 'coverage-before': return [[1, ':question.difficulty/unobserved'], [2, ':question.difficulty/easy']]
                 if name.startswith('coverage-observed-'):
                     return [[1, ':question.difficulty/moderate'], [2, ':question.difficulty/easy'], [2, ':question.difficulty/hard']]
                 raise AssertionError(name)
-        forms, expected = coverage_plan(Client(), '/tmp/coverage-test', 42)
+        with tempfile.TemporaryDirectory() as td:
+            forms, expected = coverage_plan(Client(), td, 42)
         self.assertEqual(expected, {'1': [':question.difficulty/moderate'], '2': [':question.difficulty/easy', ':question.difficulty/hard'], '3': [':question.difficulty/unobserved']})
         self.assertEqual(len(forms), 4)
         self.assertIn([':db/retract', 1, COVERAGE, ':question.difficulty/unobserved'], forms)
@@ -157,6 +162,57 @@ class InvestigationTests(unittest.TestCase):
             self.assertEqual(result['basis'], 43)
             self.assertEqual(requests[0], requests[1])
             self.assertEqual(client.preview_count, 1)
+
+    def test_log_proof_allows_learner_writes_but_rejects_source_retractions(self):
+        class Client:
+            config = SimpleNamespace(database='math')
+            changed_attribute = 999
+            def query(self, *args): return [[i + 1, ':' + name] for i, name in enumerate(COVERAGE_INPUTS)]
+            def command(self, command, *args):
+                flags = dict(zip(args[::2], args[1::2]))
+                self.asserted_inputs = loads(Path(flags['--inputs']).read_text())
+                return dumps([[200, self.changed_attribute, 100000, False]])
+        client = Client()
+        with tempfile.TemporaryDirectory() as td:
+            self.assertTrue(coverage_inputs_unchanged(client, td, 42, 45))
+            self.assertEqual(client.asserted_inputs, [43, 46])
+            client.changed_attribute = COVERAGE_INPUTS.index('question/difficulty') + 1
+            self.assertFalse(coverage_inputs_unchanged(client, td, 42, 45))
+
+    def test_rebase_keeps_guard_and_rechecks_after_confirmed_stale_rejection(self):
+        class Client:
+            basis = 43
+            config = SimpleNamespace(database='math')
+            def status(self): return {'database': 'math', 'lineage': 'one', 'basis': self.basis}
+            def query(self, *args): return [[8]]
+            def command(self, command, *args): return dumps({':edb/db-before-t': self.basis})
+        client = Client()
+        publisher = SimpleNamespace(client=client, config=SimpleNamespace(database='math', endpoint='/writer', math_root='/math', postgres_url=''))
+        requests = []
+        def submit(committer, request):
+            requests.append(copy.deepcopy(request))
+            if len(requests) == 1:
+                client.basis = 44
+                raise StaleBasis('learner committed')
+            return {':edb/committed': True, ':edb/db-before-t': 44, ':edb/db-after-t': 45, ':edb/tx-data': []}
+        with tempfile.TemporaryDirectory() as td, patch('generator_investigation.Committer.submit', submit), \
+                patch('generator_investigation.coverage_inputs_unchanged', return_value=True) as proof:
+            result = _transact(publisher, td, [[':original', 1]], 42, ':agent/codex', True, coverage_rebase=True)
+            self.assertEqual(result['basis'], 45)
+            self.assertEqual([r['basis'] for r in requests], [43, 44])
+            self.assertNotEqual(requests[0]['request_key'], requests[1]['request_key'])
+            self.assertEqual(requests[0]['transaction'], requests[1]['transaction'])
+            self.assertEqual([(c.args[-2], c.args[-1]) for c in proof.call_args_list], [(42, 43), (42, 44)])
+
+    def test_changed_coverage_dependency_prevents_submission(self):
+        client = SimpleNamespace(status=lambda: {'database': 'math', 'lineage': 'one', 'basis': 43},
+                                 command=lambda *args: '{:edb/db-before-t 43}')
+        publisher = SimpleNamespace(client=client, config=SimpleNamespace(database='math', endpoint='/writer', math_root='/math', postgres_url=''))
+        with tempfile.TemporaryDirectory() as td, patch('generator_investigation.coverage_inputs_unchanged', return_value=False), \
+                patch('generator_investigation.Committer.submit') as submit:
+            with self.assertRaises(StaleBasis):
+                _transact(publisher, td, [[':original', 1]], 42, ':agent/codex', True, coverage_rebase=True)
+            submit.assert_not_called()
 
 
 if __name__ == '__main__':

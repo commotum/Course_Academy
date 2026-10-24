@@ -44,6 +44,10 @@ class EngineChanged(ValueError):
     pass
 
 
+class RunnerChanged(RuntimeError):
+    """Reload this worker after its agent repaired shared Python code."""
+
+
 class SessionRetryExhausted(RuntimeError):
     def __init__(self, role, directory, execution):
         self.role, self.directory, self.execution = role, Path(directory), execution
@@ -219,6 +223,7 @@ class Pipeline:
             raise ValueError('max_attempts must be positive')
         self.max_attempts = max_attempts
         self.investigation_preparer = investigation_preparer
+        self.runner_code_identity = self.worker_code_identity()
         inherited = json.loads(self.environment.get('COURSE_ACADEMY_GENERATOR_LOCK_FDS', '[]'))
         if not isinstance(inherited, list) or any(type(fd) is not int or fd < 0 for fd in inherited):
             raise ValueError('Inherited generator locks must be a list of file descriptors')
@@ -238,6 +243,15 @@ class Pipeline:
     def persist(self, **updates):
         self.state.update(updated=time.time(), **updates)
         save(self.path, self.state)
+
+    def worker_code_identity(self):
+        paths = sorted({path for directory in ('scripts', 'generate/pipeline', 'capture/scripts/database')
+                        for path in (self.root / directory).rglob('*.py')})
+        return digest({str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
+
+    def reload_repaired_runner(self):
+        if self.worker_code_identity() != self.runner_code_identity:
+            raise RunnerChanged('Shared runner code changed; resume this job with its completed agent result')
 
     @property
     def is_refill(self):
@@ -453,6 +467,7 @@ class Pipeline:
                 context['resume_session_id'] = session_thread(evidence)
             result = self.session('investigate', context, directory)
             save(directory / 'result.json', result)
+            self.reload_repaired_runner()
             if result.get('status') != 'ready':
                 error = {'error': 'Finish the investigation and construct the missing examples using the supplied reference. Repair relevant tools yourself.',
                          'result': result}
@@ -519,6 +534,26 @@ class Pipeline:
                 'assets_directory': self.state['assets_directory'],
                 'instruction': 'Check this final batch, including delivery, grading and visible rendering, before returning accepted.'}
 
+    def refresh_engine_review(self):
+        """Refresh changed grading evidence while keeping its verifier thread."""
+        active = (self.state.get('active_review_directory') or self.state.get('report_repair_directory')
+                  or (str(Path(self.state['review']).parent) if self.state.get('review') else None))
+        self.sample()
+        if not active:
+            return
+        evidence = inside(self.directory, active)
+        path = evidence / 'review-binding.json'
+        if path.exists():
+            save(evidence / ('engine-binding-before-' + str(time.time_ns()) + '.json'), read(path))
+        save(path, self.review_binding())
+        rounds = self.state.get('review_report_rounds', {})
+        if (evidence / 'result.json').exists():
+            rounds[str(evidence)] = max(1, rounds.get(str(evidence), 0))
+        self.persist(active_review_directory=str(evidence), report_repair_directory=str(evidence),
+                     review_report_rounds=rounds,
+                     review_report_error={'error': 'The shared engine changed since these checks.',
+                         'instruction': 'Continue your verification, finalize again, and rerun grading and affected checks against the current engine.'})
+
     def review_candidate(self, evidence):
         """Keep verification, repairs, and report corrections with one agent."""
         evidence.mkdir(parents=True, exist_ok=True)
@@ -543,7 +578,7 @@ class Pipeline:
         rounds = self.state.get('review_report_rounds', {})
         count = rounds.get(str(evidence), 0)
         limit = self.state.get('review_report_limits', {}).get(str(evidence), self.max_attempts * 3)
-        error = self.state.get('review_report_error') if count else None
+        error = self.state.get('review_report_error')
         while count < limit:
             directory = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
             context = self.context(evidence)
@@ -554,8 +589,10 @@ class Pipeline:
                 context['resume_session_id'] = session_thread(evidence)
             if not self.admit_review_session(directory):
                 return None
+            self.persist(active_review_directory=str(evidence))
             result = self.session('review', context, directory)
             save(directory / 'result.json', result)
+            self.reload_repaired_runner()
             # The verifier's finalization helper may have resampled and saved
             # new package/asset/engine identities during this same session.
             self.state = read(self.path)
@@ -568,8 +605,9 @@ class Pipeline:
                 validate_review(result, evidence)
             except EngineChanged:
                 self.sample()
-                self.persist(stage='validate')
-                return None
+                save(binding_path, self.review_binding())
+                error = {'error': 'The shared engine changed during verification.',
+                         'instruction': 'Continue this same verification session: finalize again and rerun grading plus checks affected by the engine repair.'}
             except (OSError, ValueError) as invalid:
                 error = str(invalid)
             else:
@@ -578,7 +616,7 @@ class Pipeline:
                     save(evidence / 'result.json', result)
                     save(binding_path, self.review_binding())
                     self.persist(review_report_error=None, review_report_result_file=None,
-                                 report_repair_directory=None)
+                                 report_repair_directory=None, active_review_directory=None)
                     return result
                 self.remember_repair(result)
                 error = {'code': 'verification_unfinished', 'findings': result.get('findings', []),
@@ -832,7 +870,7 @@ class Pipeline:
             if self.is_refill:
                 self.repair({'code': 'engine_changed', 'error': 'Grading engine changed during refill; independent review is required.'})
                 return False
-            self.sample()
+            self.refresh_engine_review()
             self.persist(stage='validate')
             return False
         except (ValueError, FileNotFoundError) as error:
@@ -936,6 +974,7 @@ class Pipeline:
                      review=None, review_binding=None, review_policy_version=None,
                      review_after_publication=False, approval_recorded=False,
                      report_repair_directory=None, review_report_error=None,
+                     active_review_directory=None,
                      error=None, progress_failures={},
                      author_attempt_limit=self.state['attempt'] + self.max_attempts,
                      review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3)
@@ -999,7 +1038,7 @@ class Pipeline:
                         try:
                             self.verify_approval_inputs()
                         except EngineChanged:
-                            self.sample()
+                            self.refresh_engine_review()
                         self.persist(stage='validate', review_after_publication=True)
                         continue
                     if not self.state.get('approval_recorded'):
@@ -1047,6 +1086,7 @@ class Pipeline:
                 evidence = self.directory / f'author-{attempt}'
                 result = self.session('author', self.context(evidence), evidence)
                 save(evidence / 'result.json', result)
+                self.reload_repaired_runner()
                 self.persist(author_running=False)
                 if result.get('status') in {'unsupported', 'blocked'}:
                     self.repair({'code': 'author_unfinished', 'result': result,
@@ -1079,8 +1119,9 @@ class Pipeline:
                 try:
                     self.verify_approval_inputs()
                 except EngineChanged:
-                    self.sample()
-                evidence = Path(self.state['report_repair_directory']) if self.state.get('report_repair_directory') else self.review_directory()
+                    self.refresh_engine_review()
+                active = self.state.get('report_repair_directory') or self.state.get('active_review_directory')
+                evidence = Path(active) if active else self.review_directory()
                 result = self.review_candidate(evidence)
                 if result is None:
                     if self.state['stage'] in {'report-repair', 'blocked'}:
@@ -1216,6 +1257,11 @@ def main(argv=None):
                     'difficulty': result.get('effective_difficulty', request['difficulty']),
                     'package': request.get('registered_package'), 'reason': result.get('error')})
             failed |= result['stage'] in {'blocked', 'failed', 'unsupported', 'repair', 'report-repair'}
+        except RunnerChanged:
+            # Completed agent output and durable DB intents are already saved.
+            # Re-exec keeps supervisor/KP ownership, and releases/reacquires the
+            # worker's own lock without charging a process or model failure.
+            os.execv(sys.executable, [sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]])
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
             failed = True
             print(json.dumps({'kp': kp, 'error': str(error), 'directory': str(directory)}), file=sys.stderr, flush=True)

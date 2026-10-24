@@ -1,5 +1,8 @@
 """Exercise independent report repair and real generator repairs end to end."""
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 import textwrap
 import unittest
@@ -69,10 +72,10 @@ class GeneratorReportFlowTests(unittest.TestCase):
         session = UncorrectedReport()
         result = self.pipeline(session).run()
         self.assertEqual(result["stage"], "blocked")
-        self.assertEqual(result["error"]["code"], "review_report_correction_exhausted")
+        self.assertEqual(result["error"]["code"], "verification_unfinished")
         self.assertEqual(result["error"]["resume_stage"], "validate")
-        self.assertEqual([role for role, _ in session.calls], ["author", "review", "review", "review"])
-        self.assertEqual(list(result["review_report_rounds"].values()), [3])
+        self.assertEqual([role for role, _ in session.calls], ["author"] + ["review"] * 6)
+        self.assertEqual(list(result["review_report_rounds"].values()), [6])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         original_samples = (self.job / "samples.json").read_bytes()
         restart = UncorrectedReport()
@@ -98,7 +101,7 @@ class GeneratorReportFlowTests(unittest.TestCase):
         self.assertEqual(result["attempt"], 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
-    def test_engine_change_during_report_correction_requires_fresh_review(self):
+    def test_engine_change_during_report_correction_continues_same_verifier(self):
         pipeline = self.pipeline(fixtures.FakeSession())
         pipeline.run(stop_after="generate")
         original_evidence = pipeline.review_directory()
@@ -112,6 +115,8 @@ class GeneratorReportFlowTests(unittest.TestCase):
             def __call__(self, role, context, directory):
                 result = super().__call__(role, context, directory)
                 if role == "review" and len(self.review_contexts) == 1:
+                    (Path(context['evidence_root']) / 'events.jsonl').write_text(
+                        json.dumps({'type': 'thread.started', 'thread_id': 'engine-repair-thread'}) + '\n')
                     engine = Path(context["repo_root"]) / "engine/rust/grader.rs"
                     engine.parent.mkdir(parents=True)
                     engine.write_text("// Different grader requires independent verification.\n")
@@ -124,119 +129,142 @@ class GeneratorReportFlowTests(unittest.TestCase):
         first_directory, first_context = session.review_contexts[0]
         second_directory, second_context = session.review_contexts[1]
         self.assertEqual(first_directory, original_evidence / "contract-repair")
-        self.assertNotEqual(first_context["evidence_root"], second_context["evidence_root"])
+        self.assertEqual(first_context["evidence_root"], second_context["evidence_root"])
+        self.assertEqual(second_directory, original_evidence / 'contract-repair-2')
+        self.assertEqual(second_context['resume_session_id'], 'engine-repair-thread')
         self.assertNotEqual(first_context["review_binding"]["engine_hash"], second_context["review_binding"]["engine_hash"])
-        self.assertEqual(json.loads((original_evidence / "review-binding.json").read_text()), original_binding)
-        self.assertEqual(Path(result["review"]), second_directory / "result.json")
-        self.assertEqual(json.loads((second_directory / "review-binding.json").read_text()), second_context["review_binding"])
+        self.assertEqual(first_context['review_binding'], original_binding)
+        self.assertEqual(Path(result["review"]), original_evidence / "result.json")
+        self.assertEqual(json.loads((original_evidence / "review-binding.json").read_text()), second_context["review_binding"])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
-    def test_demonstrated_generator_defect_is_fixed_rechecked_and_published(self):
+    def test_demonstrated_generator_defect_is_fixed_rechecked_and_published_by_verifier(self):
+        pipeline = None
         class ArithmeticRepair(ReportSession):
             def __init__(self):
                 super().__init__()
                 self.math_observations = []
 
-            def __call__(self, role, context, directory):
+            def inspect(self, context):
+                records = json.loads(Path(context['batch_file']).read_text())
+                failures = []
+                for record in records:
+                    question = record['question']
+                    number = int(question[':question/problem'].split()[1])
+                    actual = int(question[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'])
+                    if actual != number * number:
+                        failures.append({'number': number, 'actual': actual, 'expected': number * number})
+                self.math_observations.append(failures)
+                return failures
+
+            def __call__(inner, role, context, directory):
+                if role == 'review':
+                    evidence = Path(context['evidence_root'])
+                    failures = inner.inspect(context)
+                    (evidence / 'arithmetic-before.json').write_text(json.dumps({'failures': failures}))
+                    pipeline.remember_repair({'findings': [{
+                        'kind': 'math', 'description': 'Squaring adds the input twice.',
+                        'source_refs': ['fixture-source-1'], 'reproduction': 'square(7) == 14, expected 49.',
+                        'requested_change': 'Multiply the input by itself.'}]})
+                    (Path(context['workspace']) / 'helper.py').write_text('def square(n): return n * n\n')
+                    context = fixtures.finalize_fixture_review(pipeline, context)
+                    failures = inner.inspect(context)
+                    (evidence / 'arithmetic.json').write_text(json.dumps({'failures': failures}))
+                    self.assertEqual(failures, [])
                 result = super().__call__(role, context, directory)
-                if role == "author" and len([r for r, _ in self.calls if r == "author"]) == 1:
-                    (Path(context["workspace"]) / "helper.py").write_text("def square(n): return n + n\n")
-                if role == "review":
-                    records = json.loads(Path(context["batch_file"]).read_text())
-                    failures = []
-                    for record in records:
-                        question = record["question"]
-                        number = int(question[":question/problem"].split()[1])
-                        actual = int(question[":question/answer-fields"][0][":answer-field/choices"][0][":answer/value"])
-                        if actual != number * number:
-                            failures.append({"number": number, "actual": actual, "expected": number * number})
-                    self.math_observations.append(failures)
-                    (Path(context["evidence_root"]) / "arithmetic.json").write_text(json.dumps({"failures": failures}))
-                    result["checks"]["math"]["evidence_paths"] = ["arithmetic.json"]
-                    if failures:
-                        result.update(verdict="revise", findings=[{
-                            "kind": "math", "description": "The square operation adds its input twice.",
-                            "source_refs": ["fixture-source-1"], "reproduction": "helper.square(7) returns 14; expected 49.",
-                            "requested_change": "Multiply the input by itself and retain square(7)==49 as a regression."}])
-                        result["checks"]["math"]["status"] = "failed"
+                if role == 'author':
+                    (Path(context['workspace']) / 'helper.py').write_text('def square(n): return n + n\n')
+                if role == 'review':
+                    result['checks']['math']['evidence_paths'] = ['arithmetic.json']
                 return result
 
         session = ArithmeticRepair()
-        result = self.pipeline(session).run()
-        self.assertEqual(result["stage"], "verified")
-        self.assertEqual([role for role, _ in session.calls], ["author", "review", "author", "review"])
+        pipeline = self.pipeline(session)
+        result = pipeline.run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review'])
         self.assertTrue(session.math_observations[0])
         self.assertEqual(session.math_observations[1], [])
-        preflight = json.loads((self.job / "repair-preflight.json").read_text())
-        self.assertTrue(preflight["passed"])
-        self.assertEqual(len(preflight["finding_ids"]), 1)
-        installed = resolve_registered_script(result["registration"], self.root, self.math)
-        self.assertEqual(installed.with_name("helper.py").read_text(), "def square(n): return n * n\n")
-        publication = json.loads((self.job / "publication/request.json").read_text())
-        for record in publication["records"]:
-            question = record["question"]
-            number = int(question[":question/problem"].split()[1])
-            self.assertEqual(int(question[":question/answer-fields"][0][":answer-field/choices"][0][":answer/value"]), number * number)
+        preflight = json.loads((self.job / 'repair-preflight.json').read_text())
+        self.assertTrue(preflight['passed'])
+        self.assertEqual(len(preflight['finding_ids']), 1)
+        installed = resolve_registered_script(result['registration'], self.root, self.math)
+        self.assertEqual(installed.with_name('helper.py').read_text(), 'def square(n): return n * n\n')
+        publication = json.loads((self.job / 'publication/request.json').read_text())
+        for record in publication['records']:
+            question = record['question']
+            number = int(question[':question/problem'].split()[1])
+            self.assertEqual(int(question[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']), number * number)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
-    def test_batch_repair_checks_current_generator_before_runner_replaces_rejected_batch(self):
+    def test_verifier_repairs_batch_rule_and_checks_prospective_then_final_batch(self):
+        pipeline = None
         class BatchRepair(ReportSession):
             def __init__(self):
                 super().__init__()
                 self.reviewed_prompts = []
 
-            def __call__(self, role, context, directory):
-                result = super().__call__(role, context, directory)
+            def __call__(inner, role, context, directory):
+                if role == 'investigate':
+                    return super().__call__(role, context, directory)
                 workspace = Path(context['workspace'])
-                if role == 'author':
-                    if len([r for r, _ in self.calls if r == 'author']) == 1:
-                        generator = workspace / 'generator.py'
-                        generator.write_text(generator.read_text().replace(
-                            'random.Random(args.seed).sample(range(2, 99), args.count)', '[2] * args.count'))
-                    else:
-                        # The author repairs package code. Its regression can
-                        # check the prospective batch without editing samples.
-                        script = textwrap.dedent('''\
-                            import json, os, subprocess, sys, tempfile
-                            from pathlib import Path
-                            old = json.loads(Path(BATCH_FILE).read_text())
-                            with tempfile.TemporaryDirectory() as output:
-                                result = subprocess.run(
-                                    [sys.executable, '-E', '-s', '-B', 'generator.py',
-                                     '--difficulty', BAND, '--count', str(COUNT),
-                                     '--seed', str(SEED), '--format', 'json'],
-                                    env={**os.environ, 'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR': output},
-                                    capture_output=True, text=True, check=True)
-                            prospective = json.loads(result.stdout)
-                            prompts = lambda rows: [r['question'][':question/problem'] for r in rows]
-                            assert len(set(prompts(old))) == 1, 'Saved rejected batch changed prematurely'
-                            assert len(set(prompts(prospective))) == COUNT, 'Batch-selection defect remains'
-                            Path('prospective-batch.json').write_text(json.dumps({
-                                'seed': SEED, 'old': prompts(old), 'fixed': prompts(prospective)}))
-                        ''')
-                        bindings = {'BATCH_FILE': context['batch_file'], 'BAND': context['requested_difficulty'],
-                                    'COUNT': context['count'], 'SEED': context['sample_seed']}
-                        (workspace / 'batch_regression.py').write_text(
-                            '\n'.join(f'{key} = {value!r}' for key, value in bindings.items()) + '\n' + script)
-                        findings = json.loads(Path(context['repair_history_file']).read_text())['findings']
-                        (workspace / 'repair-regressions.json').write_text(json.dumps({'findings': [
-                            {'id': row['id'], 'script': 'batch_regression.py'} for row in findings]}))
-                else:
+                if role == 'review':
+                    evidence = Path(context['evidence_root'])
                     rows = json.loads(Path(context['batch_file']).read_text())
-                    prompts = [row['question'][':question/problem'] for row in rows]
-                    self.reviewed_prompts.append(prompts)
-                    if len(set(prompts)) != len(prompts):
-                        result.update(verdict='revise', findings=[{
-                            'kind': 'restriction', 'description': 'Batch selection repeats one question.',
-                            'source_refs': ['fixture-source-1'], 'reproduction': f'seed={context["sample_seed"]}: all prompts match.',
-                            'requested_change': 'Repair generator sampling to select distinct questions in each finite batch.'}])
-                        result['checks']['variety']['status'] = 'failed'
+                    old = [row['question'][':question/problem'] for row in rows]
+                    inner.reviewed_prompts.append(old)
+                    self.assertEqual(len(set(old)), 1)
+                    retained = evidence / 'rejected-batch.json'
+                    retained.write_text(json.dumps(rows))
+                    pipeline.remember_repair({'findings': [{
+                        'kind': 'restriction', 'description': 'Batch selection repeats one question.',
+                        'source_refs': ['fixture-source-1'], 'reproduction': 'All requested prompts match.',
+                        'requested_change': 'Sample distinct mathematical instances.'}]})
+                    script = textwrap.dedent("""\
+                        import json, os, subprocess, sys, tempfile
+                        from pathlib import Path
+                        old = json.loads(Path(RETAINED_BATCH).read_text())
+                        with tempfile.TemporaryDirectory() as output:
+                            run = subprocess.run([sys.executable, '-E', '-s', '-B', 'generator.py',
+                                '--difficulty', BAND, '--count', str(COUNT), '--seed', str(SEED), '--format', 'json'],
+                                env={**os.environ, 'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR': output},
+                                capture_output=True, text=True, check=True)
+                        prospective = json.loads(run.stdout)
+                        prompts = lambda records: [r['question'][':question/problem'] for r in records]
+                        assert len(set(prompts(old))) == 1
+                        assert len(set(prompts(prospective))) == COUNT, 'Batch-selection defect remains'
+                        Path('prospective-batch.json').write_text(json.dumps({
+                            'seed': SEED, 'old': prompts(old), 'fixed': prompts(prospective)}))
+                    """)
+                    bindings = {'RETAINED_BATCH': str(retained), 'BAND': context['requested_difficulty'],
+                                'COUNT': context['count'], 'SEED': context['sample_seed']}
+                    check = workspace / 'batch_regression.py'
+                    check.write_text('\n'.join(f'{key} = {value!r}' for key, value in bindings.items()) + '\n' + script)
+                    findings = json.loads(Path(context['repair_history_file']).read_text())['findings']
+                    (workspace / 'repair-regressions.json').write_text(json.dumps({'findings': [
+                        {'id': row['id'], 'script': 'batch_regression.py'} for row in findings]}))
+                    before = subprocess.run([sys.executable, str(check)], cwd=workspace,
+                        capture_output=True, text=True)
+                    self.assertNotEqual(before.returncode, 0)
+                    generator = workspace / 'generator.py'
+                    generator.write_text(generator.read_text().replace('[2] * args.count',
+                        'random.Random(args.seed).sample(range(2, 99), args.count)'))
+                    pipeline.finalize_review(evidence)
+                    context = pipeline.context(evidence)
+                    rows = json.loads(Path(context['batch_file']).read_text())
+                    inner.reviewed_prompts.append([row['question'][':question/problem'] for row in rows])
+                result = super().__call__(role, context, directory)
+                if role == 'author':
+                    generator = workspace / 'generator.py'
+                    generator.write_text(generator.read_text().replace(
+                        'random.Random(args.seed).sample(range(2, 99), args.count)', '[2] * args.count'))
                 return result
 
         session = BatchRepair()
-        state = self.pipeline(session).run()
+        pipeline = self.pipeline(session)
+        state = pipeline.run()
         self.assertEqual(state['stage'], 'verified')
-        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'author', 'review'])
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review'])
         evidence = json.loads((self.job / 'workspace/prospective-batch.json').read_text())
         self.assertEqual(evidence['seed'], state['seed'])
         self.assertEqual(evidence['old'], session.reviewed_prompts[0])

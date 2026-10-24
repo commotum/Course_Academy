@@ -19,7 +19,7 @@ if str(ROOT) not in sys.path:
 
 from capture.scripts.database.client import StaleBasis
 from capture.scripts.database.commit import Committer, connection_identity
-from capture.scripts.database.edn import dumps, kw, loads
+from capture.scripts.database.edn import Symbol, dumps, kw, loads
 from capture.scripts.storage import atomic_json, atomic_text
 
 BANDS = ('easy', 'moderate', 'hard')
@@ -212,6 +212,13 @@ def _schema_forms():
 def coverage_plan(client, directory, basis):
     """Compute an exact many-ref set replacement, without changing imports."""
     directory = Path(directory)
+    identity = client.status()
+    cache_path = directory / 'coverage-plan.json'
+    if cache_path.exists():
+        cached = json.loads(cache_path.read_text())
+        if (cached.get('database') == identity['database'] and cached.get('lineage') == identity['lineage']
+                and coverage_inputs_unchanged(client, directory, cached['basis'], basis)):
+            return loads(cached['forms_edn']), cached['expected']
     rows = client.query('[:find ?kp :where [?kp :knowledge-point/id _]]', [], directory, 'coverage-kps', basis)
     current = defaultdict(set)
     for kp, ident in client.query('''[:find ?kp ?ident :where [?kp :knowledge-point/level-coverage ?d]
@@ -232,48 +239,91 @@ def coverage_plan(client, directory, basis):
             forms.append([kw('db/retract'), kp, kw(COVERAGE), kw(ident)])
         for ident in sorted(wanted - current[kp]):
             forms.append([kw('db/add'), kp, kw(COVERAGE), kw(ident)])
+    atomic_json(cache_path, {'database': identity['database'], 'lineage': identity['lineage'],
+        'basis': basis, 'forms_edn': dumps(forms), 'expected': expected})
     return forms, expected
 
 
-def _transact(publisher, directory, forms, basis, source, apply):
-    """Persist exact intent before submission; recover unknown outcomes first."""
+COVERAGE_INPUTS = (
+    'knowledge-point/id', 'knowledge-point/questions', 'knowledge-point/canonical-example',
+    'knowledge-point/level-coverage', 'question/math-academy-id', 'question/difficulty',
+    'db/ident', 'db/valueType', 'db/cardinality',
+)
+
+
+def coverage_inputs_unchanged(client, directory, before, after):
+    """Prove a rebase from committed log events, including all retractions."""
+    if before == after:
+        return True
+    if before > after:
+        raise ValueError('Coverage cannot rebase backward')
+    directory = Path(directory) / f'changes-{before}-{after}'
+    directory.mkdir(parents=True, exist_ok=True)
+    attributes = client.query('[:find ?a ?ident :in $ [?ident ...] :where [?a :db/ident ?ident]]',
+        [[kw(name) for name in COVERAGE_INPUTS]], directory, 'attributes', before)
+    names = {int(eid): str(ident) for eid, ident in attributes}
+    if len(names) != len(COVERAGE_INPUTS):
+        raise ValueError('Coverage dependency attribute dictionary is incomplete')
+    query = ('[:find ?e ?a ?tx ?op :in $log ?start ?end :where '
+             '[(tx-ids $log ?start ?end) [?tx ...]] '
+             '[(tx-data $log ?tx) [[?e ?a ?v ?tx ?s ?op]]]]')
+    atomic_text(directory / 'query.edn', query)
+    atomic_text(directory / 'inputs.edn', dumps([before + 1, after + 1]))
+    atomic_text(directory / 'sources.edn', dumps({Symbol('$log'): {
+        kw('database'): str(client.config.database), kw('log'): True}}))
+    text = client.command('query', '--file', directory / 'query.edn', '--inputs', directory / 'inputs.edn',
+                          '--sources', directory / 'sources.edn')
+    atomic_text(directory / 'log.edn', text)
+    relevant = [row for row in loads(text) if row[1] in names]
+    atomic_json(directory / 'verification.json', {'before': before, 'after': after,
+        'unchanged': not relevant, 'relevant_changes': [
+            {'entity': row[0], 'attribute': names[row[1]], 'transaction': row[2], 'added': row[3]}
+            for row in relevant]})
+    return not relevant
+
+
+def _transact(publisher, directory, forms, basis, source, apply, *, coverage_rebase=False):
+    """Persist exact intent; unrelated learner writes may safely rebase coverage."""
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     committer = Committer(publisher.config, publisher.client, directory)
-    request = committer.pending()
-    if request is None:
-        status = publisher.client.status()
-        if status['basis'] != basis:
-            raise StaleBasis('Coverage migration basis advanced before preview')
-        transaction = dumps(forms) + '\n'
-        atomic_text(directory / 'transaction.edn', transaction)
-        preview_text = publisher.client.command('with', '--file', directory / 'transaction.edn', '--source', source)
-        atomic_text(directory / 'preview.edn', preview_text)
-        preview = loads(preview_text)
-        if preview.get(':edb/db-before-t') != basis:
-            raise StaleBasis('Coverage migration basis advanced during preview')
-        request = {**connection_identity(publisher.config), 'basis': basis, 'source': source,
-                   'database_lineage': status['lineage'], 'transaction': transaction,
-                   'transaction_sha256': hashlib.sha256(transaction.encode()).hexdigest()}
-        request['request_key'] = 'kp-level-coverage-' + _hash(request)
-        atomic_json(committer.intent_path, request)
-    if not apply:
-        return {'prepared': True, 'request_key': request['request_key'], 'basis': request['basis']}
-    try:
-        receipt = committer.submit(request)
-    except StaleBasis:
-        committer.retire(request, 'rejected_stale_basis', {'reason': 'Confirmed basis rejection; next run recomputes coverage'})
-        raise
-    if receipt.get(':edb/db-before-t') != request['basis']:
-        raise ValueError('Coverage receipt does not match its saved basis')
-    after = int(receipt[':edb/db-after-t'])
-    # Verify all transaction datoms have the requested contributor. Schema
-    # changes have generated metadata, so final shape is read back separately.
-    source_rows = publisher.client.query('[:find ?s :in $ ?ident :where [?s :db/ident ?ident]]',
-        [kw(request['source'])], directory, 'transaction-source', after)
-    if len(source_rows) != 1 or any(row[4] != source_rows[0][0] for row in receipt.get(':edb/tx-data', [])):
-        raise ValueError('Coverage receipt contributor differs from the requested agent')
-    return {'committed': True, 'basis': after, 'request_key': request['request_key']}
+    for attempt in range(4):
+        request = committer.pending()
+        if request is None:
+            status = publisher.client.status()
+            if status['basis'] != basis and not coverage_rebase:
+                raise StaleBasis('Coverage migration basis advanced before preview')
+            transaction = dumps(forms) + '\n'
+            atomic_text(directory / 'transaction.edn', transaction)
+            preview_text = publisher.client.command('with', '--file', directory / 'transaction.edn', '--source', source)
+            atomic_text(directory / 'preview.edn', preview_text)
+            preview = loads(preview_text)
+            preview_basis = int(preview[':edb/db-before-t'])
+            if preview_basis != basis:
+                if not coverage_rebase or not coverage_inputs_unchanged(publisher.client, directory, basis, preview_basis):
+                    raise StaleBasis('Coverage inputs changed during preparation; recompute from fresh source')
+            request = {**connection_identity(publisher.config), 'basis': preview_basis, 'source': source,
+                       'database_lineage': status['lineage'], 'transaction': transaction,
+                       'transaction_sha256': hashlib.sha256(transaction.encode()).hexdigest()}
+            request['request_key'] = 'kp-level-coverage-' + _hash(request)
+            atomic_json(committer.intent_path, request)
+        if not apply:
+            return {'prepared': True, 'request_key': request['request_key'], 'basis': request['basis']}
+        try:
+            receipt = committer.submit(request)
+        except StaleBasis:
+            committer.retire(request, 'rejected_stale_basis', {'reason': 'Confirmed basis rejection; recheck source dependencies'})
+            if coverage_rebase and attempt < 3:
+                continue
+            raise
+        if receipt.get(':edb/db-before-t') != request['basis']:
+            raise ValueError('Coverage receipt does not match its saved basis')
+        after = int(receipt[':edb/db-after-t'])
+        source_rows = publisher.client.query('[:find ?s :in $ ?ident :where [?s :db/ident ?ident]]',
+            [kw(request['source'])], directory, 'transaction-source', after)
+        if len(source_rows) != 1 or any(row[4] != source_rows[0][0] for row in receipt.get(':edb/tx-data', [])):
+            raise ValueError('Coverage receipt contributor differs from the requested agent')
+        return {'committed': True, 'basis': after, 'request_key': request['request_key']}
 
 
 def _verify_schema(publisher, directory, basis):
@@ -322,7 +372,7 @@ def migrate_coverage(publisher, directory, *, apply=False, source=':agent/codex'
     # A lost reply is reconciled against the original expected sets before any
     # fresh source reads may replace the saved plan.
     if (backfill_dir / 'request.json').exists():
-        result = _transact(publisher, backfill_dir, [], status['basis'], source, apply)
+        result = _transact(publisher, backfill_dir, [], status['basis'], source, apply, coverage_rebase=True)
         if not apply:
             return {'stage': 'backfill', **result}
         expected = json.loads((backfill_dir / 'expected-coverage.json').read_text())
@@ -332,7 +382,7 @@ def migrate_coverage(publisher, directory, *, apply=False, source=':agent/codex'
     forms, expected = coverage_plan(publisher.client, directory, status['basis'])
     if forms:
         atomic_json(backfill_dir / 'expected-coverage.json', expected)
-        result = _transact(publisher, backfill_dir, forms, status['basis'], source, apply)
+        result = _transact(publisher, backfill_dir, forms, status['basis'], source, apply, coverage_rebase=True)
         if not apply:
             return {'stage': 'backfill', 'knowledge_points': len(expected), 'changes': len(forms), **result}
         after = result['basis']

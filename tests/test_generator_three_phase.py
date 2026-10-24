@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import test_generator_pipeline as fixtures
 from generator_packages import resolve_registered_script
-from generator_pipeline import Pipeline, digest
+from generator_pipeline import CodexSession, Pipeline, RunnerChanged, digest, main
 from test_generator_publish import record
 
 
@@ -164,6 +164,91 @@ class ThreePhaseTests(unittest.TestCase):
         self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review'])
         self.assertEqual(contexts[1]['resume_session_id'], 'verifier-thread')
         self.assertEqual(contexts[0]['evidence_root'], contexts[1]['evidence_root'])
+        self.assertEqual(result['attempt'], 1)
+
+    def test_shared_python_repair_reloads_worker_and_reuses_saved_author_result(self):
+        class SharedRepairAuthor(fixtures.FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == 'author':
+                    helper = Path(context['repo_root']) / 'scripts/generator_support.py'
+                    helper.parent.mkdir(parents=True)
+                    helper.write_text('REPAIRED = True\n')
+                return result
+
+        pipeline = self.pipeline(SharedRepairAuthor())
+        with self.assertRaises(RunnerChanged):
+            pipeline.run()
+        saved = json.loads((self.job / 'author-1/result.json').read_text())
+        self.assertEqual(saved['status'], 'ready')
+        state = json.loads((self.job / 'job.json').read_text())
+        self.assertTrue(state['author_running'])
+        self.assertEqual(state['attempt'], 1)
+        reviewer = fixtures.FakeSession()
+        cached_author = CodexSession(root=Path(__file__).resolve().parents[1])
+
+        def resumed(role, context, directory):
+            if role == 'author':
+                with patch('generator_pipeline.subprocess.Popen') as launch:
+                    result = cached_author(role, context, directory)
+                launch.assert_not_called()
+                return result
+            return reviewer(role, context, directory)
+
+        result = self.pipeline(resumed).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual(result['attempt'], 1)
+        self.assertEqual([role for role, _ in reviewer.calls], ['review'])
+        self.assertEqual(result['author_attempt_limit'], state['author_attempt_limit'])
+
+    def test_runner_change_reexecutes_instead_of_returning_process_failure(self):
+        with patch('generator_publish.Publisher.from_environment', return_value=self.publisher), \
+                patch('serve_graph_explorer.database_environment', return_value=self.environment), \
+                patch('generator_pipeline.Pipeline') as constructor, \
+                patch('generator_pipeline.os.execv', side_effect=SystemExit(73)) as execute, \
+                patch('generator_pipeline.sys.argv', ['generator_pipeline.py', '--kp', '123', '--difficulty', 'easy']):
+            constructor.return_value.run.side_effect = RunnerChanged('shared code repaired')
+            with self.assertRaises(SystemExit) as outcome:
+                main(['--kp', '123', '--difficulty', 'easy', '--directory', str(self.root / 'dispatch')])
+        self.assertEqual(outcome.exception.code, 73)
+        execute.assert_called_once()
+        self.assertEqual(execute.call_args.args[1][-4:], ['--kp', '123', '--difficulty', 'easy'])
+
+    def test_finalized_verifier_repair_survives_runner_reload_without_new_verification_agent(self):
+        pipeline = None
+        original_evidence = []
+
+        class SharedRepairVerifier(fixtures.FakeSession):
+            def __call__(self, role, context, directory):
+                if role == 'review':
+                    evidence = Path(context['evidence_root'])
+                    original_evidence.append(evidence)
+                    (Path(context['workspace']) / 'helper.py').write_text('def square(n): return n ** 2\n')
+                    pipeline.finalize_review(evidence)
+                    context = pipeline.context(evidence)
+                    helper = Path(context['repo_root']) / 'scripts/generator_support.py'
+                    helper.parent.mkdir(parents=True)
+                    helper.write_text('REPAIRED = True\n')
+                return super().__call__(role, context, directory)
+
+        pipeline = self.pipeline(SharedRepairVerifier())
+        with self.assertRaises(RunnerChanged):
+            pipeline.run()
+        saved = json.loads((self.job / 'job.json').read_text())
+        self.assertEqual(saved['active_review_directory'], str(original_evidence[0]))
+        self.assertTrue((original_evidence[0] / 'final-binding.json').exists())
+        self.assertTrue((original_evidence[0] / 'result.json').exists())
+        cached = CodexSession(root=Path(__file__).resolve().parents[1])
+        def reuse(role, context, directory):
+            self.assertEqual(role, 'review')
+            with patch('generator_pipeline.subprocess.Popen') as launch:
+                result = cached(role, context, directory)
+            launch.assert_not_called()
+            return result
+        resumed = self.pipeline(reuse)
+        result = resumed.run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual(result['review'], str(original_evidence[0] / 'result.json'))
         self.assertEqual(result['attempt'], 1)
 
 

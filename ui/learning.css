@@ -125,7 +125,9 @@ main.lesson-main { --lesson-toolbar-height: 52px; max-width: 820px; padding: 24p
 :is(.answer-select-trigger, .answer-saved-value)[data-grade] .prose, .answer-select-trigger:is([data-grade="correct"], [data-grade="incorrect"]) .answer-select-arrow { color: inherit; }
 .field-location:has(.answer-inline) { display: inline; min-width: 0; margin: 0; border: 0; font-size: inherit; color: inherit; }
 .answer-inline { display: inline-flex; align-items: baseline; max-width: 100%; margin: 0 4px; vertical-align: baseline; }
-.answer-inline .answer-input { width: 12ch; max-width: 100%; min-height: 40px; padding: 5px 9px; background: var(--tone-09); border: 1px solid var(--tone-77); font-size: inherit; }
+.answer-input[data-input-size] { width: auto; field-sizing: content; min-width: min(var(--answer-min-width, 16ch), 100%); max-width: 100%; }
+:is(.answer-input, .answer-math)[data-input-size="value"] { --answer-min-width: 3.5ch; min-width: var(--answer-min-width); }
+.answer-inline .answer-input { max-width: 100%; min-height: 40px; padding: 5px 9px; background: var(--tone-09); border: 1px solid var(--tone-77); font-size: inherit; }
 .answer-inline .answer-input::placeholder { color: var(--muted); font-size: 10px; }
 .answer-inline .answer-input:disabled { opacity: 1; color: var(--ink); }
 .question-equation { text-align: center; margin: 1.25em 0; }
@@ -143,14 +145,14 @@ main.lesson-main { --lesson-toolbar-height: 52px; max-width: 820px; padding: 24p
 .answer-inline .answer-select-trigger { border: 0; border-bottom: 1px solid var(--tone-aa); min-height: 32px; }
 
 /* Math answers remain editable equations, using the same square, monochrome controls. */
-.answer-math { display: inline-block; width: 100%; max-width: 100%; min-height: 49px; padding: 9px 12px; font-size: 20px; color: var(--ink); background: var(--tone-09); border: 1px solid var(--tone-60); border-radius: 0; --caret-color: var(--ink); --selection-background-color: var(--tone-38); --selection-color: var(--ink); --contains-highlight-background-color: transparent; --placeholder-color: var(--muted); }
+.answer-math { display: inline-block; width: max-content; min-width: min(var(--answer-min-width, 16ch), 100%); max-width: 100%; min-height: 49px; padding: 9px 12px; font-size: 20px; color: var(--ink); background: var(--tone-09); border: 1px solid var(--tone-60); border-radius: 0; --caret-color: var(--ink); --selection-background-color: var(--tone-38); --selection-color: var(--ink); --contains-highlight-background-color: transparent; --placeholder-color: var(--muted); }
 .answer-math:focus-within { outline: 1px solid var(--ink); outline-offset: 3px; }
 .answer-math::part(menu-toggle) { display: none; }
 .answer-math::part(virtual-keyboard-toggle) { display: none; }
 .answer-math::part(container) { padding: 0; }
 .answer-math[disabled] { opacity: 1; }
 .answer-math[disabled]::part(virtual-keyboard-toggle) { display: none; }
-.answer-inline .answer-math { width: auto; min-width: 8ch; min-height: 40px; padding: 5px 9px; border: 1px solid var(--tone-77); background: var(--tone-09); vertical-align: baseline; }
+.answer-inline .answer-math { min-height: 40px; padding: 5px 9px; border: 1px solid var(--tone-77); background: var(--tone-09); vertical-align: baseline; }
 .answer-inline :is(.answer-input, .answer-math):focus-within { border-color: var(--ink); outline: 1px solid var(--ink); outline-offset: 2px; }
 body:has(.answer-math) { --keyboard-background: var(--bg); --keyboard-border: 1px solid var(--line); --keyboard-accent-color: var(--ink); --keyboard-toolbar-background: var(--bg); --keyboard-toolbar-background-hover: var(--tone-22); --keyboard-toolbar-background-selected: var(--tone-22); --keyboard-toolbar-text: var(--muted); --keyboard-toolbar-text-active: var(--ink); --keycap-background: var(--panel); --keycap-text: var(--ink); --keycap-background-hover: var(--tone-22); --keycap-text-hover: var(--ink); --keycap-background-active: var(--tone-38); --keycap-text-active: var(--ink); --keycap-background-pressed: var(--tone-38); --keycap-text-pressed: var(--ink); --keycap-primary-background: var(--ink); --keycap-primary-background-hover: var(--tone-cc); --keycap-primary-text: var(--bg); --keycap-secondary-background: var(--panel); --keycap-secondary-background-hover: var(--tone-22); --keycap-secondary-text: var(--ink); --keycap-border: 1px solid var(--line); --keycap-border-bottom: 1px solid var(--line); }
 

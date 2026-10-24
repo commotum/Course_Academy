@@ -36,7 +36,7 @@ precedence over the broader inventory ratings when its KP, lineage and registere
 package still match. Shortage and assessment-variety requests retain their
 priority. Observed ratings are a scheduling hint, not proof that a package can
 generate that band or permission to publish it. Unobserved bands remain queued as
-fallback work; a definitive unsupported result still prevents an unchanged retry.
+background work. Missing imported examples do not make a difficulty unsupported; investigation supplies complete exemplars.
 
 In self-directed mode, ordinary lesson preparation follows the same L30+ targets,
 queue, and depth-two prerequisite scope as Study, with the same below-band-one
@@ -63,115 +63,95 @@ the first ranked inventory. The read-only scan runs separately from learner requ
 and does not hold their API lock. The existing `COURSE_ACADEMY_DISABLE_GENERATION=1`
 and developer-mode switches control both generation workers.
 
-Approval is specific to the package, original instructional source, database lineage,
-KP, reviewed difficulty, and review-policy version. Missing or stale approval queues an independent review
-in the build worker. An unsupported band is recorded and other work continues.
-An unsupported difficulty with no source evidence is retained as unsupported.
-Generator defects return to the author with executable counterexamples. Report corrections stay with the independent reviewer, and historical inventory defects go to the runner. Repeated failures or exhausted budgets become visible `blocked` jobs; their workspaces and publication recovery state are retained. Inventory is rechecked
-after publication; existing jobs and pending commit requests survive restarts.
+## Investigation, authorship, and verification
 
-An interrupted review can pass its partial evidence to a new reviewer when the
-package, batch, source, inventory, assets, difficulty and policy still match.
-Changed grading-engine checks must be rerun; partial evidence never grants
-approval. Inventory findings require exact affected-question evidence. Missing
-reports return to the reviewer for correction. Separate generator defects can
-reach the author while an inventory repair is unresolved, but publication still
-requires the stored defect to be resolved and independently checked.
+Each build uses three headless `gpt-6.1-sol` agents with `high` reasoning:
 
-Approval is the independent Codex reviewer's recorded acceptance, followed by
-verified publication; it does not require human permission. The initial build
-normally samples one requested or source-justified difficulty and certifies that
-band only. Approval for easy questions does not certify moderate or hard output
-from the same script. A missing band certificate waits for automatic review under
-the existing build priorities; no question from that band is published merely
-because another band passed. Existing usable questions remain available to the
-learner while this work waits.
+1. **Investigate:** A script captures the KP and selects one reference KP with at
+   least two complete Math Academy imports at each difficulty. Selection uses
+   fixed Datalog, one database basis, and batched explicit Pulls; agents do not
+   search the database themselves. The investigator studies the target and the
+   reference progression. When evidence is incomplete, it constructs and checks
+   three complete exemplars, one easy, one moderate, and one hard. The runner
+   publishes them as ordinary questions under the target KP using `:agent/codex`
+   provenance. No reconstruction labels or imported Math Academy IDs are added.
+2. **Author:** The author builds or continues a relocatable Python generator from
+   the target material and completed exemplars. It may revise earlier assumptions
+   and repair relevant shared tools or the answer engine. The runner samples twice
+   at the saved seed and compares records and asset bytes for deterministic replay.
+3. **Verify and repair:** The verifier first examines the instructional evidence
+   independently, then tests and repairs the generator in the same persistent
+   session. It owns mathematics, pedagogy, grading, rendering, packaging, and
+   delivered variation. Earlier requirements may be overridden with evidence.
+   Shared-tool defects and report omissions are corrected by this verifier rather
+   than handed to another agent. There is no fourth approval agent.
 
-Review policy 4 requires standalone source eligibility before template fidelity.
-Source capture removes retired questions and every structurally contained multistep
-part, including assigned-problem wrappers and legacy placements. Their identities
-remain in an exclusion ledger. Supplying an earlier function, derivative, graph, or
-result does not turn a part into an eligible standalone template. Generated records
-retain their actual source references, which preparation checks against the live
-database. Existing generated descendants are audited separately because they do
-not inherit the source part's structural containment. Saved pre-policy captures
-are archived and refreshed before authoring or review; pending publications are
-recovered first, without changing their request or publishing the batch again.
+Incomplete imports remain unchanged. Missing fields, keys, solutions, or labels
+are partial evidence, never inventory-repair obligations or publication blockers.
+Historical inventory observations need no blocking handoff artifact. Defects in
+new output must be repaired and checked before acceptance.
 
-Review policy 2 separately requires **decision-relevant variation**. Reviewers must
-challenge unjustified fixed roles, test relevant and irrelevant counterfactuals,
-and probe shortcuts within recognizable templates, not merely count unique outputs.
-Their `pedagogical-variation.json` records decision coverage, shortcut results and
-filtering effects with reproducible sample evidence. Source replay, mathematics,
-grading and this distribution-level judgment remain separate acceptance checks.
-Legitimate mathematical simplifications and justified finite families are allowed.
+`:knowledge-point/level-coverage` is a cardinality-many ref recording observed
+imported labels independently of completeness. Its values are easy, moderate,
+hard, or `:question.difficulty/unobserved` alone when no imported label exists.
+Authored exemplars do not add observed coverage, and unobserved is not a served
+question difficulty. The script installs/backfills coverage through the existing
+EDB transport, with durable requests and exact-basis readback:
 
-Revisions preserve the generator workspace. A prior independent review's source
-account and scripts are offered for reuse only when its source hash and review
-policy match; tests still run against the current candidate and all eight checks
-remain required. A malformed review report gets one correction by the reviewer
-using its saved evidence, without another author pass or resampling. Each evidence root permits at most three review/report sessions before an explicit blocked stop. Correction sessions can write their full evidence root. Report-only corrections do not require runtime code changes. Completed structured
-agent results are reused on restart. Prompts direct interrupted sessions to saved
-progress, limit bulk output, and stop testing once the required evidence passes.
+```bash
+.venv/bin/python scripts/generator_investigation.py --directory .local/generation/coverage --apply
+```
 
-Each unfinished author/reviewer session has a persistent limit of three Codex
-launches, including failed launches and timeouts. Exhaustion stops automatic
-retrying and records the session and original stage; it preserves the workspace,
-samples and evidence. Completed cached results remain reusable even at the limit.
-After fixing the cause, recovery must deliberately requeue that saved session;
-a service restart or ranking refresh does not reset the budget.
+The same command without `--apply` prepares the next required migration step.
+Schema declarations live in `schema/data/6-knowledge-point.edn` and
+`schema/content/4-question.edn`, mirrored in the math database schema directory.
 
-[Shared offline validation tools](pipeline/validation-tools.md) centralize delivery
-filtering, grader invocation, and rendering. `check_delivery.py` calls the same
-record-preparation function as publication against saved inventory, with all image
-writes confined to local evidence. Agents still independently check mathematics,
-source fidelity, grading, rendering and variation before and after filtering.
-Publication also reuses its fresh KP read for the same-basis source check.
+All phases may repair relevant shared renderer, delivery policy, runner, or
+answer-engine code. They stage a unified diff in their own workspace and use
+`shared_repair_command` with `--patch` and repeated `--check-json` argv arrays.
+The helper serializes shared changes and their tests. A failed check reverses
+that patch and restores the native grader's previous bytes and mode; additional
+build outputs are declared with repeated `--artifact` options. The same agent
+resolves conflicts and retries its repair. Ordinary per-KP package changes need
+no shared lock, and workers never edit another KP's job or imported questions.
 
-The shared UI renderer automatically selects an installed Node >=20 runtime,
-preferring the runtime bundled alongside Playwright. It does not rely on the
-service's older system Node. Override with `--node` or
-`COURSE_ACADEMY_NODE_EXECUTABLE` when necessary.
+The verifier calls `finalize_review_command` after its repairs. This regenerates
+the final batch and assets and saves `final-binding.json` for the actual package,
+source, inventory, and engine. It checks those final outputs and validates its
+report with `scripts/generator_review.py --result FILE --evidence-root DIRECTORY`
+before returning. Report corrections resume the same persistent verifier session.
+Acceptance requires evidence for all eight checks: source replay, mathematics,
+variety, decision-relevant variation, scope, grading, rendering, and packaging.
 
-Old certificates do not satisfy policy 2. Fast refill sends them through the existing
-review queue; published questions are retained. Saved reviews are tied to the policy
-and exact package/source/batch/inventory inputs. A pending durable publication is
-recovered exactly before any new review, and its receipt is retained; re-review does
-not republish that batch. This change does not increase review scheduling priority.
+[Shared validation tools](pipeline/validation-tools.md) use the actual publication
+filter, native grader, and learning UI. The renderer ignores hidden native
+backing values while inspecting every opened rich-dropdown menu. Visible raw
+TeX remains a failure. It selects the installed Node >=20 runtime beside
+Playwright; `--node` or `COURSE_ACADEMY_NODE_EXECUTABLE` can override that choice.
 
-## The four stages
+After acceptance, deterministic **prepare** and **push** steps publish the
+immutable package/assets, preview the typed EDB forms, retain the exact guarded
+request, submit it, and verify receipt and readback. Lost replies recover the
+same request before new work. No human approval is required.
 
-1. **Generate:** Capture original lesson, source questions, complete answer
-   banks, prerequisite context and source-image hashes at one EDB basis. A
-   headless Codex author adopts or repairs a relocatable generator package in
-   the job workspace. The runner checks its dependencies, runs it twice at a
-   saved seed, and compares the records and image bytes.
-2. **Validate:** A fresh Codex session independently reconstructs the assessed
-   skill from the sources before inspecting the author's work. It tests source
-   replay, mathematics, variety, decision-relevant variation, scope, actual grading,
-   rendering and package relocation. All eight checks require evidence. A read-only
-   `source/inventory.json` provides the captured question bank and the publisher’s
-   deduplication fingerprints for delivered-distribution checks.
-   Generator rejections return to the author with a cumulative finding history and executable regressions. Evidence findings return to the reviewer; inventory findings are repaired by the runner before fresh independent review. An unchanged generator rejected for an actual code defect stops with a no-progress error.
-   Three author attempts bound the saved job by default; restarting a worker does not renew them. A rejected unchanged package or repeated identical failure blocks. A job also has a durable budget of nine distinct review sessions by default, including input refreshes.
-3. **Prepare:** Verify the approved code, records, source and images. Publish
-   the immutable generator package and hash image bytes through the shared image
-   library. Deduplicate content and construct typed EDB forms using the existing
-   schema and contributor.
-4. **Push:** Preview with native predicates, save the exact guarded request,
-   submit it, and verify the receipt and readback. A lost reply resumes the same
-   request. A confirmed stale-basis rejection triggers fresh preparation.
+Approval remains specific to package, instructional source, database lineage,
+KP, difficulty, and review policy. Policy 5 supports the three phases and verifier
+repairs. Existing certificates that lack the current policy enter the normal
+review queue; earlier published questions remain available. One approved band
+does not certify other bands. Saved pre-policy blocked jobs are migrated into
+investigation while retaining their work and original error history; uncertain
+publication requests are recovered first.
 
-`--stop-after generate`, `validate`, or `prepare` stops at the corresponding
-boundary. Preparation publishes files to the shared store but does not commit
-database content. The default runs all four stages. To resume a stopped job,
-repeat the command without `--stop-after`.
+`--stop-after generate`, `validate`, or `prepare` stops after sampling, final
+verification, or preparation respectively. Preparation publishes files to the
+shared store but does not commit database content. Repeat without `--stop-after`
+to resume through verified publication.
 
 ## Storage and recovery
 
 Manual jobs live under `.local/generation/<database>/<kp>-<difficulty>/`.
 Inventory jobs keep their pipeline directory beside the existing inventory job.
-Each has `job.json`, the source snapshot, author/reviewer JSONL logs and evidence,
+Each has `job.json`, the source snapshot, investigation/author/verifier JSONL logs and evidence,
 the sampled batch, and a publication directory containing preparation, request,
 receipt and verification records. Read `job.json` for the current stage and last
 content failure. A process or transport failure leaves its current stage resumable.
@@ -220,12 +200,13 @@ separate files. Logs, reviews and generated output stay outside the manifest.
 ## Configuration
 
 The runner uses the application's existing EDB environment and generated-content
-contributor. Codex uses the user's existing login and model configuration.
+contributor. Codex uses the existing login; every phase explicitly selects
+`gpt-6.1-sol` and `model_reasoning_effort="high"`.
 
 - `COURSE_ACADEMY_CODEX_EXECUTABLE`: explicit Codex CLI path.
 - `COURSE_ACADEMY_GENERATOR_PYTHON`: Python interpreter; defaults to `.venv/bin/python`.
 - `COURSE_ACADEMY_GENERATOR_BUILD_WORKERS`: simultaneous builder pipelines;
-  defaults to 3. Each pipeline alternates authoring and independent review. The
+  defaults to 3. Each pipeline runs investigation, authorship, and verification/repair. The
   refill worker runs separately. Set to 1 for sequential builds; restart the
   service after changing the setting.
 - `COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS`: builder slots that prefer pending
@@ -237,19 +218,17 @@ contributor. Codex uses the user's existing login and model configuration.
   slot. This preference neither retries blocked/rejected jobs nor waives review.
 - `EDB_MATH_ROOT`, `EDB_POSTGRES_URL`, `EDB_ENDPOINT`, `EDB_BIN`,
   `LEARNING_REQUEST_DIR`: existing database and asset configuration.
-- `--max-attempts`: durable author/repair budget, default 3, plus three review sessions per author attempt.
+- `--max-attempts`: durable investigation/author budget, default 3; verification has three correction rounds per configured attempt by default.
 - `--resume-reason`: after fixing a saved blocker, explicitly grant one additional bounded recovery and record why. Increasing `--max-attempts` or restarting alone does not reset a saved budget.
 
-Author and reviewer sessions cannot publish through this workflow. They work in
-their own directories with noninteractive sandboxed Codex execution. The runner
-performs deterministic publication after acceptance. `repair-history.json` preserves
-every finding, `repair-regressions.json` maps generator findings to workspace Python checks,
-and `repair-preflight.json` records actual executions. Failed preflight checks go
-back to repair before another full review. A `sample` checkpoint resumes completed
-author work without launching another author. Source-supported engine limitations
-remain repair tasks; a grading finding permits a scoped engine fix with acceptance
-and rejection regressions. Infrastructure interruptions retain exact state with bounded retry; three process failures without a structured result block the inventory job. Provider/session launch limits remain distinct from content
-repair and never cause uncertain publication requests to be replaced.
+Agents use persistent noninteractive sandboxed sessions with access to the
+repository and their job/evidence directories. They own relevant shared repairs;
+database publication stays in the runner's durable transport. `repair-history.json`
+retains findings, `repair-regressions.json` maps generator findings to executable
+checks, and `repair-preflight.json` records their results. Completed work and
+session identities survive interruption. Genuine repeated failures retain bounded
+retry budgets and explicit errors; restarting alone does not renew those budgets
+or replace uncertain publication requests.
 
 A controlled UI service stop records the exact unfinished agent launches owned
 by that service before terminating its children. On restart, each matching launch
@@ -279,5 +258,5 @@ the rest of the cohort.
 
 Tests exercise real package/image stores and generator subprocesses. Database
 failure-injection tests simulate lost replies, stale guards, and failed readback.
-They complement native EDB pilot runs and actual independent reviewer trials;
+They complement native EDB pilot runs and actual verifier trials;
 mocked agent acceptance is not evidence of pedagogical quality.

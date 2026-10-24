@@ -1,0 +1,5 @@
+[:find ?kp ?band :in $ [?kp ...]
+ :where [?q :question/difficulty ?d] [?d :db/ident ?band]
+ [?q :question/math-academy-id _]
+ (or-join [?kp ?q] [?kp :knowledge-point/questions ?q]
+                         [?kp :knowledge-point/canonical-example ?q])]
