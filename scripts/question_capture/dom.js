@@ -291,7 +291,9 @@ element => {
             n.nextElementSibling?.localName === 'mo' && n.nextElementSibling.textContent === '\u2061') {
           return '\\operatorname{' + n.textContent + '}';
         }
-        return greek[n.textContent] || n.textContent;
+        // A literal percent can be an identifier token in captured MathML.
+        // Emit TeX content rather than a comment opener.
+        return greek[n.textContent] || literalMathGlyph(n.textContent);
       case 'mtable': {
         if (!environment && nodes.length === 1 && nodes[0].children.length === 1 &&
             cs[0].startsWith('\\left\\{\\begin{aligned}')) return cs[0];

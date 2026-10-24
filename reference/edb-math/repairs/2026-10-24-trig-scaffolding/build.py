@@ -44,7 +44,7 @@ def main():
             'basis':source['basis'],'excluded_tasks':sorted(set(excluded)),'exclusion_parse_limitations':failures,
             'band_origin':origin,'pedagogical_reference':'reference/edb-math/audits/2026-10-24-difficulty-pedagogy/README.md',
             'benchmark_kp':17592186064172,'benchmark_sources':['q-66139','q-113887','q-113890','q-31249','q-113893','q-71910'],
-            'source_counts':{band:sum(q.get(':question/math-academy-id')and q.get(':question/difficulty',{}).get(':db/ident')==':question.difficulty/'+band for q in inv['questions'])for band in origin}}
+            'source_counts':{band:sum(bool(q.get(':question/math-academy-id'))and q.get(':question/difficulty',{}).get(':db/ident')==':question.difficulty/'+band for q in inv['questions'])for band in origin}}
         contract={'version':engine.VERSION,'families':{band:list(cases)for band,cases in engine.CASES[kp].items()},
             'easy':{'operation':'Choose the integral produced by the given substitution','provided_substitution':True,'response':'radio','outside_coefficient_maximum':3,'displayed_bank_coefficient_maximum':8},
             'moderate':{'operation':'Choose the substitution and complete the calculation','provided_primitive':True,'provided_endpoint_values':True,'response':'blank'},

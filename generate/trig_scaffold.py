@@ -95,6 +95,7 @@ def trig_instance(kp,level,case,rng):
     definite=case.startswith('def_')
     fn=case.removeprefix('indef_').removeprefix('def_')
     a=s.Integer(rng.choice((2,3,4)))
+    if not linear and definite:a=s.Integer(2)
     A=s.Integer(rng.randint(1,3 if level=='easy' else 4))
     if level=='easy' and A*a>8:A=s.Integer(1)
     b=s.Integer(0)

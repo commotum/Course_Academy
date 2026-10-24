@@ -91,7 +91,7 @@ class Renderer:
         if t=='mi':
             nxt=n.find_next_sibling()
             if re.fullmatch('[A-Za-z]+',n.get_text()) and nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':return '\\operatorname{'+n.get_text()+'}'
-            return GREEK.get(n.get_text(),n.get_text())
+            return GREEK.get(n.get_text(),re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text()))
         if t=='mtable':
             rows=[[self.m(cell) for cell in row.find_all('mtd',recursive=False)] for row in n.find_all('mtr',recursive=False)]
             try:
