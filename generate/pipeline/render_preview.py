@@ -59,6 +59,8 @@ const { chromium } = require(config.playwright);
         }
         return {
         rawTex, codeMath,
+        internalFieldLabels:[...root.querySelectorAll('.answer-field legend,.response-summary')]
+          .map(node=>node.textContent.trim()).filter(text=>/^Answer:\s*(answer|selection)(?:\s|[·:]|$)/i.test(text)),
         mathContainers:document.querySelectorAll('mjx-container').length,
         mathErrors:[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].map(node=>node.textContent),
         brokenImages:[...document.images].filter(image=>!image.complete || !image.naturalWidth).map(image=>image.src),
@@ -72,7 +74,8 @@ const { chromium } = require(config.playwright);
       fs.writeFileSync(stem+'.html',await page.content());
       state.index=index; state.screenshot=stem+'.png'; state.javascriptErrors=errors;
       state.passed=!errors.length && !state.mathErrors.length && !state.brokenImages.length
-        && !state.danglingGlyphs.length && !state.rawTex.length && !state.codeMath.length && state.fonts==='loaded'
+        && !state.danglingGlyphs.length && !state.rawTex.length && !state.codeMath.length
+        && !state.internalFieldLabels.length && state.fonts==='loaded'
         && (!config.expectedMath[index] || state.mathContainers>0);
       reports.push(state);
       await context.close();

@@ -115,7 +115,7 @@ function appendStepHeading(content, step, kind) {
   content.append(heading);
 }
 function fieldLabel(key) {
-  if (!key || key === 'selection') return 'Answer';
+  if (!key || key === 'selection' || key === 'answer') return 'Answer';
   const numbered = /^field-(\d+)$/.exec(key);
   return numbered ? `Answer ${numbered[1]}` : `Answer: ${key}`;
 }
@@ -699,9 +699,10 @@ function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(field.id);
   set.dataset.type = short(field.type);
-  const label = field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key);
-  set.append(el('legend', field.key === 'selection' || short(field.type) === 'checkbox' ? 'sr-only' : '', label));
   const type = short(field.type), response = field.response;
+  const genericChoice = type === 'radio' && (!field.key || field.key === 'selection' || field.key === 'answer');
+  const label = genericChoice || field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key);
+  set.append(el('legend', genericChoice || field.key === 'selection' || type === 'checkbox' ? 'sr-only' : '', label));
   const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
   const checklist = checkboxControl(field, label => answerValue({ type: 'text', value: label }), readOnly);

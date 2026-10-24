@@ -140,6 +140,7 @@ test('generic blank labels stay accessible and numbered fields retain their labe
 
 test('preview solutions do not expose the generic answer key', async () => {
   const f = fixture(), step = question(1, 'correct');
+  f.dev = true;
   step.fields[0].key = 'answer';
   step.fields[0].correctAnswer = step.fields[0].choices[0];
   await f.h.preview({ activityId: 456, steps: [step] }, 0);
