@@ -604,6 +604,89 @@ pub fn candidates(
     }
     Ok(result)
 }
+fn review_definition(
+    s: &EntitySnapshot, learner: u64, topic: u64, seen: &BTreeSet<u64>,
+    h: &crate::scheduling::Lifecycle, policy: u64,
+) -> Result<Option<Definition>> {
+    let origins: Vec<_> = h.repairs.keys().filter_map(|(origin, t)| (*t == topic).then_some(*origin)).collect();
+    let mut pool = bank(s, topic, &seen)?;
+    // Preserve one fresh same-KP/same-band alternative for an eventual retake.
+    for &original in &h.retakes {
+        for st in learning::lesson_steps(s, s.reference(original, "learner-task/activity")?)? {
+            if s.topic_for_question(st.content)? != topic {
+                continue;
+            }
+            let kp = crate::scheduling::original_kp(s, st.content)?;
+            for band in 0..3 {
+                let protected = pool.iter().copied().find(|q| {
+                    s.owners(*q, "knowledge-point/questions").ok() == Some(vec![kp])
+                        && crate::assessment_sampling::band(s, *q).ok().flatten() == Some(band)
+                });
+                if let Some(q) = protected {
+                    pool.retain(|v| *v != q);
+                }
+            }
+        }
+    }
+    if pool.len() < 5 {
+        return Ok(None);
+    }
+    let mut questions = vec![];
+    for slot in 0..5 {
+        let weights = crate::question_selection::weights(s, policy, "review", slot)?;
+        let Some(q) = crate::question_selection::select(
+            s,
+            &pool,
+            weights,
+            &format!("review-{learner}-{topic}-{}-{slot}", s.basis_t),
+        )?
+        else {
+            break;
+        };
+        questions.push(q);
+        pool.retain(|v| *v != q);
+    }
+    if questions.len() != 5 {
+        return Ok(None);
+    }
+    Ok(Some(Definition {
+        kind: "review".into(),
+        topic: Some(topic),
+        questions,
+        title: format!(
+            "Review: {}",
+            s.entity(topic)?
+                .get("topic/title")
+                .and_then(Value::as_str)
+                .unwrap_or("Topic")
+        ),
+        priority: if origins.is_empty() { 6000.0 } else { 8000.0 },
+        expected_seconds: 3.0 * QUESTION_SECONDS,
+        remediation_for: origins,
+        retake_of: None,
+        existing_activity: None,
+    }))
+}
+
+/// Explicit practice uses the ordinary review selector and lifecycle policies.
+pub fn selected_review(s: &EntitySnapshot, learner: u64, topic: u64) -> Result<Definition> {
+    if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
+    if !s.refs(learner, "learner/knowledge-profile")?.iter().any(|progress| {
+        s.optional_ref(*progress, "progress/topic").ok().flatten() == Some(topic)
+            && s.entities[progress].get("progress/learned") == Some(&json!(true))
+    }) {
+        return Err("Study this topic before reviewing it".into());
+    }
+    let h = history(s, learner)?;
+    if h.repairs.iter().any(|((_, t), kind)| *t == topic && kind == "lesson") {
+        return Err("Complete the required relearning before reviewing this topic".into());
+    }
+    let seen = learning::unavailable_questions(s, learner)?;
+    let policy = crate::question_selection::active_policy(s)?;
+    review_definition(s, learner, topic, &seen, &h, policy)?
+        .ok_or_else(|| "Review needs at least five fresh, gradable questions for this topic".into())
+}
+
 pub fn schedule(
     s: &EntitySnapshot,
     learner: u64,
@@ -678,63 +761,9 @@ pub fn schedule(
         {
             continue;
         }
-        let mut pool = bank(s, topic, &seen)?;
-        // Preserve one fresh same-KP/same-band alternative for an eventual retake.
-        for &original in &h.retakes {
-            for st in learning::lesson_steps(s, s.reference(original, "learner-task/activity")?)? {
-                if s.topic_for_question(st.content)? != topic {
-                    continue;
-                }
-                let kp = crate::scheduling::original_kp(s, st.content)?;
-                for band in 0..3 {
-                    let protected = pool.iter().copied().find(|q| {
-                        s.owners(*q, "knowledge-point/questions").ok() == Some(vec![kp])
-                            && crate::assessment_sampling::band(s, *q).ok().flatten() == Some(band)
-                    });
-                    if let Some(q) = protected {
-                        pool.retain(|v| *v != q);
-                    }
-                }
-            }
+        if let Some(definition) = review_definition(s, learner, topic, &seen, &h, policy)? {
+            definitions.push(definition);
         }
-        if pool.len() < 5 {
-            continue;
-        }
-        let mut questions = vec![];
-        for slot in 0..5 {
-            let weights = crate::question_selection::weights(s, policy, "review", slot)?;
-            let Some(q) = crate::question_selection::select(
-                s,
-                &pool,
-                weights,
-                &format!("review-{learner}-{topic}-{}-{slot}", s.basis_t),
-            )?
-            else {
-                break;
-            };
-            questions.push(q);
-            pool.retain(|v| *v != q);
-        }
-        if questions.len() != 5 {
-            continue;
-        }
-        definitions.push(Definition {
-            kind: "review".into(),
-            topic: Some(topic),
-            questions,
-            title: format!(
-                "Review: {}",
-                s.entity(topic)?
-                    .get("topic/title")
-                    .and_then(Value::as_str)
-                    .unwrap_or("Topic")
-            ),
-            priority: if origins.is_empty() { 6000.0 } else { 8000.0 },
-            expected_seconds: 3.0 * QUESTION_SECONDS,
-            remediation_for: origins,
-            retake_of: None,
-            existing_activity: None,
-        });
     }
     if definitions.iter().any(|d| d.kind == "review") {
         let loaded = learning::learning_runtime(s, learner, at)?;
@@ -1008,10 +1037,19 @@ mod tests {
             .unwrap()
             .insert("learner/activity".into(), json!([]));
         assert!(schedule(&s, 1, 5, at).unwrap().is_empty()); // Partial imports.
+        assert!(selected_review(&s, 1, 3).unwrap_err().contains("before reviewing"));
         progress(&mut s, 21, 3, at, 0.1);
         let plan = schedule(&s, 1, 5, at).unwrap();
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].kind, "review");
+        let selected = selected_review(&s, 1, 3).unwrap();
+        assert_eq!(selected.questions, plan[0].questions);
+        assert_eq!(selected.expected_seconds, plan[0].expected_seconds);
+        assert_eq!(selected.remediation_for, plan[0].remediation_for);
+        let mut not_due = s.clone();
+        not_due.entities.get_mut(&21).unwrap().insert("progress/memory".into(), json!(1.0));
+        assert!(schedule(&not_due, 1, 5, at).unwrap().is_empty());
+        assert_eq!(selected_review(&not_due, 1, 3).unwrap().questions, selected.questions);
         assert_eq!(plan[0].questions.len(), 5);
         assert_eq!(plan[0].questions.iter().collect::<BTreeSet<_>>().len(), 5);
         s.entities
@@ -1133,6 +1171,7 @@ mod tests {
             .unwrap()
             .remove("question/answer-fields");
         assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+        assert!(selected_review(&s, 1, 3).unwrap_err().contains("five fresh"));
     }
     fn assessment_fixture() -> (EntitySnapshot, DateTime<Utc>) {
         let mut s = fixture();

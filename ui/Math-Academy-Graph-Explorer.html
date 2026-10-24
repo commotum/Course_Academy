@@ -382,6 +382,7 @@ button,input,select { font:inherit; }
 <div id="nodeQueueAction" role="none"></div>
 <div id="nodeTargetAction" role="none"></div>
 <a id="studyTopicLink" role="menuitem" href="/learn">Study now<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
+<a id="reviewTopicLink" role="menuitem" href="/learn">Review Topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
 <a id="goToTopicLink" role="menuitem" href="/topic">Go to topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
 <button id="copyNodeDbId" type="button" role="menuitem">Copy topic :db/id</button>
 <button id="copyNodeMaId" type="button" role="menuitem" hidden>Copy topic :ma/id</button>
@@ -1784,9 +1785,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   const nodeContextMenu = (() => {
     const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
     const canvasButton=$('copyCanvasDbIds');
-    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink');
+    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink'),reviewLink=$('reviewTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
-    const navigation=[{link:studyLink,label:'Study now'},{link:topicLink,label:'Go to topic'}];
+    const navigation=[{link:studyLink,label:'Study now'},{link:reviewLink,label:'Review Topic'},{link:topicLink,label:'Go to topic'}];
     let topic=null,canvasIds=null,opener=null,noticeTimer=0,shiftHeld=false,studyCheck=0;
     function studyLabel(resumable=false) {
       navigation[0].label=resumable?'Resume Study':'Study now';
@@ -1821,7 +1822,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&item.getAttribute('aria-disabled')!=='true'&&!item.closest('[hidden]'));
     }
     function canvasMode(enabled) {
-      for(const element of [targetAction,queueAction,topicLink,studyLink,button,$('copyNodeDbId'),$('copyNodeMaId')])element.hidden=enabled;
+      for(const element of [targetAction,queueAction,topicLink,studyLink,reviewLink,button,$('copyNodeDbId'),$('copyNodeMaId')])element.hidden=enabled;
       canvasButton.hidden=!enabled;
     }
     function studyAvailability(available,reason='') {
@@ -1842,6 +1843,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       const target=targetControls.createToggle(node,{menuItem:true});
       if(target)targetAction.append(target);
       topicLink.href=topicReferenceURL(snapshot,node,courseId);
+      reviewLink.href='/learn?reviewTopicId='+encodeURIComponent(node.id);
       studyLabel();
       studyAvailability(false,'Checking lesson question availability…');
       const check=studyCheck;
@@ -1974,7 +1976,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
           (current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
         items[index]?.focus({preventScroll:true});
       }
-      else if(event.key===' '&&(event.target===topicLink||event.target===studyLink)){event.preventDefault();event.target.click();}
+      else if(event.key===' '&&navigation.some(({link})=>event.target===link)){event.preventDefault();event.target.click();}
     });
     document.addEventListener('pointerdown',event=>{if(!menu.hidden&&!menu.contains(event.target))close(false);},true);
     document.addEventListener('wheel',()=>close(false),{capture:true,passive:true});

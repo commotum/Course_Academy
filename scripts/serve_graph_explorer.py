@@ -46,7 +46,7 @@ DEFAULT_ENDPOINT = "/tmp/edb-math/writer.sock"
 ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
                ROOT / "reference/mathacademy/history-question-import-2026-10-04/import-ready/assets")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
-MUTATING_ACTIONS = {"draft", "navigate", "submit", "start", "study-topic", "answer", "skip", "expire", "continue", "pause", "resume", "target", "queue", "queue-topic",
+MUTATING_ACTIONS = {"draft", "navigate", "submit", "start", "study-topic", "review-topic", "answer", "skip", "expire", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause", "regenerate-assessment"}
 
 
@@ -489,7 +489,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     worker = stats_worker if body.get("action") == "study-stats" else page_worker if page_read else learning_worker
                     response = worker.request(body)
                     finished = time.monotonic()
-                    refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
+                    refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
                     if refresh_inventory:

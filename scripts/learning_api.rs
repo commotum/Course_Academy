@@ -634,6 +634,11 @@ fn check_activity_start(s: &EntitySnapshot, l: u64, activity: u64,
             return Err(format!("Lesson needs at least five fresh, gradable questions per skill: {details}").into());
         }
     }
+    // A manually selected review need not be due yet. Its route still uses
+    // the regular fresh-question reservation and review grading policies.
+    if retrieval::kind(s, activity)? == "review"
+        && selected_topic.is_some_and(|topic| s.optional_ref(activity, "activity/scope").ok().flatten() == Some(topic))
+        && retrieval::fresh(s, l, activity)? { return Ok(()); }
     let candidates = if let Some(topic) = selected_topic {
         learning::selected_topic_candidates(s, l, course(s, l)?, topic, at)?
     } else {
@@ -2118,6 +2123,46 @@ fn mutate_with_selection(
         forms.extend(queue_forms(&prospective, l, at)?);
         return Ok((forms, json!({"targets":true})));
     }
+    if action == "review-topic" {
+        let topic = required(body, "topicId")?;
+        if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
+        let mut existing = vec![];
+        for task in s.refs(l, "learner/activity")? {
+            let activity = s.reference(task, "learner-task/activity")?;
+            if retrieval::kind(s, activity)? != "review" || s.optional_ref(activity, "activity/scope")? != Some(topic) { continue; }
+            let state = status(s, task, "learner-task/status")?;
+            if matches!(state.as_str(), "started" | "paused") {
+                existing.push((0, task, activity, state));
+            } else if matches!(state.as_str(), "locked" | "unlocked") && retrieval::fresh(s, l, activity)? {
+                existing.push((1, task, activity, state));
+            }
+        }
+        existing.sort();
+        let selected = existing.first().map(|(_, _, activity, _)| *activity);
+        let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
+        if plan.iter().any(|p| p.priority >= 11000.0)
+            && selected.is_none_or(|activity| !plan.iter().any(|p| p.activity == activity)) {
+            return Err("Complete the required activity before starting unrelated study".into());
+        }
+        if let Some((_, task, activity, state)) = existing.first() {
+            return match state.as_str() {
+                "started" => Ok((forms, json!({"taskId":task}))),
+                "paused" => mutate(s, l, "resume", &json!({"taskId":task}), at),
+                _ => mutate_with_selection(s, l, "start", &json!({"activityId":activity}), at, Some(topic)),
+            };
+        }
+        let definition = retrieval::selected_review(s, l, topic)?;
+        pause_other_lessons(s, l, None, at, &mut forms)?;
+        forms.extend(definition_forms(s, &definition, "review-activity", Some(course(s, l)?))?);
+        let id = uid()?;
+        forms.push(json!({"db/id":"new-task","learner-task/id":{"$uuid":id},"learner-task/activity":"review-activity",
+            "learner-task/status":kw("learner-task.status/started"),"learner-task/priority":definition.priority,
+            "learner-task/elapsed-seconds":0.0,"learner-task/xp-base":base_xp::duration_base(definition.expected_seconds)?,
+            "learner-task/xp-earned":0,"learner-task/remediation-for":definition.remediation_for,"db/ensure":kw("learner-task/validate")}));
+        forms.push(add(json!(l), "learner/activity", json!("new-task")));
+        append_item(json!("new-task"), None, definition.questions[0], &mut forms)?;
+        return Ok((forms, json!({"taskUuid":id})));
+    }
     if action == "study-topic" {
         let topic = required(body, "topicId")?;
         let activity = topic_lesson(s, topic)?;
@@ -2797,7 +2842,7 @@ impl Application {
             &self.snapshot,
             l,
             t,
-            matches!(action, "start" | "study-topic" | "resume")
+            matches!(action, "start" | "study-topic" | "review-topic" | "resume")
                 || retrieval::kind(
                     &self.snapshot,
                     self.snapshot.reference(t, "learner-task/activity")?,

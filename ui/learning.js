@@ -191,7 +191,7 @@ function actionButton(text, className, action, enabled = true) {
 async function mutation(path, values) {
   if (isDeveloperMode() || modeChanging) return;
   if (busy) return;
-  if (path === '/api/start' || path === '/api/study-topic') preloadLessonRendering();
+  if (path === '/api/start' || path === '/api/study-topic' || path === '/api/review-topic') preloadLessonRendering();
   const body = { ...values, requestId: crypto.randomUUID() };
   if (path === '/api/answer' && task?.type !== 'assessment') {
     body.submissionId = body.requestId;
@@ -245,7 +245,7 @@ async function mutation(path, values) {
         try { localStorage.setItem('course-academy-queue-changed', crypto.randomUUID()); } catch { /* Other pages also refresh on return. */ }
       }
       task = result.task || result;
-      if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic') setManualPause(task.taskId, false);
+      if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic' || path === '/api/review-topic') setManualPause(task.taskId, false);
       if (path === '/api/pause' || path === '/api/resume') timerPausePending = false;
       history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
       await renderTask(task);
@@ -608,15 +608,18 @@ async function loadHome(signal, preserve) {
   }
   finally { if (!signal.aborted) setBusy(false); }
 }
-async function studyTopic(id) {
+async function studyTopic(id, review = false) {
   if (modeChanging || busy) return;
   if (!/^[1-9]\d*$/.test(String(id)) || !Number.isSafeInteger(Number(id))) {
     showError(new Error('A valid topic entity ID is required.')); return;
   }
   homeController?.abort(); homeController = null; homeRequest = null;
   homeRendered = false;
-  if (isDeveloperMode()) return openPreview({ topicId: id });
-  return mutation('/api/study-topic', { topicId: Number(id) });
+  if (isDeveloperMode()) {
+    if (review) { showError(new Error('Turn off developer mode to start a practice review.')); return; }
+    return openPreview({ topicId: id });
+  }
+  return mutation(review ? '/api/review-topic' : '/api/study-topic', { topicId: Number(id) });
 }
 
 async function openTask(id) {
@@ -1065,7 +1068,8 @@ createCoursePicker({
 });
 window.addEventListener('popstate', () => {
   const params = new URL(location.href).searchParams;
-  if (params.has('topicId')) studyTopic(params.get('topicId'));
+  if (params.has('reviewTopicId')) studyTopic(params.get('reviewTopicId'), true);
+  else if (params.has('topicId')) studyTopic(params.get('topicId'));
   else if (isDeveloperMode() && params.has('activityId')) openPreview({ activityId: params.get('activityId') });
   else if (params.has('taskId')) openTask(params.get('taskId')); else leaveTask();
 });
@@ -1120,7 +1124,8 @@ window.addEventListener('pageshow', event => {
 });
 
 const initialParams = new URL(location.href).searchParams;
-if (initialParams.has('topicId')) studyTopic(initialParams.get('topicId'));
+if (initialParams.has('reviewTopicId')) studyTopic(initialParams.get('reviewTopicId'), true);
+else if (initialParams.has('topicId')) studyTopic(initialParams.get('topicId'));
 else if (isDeveloperMode() && initialParams.has('activityId')) openPreview({ activityId: initialParams.get('activityId') });
 else if (initialParams.has('taskId')) openTask(initialParams.get('taskId')); else home();
 

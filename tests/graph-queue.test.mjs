@@ -41,7 +41,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
   document.createElement = tag => new Element(tag);
   document.getElementById = id => { const walk = node => node.id === id ? node : node.children.map(walk).find(Boolean); return walk(document.body); };
   const menu = new Element('div'); menu.id = 'nodeContextMenu'; menu.hidden = true;
-  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeButton', 'copyNodeDbId', 'copyNodeMaId', 'copyCanvasDbIds']) {
+  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'reviewTopicLink', 'goToTopicLink', 'copyNodeButton', 'copyNodeDbId', 'copyNodeMaId', 'copyCanvasDbIds']) {
     const node = new Element(id.endsWith('Link') ? 'a' : 'div'); node.id = id;
     if (id.endsWith('Link') || id.startsWith('copy')) node.setAttribute('role', 'menuitem');
     if (id === 'copyCanvasDbIds') node.hidden = true;
@@ -179,7 +179,7 @@ test('Study now stays disabled while checking, for insufficient supply, and when
   assert.equal(dispatch(link, 'auxclick', { button: 1 }).defaultPrevented, true);
   dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', target: link });
   dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: 'ArrowDown' });
-  assert.equal(f.document.activeElement, f.document.getElementById('goToTopicLink'));
+  assert.equal(f.document.activeElement, f.document.getElementById('reviewTopicLink'));
   assert.deepEqual(f.opened, []);
   assert.equal(f.calls.length, 0);
   f.availability.set(20, { available: true });
@@ -369,7 +369,7 @@ function dispatch(target, type, values) {
 
 test('Shift pressed after opening the graph menu shows navigation arrows only while held', async () => {
   const f = fixture(); f.open(); await settle();
-  const links = ['studyTopicLink', 'goToTopicLink'].map(id => f.document.getElementById(id));
+  const links = ['studyTopicLink', 'reviewTopicLink', 'goToTopicLink'].map(id => f.document.getElementById(id));
   const arrows = links.map(link => link.querySelector('.menu-new-tab-indicator'));
   assert.equal(arrows.every(arrow => arrow.hidden), true);
   dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
@@ -381,8 +381,8 @@ test('Shift pressed after opening the graph menu shows navigation arrows only wh
   assert.equal(f.document.getElementById('nodeContextMenu').hidden, false);
 });
 
-test('Shift-click activates either navigation action after its input event, without same-tab navigation or learner writes', async () => {
-  for (const [id, href] of [['studyTopicLink', '/learn?topicId=20'], ['goToTopicLink', '/topic?topic=topic-uuid']]) {
+test('Shift-click activates each navigation action after its input event, without same-tab navigation or learner writes', async () => {
+  for (const [id, href] of [['studyTopicLink', '/learn?topicId=20'], ['reviewTopicLink', '/learn?reviewTopicId=20'], ['goToTopicLink', '/topic?topic=topic-uuid']]) {
     const f = fixture(); f.open(); await settle();
     dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
     const event = dispatch(f.document.getElementById(id), 'click', { shiftKey: true, detail: 1, button: 0 });
@@ -456,7 +456,7 @@ test('canvas context menu copies every displayed topic DB ID once, one per line,
     assert.equal(button.hidden, false);
     assert.equal(button.textContent, 'Copy all topic DB IDs (3)');
     assert.equal(f.document.activeElement, button);
-    for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeDbId', 'copyNodeMaId', 'copyNodeButton']) {
+    for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'reviewTopicLink', 'goToTopicLink', 'copyNodeDbId', 'copyNodeMaId', 'copyNodeButton']) {
       assert.equal(f.document.getElementById(id).hidden, true);
     }
     button.click(); await settle();

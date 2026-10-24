@@ -2265,3 +2265,55 @@ fn regeneration_rejects_started_history_retake_and_foreign_task() -> Result<()> 
     assert_eq!(base_xp::duration_base(900.0)?,15);
     Ok(())
 }
+
+#[test]
+fn selected_topic_review_uses_regular_policies_and_reuses_unfinished_attempts() -> Result<()> {
+    for due in [false, true] {
+        let mut f = Fixture::new(due)?;
+        let before = f.snapshot()?;
+        let topic = before.entities.with_attribute("topic/title").into_iter()
+            .find(|topic| text(&before, *topic, "topic/title") == "Topic 0").unwrap();
+        let existing: Vec<_> = before.refs(f.learner, "learner/activity")?.into_iter().filter(|task| {
+            let activity = before.reference(*task, "learner-task/activity").unwrap();
+            retrieval::kind(&before, activity).unwrap() == "review"
+                && before.optional_ref(activity, "activity/scope").unwrap() == Some(topic)
+                && matches!(status(&before, *task, "learner-task/status").unwrap().as_str(), "locked" | "unlocked")
+        }).collect();
+        let mut s = f.act("review-topic", json!({"topicId":topic}), f.now+100)?;
+        let task = s.refs(f.learner, "learner/activity")?.into_iter().find(|task| {
+            status(&s, *task, "learner-task/status").unwrap() == "started"
+        }).unwrap();
+        if let Some(expected) = existing.first() { assert_eq!(task, *expected); }
+        let activity = s.reference(task, "learner-task/activity")?;
+        assert_eq!(retrieval::kind(&s, activity)?, "review");
+        assert_eq!(s.reference(activity, "activity/scope")?, topic);
+        assert_eq!(learning::lesson_steps(&s, activity)?.len(), 5);
+        assert_eq!(number(&s, task, "learner-task/xp-base"), base_xp::activity_base(&s, activity)? as f64);
+        for key in ["learner/course", "learner/queue", "learner/targets", "learner/self-directed"] {
+            assert_eq!(before.entities[&f.learner].get(key), s.entities[&f.learner].get(key));
+        }
+        let count = s.refs(f.learner, "learner/activity")?.len();
+        let item = items(&s, task)?[0];
+        s = f.act("review-topic", json!({"topicId":topic}), f.now+200)?;
+        assert_eq!(s.refs(f.learner, "learner/activity")?.len(), count);
+        assert_eq!(items(&s, task)?, vec![item]);
+        f.act("pause", json!({"taskId":task}), f.now+300)?;
+        s = f.act("review-topic", json!({"topicId":topic}), f.now+400)?;
+        assert_eq!(status(&s, task, "learner-task/status")?, "started");
+        assert_eq!(items(&s, task)?, vec![item]);
+        let mut at = f.now+500;
+        for _ in 0..3 {
+            let item = *items(&s, task)?.last().unwrap();
+            let question = s.reference(item, "task-item/content")?;
+            let field = s.refs(question, "question/answer-fields")?[0];
+            f.act("answer", json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}), at)?;
+            at+=100;
+            s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
+            at+=100;
+        }
+        assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+        assert_eq!(items(&s, task)?.len(), 3);
+        assert_eq!(number(&s, task, "learner-task/xp-earned"), retrieval::xp(&s, activity, &items(&s, task)?, base_xp::activity_base(&s, activity)?)? as f64);
+    }
+    Ok(())
+}
