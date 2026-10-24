@@ -34,7 +34,7 @@ def context_records(source):
     math=table.find_parent('math');outer=table.find_parent(['mjx-container'])
     if outer and math is not outer.find('math'):continue
     old=LegacyRenderer(None);rows=[[old.m(c) for c in tr.find_all('mtd',recursive=False)] for tr in table.find_all('mtr',recursive=False)]
-    if len(rows)<2:continue
+    if not rows:continue
     occurrences.append({'identity':source['identity'],'attribute':source['attribute'],'path':source['path'],'source_attributes':dict(table.attrs),'rows':rows,'source_fences':fences(table),'source_mathml':str(table),'errors':old.errors})
   if occurrences:out.append(occurrences)
  return out

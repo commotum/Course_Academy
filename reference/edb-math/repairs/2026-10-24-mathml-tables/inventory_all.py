@@ -13,7 +13,7 @@ for r in values:
    if not cm:continue
    columns=cm[1];body=body[cm.end():]
   grid=cells(body)
-  if not grid or len(grid)<2:continue
+  if not grid:continue
   width=max(map(len,grid));counts[m[1]]+=1
   spans.append({'start':m.start(),'end':end,'body_start':body_start+(cm.end() if m[1]=='array' else 0),'body':body,'env':m[1],'columns':columns,'tex':r['v'][m.start():end],'rows':grid,'width':width})
  if spans:out.append({**r,'spans':spans,'metadata':meta.get(str(r['e']),{})})
