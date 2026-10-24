@@ -22,16 +22,12 @@ def main():
   candidates=json.loads((HERE/'candidate-inputs.json').read_text());candidate_keys={(r['e'],r['a']) for r in candidates}
   candidate_keys.update((r['entity'],r['attribute']) for r in json.loads((HERE/'fields.json').read_text()))
  for (e,a),r in values.items():
-  if candidate_keys is not None and (e,a) not in candidate_keys:continue
+  if candidate_keys is not None and (e,a) not in candidate_keys and e not in {17592186138213,17592186203769,17592186203678,17592186203770}:continue
   before=r['v'];source=before;special=[]
   if e in {17592186500361,17592186533979,17592186533981} and a=='question/worked-solution':
    source=re.sub(r'(?m)(\\end\{aligned\}\s*\n\$\$)\s*\n\$\$(?=\s*\n[A-Za-z])',r'\1',source)
    source=re.sub(r'\$\$[ \t]*\n[ \t\n]*\$\$(?=\s*\n(?:\\begin|E=))','$$',source);special=['remove-source-duplicate-display-wrappers']
   after=normalize_math_boundaries(source)
-  if e==17592186500361 and a=='question/worked-solution':
-   # This complete stand-alone source equation was stranded by duplicated
-   # currency/display boundaries. Preserve its exact mathematical expression.
-   after=re.sub(r'(?m)^(E=\\frac\{100\\,000\}\{300\}≈333)$',lambda m:'$$\n'+m[1]+'\n$$',after);special+=['restore-stranded-complete-source-equation']
   if e in {17592186362465,17592186362511} and a=='question/problem':
    def literal_sets(m):
     body=m[0];stack=[];bad=[]
@@ -43,7 +39,7 @@ def main():
     for i in sorted(stack+bad,reverse=True):body=body[:i]+'\\'+body[i:]
     return body
    after=MATH.sub(literal_sets,after);special+=['restore-source-literal-set-fences-across-answer-controls']
-  if e in {17592186138213,17592186203769}:
+  if e in {17592186138213,17592186203769,17592186203678,17592186203770}:
    from arithmetic_recovery import repair_arithmetic
    after=repair_arithmetic(e,a,before);special+=['recover-original-column-multiplication-layout']
   if e==17592186124792 and a=='question/problem':

@@ -451,6 +451,8 @@ def normalize_math_boundaries(value):
     # Settle delimiter/currency encodings before deciding which environments
     # are bare. A transient malformed delimiter must not cause double wrapping.
     for phase in (False, True, False):
+        if phase and not ENV.search(MATH.sub('', text)):
+            continue
         for _ in range(4):
             result = _normalize_math_boundary_pass(text, wrap_environments=phase)
             if result == text:
