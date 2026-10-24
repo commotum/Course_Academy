@@ -357,7 +357,7 @@ button,input,select { font:inherit; }
 <div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="var(--mastery-3)"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="var(--tone-ff)" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
 <details id="competencyDetails"><summary id="profileSummary">Knowledge profile</summary>
 <p id="competencySelectionDetail"></p>
-<p id="competencyFillDescription">Fill shows accumulated repetitions. Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.</p>
+<p id="competencyFillDescription">Fill shows accumulated repetitions. Bands round down to whole numbers, capped at 6. Studied topics with a recorded score use at least band 1. A dashed outline means no progress record.</p>
 <p>Corner brackets mark your selection. Brightness shows progress; it does not indicate whether a review is due.</p>
 </details></section>
 <div class="breadcrumbs" id="breadcrumbs"></div>
@@ -1343,7 +1343,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     const id=typeof nodeOrId==='object'?nodeOrId.id:Number(nodeOrId);
     const value=repetitions[id];
     if(!Number.isFinite(value)||value<0)return {known:false,level:null,repetitions:null,fill:themeColor('#000000'),text:themeColor('#FFFFFF'),border:themeColor('#8C8C8C'),dash:'4 3',label:'No progress data'};
-    const level=Math.min(6,Math.floor(value));
+    const level=Math.min(6,Math.max(snapshot?.learned?.[id]===true?1:0,Math.floor(value)));
     const light=isLightTheme();
     return {known:true,level,repetitions:value,fill:PALETTE[light?6-level:level],text:(light?level<=3:level>=3)?'#000000':'#FFFFFF',border:themeColor('#FFFFFF'),dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
   }
@@ -1403,7 +1403,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     $('competencyFillDescription').textContent=(colorCodeEnabled?
       'Red marks incomplete targets, green marks completed targets, and blue marks topics in your queue. Queue color takes precedence. Other topics use grayscale. ':
       'Color coding is off. Every topic uses grayscale repetition bands. ')+
-      'Bands use the whole-number part of repetitions, capped at 6. Higher bands become lighter in dark mode and darker in light mode. A dashed outline means no progress record; a solid outline means progress is recorded.';
+      'Bands round down to whole numbers, capped at 6. Studied topics with a recorded score use at least band 1. Higher bands become lighter in dark mode and darker in light mode. A dashed outline means no progress record; a solid outline means progress is recorded.';
   }
   function refreshTargetColors() {
     $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));

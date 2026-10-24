@@ -20,7 +20,7 @@ for (const match of styles.matchAll(/:root(\[data-theme="light"\])?\s*\{([^}]+)\
 function fixture(theme) {
   const window = new EventTarget();
   const document = { documentElement: { dataset: { theme } } };
-  const context = vm.createContext({ window, document, CustomEvent, localStorage: { setItem() {} }, repetitions: {} });
+  const context = vm.createContext({ window, document, CustomEvent, localStorage: { setItem() {} }, repetitions: {}, snapshot: null });
   vm.runInContext(`${themeSource}\n${paletteSource}\n${competencySource}`, context);
   return context;
 }

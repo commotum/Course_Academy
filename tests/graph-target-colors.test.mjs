@@ -67,6 +67,22 @@ test('new-topic count uses band one independently of an incomplete flag', () => 
   assert.equal(elements.get('scopeReadout').textContent, '5 topics · 0 links');
 });
 
+test('explicitly learned topics have a minimum display band of one without changing repetition scores', () => {
+  const { c } = fixture();
+  for (const light of [false, true]) for (const learned of [undefined, false, true]) {
+    c.light = light; c.snapshot.learned = { 2: learned };
+    for (const score of [0, .8341986182889731, .999, 1, 1.9, 2.9, 6.9]) {
+      c.repetitions[2] = score;
+      const appearance = c.nodeAppearance(2);
+      const level = Math.min(6, Math.max(learned === true ? 1 : 0, Math.floor(score)));
+      assert.equal(appearance.level, level);
+      assert.equal(appearance.fill, c.PALETTE[light ? 6 - level : level]);
+      assert.equal(appearance.repetitions, score);
+      assert.equal(c.repetitions[2], score);
+    }
+  }
+});
+
 test('returning from a completed lesson refreshes mastery without moving the graph', async () => {
   const { c, elements } = fixture();
   c.snapshot.learner.id = 'test';
@@ -149,7 +165,7 @@ test('explicit completion flags take precedence; historical repetition evidence 
   assert.equal(c.nodeAppearance(2).fill, '#cf626b');
   c.snapshot.learned[2] = true; c.repetitions[2] = .9938596149152737;
   assert.equal(c.nodeAppearance(2).status, 'completed-target');
-  assert.equal(c.nodeAppearance(2).fill, '#093c22');
+  assert.equal(c.nodeAppearance(2).fill, c.statusMasteryAppearance('completed-target', { known: true, level: 1 }).fill);
   assert.equal(c.nodeAppearance(2).repetitions, .9938596149152737);
   delete c.repetitions[2];
   assert.equal(c.nodeAppearance(2).fill, '#093c22');
@@ -187,7 +203,8 @@ test('each status has distinct mastery bands, reverses shade progression with th
     c.light = light; c.snapshot.learned[1] = status === 'completed-target';
     c.snapshot.learner.queue = status === 'queue' ? [1] : [];
     const appearances = [];
-    for (let level = 0; level <= 6; level++) {
+    const minimum = status === 'completed-target' ? 1 : 0;
+    for (let level = minimum; level <= 6; level++) {
       c.repetitions[1] = level;
       const appearance = c.nodeAppearance(1); appearances.push(appearance);
       assert.equal(appearance.status, status); assert.equal(appearance.level, level);
@@ -195,16 +212,16 @@ test('each status has distinct mastery bands, reverses shade progression with th
       const a = luminance(appearance.fill), b = luminance(appearance.text);
       assert.ok((Math.max(a, b) + .05) / (Math.min(a, b) + .05) >= 4.5, status + ': unreadable text at ' + level);
     }
-    assert.equal(new Set(appearances.map(appearance => appearance.fill)).size, 7);
+    assert.equal(new Set(appearances.map(appearance => appearance.fill)).size, 7 - minimum);
     for (let i = 1; i < appearances.length; i++) {
       assert.ok(light ? luminance(appearances[i].fill) < luminance(appearances[i - 1].fill)
         : luminance(appearances[i].fill) > luminance(appearances[i - 1].fill));
     }
-    c.repetitions[1] = 60; assert.equal(c.nodeAppearance(1).fill, appearances[6].fill);
+    c.repetitions[1] = 60; assert.equal(c.nodeAppearance(1).fill, appearances.at(-1).fill);
     delete c.repetitions[1];
     const unknown = c.nodeAppearance(1);
     assert.equal(unknown.known, false); assert.equal(unknown.level, null);
-    assert.equal(unknown.dash, '4 3'); assert.equal(unknown.fill, appearances[0].fill);
+    assert.equal(unknown.dash, '4 3'); assert.equal(unknown.fill, c.statusMasteryAppearance(status, { known: false, level: null }).fill);
   }
 });
 
