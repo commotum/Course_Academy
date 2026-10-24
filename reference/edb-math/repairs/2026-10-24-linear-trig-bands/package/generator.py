@@ -35,7 +35,9 @@ CASES = {
 
 
 def tex(value):
-    return normalize_tex(sp.latex(sp.factor(value)))
+    # Preserve the chosen affine input; a CAS factorization is not a display
+    # policy for the learner's substitution or its derivative.
+    return normalize_tex(sp.latex(value))
 
 
 def trig(fn, argument):
@@ -87,9 +89,8 @@ def parameters(case, rng, *, slope_sign=None, difference_kind=None):
         return fn, a, b, c, None, None
     if case.startswith('def'):
         b = sp.Integer(rng.randint(2, 9))
-        angles = (0, PI/2, PI, 3*PI/2, 2*PI)
-        i = rng.randrange(4)
-        u0, u1 = angles[i:i+2]
+        u0, u1 = rng.choice(((0,PI/2),(PI/2,PI),(PI,3*PI/2),(3*PI/2,2*PI),
+                             (0,PI),(PI/2,3*PI/2),(PI,2*PI)))
     elif case.startswith('shift'):
         b = sp.Integer(rng.randint(2, 7))
         c = rng.choice(SHIFTS)
@@ -138,6 +139,16 @@ def wrong_answers(fn, a, b, c, lo, hi):
                 (coefficient*trig(fn, arg), term(coefficient, fn, arg), 'retain original trig function')]
     p = getattr(sp, pf)
     delta = p(u1)-p(u0)
+    if answer == 0:
+        # Generalize the complete q-13644 zero-outcome bank. These errors
+        # replace the endpoint difference or omit its amplitude, so they do not
+        # all collapse to zero when the correct endpoints cancel.
+        scale = sp.cancel(a/b)
+        return [(value,tex(value),recipe) for value,recipe in (
+            (scale,'replace endpoint difference by one'),(1/b,'omit amplitude and replace endpoint difference by one'),
+            (sp.Integer(1),'report one'),(sp.Integer(-1),'report negative one'),
+            (-scale,'reverse sign and replace endpoint difference by one'),
+            (-1/b,'omit amplitude and reverse endpoint sign'))]
     return [(sp.simplify(-answer), tex(-answer), 'reverse endpoint subtraction'),
             (sp.simplify(answer*b), tex(answer*b), 'omit reciprocal inner derivative'),
             (sp.simplify(answer*b*b), tex(answer*b*b), 'multiply by inner derivative'),
@@ -185,7 +196,31 @@ def build(level, case, values, *, response='blank', seed=0):
     fn, a, b, c, lo, hi = values
     if fn not in ('sin','cos') or a == 0 or b == 0 or (lo is not None and not lo < hi):
         raise ValueError('Invalid linear-substitution instance')
+    if fn != ('sin' if 'sin' in case else 'cos'):
+        raise ValueError('Function/case mismatch')
+    if case.startswith('indef'):
+        valid = a.is_Integer and 1 <= a <= 9 and abs(b) in EASY_SLOPES and c.is_Integer and -4 <= c <= 4 and lo is None and hi is None
+    elif case.startswith('def'):
+        valid = a.is_Integer and 1 <= a <= 9 and b.is_Integer and 2 <= b <= 9 and c == 0 and lo is not None
+    elif case.startswith('shift'):
+        valid = a.is_Integer and 1 <= a <= 9 and b.is_Integer and 2 <= b <= 7 and c in SHIFTS and lo is not None
+    elif case.startswith('pi'):
+        valid = a.is_Integer and 1 <= a <= 9 and (b/PI).is_Rational and b > 0 and c == 0 and lo is not None
+    elif case.startswith('fraction'):
+        valid = a.is_Integer and 1 <= a <= 9 and abs(b) in RATIONAL_SLOPES and sp.cancel(a/b).q != 1 and c == 0 and lo is not None
+    else:
+        valid = a in AMPLITUDES and abs(b) in RATIONAL_SLOPES and sp.cancel(a/b).q != 1 and c in SHIFTS and lo is not None
+        valid = valid and (b < 0) == case.endswith('negative')
+    if not valid:
+        raise ValueError('Instance does not satisfy the declared band contract')
     arg, pf, coefficient, primitive, answer, u0, u1 = data(fn,a,b,c,lo,hi)
+    if case.startswith('def') and (u0 < 0 or u1 > 2*PI or sp.simplify((u1-u0)/PI) not in (R(1,2),1)
+                                   or not all((2*value/PI).is_Integer for value in (u0,u1))):
+        raise ValueError('Easy definite endpoints must retain elementary quarter-turn values')
+    if level == 'hard':
+        endpoint_magnitudes = {sp.simplify(abs(getattr(sp,pf)(value))) for value in (u0,u1)}
+        if endpoint_magnitudes != {sp.sqrt(2)/2,sp.sqrt(3)/2}:
+            raise ValueError('Hard endpoint work must contain unlike nonzero radicals')
     integral, solution = worked(fn,a,b,c,lo,hi)
     correct = term(coefficient,pf,arg) if lo is None else tex(answer)
     choices = [(answer, correct, 'correct')]
@@ -230,12 +265,16 @@ def batch(level, count=5, seed=0):
         raise ValueError('Use an available band and count 0..200; shortages are explicit')
     rng = random.Random(seed)
     schedule = list(CASES[level]);rng.shuffle(schedule)
+    starts = {case:('blank' if index%2 == 0 else 'radio') for index,case in enumerate(schedule)}
+    served = {case:0 for case in schedule}
     records, seen = [], set()
     indefinite_sign = rng.choice((-1,1))
     pair_kind = rng.choice(('same','opposite'))
     for index in range(count):
         case = schedule[index % len(schedule)]
-        response = 'blank' if level=='hard' else ('blank' if index%2 == 0 else 'radio')
+        response = 'blank' if level=='hard' else starts[case]
+        if level != 'hard' and served[case] % 2:
+            response = 'radio' if response=='blank' else 'blank'
         for attempt in range(100):
             values = parameters(case,rng,slope_sign=indefinite_sign,
                                 difference_kind=pair_kind)
@@ -247,6 +286,7 @@ def batch(level, count=5, seed=0):
             if fingerprint in seen:
                 continue
             records.append(record);seen.add(fingerprint)
+            served[case] += 1
             break
         else:
             raise ValueError('Finite compatible family exhausted; no duplicate padding')
