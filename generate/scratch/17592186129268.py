@@ -177,7 +177,7 @@ def normal_question(t,p,options):
  if cx:lhs='(x'+('+' if cx<0 else '-')+str(abs(cx))+r')^{2}+{y}^{2}';axis='cos';shift=cx
  else:lhs=r'{x}^{2}+(y'+('+' if cy<0 else '-')+str(abs(cy))+r')^{2}';axis='sin';shift=cy
  eq=lhs+'='+str(A*A)
- prompt='If the solid region $R$ is given by \n\n$$\nR=\\{(x,y,z)\\,:\\,'+lhs+r'\le '+str(A*A)+(','+condition if condition else '')+r',\,'+tex(L)+r'\le z\le '+tex(H)+r'\},'+'\n$$\n\nthen express the triple integral\n\n$$\n'+r'{∭}_{R}'+tex(F)+r'\,\text{d}V'+'\n$$\n\nas an equivalent integral in cylindrical polar coordinates.\n\n{{selection}}'
+ prompt='If the solid region $R$ is given by \n\n$$\nR=\\{(x,y,z)\\,:\\,'+lhs+r'\le '+str(A*A)+(','+condition if condition else '')+r',\,'+tex(L)+r'\le z\le '+tex(H)+r'\},'+'\n$$\n\nthen express the triple integral\n\n$$\n'+r'{∭}_{R}'+tex(F)+r'\,\text{d}V'+'\n$$\n\nas an equivalent integral in cylindrical polar coordinates.'
  # Preserve shared source prose and the exact operative algebra order.
  opener='We will use the change of variables formula in the form\n\n$$\n'+r'{∭}_{R}f(x,y,z)\,dV={∭}_{Δ}\,f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta ,z)\,r\,dz\,dr\,d\theta .'+'\n$$\n\nIf $(r,\\theta ,z)$ are the cylindrical polar coordinates of a point, then its Cartesian coordinates $(x,y,z)$ can be found by using the formulas\n\n$$\n'+r'x=r\operatorname{cos}⁡\theta ,\,y=r\operatorname{sin}⁡\theta ,\,z=z.'+'\n$$\n\nFirst, let\'s sketch the projection of $R$ onto the $xy$-plane:\n\n![]('+projection(t,p)+')\n\n'
  word='one-half of a right vertical cylinder' if condition else 'a right vertical cylinder'

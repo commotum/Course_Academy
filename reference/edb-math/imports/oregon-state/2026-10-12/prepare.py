@@ -20,6 +20,7 @@ OUT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 from f26_assignment_content import Builder
 from import_school_assignments import VAULT, DEFAULT_LEARNER
+from question_markers import repair_problem
 sys.path.insert(0, str(ROOT / 'capture'))
 from scripts.config import Config
 from scripts.database.client import EDBClient
@@ -53,15 +54,15 @@ class CurrentBuilder(Builder):
         for field in converted['fields']:
             if field['key'] in free:
                 field['type'] = 'blank'
-                marker = '{{' + field['key'] + '}}'
-                if marker not in converted['content']:
-                    converted['content'] += '\n\nWritten response: ' + marker
         uid, audit = super().canonical_question(source, key, converted, path, context)
         for field in audit['fields']:
             if field['key'] in free:
                 field['type'] = 'free'
                 row = next(r for r in self.entities if r[':db/id'] == field['field_id'])
                 row[':answer-field/type'] = ':answer-field.type/free'
+        question = next(r for r in self.entities if r[':db/id'] == uid)
+        answer_fields = [r for r in self.entities if r[':db/id'] in question[':question/answer-fields']]
+        question[':question/problem'] = repair_problem(question[':question/problem'], answer_fields)
         return uid, audit
 
 def main():

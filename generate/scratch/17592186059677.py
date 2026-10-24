@@ -132,7 +132,6 @@ def _authored(level,seed,template,field_type,p):
  else:
   bank,recipes=authored_bank(template,p,f,d1,d2,result)
   if any(sp.simplify(bank[i]-bank[j])==0 for i in range(len(bank)) for j in range(i)):raise ValueError('complete selected bank invalid')
-  prompt+='\n\n{{selection}}'
  prompt=_fmt.normalize_prose(prompt);solution=_fmt.normalize_prose(solution);values=[tex(v) for v in bank]
  identity=digest([VERSION,prompt,solution,sorted(values),tex(result)])
  field_id=uid(identity+'/field');key='field-1' if kind=='blank' else 'selection'

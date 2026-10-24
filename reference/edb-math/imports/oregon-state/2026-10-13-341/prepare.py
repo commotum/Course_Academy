@@ -24,6 +24,7 @@ import yaml
 from datetime import datetime, date, time, timezone
 from zoneinfo import ZoneInfo
 from import_school_assignments import VAULT, DEFAULT_LEARNER
+from question_markers import repair_problem
 sys.path.insert(0, str(ROOT / 'capture'))
 from scripts.config import Config
 from scripts.database.client import EDBClient
@@ -136,7 +137,6 @@ class CurrentBuilder(Builder):
             prompt = self.render_text(quiz['content'],path,quiz['id']+'/content')
             for choice in field['choices']:
                 prompt += '\n\n' + choice['id'] + '. ' + self.render_text(choice['value'],path,quiz['id']+'/'+choice['id'])
-            prompt += '\n\nYour selection' + ('s' if field['type']=='checkbox' else '') + ': {{'+field['key']+'}}'
             fid = self.entity(source,key+'/'+field['key'],'answer-field',answer_field__key=field['key'],answer_field__type=':answer-field.type/free')
             attrs = {'question__problem':tidy(context+'\n\n'+prompt),'question__answer_fields':[fid]}
             feedback = list(dict.fromkeys([quiz.get('feedback','')]+[c.get('feedback','') for c in field['choices']]))
@@ -154,15 +154,15 @@ class CurrentBuilder(Builder):
         for field in converted['fields']:
             if field['key'] in free:
                 field['type'] = 'blank'
-                marker = '{{' + field['key'] + '}}'
-                if marker not in converted['content']:
-                    converted['content'] += '\n\nWritten response: ' + marker
         uid, audit = super().canonical_question(source, key, converted, path, context)
         for field in audit['fields']:
             if field['key'] in free:
                 field['type'] = 'free'
                 row = next(r for r in self.entities if r[':db/id'] == field['field_id'])
                 row[':answer-field/type'] = ':answer-field.type/free'
+        question = next(r for r in self.entities if r[':db/id'] == uid)
+        answer_fields = [r for r in self.entities if r[':db/id'] in question[':question/answer-fields']]
+        question[':question/problem'] = repair_problem(question[':question/problem'], answer_fields)
         return uid, audit
 
 def main():

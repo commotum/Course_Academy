@@ -102,7 +102,6 @@ def render(profile,p):
  opening='Find the exact value of the ' if profile=='quadratic_blank' else 'Find the '
  prompt=opening+f'{target} of the {point} on the curve $y={tex(f)}$ whose tangent has a slope of ${tex(p["m"])}.$'
  if ft=='blank':prompt+='\n\n$x=$\n{{field-1}}'
- else:prompt+='\n\n{{selection}}'
  # Separate differentiated terms preserve the power-rule stages of the source.
  derivative_terms=' + '.join('('+tex(coef)+')'+r'\cdot '+str(power)+r'\cdot '+tex(x**(power-1)) for (power,),coef in sp.Poly(f,x).terms() if power)
  intro=f'Let $f(x)={tex(f)}.$ The slope of the tangent at the point $x$ is equal to $f^{{\\prime}}(x).$ Computing the derivative, we get'

@@ -42,7 +42,7 @@ def math_check(r):
  final=q[':question/worked-solution'].split('&= ')[-1].split(r'.\end{aligned}')[0];assert g.signs(final)==tuple(got)
  for i,sign in enumerate(got):
   term=g.integral(i+1,sign<0);assert term in q[':question/worked-solution']
- assert '{{selection}}' in q[':question/problem'] and '$ABCA$' in q[':question/problem'] and 'counterclockwise' in q[':question/problem']
+ assert '{{selection}}' not in q[':question/problem'] and '$ABCA$' in q[':question/problem'] and 'counterclockwise' in q[':question/problem']
  assert Path(asset['prompt']).is_file() and hashlib.sha256(Path(asset['prompt']).read_bytes()).hexdigest()==asset['sha256']
  return True
 

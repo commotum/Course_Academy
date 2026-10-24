@@ -75,7 +75,7 @@ def generate(level='easy',seed=0,parameters=None,profile_id=None,output_dir=None
  mid=profile_id or rng.choice(sorted(SOURCES));bank,masks=profile(mid,vector);values=[value(v) for v in bank]
  assert len(values)==len(set(values))==5 and bank.count(vector)==1
  asset=render_plots(vector,output_dir or HERE/'plots')
- prompt='![]('+str(Path(asset['prompt']).resolve())+')\n\nWhich of the following is equivalent to the integral $'+r'{\int }_{C}F\cdot \text{d}r'+',$ where $C$ is the closed polygonal path $ABCA$, shown in the diagram above, traversed in the counterclockwise direction?\n\n{{selection}}'
+ prompt='![]('+str(Path(asset['prompt']).resolve())+')\n\nWhich of the following is equivalent to the integral $'+r'{\int }_{C}F\cdot \text{d}r'+',$ where $C$ is the closed polygonal path $ABCA$, shown in the diagram above, traversed in the counterclockwise direction?'
  sol=solution(vector);contract=[prompt,sol,sorted(values),value(vector),'easy'];qid=str(uuid.uuid5(uuid.UUID(KP_UUID),'generated:'+digest(contract)));fid=str(uuid.uuid5(uuid.UUID(qid),'field:selection'))
  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),'value:'+v)),':answer/type':':answer.type/math',':answer/value':v} for v in values]
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[bank.index(vector)][':answer/id']]}]}

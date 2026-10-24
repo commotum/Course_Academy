@@ -58,7 +58,7 @@ def verify(rec):
  q=rec['question'];meta=rec['generation'];t=meta['template'];p=meta['parameters'];g.guard(t,p)
  assert not meta['evidence_only'] and meta['eligible_for_learning']
  for text in [q[':question/problem'],q[':question/worked-solution']]+[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]:formatting(text)
- assert '{{selection}}' in q[':question/problem']
+ assert '{{selection}}' not in q[':question/problem']
  # Read actual printed circle and its independent shifted center from its polynomial.
  prompt=q[':question/problem'];region=prompt.split('$$')[1]
  circle_part=region.split(r'\,:\,')[1].split(r'\le ')[0];circ=expr(circle_part)

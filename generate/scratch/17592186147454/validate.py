@@ -69,7 +69,7 @@ def independent(r):
  assert sol.startswith(prefix)
  if h:
   assert f'(x{h:+d})' in text and f'(x{h:+d})' in sol
-  assert '{{selection}}' in text and 'general nonzero real solution' in text
+  assert '{{selection}}' not in text and 'general nonzero real solution' in text
   # Reverse the algebraic translation to check all source instructional stages.
   restored=prefix.replace(f'(x{h:+d})','x');assert restored.replace(r'\cdot ','')==source_solution.replace(r'\cdot ','')
  return {'n':str(n),'linear_p':str(p),'nonlinear_q':str(coef),'correct_residual':'0'}

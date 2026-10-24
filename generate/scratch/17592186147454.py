@@ -76,7 +76,6 @@ def generate(difficulty,seed=0,template=None,parameters=None,profile=None):
   domain='x'+('+' if h>0 else '-')+str(abs(h))
   problem+='\n\nWork on an interval where $'+domain+'>0$. Choose constants and intervals on which all displayed real expressions are defined.'
   if t in ('q-109170','q-109177'):problem+=' Take $y>0$.'
-  problem+='\n\n{{selection}}'
   solution+='\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.'
   if t=='q-109170':solution+=' Since $z=y^{1/4}>0$, retain only intervals where the displayed expression for $z$ is positive.'
   if t=='q-109177':solution+=' Since $z=y^{3/2}>0$, retain only intervals where the displayed expression for $z$ is positive.'

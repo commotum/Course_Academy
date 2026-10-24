@@ -81,7 +81,6 @@ def generate(level,seed,profile=None,t=None):
  f,u,at,answer,bank=model(profile,t);p,s=text_parts(profile,t)
  original=ORIGINALS[profile];sf=original[':question/answer-fields'][0]
  ftype=sf[':answer-field/type'][':db/ident'];key=sf[':answer-field/key']
- if ftype.endswith('/radio'):p+='\n\n{{'+key+'}}'
  fp=task_key(profile,t);qid=str(uuid.uuid5(uuid.UUID(KP_UUID),fp));fid=str(uuid.uuid5(uuid.UUID(qid),key))
  choices=[];correct=None
  for b in bank:

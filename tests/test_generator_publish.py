@@ -153,6 +153,17 @@ class FakeClient:
 
 
 class PublicationTests(unittest.TestCase):
+    def test_radio_prompt_marker_is_rejected_before_publication(self):
+        q = record()['question']
+        f = q[':question/answer-fields'][0]
+        f[':answer-field/type'] = ':answer-field.type/radio'
+        other = copy.deepcopy(f[':answer-field/choices'][0])
+        other.update({':answer/id': str(uuid.uuid4()), ':answer/value': '99'})
+        f[':answer-field/choices'].append(other)
+        q[':question/problem'] += '\n\n{{answer}}'
+        with self.assertRaisesRegex(ValueError, 'Only blank/select'):
+            validate_question(q)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)

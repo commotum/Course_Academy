@@ -456,8 +456,11 @@ class Builder:
                 inline = re.findall(r'\{\{([^}]+)\}\}', row[':question/problem'])
                 unplaced = set(keys) - set(inline)
                 assert set(inline) <= set(keys), (uid, inline, keys)
-                assert all(f[':answer-field/type'] == ':answer-field.type/radio'
+                assert all(f[':answer-field/type'] in {':answer-field.type/radio', ':answer-field.type/checkbox', ':answer-field.type/free'}
                            for f in fields if f[':answer-field/key'] in unplaced), (uid, inline, keys)
+                from question_markers import validate_prompt_markers
+                validate_prompt_markers({':question/problem': row[':question/problem'],
+                                         ':question/answer-fields': fields})
             if ':answer-field/id' in row:
                 assert row[':answer-field/correct'] in row[':answer-field/choices']
             if ':answer/id' in row:

@@ -28,7 +28,7 @@ def parsed(record):
  assert len(args)==2 and set(args)<=set(AXES)
  vector=body.replace(r'\,','').split(',');assert len(vector)==3
  target=re.search(r'What is the (first|second|third) component',prompt).group(1);target=['first','second','third'].index(target)
- assert '{{selection}}' in vector[target] or '___' in vector[target]
+ assert '?' in vector[target] or '___' in vector[target]
  relation=re.search(r'Cartesian coordinates as \$([^$]+)\$',prompt).group(1).rstrip('.')
  lhs,rhs=relation.split('=');poly=sp.Poly(expr(lhs)-expr(rhs),*[SYMBOLS[x] for x in AXES])
  degree={x:poly.degree(SYMBOLS[x]) for x in AXES};assert sorted(degree.values())==[0,1,2]
@@ -80,7 +80,7 @@ def candidates(record):
 def normal_math(record):
  assert set(record['knowledge_point'])=={'db_id','id','title'}
  assert not record['generation']['evidence_only'] and record['generation']['eligible_for_learning']
- q=record['question'];assert '{{selection}}' in q[':question/problem']
+ q=record['question'];assert '?' in q[':question/problem'] and '{{selection}}' not in q[':question/problem']
  fn,args,t,u,d,v,given,expected,relation=parsed(record)
  for f,opts,aliases in candidates(record):
   assert len(opts)==5

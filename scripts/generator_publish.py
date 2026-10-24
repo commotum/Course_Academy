@@ -25,6 +25,7 @@ from capture.scripts.database.edn import dumps, loads, kw
 from capture.scripts.database.images import ImageLibrary
 from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_json
 from scripts.generator_packages import resolve_registered_script
+from scripts.question_markers import validate_prompt_markers
 
 
 class SourceChanged(ValueError):
@@ -220,6 +221,7 @@ def validate_question(q):
                                                 if str(a[':answer/id']) == answer_id(field[':answer-field/correct'])))
     if checkbox_correct_values and 'true' not in checkbox_correct_values:
         raise ValueError('Generated checkbox questions require at least one correct selectable option')
+    validate_prompt_markers(q)
 
 
 def stable_identities(question, kp_uuid):

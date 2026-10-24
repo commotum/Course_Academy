@@ -141,7 +141,7 @@ def render(p,profile,raw):
  u,d,v=p['base'],p['dependent'],p['free']; a,b=p['a'],p['b'];fn=p['function'];args=','.join(p['arguments'])
  t=p['target'];i=AXES.index(t);ordinal=ORDINAL[i];quad=mul(a,square(u));dep=mul(sp.Rational(a,b),square(u))
  vector=[dep if x==d else x for x in AXES]
- masked=vector.copy();masked[i]=r'\text{___}' if raw else '{{selection}}'
+ masked=vector.copy();masked[i]=r'\text{___}' if raw else '?'
  left=mul(b,d);right=quad
  relation=left+'='+right if p['relation_order']=='dependent_first' else right+'='+left
  inline=profile=='q-103992'
@@ -232,7 +232,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},
  'bank_origin':'observed complete bank' if raw or profile!='q-103986' and profile!='normalized' else 'authored complete method-derived bank',
  'recipes':list(recipes),
- 'repairs':[] if raw else ['replace blank marker with keyed placeholder']+(['keep supported duplicate field only; use authored whole bank replacing opaque half-linear mask with omitted square'] if profile=='q-103986' else [])+(['repair prose arguments; infer correct free component; author missing solution and easy label'] if profile=='q-103992' else [])+(['clarify direct-coordinate convention; 6z is otherwise a covering parametrization'] if p['role']=='free' else [])}
+ 'repairs':[] if raw else ['show missing component with a neutral question mark; radio control renders separately']+(['keep supported duplicate field only; use authored whole bank replacing opaque half-linear mask with omitted square'] if profile=='q-103986' else [])+(['repair prose arguments; infer correct free component; author missing solution and easy label'] if profile=='q-103992' else [])+(['clarify direct-coordinate convention; 6z is otherwise a covering parametrization'] if p['role']=='free' else [])}
  result={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':generation}
  if raw:
   # Shared strict formatter cannot require an absent source worked-solution.

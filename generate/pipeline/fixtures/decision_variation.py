@@ -44,7 +44,7 @@ def distributivity(seed=0, *, repaired=False, matrices=None, survivor=None):
     subtract_right = scale - (right == survivor)
     expression = f"{scale}({left}+{right})-{subtract_left}{left}-{subtract_right}{right}"
     definitions = ", ".join(f"${label}={matrix_tex(value)}$" for label, value in matrices.items())
-    prompt = f"Given {definitions}, evaluate ${expression}$. {{{{selection}}}}"
+    prompt = f"Given {definitions}, evaluate ${expression}$."
     choices = [f"{label}={matrix_tex(value)}" for label, value in matrices.items()]
     correct = f"{survivor}={matrix_tex(matrices[survivor])}"
     solution = (f"Distribute and collect terms: ${expression}="
@@ -72,7 +72,7 @@ def classification(seed=0, *, repaired=False, matrices=None, collection=None):
     subset = lambda labels: r"\{" + ",".join(labels) + r"\}"
     definitions = ", ".join(f"${label}={matrix_tex(value)}$" for label, value in matrices.items())
     prompt = (f"Collection {collection}. Given {definitions}, which set contains exactly the diagonal "
-              "matrices? {{selection}}")
+              "matrices?")
     details = " ".join(f"{label}: off-diagonal entries are {value[0][1]} and {value[1][0]}."
                        for label, value in matrices.items())
     solution = f"A matrix is diagonal exactly when both off-diagonal entries vanish. {details} Select ${subset(qualifying)}$."
@@ -84,6 +84,6 @@ def equal_row_identity(seed=0):
     rng = random.Random(seed)
     a, b = rng.randint(1, 20), rng.randint(1, 20)
     prompt = ("Use the equal-row determinant identity to evaluate "
-              f"$\\det({matrix_tex([[a, b], [a, b]])})$. {{{{selection}}}}")
+              f"$\\det({matrix_tex([[a, b], [a, b]])})$.")
     solution = f"The rows are equal, so the determinant is zero: {a}*{b}-{b}*{a}=0."
     return record(prompt, ["0", "1", "-1"], "0", solution, seed)
