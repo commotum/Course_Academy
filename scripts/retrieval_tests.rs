@@ -2269,7 +2269,7 @@ fn regeneration_rejects_started_history_retake_and_foreign_task() -> Result<()> 
 #[test]
 fn selected_topic_review_uses_regular_policies_and_reuses_unfinished_attempts() -> Result<()> {
     for due in [false, true] {
-        let mut f = Fixture::new(due)?;
+        let mut f = Fixture::with_admission(due, 3*86400000, false)?;
         let before = f.snapshot()?;
         let topic = before.entities.with_attribute("topic/title").into_iter()
             .find(|topic| text(&before, *topic, "topic/title") == "Topic 0").unwrap();
