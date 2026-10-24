@@ -22,4 +22,9 @@ def write_decision_evidence(directory):
         'limitations': ['Boundary fixture only; not a real independent review.'],
     }
     (directory / name).write_text(json.dumps(report))
+    (directory / 'solution-paths.json').write_text(json.dumps({'cases': [{
+        'template': 'square', 'field_key': 'answer', 'final_expression': '9',
+        'keyed_answer': '9', 'domain': 'Positive integers', 'conversions': [],
+        'sample_refs': samples, 'status': 'passed',
+        'conclusion': 'The worked multiplication ends at the keyed integer.'}]}))
     return name

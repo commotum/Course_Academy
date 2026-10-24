@@ -19,7 +19,7 @@ KP_ID=17592186129268
 ROOT=Path(__file__).resolve().parent; EVIDENCE=ROOT/str(KP_ID)
 CAPTURE=json.loads((EVIDENCE/'source.json').read_text()); SOURCE=CAPTURE['record']
 QS={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
-VERSION='shifted-cylinder-1'
+VERSION='shifted-cylinder-2'
 x,y,z=sp.symbols('x y z',real=True);r=sp.Symbol('r',nonnegative=True);theta=sp.Symbol('theta',real=True)
 TEMPLATES={
  'lower_xy':('moderate','q-161521',{'a':3,'H':2}),
@@ -209,10 +209,9 @@ def normal_question(t,p,options):
   stages.append(r' & ={∭}_{Δ}'+grouped+r'\,dz\,dr\,d\theta')
  elif t=='upper_square':stages.append(r' & ={∭}_{Δ}{r}^{2}({cos}^{2}⁡\theta +{sin}^{2}⁡\theta )\cdot r\,dz\,dr\,d\theta')
  out=list(model(t,p)[:6])
- if t=='left_xy_sphere':
-  # Source uses double-angle collection, not separate sin*cos.
-  final=integral(out).replace(tex(f),r'{r}^{3}\operatorname{sin}⁡2\theta ')
- else:final=integral(out)
+ # Keep the substituted product form used by the answer bank. A double-angle
+ # collection would add an unnecessary representation change at the endpoint.
+ final=integral(out)
  stages.append(' & ='+final+'.')
  sol+='$$\n'+r'\begin{aligned}'+r' \\ '.join(stages)+r'\end{aligned}'+'\n$$'
  return {':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+TEMPLATES[t][0]}

@@ -1,6 +1,7 @@
 import { createStudySidebar } from './study-stats.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
+import { protectMath } from './math-protection.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
 import { developerModeReady, isDeveloperMode } from './developer-mode.js';
 import { attachStepMenu } from './step-menu.js';
@@ -276,7 +277,7 @@ function markdown(value, className = 'prose', fields = []) {
   const prefix = 'CAMATH' + crypto.randomUUID().replaceAll('-', '') + 'TOKEN';
   const fieldKeys = new Set(fields.map(field => field.key));
   const placeholder = /\{\{(?:answer-field:)?([^}]+)\}\}/g;
-  let source = inlinePrompt(value, fields).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$/g, match => {
+  let source = protectMath(inlinePrompt(value, fields), match => {
     math.push(match.replace(placeholder, (whole, key) => fieldKeys.has(key)
       ? `\\underbrace{\\qquad}_{\\text{answer ${fields.findIndex(field => field.key === key) + 1}}}` : whole));
     return prefix + (math.length - 1) + 'END';

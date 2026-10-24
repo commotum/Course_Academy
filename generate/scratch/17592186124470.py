@@ -17,7 +17,7 @@ from functools import lru_cache
 KP_ID=17592186124470
 KP_UUID='112e3378-bde8-5896-822e-e815bde51501'
 TITLE='Applying the Vector Form of the Chain Rule to a Function of Three Variables'
-VERSION='vector-three-variables-2'
+VERSION='vector-three-variables-3'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 X,Y,Z,T=sp.symbols('x y z t', real=True)
@@ -106,6 +106,15 @@ def read_scalar(s):
  return value
 
 def tex(e):return sp.latex(e).replace(r'\log',r'\ln')
+def choice_tex(e,name,p):
+ # Expanding a sum must not expand the input of a trig function in the UI.
+ if name=='exponential_cosine':
+  inner=(T+p['h'])**2
+  e=e.xreplace({fn(sp.expand(inner)):fn(inner,evaluate=False) for fn in (sp.sin,sp.cos)})
+ return tex(e)
+
+def final_solution_value(solution):
+ return solution.rsplit(' & =',1)[1].split(r'\end{aligned}',1)[0].rstrip('.')
 @lru_cache(maxsize=40000)
 def equal(a,b):
  d=a-b
@@ -317,7 +326,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if sum(flags)!=1:raise ValueError('observed bank correct value not uniquely derived')
    correct_index=flags.index(True);recipes=['observed_expression_pattern_'+str(i+1) for i in range(5)]
   else:
-   pairs=bank_values(profile,data);recipes=[a for a,b in pairs];exprs=[b for a,b in pairs];values=[tex(v) for v in exprs];correct_index=0
+   pairs=bank_values(profile,data);recipes=[a for a,b in pairs];exprs=[b for a,b in pairs];values=[choice_tex(v,name,p) for v in exprs];correct_index=0
   collision=any(equal(a,b) for i,a in enumerate(exprs) for b in exprs[i+1:])
   if not collision:break
   if parameters is not None:raise ValueError('entire bank rejected: equivalent options')
@@ -332,6 +341,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  else:
   prompt='If $f(x,y,z)='+tex(f)+'$ and $r(t)='+vector(r)+r',$ compute $\frac{\text{d}}{\text{d}t}[f(r(t))].$'
   solution=common_solution(f,r)
+ if not observed:
+  # The source's completed derivation defines the instructional answer form.
+  # Independent symbolic work still checks its value before it is keyed.
+  final=final_solution_value(solution)
+  assert equal(read_scalar(final),ans),'Worked solution does not derive the keyed answer'
+  values[correct_index]=final
  if profile!='observed_raw':
   # The captured Unicode function-application glyph is valid notation.
   # Source bytes are preserved; no invented TeX anomaly or normalization.

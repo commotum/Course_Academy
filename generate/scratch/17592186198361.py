@@ -21,7 +21,7 @@ import sympy as sp
 KP_ID=17592186198361
 KP_UUID='9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb'
 TITLE='Performing a Change of Variables'
-VERSION='change-variables-2'
+VERSION='change-variables-3'
 HERE=Path(__file__).with_suffix('')
 TEMPLATES=json.loads((HERE/'templates.json').read_text())
 RAW=json.loads((HERE/'source.json').read_text())
@@ -155,6 +155,14 @@ def common_completed_solution(template,p,m):
       r'$$\begin{aligned}\iint_D(y^2-x^2)\,dx\,dy&=\iint_Δ\left[\left(\frac{u+v}{2}\right)^2-\left(\frac{u-v}{2}\right)^2\right]\left|\frac{∂(x,y)}{∂(u,v)}\right|\,du\,dv\\&=\iint_Δuv\left|\frac12\right|\,du\,dv\\&='+
       integral(m['correct'],p,'vu')+r'.\end{aligned}$$')
 
+def ratio_answer_tex(value,p):
+    # The solution evaluates ln(uh) as 2 ln(sqrt(uh)); keep that same base
+    # throughout the bank instead of independently reducing ln(4) to ln(2).
+    root=int(sp.sqrt(p['uh']))
+    coefficient=sp.simplify(value/sp.log(root))
+    assert coefficient.is_Rational
+    return tex(coefficient*sp.Symbol(r'\ln('+str(root)+')'))
+
 def bank(template,p,profile):
     data=mathematical_data(template,p)
     if profile=='observed':
@@ -183,7 +191,9 @@ def bank(template,p,profile):
     power=2 if template.endswith('squared') else 1
     wrongs=[v**power/u,-v**power/(3*u),1/(3*u),v**(power+1)/(3*u)]
     exprs=[correct]+wrongs;labels=['correct','omit_three_in_jacobian','signed_jacobian','omit_integrand_v_power','extra_v_factor']
-    return [tex(integrate_rectangle(z,p)) for z in exprs],0,list(zip(labels,exprs))
+    values=[ratio_answer_tex(integrate_rectangle(z,p),p) for z in exprs]
+    values[0]=ratio_chain(p,power)[1]
+    return values,0,list(zip(labels,exprs))
 
 def eligible(values):
     # Exact equality in the transcendental E field, with familiar logarithms reduced.

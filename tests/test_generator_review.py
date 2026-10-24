@@ -39,6 +39,7 @@ class ReviewEvidenceTests(unittest.TestCase):
 
         evidence = write_decision_evidence(self.directory)
         self.review["checks"]["decision_variation"]["evidence_paths"] = [evidence]
+        self.review["checks"]["scope"]["evidence_paths"] = ['solution-paths.json']
 
     def tearDown(self):
         self.temp.cleanup()
@@ -128,6 +129,31 @@ class ReviewEvidenceTests(unittest.TestCase):
             strategy="Recognize the source lesson's intended identity.",
             conclusion="In this narrowly scoped instructional family, recognizing the identity is the objective; no broader mastery claim.")
         path.write_text(json.dumps(report))
+        validate_review(self.review, self.directory)
+
+    def test_scope_requires_explicit_answer_transition_evidence(self):
+        original = copy.deepcopy(self.review)
+        self.review['checks']['scope']['evidence_paths'] = ['measurements.json']
+        with self.assertRaisesRegex(ValueError, 'solution-paths.json'):
+            validate_review(self.review, self.directory)
+        self.review = original
+        path = self.directory / 'solution-paths.json'
+        saved = json.loads(path.read_text())
+        for change in (
+            lambda r: r.update(cases=[]),
+            lambda r: r['cases'][0].update(status='failed'),
+            lambda r: r['cases'][0].update(sample_refs=[]),
+            lambda r: r['cases'][0].update(conversions=[{'rule': 'sine oddness', 'scope_source': '',
+                'shown_step': '', 'status': 'passed'}]),
+            lambda r: r['cases'][0].update(conversions=[{'rule': 'sine oddness', 'scope_source': 'lesson',
+                'shown_step': 'line 3', 'status': 'failed'}]),
+        ):
+            report = copy.deepcopy(saved)
+            change(report)
+            path.write_text(json.dumps(report))
+            with self.assertRaises(ValueError):
+                validate_review(self.review, self.directory)
+        path.write_text(json.dumps(saved))
         validate_review(self.review, self.directory)
 
 

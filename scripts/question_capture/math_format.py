@@ -213,6 +213,107 @@ def legacy_choice(text):
 MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
 
 
+def normalize_math_boundaries(value):
+    """Recover explicit legacy math boundaries without changing equations.
+
+    This is deliberately narrower than normalize_tex: authored content, answer
+    identities, and algebra are untouched. Raw source environments must survive
+    Markdown before MathJax can see them. Historical currency glyphs and empty
+    table cells must not become display-math delimiters.
+    """
+    text = str(value)
+    # The legacy dollar-to-[math] substitution also touched escaped currency.
+    text = re.sub(r'\\\[/?math\]', lambda _: r'\$', text)
+    # A source math box containing a dollar sign was wrapped once more in $...$.
+    currency_or_math = re.compile(
+        r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|'
+        r'(?<!\\)\$\$(?P<currency>\d[^$\n]*?)(?<!\\)\$(?!\$)|'
+        r'\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
+    text = currency_or_math.sub(lambda m: ('$' + r'\$' + m['currency'] + '$')
+                                if m['currency'] is not None else m[0], text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$(?=[ \t]*\|)', lambda m: m[1], text)
+    # Triple dollars on their own lines are duplicated display wrappers. Other
+    # triple-dollar uses in this corpus are a currency glyph beside a widget or
+    # in a table header; do not reinterpret general unmatched dollars.
+    text = re.sub(r'(?m)^[ \t]*\${3}[ \t]*$', '$$', text)
+    text = re.sub(r'\${3,}(?=[ \t\n]*\{\{)', lambda _: r'\$', text)
+    text = re.sub(r'\${3}(?=[ \t]*(?:\)|\(\$))', lambda _: r'\$', text)
+    # Adjacent closing inline/opening display delimiters need a paragraph break.
+    text = re.sub(r'(?<=[^$\n])\${3}(?=\n\\)', '$\n\n$$', text)
+
+    def inner_markers(match):
+        return re.sub(r'\[/?(?:math|latex|tex|displaymath)\]', '', match[0])
+    text = MATH.sub(inner_markers, text)
+    def bracket_math(match):
+        body = match[2]
+        display = match[1] == 'displaymath' or r'\begin{' in body
+        return ('$$\n' + body.strip() + '\n$$') if display else '$' + body.strip() + '$'
+    text = re.sub(r'\[(math|latex|tex|displaymath)\]([\s\S]*?)\[/\1\]', bracket_math, text)
+
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    changes, consumed = [], -1
+    for match in ENV.finditer(text):
+        if match[1] != 'begin' or match.start() < consumed:
+            continue
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        span = environment(text, match.start())
+        if not span:
+            continue
+        name = match[2]
+        if name not in {'align', 'align*', 'aligned', 'alignedat', 'alignat', 'alignat*',
+                        'eqnarray', 'eqnarray*', 'gather', 'gather*', 'gathered',
+                        'equation', 'equation*', 'multline', 'multline*', 'split',
+                        'matrix', 'bmatrix', 'pmatrix', 'vmatrix', 'Bmatrix', 'Vmatrix',
+                        'smallmatrix', 'cases', 'array'}:
+            continue
+        tex = text[match.start():span[2]]
+        mapping = {'align': 'aligned', 'align*': 'aligned', 'alignat': 'alignedat',
+                   'alignat*': 'alignedat', 'eqnarray': 'aligned', 'eqnarray*': 'aligned',
+                   'gather': 'gathered', 'gather*': 'gathered', 'equation': 'gathered',
+                   'equation*': 'gathered', 'multline': 'gathered', 'multline*': 'gathered',
+                   'split': 'aligned'}
+        if name in mapping:
+            tex = r'\begin{' + mapping[name] + '}' + text[span[0]:span[1]] + r'\end{' + mapping[name] + '}'
+        tex = _legacy_commands(tex)
+        # Remove only a redundant whole inner alignment, keeping its rows exact.
+        body_match = re.match(r'\\begin\{aligned\}\s*(?=\\begin\{aligned\})', tex)
+        if body_match:
+            inner = environment(tex, body_match.end())
+            if inner and re.fullmatch(r'\s*\\end\{aligned\}', tex[inner[2]:]):
+                tex = tex[body_match.end():inner[2]]
+        changes.append((match.start(), span[2], '$$\n' + tex + '\n$$'))
+        consumed = span[2]
+    for start, end, replacement in reversed(changes):
+        text = text[:start] + replacement + text[end:]
+
+    # Fix only explicit numeric percentage glyphs, not arbitrary TeX comments.
+    # The MathML converters emitted e.g. 12%=12/100, silently commenting out
+    # the rest of that formula in MathJax.
+    def percentages(match):
+        return re.sub(r'(?<=\d)(?<!\\)%', lambda _: r'\%', match[0])
+    text = MATH.sub(percentages, text)
+    # An indented formula opener otherwise becomes <pre><code>, which MathJax
+    # explicitly skips. Indentation within a protected formula remains exact.
+    text = re.sub(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', '', text)
+    return text
+
+
+def validate_math_boundaries(value):
+    """Catch unparsed TeX as well as errors inside recognized math spans."""
+    text = str(value)
+    outside = MATH.sub('', text)
+    if re.search(r'\\(?:begin|end)\{|\\(?:eqalign|matrix)\s*\{', outside):
+        raise ValueError('Unprotected TeX environment; use a delimited display block')
+    if re.search(r'\[/?(?:math|latex|tex|displaymath)\]', text):
+        raise ValueError('Legacy math delimiter; use $ or $$')
+    if re.search(r'(?<!\\)\$', outside):
+        raise ValueError('Unpaired math dollar delimiter; escape literal currency')
+    if re.search(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', text):
+        raise ValueError('Indented math becomes a Markdown code block')
+    return text
+
+
 def matrix_tex(rows, *, augmented=False):
     rows = [list(map(str, row)) for row in rows]
     if not rows or not rows[0] or len({len(row) for row in rows}) != 1:
@@ -547,7 +648,7 @@ def normalize_prose(value):
         whole = match[0]; display = whole.startswith(('$$', r'\['))
         normalized = normalize_tex(whole)
         return ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
-    text = MATH.sub(replace, str(value))
+    text = MATH.sub(replace, normalize_math_boundaries(value))
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
@@ -593,7 +694,7 @@ def validate_tex(value):
 
 
 def validate_prose(value):
-    text = str(value)
+    text = validate_math_boundaries(value)
     for match in MATH.finditer(text):
         size = 2 if match[0].startswith(('$$', r'\[', r'\(')) else 1
         validate_tex(match[0][size:-size])

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 
-REVIEW_POLICY_VERSION = 2
+REVIEW_POLICY_VERSION = 3
 CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
                  "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")
@@ -114,6 +114,37 @@ def _decision_evidence(check, root):
     _strings(report.get("limitations"), "decision_variation.limitations")
 
 
+def _solution_path_evidence(check, root):
+    """Require the reviewer's observed answer transitions, not equivalence alone."""
+    name = "solution-paths.json"
+    if name not in check["evidence_paths"]:
+        raise ValueError("scope requires solution-paths.json")
+    try:
+        report = json.loads((Path(root) / name).read_text())
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError("solution paths evidence must be readable JSON") from error
+    if not isinstance(report, dict) or not isinstance(report.get("cases"), list) or not report["cases"]:
+        raise ValueError("solution paths requires nonempty cases")
+    for case in report["cases"]:
+        if not isinstance(case, dict):
+            raise ValueError("solution path case must be an object")
+        for key in ("template", "field_key", "final_expression", "keyed_answer", "domain", "conclusion"):
+            _text(case.get(key), "solution_path." + key)
+        _evidence(case.get("sample_refs"), root, "solution_path.sample_refs", required=True)
+        if case.get("status") != "passed":
+            raise ValueError("solution path is failed or untested")
+        conversions = case.get("conversions")
+        if not isinstance(conversions, list):
+            raise ValueError("solution path conversions must be a list")
+        for conversion in conversions:
+            if not isinstance(conversion, dict):
+                raise ValueError("solution path conversion must be an object")
+            for key in ("rule", "scope_source", "shown_step"):
+                _text(conversion.get(key), "solution_path.conversion." + key)
+            if conversion.get("status") != "passed":
+                raise ValueError("solution path contains an unsupported or unshown conversion")
+
+
 def validate_review(result, evidence_root):
     """Validate structure and on-disk evidence; never infer pedagogical truth.
 
@@ -161,6 +192,8 @@ def validate_review(result, evidence_root):
             raise ValueError(f"accepted review requires passing {name}")
     if checks["decision_variation"]["status"] == "passed":
         _decision_evidence(checks["decision_variation"], evidence_root)
+    if checks["scope"]["status"] == "passed":
+        _solution_path_evidence(checks["scope"], evidence_root)
     findings = result.get("findings")
     if not isinstance(findings, list):
         raise ValueError("findings must be a list")

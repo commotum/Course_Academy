@@ -115,6 +115,7 @@ class FakeSession:
         checks = {name: {"status": "passed", "details": "Structured boundary fixture.",
                          "evidence_paths": ["checks.json"]} for name in CHECKS}
         checks["decision_variation"]["evidence_paths"] = [write_decision_evidence(directory)]
+        checks["scope"]["evidence_paths"] = ['solution-paths.json']
         findings = []
         if self.reject:
             kind = "restriction" if len([r for r, _ in self.calls if r == "review"]) % 2 else "drift"
