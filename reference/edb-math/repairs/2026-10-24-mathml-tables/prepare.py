@@ -15,7 +15,7 @@ def read_rows(tex):
  return clean_rows(cells(body))
 def render_target(item,text):
  rows=read_rows(text);new=mathml_ruled_table(rows,item['source']['source_attributes']);assert new
- actual=read_rows(new);assert len(rows)==len(actual)
+ actual=read_rows(new);assert len(rows)==len(actual),(item['e'],item['a'],repr(text),rows,repr(new),actual)
  for before,after in zip(rows,actual):assert before==after[:len(before)] and all(not x for x in after[len(before):]),(before,after)
  if item['span']['env'] in FENCES:
   f=item['source']['source_fences']

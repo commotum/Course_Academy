@@ -18,7 +18,7 @@ def clean_rows(rows):
  out=[list(r) for r in rows]
  for row in out:
   if row:row[0]=re.sub(r'^\s*\\hline\s*','',row[0])
- if out and all(not c.strip() for c in out[-1]) and any(r'\hline' in c for c in rows[-1]):out.pop()
+ if out and len(out[-1])==1 and not out[-1][0].strip() and r'\hline' in rows[-1][0]:out.pop()
  return out
 
 def context_records(source):
