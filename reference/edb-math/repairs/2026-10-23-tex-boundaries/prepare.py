@@ -19,7 +19,11 @@ def main():
   if a=='knowledge-point/question-generator':owners[e]=v
  out=[];unresolved=[];actions=collections.Counter()
  for (e,a),r in values.items():
-  before=r['v'];after=normalize_math_boundaries(before);special=[]
+  before=r['v'];source=before;special=[]
+  if e in {17592186500361,17592186533979,17592186533981} and a=='question/worked-solution':
+   source=re.sub(r'(?m)(\\end\{aligned\}\s*\n\$\$)\s*\n\$\$(?=\s*\n[A-Za-z])',r'\1',source)
+   source=re.sub(r'\$\$[ \t]*\n[ \t]*\$\$(?=\s*\n(?:\\begin|E=))','$$',source);special=['remove-source-duplicate-display-wrappers']
+  after=normalize_math_boundaries(source)
   if e==17592186124792 and a=='question/problem':
    # Source asks for a missing radio word; $$ is an empty captured formula,
    # and the ordinary TeX group around its equivalence array lacks its close.

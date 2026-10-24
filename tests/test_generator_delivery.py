@@ -18,6 +18,19 @@ spec.loader.exec_module(delivery)
 
 
 class DeliveryTests(unittest.TestCase):
+    def test_legacy_raw_equation_rows_are_normalized_before_delivery_identity(self):
+        original = record(3)
+        original['question'][':question/worked-solution'] = '\\begin{align*}x&=3+1\\\\[5pt]\n\n&=4\\end{align*}'
+        saved = copy.deepcopy(original)
+        report = self.run_audit([original])
+        self.assertEqual(report['accepted_count'], 1)
+        accepted = json.loads((self.root / 'evidence/accepted.json').read_text())[0]['question']
+        self.assertIn('$$\n\\begin{aligned}', accepted[':question/worked-solution'])
+        self.assertIn('\\\\[5pt]', accepted[':question/worked-solution'])
+        self.assertEqual(original, saved)
+        self.assertEqual(accepted[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'],
+                         original['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'])
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

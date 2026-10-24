@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import sys
+from collections import defaultdict
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +38,13 @@ class RepresentationTests(unittest.TestCase):
         self.assertEqual(candidates(e)['candidate_count'], 1)
         e['3']['answer/value'] = [r'2\sin(12-2x)']
         self.assertEqual(candidates(e)['candidate_count'], 0)
+
+    def test_incomplete_historical_fields_do_not_mutate_the_snapshot(self):
+        e=defaultdict(dict, {'1': {'question/problem':['Historical question'],
+                                  'question/worked-solution':['An explanation'],
+                                  'question/answer-fields':[2]}})
+        self.assertEqual(candidates(e)['questions_scanned'],1)
+        self.assertEqual(set(e),{'1'})
 
     def test_translated_vector_chain_rule_keeps_the_inner_square(self):
         g = self.vector

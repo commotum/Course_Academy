@@ -348,6 +348,16 @@ def _normalize_math_boundary_pass(value):
     # An indented formula opener otherwise becomes <pre><code>, which MathJax
     # explicitly skips. Indentation within a protected formula remains exact.
     text = re.sub(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', '', text)
+    saved = []
+    prefix = 'CABOUNDARYMATHTOKEN'
+    while prefix in text:
+        prefix += 'X'
+    def protect_for_indent(match):
+        saved.append(match[0])
+        return prefix + str(len(saved) - 1) + 'END'
+    protected_text = MATH.sub(protect_for_indent, text)
+    protected_text = re.sub(r'(?m)^[ \t]{4,}(?=[^\n]*(?:' + prefix + r'|\{\{))', '', protected_text)
+    text = re.sub(prefix + r'(\d+)END', lambda m: saved[int(m[1])], protected_text)
     # Empty formula artifacts outside complete math spans carry no equation.
     spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
     changes = []

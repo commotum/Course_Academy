@@ -81,9 +81,9 @@ def candidates(entities):
         solution = question.get('question/worked-solution', [''])[0]
         solution_calls = calls(solution)
         for fid in question.get('question/answer-fields', []):
-            field = entities[str(fid)]
+            field = entities.get(str(fid), {})
             for aid in field.get('answer-field/correct', []):
-                answer = entities[str(aid)].get('answer/value', [''])[0]
+                answer = entities.get(str(aid), {}).get('answer/value', [''])[0]
                 missing = [call for call in calls(answer) if call not in solution_calls]
                 if missing and solution:
                     found.append({'question': int(eid), 'answer_entity': aid,
