@@ -36,7 +36,9 @@ def validate_delivery_batch(records, kp_id):
             raise ValueError('Normalize accepted aliases; a canonical answer must not be duplicated')
         key = field[':answer-field/choices'][0][':answer/value']
         blocks = re.findall(r'\$\$\s*(.*?)\s*\$\$', q[':question/worked-solution'], re.S)
-        if not blocks or blocks[-1].strip().rstrip('.') != key:
+        external_c = bool(re.search(r'\{\{field-1\}\}\s*\$\+C\$',q[':question/problem']))
+        expected_final = key + ('+C' if external_c else '')
+        if not blocks or blocks[-1].strip().rstrip('.') != expected_final:
             raise ValueError('Worked solution must visibly reach the exact displayed canonical answer')
         m = meta['model']
         shape = (meta['family'],m['substitution'],m['lower'],m['upper'])

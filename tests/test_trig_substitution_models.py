@@ -37,7 +37,7 @@ class TrigSubstitutionTests(unittest.TestCase):
             field=r['question'][':question/answer-fields'][0]
             self.assertEqual(len(field[':answer-field/choices']),1)
             final=re.findall(r'\$\$\s*(.*?)\s*\$\$',r['question'][':question/worked-solution'],re.S)[-1].strip().rstrip('.')
-            self.assertEqual(final,field[':answer-field/choices'][0][':answer/value'])
+            self.assertEqual(final,field[':answer-field/choices'][0][':answer/value']+('+C' if case=='rearranged' else ''))
             if case!='rearranged':self.assertIn(r'\ln A-\ln B=\ln(A/B)',r['question'][':question/worked-solution'])
             validate_delivery_batch([r],17592186068918)
 

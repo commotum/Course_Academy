@@ -29,6 +29,15 @@ finder order. Shared KP locks prevent builders and refills from publishing
 competing versions. Builder slot locks preserve the total concurrency limit
 across service restarts.
 
+Within routine reserve reviews, bands observed in the KP's question inventory
+come before unobserved bands, both when selecting a KP's next review and when the
+review slot claims work. A failed refill's saved eligible-source capture takes
+precedence over the broader inventory ratings when its KP, lineage and registered
+package still match. Shortage and assessment-variety requests retain their
+priority. Observed ratings are a scheduling hint, not proof that a package can
+generate that band or permission to publish it. Unobserved bands remain queued as
+fallback work; a definitive unsupported result still prevents an unchanged retry.
+
 In self-directed mode, ordinary lesson preparation follows the same L30+ targets,
 queue, and depth-two prerequisite scope as Study, with the same below-band-one
 new-topic filter. All new lessons in that scope share one relevance tier. Actual

@@ -65,6 +65,7 @@ def check(record):
     blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',sol,re.S)
     du=scalar(blocks[0].split('=',1)[1]);assert equal(du,s.diff(inner,p.x)),('du',sol)
     substitution=next(block for block in blocks if block.count(r'\int')==2)
+    substitution=substitution.replace(r'\begin{aligned}','').replace(r'\end{aligned}','').replace(r'\\','').replace('&','')
     left,right=substitution.split('=',1)
     left_body,left_var,left_lo,left_hi,_=integral(left)
     assert left_var==p.x and equal(left_body,body) and left_lo==lo and left_hi==hi
@@ -101,8 +102,9 @@ def check(record):
         expected=primitive.subs(p.u,inner)
     field=q[':question/answer-fields'][0];assert len(field[':answer-field/choices'])==1
     key=field[':answer-field/choices'][0][':answer/value']
-    assert blocks[-1].strip().rstrip('.')==key,'Unshown final-to-key conversion'
+    assert blocks[-1].strip().rstrip('.')==key+('+C' if lo is None else ''),'Unshown final-to-key conversion'
     answer=scalar(key)
+    if lo is None:expected=expected.subs(p.C,0)
     assert equal(answer,expected),('key',key,expected)
     if lo is not None:assert not equal(answer,0),'Zero-answer repetition'
     # Check the actual trig-argument range on every closed definite interval.
@@ -150,6 +152,11 @@ def main():
             checks=[{'submitted':key,'expected':'accepted'},
                     {'submitted':r'\frac{2\left('+key+r'\right)}{2}','expected':'accepted'},
                     {'submitted':wrong,'expected':'rejected'}]
+            if row['generation']['model']['lower'] is None:
+                checks.append({'submitted':'('+key+')+1','expected':'accepted','purpose':'Numeric constant can be absorbed into external C'})
+                if row['generation']['family']=='rearranged':
+                    m=row['generation'];constant=s.Rational(m['parameters']['factor'])*s.Rational(m['parameters']['offset'])
+                    checks.append({'submitted':'('+key+')-('+s.latex(constant)+')','expected':'accepted','purpose':'Back-substitution constant may be absorbed into C'})
             grader.append({'label':str(kp)+' '+str(index),'record':row,'checks':checks})
         negatives=[]
         bad=copy.deepcopy(pool[0]);bad['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']+=' + 1'

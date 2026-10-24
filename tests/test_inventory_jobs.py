@@ -827,6 +827,90 @@ class RankedInventoryJobTests(unittest.TestCase):
             self.assertTrue(self.jobs.run_one('build', 0))
         self.assertEqual(claimed, [1, 2])
 
+    def test_routine_review_selects_observed_band_without_dropping_other_reserves(self):
+        kp = self.relevant(self.kp(script='generators/aa/hash/main.py', purpose='advance-build'), 1)
+        kp['inventory']['supported_difficulties'] = ['moderate']
+        inventory = self.ranked(kp)
+        self.jobs.accept(inventory)
+        for band in ('easy', 'moderate', 'hard'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(inventory)
+        build = self.path_for(1, 'build')
+        request = json.loads(build.read_text())['request']
+        self.assertEqual(request['difficulty'], 'moderate')
+        self.assertEqual(request['observed_difficulties'], ['moderate'])
+        self.assertEqual({job['request']['difficulty'] for job in self.records()
+                          if job['request']['jobKind'] == 'refill'}, {'easy', 'moderate', 'hard'})
+        # Rejecting a band is definitive for this variant even if inventory
+        # continues to report observations of that band. Other bands can run.
+        def fail(command, **kwargs):
+            build.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
+            return subprocess.CompletedProcess(command, 1)
+        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+            self.assertTrue(self.jobs.run_one('build', 2))
+        self.jobs.accept(inventory)
+        self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], 'moderate')
+        self.assertEqual(len(json.loads(build.read_text())['rejectedVariants']), 1)
+
+    def test_review_slot_prefers_observed_reserves_then_falls_back_to_unobserved(self):
+        kps = [self.relevant(self.kp(entity, topic=entity, script=f'generators/{entity}/main.py',
+                                    purpose='advance-build'), 1) for entity in (1, 2)]
+        kps[0]['inventory']['supported_difficulties'] = ['easy']
+        kps[1]['inventory']['supported_difficulties'] = ['hard']
+        inventory = self.ranked(*kps)
+        self.jobs.accept(inventory)
+        for entity in (1, 2):
+            self.jobs.finish(self.path_for(entity, 'refill', 'hard'), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(inventory)
+        claimed = []
+        def execute(command, **kwargs):
+            claimed.append(json.loads(Path(command[3]).read_text())['request']['knowledgePoint'])
+            return subprocess.CompletedProcess(command, 0)
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one('build', 2))
+            self.assertTrue(self.jobs.run_one('build', 2))
+        self.assertEqual(claimed, [2, 1])
+
+    def test_review_prefers_eligible_source_bands_and_ignores_mismatched_capture(self):
+        for mismatch in (None, 'kp_id', 'lineage', 'registered_generator', 'material'):
+            with self.subTest(mismatch=mismatch), tempfile.TemporaryDirectory() as directory:
+                self.jobs = InventoryJobs(self.directory, Path(directory), 'learner')
+                kp = self.relevant(self.kp(script='generators/aa/hash/main.py', purpose='advance-build'), 1)
+                kp['inventory']['supported_difficulties'] = ['hard']
+                inventory = self.ranked(kp)
+                self.jobs.accept(inventory)
+                source = {'kp_id': 1, 'lineage': 'same', 'basis': 9,
+                          'registered_generator': {':question-generator/script': kp['generator_script']},
+                          'material': {'source_eligibility': {'policy_version': 1}},
+                          'available_difficulties': ['moderate']}
+                if mismatch:
+                    source[mismatch] = {'kp_id': 99, 'lineage': 'different', 'registered_generator': {},
+                                        'material': {}}[mismatch]
+                for band in ('moderate', 'hard'):
+                    refill = self.path_for(1, 'refill', band)
+                    self.jobs.finish(refill, {'state': 'repair-needed', 'completedAt': 10})
+                    save(refill.with_suffix('.pipeline') / '1/source/source.json', source)
+                self.jobs.accept(inventory)
+                request = json.loads(self.path_for(1, 'build').read_text())['request']
+                self.assertEqual(request['difficulty'], 'hard' if mismatch else 'moderate')
+                self.assertEqual(request['difficulty_evidence'], 'inventory' if mismatch else 'captured-eligible-source')
+
+    def test_shortage_and_variety_reviews_precede_observed_routine_band(self):
+        for purpose in ('lesson-shortage', 'hard-variety'):
+            with self.subTest(purpose=purpose), tempfile.TemporaryDirectory() as directory:
+                self.jobs = InventoryJobs(self.directory, Path(directory), 'learner')
+                kp = self.relevant(self.kp(script='generators/aa/hash/main.py', purpose=purpose), 1)
+                kp['inventory']['supported_difficulties'] = ['moderate']
+                kp['priority_reasons'][0]['generated_band'] = 'hard'
+                inventory = self.ranked(kp)
+                self.jobs.accept(inventory)
+                for band in ('moderate', 'hard'):
+                    self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+                self.jobs.accept(inventory)
+                request = json.loads(self.path_for(1, 'build').read_text())['request']
+                self.assertEqual(request['difficulty'], 'hard')
+                self.assertEqual(request['purpose'], purpose)
+
     def test_shared_kp_lock_prevents_cross_lane_publication(self):
         self.jobs.accept(self.ranked(self.kp(script='generators/aa/hash/main.py')))
         path = self.path_for(1, 'refill', 'hard')

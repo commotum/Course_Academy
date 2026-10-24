@@ -54,6 +54,43 @@ def ranked_reason(common: dict, reason: dict) -> dict:
     return result
 
 
+def speculative_review(request: dict) -> bool:
+    """A reserve band without observations is a fallback, not a rejection.
+
+    Observed ratings are a useful scheduling hint, not a package capability or
+    approval certificate. Actual shortages and assessment variety keep their
+    priority even when this hint does not support their requested band.
+    """
+    return (request.get('stage') == 'review-generator'
+            and request.get('purpose') == 'routine-replenishment'
+            and request.get('difficulty') not in request.get('observed_difficulties', []))
+
+
+def review_request(path: Path, previous: dict, request: dict) -> dict:
+    """Prefer the failed refill's eligible source over broad inventory ratings."""
+    request = {**request, 'jobKind': 'build', 'stage': 'review-generator'}
+    try:
+        source = json.loads((path.with_suffix('.pipeline') / str(previous.get('cycle', 1))
+                             / 'source/source.json').read_text())
+    except (OSError, ValueError):
+        return request
+    if not isinstance(source, dict):
+        return request
+    generator, material = source.get('registered_generator'), source.get('material')
+    eligibility = material.get('source_eligibility') if isinstance(material, dict) else None
+    if not isinstance(generator, dict) or not isinstance(eligibility, dict):
+        return request
+    bands = source.get('available_difficulties')
+    if (source.get('kp_id') == request['knowledgePoint']
+            and source.get('lineage') == previous.get('lineage')
+            and generator.get(':question-generator/script') == request['script']
+            and eligibility.get('policy_version')
+            and isinstance(bands, list) and all(band in ('easy', 'moderate', 'hard') for band in bands)):
+        request.update(observed_difficulties=bands, difficulty_evidence='captured-eligible-source',
+                       difficulty_evidence_basis=source.get('basis'))
+    return request
+
+
 def ranked_requests(inventory: dict) -> list[dict]:
     """One build per KP; approved packages replenish independently per band."""
     builds, refills = {}, {}
@@ -74,6 +111,8 @@ def ranked_requests(inventory: dict) -> list[dict]:
                   'shortage': kp.get('shortage', 0), 'urgency_value': kp.get('urgency_value', 0),
                   'first_studied_at': kp.get('first_studied_at'), 'waiting_since': kp.get('waiting_since'),
                   'next_activity': kp.get('next_activity'), 'priority_reasons': kp.get('priority_reasons', []),
+                  'observed_difficulties': kp['inventory'].get('supported_difficulties', []),
+                  'difficulty_evidence': 'inventory',
                   **{field: kp[field] for field in PRIORITY_FIELDS if field in kp}}
         if not packaged:
             # The selection gate reserves agent work for selected KPs. Existing
@@ -165,14 +204,15 @@ class InventoryJobs:
                 if request.get('jobKind', 'build') == 'build':
                     build_records.setdefault(request['knowledgePoint'], []).append((path, job))
                 else:
-                    refill_records[(request['knowledgePoint'], request['difficulty'])] = job
+                    refill_records[(request['knowledgePoint'], request['difficulty'])] = path, job
             build_requests = [request for request in requests if request['jobKind'] == 'build']
             refill_requests = [request for request in requests if request['jobKind'] == 'refill']
             reopened_refills = set()
             for request in refill_requests:
-                old = refill_records.get((request['knowledgePoint'], request['difficulty']))
-                if old is None:
+                previous = refill_records.get((request['knowledgePoint'], request['difficulty']))
+                if previous is None:
                     continue
+                refill_path, old = previous
                 if old.get('state') != 'repair-needed' or old['request'].get('script') != request['script']:
                     continue
                 successful_review = any(
@@ -188,7 +228,7 @@ class InventoryJobs:
                 elif selected is None or request['knowledgePoint'] in selected:
                     # A refill with missing/stale approval cannot start an
                     # outside agent review while selected work is incomplete.
-                    build_requests.append({**request, 'jobKind': 'build', 'stage': 'review-generator'})
+                    build_requests.append(review_request(refill_path, old, request))
             # Each package/band is allowed its own independent review, but a
             # rejected unchanged band must not prevent other bands from running.
             blocked = {}
@@ -198,7 +238,7 @@ class InventoryJobs:
                     if job.get('state') == 'rejected':
                         blocked[job['request']['knowledgePoint']].add(request_variant(job['request']))
             selected_builds = {}
-            for request in sorted(build_requests, key=priority_key):
+            for request in sorted(build_requests, key=lambda request: (speculative_review(request), *priority_key(request))):
                 kp = request['knowledgePoint']
                 if request_variant(request) not in blocked.get(kp, set()):
                     selected_builds.setdefault(kp, request)
@@ -419,7 +459,8 @@ class InventoryJobs:
                     # recovery retain precedence on every slot. Busy/empty review
                     # queues fall through to ordinary work below.
                     preference = (0 if rank[0] == 0 else
-                                  1 if request.get('stage') == 'review-generator' else 2) if prefer_reviews else 0
+                                  1 + speculative_review(request) if request.get('stage') == 'review-generator'
+                                  else 3) if prefer_reviews else 0
                     return (not self.publication_recovery(path, job), preference, *rank, job['key'])
                 for path, job in sorted(jobs, key=ordering):
                     candidate_lock = (self.directory / f'kp-{job["request"]["knowledgePoint"]}.lock').open('a')

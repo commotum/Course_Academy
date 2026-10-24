@@ -22,3 +22,27 @@ The correct special-angle domain, sum/difference formulas, quadratic-surd ration
 `verify.py` uses independent exact SymPy calculations from displayed prompts and options, checks every displayed solution transition, reproduces both earlier defects, covers all 128 catalog cases, tests 250 additional five-question seeds, and creates a different-target/same-bank control for every catalog bank. The native grader and actual publication filter are used separately. The generated candidate's source and delivery evidence are the captured basis 6389; final publication must recheck current source and inventory.
 
 The family-knowledge-plus-bounds strategy remains possible and is documented in `evidence/finite-family-proof.json`. This is not a claim that every shortcut or every possible future batch has been eliminated. A final-answer multiple-choice question cannot distinguish formula execution from correct recall of the finite exact-value identities. The fix prevents the demonstrated bank-only unique-shape cue and unique interval candidate; it does not invent a different mathematical task to defeat learned knowledge.
+
+## Frozen candidate and completed checks
+
+The runtime package hash is `e7b15035bab20db925c7ca95b4898285773fae170428ca83c375a3bf94a3bd8e`. Only `package/generator.py` changes relative to the blocked package: the symmetric distractor-bank construction and generation version. Source replay banks, formatting helper, and manifest are unchanged. The independent reviewer must accept this exact candidate before it replaces the live workspace.
+
+- `evidence/verification.json`: exact mathematics for all 128 bounded cases, 128 different-target/same-bank controls, 1,250 further generated records, complete replay of both original five-choice banks, and retained negative examples.
+- `evidence/grader-verification.json`: actual `course_academy_engine::learning::grade_field`, 141 correct choices accepted, 564 distractors rejected, zero unresolved checks or database writes.
+- `evidence/delivery-{requested,fresh,catalog}/delivery.json`: actual publication filter retains 5/5, 8/8, and 128/128 records.
+- `evidence/delivery-regression.json`: the protected properties survive filtering; requested CLI replay is byte-identical.
+- `evidence/render/rendering.json`: five requested records pass the unmodified UI renderer. All five screenshots were also visually inspected; math, answer banks, and worked steps are readable.
+- `evidence/portable-regression/regression.json`: the standalone workspace regression passes against current CLI output and delivery survivors, with all mathematical comparisons performed exactly in the quadratic field using only Python's standard library.
+
+## Retained finding map and deployment files
+
+`workspace-regressions/repair-regressions.json` maps both historical IDs to `check_tangent_regressions.py`. The script and the adjacent `tangent-regression-fixtures/` directory are portable: copy all three into the workspace after independent review accepts the corrected criterion. Running the script without arguments then resolves `generator.py` beside itself and `../source/{source,inventory}.json`. It does not modify runtime files or contact a database. Override `--package`, `--source`, `--inventory`, and `--output` for isolated runs.
+
+| Finding | Preserved failing evidence | Current acceptance criterion |
+| --- | --- | --- |
+| `0c0b5701fdc1e1f51385` | Review 1 has 2/5 unique interval answers and additional sole fraction-free interval answers. | Every current record has at least two interval candidates and at least two fraction-free interval candidates, before and after shared delivery filtering. |
+| `5177439f65fd0aa4269e` | Review 2 has 3/5 prompt-blind unique-family-shape answers. | Every current record has at least two canonical-family answers, before and after filtering. |
+
+The second review's added requirement that *family recognition intersected with bounds* also remain ambiguous is explicitly classified as impossible within the source-supported finite family. The regression reports its success on all current questions, instead of claiming the strategy disappeared. It recomputes the four disjoint intervals and tests both retained original source banks. This is a mathematical correction to the criterion, not a deleted counterexample. `evidence/portable-regression/negative-controls.json` also verifies that both historical batches fail the repaired-defect guard.
+
+The recurring workflow failure was treating a compound reviewer request as one indivisible requirement. The author proved one component impossible and stopped even though another component was still a concrete, repairable defect. Future repairs should preserve and test each separable counterexample, identify any impossible component with a source-backed witness, and request independent review of the revised criterion rather than allow contradiction to stall the whole generator.

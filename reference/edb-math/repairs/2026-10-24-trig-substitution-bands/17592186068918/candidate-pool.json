@@ -6,25 +6,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "ffdad78e-eeb0-5582-8f19-9776da9142a6",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{4 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{4 \\cos{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x=- \\frac{2}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{2}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{2}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{2}{3}\\left(\\ln\\left|\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "a411d167-2825-51c4-9339-a02bf0f6d63a",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 3 \\cos{\\left(2 x + \\frac{\\pi}{6} \\right)}}{\\sin{\\left(2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\sin{\\left(2 x + \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 \\cos{\\left(2 x + \\frac{\\pi}{6} \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 3 \\cos{\\left(2 x + \\frac{\\pi}{6} \\right)}}{\\sin{\\left(2 x + \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\\\\&=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|\\sin{\\left(2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "767c493d-15a2-525d-9ace-bea4de6b67ee",
+          ":answer-field/id": "0cd9e74f-7363-5f96-877b-58df43f291ab",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "63f96bc0-d0c4-5197-899f-1f8ec53ff30b",
+              ":answer/id": "f4eeb0b9-7067-5af4-9986-da666d341f8a",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{2}{3}\\left(\\ln\\left|\\sin{\\left(- 2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)+C"
+              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|\\sin{\\left(2 x + \\frac{\\pi}{6} \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "63f96bc0-d0c4-5197-899f-1f8ec53ff30b"
+            "f4eeb0b9-7067-5af4-9986-da666d341f8a"
           ]
         }
       ]
@@ -35,14 +35,15 @@
       "template": "shift_sin",
       "family": "shift_sin",
       "parameters": {
-        "a": "-2",
+        "a": "2",
         "b": "pi/6",
         "offset": "5",
         "scale": "3",
-        "factor": "-2/3",
+        "numerator_coefficient": "-3",
+        "factor": "-3/2",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "d078393602ba55c38b1a807803bfe7c10598278cab19e1cd225141ed4496c41b",
+      "mathematical_fingerprint": "06e2d345cd61e916f2503132203e51f7c306d4362b2143f2a6e4d07bef6c8ac2",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -62,15 +63,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "4*cos(-2*x + pi/6)/(3*sin(-2*x + pi/6))",
-        "substitution": "sin(-2*x + pi/6)",
-        "derivative": "-2*cos(-2*x + pi/6)",
+        "integrand": "-3*cos(2*x + pi/6)/sin(2*x + pi/6)",
+        "substitution": "sin(2*x + pi/6)",
+        "derivative": "2*cos(2*x + pi/6)",
         "transformed": "1/u",
-        "factor": "-2/3",
-        "primitive": "-2*log(sin(-2*x + pi/6))/3",
+        "factor": "-3/2",
+        "primitive": "-3*log(sin(2*x + pi/6))/2",
         "lower": null,
         "upper": null,
-        "result": "-2*log(sin(-2*x + pi/6))/3"
+        "result": "-3*log(sin(2*x + pi/6))/2"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -84,25 +85,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "5d7a4fcb-05c6-5bf8-8751-e0e98c0557d9",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{15 \\cos{\\left(- 5 x \\right)}}{2}}{\\sin{\\left(- 5 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\sin{\\left(- 5 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 5 \\cos{\\left(- 5 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{15 \\cos{\\left(- 5 x \\right)}}{2}}{\\sin{\\left(- 5 x \\right)}}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|\\sin{\\left(- 5 x \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "24f89d85-1234-5960-9f69-130473fa7540",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 6 \\cos{\\left(5 x \\right)}}{\\sin{\\left(5 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\sin{\\left(5 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=5 \\cos{\\left(5 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 6 \\cos{\\left(5 x \\right)}}{\\sin{\\left(5 x \\right)}}\\,\\mathrm{d}x\\\\&=- \\frac{6}{5}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{6}{5}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{6}{5}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{6}{5}\\left(\\ln\\left|\\sin{\\left(5 x \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "b05fb4d4-6c4d-5885-85a4-6321d7d358f8",
+          ":answer-field/id": "3f3367e0-2df1-55d4-a026-3410f2d4a263",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "dc7b3262-6e7b-5188-82a8-abcc3c13bcb2",
+              ":answer/id": "8d9abd72-690a-5d66-a58b-fef0433dc634",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|\\sin{\\left(- 5 x \\right)}\\right|\\right)+C"
+              ":answer/value": "- \\frac{6}{5}\\left(\\ln\\left|\\sin{\\left(5 x \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "dc7b3262-6e7b-5188-82a8-abcc3c13bcb2"
+            "8d9abd72-690a-5d66-a58b-fef0433dc634"
           ]
         }
       ]
@@ -113,14 +114,15 @@
       "template": "sin",
       "family": "sin",
       "parameters": {
-        "a": "-5",
+        "a": "5",
         "b": "0",
         "offset": "3",
         "scale": "4",
-        "factor": "-3/2",
+        "numerator_coefficient": "-6",
+        "factor": "-6/5",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "f7c4055286e85cb0f368a8b0c4d7cde07a99c2fabc1e1780ed763f66655bdeef",
+      "mathematical_fingerprint": "6225bbb8cb70560059e933a7c53ad0c93a16e2ae01b9dd31955030a7352890bd",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -140,15 +142,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "15*cos(-5*x)/(2*sin(-5*x))",
-        "substitution": "sin(-5*x)",
-        "derivative": "-5*cos(-5*x)",
+        "integrand": "-6*cos(5*x)/sin(5*x)",
+        "substitution": "sin(5*x)",
+        "derivative": "5*cos(5*x)",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(sin(-5*x))/2",
+        "factor": "-6/5",
+        "primitive": "-6*log(sin(5*x))/5",
         "lower": null,
         "upper": null,
-        "result": "-3*log(sin(-5*x))/2"
+        "result": "-6*log(sin(5*x))/5"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -162,25 +164,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "8043df97-8334-5b8f-a87e-966168eac862",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 3 \\sin{\\left(- 4 x \\right)}}{\\cos{\\left(- 4 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\cos{\\left(- 4 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\sin{\\left(- 4 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 3 \\sin{\\left(- 4 x \\right)}}{\\cos{\\left(- 4 x \\right)}}\\,\\mathrm{d}x=- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{4}\\left(\\ln\\left|\\cos{\\left(- 4 x \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "1d699d0d-c059-5d2a-be51-84bdb95a4ee4",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{8 \\sin{\\left(4 x \\right)}}{\\cos{\\left(4 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\cos{\\left(4 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 4 \\sin{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{8 \\sin{\\left(4 x \\right)}}{\\cos{\\left(4 x \\right)}}\\,\\mathrm{d}x\\\\&=-2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-2\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=-2\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n-2\\left(\\ln\\left|\\cos{\\left(4 x \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "5dc352fb-581c-50a4-a00c-a7dbf0670931",
+          ":answer-field/id": "0ec9e433-0b86-5177-b34c-c5d0522e197c",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "ada4f178-e6b2-5d9e-bfd1-63c0a0a67be7",
+              ":answer/id": "b6b3c7de-896a-5ba6-82ea-7b82215d108b",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{4}\\left(\\ln\\left|\\cos{\\left(- 4 x \\right)}\\right|\\right)+C"
+              ":answer/value": "-2\\left(\\ln\\left|\\cos{\\left(4 x \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "ada4f178-e6b2-5d9e-bfd1-63c0a0a67be7"
+            "b6b3c7de-896a-5ba6-82ea-7b82215d108b"
           ]
         }
       ]
@@ -191,14 +193,15 @@
       "template": "cos",
       "family": "cos",
       "parameters": {
-        "a": "-4",
+        "a": "4",
         "b": "0",
         "offset": "5",
         "scale": "1",
-        "factor": "-3/4",
+        "numerator_coefficient": "-8",
+        "factor": "-2",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "c6b960aabcdb41aed2f01f81c1b97a988fd5a7f6ba6c5a0e351685f96c6c9bb4",
+      "mathematical_fingerprint": "6c7e80878dad5b931cfc2d136bace1d87e1ae54b1fa269d5cbb7b1e00f76af6d",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -218,15 +221,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-3*sin(-4*x)/cos(-4*x)",
-        "substitution": "cos(-4*x)",
-        "derivative": "4*sin(-4*x)",
+        "integrand": "8*sin(4*x)/cos(4*x)",
+        "substitution": "cos(4*x)",
+        "derivative": "-4*sin(4*x)",
         "transformed": "1/u",
-        "factor": "-3/4",
-        "primitive": "-3*log(cos(-4*x))/4",
+        "factor": "-2",
+        "primitive": "-2*log(cos(4*x))",
         "lower": null,
         "upper": null,
-        "result": "-3*log(cos(-4*x))/4"
+        "result": "-2*log(cos(4*x))"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -240,25 +243,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "fbcd0195-eeb1-5e91-a776-5275ab7f2b6f",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 6 \\sin{\\left(- 4 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(- 4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\cos{\\left(- 4 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\sin{\\left(- 4 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 6 \\sin{\\left(- 4 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(- 4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(- 4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "67275ce7-53c5-5db2-b1a2-cba26904d139",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{6 \\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 4 \\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{6 \\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\\\\&=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "348b97c1-325c-54b8-96ed-0748b935d948",
+          ":answer-field/id": "dc26ab9e-7c8f-5d9f-a18f-0b033e8961cf",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "fa6f5132-27f6-574b-9f68-5129eeae5279",
+              ":answer/id": "3e7d6e28-b39a-5527-ba6c-627cc21f945f",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(- 4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C"
+              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "fa6f5132-27f6-574b-9f68-5129eeae5279"
+            "3e7d6e28-b39a-5527-ba6c-627cc21f945f"
           ]
         }
       ]
@@ -269,14 +272,15 @@
       "template": "shift_cos",
       "family": "shift_cos",
       "parameters": {
-        "a": "-4",
+        "a": "4",
         "b": "-pi/6",
         "offset": "4",
         "scale": "2",
+        "numerator_coefficient": "-6",
         "factor": "-3/2",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "9cbe025fd428ff7f2441cb3fece80c5927ef6bb9e0bcd905371419d685254074",
+      "mathematical_fingerprint": "1294b07588049d8c14f85b2761dca3f049bafec35ba0f63cba9bdcf1cfce5800",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -296,15 +300,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-6*sin(-4*x - pi/6)/cos(-4*x - pi/6)",
-        "substitution": "cos(-4*x - pi/6)",
-        "derivative": "4*sin(-4*x - pi/6)",
+        "integrand": "6*sin(4*x - pi/6)/cos(4*x - pi/6)",
+        "substitution": "cos(4*x - pi/6)",
+        "derivative": "-4*sin(4*x - pi/6)",
         "transformed": "1/u",
         "factor": "-3/2",
-        "primitive": "-3*log(cos(-4*x - pi/6))/2",
+        "primitive": "-3*log(cos(4*x - pi/6))/2",
         "lower": null,
         "upper": null,
-        "result": "-3*log(cos(-4*x - pi/6))/2"
+        "result": "-3*log(cos(4*x - pi/6))/2"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -318,25 +322,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "b02bda70-04ae-5a18-a0e9-9fbe516c4afb",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{20 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{20 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}{3}}{\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x=\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{5}{3}\\left(\\ln\\left|\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "95cecd55-6742-54ae-b8bb-c222b6a10559",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{9 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}{\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{9 \\cos{\\left(4 x - \\frac{\\pi}{6} \\right)}}{\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\\\\&=\\frac{9}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{9}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{9}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{9}{4}\\left(\\ln\\left|\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "d6c9ea7b-54b0-5a3a-b031-3a914b89be32",
+          ":answer-field/id": "eb7ea553-0376-5f3e-b39e-5b4e042631ad",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "00dbb75d-eaea-5d34-9be3-2da20a4ad980",
+              ":answer/id": "1c7d388b-30d1-5c83-a52d-f24ab3988721",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{5}{3}\\left(\\ln\\left|\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C"
+              ":answer/value": "\\frac{9}{4}\\left(\\ln\\left|\\sin{\\left(4 x - \\frac{\\pi}{6} \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "00dbb75d-eaea-5d34-9be3-2da20a4ad980"
+            "1c7d388b-30d1-5c83-a52d-f24ab3988721"
           ]
         }
       ]
@@ -351,10 +355,11 @@
         "b": "-pi/6",
         "offset": "4",
         "scale": "4",
-        "factor": "5/3",
+        "numerator_coefficient": "9",
+        "factor": "9/4",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "7d40f437d9a188917dbacd6d525aeaa01367aa1a6872c3671533a9b05f70d8a3",
+      "mathematical_fingerprint": "5e938296b6ba86b92b9f889a207bc35216aece9564c3f6d4e0fa2e98bb89bf34",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -374,15 +379,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "20*cos(4*x - pi/6)/(3*sin(4*x - pi/6))",
+        "integrand": "9*cos(4*x - pi/6)/sin(4*x - pi/6)",
         "substitution": "sin(4*x - pi/6)",
         "derivative": "4*cos(4*x - pi/6)",
         "transformed": "1/u",
-        "factor": "5/3",
-        "primitive": "5*log(sin(4*x - pi/6))/3",
+        "factor": "9/4",
+        "primitive": "9*log(sin(4*x - pi/6))/4",
         "lower": null,
         "upper": null,
-        "result": "5*log(sin(4*x - pi/6))/3"
+        "result": "9*log(sin(4*x - pi/6))/4"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -396,25 +401,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "248c3a4f-8510-5a56-8eda-0c1e283933d4",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{20 \\cos{\\left(4 x \\right)}}{3}}{\\sin{\\left(4 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\sin{\\left(4 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\cos{\\left(4 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{20 \\cos{\\left(4 x \\right)}}{3}}{\\sin{\\left(4 x \\right)}}\\,\\mathrm{d}x=\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{5}{3}\\left(\\ln\\left|\\sin{\\left(4 x \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "322cff1f-722e-5335-bbbb-5cd9f3bc0deb",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{9 \\cos{\\left(4 x \\right)}}{\\sin{\\left(4 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\sin{\\left(4 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\cos{\\left(4 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{9 \\cos{\\left(4 x \\right)}}{\\sin{\\left(4 x \\right)}}\\,\\mathrm{d}x\\\\&=\\frac{9}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{9}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{9}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{9}{4}\\left(\\ln\\left|\\sin{\\left(4 x \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "58d0d3d3-13c1-5483-a75b-37d1da7f4151",
+          ":answer-field/id": "361279cb-7bcf-5cce-9e29-76d0b4852f06",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "50d6b0a3-89d5-54b5-812e-c5bb66358501",
+              ":answer/id": "46c8f43a-dc80-5293-9219-e61d3fd08c87",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{5}{3}\\left(\\ln\\left|\\sin{\\left(4 x \\right)}\\right|\\right)+C"
+              ":answer/value": "\\frac{9}{4}\\left(\\ln\\left|\\sin{\\left(4 x \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "50d6b0a3-89d5-54b5-812e-c5bb66358501"
+            "46c8f43a-dc80-5293-9219-e61d3fd08c87"
           ]
         }
       ]
@@ -429,10 +434,11 @@
         "b": "0",
         "offset": "5",
         "scale": "2",
-        "factor": "5/3",
+        "numerator_coefficient": "9",
+        "factor": "9/4",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "82f991263c21cb64e0becb4038cd419d537e7279a894af82b466315533aad28e",
+      "mathematical_fingerprint": "25089d78a5a76fe5f5debd6648d28f5fd7e1d1a8511f5afec3c7307b0e4d5e06",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -452,15 +458,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "20*cos(4*x)/(3*sin(4*x))",
+        "integrand": "9*cos(4*x)/sin(4*x)",
         "substitution": "sin(4*x)",
         "derivative": "4*cos(4*x)",
         "transformed": "1/u",
-        "factor": "5/3",
-        "primitive": "5*log(sin(4*x))/3",
+        "factor": "9/4",
+        "primitive": "9*log(sin(4*x))/4",
         "lower": null,
         "upper": null,
-        "result": "5*log(sin(4*x))/3"
+        "result": "9*log(sin(4*x))/4"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -474,25 +480,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "86dd752b-2d5c-5250-ba51-2d92670e6970",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- \\frac{9 \\sin{\\left(3 x \\right)}}{2}}{\\cos{\\left(3 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\cos{\\left(3 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 3 \\sin{\\left(3 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- \\frac{9 \\sin{\\left(3 x \\right)}}{2}}{\\cos{\\left(3 x \\right)}}\\,\\mathrm{d}x=\\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(3 x \\right)}\\right|\\right)+C.\n$$",
+      ":question/id": "f125b4f1-ed29-5df2-bb8a-89064bddaa4d",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 5 \\sin{\\left(3 x \\right)}}{\\cos{\\left(3 x \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\cos{\\left(3 x \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 3 \\sin{\\left(3 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 5 \\sin{\\left(3 x \\right)}}{\\cos{\\left(3 x \\right)}}\\,\\mathrm{d}x\\\\&=\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{5}{3}\\left(\\ln\\left|\\cos{\\left(3 x \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "0f6c0511-87f9-578a-a89c-324301d26489",
+          ":answer-field/id": "62569f08-a6cc-5798-b5bc-56a2f63780fb",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "82e2396a-3691-58cb-82c2-b4e430109564",
+              ":answer/id": "c064f66e-a861-59b6-ad24-6627e83e7bea",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{3}{2}\\left(\\ln\\left|\\cos{\\left(3 x \\right)}\\right|\\right)+C"
+              ":answer/value": "\\frac{5}{3}\\left(\\ln\\left|\\cos{\\left(3 x \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "82e2396a-3691-58cb-82c2-b4e430109564"
+            "c064f66e-a861-59b6-ad24-6627e83e7bea"
           ]
         }
       ]
@@ -507,10 +513,11 @@
         "b": "0",
         "offset": "4",
         "scale": "1",
-        "factor": "3/2",
+        "numerator_coefficient": "5",
+        "factor": "5/3",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "809c58421dd620106fe3017e41a3711ac75129f7ddf5843721706b45ef509d7f",
+      "mathematical_fingerprint": "6b278937d970b436c143d16fb8aa728a737651b0b69329f9ec5d5a2a2e47c5d4",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -530,15 +537,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-9*sin(3*x)/(2*cos(3*x))",
+        "integrand": "-5*sin(3*x)/cos(3*x)",
         "substitution": "cos(3*x)",
         "derivative": "-3*sin(3*x)",
         "transformed": "1/u",
-        "factor": "3/2",
-        "primitive": "3*log(cos(3*x))/2",
+        "factor": "5/3",
+        "primitive": "5*log(cos(3*x))/3",
         "lower": null,
         "upper": null,
-        "result": "3*log(cos(3*x))/2"
+        "result": "5*log(cos(3*x))/3"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -553,8 +560,8 @@
     },
     "question": {
       ":question/id": "daab8fef-7f81-5e77-a20e-828a7fc24448",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x=\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{1}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{2}\\left(\\ln\\left|\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- \\sin{\\left(2 x - \\frac{\\pi}{6} \\right)}}{\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=\\frac{1}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{2}\\left(\\ln\\left|\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/easy",
       ":question/answer-fields": [
         {
@@ -565,7 +572,7 @@
             {
               ":answer/id": "5a70e07c-58e6-5b61-b332-843ef1e9c3fe",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{1}{2}\\left(\\ln\\left|\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}\\right|\\right)+C"
+              ":answer/value": "\\frac{1}{2}\\left(\\ln\\left|\\cos{\\left(2 x - \\frac{\\pi}{6} \\right)}\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
@@ -585,6 +592,7 @@
         "b": "-pi/6",
         "offset": "2",
         "scale": "4",
+        "numerator_coefficient": "1",
         "factor": "1/2",
         "inner_role": "affine"
       },
@@ -630,25 +638,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "6c489afe-d724-5207-868a-aada64eaac3c",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{24 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=2 \\cot^{2}{\\left(4 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 16 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{24 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)+C.\n$$",
+      ":question/id": "fe4cdb97-3c03-55ad-9e1c-f0b88c3210d4",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{5 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=2 \\cot^{2}{\\left(4 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 16 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{5 \\cot{\\left(4 x \\right)} \\csc^{2}{\\left(4 x \\right)}}{2 \\cot^{2}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\\\\&=- \\frac{5}{16}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{5}{16}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{5}{16}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{5}{16}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "1d02c70b-28b1-5e39-8674-00804f8f80ed",
+          ":answer-field/id": "9ac9f795-0e49-586d-b35c-1b2572b96dad",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "72bf34cb-5ea5-5b68-90d7-841684d73f6d",
+              ":answer/id": "b10d9c76-84f2-58c9-ad91-aa2a93087789",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)+C"
+              ":answer/value": "- \\frac{5}{16}\\left(\\ln\\left|2 \\cot^{2}{\\left(4 x \\right)} + 5\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "72bf34cb-5ea5-5b68-90d7-841684d73f6d"
+            "b10d9c76-84f2-58c9-ad91-aa2a93087789"
           ]
         }
       ]
@@ -663,10 +671,11 @@
         "b": "0",
         "offset": "5",
         "scale": "2",
-        "factor": "-3/2",
+        "numerator_coefficient": "-5",
+        "factor": "-5/16",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "23aebec09dea993a15424b5d0cc44ca24a860a6fb3f2157739405f9c2de44262",
+      "mathematical_fingerprint": "32b8aeebd5542a7c0a490813b76ccec2dda1f25d04ba324eb5cc36c1bbb37971",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -686,15 +695,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "24*cot(4*x)*csc(4*x)**2/(2*cot(4*x)**2 + 5)",
+        "integrand": "5*cot(4*x)*csc(4*x)**2/(2*cot(4*x)**2 + 5)",
         "substitution": "2*cot(4*x)**2 + 5",
         "derivative": "-16*cot(4*x)*csc(4*x)**2",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(2*cot(4*x)**2 + 5)/2",
+        "factor": "-5/16",
+        "primitive": "-5*log(2*cot(4*x)**2 + 5)/16",
         "lower": null,
         "upper": null,
-        "result": "-3*log(2*cot(4*x)**2 + 5)/2"
+        "result": "-5*log(2*cot(4*x)**2 + 5)/16"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -708,25 +717,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "04c3c421-ca19-51d0-a5e2-68fd8323ea01",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- \\frac{80 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}}{3}}{4 \\sin^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=4 \\sin^{2}{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=16 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- \\frac{80 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}}{3}}{4 \\sin^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x=- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{5}{3}\\left(\\ln\\left|4 \\sin^{2}{\\left(2 x \\right)} + 4\\right|\\right)+C.\n$$",
+      ":question/id": "fd6aac28-64c4-571e-a3df-d32e27923be4",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 9 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}}{4 \\sin^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=4 \\sin^{2}{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=16 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 9 \\sin{\\left(2 x \\right)} \\cos{\\left(2 x \\right)}}{4 \\sin^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\\\\&=- \\frac{9}{16}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{9}{16}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{9}{16}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{9}{16}\\left(\\ln\\left|4 \\sin^{2}{\\left(2 x \\right)} + 4\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "dd753178-73bd-5d8d-9109-52a2f1214e8b",
+          ":answer-field/id": "238dd255-45cc-50ae-89ba-ad1dc158ebdf",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "2888a256-9059-5226-9c41-c30388b17959",
+              ":answer/id": "068bcd4e-a085-5749-88b5-c24f2462f73b",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{5}{3}\\left(\\ln\\left|4 \\sin^{2}{\\left(2 x \\right)} + 4\\right|\\right)+C"
+              ":answer/value": "- \\frac{9}{16}\\left(\\ln\\left|4 \\sin^{2}{\\left(2 x \\right)} + 4\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "2888a256-9059-5226-9c41-c30388b17959"
+            "068bcd4e-a085-5749-88b5-c24f2462f73b"
           ]
         }
       ]
@@ -741,10 +750,11 @@
         "b": "0",
         "offset": "4",
         "scale": "4",
-        "factor": "-5/3",
+        "numerator_coefficient": "-9",
+        "factor": "-9/16",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "3832c32d5b49d894967853d04424244ac865fafd7e5a69952ad0a2f13abd66d8",
+      "mathematical_fingerprint": "2e5206d2adffaee85ce09b46be1bc5fb22174d9ebdb6eb3d3292c9c0c9d573c3",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -764,15 +774,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-80*sin(2*x)*cos(2*x)/(3*(4*sin(2*x)**2 + 4))",
+        "integrand": "-9*sin(2*x)*cos(2*x)/(4*sin(2*x)**2 + 4)",
         "substitution": "4*sin(2*x)**2 + 4",
         "derivative": "16*sin(2*x)*cos(2*x)",
         "transformed": "1/u",
-        "factor": "-5/3",
-        "primitive": "-5*log(4*sin(2*x)**2 + 4)/3",
+        "factor": "-9/16",
+        "primitive": "-9*log(4*sin(2*x)**2 + 4)/16",
         "lower": null,
         "upper": null,
-        "result": "-5*log(4*sin(2*x)**2 + 4)/3"
+        "result": "-9*log(4*sin(2*x)**2 + 4)/16"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -786,25 +796,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "49b2f451-925e-54f9-83d9-e96e9a7a70df",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 25 \\sec^{2}{\\left(5 x \\right)}}{3 \\tan{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=3 \\tan{\\left(5 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=15 \\sec^{2}{\\left(5 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 25 \\sec^{2}{\\left(5 x \\right)}}{3 \\tan{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x=- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{5}{3}\\left(\\ln\\left|3 \\tan{\\left(5 x \\right)} + 3\\right|\\right)+C.\n$$",
+      ":question/id": "e45b24fa-a9de-5f6d-996e-a14d8caaa03d",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 6 \\sec^{2}{\\left(5 x \\right)}}{3 \\tan{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=3 \\tan{\\left(5 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=15 \\sec^{2}{\\left(5 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 6 \\sec^{2}{\\left(5 x \\right)}}{3 \\tan{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\\\\&=- \\frac{2}{5}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{2}{5}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{2}{5}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{2}{5}\\left(\\ln\\left|3 \\tan{\\left(5 x \\right)} + 3\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "a5152626-22f9-5590-8348-d188f9a997da",
+          ":answer-field/id": "623e141c-133d-504c-a6e3-d3bf1c8537ba",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "f68a61ab-a4a3-508f-a7ff-caa254ef1bec",
+              ":answer/id": "8840d6ac-0ae6-55b5-be36-c00c32c2ccd3",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{5}{3}\\left(\\ln\\left|3 \\tan{\\left(5 x \\right)} + 3\\right|\\right)+C"
+              ":answer/value": "- \\frac{2}{5}\\left(\\ln\\left|3 \\tan{\\left(5 x \\right)} + 3\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "f68a61ab-a4a3-508f-a7ff-caa254ef1bec"
+            "8840d6ac-0ae6-55b5-be36-c00c32c2ccd3"
           ]
         }
       ]
@@ -819,10 +829,11 @@
         "b": "0",
         "offset": "3",
         "scale": "3",
-        "factor": "-5/3",
+        "numerator_coefficient": "-6",
+        "factor": "-2/5",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "2179370611b717aafb616543cd25db9626471e067d09f383e8e654e0c2c415f4",
+      "mathematical_fingerprint": "921fac36d3cfb797c78039f009fc112ea9a390003e509167fbde609727bf67ef",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -842,15 +853,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-25*sec(5*x)**2/(3*tan(5*x) + 3)",
+        "integrand": "-6*sec(5*x)**2/(3*tan(5*x) + 3)",
         "substitution": "3*tan(5*x) + 3",
         "derivative": "15*sec(5*x)**2",
         "transformed": "1/u",
-        "factor": "-5/3",
-        "primitive": "-5*log(3*tan(5*x) + 3)/3",
+        "factor": "-2/5",
+        "primitive": "-2*log(3*tan(5*x) + 3)/5",
         "lower": null,
         "upper": null,
-        "result": "-5*log(3*tan(5*x) + 3)/3"
+        "result": "-2*log(3*tan(5*x) + 3)/5"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -864,25 +875,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "e3ac9f9e-53c4-5a9e-8fac-3894ed8f9c0b",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{54 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=3 \\cos^{3}{\\left(4 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 36 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{54 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 4}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|3 \\cos^{3}{\\left(4 x \\right)} + 4\\right|\\right)+C.\n$$",
+      ":question/id": "b4d5fc1a-d7c7-5e26-8e4b-c5b64a70f86b",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{5 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=3 \\cos^{3}{\\left(4 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 36 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{5 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 4}\\,\\mathrm{d}x\\\\&=- \\frac{5}{36}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{5}{36}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{5}{36}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{5}{36}\\left(\\ln\\left|3 \\cos^{3}{\\left(4 x \\right)} + 4\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "fbce080c-71e2-5c2a-9dab-3958e3971b00",
+          ":answer-field/id": "031ce265-bd53-5059-aa00-99e347209715",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "8fb9ee5e-f7ee-5d30-ac34-9c6f67b8b76f",
+              ":answer/id": "ffb09d5b-f56c-5f4a-af79-581288118728",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|3 \\cos^{3}{\\left(4 x \\right)} + 4\\right|\\right)+C"
+              ":answer/value": "- \\frac{5}{36}\\left(\\ln\\left|3 \\cos^{3}{\\left(4 x \\right)} + 4\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "8fb9ee5e-f7ee-5d30-ac34-9c6f67b8b76f"
+            "ffb09d5b-f56c-5f4a-af79-581288118728"
           ]
         }
       ]
@@ -897,10 +908,11 @@
         "b": "0",
         "offset": "4",
         "scale": "3",
-        "factor": "-3/2",
+        "numerator_coefficient": "-5",
+        "factor": "-5/36",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "44aeadc51a51313068b86772362659a04199ae47604fce4ff4a7126945dd2534",
+      "mathematical_fingerprint": "e534d1fc624277c6ba8bab881a80f90c31b5847dac7f4d50b03178b48c6d014e",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -920,15 +932,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "54*sin(4*x)*cos(4*x)**2/(3*cos(4*x)**3 + 4)",
+        "integrand": "5*sin(4*x)*cos(4*x)**2/(3*cos(4*x)**3 + 4)",
         "substitution": "3*cos(4*x)**3 + 4",
         "derivative": "-36*sin(4*x)*cos(4*x)**2",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(3*cos(4*x)**3 + 4)/2",
+        "factor": "-5/36",
+        "primitive": "-5*log(3*cos(4*x)**3 + 4)/36",
         "lower": null,
         "upper": null,
-        "result": "-3*log(3*cos(4*x)**3 + 4)/2"
+        "result": "-5*log(3*cos(4*x)**3 + 4)/36"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -942,25 +954,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "5034c296-7847-5157-8b7b-472480dae0da",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{50 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{3 \\cos^{2}{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=3 \\cos^{2}{\\left(5 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 30 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{50 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{3 \\cos^{2}{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x=- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{5}{3}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{5}{3}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{5}{3}\\left(\\ln\\left|3 \\cos^{2}{\\left(5 x \\right)} + 3\\right|\\right)+C.\n$$",
+      ":question/id": "610acb1e-f9e0-5b4a-be14-e1d3ced7b3e0",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{9 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{3 \\cos^{2}{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=3 \\cos^{2}{\\left(5 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 30 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{9 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{3 \\cos^{2}{\\left(5 x \\right)} + 3}\\,\\mathrm{d}x\\\\&=- \\frac{3}{10}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{10}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{10}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{10}\\left(\\ln\\left|3 \\cos^{2}{\\left(5 x \\right)} + 3\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "87ba1ac9-55e0-5bdc-bad2-7f933bb08350",
+          ":answer-field/id": "37df2208-438e-5cc3-b670-67c0d276fa22",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "2393ec9e-0969-58f8-8c8c-534820d4d2dd",
+              ":answer/id": "846e8754-94f9-5233-b33a-607dafc4ea47",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{5}{3}\\left(\\ln\\left|3 \\cos^{2}{\\left(5 x \\right)} + 3\\right|\\right)+C"
+              ":answer/value": "- \\frac{3}{10}\\left(\\ln\\left|3 \\cos^{2}{\\left(5 x \\right)} + 3\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "2393ec9e-0969-58f8-8c8c-534820d4d2dd"
+            "846e8754-94f9-5233-b33a-607dafc4ea47"
           ]
         }
       ]
@@ -975,10 +987,11 @@
         "b": "0",
         "offset": "3",
         "scale": "3",
-        "factor": "-5/3",
+        "numerator_coefficient": "-9",
+        "factor": "-3/10",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "6ff5b91de5fe638cabc79faa69a80d14153d77589656e4c2a23b86ac593e42bb",
+      "mathematical_fingerprint": "f3b56d2cb7cfe666ede65802d7095c58cdfe5d5fa5c4167bfc81b0e77df350eb",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -998,15 +1011,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "50*sin(5*x)*cos(5*x)/(3*cos(5*x)**2 + 3)",
+        "integrand": "9*sin(5*x)*cos(5*x)/(3*cos(5*x)**2 + 3)",
         "substitution": "3*cos(5*x)**2 + 3",
         "derivative": "-30*sin(5*x)*cos(5*x)",
         "transformed": "1/u",
-        "factor": "-5/3",
-        "primitive": "-5*log(3*cos(5*x)**2 + 3)/3",
+        "factor": "-3/10",
+        "primitive": "-3*log(3*cos(5*x)**2 + 3)/10",
         "lower": null,
         "upper": null,
-        "result": "-5*log(3*cos(5*x)**2 + 3)/3"
+        "result": "-3*log(3*cos(5*x)**2 + 3)/10"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1020,25 +1033,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "6f56065c-6460-51e5-931e-f8b008437a97",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 36 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3 \\tan^{2}{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=3 \\tan^{2}{\\left(4 x \\right)} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=24 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 36 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3 \\tan^{2}{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left|3 \\tan^{2}{\\left(4 x \\right)} + 2\\right|\\right)+C.\n$$",
+      ":question/id": "0723f74c-97a4-519e-b71e-139b76b2fc24",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 6 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3 \\tan^{2}{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=3 \\tan^{2}{\\left(4 x \\right)} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=24 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 6 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3 \\tan^{2}{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\\\\&=- \\frac{1}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{4}\\left(\\ln\\left|3 \\tan^{2}{\\left(4 x \\right)} + 2\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "2be91e5e-8981-5840-bc97-ada7b3ad766e",
+          ":answer-field/id": "6f92f4d8-91d4-581e-b63a-068ab6e8f30d",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "fb9ab92c-a4a7-542d-9d71-991613e3b16e",
+              ":answer/id": "5c31069a-b2db-5d21-bc7d-2dd6424dfa4e",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left|3 \\tan^{2}{\\left(4 x \\right)} + 2\\right|\\right)+C"
+              ":answer/value": "- \\frac{1}{4}\\left(\\ln\\left|3 \\tan^{2}{\\left(4 x \\right)} + 2\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "fb9ab92c-a4a7-542d-9d71-991613e3b16e"
+            "5c31069a-b2db-5d21-bc7d-2dd6424dfa4e"
           ]
         }
       ]
@@ -1053,10 +1066,11 @@
         "b": "0",
         "offset": "2",
         "scale": "3",
-        "factor": "-3/2",
+        "numerator_coefficient": "-6",
+        "factor": "-1/4",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "176dc1b8055f2f6523e48cb873aeafb0aac0e0e663851af517ba382753174220",
+      "mathematical_fingerprint": "f08e08f6831d846009b504f46cf0678ecc8cf5f91f0c32f423b7fc0bcdea71a0",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1076,15 +1090,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-36*tan(4*x)*sec(4*x)**2/(3*tan(4*x)**2 + 2)",
+        "integrand": "-6*tan(4*x)*sec(4*x)**2/(3*tan(4*x)**2 + 2)",
         "substitution": "3*tan(4*x)**2 + 2",
         "derivative": "24*tan(4*x)*sec(4*x)**2",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(3*tan(4*x)**2 + 2)/2",
+        "factor": "-1/4",
+        "primitive": "-log(3*tan(4*x)**2 + 2)/4",
         "lower": null,
         "upper": null,
-        "result": "-3*log(3*tan(4*x)**2 + 2)/2"
+        "result": "-log(3*tan(4*x)**2 + 2)/4"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1098,25 +1112,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "de1a1b21-03f6-5591-814b-81f31fd32f04",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{\\frac{3 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}}{2}}{\\csc{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\csc{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{\\frac{3 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}}{2}}{\\csc{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x=- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{4}\\left(\\ln\\left|\\csc{\\left(2 x \\right)} + 4\\right|\\right)+C.\n$$",
+      ":question/id": "3a1ba1d8-1969-508a-be5a-4c4fa6b390d0",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{7 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}}{\\csc{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\csc{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 2 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{7 \\cot{\\left(2 x \\right)} \\csc{\\left(2 x \\right)}}{\\csc{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\\\\&=- \\frac{7}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{7}{2}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{7}{2}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{7}{2}\\left(\\ln\\left|\\csc{\\left(2 x \\right)} + 4\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "df336654-0adf-53f2-900e-2ad0be99e2de",
+          ":answer-field/id": "846dce3b-5c1d-5b19-b44c-14901b427b66",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "8fd27529-1ab0-51cb-a994-db79e7fe5775",
+              ":answer/id": "13f0aa1c-cb2d-572f-b69f-78be4853041e",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{4}\\left(\\ln\\left|\\csc{\\left(2 x \\right)} + 4\\right|\\right)+C"
+              ":answer/value": "- \\frac{7}{2}\\left(\\ln\\left|\\csc{\\left(2 x \\right)} + 4\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "8fd27529-1ab0-51cb-a994-db79e7fe5775"
+            "13f0aa1c-cb2d-572f-b69f-78be4853041e"
           ]
         }
       ]
@@ -1131,10 +1145,11 @@
         "b": "0",
         "offset": "4",
         "scale": "1",
-        "factor": "-3/4",
+        "numerator_coefficient": "-7",
+        "factor": "-7/2",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "4d7e295b2b6e3604688572dea6a9e837d0ab4014a06351a9622f0f19563b0d91",
+      "mathematical_fingerprint": "fb15747e1a608a736ce1e27ae5842396fc3c4a05b162b605cf6cff1292942dce",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1154,15 +1169,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "3*cot(2*x)*csc(2*x)/(2*(csc(2*x) + 4))",
+        "integrand": "7*cot(2*x)*csc(2*x)/(csc(2*x) + 4)",
         "substitution": "csc(2*x) + 4",
         "derivative": "-2*cot(2*x)*csc(2*x)",
         "transformed": "1/u",
-        "factor": "-3/4",
-        "primitive": "-3*log(csc(2*x) + 4)/4",
+        "factor": "-7/2",
+        "primitive": "-7*log(csc(2*x) + 4)/2",
         "lower": null,
         "upper": null,
-        "result": "-3*log(csc(2*x) + 4)/4"
+        "result": "-7*log(csc(2*x) + 4)/2"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1176,25 +1191,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "90bcde26-d76a-51e5-8984-faebc6de605a",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- \\frac{15 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}}{2}}{2 \\sec{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=2 \\sec{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=10 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- \\frac{15 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}}{2}}{2 \\sec{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{3}{4}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{4}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{4}\\left(\\ln\\left|2 \\sec{\\left(5 x \\right)} + 5\\right|\\right)+C.\n$$",
+      ":question/id": "8a6cb493-e9c7-549e-8e96-cbae19874ed7",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- 7 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}}{2 \\sec{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=2 \\sec{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=10 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- 7 \\tan{\\left(5 x \\right)} \\sec{\\left(5 x \\right)}}{2 \\sec{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\\\\&=- \\frac{7}{10}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{7}{10}\\left(\\int \\frac{1}{u}\\,\\mathrm{d}u\\right)=- \\frac{7}{10}\\left(\\ln\\left|u\\right|\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{7}{10}\\left(\\ln\\left|2 \\sec{\\left(5 x \\right)} + 5\\right|\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/moderate",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "d3d524c1-795f-5a4b-ac9e-c07954adc7f9",
+          ":answer-field/id": "f2261c66-d0ca-5a68-bfc5-a4db05416dfb",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "cfd2cf76-786b-53cd-b206-22913d32274c",
+              ":answer/id": "38a541fb-ca7c-5c71-8030-c741f5cb4195",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{4}\\left(\\ln\\left|2 \\sec{\\left(5 x \\right)} + 5\\right|\\right)+C"
+              ":answer/value": "- \\frac{7}{10}\\left(\\ln\\left|2 \\sec{\\left(5 x \\right)} + 5\\right|\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "cfd2cf76-786b-53cd-b206-22913d32274c"
+            "38a541fb-ca7c-5c71-8030-c741f5cb4195"
           ]
         }
       ]
@@ -1209,10 +1224,11 @@
         "b": "0",
         "offset": "5",
         "scale": "2",
-        "factor": "-3/4",
+        "numerator_coefficient": "-7",
+        "factor": "-7/10",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "50fa3312ff2edce33c2251382cda3ddb8cc4c2592af0fa39019fd3a79b282ba7",
+      "mathematical_fingerprint": "673baca4a1fff223a1925456d9518af0f9c3e65dbd4ae7b76e17271783c19676",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1232,15 +1248,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-15*tan(5*x)*sec(5*x)/(2*(2*sec(5*x) + 5))",
+        "integrand": "-7*tan(5*x)*sec(5*x)/(2*sec(5*x) + 5)",
         "substitution": "2*sec(5*x) + 5",
         "derivative": "10*tan(5*x)*sec(5*x)",
         "transformed": "1/u",
-        "factor": "-3/4",
-        "primitive": "-3*log(2*sec(5*x) + 5)/4",
+        "factor": "-7/10",
+        "primitive": "-7*log(2*sec(5*x) + 5)/10",
         "lower": null,
         "upper": null,
-        "result": "-3*log(2*sec(5*x) + 5)/4"
+        "result": "-7*log(2*sec(5*x) + 5)/10"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1254,25 +1270,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "e8178f77-0daf-5061-96b6-56d3e17c2e2c",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{16}} \\frac{- \\frac{160 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=4 \\tan^{2}{\\left(4 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=32 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\pi}{16}&\\Longrightarrow u=7\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\pi}{16}} \\frac{- \\frac{160 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{3}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x=- \\frac{5}{3}\\left(\\int_{3}^{7} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{5}{3}\\left(\\left[\\ln u\\right]_{3}^{7}\\right)=- \\frac{5}{3}\\left(\\ln\\left(7\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{5}{3}\\left(\\ln\\left(\\frac{7}{3}\\right)\\right).\n$$",
+      ":question/id": "5fade615-6c46-599a-a0b7-8c0e4674354f",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{24}} \\frac{- 4 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=4 \\tan^{2}{\\left(4 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=32 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\pi}{24}&\\Longrightarrow u=\\frac{13}{3}\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{24}} \\frac{- 4 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{4 \\tan^{2}{\\left(4 x \\right)} + 3}\\,\\mathrm{d}x\\\\&=- \\frac{1}{8}\\left(\\int_{3}^{\\frac{13}{3}} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{1}{8}\\left(\\left[\\ln u\\right]_{3}^{\\frac{13}{3}}\\right)=- \\frac{1}{8}\\left(\\ln\\left(\\frac{13}{3}\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{1}{8}\\left(\\ln\\left(\\frac{13}{9}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "f72b94bd-c1f2-59cf-9840-3a0516816a39",
+          ":answer-field/id": "2b6e0f50-3a70-5f2f-9a0a-04a88b11cb40",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "45f111d4-f5f8-52a1-94c5-4380c74c4965",
+              ":answer/id": "46da0c99-d681-5f54-8c78-8f7c0f597f9b",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{5}{3}\\left(\\ln\\left(\\frac{7}{3}\\right)\\right)"
+              ":answer/value": "- \\frac{1}{8}\\left(\\ln\\left(\\frac{13}{9}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "45f111d4-f5f8-52a1-94c5-4380c74c4965"
+            "46da0c99-d681-5f54-8c78-8f7c0f597f9b"
           ]
         }
       ]
@@ -1287,10 +1303,11 @@
         "b": "0",
         "offset": "3",
         "scale": "4",
-        "factor": "-5/3",
+        "numerator_coefficient": "-4",
+        "factor": "-1/8",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "a1aab1c5d9a42868acc7583fad098f66c57e4b400da2d46afaecefb5d72e36a8",
+      "mathematical_fingerprint": "a869953d75658aeeb2a441391c71c1ea9d90101f0f3194a4151c24d8d4dddfcc",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1310,15 +1327,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-160*tan(4*x)*sec(4*x)**2/(3*(4*tan(4*x)**2 + 3))",
+        "integrand": "-4*tan(4*x)*sec(4*x)**2/(4*tan(4*x)**2 + 3)",
         "substitution": "4*tan(4*x)**2 + 3",
         "derivative": "32*tan(4*x)*sec(4*x)**2",
         "transformed": "1/u",
-        "factor": "-5/3",
-        "primitive": "-5*log(4*tan(4*x)**2 + 3)/3",
+        "factor": "-1/8",
+        "primitive": "-log(4*tan(4*x)**2 + 3)/8",
         "lower": "0",
-        "upper": "pi/16",
-        "result": "-5*log(7/3)/3"
+        "upper": "pi/24",
+        "result": "-log(13/9)/8"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1332,25 +1349,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "c21a24eb-e36a-5dfc-828d-6cd3e957ee00",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{6}} \\frac{- 6 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}}{4 \\sec{\\left(2 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=4 \\sec{\\left(2 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=8 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{8}&\\Longrightarrow u=3 + 4 \\sqrt{2}\\\\x=\\frac{\\pi}{6}&\\Longrightarrow u=11\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{6}} \\frac{- 6 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}}{4 \\sec{\\left(2 x \\right)} + 3}\\,\\mathrm{d}x=- \\frac{3}{4}\\left(\\int_{3 + 4 \\sqrt{2}}^{11} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{4}\\left(\\left[\\ln u\\right]_{3 + 4 \\sqrt{2}}^{11}\\right)=- \\frac{3}{4}\\left(\\ln\\left(11\\right)-\\ln\\left(3 + 4 \\sqrt{2}\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{4}\\left(\\ln\\left(\\frac{11}{3 + 4 \\sqrt{2}}\\right)\\right).\n$$",
+      ":question/id": "1ba8f5de-3be2-5e30-99e9-a371da318fd0",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{6}} \\frac{- 7 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}}{4 \\sec{\\left(2 x \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=4 \\sec{\\left(2 x \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=8 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{8}&\\Longrightarrow u=3 + 4 \\sqrt{2}\\\\x=\\frac{\\pi}{6}&\\Longrightarrow u=11\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{6}} \\frac{- 7 \\tan{\\left(2 x \\right)} \\sec{\\left(2 x \\right)}}{4 \\sec{\\left(2 x \\right)} + 3}\\,\\mathrm{d}x\\\\&=- \\frac{7}{8}\\left(\\int_{3 + 4 \\sqrt{2}}^{11} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{7}{8}\\left(\\left[\\ln u\\right]_{3 + 4 \\sqrt{2}}^{11}\\right)=- \\frac{7}{8}\\left(\\ln\\left(11\\right)-\\ln\\left(3 + 4 \\sqrt{2}\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{7}{8}\\left(\\ln\\left(\\frac{11}{3 + 4 \\sqrt{2}}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "9c69a4b5-4ce5-5cd2-8a1a-38651f33d01d",
+          ":answer-field/id": "34ec23fc-f480-54d8-876b-70325995e900",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "9b87885f-cc18-516c-b544-128548f7acae",
+              ":answer/id": "fc020da0-79dc-5107-afc0-8f4a697a0b06",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{4}\\left(\\ln\\left(\\frac{11}{3 + 4 \\sqrt{2}}\\right)\\right)"
+              ":answer/value": "- \\frac{7}{8}\\left(\\ln\\left(\\frac{11}{3 + 4 \\sqrt{2}}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "9b87885f-cc18-516c-b544-128548f7acae"
+            "fc020da0-79dc-5107-afc0-8f4a697a0b06"
           ]
         }
       ]
@@ -1365,10 +1382,11 @@
         "b": "0",
         "offset": "3",
         "scale": "4",
-        "factor": "-3/4",
+        "numerator_coefficient": "-7",
+        "factor": "-7/8",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "8bebbba53b5e2bd0cbc1cf915add048caa21461209149c1ca05a65abbdd21d1a",
+      "mathematical_fingerprint": "d3422c4a6ce8fcc28689c9a96e7a028e6bc9b10d30b8315ba9c370386ba97353",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1388,15 +1406,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-6*tan(2*x)*sec(2*x)/(4*sec(2*x) + 3)",
+        "integrand": "-7*tan(2*x)*sec(2*x)/(4*sec(2*x) + 3)",
         "substitution": "4*sec(2*x) + 3",
         "derivative": "8*tan(2*x)*sec(2*x)",
         "transformed": "1/u",
-        "factor": "-3/4",
-        "primitive": "-3*log(4*sec(2*x) + 3)/4",
+        "factor": "-7/8",
+        "primitive": "-7*log(4*sec(2*x) + 3)/8",
         "lower": "pi/8",
         "upper": "pi/6",
-        "result": "-3*log(11/(3 + 4*sqrt(2)))/4"
+        "result": "-7*log(11/(3 + 4*sqrt(2)))/8"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1410,25 +1428,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "44ed22eb-88cc-54b2-acad-047f4d3c206f",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{10}} \\frac{- 60 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{4 \\sin^{2}{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=4 \\sin^{2}{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=40 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=5\\\\x=\\frac{\\pi}{10}&\\Longrightarrow u=9\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\pi}{10}} \\frac{- 60 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{4 \\sin^{2}{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int_{5}^{9} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{2}\\left(\\left[\\ln u\\right]_{5}^{9}\\right)=- \\frac{3}{2}\\left(\\ln\\left(9\\right)-\\ln\\left(5\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left(\\frac{9}{5}\\right)\\right).\n$$",
+      ":question/id": "e567a047-2255-5d48-82e4-96ea24840a59",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{10}} \\frac{- 5 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{4 \\sin^{2}{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=4 \\sin^{2}{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=40 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=5\\\\x=\\frac{\\pi}{10}&\\Longrightarrow u=9\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{10}} \\frac{- 5 \\sin{\\left(5 x \\right)} \\cos{\\left(5 x \\right)}}{4 \\sin^{2}{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\\\\&=- \\frac{1}{8}\\left(\\int_{5}^{9} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{1}{8}\\left(\\left[\\ln u\\right]_{5}^{9}\\right)=- \\frac{1}{8}\\left(\\ln\\left(9\\right)-\\ln\\left(5\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{1}{8}\\left(\\ln\\left(\\frac{9}{5}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "0bf15d7f-a10d-595f-ab3f-9fc29aa9a336",
+          ":answer-field/id": "2f5e15c7-6570-586c-bfca-25f499f65585",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "c204cb72-0dc2-5ada-90e2-44e8366bef4c",
+              ":answer/id": "596b83d5-a0f1-5293-9e96-067d94ccafad",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left(\\frac{9}{5}\\right)\\right)"
+              ":answer/value": "- \\frac{1}{8}\\left(\\ln\\left(\\frac{9}{5}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "c204cb72-0dc2-5ada-90e2-44e8366bef4c"
+            "596b83d5-a0f1-5293-9e96-067d94ccafad"
           ]
         }
       ]
@@ -1443,10 +1461,11 @@
         "b": "0",
         "offset": "5",
         "scale": "4",
-        "factor": "-3/2",
+        "numerator_coefficient": "-5",
+        "factor": "-1/8",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "45b7fbf3cf0156f3d4124ddf03c69c490e1378928a9c5e4b0da0692951f4d9ad",
+      "mathematical_fingerprint": "9d0dd0662ff491de5de8db6de1236ff7fcc6700d921b83c74382a43d50f0c7ca",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1466,15 +1485,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-60*sin(5*x)*cos(5*x)/(4*sin(5*x)**2 + 5)",
+        "integrand": "-5*sin(5*x)*cos(5*x)/(4*sin(5*x)**2 + 5)",
         "substitution": "4*sin(5*x)**2 + 5",
         "derivative": "40*sin(5*x)*cos(5*x)",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(4*sin(5*x)**2 + 5)/2",
+        "factor": "-1/8",
+        "primitive": "-log(4*sin(5*x)**2 + 5)/8",
         "lower": "0",
         "upper": "pi/10",
-        "result": "-3*log(9/5)/2"
+        "result": "-log(9/5)/8"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1488,25 +1507,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "a3c88f3e-2652-5fa5-b43b-8cf2d7316463",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{30}}^{\\frac{\\pi}{10}} \\frac{\\frac{10 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}}{3}}{\\csc{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\csc{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 5 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{30}&\\Longrightarrow u=7\\\\x=\\frac{\\pi}{10}&\\Longrightarrow u=6\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{\\frac{\\pi}{30}}^{\\frac{\\pi}{10}} \\frac{\\frac{10 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}}{3}}{\\csc{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{2}{3}\\left(\\int_{7}^{6} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{2}{3}\\left(\\left[\\ln u\\right]_{7}^{6}\\right)=- \\frac{2}{3}\\left(\\ln\\left(6\\right)-\\ln\\left(7\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{2}{3}\\left(\\ln\\left(\\frac{6}{7}\\right)\\right).\n$$",
+      ":question/id": "9591f6a7-d7ce-5954-adae-eda43ba6bb25",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{30}}^{\\frac{\\pi}{10}} \\frac{3 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}}{\\csc{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=\\csc{\\left(5 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 5 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{30}&\\Longrightarrow u=7\\\\x=\\frac{\\pi}{10}&\\Longrightarrow u=6\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{30}}^{\\frac{\\pi}{10}} \\frac{3 \\cot{\\left(5 x \\right)} \\csc{\\left(5 x \\right)}}{\\csc{\\left(5 x \\right)} + 5}\\,\\mathrm{d}x\\\\&=- \\frac{3}{5}\\left(\\int_{7}^{6} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{5}\\left(\\left[\\ln u\\right]_{7}^{6}\\right)=- \\frac{3}{5}\\left(\\ln\\left(6\\right)-\\ln\\left(7\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{5}\\left(\\ln\\left(\\frac{6}{7}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "ac91bf8a-f27b-5e6b-9d9b-ebbd60202f30",
+          ":answer-field/id": "5856c4f6-28f9-5d64-87b8-d3c6ba167f88",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "7962bbf4-79ef-533c-ba2d-032bb5ca7628",
+              ":answer/id": "92e698b9-dcea-5dbe-839a-15c212e85add",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{2}{3}\\left(\\ln\\left(\\frac{6}{7}\\right)\\right)"
+              ":answer/value": "- \\frac{3}{5}\\left(\\ln\\left(\\frac{6}{7}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "7962bbf4-79ef-533c-ba2d-032bb5ca7628"
+            "92e698b9-dcea-5dbe-839a-15c212e85add"
           ]
         }
       ]
@@ -1521,10 +1540,11 @@
         "b": "0",
         "offset": "5",
         "scale": "1",
-        "factor": "-2/3",
+        "numerator_coefficient": "-3",
+        "factor": "-3/5",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "c68d7581583d90a81e28150f97684906c8eaed919a020783d5831f5859338399",
+      "mathematical_fingerprint": "861fe609e8b94d72f19f14f54f114c72825b003f63efbca004832e41ca6f3a9e",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1544,15 +1564,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "10*cot(5*x)*csc(5*x)/(3*(csc(5*x) + 5))",
+        "integrand": "3*cot(5*x)*csc(5*x)/(csc(5*x) + 5)",
         "substitution": "csc(5*x) + 5",
         "derivative": "-5*cot(5*x)*csc(5*x)",
         "transformed": "1/u",
-        "factor": "-2/3",
-        "primitive": "-2*log(csc(5*x) + 5)/3",
+        "factor": "-3/5",
+        "primitive": "-3*log(csc(5*x) + 5)/5",
         "lower": "pi/30",
         "upper": "pi/10",
-        "result": "-2*log(6/7)/3"
+        "result": "-3*log(6/7)/5"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1566,25 +1586,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "5a17a8cd-4b37-53c8-8481-b2b0aa38c4f0",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} \\frac{27 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=3 \\cos^{3}{\\left(4 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 36 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=8\\\\x=\\frac{\\pi}{8}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} \\frac{27 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x=- \\frac{3}{4}\\left(\\int_{8}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{4}\\left(\\left[\\ln u\\right]_{8}^{5}\\right)=- \\frac{3}{4}\\left(\\ln\\left(5\\right)-\\ln\\left(8\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{4}\\left(\\ln\\left(\\frac{5}{8}\\right)\\right).\n$$",
+      ":question/id": "15fd1338-f309-5e5a-baa4-02347b698089",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} \\frac{7 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=3 \\cos^{3}{\\left(4 x \\right)} + 5$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 36 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=8\\\\x=\\frac{\\pi}{8}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{8}} \\frac{7 \\sin{\\left(4 x \\right)} \\cos^{2}{\\left(4 x \\right)}}{3 \\cos^{3}{\\left(4 x \\right)} + 5}\\,\\mathrm{d}x\\\\&=- \\frac{7}{36}\\left(\\int_{8}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{7}{36}\\left(\\left[\\ln u\\right]_{8}^{5}\\right)=- \\frac{7}{36}\\left(\\ln\\left(5\\right)-\\ln\\left(8\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{7}{36}\\left(\\ln\\left(\\frac{5}{8}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "e2138256-6bb6-5841-82da-125b0c181c80",
+          ":answer-field/id": "d22a6696-5af0-5d58-869f-880a33290398",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "c2d64313-0b84-5fc6-ae6f-e252bf47ee41",
+              ":answer/id": "a5b2104a-64de-50ec-aa28-9af59d22acc7",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{4}\\left(\\ln\\left(\\frac{5}{8}\\right)\\right)"
+              ":answer/value": "- \\frac{7}{36}\\left(\\ln\\left(\\frac{5}{8}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "c2d64313-0b84-5fc6-ae6f-e252bf47ee41"
+            "a5b2104a-64de-50ec-aa28-9af59d22acc7"
           ]
         }
       ]
@@ -1599,10 +1619,11 @@
         "b": "0",
         "offset": "5",
         "scale": "3",
-        "factor": "-3/4",
+        "numerator_coefficient": "-7",
+        "factor": "-7/36",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "c7cb1d15bbf3cd34757ce7bb96be06bc2218d0453e99b95a62b6e38edae50ca9",
+      "mathematical_fingerprint": "4024992ff838fa915d6e7adfae168b360da68da796a33bc8d03ff3d476c7259d",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1622,15 +1643,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "27*sin(4*x)*cos(4*x)**2/(3*cos(4*x)**3 + 5)",
+        "integrand": "7*sin(4*x)*cos(4*x)**2/(3*cos(4*x)**3 + 5)",
         "substitution": "3*cos(4*x)**3 + 5",
         "derivative": "-36*sin(4*x)*cos(4*x)**2",
         "transformed": "1/u",
-        "factor": "-3/4",
-        "primitive": "-3*log(3*cos(4*x)**3 + 5)/4",
+        "factor": "-7/36",
+        "primitive": "-7*log(3*cos(4*x)**3 + 5)/36",
         "lower": "0",
         "upper": "pi/8",
-        "result": "-3*log(5/8)/4"
+        "result": "-7*log(5/8)/36"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1644,25 +1665,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "ebc47f95-a820-5962-9d6f-e6812ddabc28",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{4}} \\frac{\\frac{32 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}}{3}}{4 \\cot^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=4 \\cot^{2}{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 16 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{8}&\\Longrightarrow u=8\\\\x=\\frac{\\pi}{4}&\\Longrightarrow u=4\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{4}} \\frac{\\frac{32 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}}{3}}{4 \\cot^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x=- \\frac{2}{3}\\left(\\int_{8}^{4} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{2}{3}\\left(\\left[\\ln u\\right]_{8}^{4}\\right)=- \\frac{2}{3}\\left(\\ln\\left(4\\right)-\\ln\\left(8\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{2}{3}\\left(\\ln\\left(\\frac{1}{2}\\right)\\right).\n$$",
+      ":question/id": "bbd56c98-39a1-5dcc-924b-ad081c83bff7",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{4}} \\frac{3 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}}{4 \\cot^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=4 \\cot^{2}{\\left(2 x \\right)} + 4$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- 16 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}.\n$$\n\nThe negative derivative is included in the factor outside the new integral.\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{8}&\\Longrightarrow u=8\\\\x=\\frac{\\pi}{4}&\\Longrightarrow u=4\\end{aligned}\n$$\n\nThe transformed bounds decrease; keep their order when subtracting endpoint values.\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{8}}^{\\frac{\\pi}{4}} \\frac{3 \\cot{\\left(2 x \\right)} \\csc^{2}{\\left(2 x \\right)}}{4 \\cot^{2}{\\left(2 x \\right)} + 4}\\,\\mathrm{d}x\\\\&=- \\frac{3}{16}\\left(\\int_{8}^{4} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{16}\\left(\\left[\\ln u\\right]_{8}^{4}\\right)=- \\frac{3}{16}\\left(\\ln\\left(4\\right)-\\ln\\left(8\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{16}\\left(\\ln\\left(\\frac{1}{2}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "f8dde6bb-5cb6-5315-9a2c-1c43d215e8a9",
+          ":answer-field/id": "736c4797-1792-58a2-9321-a687a8dad657",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "92ac2236-fb18-5721-bfb6-f4d66949a3c6",
+              ":answer/id": "be44483a-358f-50b5-a8fc-17efe2c5973f",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{2}{3}\\left(\\ln\\left(\\frac{1}{2}\\right)\\right)"
+              ":answer/value": "- \\frac{3}{16}\\left(\\ln\\left(\\frac{1}{2}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "92ac2236-fb18-5721-bfb6-f4d66949a3c6"
+            "be44483a-358f-50b5-a8fc-17efe2c5973f"
           ]
         }
       ]
@@ -1677,10 +1698,11 @@
         "b": "0",
         "offset": "4",
         "scale": "4",
-        "factor": "-2/3",
+        "numerator_coefficient": "-3",
+        "factor": "-3/16",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "33e7dac0a0259fbd0654f1d282f3507d657700a14c077f385ca2f4fd739a4eff",
+      "mathematical_fingerprint": "3c840e763cfec9ef2538f612cf5a9bbe36f0f9beb14d72c0e455eee9cee41f61",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1700,15 +1722,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "32*cot(2*x)*csc(2*x)**2/(3*(4*cot(2*x)**2 + 4))",
+        "integrand": "3*cot(2*x)*csc(2*x)**2/(4*cot(2*x)**2 + 4)",
         "substitution": "4*cot(2*x)**2 + 4",
         "derivative": "-16*cot(2*x)*csc(2*x)**2",
         "transformed": "1/u",
-        "factor": "-2/3",
-        "primitive": "-2*log(4*cot(2*x)**2 + 4)/3",
+        "factor": "-3/16",
+        "primitive": "-3*log(4*cot(2*x)**2 + 4)/16",
         "lower": "pi/8",
         "upper": "pi/4",
-        "result": "2*log(2)/3"
+        "result": "3*log(2)/16"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1722,25 +1744,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "5f132665-c58c-5618-9a00-7d0d0ed023c0",
-      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 24 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=2 \\tan{\\left(4 x^{2} \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=16 x \\sec^{2}{\\left(4 x^{2} \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\sqrt{\\pi}}{4}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 24 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x=- \\frac{3}{2}\\left(\\int_{3}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{2}\\left(\\left[\\ln u\\right]_{3}^{5}\\right)=- \\frac{3}{2}\\left(\\ln\\left(5\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{2}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right).\n$$",
+      ":question/id": "f57426d0-df96-5a99-9439-23311c388645",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 6 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
+      ":question/worked-solution": "Let $u=2 \\tan{\\left(4 x^{2} \\right)} + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=16 x \\sec^{2}{\\left(4 x^{2} \\right)}.\n$$\n\nChange both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=3\\\\x=\\frac{\\sqrt{\\pi}}{4}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\sqrt{\\pi}}{4}} \\frac{- 6 x \\sec^{2}{\\left(4 x^{2} \\right)}}{2 \\tan{\\left(4 x^{2} \\right)} + 3}\\,\\mathrm{d}x\\\\&=- \\frac{3}{8}\\left(\\int_{3}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nBoth new bounds are positive, so absolute values may be omitted. Evaluate:\n\n$$\n- \\frac{3}{8}\\left(\\left[\\ln u\\right]_{3}^{5}\\right)=- \\frac{3}{8}\\left(\\ln\\left(5\\right)-\\ln\\left(3\\right)\\right).\n$$\n\nUsing $\\ln A-\\ln B=\\ln(A/B)$ gives\n\n$$\n- \\frac{3}{8}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right).\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "c2dfd81f-22ad-55fe-88ca-ff047da156c4",
+          ":answer-field/id": "70cb0a43-645b-51a5-8ac9-9ddd2fd85fb5",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "6660a739-3f11-5fd0-95d0-a92591055a3d",
+              ":answer/id": "be6bd922-392c-52d1-89ce-a972dae64915",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{3}{2}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right)"
+              ":answer/value": "- \\frac{3}{8}\\left(\\ln\\left(\\frac{5}{3}\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "6660a739-3f11-5fd0-95d0-a92591055a3d"
+            "be6bd922-392c-52d1-89ce-a972dae64915"
           ]
         }
       ]
@@ -1755,10 +1777,11 @@
         "b": "0",
         "offset": "3",
         "scale": "2",
-        "factor": "-3/2",
+        "numerator_coefficient": "-6",
+        "factor": "-3/8",
         "inner_role": "quadratic"
       },
-      "mathematical_fingerprint": "fb25c3b16647867e301b191866b0ca2c016cf368808967e07ea50c424e656f2f",
+      "mathematical_fingerprint": "0d25bb8b8ec27fd9149aed1ac694c695e92cff0bb8fc938ded6409ba217d78b8",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1778,15 +1801,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-24*x*sec(4*x**2)**2/(2*tan(4*x**2) + 3)",
+        "integrand": "-6*x*sec(4*x**2)**2/(2*tan(4*x**2) + 3)",
         "substitution": "2*tan(4*x**2) + 3",
         "derivative": "16*x*sec(4*x**2)**2",
         "transformed": "1/u",
-        "factor": "-3/2",
-        "primitive": "-3*log(2*tan(4*x**2) + 3)/2",
+        "factor": "-3/8",
+        "primitive": "-3*log(2*tan(4*x**2) + 3)/8",
         "lower": "0",
         "upper": "sqrt(pi)/4",
-        "result": "-3*log(5/3)/2"
+        "result": "-3*log(5/3)/8"
       },
       "dependencies": {
         "sympy": "1.14.0"
@@ -1800,25 +1823,25 @@
       "title": "Integrating Quotients Containing Trigonometric Functions Using Substitution"
     },
     "question": {
-      ":question/id": "49a79cde-fcc5-585e-bfd1-92de4d6464d7",
-      ":question/problem": "Find an antiderivative. Include the constant $C$.\n\n$$\n\\int \\frac{- 2 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\n$$\n\n{{field-1}}",
-      ":question/worked-solution": "Let $u=\\tan{\\left(4 x \\right)} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nSince $\\tan{\\left(4 x \\right)}=u-2$, the remaining quotient is\n\n$$\n\\frac{u-2}{u}=1-\\frac{2}{u}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\int \\frac{- 2 \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x=- \\frac{1}{2}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right).\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{2}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{2}\\left(u-2\\left(\\ln\\left|u\\right|\\right)\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{2}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)+C.\n$$",
+      ":question/id": "2a853359-1d6f-5f75-a160-46c87f2b4667",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{- \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\n$$\n\n{{field-1}} $+C$",
+      ":question/worked-solution": "Let $u=\\tan{\\left(4 x \\right)} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4 \\sec^{2}{\\left(4 x \\right)}.\n$$\n\nSince $\\tan{\\left(4 x \\right)}=u-2$, the remaining quotient is\n\n$$\n\\frac{u-2}{u}=1-\\frac{2}{u}.\n$$\n\nSubstituting, including the required constant factor, gives\n\n$$\n\\begin{aligned}&\\int \\frac{- \\tan{\\left(4 x \\right)} \\sec^{2}{\\left(4 x \\right)}}{\\tan{\\left(4 x \\right)} + 2}\\,\\mathrm{d}x\\\\&=- \\frac{1}{4}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{4}\\left(\\int 1 - \\frac{2}{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{4}\\left(u-2\\left(\\ln\\left|u\\right|\\right)\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{4}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)+C.\n$$",
       ":question/difficulty": ":question.difficulty/hard",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "f7d623f0-314e-52ae-8585-ca6fc139ba5f",
+          ":answer-field/id": "b8eb4345-124a-5a64-965f-66599b305d82",
           ":answer-field/key": "field-1",
           ":answer-field/type": ":answer-field.type/blank",
           ":answer-field/choices": [
             {
-              ":answer/id": "6ceddc40-4ace-5df0-95ec-fbfe1955f647",
+              ":answer/id": "618efc0f-e330-5a75-8447-5a215deead21",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "- \\frac{1}{2}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)+C"
+              ":answer/value": "- \\frac{1}{4}\\left(\\tan{\\left(4 x \\right)} + 2-2\\left(\\ln\\left|\\tan{\\left(4 x \\right)} + 2\\right|\\right)\\right)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "6ceddc40-4ace-5df0-95ec-fbfe1955f647"
+            "618efc0f-e330-5a75-8447-5a215deead21"
           ]
         }
       ]
@@ -1833,10 +1856,11 @@
         "b": "0",
         "offset": "2",
         "scale": "3",
-        "factor": "-1/2",
+        "numerator_coefficient": "-1",
+        "factor": "-1/4",
         "inner_role": "affine"
       },
-      "mathematical_fingerprint": "a8857b6a211a50d3fe6ab7331bf9c96ddbd2a41fad3e8a64fcfd7186d9545b72",
+      "mathematical_fingerprint": "974c0737c24823f2b9af6173217dfdaa9e8a7ab1f14de79e12ab8986a24427f9",
       "source_questions": [
         "q-49557",
         "q-113998",
@@ -1856,15 +1880,15 @@
       "response_policy": "Authored exact-entry extension; no transported distractor bank or source-fidelity claim",
       "domain": "Connected real intervals avoiding trig poles and denominator zeros; x>0 for square roots; x!=0 for reciprocals. All definite intervals lie in a single safe component.",
       "model": {
-        "integrand": "-2*tan(4*x)*sec(4*x)**2/(tan(4*x) + 2)",
+        "integrand": "-tan(4*x)*sec(4*x)**2/(tan(4*x) + 2)",
         "substitution": "tan(4*x) + 2",
         "derivative": "4*sec(4*x)**2",
         "transformed": "1 - 2/u",
-        "factor": "-1/2",
-        "primitive": "log(tan(4*x) + 2) - tan(4*x)/2 - 1",
+        "factor": "-1/4",
+        "primitive": "log(tan(4*x) + 2)/2 - tan(4*x)/4 - 1/2",
         "lower": null,
         "upper": null,
-        "result": "log(tan(4*x) + 2) - tan(4*x)/2 - 1"
+        "result": "log(tan(4*x) + 2)/2 - tan(4*x)/4 - 1/2"
       },
       "dependencies": {
         "sympy": "1.14.0"
