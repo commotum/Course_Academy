@@ -6,6 +6,15 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_html_emphasis_moves_padding_outside_markers(self):
+        from math_format import markdown_emphasis
+        self.assertEqual(markdown_emphasis(' Step 1', '**'), ' **Step 1**')
+        self.assertEqual(markdown_emphasis('term ', '**'), '**term** ')
+        self.assertEqual(markdown_emphasis(' hint ', '*'), ' *hint* ')
+        self.assertEqual(markdown_emphasis(' *minimum* ', '**'), ' ***minimum*** ')
+        self.assertEqual(markdown_emphasis(' ', '**'), ' ')
+        self.assertEqual(markdown_emphasis('', '**'), '')
+
     def test_mixed_chain_relations_and_final_punctuation(self):
         cases = [
             (r'\begin{aligned}x+x &= \\ 2x & .\end{aligned}',

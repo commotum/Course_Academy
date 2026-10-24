@@ -11,6 +11,21 @@ import re
 
 FORMAT_VERSION = 'course-academy-tex-v1'
 
+
+def markdown_emphasis(body, marker):
+    """Convert an HTML emphasis body without putting whitespace inside markers.
+
+    HTML permits padded and empty emphasis elements; Markdown does not. Keep
+    the padding outside the delimiters so adjacent words retain their spacing.
+    Only use this for an explicit HTML emphasis node, never arbitrary Markdown.
+    """
+    core = body.strip()
+    if not core:
+        return body
+    start = len(body) - len(body.lstrip())
+    end = len(body.rstrip())
+    return body[:start] + marker + body[start:end] + marker + body[end:]
+
 ENV = re.compile(r'\\(begin|end)\{([^{}]+)\}')
 
 def environment(text, start):

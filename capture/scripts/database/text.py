@@ -79,7 +79,7 @@ def markdown(source: str) -> str:
             return '\n'
         if name in ('strong', 'b', 'em', 'i'):
             mark = '**' if name in ('strong', 'b') else '*'
-            return mark + body.strip() + mark
+            return formatter().markdown_emphasis(body, mark)
         if name == 'a':
             href = node.get('href')
             return '[' + body.strip() + '](' + urljoin('https://mathacademy.com/', href) + ')' if href else body

@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from question_capture.math_format import normalize_math_boundaries
+from question_capture.math_format import normalize_math_boundaries, markdown_emphasis
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
@@ -155,8 +155,8 @@ class Renderer:
                 return '\n\n'+'\n'.join(lines)+'\n\n'
         children=''.join(self.render(c,extract_fields) for c in n.children)
         if t=='li':return '- '+children.strip()+'\n'
-        if t in ('b','strong'):return '**'+children+'**'
-        if t in ('i','em'):return '*'+children+'*'
+        if t in ('b','strong'):return markdown_emphasis(children,'**')
+        if t in ('i','em'):return markdown_emphasis(children,'*')
         if t in ('p','div','ul','ol'):return '\n\n'+children+'\n\n'
         return children
     def text(self,n,extract_fields=False):return normalize_math_boundaries(re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip())
