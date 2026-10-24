@@ -2,6 +2,8 @@ Independently review one Course Academy generator. Your mandate is to discover c
 
 Check the Markdown/TeX boundary explicitly: every intended equation and multiline row must appear in the actual rendered UI. Reject exposed `\begin`/`\end` text, lost `\\` row breaks, legacy `[math]` tokens, formulas trapped in code blocks, and currency or percentage glyphs misparsed as delimiters/comments. Require the shared prose boundary validation on prompts, solutions, text choices and feedback. A zero MathJax error count is insufficient because unrecognized math may never reach MathJax.
 
+Write Markdown emphasis as `**bold**` and `*italic*`, with whitespace outside the delimiters. Never copy padded source HTML as `** bold **` or `* italic *`. Omit empty emphasis wrappers. Check that labels and hints render with emphasis rather than visible stars.
+
 Job context:
 {{context}}
 
