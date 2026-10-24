@@ -1,23 +1,14 @@
 #!/usr/bin/env python3
-"""secant integration: repaired role-based generator; source evidence kept separately."""
+"""KP 17592186064250: scaffolded substitution."""
+import json
 from pathlib import Path
 import sys
-_here = Path(__file__).resolve().parent
-_local = _here / 'inverse_trig.py'
-sys.path.insert(0, str(_here if _local.exists() else _here.parent))
-from inverse_trig import Generator
-_evidence = _here / 'evidence.json'
-if not _evidence.exists(): _evidence = Path(__file__).with_suffix('') / 'band-evidence.json'
-_generator = Generator(_evidence)
-KP_ID = _generator.kp
-KP_UUID = _generator.kp_uuid
-CASES = _generator.cases
-SUPPORTED_LEVELS = ('easy', 'moderate', 'hard')
-generate = _generator.generate
-build = _generator.build
-batch = _generator.batch
-source_original = _generator.source_original
-def generate_easy(seed=0, **kwargs): return generate('easy', seed, **kwargs)
-def generate_moderate(seed=0, **kwargs): return generate('moderate', seed, **kwargs)
-def generate_hard(seed=0, **kwargs): return generate('hard', seed, **kwargs)
-if __name__ == '__main__': _generator.main()
+LOCAL=Path(__file__).with_suffix('')
+if not (LOCAL/'substitution_pedagogy.py').is_file():LOCAL=Path(__file__).resolve().parent
+sys.path.insert(0,str(LOCAL))
+import substitution_pedagogy as model
+KP=17592186064250
+EVIDENCE=json.loads((LOCAL/'source-evidence.json').read_text())
+def generate(level,seed=0,template=None,**kwargs):return model.generate(KP,level,seed,template,evidence=EVIDENCE,**kwargs)
+def batch(level,count=8,seed=0,template=None):return model.batch(KP,level,count,seed,evidence=EVIDENCE,template=template)
+if __name__=='__main__':model.cli(KP,LOCAL)
