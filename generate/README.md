@@ -70,6 +70,14 @@ An unsupported difficulty with no source evidence is retained as unsupported.
 Generator defects return to the author with executable counterexamples. Report corrections stay with the independent reviewer, and historical inventory defects go to the runner. Repeated failures or exhausted budgets become visible `blocked` jobs; their workspaces and publication recovery state are retained. Inventory is rechecked
 after publication; existing jobs and pending commit requests survive restarts.
 
+An interrupted review can pass its partial evidence to a new reviewer when the
+package, batch, source, inventory, assets, difficulty and policy still match.
+Changed grading-engine checks must be rerun; partial evidence never grants
+approval. Inventory findings require exact affected-question evidence. Missing
+reports return to the reviewer for correction. Separate generator defects can
+reach the author while an inventory repair is unresolved, but publication still
+requires the stored defect to be resolved and independently checked.
+
 Approval is the independent Codex reviewer's recorded acceptance, followed by
 verified publication; it does not require human permission. The initial build
 normally samples one requested or source-justified difficulty and certifies that
