@@ -6,7 +6,8 @@ from generator_publish import Publisher,KP_PULL,jsonable
 TRIG=(17592186068915,17592186068916,17592186068917,17592186068918)
 OTHER=(17592186064218,17592186064219,17592186064250,17592186064220,17592186184349,17592186184350,17592186184351,17592186184352)
 p=Publisher.from_environment(source=':agent/codex');basis=p.client.status()['basis']
-rows=p.client.query('[:find (pull ?kp '+KP_PULL+') :in $ [?kp ...] :where [?kp :knowledge-point/id _]]',[list(TRIG+OTHER)],H,'before',basis)
+from concurrent.futures import ThreadPoolExecutor
+with ThreadPoolExecutor(max_workers=3)as pool:rows=[[k]for k in pool.map(lambda kp:p.read_kp(kp,H/str(kp)/'capture',basis),TRIG+OTHER)]
 summary=[]
 for[k]in rows:
  k=jsonable(k);kp=k[':db/id'];old=ROOT/'reference/edb-math/repairs'/('2026-10-24-trig-scaffolding'if kp in TRIG else'2026-10-24-two-topic-pedagogy')/str(kp)

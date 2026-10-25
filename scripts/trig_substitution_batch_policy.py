@@ -27,11 +27,13 @@ def validate_delivery_batch(records,kp_id):
     groups=defaultdict(list);shapes=set()
     for record in records:
         q,m=record['question'],record.get('generation',{})
-        if m.get('batch_contract')!='trig-scaffolding-v4':
+        if m.get('batch_contract')!='trig-prerequisite-recall-v5':
             raise ValueError('Trig substitution requires the reviewed scaffolded band contract')
         band=str(q[':question/difficulty']).rsplit('/',1)[-1];family=m.get('family')
         if family not in FAMILIES[kp].get(band,set()):raise ValueError('Unsupported scaffolded family or difficulty')
         problem=q[':question/problem'];fields=q[':question/answer-fields']
+        from scripts.integration_support_policy import validate_prerequisite_recall
+        validate_prerequisite_recall(record)
         if any(int(n)>12 for n in re.findall(r'\d+',problem)):
             raise ValueError('Displayed parameters exceed the reviewed arithmetic budget')
         if len(fields)!=1:raise ValueError('Scaffolded substitution has one assessed response')
@@ -50,10 +52,6 @@ def validate_delivery_batch(records,kp_id):
         else:
             if field[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1:
                 raise ValueError('Full calculation needs one canonical exact answer fragment')
-            if not m.get('provided_primitive')or 'You may use $'not in problem:
-                raise ValueError('Full calculation must supply the prerequisite primitive')
-            if m['model']['lower']is not None and(not m.get('provided_endpoint_values')or 'Endpoint values:'not in problem):
-                raise ValueError('Endpoint evaluation facts must be supplied')
         blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',q[':question/worked-solution'],re.S)
         outside_c=bool(re.search(r'\{\{answer\}\}\s*\$\+C\$',problem))
         if not blocks or blocks[-1].strip().rstrip('.')!=key+('+C'if outside_c else ''):

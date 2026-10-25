@@ -43,15 +43,18 @@ class TrigSubstitutionTests(unittest.TestCase):
                 self.assertTrue(all(r'\int'in a[':answer/value']for a in f[':answer-field/choices']))
                 self.assertEqual(row['generation']['operation'],'transform')
 
-    def test_full_questions_supply_the_prerequisite_formula_and_endpoint_facts(self):
+    def test_full_questions_recall_prerequisites_and_explain_them_in_solutions(self):
         for kp in self.g.CASES:
             for band in('moderate','hard'):
                 rows=self.rows(kp,band)
                 validate_delivery_batch(rows,kp)
                 for r in rows:
-                    self.assertIn('You may use $',r['question'][':question/problem'])
+                    self.assertNotIn('You may use $',r['question'][':question/problem'])
+                    self.assertFalse(r['generation']['provided_primitive'])
+                    self.assertIn('Use the integration rule:',r['question'][':question/worked-solution'])
                     if r['generation']['model']['lower']is not None:
-                        self.assertIn('Endpoint values:',r['question'][':question/problem'])
+                        self.assertNotIn('Endpoint values:',r['question'][':question/problem'])
+                        self.assertIn('Endpoint values:',r['question'][':question/worked-solution'])
 
     def test_same_instance_cannot_become_fresh_by_resampling_distractors(self):
         kp=17592186068915;g=self.g
@@ -66,9 +69,9 @@ class TrigSubstitutionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'arithmetic budget'):
             validate_delivery_batch([r],17592186068915)
 
-    def test_delivery_rejects_removed_support_and_unshown_final_conversion(self):
+    def test_delivery_rejects_blanket_hints_and_unshown_final_conversion(self):
         r=self.rows(17592186068918,'moderate',1)[0]
-        bad=copy.deepcopy(r);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('You may use','Recall')
+        bad=copy.deepcopy(r);bad['question'][':question/problem']+='\n\nYou may use $\\int 1/u\\,du=\\ln|u|+C$. '
         with self.assertRaises(ValueError):validate_delivery_batch([bad],17592186068918)
         bad=copy.deepcopy(r);bad['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']+=' + 0'
         with self.assertRaisesRegex(ValueError,'canonical answer fragment'):validate_delivery_batch([bad],17592186068918)
