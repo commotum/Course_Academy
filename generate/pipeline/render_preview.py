@@ -39,7 +39,15 @@ VISIBLE_DOM_AUDIT = r"""() => {
         internalFieldLabels:[...root.querySelectorAll('.answer-field legend,.response-summary')]
           .filter(visible).map(node=>node.textContent.trim()).filter(text=>/^Answer:\s*(answer|selection)(?:\s|[·:]|$)/i.test(text)),
         mathContainers:document.querySelectorAll('mjx-container').length,
-        mathErrors:[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].filter(visible).map(node=>node.textContent),
+        // noUndefined renders unknown commands as mtext, not merror. SVG
+        // mtext contains glyph references, so textContent alone misses them.
+        mathErrors:[
+          ...[...document.querySelectorAll('[data-mml-node="merror"],mjx-merror,.math-error')].filter(visible).map(node=>node.textContent),
+          ...[...document.querySelectorAll('mjx-container [data-mml-node="mtext"],mjx-container mjx-mtext')]
+            .filter(visible).map(node=>node.textContent || [...node.querySelectorAll('use[data-c]')]
+              .map(glyph=>String.fromCodePoint(parseInt(glyph.getAttribute('data-c'),16))).join(''))
+            .filter(text=>/\\[A-Za-z]+/.test(text))
+        ],
         brokenImages:[...document.images].filter(image=>!image.complete || !image.naturalWidth).map(image=>image.src),
         danglingGlyphs:[...document.querySelectorAll('mjx-container use')].map(node=>node.getAttribute('href') || node.getAttribute('xlink:href'))
           .filter(href=>href?.startsWith('#') && !document.getElementById(href.slice(1))),
