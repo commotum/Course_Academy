@@ -37,7 +37,7 @@ def attrs(node,last_rows):
         location=alignment(node.get('align'))or('center'if s.get('margin')=='auto'or s.get('margin-left')=='auto'and s.get('margin-right')=='auto'else None)
         if location:put('data-table-align',location)
         border=s.get('border','')
-        if str(node.get('border','0'))not in {'','0'}or border and not re.match(r'^(?:none|0(?:px)?)(?:\s|$)',border):put('data-frame','true')
+        if str(node.get('border','0'))not in {'','0'}or border and not re.match(r'^(?:none|hidden|0(?:px)?)(?:\s|$)',border):put('data-frame','true')
     elif tag=='tr'and id(node)not in last_rows:put('data-next-row','true')
     for key in ['rowspan','colspan','span']:
         value=node.get(key)
@@ -55,10 +55,13 @@ def attrs(node,last_rows):
         if align:put('data-cell-align',align);break
     fill=color(node.get('bgcolor')or s.get('background-color')or s.get('background'))
     if fill:put('data-fill',fill)
+    if re.fullmatch(r'bold|[6-9]00',s.get('font-weight','')):put('data-cell-weight','bold')
+    valign=s.get('vertical-align')or node.get('valign')
+    if valign in {'top','middle','bottom'}:put('data-cell-valign',valign)
     if tag in {'td','th'}:
         for side in ['top','right','bottom','left']:
             value=s.get('border-'+side,s.get('border'))
-            if value is not None:put('data-border-'+side,'none'if re.match(r'^(?:none|0(?:px)?)(?:\s|$)',value)else'solid')
+            if value is not None:put('data-border-'+side,'none'if re.match(r'^(?:none|hidden|0(?:px)?)(?:\s|$)',value)else'solid')
     return ''.join(a)
 
 def source_table_html(table,render_leaf,skip=lambda node:False):

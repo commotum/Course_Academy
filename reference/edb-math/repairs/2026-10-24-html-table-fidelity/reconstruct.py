@@ -69,3 +69,21 @@ if __name__=='__main__':
   try:rebuilt=reconstruct(m);out.append({**m,**rebuilt,'all_current_leaf_bytes_preserved':True})
   except(Exception)as e:unresolved.append({**m,'reason':str(e)})
  (H/'nested-reconstructions.json').write_text(json.dumps(out,indent=2)+'\n');(H/'nested-unresolved.json').write_text(json.dumps(unresolved,indent=2)+'\n');print('Nested reconstructed',len(out),'unresolved',len(unresolved))
+
+def reconstruct_html(source,current):
+ """Bind nested current HTML cells recursively, keeping all current leaf markup."""
+ def build(s,c):
+  spec=source_table(s,source['identity'],source['attribute'],source['path']);sr=[r for r in s.find_all('tr')if r.find_parent('table')is s];cr=[r for r in c.find_all('tr')if r.find_parent('table')is c];assert len(sr)==len(cr);values=[]
+  for rs,rc in zip(sr,cr):
+   sc=rs.find_all(['td','th'],recursive=False);cc=rc.find_all(['td','th'],recursive=False);assert len(sc)==len(cc);row=[]
+   for a,b in zip(sc,cc):
+    assert key(source_cell(a))==key(str(b.decode_contents()))
+    an=[t for t in a.find_all('table')if t.find_parent('table')is s];bn=[t for t in b.find_all('table')if t.find_parent('table')is c];assert len(an)==len(bn)
+    if not an:row.append(str(b.decode_contents()));continue
+    parts=[];markup=str(b.decode_contents())
+    for x,y in zip(an,bn):
+     before,sep,markup=markup.partition(str(y));assert sep;parts.append(before);child=build(x,y);parts.append({'table':child['source'],'rows':child['prototype_rows']})
+    parts.append(markup);row.append({'parts':parts})
+   values.append(row)
+  return {'source':spec,'prototype_rows':values}
+ return build(BeautifulSoup(source['source_html'],'html.parser').find('table'),BeautifulSoup(current,'html.parser').find('table'))

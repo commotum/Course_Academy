@@ -14,14 +14,16 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     if(tag==='table'){
       put('class','source-table');put('data-rules',['all','rows','cols'].includes(node.getAttribute('rules'))?node.getAttribute('rules'):'none');
       const location=align(node.getAttribute('align'))||((s.margin==='auto'||s['margin-left']==='auto'&&s['margin-right']==='auto')?'center':null);if(location)put('data-table-align',location);
-      if(!['','0'].includes(node.getAttribute('border')||'0')||s.border&&!/^(?:none|0(?:px)?)(?:\s|$)/.test(s.border))put('data-frame','true');
+      if(!['','0'].includes(node.getAttribute('border')||'0')||s.border&&!/^(?:none|hidden|0(?:px)?)(?:\s|$)/.test(s.border))put('data-frame','true');
     }else if(tag==='tr'&&!lastRows.has(node))put('data-next-row','true');
     for(const k of ['rowspan','colspan','span'])if(node.hasAttribute(k)){const v=node.getAttribute(k);if(!/^\d{1,3}$/.test(v)||Number(v)===0&&k!=='rowspan')reportError('Unsupported table span: '+k+'='+v);else put(k,v)}
     if(tag==='th'&&['row','col','rowgroup','colgroup'].includes(node.getAttribute('scope')))put('scope',node.getAttribute('scope'));
     const ancestors=[node];if(['td','th'].includes(tag))for(let p=node.parentElement;p;p=p.parentElement){ancestors.push(p);if(p.localName==='table')break}
     for(const p of ancestors){const value=(p.localName==='table'?null:align(p.getAttribute('align')))||align(props(p)['text-align']);if(value){put('data-cell-align',value);break}}
     const fill=color(node.getAttribute('bgcolor')||s['background-color']||s.background);if(fill)put('data-fill',fill);
-    if(['td','th'].includes(tag))for(const side of ['top','right','bottom','left']){const value=s['border-'+side]??s.border;if(value!==undefined)put('data-border-'+side,/^(?:none|0(?:px)?)(?:\s|$)/.test(value)?'none':'solid')}
+    if(/^(?:bold|[6-9]00)$/.test(s['font-weight']||''))put('data-cell-weight','bold');
+    if(['top','middle','bottom'].includes(s['vertical-align']||node.getAttribute('valign')))put('data-cell-valign',s['vertical-align']||node.getAttribute('valign'));
+    if(['td','th'].includes(tag))for(const side of ['top','right','bottom','left']){const value=s['border-'+side]??s.border;if(value!==undefined)put('data-border-'+side,/^(?:none|hidden|0(?:px)?)(?:\s|$)/.test(value)?'none':'solid')}
     return a.join('');
   }
   function walk(node){
