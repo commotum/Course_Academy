@@ -2174,6 +2174,33 @@ fn displayed_solution_family_constant(prompt: &str, key: &str) -> bool {
     })
 }
 
+/// Split exactly two coordinates, preserving nested expression groups. This
+/// is used only when the prompt explicitly requests an ordered pair, so a
+/// comma in interval, function, or subscript notation is not reinterpreted.
+fn ordered_pair_coordinates(value: &str) -> Option<(&str, &str)> {
+    let inner = value.strip_prefix('(')?.strip_suffix(')')?;
+    let mut groups = Vec::new();
+    let mut comma = None;
+    for (index, ch) in inner.char_indices() {
+        match ch {
+            '(' => groups.push(')'),
+            '{' => groups.push('}'),
+            '[' => groups.push(']'),
+            ')' | '}' | ']' => {
+                if groups.pop() != Some(ch) { return None; }
+            }
+            ',' if groups.is_empty() => {
+                if comma.replace(index).is_some() { return None; }
+            }
+            _ => {}
+        }
+    }
+    if !groups.is_empty() { return None; }
+    let index = comma?;
+    let (left, right) = (&inner[..index], &inner[index + 1..]);
+    (!left.is_empty() && !right.is_empty()).then_some((left, right))
+}
+
 /// Error-preserving comparison shared by grading and content reconciliation.
 pub fn compare_math_in_context(
     a: &str,
@@ -2181,6 +2208,17 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    if prompt.to_lowercase().contains("ordered pair") {
+        let expected = normalize_math(b);
+        if let Some((bx, by)) = ordered_pair_coordinates(&expected) {
+            let actual = normalize_math(a);
+            let Some((ax, ay)) = ordered_pair_coordinates(&actual) else { return Ok(false); };
+            // Keep coordinate order and each coordinate's normal exact/form
+            // constraints; neither sorting nor textual tuple equality suffices.
+            return Ok(compare_math_in_context(ax, bx, prompt, context)?
+                && compare_math_in_context(ay, by, prompt, context)?);
+        }
+    }
     // A whole symbolic log-to-exponential conversion assesses all three roles.
     // Compare that representation directly; the expression parser does not
     // parse equalities, and a reversed equality has the same role assignment.
@@ -2773,6 +2811,30 @@ pub fn credit(
 pub(crate) mod tests {
     use super::*;
     use crate::core::Policy;
+
+
+    #[test]
+    fn ordered_pair_blanks_preserve_coordinate_order_and_equivalence() {
+        let mut s = fixture();
+        s.entities.get_mut(&200).unwrap().insert("answer-field/type".into(), json!("answer-field.type/blank"));
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Enter the point as an ordered pair (x,y)."));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("(-2,3)"));
+        for accepted in ["(-2,3)", r"\left(-2,\frac{6}{2}\right)", "(-(1+1),9/3)"] {
+            assert_eq!(grade_field(&s, 100, 200, accepted), Ok(true), "{accepted}");
+        }
+        for rejected in ["(3,-2)", "(-2,-3)", "(0,2)", "-2,3", "(-2,3,4)", "(-2,)", "[-2,3]", "(-2,3)+0"] {
+            assert_eq!(grade_field(&s, 100, 200, rejected), Ok(false), "{rejected}");
+        }
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("(1/2,3)"));
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Enter an ordered pair in simplest form."));
+        assert_eq!(grade_field(&s, 100, 200, r"(\frac12,3)"), Ok(true));
+        assert_eq!(grade_field(&s, 100, 200, "(2/4,3)"), Ok(false));
+        // Domain restrictions still apply inside a coordinate.
+        assert!(compare_math_in_context("(x/x,3)", "(1,3)", "ordered pair", symbolic::Context::default()).is_err());
+        // Scalar answers in pair-related prompts keep the ordinary expression path.
+        assert_eq!(compare_math_in_context("4/2", "2", "ordered pair coordinate", symbolic::Context::default()), Ok(true));
+        assert!(compare_math_in_context("(-2,3)", "(-2,3)", "interval", symbolic::Context::default()).is_err());
+    }
 
     fn id(n: u64) -> String {
         format!("00000000-0000-0000-0000-{n:012}")
