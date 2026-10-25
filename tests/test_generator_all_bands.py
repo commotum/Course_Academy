@@ -155,6 +155,26 @@ class GeneratorAllBandsTests(unittest.TestCase):
         self.assertEqual(publisher.exemplar_publications, [])
         self.assertEqual(set(state['verified_bands']), set(BANDS))
 
+    def test_catchup_rebases_legacy_absolute_manifest_into_new_workspace(self):
+        prior = self.pipeline(RecordingSession()).run()
+        old_manifest = self.job / 'workspace' / prior['manifest']
+        prior['manifest'] = str(old_manifest.resolve())
+        (self.job / 'job.json').write_text(json.dumps(prior))
+        publisher = FakePublisher(self.root / 'absolute-catchup-publisher')
+        publisher.registered_generator = {':question-generator/script': prior['registration']}
+        session = RecordingSession()
+        state = self.pipeline(session, job=self.root / 'absolute-catchup', publisher=publisher,
+                              request={**self.request, 'difficulty': 'hard',
+                                       'registered_package': prior['registration'],
+                                       'reuse_pipeline': str(self.job)}).run()
+        self.assertEqual(state['stage'], 'verified')
+        self.assertEqual(session.roles, ['review'])
+        self.assertEqual(state['manifest'], 'package.json')
+        self.assertEqual(state['package_hash'], prior['package_hash'])
+        self.assertEqual(json.loads((self.job / 'job.json').read_text())['manifest'],
+                         str(old_manifest.resolve()))
+        self.assertEqual(set(state['verified_bands']), set(BANDS))
+
     def test_changed_source_cannot_skip_investigation_and_authorship_via_reuse(self):
         prior = self.pipeline(RecordingSession()).run()
         publisher = FakePublisher(self.root / 'changed-source-publisher')

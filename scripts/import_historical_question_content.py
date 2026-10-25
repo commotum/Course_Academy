@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from question_capture.html_tables import source_table_html
 from question_capture.math_format import normalize_math_boundaries, markdown_emphasis, mathml_ruled_table
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -150,15 +151,7 @@ class Renderer:
         if t in ('ul','ol') and 'questionStatements' in classes:
             roman=['I','II','III','IV','V','VI']
             return '\n\n'+'\n'.join(roman[i]+'. '+self.text(c,extract_fields) for i,c in enumerate(n.find_all('li',recursive=False)))+'\n\n'
-        if t=='table':
-            rows=[]
-            for row in n.find_all('tr'):
-                cells=[self.text(c,extract_fields) for c in row.find_all(['td','th'],recursive=False)]
-                if cells:rows.append(cells)
-            width=max(map(len,rows),default=0)
-            if width:
-                lines=['| '+' | '.join(r+['']*(width-len(r)))+' |' for r in rows];lines.insert(1,'| '+' | '.join(['---']*width)+' |')
-                return '\n\n'+'\n'.join(lines)+'\n\n'
+        if t=='table':return source_table_html(n,lambda node:self.render(node,extract_fields))
         children=''.join(self.render(c,extract_fields) for c in n.children)
         if t=='li':return '- '+children.strip()+'\n'
         if t in ('b','strong'):return markdown_emphasis(children,'**')

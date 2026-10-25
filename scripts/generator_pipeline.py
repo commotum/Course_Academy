@@ -1090,8 +1090,11 @@ class Pipeline:
         old_workspace = directory / 'workspace'
         if not old_workspace.is_dir():
             return False
+        # Older authors saved absolute manifest paths. Rebase within the copied
+        # workspace so catch-up never resolves back into a previous job cycle.
+        manifest = inside(old_workspace, prior['manifest']).relative_to(old_workspace)
         shutil.copytree(old_workspace, self.directory / 'workspace', dirs_exist_ok=True)
-        self.persist(manifest=prior['manifest'])
+        self.persist(manifest=str(manifest))
         if self.candidate_hash() != prior.get('package_hash'):
             # A retained workspace can have later edits; reload the immutable
             # registered version rather than trusting those unreviewed bytes.
@@ -1285,13 +1288,26 @@ class Pipeline:
                 package = publish_package(source, manifest['entrypoint'], manifest['files'],
                                           Path(self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')),
                                           dependencies=manifest.get('dependencies'), expected_digest=self.state['package_hash'])
-                from generator_publish import SourceChanged
+                from generator_publish import SourceChanged, StaleBasis
                 try:
                     self.publisher.prepare(self.state['request']['kp'], self.publication_records(),
                                            package.reference, package.digest, self.directory / 'publication',
                                            source_snapshot=read(self.directory / 'source/source.json'),
                                            assets_directory=self.state.get('assets_directory', self.state['runtime']),
                                            **({'expected_registered_generator': package.reference} if self.is_refill else {}))
+                except StaleBasis:
+                    # A concurrent learner/worker write can invalidate the
+                    # speculative preparation. Retry fresh reads here without
+                    # discarding the accepted review or returning to the queue.
+                    # Never reinterpret a saved intent or acknowledgement as a
+                    # speculative failure: exact publication recovery owns it.
+                    if ((publication / 'request.json').exists()
+                            or (publication / 'verification.json').exists()):
+                        raise
+                    stale_retries += 1
+                    if stale_retries >= 3:
+                        raise
+                    continue
                 except SourceChanged as error:
                     if not self.is_refill:
                         self.publisher.extract_source(self.state['request']['kp'], self.directory / 'source')

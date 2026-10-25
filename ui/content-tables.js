@@ -11,7 +11,7 @@ function fillFor(rgb,light,alpha=1) {
 }
 const watched = new WeakSet();
 export function decorateSourceTables(root) {
- for(const cell of root.querySelectorAll('.source-table [data-fill]')){
+ for(const cell of root.querySelectorAll('.source-table[data-fill],.source-table [data-fill]')){
   const value=color(cell.dataset.fill);if(!value)continue;
   // A validated source color is resolved to RGB, never copied as arbitrary CSS.
   const canvas=document.createElement('canvas'),context=canvas.getContext('2d');

@@ -112,6 +112,7 @@ def _restore_source_svgs(html, originals):
 def html_to_markdown(html):
     """Render source text, math, tables and canonical image paths; discard UI/comments."""
     from bs4 import BeautifulSoup, Comment, NavigableString
+    from html_tables import source_table_html
     soup = BeautifulSoup(_formula_html(html), 'html.parser')
     for node in soup.select('script, style, head, .stepHeader, .helpButton, .explanationHeader'):
         node.decompose()
@@ -145,16 +146,7 @@ def html_to_markdown(html):
                 lines.append((str(i) + '. ' if name == 'ol' else '- ') + render(child).strip())
             return '\n\n' + '\n'.join(lines) + '\n\n'
         if name == 'table':
-            rows = [[render(c).strip().replace('|', '\\|').replace('\n', '<br>')
-                     for c in row.find_all(['td', 'th'], recursive=False)]
-                    for row in node.find_all('tr')]
-            rows = [r for r in rows if r]
-            if not rows or len({len(r) for r in rows}) != 1 or node.select('[rowspan], [colspan]'):
-                # Preserve source structure for tables Markdown cannot express.
-                return '\n\n' + str(node) + '\n\n'
-            lines = ['| ' + ' | '.join(r) + ' |' for r in rows]
-            lines.insert(1, '| ' + ' | '.join('---' for _ in rows[0]) + ' |')
-            return '\n\n' + '\n'.join(lines) + '\n\n'
+            return source_table_html(node, render)
         if name and re.fullmatch('h[1-6]', name):
             return '\n\n' + '#' * int(name[1]) + ' ' + body.strip() + '\n\n'
         if name in ('p', 'div', 'blockquote', 'section'):
