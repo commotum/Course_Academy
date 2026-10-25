@@ -47,6 +47,16 @@ def validate_delivery_batch(records,kp_id):
         if radio:
             recipes=m['bank_recipes']
             if len(recipes)!=5 or any('return_substitution'in v or 'offset'in v or 'shift_inner'in v for v in recipes):raise ValueError('Diagnostic distractors required; generic filler is forbidden')
+            if kp==17592186064220:
+                # Easy endpoints and differential factors give positive
+                # rational multiples of pi. Inspect the displayed bank too:
+                # metadata must not conceal arbitrary +1/+2 fallback choices.
+                for answer in choices:
+                    value=re.sub(r'\s+','',answer[':answer/value'])
+                    if not re.fullmatch(r'(?:\\frac\{(?:\d+)?\\pi\}\{\d+\}|(?:\d+)?\\pi)',value):raise ValueError('Displayed endpoint bank contains generic filler or unsupported values')
+            else:
+                name={'sine':r'\arcsin','tangent':r'\arctan','secant':r'\operatorname{arcsec}'}[m['family']]
+                if any(name not in a[':answer/value']for a in choices):raise ValueError('Displayed primitive bank contains generic filler')
             if kp!=17592186064220 and any('+C'not in a[':answer/value']for a in choices):raise ValueError('Each antiderivative choice needs C')
         identity=(band,m['mathematical_fingerprint'])
         if identity in seen:raise ValueError('Duplicate task')

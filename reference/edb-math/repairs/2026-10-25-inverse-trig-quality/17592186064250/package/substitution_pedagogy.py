@@ -10,7 +10,6 @@ from pathlib import Path
 import random
 import uuid
 import sympy as s
-import inverse_substitution_models as inverse_models
 from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
@@ -34,7 +33,9 @@ def fp(body,lo=None,hi=None):
 def inverse(fn,z):return getattr(s,{'sine':'asin','tangent':'atan','secant':'asec'}[fn])(z)
 
 def instance(kp,band,case,rng,profile=0):
- if kp in INV:return inverse_models.instance(kp,band,case,rng,profile)
+ if kp in INV:
+  import inverse_substitution_models as inverse_models
+  return inverse_models.instance(kp,band,case,rng,profile)
  a=s.Integer(rng.randint(2,5));n=s.Integer(rng.randint(1,4));lo=hi=None;notes=[];facts=[]
  base=s.E if kp==EXP[0]or case.endswith('_e')or case=='log_composite'else s.Integer(rng.choice((2,3,5)))
  if kp in EXP[:2]:
@@ -89,6 +90,8 @@ def primtex(expr,z):
  return tex(expr.subs(U,z))
 
 def render(kp,band,case,m,seed,evidence):
+ if kp in INV:
+  import inverse_substitution_models as inverse_models
  easy=band=='easy';lo,hi=m['lo'],m['hi'];definite=lo is not None;inverse_choice=kp in INV and not definite
  inner,du,r,trans,prim=(m[k]for k in('inner','du','factor','trans','prim'))
  u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))

@@ -46,7 +46,7 @@ def bank_check(row,kp):
   for i,a in enumerate(signatures):
    for b in signatures[:i]:
     delta=a-b;witness=None
-    for point in (s.Rational(1,97),s.Rational(-1,89),s.Rational(1,7),2,3,-2,-3):
+    for point in (s.Rational(1,97),s.Rational(-1,89),s.Rational(1,7),2,3,-2,-3,7,11,-7,-11):
      try:
       va,vb=(complex(v.evalf(30,subs={x:point}))for v in(a,b))
       if abs(va.imag)<1e-12 and abs(vb.imag)<1e-12 and 1e-12<abs(va-vb)<1e100:witness=str(point);break

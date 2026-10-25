@@ -1080,6 +1080,32 @@ impl Algebra {
                 }
             }
             "exp" => {
+                // A linear fractional argument has a unique constant part:
+                // (a*x+b)/(c*x+d) = a/c + remainder/(c*x+d).
+                // Extract it before splitting numerator terms, so translated
+                // reciprocal IVP answers agree with products such as
+                // exp(-1)*exp(3/(x-2)). Guards from the original denominator
+                // remain in self.conditions, including cancelled holes.
+                let linear = |m: &Mono| m.is_empty()
+                    || (m.len() == 1 && m.iter().all(|(a,e)|
+                        *e == 1 && matches!(a, Atom::Variable(_))));
+                if x.den != Poly::integer(1)
+                    && x.den.0.keys().all(linear)
+                    && x.num.0.keys().all(linear)
+                    && x.den.0.keys().filter(|m| !m.is_empty()).count() == 1
+                {
+                    let (m, d) = x.den.0.iter().find(|(m,_)| !m.is_empty()).unwrap();
+                    if let Some(n) = x.num.0.get(m) {
+                        let q = n / d;
+                        let remainder = self.padd(&x.num, &x.den.scale(&-q.clone()))?;
+                        if remainder.constant().is_some() {
+                            let part = self.function("exp", &Value::number(q))?;
+                            let fraction = self.value(remainder, x.den.clone())?;
+                            let rest = self.function("exp", &fraction)?;
+                            return self.mul(&part, &rest);
+                        }
+                    }
+                }
                 // exp(-u) is the reciprocal of exp(u) for every supported real
                 // argument, including rational coefficients. Orient by the
                 // leading term so opaque exponential atoms share this identity.
@@ -1116,8 +1142,7 @@ impl Algebra {
                     }
                     return Ok(result);
                 }
-                if x.den == Poly::integer(1)
-                    && x.num.0.values().all(|c| {
+                if x.num.0.values().all(|c| {
                         c.is_integer()
                             && c.to_integer()
                                 .to_i32()
@@ -1126,14 +1151,14 @@ impl Algebra {
                 {
                     let mut result = Value::integer(1);
                     for (m, c) in &x.num.0 {
-                        let base = if m.is_empty() {
+                        let base = if m.is_empty() && x.den == Poly::integer(1) {
                             Value::atom(Atom::E)
                         } else {
                             Value::atom(Atom::Function(
                                 "exp".into(),
                                 Box::new(Value {
                                     num: Poly(BTreeMap::from([(m.clone(), Q::one())])),
-                                    den: Poly::integer(1),
+                                    den: x.den.clone(),
                                 }),
                             ))
                         };
@@ -2238,6 +2263,21 @@ mod tests {
         assert_eq!(compare("exp(x/2+1/3)", "exp(x/2)*exp(2/3)", Context::default()), Ok(false));
         assert!(compare("exp(x/x+x/2)", "exp(1)*exp(x/2)", Context::default()).is_err());
     }
+    #[test]
+    fn translated_reciprocal_exponential_arguments() {
+        for (a,b) in [
+            ("exp(-1+3/(x-2))", "exp(-1)*exp(3/(x-2))"),
+            ("exp((5-x)/(x-2))", "exp(-1)*exp(3/(x-2))"),
+            ("exp(2+1/(x+1))", "exp(2)*exp(1/(x+1))"),
+            ("exp((x+1)/(x-1))", "exp(1)*exp(2/(x-1))"),
+        ] { eq(a,b); eq(b,a); }
+        for wrong in ["exp(1)*exp(3/(x-2))", "exp(-1)*exp(-3/(x-2))", "exp(-1)*exp(2/(x-2))"] {
+            assert_eq!(compare("exp(-1+3/(x-2))", wrong, Context::default()), Ok(false));
+        }
+        assert!(compare("exp((x-2)/(x-2))", "exp(1)", Context::default()).is_err());
+        assert!(!supports("exp(1/(x-x))", Context::default()));
+    }
+
     #[test]
     fn bounded_real_trig_arguments_normalize_absolute_logarithms() {
         let canonical = r"-3\left(\ln\left|\cos{\left(x\right)}+2\right|\right)";

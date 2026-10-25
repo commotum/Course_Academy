@@ -43,6 +43,18 @@ class InverseSubstitutionQualityTests(unittest.TestCase):
             p=r['generation']['parameters'];p['normalized_lower']='0';p['normalized_upper']='1'
         with self.assertRaisesRegex(ValueError,'Endpoint coverage'):validate_delivery_batch(pool,kp)
 
+    def test_false_recipe_metadata_cannot_hide_arbitrary_offsets(self):
+        kp=17592186064220;r=rows(kp)[0];f=r['question'][':question/answer-fields'][0]
+        wrong=next(a for a in f[':answer-field/choices']if a[':answer/id']!=f[':answer-field/correct'][1])
+        wrong[':answer/value']=r'\frac{2\pi}{9}+1'
+        with self.assertRaisesRegex(ValueError,'Displayed.*filler'):validate_delivery_batch([r],kp)
+
+    def test_false_recipe_metadata_cannot_hide_copied_u(self):
+        kp=17592186064250;r=rows(kp)[0];f=r['question'][':question/answer-fields'][0]
+        wrong=next(a for a in f[':answer-field/choices']if a[':answer/id']!=f[':answer-field/correct'][1])
+        wrong[':answer/value']='4x+C'
+        with self.assertRaisesRegex(ValueError,'Displayed.*filler'):validate_delivery_batch([r],kp)
+
     def test_sampling_retains_the_progression_for_new_seeds(self):
         for kp in KPS:
             ev=json.loads((H/str(kp)/'package/source-evidence.json').read_text())
