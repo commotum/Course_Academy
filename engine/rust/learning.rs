@@ -2213,6 +2213,13 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    // Evaluated change-of-base answers may explicitly exclude logarithms.
+    // Enforce that narrow representation contract before value equivalence;
+    // otherwise log_3(9) bypasses the requested denominator evaluation.
+    // Keep ordinary equivalent-logarithm questions and numeric spellings free.
+    if forbids_logarithms(prompt) && contains_logarithm(a) {
+        return Ok(false);
+    }
     if prompt.to_lowercase().contains("ordered pair") {
         let expected = normalize_math(b);
         if let Some((bx, by)) = ordered_pair_coordinates(&expected) {
@@ -2264,6 +2271,24 @@ pub fn compare_math_in_context(
     } else {
         compare_math(a, b, context)
     }
+}
+
+fn forbids_logarithms(prompt: &str) -> bool {
+    use std::sync::LazyLock;
+    static NO_LOGS: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(r"(?i)\b(?:no|without)\s+logarithms?\b")
+            .expect("valid logarithm-free answer instruction")
+    });
+    NO_LOGS.is_match(prompt)
+}
+
+fn contains_logarithm(answer: &str) -> bool {
+    use std::sync::LazyLock;
+    static LOG: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(r"(?i)(?:\\|\b)(?:log|ln)(?:\b|_)")
+            .expect("valid logarithm token expression")
+    });
+    LOG.is_match(answer)
 }
 
 fn requests_power_form(prompt: &str) -> bool {
@@ -4437,6 +4462,27 @@ pub(crate) mod tests {
             s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
             assert_eq!(grade_field(&s,100,200,"(x-3)^2+1"), Ok(false), "{prompt}");
         }
+    }
+
+    #[test]
+    fn evaluated_logarithm_answers_enforce_only_explicit_log_free_contract() {
+        let context = symbolic::Context::default();
+        for value in [r"\log_3 9", r"\ln(9)/\ln(3)", "log(9)/log(3)", "log_3(9)"] {
+            assert!(!compare_math_in_context(value, "2",
+                "Give an evaluated integer or fraction, with no logarithms.", context).unwrap(), "{value}");
+        }
+        assert!(!compare_math_in_context(r"t/\log_3 9", "t/2",
+            "Give a multiple of t with an evaluated coefficient and no logarithms.", context).unwrap());
+        for value in ["2", "2.000", "4/2", r"\frac{4}{2}"] {
+            assert!(compare_math_in_context(value, "2",
+                "Give an evaluated integer or fraction, with no logarithms.", context).unwrap());
+        }
+        assert!(compare_math_in_context("t*(1/2)", "t/2",
+            "Give a multiple of t with no logarithms.", context).unwrap());
+        assert!(compare_math_in_context(r"\log_3 9", "2", "Find k.", context).unwrap());
+        assert!(!forbids_logarithms("Use logarithms to solve."));
+        assert!(forbids_logarithms("Give an expression without logarithms."));
+        assert!(!contains_logarithm("alpha + t/2"));
     }
 
     #[test]
