@@ -1,0 +1,2178 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "76f7ab34-158b-5e28-b158-c95c23947019",
+      ":question/problem": "Use the substitution $u=2 x^{2} + 1$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 2 x e^{2 x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=2 x^{2} + 1$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=\\sqrt{\\ln{\\left(2 \\right)}}&\\Longrightarrow u=1 + \\ln{\\left(4 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 2 x e^{2 x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n\\frac{1}{2}\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "713fac61-ef34-51fb-817e-d09d93c50f98",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e083781d-f59e-57f7-8b88-45c3635074f1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "6e5b6957-7d12-560b-921c-cd818f7f1540",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{8}\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "f916ce3a-9570-5558-a7c1-f97fb12ac57c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{2}\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "56a9b563-e91f-5d45-a704-1e52a68f8b1a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "068e39e7-31c1-5e97-be76-23a2af3433d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\int_{1}^{1 + \\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "56a9b563-e91f-5d45-a704-1e52a68f8b1a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_e",
+      "family": "square_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 2,
+        "slope": "2",
+        "shift": "1",
+        "amplitude": "2",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "4484b79988674ae520605aab0420a595627a9ce27a1f0a1baf634cd91cbdd138",
+      "model": {
+        "integrand": "2*x*exp(2*x**2 + 1)",
+        "substitution": "2*x**2 + 1",
+        "derivative": "4*x",
+        "factor": "1/2",
+        "transformed": "exp(u)",
+        "primitive": "exp(2*x**2 + 1)/2",
+        "lower": "0",
+        "upper": "sqrt(log(2))",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 3,
+      "bank_recipes": [
+        "negative_double",
+        "extra_quarter",
+        "negative_triple",
+        "correct",
+        "quadruple_factor"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "9ed8106b-68d7-5bb0-a76d-0890cdd4946f",
+      ":question/problem": "Use the substitution $u=x + 1$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\ln{\\left(2 \\right)}} 4 e^{x + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=x + 1$. Then $\\mathrm{d}u=(1)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=\\ln{\\left(2 \\right)} + 1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\ln{\\left(2 \\right)}} 4 e^{x + 1}\\,\\mathrm{d}x\\\\&=4\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n4\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ab71f5c6-e9cf-5e82-8d1f-8371caf8b48b",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b3f88e14-20f8-5580-b051-c32251fa8458",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "892abda1-3beb-54b5-be50-3794091e0b4a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4}{3}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "68f2aa6c-a141-50f1-b436-14e663c4a9f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "d902dad2-758c-5116-b6fa-7a24cf480ab8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-8\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "bd0e0110-6d8d-5287-9a53-ac2e6ab5e0f1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b3f88e14-20f8-5580-b051-c32251fa8458"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_e",
+      "family": "linear_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 1,
+        "slope": "1",
+        "shift": "1",
+        "amplitude": "4",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "3dc24a967ddceca1e7ac33c557f7f8397605ec6b5004f7529e909b2b383436b2",
+      "model": {
+        "integrand": "4*exp(x + 1)",
+        "substitution": "x + 1",
+        "derivative": "1",
+        "factor": "4",
+        "transformed": "exp(u)",
+        "primitive": "4*exp(x + 1)",
+        "lower": "0",
+        "upper": "log(2)",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 2,
+      "bank_recipes": [
+        "correct",
+        "extra_third",
+        "triple_factor",
+        "negative_double",
+        "double_factor"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "53bd9046-a0c9-5aa2-9147-c7683893ad69",
+      ":question/problem": "Use the substitution $u=x^{2}$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 4 x e^{x^{2}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=x^{2}$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\sqrt{\\ln{\\left(2 \\right)}}&\\Longrightarrow u=\\ln{\\left(2 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 4 x e^{x^{2}}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n2\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "88a007b6-0dbf-51de-8960-f63825b3a10c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "93bbc09e-f842-560b-ac12-2acd6733ae28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "fe4b6e97-c5d7-5288-bd23-256fad4057bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-6\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "1a9217bf-0966-5d73-be18-6a16f3d4bc52",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "d359e514-7ef1-5527-b155-52639697395d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "915745e1-460a-57cc-aef8-ec82802a8f18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "93bbc09e-f842-560b-ac12-2acd6733ae28"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_e",
+      "family": "square_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 2,
+        "slope": "1",
+        "shift": "0",
+        "amplitude": "4",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "9b6c2daf5e9fe91e4feb074007744f221cd78e0c992e8d9c54aabfaa4b41c4f6",
+      "model": {
+        "integrand": "4*x*exp(x**2)",
+        "substitution": "x**2",
+        "derivative": "2*x",
+        "factor": "2",
+        "transformed": "exp(u)",
+        "primitive": "2*exp(x**2)",
+        "lower": "0",
+        "upper": "sqrt(log(2))",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 3,
+      "bank_recipes": [
+        "correct",
+        "negative_triple",
+        "triple_factor",
+        "wrong_sign",
+        "extra_quarter"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "52e02874-77ba-5369-b00d-24ca76a8bc3e",
+      ":question/problem": "Use the substitution $u=2 x$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\ln{\\left(2 \\right)}} e^{2 x}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=\\ln{\\left(4 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\ln{\\left(2 \\right)}} e^{2 x}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n\\frac{1}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f6a873b5-f9e6-5b03-b5d9-359c64a54162",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "603bf00c-aa10-51d0-bef7-2bc0638ac2d3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "47ba7e27-d95f-53da-9fa3-092d1065fce5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u"
+            },
+            {
+              ":answer/id": "1a051e72-0189-5d67-9af5-1825d0c9a576",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{6}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "ee641f51-06a5-528a-96e2-661a5fa0c5bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "01edcfb0-1be4-5a08-a733-b778047e9f93",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ee641f51-06a5-528a-96e2-661a5fa0c5bf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_e",
+      "family": "linear_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 1,
+        "slope": "2",
+        "shift": "0",
+        "amplitude": "1",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "71c543d26fd2f909d0342b460fb4d35c1f3e0b2f21e6379244216b5e26335310",
+      "model": {
+        "integrand": "exp(2*x)",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "1/2",
+        "transformed": "exp(u)",
+        "primitive": "exp(2*x)/2",
+        "lower": "0",
+        "upper": "log(2)",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 1,
+      "bank_recipes": [
+        "triple_factor",
+        "double_factor",
+        "extra_third",
+        "correct",
+        "quadruple_factor"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "df68770e-204f-5785-ac94-e0d97819ed0d",
+      ":question/problem": "Use the substitution $u=x^{2}$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 2 x e^{x^{2}}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=x^{2}$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\sqrt{\\ln{\\left(2 \\right)}}&\\Longrightarrow u=\\ln{\\left(2 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} 2 x e^{x^{2}}\\,\\mathrm{d}x\\\\&=\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a8dfa04e-c89e-595c-9e56-25d05f83cac4",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "199834a8-15c7-5192-8598-d7b4fe32b3e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "e6e77070-9eb8-52c3-8cb1-ff98baac7736",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "dda6465f-4977-552d-a47c-45412648ecb3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "32dc258b-d39c-53d2-95fb-2d88894bc396",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4\\left(\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "0deafa5f-05fb-5a8d-bc4e-c2b3fa47fc3f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{0}^{\\ln{\\left(2 \\right)}} e^{u}\\,\\mathrm{d}u"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0deafa5f-05fb-5a8d-bc4e-c2b3fa47fc3f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_e",
+      "family": "square_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 2,
+        "slope": "1",
+        "shift": "0",
+        "amplitude": "2",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "3ea94095d781a0cb657318cc5b85f82ed01751f23a3e7ecc9c5a2531d205e76d",
+      "model": {
+        "integrand": "2*x*exp(x**2)",
+        "substitution": "x**2",
+        "derivative": "2*x",
+        "factor": "1",
+        "transformed": "exp(u)",
+        "primitive": "exp(x**2)",
+        "lower": "0",
+        "upper": "sqrt(log(2))",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 2,
+      "bank_recipes": [
+        "wrong_sign",
+        "negative_triple",
+        "double_factor",
+        "quadruple_factor",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "15afb047-7ab9-5689-8017-2b19eb22c6ce",
+      ":question/problem": "Use the substitution $u=2 x$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\ln{\\left(2 \\right)}} 3 e^{2 x}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=\\ln{\\left(4 \\right)}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\ln{\\left(2 \\right)}} 3 e^{2 x}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n\\frac{3}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bf4d12c4-daec-568d-a743-88e4a6fbb320",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6741cb8e-88a0-5ce1-976c-237d3ec49113",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "8e31ec6b-6202-5f44-826d-864aebcbda07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "43e1c96c-50a1-5512-8229-4a3e1fcfe504",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "d12681f5-ecff-584a-a9d5-3f9cef6cf34c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{8}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "a930e23a-ba33-5764-b728-ef56fda55b85",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{2}\\left(\\int_{0}^{\\ln{\\left(4 \\right)}} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a930e23a-ba33-5764-b728-ef56fda55b85"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_e",
+      "family": "linear_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 1,
+        "slope": "2",
+        "shift": "0",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "dd38308c1a9af33235c7f6a2ae5f69831e8057d1aa2c076825030e7196d717e3",
+      "model": {
+        "integrand": "3*exp(2*x)",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "3/2",
+        "transformed": "exp(u)",
+        "primitive": "3*exp(2*x)/2",
+        "lower": "0",
+        "upper": "log(2)",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 2,
+      "bank_recipes": [
+        "double_factor",
+        "triple_factor",
+        "negative_double",
+        "extra_quarter",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "918aae66-2616-5579-b040-086f3e44e133",
+      ":question/problem": "Use the substitution $u=x^{2} + 1$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} x e^{x^{2} + 1}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=x^{2} + 1$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=\\sqrt{\\ln{\\left(2 \\right)}}&\\Longrightarrow u=\\ln{\\left(2 \\right)} + 1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\sqrt{\\ln{\\left(2 \\right)}}} x e^{x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n\\frac{1}{2}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0940ea7b-77fe-5dff-b178-39085ba3d487",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1f25d427-cd19-5c12-ab57-65a29c84b094",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{2}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "f44e02e1-d06f-5224-acac-0442b3d22e19",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "6a647c01-afdc-5bed-b6a4-2827ea0bb5bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{6}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "662101b1-ae8e-5549-8e7f-1b491cc4a7e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "900e3c46-273d-505c-9f8c-1a1ecffdc85e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{2}\\left(\\int_{1}^{\\ln{\\left(2 \\right)} + 1} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "662101b1-ae8e-5549-8e7f-1b491cc4a7e2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_e",
+      "family": "square_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 2,
+        "slope": "1",
+        "shift": "1",
+        "amplitude": "1",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "25c00333bec6170bf0806475eb83c6035799be31adf16d94c918ef99e6e62147",
+      "model": {
+        "integrand": "x*exp(x**2 + 1)",
+        "substitution": "x**2 + 1",
+        "derivative": "2*x",
+        "factor": "1/2",
+        "transformed": "exp(u)",
+        "primitive": "exp(x**2 + 1)/2",
+        "lower": "0",
+        "upper": "sqrt(log(2))",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 3,
+      "bank_recipes": [
+        "negative_triple",
+        "quadruple_factor",
+        "extra_third",
+        "correct",
+        "wrong_sign"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "b307b28c-7447-5305-a106-a972e7d5a9ca",
+      ":question/problem": "Use the substitution $u=x + 2$. Which integral is obtained?\n\n$$\n\\int_{0}^{\\ln{\\left(2 \\right)}} 3 e^{x + 2}\\,\\mathrm{d}x\n$$",
+      ":question/worked-solution": "Let $u=x + 2$. Then $\\mathrm{d}u=(1)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=2\\\\x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=\\ln{\\left(2 \\right)} + 2\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\ln{\\left(2 \\right)}} 3 e^{x + 2}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nThe transformed integral is\n\n$$\n3\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ca691ac6-c678-571a-a6df-f3d1703c46df",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "35793bcb-5557-56d7-8333-59d88d526e20",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "bfba1f10-b3af-5f34-b69d-69634fc52ba8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u"
+            },
+            {
+              ":answer/id": "bb044171-5255-5057-b5a0-5f668d3a5586",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-9\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "ebbcd5a7-7a54-5a4e-8b72-f33d8e5f553a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right)"
+            },
+            {
+              ":answer/id": "c1af244a-1e63-5104-a874-6082ca45acad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{4}\\left(\\int_{2}^{\\ln{\\left(2 \\right)} + 2} e^{u}\\,\\mathrm{d}u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ebbcd5a7-7a54-5a4e-8b72-f33d8e5f553a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_e",
+      "family": "linear_e",
+      "challenge": "provided_substitution",
+      "parameters": {
+        "power": 1,
+        "slope": "1",
+        "shift": "2",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "0553ae47d46562815f7adaedcf763ee3913a4f39a8df5e6f71d49ab384c770d1",
+      "model": {
+        "integrand": "3*exp(x + 2)",
+        "substitution": "x + 2",
+        "derivative": "1",
+        "factor": "3",
+        "transformed": "exp(u)",
+        "primitive": "3*exp(x + 2)",
+        "lower": "0",
+        "upper": "log(2)",
+        "result": null
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored supplied-u transformation stage, following imported q-49529/q-49532 scaffolding; own KP imports anchor the integrands.",
+      "operation": "transform",
+      "provided_substitution": true,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": 3,
+      "bank_recipes": [
+        "double_factor",
+        "extra_third",
+        "negative_triple",
+        "correct",
+        "extra_quarter"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "012021b3-4d85-5cb3-8311-8b799e8be032",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 4 \\cdot 3^{2 x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 x^{2} + 2$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=2\\\\x=1&\\Longrightarrow u=4\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 4 \\cdot 3^{2 x^{2} + 2} x\\,\\mathrm{d}x\\\\&=\\int_{2}^{4} 3^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right]_{2}^{4}=\\left(\\frac{81}{\\ln{\\left(3 \\right)}}\\right)-\\left(\\frac{9}{\\ln{\\left(3 \\right)}}\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{72}{\\ln{\\left(3 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "119f5306-f073-5d16-91d6-d7cdf25e2a75",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "33815bee-7119-5572-94c9-72f36586f2e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{72}{\\ln{\\left(3 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "33815bee-7119-5572-94c9-72f36586f2e9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_base",
+      "family": "square_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 2,
+        "slope": "2",
+        "shift": "2",
+        "amplitude": "4",
+        "base": "3"
+      },
+      "mathematical_fingerprint": "a2a196654369eda1206b21674e0813643adb9e1d460295a8072570d60a980b59",
+      "model": {
+        "integrand": "4*3**(2*x**2 + 2)*x",
+        "substitution": "2*x**2 + 2",
+        "derivative": "4*x",
+        "factor": "1",
+        "transformed": "3**u",
+        "primitive": "3**(2*x**2 + 2)/log(3)",
+        "lower": "0",
+        "upper": "1",
+        "result": "72/log(3)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "1100c904-712f-5524-964a-421be8478f15",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 2^{x + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=x + 1$. Then $\\mathrm{d}u=(1)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=1&\\Longrightarrow u=2\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 2^{x + 1}\\,\\mathrm{d}x\\\\&=\\int_{1}^{2} 2^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right]_{1}^{2}=\\left(\\frac{4}{\\ln{\\left(2 \\right)}}\\right)-\\left(\\frac{2}{\\ln{\\left(2 \\right)}}\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2}{\\ln{\\left(2 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9d0908c6-1508-50e9-9268-c0821dfd898f",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2f77e899-5bf3-5606-be9d-9e74679a05f9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{\\ln{\\left(2 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2f77e899-5bf3-5606-be9d-9e74679a05f9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_base",
+      "family": "linear_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 1,
+        "slope": "1",
+        "shift": "1",
+        "amplitude": "1",
+        "base": "2"
+      },
+      "mathematical_fingerprint": "d28974ae543a91f13127f6048dd1cf0cb3f58de7bef70b449a742379e4525de3",
+      "model": {
+        "integrand": "2**(x + 1)",
+        "substitution": "x + 1",
+        "derivative": "1",
+        "factor": "1",
+        "transformed": "2**u",
+        "primitive": "2**(x + 1)/log(2)",
+        "lower": "0",
+        "upper": "1",
+        "result": "2/log(2)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "16af13da-5b4a-5b74-9587-06e182b98c33",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 2 \\cdot 2^{2 x^{2} + 1} x\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 x^{2} + 1$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=1&\\Longrightarrow u=3\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 2 \\cdot 2^{2 x^{2} + 1} x\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{1}^{3} 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{2}\\left(\\left[\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right]_{1}^{3}\\right)=\\frac{1}{2}\\left(\\left(\\frac{8}{\\ln{\\left(2 \\right)}}\\right)-\\left(\\frac{2}{\\ln{\\left(2 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{3}{\\ln{\\left(2 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b2e12dce-8af3-5074-96bb-3236a1bf09ab",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8edcdcf5-ee8a-538c-96af-d2101e4899ef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{\\ln{\\left(2 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8edcdcf5-ee8a-538c-96af-d2101e4899ef"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_base",
+      "family": "square_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 2,
+        "slope": "2",
+        "shift": "1",
+        "amplitude": "2",
+        "base": "2"
+      },
+      "mathematical_fingerprint": "454289e7316871e58ba7e198751827e2af02c58f4547fb22dfcd728ef53203c7",
+      "model": {
+        "integrand": "2*2**(2*x**2 + 1)*x",
+        "substitution": "2*x**2 + 1",
+        "derivative": "4*x",
+        "factor": "1/2",
+        "transformed": "2**u",
+        "primitive": "4**(x**2)/log(2)",
+        "lower": "0",
+        "upper": "1",
+        "result": "3/log(2)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "19de1ca2-28f1-5ffe-a86a-3f6bc8444a83",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 2^{2 x + 2}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 x + 2$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=2\\\\x=1&\\Longrightarrow u=4\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 2^{2 x + 2}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{2}^{4} 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{2}\\left(\\left[\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right]_{2}^{4}\\right)=\\frac{1}{2}\\left(\\left(\\frac{16}{\\ln{\\left(2 \\right)}}\\right)-\\left(\\frac{4}{\\ln{\\left(2 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{6}{\\ln{\\left(2 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "03fb0ade-496a-5432-8405-4871628eba76",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "33ffd842-c0f4-5dd4-ae37-55555a0a18c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6}{\\ln{\\left(2 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "33ffd842-c0f4-5dd4-ae37-55555a0a18c8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_base",
+      "family": "linear_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 1,
+        "slope": "2",
+        "shift": "2",
+        "amplitude": "1",
+        "base": "2"
+      },
+      "mathematical_fingerprint": "f6eca08403202a22a355e5411c490f39c17fd04a48d79fdb53d89f51eb6ddb2d",
+      "model": {
+        "integrand": "2**(2*x + 2)",
+        "substitution": "2*x + 2",
+        "derivative": "2",
+        "factor": "1/2",
+        "transformed": "2**u",
+        "primitive": "2**(2*x + 1)/log(2)",
+        "lower": "0",
+        "upper": "1",
+        "result": "6/log(2)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "0cb8ac52-0d5a-5929-9f99-bdc30485bce9",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 3^{2 x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 x^{2} + 2$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=2\\\\x=1&\\Longrightarrow u=4\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 3^{2 x^{2} + 2} x\\,\\mathrm{d}x\\\\&=\\frac{1}{4}\\left(\\int_{2}^{4} 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{4}\\left(\\left[\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right]_{2}^{4}\\right)=\\frac{1}{4}\\left(\\left(\\frac{81}{\\ln{\\left(3 \\right)}}\\right)-\\left(\\frac{9}{\\ln{\\left(3 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{18}{\\ln{\\left(3 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "05f3173b-ff5e-514c-8652-b030ac2dcf48",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d3a8f371-e5ae-5720-b7bb-d3e191025cfd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{18}{\\ln{\\left(3 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d3a8f371-e5ae-5720-b7bb-d3e191025cfd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_base",
+      "family": "square_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 2,
+        "slope": "2",
+        "shift": "2",
+        "amplitude": "1",
+        "base": "3"
+      },
+      "mathematical_fingerprint": "a8d890ed38420dda073baf0142643b58630f316c84d0aa99276deca65a9682f4",
+      "model": {
+        "integrand": "3**(2*x**2 + 2)*x",
+        "substitution": "2*x**2 + 2",
+        "derivative": "4*x",
+        "factor": "1/4",
+        "transformed": "3**u",
+        "primitive": "3**(2*x**2 + 2)/(4*log(3))",
+        "lower": "0",
+        "upper": "1",
+        "result": "18/log(3)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "767c4d7a-696c-54ad-bdc2-ba5430518877",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 2 \\cdot 3^{x + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=x + 1$. Then $\\mathrm{d}u=(1)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=1&\\Longrightarrow u=2\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 2 \\cdot 3^{x + 1}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{1}^{2} 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right]_{1}^{2}\\right)=2\\left(\\left(\\frac{9}{\\ln{\\left(3 \\right)}}\\right)-\\left(\\frac{3}{\\ln{\\left(3 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{12}{\\ln{\\left(3 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3a252eb3-0c64-56bf-be62-4af6527ff94c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "792ffb16-ba24-5a06-b1aa-8ab593242c8b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{12}{\\ln{\\left(3 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "792ffb16-ba24-5a06-b1aa-8ab593242c8b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_base",
+      "family": "linear_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 1,
+        "slope": "1",
+        "shift": "1",
+        "amplitude": "2",
+        "base": "3"
+      },
+      "mathematical_fingerprint": "1b6d450f93787266fdd858557706b1a6f427b0278750abf3b234b4722fa7ae52",
+      "model": {
+        "integrand": "2*3**(x + 1)",
+        "substitution": "x + 1",
+        "derivative": "1",
+        "factor": "2",
+        "transformed": "3**u",
+        "primitive": "6*3**x/log(3)",
+        "lower": "0",
+        "upper": "1",
+        "result": "12/log(3)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "e0fc7683-b8ed-592a-a25c-b785a2344d1a",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 4 \\cdot 2^{x^{2}} x\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=x^{2}$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=1&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 4 \\cdot 2^{x^{2}} x\\,\\mathrm{d}x\\\\&=2\\left(\\int_{0}^{1} 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right]_{0}^{1}\\right)=2\\left(\\left(\\frac{2}{\\ln{\\left(2 \\right)}}\\right)-\\left(\\frac{1}{\\ln{\\left(2 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2}{\\ln{\\left(2 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c9c1f898-d92a-5cad-a8d1-08463d9e421e",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0fe06044-600f-535f-bed4-8ffc40f30073",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2}{\\ln{\\left(2 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0fe06044-600f-535f-bed4-8ffc40f30073"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "square_base",
+      "family": "square_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 2,
+        "slope": "1",
+        "shift": "0",
+        "amplitude": "4",
+        "base": "2"
+      },
+      "mathematical_fingerprint": "973c36af493dc880ca1357e807f03920f65802b7ae980d68322117a4a168bced",
+      "model": {
+        "integrand": "4*2**(x**2)*x",
+        "substitution": "x**2",
+        "derivative": "2*x",
+        "factor": "2",
+        "transformed": "2**u",
+        "primitive": "2**(x**2 + 1)/log(2)",
+        "lower": "0",
+        "upper": "1",
+        "result": "2/log(2)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "65b3a6c7-a7dc-5b8b-bf74-171639b45782",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} 4 \\cdot 5^{x + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=x + 1$. Then $\\mathrm{d}u=(1)\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=1\\\\x=1&\\Longrightarrow u=2\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} 4 \\cdot 5^{x + 1}\\,\\mathrm{d}x\\\\&=4\\left(\\int_{1}^{2} 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n4\\left(\\left[\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right]_{1}^{2}\\right)=4\\left(\\left(\\frac{25}{\\ln{\\left(5 \\right)}}\\right)-\\left(\\frac{5}{\\ln{\\left(5 \\right)}}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{80}{\\ln{\\left(5 \\right)}}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bb4a765f-4357-592d-a138-9c572d7d0f98",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cd6eb6a6-6f3d-5d0a-bbc8-0443fb7f2afb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{80}{\\ln{\\left(5 \\right)}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cd6eb6a6-6f3d-5d0a-bbc8-0443fb7f2afb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "linear_base",
+      "family": "linear_base",
+      "challenge": "base_exponential_bounds",
+      "parameters": {
+        "power": 1,
+        "slope": "1",
+        "shift": "1",
+        "amplitude": "4",
+        "base": "5"
+      },
+      "mathematical_fingerprint": "6b900acad110bc0ba750e5675cea6d23b126b78bcc0c43c47c6133c6a63c90da",
+      "model": {
+        "integrand": "4*5**(x + 1)",
+        "substitution": "x + 1",
+        "derivative": "1",
+        "factor": "4",
+        "transformed": "5**u",
+        "primitive": "20*5**x/log(5)",
+        "lower": "0",
+        "upper": "1",
+        "result": "80/log(5)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "5221acf4-978c-58d8-9697-827ffc8e9542",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{6 e^{x}}{2 e^{x} + 3}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 e^{x} + 3$. Then $\\mathrm{d}u=(2 e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=7\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=9\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{6 e^{x}}{2 e^{x} + 3}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{7}^{9} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\ln\\left|u\\right|\\right]_{7}^{9}\\right)=3\\left(\\left(\\ln{\\left(9 \\right)}\\right)-\\left(\\ln{\\left(7 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n3\\left(\\ln\\left(9\\right)-\\ln\\left(7\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6ec0fd86-93c9-5a69-b4b1-b1e5b2211a71",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "006a3367-4a5e-565b-976b-1c24160b07ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\ln\\left(9\\right)-\\ln\\left(7\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "006a3367-4a5e-565b-976b-1c24160b07ab"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "2",
+        "offset": "3",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "ef6ef7dc2815cb54e279397b0b10f8818c559e8d610ae8d0d9a12bd88e3536c8",
+      "model": {
+        "integrand": "6*exp(x)/(2*exp(x) + 3)",
+        "substitution": "2*exp(x) + 3",
+        "derivative": "2*exp(x)",
+        "factor": "3",
+        "transformed": "1/u",
+        "primitive": "3*log(2*exp(x) + 3)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(729/343)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "288c851f-3131-5632-91b4-c054d25eb62c",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{3 e^{x}}{e^{x} + 2}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=e^{x} + 2$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=4\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{3 e^{x}}{e^{x} + 2}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{4}^{5} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\ln\\left|u\\right|\\right]_{4}^{5}\\right)=3\\left(\\left(\\ln{\\left(5 \\right)}\\right)-\\left(\\ln{\\left(4 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n3\\left(\\ln\\left(5\\right)-\\ln\\left(4\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bc043b8a-cadd-581c-9912-a629a4453c91",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "09a01de8-9d9c-5eb5-9613-f7cc12bde92f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\ln\\left(5\\right)-\\ln\\left(4\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "09a01de8-9d9c-5eb5-9613-f7cc12bde92f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "1",
+        "offset": "2",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "38f81ff3f899dbec8ce6976d3ca3e71dd01f4e748fc4e418b548c0763fd3cc7a",
+      "model": {
+        "integrand": "3*exp(x)/(exp(x) + 2)",
+        "substitution": "exp(x) + 2",
+        "derivative": "exp(x)",
+        "factor": "3",
+        "transformed": "1/u",
+        "primitive": "3*log(exp(x) + 2)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(125/64)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "382cce4b-b933-5280-b62f-ef1960d96879",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{4 e^{x}}{2 e^{x} + 3}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 e^{x} + 3$. Then $\\mathrm{d}u=(2 e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=7\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=9\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{4 e^{x}}{2 e^{x} + 3}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{7}^{9} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\ln\\left|u\\right|\\right]_{7}^{9}\\right)=2\\left(\\left(\\ln{\\left(9 \\right)}\\right)-\\left(\\ln{\\left(7 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n2\\left(\\ln\\left(9\\right)-\\ln\\left(7\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bba61d35-fe85-5d7e-aa62-6fa7c35aba8c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "38a0538a-a783-56ea-a782-05afc488044a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\left(\\ln\\left(9\\right)-\\ln\\left(7\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "38a0538a-a783-56ea-a782-05afc488044a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "2",
+        "offset": "3",
+        "amplitude": "2",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "8e2a95c4ca1c452c6b8d7a843aec27ffc2747bf2154565fad273bddaeb461597",
+      "model": {
+        "integrand": "4*exp(x)/(2*exp(x) + 3)",
+        "substitution": "2*exp(x) + 3",
+        "derivative": "2*exp(x)",
+        "factor": "2",
+        "transformed": "1/u",
+        "primitive": "2*log(2*exp(x) + 3)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(81/49)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "9725e270-9559-5cfa-b64a-0453199e39bd",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{9 e^{x}}{3 e^{x} + 2}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=3 e^{x} + 2$. Then $\\mathrm{d}u=(3 e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=8\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=11\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{9 e^{x}}{3 e^{x} + 2}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{8}^{11} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\ln\\left|u\\right|\\right]_{8}^{11}\\right)=3\\left(\\left(\\ln{\\left(11 \\right)}\\right)-\\left(\\ln{\\left(8 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n3\\left(\\ln\\left(11\\right)-\\ln\\left(8\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d9dd5daa-b012-5b54-a61e-4d643a689590",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d5b95728-bb26-5604-b40d-a33c75195305",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\ln\\left(11\\right)-\\ln\\left(8\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d5b95728-bb26-5604-b40d-a33c75195305"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "3",
+        "offset": "2",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "8f83c6cb32ab2bfef9649a73154fc22dcfed58a72a7933df382299fe4b0614ab",
+      "model": {
+        "integrand": "9*exp(x)/(3*exp(x) + 2)",
+        "substitution": "3*exp(x) + 2",
+        "derivative": "3*exp(x)",
+        "factor": "3",
+        "transformed": "1/u",
+        "primitive": "3*log(3*exp(x) + 2)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(1331/512)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "2963665c-c27d-5066-9d24-fca8da38a3ed",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{4 e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=e^{x} + 1$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=3\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=4\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{4 e^{x}}{e^{x} + 1}\\,\\mathrm{d}x\\\\&=4\\left(\\int_{3}^{4} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n4\\left(\\left[\\ln\\left|u\\right|\\right]_{3}^{4}\\right)=4\\left(\\left(\\ln{\\left(4 \\right)}\\right)-\\left(\\ln{\\left(3 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n4\\left(\\ln\\left(4\\right)-\\ln\\left(3\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "08caccc4-9c2f-58fb-8975-52cd7a1ff3a4",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "63803f38-d4f4-51fb-b926-c0a17e394dd1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4\\left(\\ln\\left(4\\right)-\\ln\\left(3\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "63803f38-d4f4-51fb-b926-c0a17e394dd1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "1",
+        "offset": "1",
+        "amplitude": "4",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "d5b7cba1ab03e9da24cfb26f7941225b86a570855dadfc868b6ef8c93bb46079",
+      "model": {
+        "integrand": "4*exp(x)/(exp(x) + 1)",
+        "substitution": "exp(x) + 1",
+        "derivative": "exp(x)",
+        "factor": "4",
+        "transformed": "1/u",
+        "primitive": "4*log(exp(x) + 1)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(256/81)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "90c498cb-3f17-506c-a251-e00e040b2e6e",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{9 e^{x}}{3 e^{x} + 3}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=3 e^{x} + 3$. Then $\\mathrm{d}u=(3 e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=9\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=12\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{9 e^{x}}{3 e^{x} + 3}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{9}^{12} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\ln\\left|u\\right|\\right]_{9}^{12}\\right)=3\\left(\\left(\\ln{\\left(12 \\right)}\\right)-\\left(\\ln{\\left(9 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n3\\left(\\ln\\left(12\\right)-\\ln\\left(9\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a9f990f1-50fc-5b77-b9f9-3a333bcded2f",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "477bedff-d5ed-543d-a499-890302b02dc5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\ln\\left(12\\right)-\\ln\\left(9\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "477bedff-d5ed-543d-a499-890302b02dc5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "3",
+        "offset": "3",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "ef872925f81d30444462c8c3a7fbd41a043ad47241a21829ff0004496e2bbfb0",
+      "model": {
+        "integrand": "9*exp(x)/(3*exp(x) + 3)",
+        "substitution": "3*exp(x) + 3",
+        "derivative": "3*exp(x)",
+        "factor": "3",
+        "transformed": "1/u",
+        "primitive": "log(27*(exp(x) + 1)**3)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(64/27)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "7581584f-3556-5295-9d05-15996a63e9cd",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{e^{x}}{e^{x} + 2}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=e^{x} + 2$. Then $\\mathrm{d}u=(e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=4\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=5\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{e^{x}}{e^{x} + 2}\\,\\mathrm{d}x\\\\&=\\int_{4}^{5} \\frac{1}{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\ln\\left|u\\right|\\right]_{4}^{5}=\\left(\\ln{\\left(5 \\right)}\\right)-\\left(\\ln{\\left(4 \\right)}\\right).\n$$\n\nThe exact answer is\n\n$$\n\\ln\\left(5\\right)-\\ln\\left(4\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "85a0a66a-723e-5fd3-8ec9-a705e74547eb",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f9739542-a30b-50b4-aae8-1f04112ba9ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\ln\\left(5\\right)-\\ln\\left(4\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f9739542-a30b-50b4-aae8-1f04112ba9ce"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "1",
+        "offset": "2",
+        "amplitude": "1",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "862ae2d06d73a65234ec0b9e1c472cff9a261416d626d0290bf6fe31bbe259ce",
+      "model": {
+        "integrand": "exp(x)/(exp(x) + 2)",
+        "substitution": "exp(x) + 2",
+        "derivative": "exp(x)",
+        "factor": "1",
+        "transformed": "1/u",
+        "primitive": "log(exp(x) + 2)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(5/4)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186184352,
+      "id": "114e3660-63d9-511d-b89c-e71081ffa1e5",
+      "title": "Evaluating Definite Integrals"
+    },
+    "question": {
+      ":question/id": "b8e6f16f-4e6e-54e3-ad91-b58eab9d4503",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{6 e^{x}}{2 e^{x} + 1}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=2 e^{x} + 1$. Then $\\mathrm{d}u=(2 e^{x})\\,\\mathrm{d}x$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\ln{\\left(2 \\right)}&\\Longrightarrow u=5\\\\x=\\ln{\\left(3 \\right)}&\\Longrightarrow u=7\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\ln{\\left(2 \\right)}}^{\\ln{\\left(3 \\right)}} \\frac{6 e^{x}}{2 e^{x} + 1}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{5}^{7} \\frac{1}{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $e^{\\ln 2}=2,\\quad e^{\\ln 3}=3$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u}\\,\\mathrm{d}u=\\ln\\left|u\\right|+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\ln\\left|u\\right|\\right]_{5}^{7}\\right)=3\\left(\\left(\\ln{\\left(7 \\right)}\\right)-\\left(\\ln{\\left(5 \\right)}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n3\\left(\\ln\\left(7\\right)-\\ln\\left(5\\right)\\right).\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "10eb30fc-60c0-550a-9e0b-73315f651eaf",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "55a0eaaf-8470-5260-abcc-1bda98163d43",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\left(\\ln\\left(7\\right)-\\ln\\left(5\\right)\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "55a0eaaf-8470-5260-abcc-1bda98163d43"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-prerequisite-recall-2",
+      "seed": 20261024,
+      "template": "log_e",
+      "family": "log_e",
+      "challenge": "logarithmic_derivative_bounds",
+      "parameters": {
+        "scale": "2",
+        "offset": "1",
+        "amplitude": "3",
+        "base": "E"
+      },
+      "mathematical_fingerprint": "5150bd4b290d9eebcea12f71ff37ff1f83dacf5b64968230e515716a2c6be142",
+      "model": {
+        "integrand": "6*exp(x)/(2*exp(x) + 1)",
+        "substitution": "2*exp(x) + 1",
+        "derivative": "2*exp(x)",
+        "factor": "3",
+        "transformed": "1/u",
+        "primitive": "3*log(2*exp(x) + 1)",
+        "lower": "log(2)",
+        "upper": "log(3)",
+        "result": "log(343/125)"
+      },
+      "batch_contract": "substitution-prerequisite-recall-2",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-13751",
+        "q-30977",
+        "q-30953",
+        "q-30978",
+        "q-346400",
+        "q-350740",
+        "q-350743",
+        "q-350751",
+        "q-30947",
+        "q-30954",
+        "e-14407"
+      ],
+      "band_origin": "Authored relative band: Transform bounds for a logarithmic derivative; exponential endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  }
+]

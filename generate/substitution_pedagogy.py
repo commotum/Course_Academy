@@ -10,9 +10,10 @@ from pathlib import Path
 import random
 import uuid
 import sympy as s
+from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
-VERSION='substitution-prerequisite-recall-2'
+VERSION='substitution-recognition-3'
 INV={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
@@ -116,37 +117,26 @@ def primtex(expr,z):
  return tex(expr.subs(U,z))
 
 def render(kp,band,case,m,seed,evidence):
- easy=band=='easy';lo,hi=m['lo'],m['hi'];definite=lo is not None;inverse_choice=kp in INV and not definite and not easy
+ easy=band=='easy';lo,hi=m['lo'],m['hi'];definite=lo is not None;inverse_choice=kp in INV and not definite
  inner,du,r,trans,prim=(m[k]for k in('inner','du','factor','trans','prim'))
  u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
  original=integral(m['body_tex'],lo=lo,hi=hi);target=times(r,integral(tex(trans),'u',u0,u1))
  formula=integral(tex(trans),'u')+'='+primtex(prim,U)+'+C'
- problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n'+block(original)
- if not easy:
+ problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n'+block(original)
+ if True:
   if kp==17592186064250:problem+='\n\nWork on a connected interval where $|'+tex(inner)+'|>1$.'
   if kp==EXP[2]and not case.startswith('log'):problem+='\n\nWork where $'+tex(inner)+'>0$.'
-  if not inverse_choice:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
-  else:problem+='\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.'
+  if not inverse_choice and not easy:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
+  else:problem+='\n\n'+('Choose the exact value.'if definite else 'Choose the antiderivative. In each choice, $C$ is an arbitrary constant.')
  sol='Let $u='+tex(inner)+'$. Then $'+r'\mathrm{d}u=('+tex(du)+r')\,\mathrm{d}x$.'
  if m['notes']:sol+='\n\n'+'\n\n'.join(m['notes'])
  if definite:sol+='\n\nTransform both bounds:\n\n'+block(r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}')
  sol+='\n\nIncluding the differential factor gives\n\n'+block(r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}')
- if definite and not easy and m['facts']:sol+='\n\nEndpoint values: $'+r',\quad '.join(m['facts'])+'$.'
+ if definite and m['facts']:sol+='\n\nEndpoint values: $'+r',\quad '.join(m['facts'])+'$.'
  mathfp=fp(m['body'],lo,hi)
- if easy:
-  key=target;answer=None
-  # Deterministic full authored bank; every distractor has a distinct nonzero factor.
-  bank_rng=random.Random('factor-bank-v2:'+mathfp)
-  errors=[(s.Integer(-3),'negative_triple'),(s.Integer(-2),'negative_double'),(s.Integer(-1),'wrong_sign'),(s.Rational(1,4),'extra_quarter'),(s.Rational(1,3),'extra_third'),(s.Rational(1,2),'extra_half'),(s.Integer(2),'double_factor'),(s.Integer(3),'triple_factor'),(s.Integer(4),'quadruple_factor')]
-  selected=bank_rng.sample(errors,4)
-  while {a for a,b in selected}=={s.Integer(-1),s.Integer(2),s.Rational(1,2),s.Integer(3)}:selected=bank_rng.sample(errors,4)
-  bank_rank=sum(bool(a<1)for a,b in selected)
-  bank=[(target,'correct')]+[(times(r*multiple,integral(tex(trans),'u',u0,u1)),label)for multiple,label in selected]
-  bank_rng.shuffle(bank)
-  sol+='\n\nThe transformed integral is\n\n'+block(key+'.')
- elif not definite:
+ if not definite:
   key=times(r,primtex(prim,inner));answer=m['primitive'];bank=[(key,'correct')]
-  if inverse_choice:
+  if inverse_choice and not easy:
    bank_rng=random.Random('primitive-bank-v2:'+mathfp);options=[];seen_options={(str(r),str(inner))}
    for c,arg,label in [(2*r,inner,'double_factor'),(-r,inner,'wrong_sign'),(r/2,inner,'extra_half'),(r,X,'omit_inner_scale'),(2*r,X,'double_factor_omit_inner'),(-r,X,'negative_omit_inner'),(r,2*inner,'double_inner_scale'),(r/2,2*inner,'half_factor_double_inner'),(2*r,2*inner,'double_factor_double_inner'),(r,inner/2,'half_inner_scale')]:
     token=(str(c),str(arg))
@@ -164,12 +154,15 @@ def render(kp,band,case,m,seed,evidence):
   else:key=tex(answer)
   bank=[(key,'correct')]
   sol+='\n\nUse the integration rule:\n\n'+block(formula+'.')+'\n\nEvaluate the primitive and subtract lower from upper:\n\n'+block(times(r,r'\left['+primtex(prim,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}')+'='+times(r,r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right)')+'.')+'\n\nThe exact answer is\n\n'+block(key+'.')
- uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+mathfp+':'+('transform'if easy else 'evaluate')+':'+role))
+ if easy:
+  bank=answer_bank(answer,r*prim,inner,X,U,mathfp,tex,lower=lo,upper=hi)
+  bank=[(key+(''if definite else '+C')if label=='correct'else value,label)for value,label in bank]
+ uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+mathfp+':'+'evaluate'+':'+role))
  answers=[{':answer/id':uid('answer:'+v),':answer/type':':answer.type/math',':answer/value':v}for v,_ in bank]
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
  q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
- return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':int(bank_rank)if easy else None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
+ return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'evaluate','provided_substitution':False,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
 def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if kp not in CASES or level not in CASES[kp]:raise ValueError('Unsupported KP/band')
@@ -190,7 +183,7 @@ def batch(kp,level,count=8,seed=0,*,evidence,template=None):
    key=record['generation']['mathematical_fingerprint']
    shape=record['generation']['model']['substitution']
    rank=record['generation']['bank_correct_rank']
-   if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 or level=='easy'and ranks.get(rank,0)>=(count+1)//2):continue
+   if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 ):continue
    rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;ranks[rank]=ranks.get(rank,0)+1;break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows
