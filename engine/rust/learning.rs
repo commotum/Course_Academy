@@ -2218,6 +2218,9 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    if let Some(result) = crate::set_answers::compare(a, b, |x, y| compare_math(x, y, context)) {
+        return result;
+    }
     // Evaluated change-of-base answers may explicitly exclude logarithms.
     // Enforce that narrow representation contract before value equivalence;
     // otherwise log_3(9) bypasses the requested denominator evaluation.

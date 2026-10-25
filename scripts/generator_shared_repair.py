@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
     root = Path(root).resolve()
-    patch = Path(patch).resolve()
+    patch = Path(patch).resolve() if patch is not None else None
     if not checks or any(not isinstance(c, list) or not c or any(not isinstance(a, str) for a in c) for c in checks):
         raise ValueError('Supply at least one real regression command as a JSON argv array')
     local = root / '.local'
@@ -29,7 +29,8 @@ def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
         outputs.append(path)
     with (local / 'generator-shared-repair.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        subprocess.run(['git', 'apply', '--check', str(patch)], cwd=root, check=True)
+        if patch is not None:
+            subprocess.run(['git', 'apply', '--check', str(patch)], cwd=root, check=True)
         with tempfile.TemporaryDirectory(prefix='shared-repair-', dir=local) as snapshot:
             saved = []
             for index, path in enumerate(outputs):
@@ -37,7 +38,8 @@ def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
                 if backup is not None:
                     shutil.copy2(path, backup)
                 saved.append((path, backup))
-            subprocess.run(['git', 'apply', str(patch)], cwd=root, check=True)
+            if patch is not None:
+                subprocess.run(['git', 'apply', str(patch)], cwd=root, check=True)
             try:
                 for command in checks:
                     subprocess.run(command, cwd=root, check=True)
@@ -45,13 +47,15 @@ def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
                 try:
                     # Reverse only this patch, never reset another worker's
                     # changes. The agent owns any conflict and its recovery.
-                    subprocess.run(['git', 'apply', '--reverse', str(patch)], cwd=root, check=True)
+                    if patch is not None:
+                        subprocess.run(['git', 'apply', '--reverse', str(patch)], cwd=root, check=True)
                 finally:
                     # A failed regression may have rebuilt the live grader.
                     # Restore its exact bytes and mode along with the source.
                     for path, backup in saved:
                         if backup is None:
                             path.unlink(missing_ok=True)
+                            continue
                         else:
                             path.parent.mkdir(parents=True, exist_ok=True)
                             # Workspace artifacts may live on another filesystem.
@@ -67,13 +71,13 @@ def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
                         finally:
                             restore.unlink(missing_ok=True)
                 raise
-    return {'passed': True, 'patch': str(patch), 'checks': checks,
+    return {'passed': True, 'patch': str(patch) if patch is not None else None, 'checks': checks,
             'artifacts': [str(path.relative_to(root)) for path in outputs]}
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--patch', type=Path, required=True)
+    parser.add_argument('--patch', type=Path, help='Source patch; omit for a serialized artifact-only rebuild')
     parser.add_argument('--check-json', action='append', required=True,
                         help='Regression command as a JSON argv array; repeat for multiple commands')
     parser.add_argument('--artifact', action='append', default=[],

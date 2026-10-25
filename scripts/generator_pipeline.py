@@ -568,6 +568,53 @@ class Pipeline:
                      review_report_error={'error': 'The shared engine changed since these checks.',
                          'instruction': 'Continue your verification, finalize again, and rerun grading and affected checks against the current engine.'})
 
+    def resume_unfinished_review_draft(self):
+        """Refresh an interrupted verifier's edits without approving its draft."""
+        active = self.state.get('active_review_directory')
+        publication = self.directory / 'publication'
+        if (self.is_refill or self.state['stage'] != 'validate' or not active
+                or self.state.get('review') or self.state.get('publication')
+                or (publication / 'request.json').exists()
+                or (publication / 'verification.json').exists()
+                or self.candidate_hash() == self.state['package_hash']):
+            return False
+        evidence = inside(self.directory, active)
+        rounds = self.state.get('review_report_rounds', {})
+        count = rounds.get(str(evidence), 0)
+        current = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
+        execution_path = current / 'execution.json'
+        execution = read(execution_path) if execution_path.exists() else {}
+        if ((current / 'result.json').exists() or not execution.get('persistent_session')
+                or execution.get('status') not in {'running', 'failed'}
+                or not session_thread(evidence)):
+            return False
+        # Only the editable package may have changed. Never hide altered source,
+        # inventory, sampled questions, asset bytes, or dependency evidence by
+        # regenerating over them. A changed engine is rechecked by this verifier.
+        try:
+            self.verify_approval_inputs(allow_draft_package_change=True)
+        except EngineChanged:
+            pass
+        archive = evidence / ('draft-recovery-before-' + str(time.time_ns()))
+        archive.mkdir()
+        save(archive / 'state-binding.json', self.review_binding())
+        for name in ('review-binding.json', 'final-binding.json'):
+            path = evidence / name
+            if path.exists():
+                shutil.copy2(path, archive / name)
+        self.sample(tolerate_failures=True)
+        self.persist(package_hash=self.candidate_hash())
+        save(evidence / 'review-binding.json', self.review_binding())
+        # Provisional samples allow the same agent to finish the repair. Only
+        # its subsequent strict finalization may create a new final binding.
+        (evidence / 'final-binding.json').unlink(missing_ok=True)
+        self.persist(active_review_directory=str(evidence), report_repair_directory=str(evidence),
+                     review_report_rounds=rounds, approval_recorded=False,
+                     review_report_error={'error': 'Your interrupted verification left an unfinalized generator repair.',
+                         'instruction': 'Continue this same session with your retained draft and evidence. Inspect sampling_errors, finish repairs, run strict finalize_review_command, and recheck every final band before accepting.',
+                         'previous_binding_directory': str(archive)})
+        return True
+
     def review_candidate(self, evidence):
         """Keep verification, repairs, and report corrections with one agent."""
         evidence.mkdir(parents=True, exist_ok=True)
@@ -769,8 +816,9 @@ class Pipeline:
                 'runtime': str(runtime), 'assets_directory': str(output), 'seed': seed, 'count': count,
                 'assets': asset_hashes(records, output, self.math_root)}
 
-    def verify_approval_inputs(self):
-        if self.candidate_hash() != self.state['package_hash'] or digest(read(self.directory / 'samples.json')) != self.state['batch_hash']:
+    def verify_approval_inputs(self, *, allow_draft_package_change=False):
+        if ((not allow_draft_package_change and self.candidate_hash() != self.state['package_hash'])
+                or digest(read(self.directory / 'samples.json')) != self.state['batch_hash']):
             raise ValueError('Reviewed package or publication batch changed')
         if digest(read(self.directory / 'source/source.json')) != self.state['source_hash']:
             raise ValueError('Reviewed source snapshot changed')
@@ -1258,6 +1306,7 @@ class Pipeline:
                 if stop_after == 'generate':
                     return self.state
                 self.ensure_inventory()
+                self.resume_unfinished_review_draft()
                 try:
                     self.verify_approval_inputs()
                 except EngineChanged:

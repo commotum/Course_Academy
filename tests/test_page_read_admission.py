@@ -103,6 +103,33 @@ class PageReadAdmission(unittest.TestCase):
                     jobs.return_value.run_one.assert_called_once_with(lane=lane, slot=slot)
                     self.assertTrue(cls.inventory_refresh.is_set())
 
+    def test_unexpected_generator_error_keeps_lane_alive_and_retries_after_wait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs') as jobs, patch('serve_graph_explorer.NativeWorker'), \
+                 patch('serve_graph_explorer.developer_mode', return_value=False), \
+                 patch('serve_graph_explorer.traceback.print_exc') as diagnostic:
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                loops = [fn for fn in cls.background
+                         if fn.__name__ in {'generator_build_loop', 'generator_refill_loop'}]
+                cls.inventory_ready.set()
+                for fn in loops:
+                    cls.scheduler_stop.clear()
+                    cls.inventory_refresh.clear()
+                    jobs.return_value.run_one.reset_mock()
+                    jobs.return_value.run_one.side_effect = [KeyError('state'), True]
+                    waits = []
+                    def wait(seconds):
+                        waits.append(seconds)
+                        if len(waits) == 2:
+                            cls.scheduler_stop.set()
+                    with patch.object(cls.scheduler_stop, 'wait', side_effect=wait), patch('builtins.print'):
+                        fn()
+                    self.assertEqual(jobs.return_value.run_one.call_count, 2)
+                    self.assertEqual(waits, [5, 5])
+                    self.assertTrue(cls.inventory_refresh.is_set())
+                self.assertEqual(diagnostic.call_count, len(loops))
+
     def test_configured_builder_count_controls_background_slots(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused',

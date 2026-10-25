@@ -28,6 +28,43 @@ class InventoryJobTests(unittest.TestCase):
                               qualifyingTopics=[2] if topics is None else topics, **changes))
     def records(self):
         return [json.loads(p.read_text()) for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json']
+    def test_concurrent_job_and_result_saves_have_independent_temporary_files(self):
+        job = self.directory / 'same-job.json'
+        result = self.directory / 'same-job.result'
+        values = ({'state': 'running', 'request': {'knowledgePoint': 1}},
+                  {'outcome': 'generated', 'publication': {'passed': True}})
+        dumped = threading.Barrier(2)
+        dump = json.dump
+
+        def overlap(*args, **kwargs):
+            dump(*args, **kwargs)
+            dumped.wait(timeout=5)
+
+        with patch('inventory_jobs.json.dump', side_effect=overlap), ThreadPoolExecutor(max_workers=2) as pool:
+            writes = [pool.submit(save, path, value) for path, value in zip((job, result), values)]
+            for write in writes:
+                write.result(timeout=10)
+        self.assertEqual(json.loads(job.read_text()), values[0])
+        self.assertEqual(json.loads(result.read_text()), values[1])
+        self.assertEqual(list(self.directory.glob('*.tmp')), [])
+
+    def test_failed_atomic_save_preserves_existing_target_and_cleans_temporary_file(self):
+        path = self.directory / 'job.json'
+        save(path, {'state': 'pending'})
+        with patch('inventory_jobs.json.dump', side_effect=ValueError('invalid value')):
+            with self.assertRaises(ValueError):
+                save(path, {'state': 'running'})
+        self.assertEqual(json.loads(path.read_text()), {'state': 'pending'})
+        self.assertEqual(list(self.directory.glob('*.tmp')), [])
+
+    def test_finish_preserves_malformed_job_for_reconciliation(self):
+        path = self.jobs.directory / 'damaged.json'
+        result = {'outcome': 'generated', 'publication': {'passed': True}}
+        save(path, result)
+        with self.assertRaisesRegex(ValueError, 'Invalid inventory job state'):
+            self.jobs.finish(path, {'state': 'awaiting-verification'}, cycle=1)
+        self.assertEqual(json.loads(path.read_text()), result)
+
     def test_overlapping_triggers_restart_and_cursor_do_not_duplicate_jobs(self):
         self.accept(); self.accept()
         restarted = InventoryJobs(self.directory, self.jobs.directory, 'learner')

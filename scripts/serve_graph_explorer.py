@@ -31,6 +31,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
@@ -383,8 +384,13 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') != '1'):
                     if inventory_jobs.run_one(lane=lane, slot=slot):
                         inventory_refresh.set()
-            except (OSError, ValueError) as error:
+            except Exception as error:
+                # A bad job or unexpected runtime error must not permanently
+                # remove a worker lane while the HTTP service still looks live.
+                # Job retry budgets remain in run_one; this supervisor retains
+                # the lane and waits before its next admission attempt.
                 print(f'Inventory {lane} worker {slot + 1} deferred: {error}', file=sys.stderr)
+                traceback.print_exc()
             scheduler_stop.wait(5)
 
     def build_loop(slot):

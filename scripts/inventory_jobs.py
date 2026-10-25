@@ -13,6 +13,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, priority_key
@@ -188,17 +189,24 @@ def request_variant(request: dict) -> str:
 
 def save(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temp = path.with_suffix('.tmp')
-    with temp.open('w') as stream:
-        json.dump(value, stream, indent=2)
-        stream.flush()
-        os.fsync(stream.fileno())
-    temp.replace(path)
-    fd = os.open(path.parent, os.O_RDONLY)
+    # A job.json and its job.result are written by different processes. A
+    # shared job.tmp lets one rename the other writer's bytes into its target.
+    # Each write therefore owns a unique temporary file in the same directory.
+    fd, temporary = tempfile.mkstemp(prefix=path.name + '.', suffix='.tmp', dir=path.parent)
+    temp = Path(temporary)
     try:
-        os.fsync(fd)
+        with os.fdopen(fd, 'w') as stream:
+            json.dump(value, stream, indent=2)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temp.replace(path)
+        directory_fd = os.open(path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
     finally:
-        os.close(fd)
+        temp.unlink(missing_ok=True)
 
 
 class InventoryJobs:
@@ -522,6 +530,8 @@ class InventoryJobs:
         with (self.directory / 'jobs.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
             current = json.loads(path.read_text())
+            if not isinstance(current, dict) or not isinstance(current.get('state'), str):
+                raise ValueError('Invalid inventory job state; preserve and reconcile ' + str(path))
             if current['state'] not in {'verified', 'withdrawn'} and (cycle is None or current.get('cycle', 1) == cycle):
                 save(path, {**current, **updates})
 
