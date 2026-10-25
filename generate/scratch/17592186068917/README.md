@@ -1,13 +1,7 @@
-# Scaffolded trig substitution — KP 17592186068917
+# Substitution practice — KP 17592186068917
 
-Current implementation: `../17592186068917.py`, using the bundled `trig_scaffold.py` helper.
-Version: 4.0.0-scaffolded-substitution. The registered immutable package is recorded in
-`reference/edb-math/repairs/2026-10-24-trig-scaffolding/`.
+Version: 5.0.0-prerequisite-recall.
 
-Easy supplies u and assesses transformation. Moderate asks for the full calculation.
-Hard adds one relevant condition while keeping arithmetic simple. Full calculations
-provide the primitive and any required endpoint values. See `band-contract.json`.
+Guided transformation questions supply u. Ordinary full calculations retrieve mastered integration formulas and routine endpoint values. Complete worked solutions and mathematical domain assumptions remain.
 
-Older extraction, capacity, validation, and replay files remain historical evidence;
-they do not describe the current sampler. Imported questions and historical learner
-work are preserved. Newly sampled banks are explicitly authored, not source replays.
+Current immutable package and validation: `reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/`. Older extraction and validation artifacts are historical evidence.

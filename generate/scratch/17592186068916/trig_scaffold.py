@@ -2,7 +2,7 @@
 
 Easy asks for a supplied substitution's transformed integral. Moderate asks for
 the whole calculation. Hard changes one target condition, keeping arithmetic
-small. Primitive formulas and endpoint values are supplied for full calculations.
+small. Full calculations retrieve mastered primitive formulas and endpoint values; the worked solution explains their use.
 """
 import argparse
 import hashlib
@@ -17,7 +17,7 @@ from trig_format import normalize_prose, normalize_tex
 
 X,U=s.symbols('x u',real=True)
 R,PI=s.Rational,s.pi
-VERSION='4.0.0-scaffolded-substitution'
+VERSION='5.0.0-prerequisite-recall'
 TRIG=('sin','cos','sec2','csc2','sec_tan','csc_cot')
 RECIP=TRIG[2:]
 LINEAR=('indef_sin','indef_cos','def_sin','def_cos')
@@ -227,19 +227,7 @@ def render(kp,level,case,m,seed,evidence,rng):
         problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\n\n$$\n'+original+'\n$$'
     else:
         problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n$$\n'+original+'\n$$\n\n'
-        formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
-        problem+='You may use $'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C$.'
-        if definite:
-            if m.get('log'):
-                # Values of the original trig function suffice to find the new
-                # bounds; no unrelated exact-value recall is left implicit.
-                fn=m['trig_fn']
-                facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
-            else:
-                pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
-                facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
-            problem+='\n\nEndpoint values: $'+r',\quad '.join(facts)+'$.'
-        problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
+        problem+='{{answer}}'+(''if definite else ' $+C$')
     sol='Let $u='+tex(inner)+'$. Then\n\n$$\n'+r'\frac{\mathrm{d}u}{\mathrm{d}x}='+tex(du)+'.\n$$\n\n'
     if definite:
         sol+='Transform both bounds:\n\n$$\n'+r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}'+'\n$$\n\n'
@@ -247,6 +235,16 @@ def render(kp,level,case,m,seed,evidence,rng):
     if m.get('rearranged'):
         sol+='Since $'+tex(fun(m['trig_fn'],m['theta']))+'=u-'+tex(m['d'])+'$, rewrite the remaining factor:\n\n$$\n'+r'\frac{u-'+tex(m['d'])+r'}{u}=1-\frac{'+tex(m['d'])+'}{u}.\n$$\n\n'
     sol+='Including the differential factor gives\n\n$$\n'+r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}'+'\n$$\n\n'
+    if not easy:
+        formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
+        sol+='Use the integration rule:\n\n$$\n'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C.\n$$\n\n'
+        if definite:
+            if m.get('log'):
+                fn=m['trig_fn'];facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
+            else:
+                pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
+                facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
+            sol+='Endpoint values: $'+r',\quad '.join(facts)+'$.\n\n'
     if easy:
         sol+='The transformed integral is\n\n$$\n'+target+'.\n$$'
         key=target;answer=None
@@ -283,10 +281,10 @@ def render(kp,level,case,m,seed,evidence,rng):
     return {'knowledge_point':evidence['kp'],'question':question,'generation':{
         'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],
         'parameters':m['parameters'],'mathematical_fingerprint':fp,'model':model,
-        'batch_contract':'trig-scaffolding-v4','source_questions':m['source_questions'],
+        'batch_contract':'trig-prerequisite-recall-v5','source_questions':m['source_questions'],
         'source_basis':evidence['basis'],'band_origin':evidence['band_origin'][level],
         'operation':'transform'if easy else 'evaluate','provided_substitution':easy,
-        'provided_primitive':not easy,'provided_endpoint_values':definite and not easy,
+        'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall',
         'bank_profile':'authored transformed-integral bank; no imported-bank replay claim'if easy else 'exact fragment with external C for antiderivatives',
         'bank_recipes':[label for _,label in bank],'dependencies':{'sympy':s.__version__},
         'domain':'Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles.'}}

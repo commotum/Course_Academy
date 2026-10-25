@@ -12,7 +12,7 @@ import uuid
 import sympy as s
 
 X,U=s.symbols('x u',real=True)
-VERSION='substitution-pedagogy-1'
+VERSION='substitution-prerequisite-recall-2'
 INV={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 EXP=(17592186184349,17592186184350,17592186184351,17592186184352)
 CASES={k:{b:('sine','tangent')if v=='definite'else(v,) for b in('easy','moderate','hard')}for k,v in INV.items()}
@@ -123,8 +123,6 @@ def render(kp,band,case,m,seed,evidence):
  formula=integral(tex(trans),'u')+'='+primtex(prim,U)+'+C'
  problem=('Use the substitution $u='+tex(inner)+'$. Which integral is obtained?'if easy else 'Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n'+block(original)
  if not easy:
-  problem+='\n\nYou may use $'+formula+'$.'
-  if definite and m['facts']:problem+='\n\nEndpoint values: $'+r',\quad '.join(m['facts'])+'$.'
   if kp==17592186064250:problem+='\n\nWork on a connected interval where $|'+tex(inner)+'|>1$.'
   if kp==EXP[2]and not case.startswith('log'):problem+='\n\nWork where $'+tex(inner)+'>0$.'
   if not inverse_choice:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
@@ -133,6 +131,7 @@ def render(kp,band,case,m,seed,evidence):
  if m['notes']:sol+='\n\n'+'\n\n'.join(m['notes'])
  if definite:sol+='\n\nTransform both bounds:\n\n'+block(r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}')
  sol+='\n\nIncluding the differential factor gives\n\n'+block(r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}')
+ if definite and not easy and m['facts']:sol+='\n\nEndpoint values: $'+r',\quad '.join(m['facts'])+'$.'
  mathfp=fp(m['body'],lo,hi)
  if easy:
   key=target;answer=None
@@ -158,19 +157,19 @@ def render(kp,band,case,m,seed,evidence):
     if any(arg==inner for c,arg,label in selected)and any(arg!=inner for c,arg,label in selected)and {label for c,arg,label in selected}!={'double_factor','wrong_sign','omit_inner_scale','double_inner_scale'}:break
    bank=[(key+'+C','correct')]+[(times(c,primtex(prim,arg))+'+C',label)for c,arg,label in selected]
    bank_rng.shuffle(bank)
-  sol+='\n\nUse the supplied primitive:\n\n'+block(target+'='+times(r,primtex(prim,U))+'+C.')+'\n\nSubstitute back:\n\n'+block(key+'+C.')
+  sol+='\n\nUse the integration rule:\n\n'+block(formula+'.')+'\n\n'+block(target+'='+times(r,primtex(prim,U))+'+C.')+'\n\nSubstitute back:\n\n'+block(key+'+C.')
  else:
   first,last=(s.simplify(prim.subs(U,v))for v in(u0,u1));answer=s.simplify(r*(last-first))
   if prim==s.log(U):key=times(r,r'\ln\left('+tex(u1)+r'\right)-\ln\left('+tex(u0)+r'\right)')
   else:key=tex(answer)
   bank=[(key,'correct')]
-  sol+='\n\nApply the supplied primitive and subtract lower from upper:\n\n'+block(times(r,r'\left['+primtex(prim,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}')+'='+times(r,r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right)')+'.')+'\n\nThe exact answer is\n\n'+block(key+'.')
+  sol+='\n\nUse the integration rule:\n\n'+block(formula+'.')+'\n\nEvaluate the primitive and subtract lower from upper:\n\n'+block(times(r,r'\left['+primtex(prim,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}')+'='+times(r,r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right)')+'.')+'\n\nThe exact answer is\n\n'+block(key+'.')
  uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+mathfp+':'+('transform'if easy else 'evaluate')+':'+role))
  answers=[{':answer/id':uid('answer:'+v),':answer/type':':answer.type/math',':answer/value':v}for v,_ in bank]
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
  q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
- return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':not easy,'provided_endpoint_values':bool(m['facts'])and not easy,'bank_correct_rank':int(bank_rank)if easy else None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
+ return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':VERSION,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'transform'if easy else 'evaluate','provided_substitution':easy,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':int(bank_rank)if easy else None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
 def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if kp not in CASES or level not in CASES[kp]:raise ValueError('Unsupported KP/band')

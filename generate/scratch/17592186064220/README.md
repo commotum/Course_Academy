@@ -1,5 +1,7 @@
-# Scaffolded substitution — KP 17592186064220
+# Substitution practice — KP 17592186064220
 
-Version substitution-pedagogy-1; source/band contract is in `band-contract.json`.
+Version: substitution-prerequisite-recall-2.
 
-The immutable live package and verification are recorded in `reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/`. Older extraction/replay/validation files in this folder are historical evidence, not the current sampler. Imports and learner history are preserved.
+Guided transformation questions supply u. Ordinary full calculations retrieve mastered integration formulas and routine endpoint values. Complete worked solutions and mathematical domain assumptions remain.
+
+Current immutable package and validation: `reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/`. Older extraction and validation artifacts are historical evidence.

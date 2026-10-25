@@ -1,4 +1,4 @@
-> Superseded for live generation on 2026-10-24. The four public inverse-trig entrypoints now use `substitution_pedagogy.py`; see `reference/edb-math/repairs/2026-10-24-two-topic-pedagogy/README.md`. This document and `inverse_trig.py` retain the earlier implementation as historical evidence.
+> Superseded for live generation on 2026-10-24. The four public inverse-trig entrypoints now use `substitution_pedagogy.py`; see `reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints/README.md` for the current support policy. The earlier two-topic repair remains historical evidence. This document and `inverse_trig.py` retain the earlier implementation as historical evidence.
 
 # Inverse-trigonometric integration generators
 
