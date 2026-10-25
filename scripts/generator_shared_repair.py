@@ -54,7 +54,18 @@ def apply_repair(patch, checks, *, root=ROOT, artifacts=()):
                             path.unlink(missing_ok=True)
                         else:
                             path.parent.mkdir(parents=True, exist_ok=True)
-                            os.replace(backup, path)
+                            # Workspace artifacts may live on another filesystem.
+                        # Stage on the destination filesystem, preserving mode,
+                        # then atomically replace there instead of moving the
+                        # snapshot across mount boundaries.
+                        fd, restore_name = tempfile.mkstemp(prefix='.generator-restore-', dir=path.parent)
+                        os.close(fd)
+                        restore = Path(restore_name)
+                        try:
+                            shutil.copy2(backup, restore)
+                            os.replace(restore, path)
+                        finally:
+                            restore.unlink(missing_ok=True)
                 raise
     return {'passed': True, 'patch': str(patch), 'checks': checks,
             'artifacts': [str(path.relative_to(root)) for path in outputs]}

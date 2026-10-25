@@ -1988,6 +1988,32 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
                         return Ok(false);
                     }
                 }
+                // Polynomial radicands may have a narrow common real
+                // interval containing just one coarse witness where unequal
+                // answers happen to coincide. Refine only this algebraic
+                // domain case: expensive transcendental unresolved identities
+                // keep the existing bounded search. Exact witnesses reject;
+                // they never prove equality or discard a domain obligation.
+                let polynomial_radical_domain = ca.iter().chain(cb.iter())
+                    .any(|c| matches!(c, Condition::Nonnegative(_)))
+                    && ca.iter().chain(cb.iter()).all(|c| match c {
+                        Condition::Nonzero(p) => p.rational_variables_only(),
+                        Condition::Nonnegative(v) | Condition::Positive(v) =>
+                            v.num.rational_variables_only() && v.den.rational_variables_only(),
+                    });
+                if polynomial_radical_domain {
+                    let samples = [4_i64, 8, 16].into_iter().flat_map(|den| {
+                        (-8 * den..=8 * den)
+                            .filter(|num| num % 2 != 0)
+                            .map(move |num| Q::new(num.into(), den.into()))
+                    });
+                    for sample in samples {
+                        if ca.iter().chain(cb.iter()).all(|c| condition_at(c, &sample))
+                            && diff.nonzero_at(Some(&sample)) {
+                            return Ok(false);
+                        }
+                    }
+                }
                 return Err("answer comparison has unresolved domain differences".into());
             }
             if diff.rational_variables_only() {
@@ -2013,16 +2039,7 @@ fn counterexample_samples() -> impl Iterator<Item = Q> {
     // Substitutions prove inequality only; equality still needs a normal form.
     [-4, -2, 0, 1, 3].into_iter().map(|n| Q::from_integer(n.into()))
         .chain((-16..=8).filter(|n| n % 2 != 0).map(|n| Q::new(n.into(), 2.into())))
-        // Radicals can share only a narrow real interval, and can agree at
-        // its lone integer/half-integer witness. Refine the same bounded
-        // search dyadically rather than treating domain mismatch as equality
-        // or using a question-specific evaluation point. These exact samples
-        // can only reject; acceptance still requires the symbolic normal form.
-        .chain([4_i64, 8, 16].into_iter().flat_map(|den| {
-            (-8 * den..=8 * den)
-                .filter(|num| num % 2 != 0)
-                .map(move |num| Q::new(num.into(), den.into()))
-        }))
+
 }
 fn condition_at(c: &Condition, sample: &Q) -> bool {
     match c {
