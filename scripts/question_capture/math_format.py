@@ -539,6 +539,28 @@ def normalize_math_boundaries(value):
 def validate_math_boundaries(value, *, strict=False):
     """Catch unparsed TeX as well as errors inside recognized math spans."""
     text = str(value)
+    # Markdown code spans/fences suppress MathJax even when the TeX inside
+    # has valid delimiters. Inspect those bodies before removing math spans.
+    def code_has_math(body):
+        return MATH.search(body) or re.search(r'\\(?:begin|end)\{|\\(?:frac|dfrac|sqrt|sum|int)\b', body)
+
+    fenced = []
+    cursor = 0
+    opener = re.compile(r'(?m)^[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n')
+    while match := opener.search(text, cursor):
+        marker = match[1]
+        closing = re.search(r'(?m)^[ \t]{0,3}' + re.escape(marker[0])
+                            + '{' + str(len(marker)) + r',}[ \t]*$', text[match.end():])
+        end = match.end() + closing.start() if closing else len(text)
+        if code_has_math(text[match.end():end]):
+            raise ValueError('Fenced math becomes a Markdown code block')
+        cursor = match.end() + closing.end() if closing else len(text)
+        fenced.append((match.start(), cursor))
+    for match in re.finditer(r'(?<!`)(`+)(?!`)(.*?)(?<!`)\1(?!`)', text, re.S):
+        if any(start <= match.start() < end for start, end in fenced):
+            continue
+        if code_has_math(match[2]):
+            raise ValueError('Math inside a Markdown code span is not rendered')
     outside = MATH.sub('', text)
     if strict and re.search(r'\\(?:frac|dfrac|sqrt|eqalign)\b', outside):
         raise ValueError('Unprotected TeX expression outside math delimiters')
