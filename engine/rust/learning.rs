@@ -2172,6 +2172,14 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    // A whole symbolic log-to-exponential conversion assesses all three roles.
+    // Compare that representation directly; the expression parser does not
+    // parse equalities, and a reversed equality has the same role assignment.
+    if requests_power_form(prompt)
+        && let Some(expected) = symbolic_power_equation_form(b)
+    {
+        return Ok(symbolic_power_equation_form(a).is_some_and(|actual| actual == expected));
+    }
     // Repeated-product exercises assess the base/exponent representation,
     // rather than only its evaluated value. Grouping syntax is immaterial.
     if requests_power_form(prompt)
@@ -2241,6 +2249,27 @@ fn ungroup_power_slot(mut text: &str) -> Option<&str> {
         }
         text = &text[1..text.len() - 1];
     }
+}
+
+/// A complete base^exponent=result equation whose three slots are single
+/// symbolic variables. This deliberately handles representation, not general
+/// equation equivalence. Compound expressions keep the existing parser path.
+fn symbolic_power_equation_form(value: &str) -> Option<(char, char, char)> {
+    fn variable(text: &str) -> Option<char> {
+        let text = ungroup_power_slot(text)?;
+        let mut chars = text.chars();
+        let variable = chars.next()?;
+        (variable.is_ascii_alphabetic() && chars.next().is_none()).then_some(variable)
+    }
+    fn roles(power: &str, result: &str) -> Option<(char, char, char)> {
+        let power = ungroup_power_slot(power)?;
+        let (base, exponent) = power.split_once('^')?;
+        Some((variable(base)?, variable(exponent)?, variable(result)?))
+    }
+    let normalized = normalize_math(value);
+    let equation = ungroup_power_slot(&normalized)?;
+    let (left, right) = equation.split_once('=')?;
+    roles(left, right).or_else(|| roles(right, left))
 }
 
 /// A direct integer base and exponent, allowing harmless TeX/parenthesis groups.
@@ -4400,6 +4429,41 @@ pub(crate) mod tests {
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Exponent form: $7^?$; fill the exponent. {{x}}"));
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("5"));
         assert_eq!(grade_field(&s,100,200,"5"), Ok(true));
+    }
+
+    #[test]
+    fn exponential_form_symbolic_equations_preserve_all_three_roles() {
+        let mut s = fixture();
+        for (base, exponent, result) in [('m', 'k', 't'), ('P', 'r', 'q')] {
+            let canonical = format!("{base}^{exponent}={result}");
+            s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!(canonical));
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(
+                "Write the logarithmic equation in exponential form. {{x}}"));
+            for value in [canonical.clone(), format!("{result}={base}^{{{exponent}}}"),
+                format!("{{({base})^({exponent})}}=({result})"),
+                format!(r"\left({base}\right)^{{{exponent}}}={result}"),
+                format!("({result}=({base})^({exponent}))")] {
+                assert_eq!(grade_field(&s,100,200,&value), Ok(true), "{value}");
+            }
+            for value in [format!("{exponent}^{base}={result}"),
+                format!("{base}^{result}={exponent}"), format!("{result}^{exponent}={base}"),
+                format!("{base}*{exponent}={result}"), format!("{base}^{exponent}"),
+                format!("{base}^({exponent}+1)={result}"), format!("{base}^{exponent}=-{result}"),
+                format!("{base}^{exponent}={result}=0"), format!("{base}^{exponent}={result}extra"),
+                format!("{base}^{{{exponent}={result}"), format!("{base})^{exponent}={result}"),
+                format!("{base}^({exponent})^{exponent}={result}"),
+                format!(r"\log_{{{base}}}({result})={exponent}")] {
+                assert_eq!(grade_field(&s,100,200,&value), Ok(false), "{value}");
+            }
+        }
+        // A single expression, numeric fragment, or other prompt is not routed
+        // through this deliberately narrow representation check.
+        assert!(symbolic_power_equation_form("m^k").is_none());
+        assert!(symbolic_power_equation_form("2^3=8").is_none());
+        assert!(symbolic_power_equation_form("(m+1)^k=t").is_none());
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("m^k=t"));
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Evaluate. {{x}}"));
+        assert!(grade_field(&s,100,200,"m^k=t").is_err());
     }
 
     #[test]
