@@ -129,7 +129,7 @@ def render(kp,band,case,m,seed,evidence):
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
  q={':question/id':uid('question'),':question/problem':problem,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':[{':answer-field/id':uid('field'),':answer-field/key':'answer',':answer-field/type':':answer-field.type/radio'if easy or inverse_choice else ':answer-field.type/blank',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  model={k:str(v)if v is not None else None for k,v in dict(integrand=m['body'],substitution=inner,derivative=du,factor=r,transformed=trans,primitive=m['primitive'],lower=lo,upper=hi,result=answer).items()}
- return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':version,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':version,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'evaluate','provided_substitution':False,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':None,'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
+ return {'knowledge_point':evidence['kp'],'question':q,'generation':{'version':version,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],'parameters':m['params'],'mathematical_fingerprint':mathfp,'model':model,'batch_contract':version,'source_basis':evidence['basis'],'source_questions':evidence['sources'],'band_origin':evidence['band_origin'][band],'operation':'evaluate','provided_substitution':False,'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall','bank_correct_rank':m.get('bank_correct_rank'),'bank_recipes':[v for _,v in bank],'domain':'Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities.'}}
 
 def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if kp not in CASES or level not in CASES[kp]:raise ValueError('Unsupported KP/band')
@@ -145,13 +145,16 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  raise ValueError('Bounded variant capacity exhausted')
 def batch(kp,level,count=8,seed=0,*,evidence,template=None):
  if not 1<=count<=100:raise ValueError('Count must be 1..100')
- cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};rows=[]
+ cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};ranks={};rows=[]
  for index in range(count):
   for attempt in range(300):
    record=generate(kp,level,seed,template or cases[index%len(cases)],evidence=evidence,index=index,attempt=attempt)
    key=record['generation']['mathematical_fingerprint']
    shape=record['generation']['model']['substitution']
    if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 ):continue
+   rank=(record['generation']['family'],record['generation']['bank_correct_rank'])
+   if kp==17592186064220 and level=='easy'and count>=8 and ranks.get(rank,0)>=(count+3)//4:continue
+   ranks[rank]=ranks.get(rank,0)+1
    rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows

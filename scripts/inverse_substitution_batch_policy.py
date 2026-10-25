@@ -3,9 +3,18 @@ from collections import defaultdict
 import math
 import re
 import sympy as s
+from fractions import Fraction
 
 KPS={17592186064218,17592186064219,17592186064220,17592186064250}
 VERSION='inverse-substitution-quality-4'
+
+def pi_coefficient(text):
+    compact=re.sub(r'\s+','',text)
+    match=re.fullmatch(r'\\frac\{(\d*)\\pi\}\{(\d+)\}',compact)
+    if match:return Fraction(int(match[1]or 1),int(match[2]))
+    match=re.fullmatch(r'(\d*)\\pi',compact)
+    if match:return Fraction(int(match[1]or 1))
+    raise ValueError('Displayed endpoint bank contains generic filler or unsupported values')
 
 def validate_delivery_batch(records,kp_id):
     kp=int(kp_id)
@@ -52,8 +61,9 @@ def validate_delivery_batch(records,kp_id):
                 # rational multiples of pi. Inspect the displayed bank too:
                 # metadata must not conceal arbitrary +1/+2 fallback choices.
                 for answer in choices:
-                    value=re.sub(r'\s+','',answer[':answer/value'])
-                    if not re.fullmatch(r'(?:\\frac\{(?:\d+)?\\pi\}\{\d+\}|(?:\d+)?\\pi)',value):raise ValueError('Displayed endpoint bank contains generic filler or unsupported values')
+                    pi_coefficient(answer[':answer/value'])
+                rank=sum(pi_coefficient(a[':answer/value'])<pi_coefficient(key)for a in choices)
+                if m.get('bank_correct_rank')!=rank:raise ValueError('Displayed bank rank differs from metadata')
             else:
                 name={'sine':r'\arcsin','tangent':r'\arctan','secant':r'\operatorname{arcsec}'}[m['family']]
                 if any(name not in a[':answer/value']for a in choices):raise ValueError('Displayed primitive bank contains generic filler')
@@ -68,6 +78,9 @@ def validate_delivery_batch(records,kp_id):
                 for fn in('sine','tangent'):
                     pairs={(r['generation']['parameters']['normalized_lower'],r['generation']['parameters']['normalized_upper'])for r in rows if r['generation']['family']==fn}
                     if len(pairs)<(2 if band=='easy'else 3):raise ValueError('Endpoint coverage lost after delivery')
+                    if band=='easy':
+                        ranks=[r['generation']['bank_correct_rank']for r in rows if r['generation']['family']==fn]
+                        if any(ranks.count(rank)>(len(ranks)+1)//2 for rank in set(ranks)):raise ValueError('Conditional numerical rank balance lost after delivery')
                 if band!='easy':
                     n=sum(s.sympify(r['generation']['parameters']['normalized_lower'])!=0 and s.sympify(r['generation']['parameters']['normalized_upper'])!=0 for r in rows)
                     if not 2<=n<=len(rows)-2:raise ValueError('Mix one and two nonzero endpoint contributions')

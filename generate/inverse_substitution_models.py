@@ -75,7 +75,7 @@ def answer_bank(m,fn,fingerprint,render):
         u0,u1=(s.simplify(z.subs(X,v))for v in(m['lo'],m['hi']))
         f0,f1=(primitive(fn,v)for v in(u0,u1));correct=s.simplify(r*(f1-f0))
         pref=s.simplify(r*m['du'])
-        for c,label in ((pref,'omit_dx_factor'),(pref*m['du'],'multiply_by_inner_derivative'),(r/2,'extra_factor_two'),(2*r,'lose_factor_two')):
+        for c,label in ((pref,'omit_dx_factor'),(pref*m['du'],'multiply_by_inner_derivative'),(r/m['du'],'divide_by_inner_derivative_twice'),(r/2,'extra_factor_two'),(2*r,'lose_factor_two')):
             candidates.append((s.simplify(c*(f1-f0)),label,'factor'))
         for angle in(s.pi/6,s.pi/4,s.pi/3,s.pi/2):
             candidates.append((s.simplify(r*angle),'wrong_special_angle','endpoint'))
@@ -104,5 +104,6 @@ def answer_bank(m,fn,fingerprint,render):
     if no>len(pools[other]):no=len(pools[other]);nf=4-no
     if not no or nf>len(pools['factor']):raise ValueError('Insufficient distinct diagnostic choices')
     bank=[(correct,'correct')]+pools['factor'][:nf]+pools[other][:no]
+    if definite:m['bank_correct_rank']=sum(bool(v<correct)for v,label in bank)
     rng.shuffle(bank)
     return [(render(v)+(''if definite else'+C'),label)for v,label in bank]

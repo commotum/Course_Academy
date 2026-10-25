@@ -5,7 +5,7 @@ import unittest
 from scripts.substitution_pedagogy_batch_policy import validate_delivery_batch,KPS
 H=Path(__file__).resolve().parents[1]/'reference/edb-math/repairs/2026-10-25-restore-substitution-recognition'
 def rows(kp):
- h=H.with_name('2026-10-25-inverse-trig-quality')if kp in(17592186064218,17592186064219,17592186064220,17592186064250)else H
+ h=H.with_name('2026-10-25-inverse-bank-balance')if kp in(17592186064218,17592186064219,17592186064220,17592186064250)else H
  return json.loads((h/str(kp)/'accepted-pool.json').read_text())
 class SubstitutionPedagogyPolicyTests(unittest.TestCase):
  def test_reviewed_delivered_pools_pass(self):

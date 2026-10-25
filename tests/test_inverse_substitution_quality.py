@@ -10,7 +10,7 @@ sys.path.insert(0,str(ROOT/'generate'))
 import substitution_pedagogy as model
 from scripts.inverse_substitution_batch_policy import validate_delivery_batch,KPS,VERSION
 
-H=ROOT/'reference/edb-math/repairs/2026-10-25-inverse-trig-quality'
+H=ROOT/'reference/edb-math/repairs/2026-10-25-inverse-bank-balance'
 OLD=H.with_name('2026-10-25-restore-substitution-recognition')
 def rows(kp):return json.loads((H/str(kp)/'accepted-pool.json').read_text())
 
@@ -54,6 +54,16 @@ class InverseSubstitutionQualityTests(unittest.TestCase):
         wrong=next(a for a in f[':answer-field/choices']if a[':answer/id']!=f[':answer-field/correct'][1])
         wrong[':answer/value']='4x+C'
         with self.assertRaisesRegex(ValueError,'Displayed.*filler'):validate_delivery_batch([r],kp)
+
+    def test_original_conditional_smallest_option_shortcut_is_rejected(self):
+        from scripts.inverse_substitution_batch_policy import pi_coefficient
+        kp=17592186064220
+        old=json.loads((H.with_name('2026-10-25-inverse-trig-quality')/str(kp)/'accepted-pool.json').read_text())[:8]
+        for r in old:
+            f=r['question'][':question/answer-fields'][0]
+            key=next(a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1])
+            r['generation']['bank_correct_rank']=sum(pi_coefficient(a[':answer/value'])<pi_coefficient(key)for a in f[':answer-field/choices'])
+        with self.assertRaisesRegex(ValueError,'Conditional numerical rank'):validate_delivery_batch(old,kp)
 
     def test_sampling_retains_the_progression_for_new_seeds(self):
         for kp in KPS:
