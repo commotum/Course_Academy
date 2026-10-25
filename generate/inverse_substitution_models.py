@@ -8,7 +8,7 @@ VERSION='inverse-substitution-quality-4'
 KPS={17592186064218:'sine',17592186064219:'tangent',17592186064250:'secant',17592186064220:'definite'}
 
 def tex(v):
-    return s.latex(v).replace(r'\log',r'\ln')
+    return s.latex(v).replace(r'\log',r'\ln').replace(r'\operatorname{asin}',r'\arcsin').replace(r'\operatorname{atan}',r'\arctan').replace(r'\operatorname{asec}',r'\operatorname{arcsec}')
 
 def primitive(fn,z):
     return {'sine':s.asin,'tangent':s.atan,'secant':s.asec}[fn](z)
@@ -59,8 +59,7 @@ def instance(kp,band,fn,rng,profile=0):
             notes.append('Normalize the denominator:\n\n$$\n'+lhs+'='+rhs+'.\n$$')
         if definite:
             p,q=map(s.sympify,endpoint_pair(fn,band,profile));lo,hi=(s.simplify(v/du)for v in(p,q))
-            facts=[tex(primitive(fn,v,evaluate=False))+'='+tex(primitive(fn,v))for v in()] # set below without suppressing evaluation globally
-            facts=[s.latex((s.asin if fn=='sine'else s.atan)(v,evaluate=False))+'='+tex(primitive(fn,v))for v in(p,q)]
+            facts=[tex((s.asin if fn=='sine'else s.atan)(v,evaluate=False))+'='+tex(primitive(fn,v))for v in(p,q)]
         challenge='direct_standard_form'if band=='easy'else'constant_normalization'if band=='moderate'else'familiar_radical_normalization'if definite else'combined_coprime_normalization'
     notes.append('The differential is $\\mathrm{d}x='+tex(1/du)+r'\,\mathrm{d}u$. The outside factor is $'+tex(pref)+r'\cdot '+tex(1/du)+'='+tex(factor)+'$.')
     factor=s.simplify(factor)

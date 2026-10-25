@@ -1,0 +1,2714 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "76fa6935-8c9e-5bbd-a879-f112a3867cc6",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|2 x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|2 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{2}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|2 x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(2 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9ff36386-85bd-5980-b190-83ae402cf738",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4c334364-f268-5cb4-83c1-de4d3a966078",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "b0af8bad-477e-50f9-afa6-0c200120cd3e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "6376b7d6-3ad3-5993-981d-418b8f10b9eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "46c1daa2-fa1e-5b3e-8787-e6f684be2f08",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(\\frac{x}{2} \\right)}+C"
+            },
+            {
+              ":answer/id": "6b75eff1-801a-59ac-9fc6-7d6fb17aacc1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4c334364-f268-5cb4-83c1-de4d3a966078"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "4",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "843b00b87d327861db3f9e85c13285c6b7986e0127e00faa8efb76bfccd97d9a",
+      "model": {
+        "integrand": "2/(sqrt(4*x**2 - 1)*Abs(x))",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(2*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(2*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "double_inner_scale",
+        "omit_inner_scale_extra_double",
+        "invert_inner_scale_extra_double",
+        "extra_factor_two"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "52a62d0a-0164-5f87-9ced-b80916eb99ef",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{9}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $9\\cdot \\frac{1}{3}=3$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{9}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=3\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\operatorname{arcsec}{\\left(3 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "84b4d52e-1527-5929-acbc-c4c5b24bb56e",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "afd16598-eb85-5bbb-9a87-83f61758b011",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "aa6a1e57-714e-541f-9352-64a329a690cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(6 x \\right)}+C"
+            },
+            {
+              ":answer/id": "77ac2dd1-dac8-5ef9-9757-d7c9a33a2b7f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(\\frac{x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "21d5ee70-7b43-5328-b232-e6ee091874a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(6 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "ad5772db-9746-543f-8fb6-405e21fa8092",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ad5772db-9746-543f-8fb6-405e21fa8092"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "9",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "4a51e172d3f2581a30aef80da7d7faa709c637c63d66f4321a5dfe5c78285b36",
+      "model": {
+        "integrand": "3/(sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(3*x)",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(3*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "lose_factor_two",
+        "double_inner_scale_extra_double",
+        "invert_inner_scale_extra_double",
+        "double_inner_scale_extra_half",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "6ac1b9e6-d017-50cd-8003-61a4ad34ccfa",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{12}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $12\\cdot \\frac{1}{4}=3$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{12}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=3\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\operatorname{arcsec}{\\left(4 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e950dedf-849e-50ae-9ddd-0064c228e172",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "55a049a0-0c86-5f62-ac6a-5db20d317d50",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "29b5cd66-6203-5698-a0e8-91d2e505bbea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "47a07120-7a01-575e-931f-1a4a805a2f80",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(8 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "5f3b7c19-ca18-5fc5-a105-cf94faac1b7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "8d7ad6d3-afb9-5557-8442-85d33f9f65a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "55a049a0-0c86-5f62-ac6a-5db20d317d50"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "12",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "807cc551bd109e9a7f86b300384ec67789c3bb1706baaf12fe15ae4b2912129b",
+      "model": {
+        "integrand": "3/(sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(4*x)",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(4*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "multiply_by_inner_derivative",
+        "double_inner_scale_extra_half",
+        "omit_inner_scale_extra_half",
+        "invert_inner_scale_extra_double"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "0e122638-acdb-502a-87fd-533344650510",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{5}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $5\\cdot \\frac{1}{5}=1$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{5}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\operatorname{arcsec}{\\left(5 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4dd393a6-0946-5abb-b72f-a02747cb450d",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8c4c9416-6c47-5c37-91e0-1c5bc23e796d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(\\frac{5 x}{2} \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "07cd8c36-f559-5b46-987d-a465c4449383",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(\\frac{x}{5} \\right)}+C"
+            },
+            {
+              ":answer/id": "b54d427f-b4b2-5683-8c48-31308930fb2d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(10 x \\right)}+C"
+            },
+            {
+              ":answer/id": "f9497056-cb73-5497-99b8-61cd31a7cc14",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "2ef76bb5-1ddd-5b39-9b74-14d101a69ab3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2ef76bb5-1ddd-5b39-9b74-14d101a69ab3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "5",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "f7cedfb07a55718c130ac28d05537be65dde9d8a8d68195fcd0841d860794dca",
+      "model": {
+        "integrand": "1/(sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "1",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "asec(5*x)",
+        "lower": null,
+        "upper": null,
+        "result": "asec(5*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "half_inner_scale_extra_half",
+        "invert_inner_scale",
+        "double_inner_scale",
+        "lose_factor_two",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "c7145572-ba73-5f7a-aea0-6130b3ca37de",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{10}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $10\\cdot \\frac{1}{5}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{10}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(5 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8b8770d9-0ed5-5752-8c4a-bc161dbee4b6",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "588c85c3-bb1a-5e89-a1ee-1bd890b61dad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "b44fa8a2-77be-5549-b15e-bdfeb91886a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{5} \\right)}+C"
+            },
+            {
+              ":answer/id": "4212dbe0-19f0-5c9e-a325-0a2cbf5b36de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(\\frac{5 x}{2} \\right)}+C"
+            },
+            {
+              ":answer/id": "9a1fb96c-fb4c-5f80-a4e8-382e9018b71c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "50 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "45ece88d-7fec-584e-a5f6-620ae11caa78",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "45ece88d-7fec-584e-a5f6-620ae11caa78"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "10",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "b5d801de35cd5e402353ced351d19583abe982398333cd8ebc9512270aa909aa",
+      "model": {
+        "integrand": "2/(sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(5*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(5*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "lose_factor_two",
+        "invert_inner_scale",
+        "half_inner_scale_extra_half",
+        "multiply_by_inner_derivative",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "4f0a577d-2d93-5ca0-bdb0-3d70103d61c4",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{6}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $6\\cdot \\frac{1}{3}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{6}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(3 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2568a113-6a7a-5886-a6f1-86b3e3259d7b",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9e5f3cf1-8679-5284-a814-4f383605581d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "c2be34a1-0727-5d50-81c0-4c64725c9ca9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "99fd8bde-6150-5c28-b99d-a7172dbecc7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "81cb46fe-cef2-5cbe-84b2-3e6a5907701a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "06726676-3d97-50a0-99a5-fec1672d1a9e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9e5f3cf1-8679-5284-a814-4f383605581d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "6",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "e06a49ec7d53ecf16f04c452a871dbf87190217b4f670a51b3a87f5a5106c5a1",
+      "model": {
+        "integrand": "2/(sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(3*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(3*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "invert_inner_scale",
+        "omit_inner_scale_extra_half",
+        "extra_factor_two",
+        "lose_factor_two"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "e3ab3d72-3050-5dc4-a51d-b164ca943579",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{8}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $8\\cdot \\frac{1}{4}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{8}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(4 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "017328f6-4d18-5c97-8f8c-f9decb2dea55",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7de16c29-1456-5cc0-a79f-f6d630d685af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "32 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "6470fd9f-795e-507f-a28a-209264caadf4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "206008f6-a1db-5ee9-8e6e-07e25b98ccfa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "86323d03-175e-5135-b24b-52d0122b5e97",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "b086cef1-dbe5-52f0-b136-f0426d75bf74",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b086cef1-dbe5-52f0-b136-f0426d75bf74"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "8",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "c9f6699e88b5ab00fc33ff7b22322fe67da643c78ca4758cdde77abd67b3603d",
+      "model": {
+        "integrand": "2/(sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(4*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(4*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "multiply_by_inner_derivative",
+        "half_inner_scale",
+        "half_inner_scale_extra_half",
+        "omit_inner_scale_extra_half",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "0a0409d1-00d2-5698-9531-eafac455f481",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{4}=1$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\operatorname{arcsec}{\\left(4 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "923a619d-368a-5439-a94e-344a40ec09df",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b7c6c96e-d4ee-5d57-be0e-e2911a740224",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(8 x \\right)}+C"
+            },
+            {
+              ":answer/id": "78367e59-9098-54c6-a214-fa36e460a745",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(4 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "175ca0ca-a0c5-52a9-9382-2e609e483527",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "30cd8de8-2f87-5b07-9d74-f81826419ec8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "b4355f17-d08e-537f-a43e-6da61e18b669",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "30cd8de8-2f87-5b07-9d74-f81826419ec8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "4",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "656e06b8c14d1b01dbd1ad3cafc5b4e56508af9b9e9fe7eb2ac41eba7da50718",
+      "model": {
+        "integrand": "1/(sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "1",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "asec(4*x)",
+        "lower": null,
+        "upper": null,
+        "result": "asec(4*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Complete calculation in a direct standard form after small useful cancellations. Full-answer choices require normalization and differential knowledge. No given substitution or formula.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "double_inner_scale_extra_double",
+        "extra_factor_two",
+        "omit_dx_factor",
+        "correct",
+        "multiply_by_inner_derivative"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "d6c54c73-9174-5651-88d0-f95609d863d9",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{|2 x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|2 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{2}=\\frac{3}{2}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{|2 x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{3}{2}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{3}{2}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\operatorname{arcsec}{\\left(2 x \\right)}}{2}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "44d08f46-ebb1-5af9-a6c1-67c92c3a7ca2",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f0138811-a72f-52ac-935b-78843130ef00",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(2 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "2609bd03-3f74-56f5-9ec8-682dd1d3ec93",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "2d77d086-9987-58b8-b9fa-ee8b1ec4e015",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(\\frac{x}{2} \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "019998b5-14dc-5259-98a0-1092f024ccf3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "8bae7b35-d3f3-555a-b9e4-633fe05789a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f0138811-a72f-52ac-935b-78843130ef00"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "3",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "47b3a5c85a05ca84fae24371f4400a9c42c9822654ef6d555f0c8e5832e427ea",
+      "model": {
+        "integrand": "3/(2*sqrt(4*x**2 - 1)*Abs(x))",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "3/2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(2*x)/2",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(2*x)/2"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "omit_dx_factor",
+        "invert_inner_scale",
+        "omit_inner_scale_extra_double",
+        "double_inner_scale_extra_double"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "5eb6e9b0-bf64-50de-95fe-fc168a870d4f",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{3}=\\frac{4}{3}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{4}{3}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{4}{3}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{4 \\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "11050806-84a3-572b-8764-e0544d4f8f7a",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "75444539-3751-53ad-b9eb-a8441c96f5e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(x \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "4df567a9-44cb-58ef-b8e9-38a6a762c565",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "aa846094-78a7-5210-8dab-853ca2746d14",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{8 \\operatorname{arcsec}{\\left(\\frac{3 x}{2} \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "8fe841a4-340d-58c8-9a32-023df8e7d00d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "8b1a3181-84a1-52fe-ad8a-1ed35e5b722c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8b1a3181-84a1-52fe-ad8a-1ed35e5b722c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "4",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "3a45d233474adc2f244d088c2ae0ee0dd8db46a9aecbb0b28b19f8dab018a24e",
+      "model": {
+        "integrand": "4/(3*sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "4/3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "4*asec(3*x)/3",
+        "lower": null,
+        "upper": null,
+        "result": "4*asec(3*x)/3"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "omit_inner_scale_extra_half",
+        "multiply_by_inner_derivative",
+        "half_inner_scale_extra_double",
+        "extra_factor_two",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "aa52a6d3-0059-50e0-a2e2-fd98a25c18e8",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{5}=\\frac{2}{5}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{2}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{2}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{2}{5}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "789aa4e4-d70c-500d-9964-03ee8ebb2ae7",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ff346366-3b5b-5ed9-8315-bd02460a1186",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "1f48af1b-2c23-50d3-bccc-0d5e50bef227",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "f162daea-c303-5ab0-8b57-4356066bf3d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(10 x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "58ad7cbb-de4b-58df-b7d6-d0174f8c9622",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "1734ae56-0758-5c58-b95a-cc75e6a64e6a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1734ae56-0758-5c58-b95a-cc75e6a64e6a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "2",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "12481270ecbf277c9076428c4a8c33f82771cc9589d8c269704d59106b32dbfa",
+      "model": {
+        "integrand": "2/(5*sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "2/5",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(5*x)/5",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(5*x)/5"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "omit_denominator_normalization",
+        "lose_factor_two",
+        "double_inner_scale_extra_half",
+        "extra_factor_two",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "7193e45e-982e-5bdb-9705-94508d94cff8",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{5}=\\frac{4}{5}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{4}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{4}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{4}{5}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{4 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8412a24a-9963-5d7c-a289-bec57df203b2",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5367755b-c9b4-596e-8420-95ffe5a531c9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "6616e314-37ea-5255-80fb-ebdca67bde15",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(\\frac{5 x}{2} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "eb952015-2bf2-59aa-acb2-c3b7b98748c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "b787623f-d3bf-593a-9ef3-02d655aee985",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(\\frac{x}{5} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "6a6fa941-e086-59c2-9fc5-987e3fabf98e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6a6fa941-e086-59c2-9fc5-987e3fabf98e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "4",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "f560d756c0c48d666d570854c02e3815042759b47f54cb3309ba0c5c7ec7cfda",
+      "model": {
+        "integrand": "4/(5*sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "4/5",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "4*asec(5*x)/5",
+        "lower": null,
+        "upper": null,
+        "result": "4*asec(5*x)/5"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "omit_inner_scale_extra_half",
+        "half_inner_scale_extra_half",
+        "omit_denominator_normalization",
+        "invert_inner_scale",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "20fd99c5-5537-5a2f-9ed2-26bd5efe4f7d",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{4}=\\frac{1}{2}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{1}{2}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{1}{2}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\operatorname{arcsec}{\\left(4 x \\right)}}{2}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d86e01aa-dc70-59e0-bd51-f1aa9a50405f",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7df752ea-2ea3-5da7-a149-05346263729a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "c687ffc3-8cf0-5ca4-a1a3-43032e468d78",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "891e2cbd-3492-5817-8cf1-055dc46f6c1b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(4 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "e66e6c58-1803-5e64-8a99-588a7c0abc6f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(8 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "5c3e2d86-fdf3-539c-b8ff-370a0dedc452",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}}{4}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "891e2cbd-3492-5817-8cf1-055dc46f6c1b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "2",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "922726b85e44f1438068d6304141aafc58a7e7cb58313467daa0af2a9e65039a",
+      "model": {
+        "integrand": "1/(2*sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "1/2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "asec(4*x)/2",
+        "lower": null,
+        "upper": null,
+        "result": "asec(4*x)/2"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "omit_denominator_normalization",
+        "omit_inner_scale",
+        "correct",
+        "double_inner_scale",
+        "invert_inner_scale_extra_half"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "6e0c2fcb-2507-5ba3-ba55-ec32ef4dbf0c",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{5}=\\frac{3}{5}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{|5 x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{3}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{3}{5}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{3}{5}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c317fa78-26c2-5fca-a20f-200a001e1a5e",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a65ffd38-40a6-5c9c-a7c7-fcf2809e58ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(\\frac{x}{5} \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "ed1df97d-1040-5e5c-b4a4-6d699377b135",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{6 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            },
+            {
+              ":answer/id": "51851700-6670-50ce-aeda-7461f23ff559",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(5 x \\right)}}{10}+C"
+            },
+            {
+              ":answer/id": "50a1878d-f316-5804-8e3d-d312b3f85e7e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "8be8bdc2-1002-504c-a23c-28611ead05e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(5 x \\right)}}{5}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8be8bdc2-1002-504c-a23c-28611ead05e1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "3",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "5e04d364289c29315f54ede9b87bf8d37d0109b13f31b0ec5df1594f00f5800b",
+      "model": {
+        "integrand": "3/(5*sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "3/5",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(5*x)/5",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(5*x)/5"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "invert_inner_scale",
+        "lose_factor_two",
+        "extra_factor_two",
+        "multiply_by_inner_derivative",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "5e5288cf-c32b-56ef-acee-9ae607d8ea42",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{4}=\\frac{3}{4}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{|4 x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{3}{4}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{3}{4}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{3}{4}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\operatorname{arcsec}{\\left(4 x \\right)}}{4}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d5f60cd4-7ab2-549a-8480-0fe2f41ab943",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9678a789-b6ff-52df-92e8-38f72505a014",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(8 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "dc5bfa0a-8938-56e0-b661-61fea350bc5f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(4 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "42db332d-51c6-5da0-bcd3-90f5e025d83f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}}{4}+C"
+            },
+            {
+              ":answer/id": "ce336069-f634-5f6d-9883-4443a6dc995b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "5341c7f9-26c8-5a90-8e31-2cd1f7e8e7bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(4 x \\right)}}{4}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5341c7f9-26c8-5a90-8e31-2cd1f7e8e7bd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "3",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "de75045650650a6fab31a0809d9d4c9475c2f691192a52d12b195e1a58a46841",
+      "model": {
+        "integrand": "3/(4*sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "3/4",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(4*x)/4",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(4*x)/4"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "double_inner_scale_extra_double",
+        "lose_factor_two",
+        "invert_inner_scale",
+        "multiply_by_inner_derivative",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "13cf63e5-08a5-5d27-b5a8-5f44836396c1",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{3}=\\frac{2}{3}$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2}{|3 x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\frac{2}{3}\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=\\frac{2}{3}\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "be959ae0-03a5-5dc3-a316-8f8eefd32cb1",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "06d0abeb-5241-5f2b-9dde-a6e7988d1500",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "abe127c6-d0f9-5078-b14b-2b3a77513ee4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(3 x \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "0e713122-8650-5cf0-ad04-d53227927a48",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(x \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "845bfb35-9d2d-5905-b2a7-d8b0c08da946",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\operatorname{arcsec}{\\left(\\frac{3 x}{2} \\right)}}{3}+C"
+            },
+            {
+              ":answer/id": "a2539838-fc92-59b6-bacf-6587955ea27e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\operatorname{arcsec}{\\left(x \\right)}}{3}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "06d0abeb-5241-5f2b-9dde-a6e7988d1500"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "visible_linear_scaling",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "2",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "c16897568884c7701847bbf1ff77c99dd55b1dc2169a8c7c15a25923b0f8e589",
+      "model": {
+        "integrand": "2/(3*sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "2/3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(3*x)/3",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(3*x)/3"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "One familiar square normalization; inverse secant requires a small fractional differential adjustment. Definite intervals include varied familiar endpoint values and one or two nonzero contributions.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "extra_factor_two",
+        "omit_inner_scale_extra_double",
+        "half_inner_scale_extra_double",
+        "omit_inner_scale"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "2ac1c584-7d15-5024-a2a8-5bc7b3880fd8",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{1}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nBecause $3>0$, $|u|=3|x|$, so $|x|=|u|/3$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{3}=1$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{1}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\operatorname{arcsec}{\\left(3 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5be4a1d6-7665-5f6b-99e7-5890cf89f472",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "26d7c6f1-42d5-5502-a596-e14d05e8226a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "30e083b5-0c82-539a-a859-ffdd214a3ed9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "c0b5434e-8848-5d10-9569-d69e79aeb6fe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(\\frac{x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "cd44d5f3-145d-55f7-98cb-788e9196664c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "542226f7-fee2-5b7a-afca-e498b202e242",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(\\frac{3 x}{2} \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "30e083b5-0c82-539a-a859-ffdd214a3ed9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "1",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "2d8b56e5febcd6215165a7da1c4530da3ba52a8117c5ee1a2540ecb218cc7816",
+      "model": {
+        "integrand": "1/(sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "1",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "asec(3*x)",
+        "lower": null,
+        "upper": null,
+        "result": "asec(3*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "wrong_sign",
+        "correct",
+        "invert_inner_scale",
+        "omit_dx_factor",
+        "half_inner_scale"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "88fc2876-2ce5-5b4d-94f1-8344c93b7ea6",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{1}{|x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|2 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nBecause $2>0$, $|u|=2|x|$, so $|x|=|u|/2$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{2}=1$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{1}{|x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\operatorname{arcsec}{\\left(2 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bca34ae4-20d2-5590-a0aa-b1e99c1dc2bb",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9aaefa2d-6ac5-55b0-bb58-f76afc17f822",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "dabff013-b2fd-5ce0-bcbd-efa8481f6691",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "1dc29532-3e60-555a-83e7-08a321949f7d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{2} \\right)}+C"
+            },
+            {
+              ":answer/id": "07380abd-65ee-5ae4-af5d-3ad7cc2c1406",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\operatorname{arcsec}{\\left(2 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "ec31b9a5-8073-5ec4-938f-4de6aa03c61f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9aaefa2d-6ac5-55b0-bb58-f76afc17f822"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "1",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "daf73064873bfd1e049f3d291b74cc04b19b17cfb2f4aae5ece8e91b4222025a",
+      "model": {
+        "integrand": "1/(sqrt(4*x**2 - 1)*Abs(x))",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "1",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "asec(2*x)",
+        "lower": null,
+        "upper": null,
+        "result": "asec(2*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "omit_dx_factor",
+        "invert_inner_scale_extra_double",
+        "extra_factor_two",
+        "wrong_sign"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "84424ff1-f162-5b93-b697-caabcb6db9be",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nBecause $3>0$, $|u|=3|x|$, so $|x|=|u|/3$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $12\\cdot \\frac{1}{3}=4$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=4\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n4\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=4\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n4 \\operatorname{arcsec}{\\left(3 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "29f5c18a-2d55-5f62-a11b-8f58ee478b00",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5e257983-7fb3-53bb-9f5d-c2dc253540f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "8139d7cb-bfa5-5f03-8d87-4908b2dad5d9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "25a72f96-da27-5cc8-b1a7-020c5fc5fb58",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "d08dcd2e-01e5-534e-8c87-2aa007f28308",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "6a123433-56f7-51a2-88a9-f8bb4a9ab193",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5e257983-7fb3-53bb-9f5d-c2dc253540f0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "4",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "47000116bb83124401dfa4a42f9a07678dcebea492d4554fd742384fc555cc3d",
+      "model": {
+        "integrand": "4/(sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "4",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "4*asec(3*x)",
+        "lower": null,
+        "upper": null,
+        "result": "4*asec(3*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "invert_inner_scale_extra_half",
+        "lose_factor_two",
+        "extra_factor_two",
+        "multiply_by_inner_derivative"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "30c51dd6-a75d-5381-b973-058c68179d84",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{4}{|x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nBecause $4>0$, $|u|=4|x|$, so $|x|=|u|/4$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $16\\cdot \\frac{1}{4}=4$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{4}{|x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=4\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n4\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=4\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n4 \\operatorname{arcsec}{\\left(4 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5bb2b6b4-ab00-52be-a624-d7e5e0154394",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8724de12-df37-5d48-8bb2-bec58672597a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 \\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}+C"
+            },
+            {
+              ":answer/id": "18f64a0f-00b9-58a7-8334-3176cea44eda",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "fa478968-7a06-5f17-a697-ba8975b31c1b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "8a7bafff-7da1-53ff-8052-c6913bc4fa76",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "17d51d65-01f2-5b9c-93f8-4c35573b7351",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "18f64a0f-00b9-58a7-8334-3176cea44eda"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "4",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "1775d2d4ca77e678552aa32353d06bc1430af7ef5bf8c0e5a091428c5a25a500",
+      "model": {
+        "integrand": "4/(sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "4",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "4*asec(4*x)",
+        "lower": null,
+        "upper": null,
+        "result": "4*asec(4*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "invert_inner_scale_extra_double",
+        "correct",
+        "lose_factor_two",
+        "wrong_sign",
+        "invert_inner_scale_extra_half"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "4f0a577d-2d93-5ca0-bdb0-3d70103d61c4",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|3 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nBecause $3>0$, $|u|=3|x|$, so $|x|=|u|/3$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $6\\cdot \\frac{1}{3}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2}{|x|\\sqrt{9 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(3 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2568a113-6a7a-5886-a6f1-86b3e3259d7b",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9e5f3cf1-8679-5284-a814-4f383605581d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "c2be34a1-0727-5d50-81c0-4c64725c9ca9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{3} \\right)}+C"
+            },
+            {
+              ":answer/id": "99fd8bde-6150-5c28-b99d-a7172dbecc7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "81cb46fe-cef2-5cbe-84b2-3e6a5907701a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            },
+            {
+              ":answer/id": "06726676-3d97-50a0-99a5-fec1672d1a9e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(3 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9e5f3cf1-8679-5284-a814-4f383605581d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "2",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "e06a49ec7d53ecf16f04c452a871dbf87190217b4f670a51b3a87f5a5106c5a1",
+      "model": {
+        "integrand": "2/(sqrt(9*x**2 - 1)*Abs(x))",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(3*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(3*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "invert_inner_scale",
+        "omit_inner_scale_extra_half",
+        "extra_factor_two",
+        "lose_factor_two"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "6ac1b9e6-d017-50cd-8003-61a4ad34ccfa",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{|x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|4 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nBecause $4>0$, $|u|=4|x|$, so $|x|=|u|/4$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $12\\cdot \\frac{1}{4}=3$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{|x|\\sqrt{16 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=3\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\operatorname{arcsec}{\\left(4 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e950dedf-849e-50ae-9ddd-0064c228e172",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "55a049a0-0c86-5f62-ac6a-5db20d317d50",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "29b5cd66-6203-5698-a0e8-91d2e505bbea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48 \\operatorname{arcsec}{\\left(4 x \\right)}+C"
+            },
+            {
+              ":answer/id": "47a07120-7a01-575e-931f-1a4a805a2f80",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(8 x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "5f3b7c19-ca18-5fc5-a105-cf94faac1b7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(x \\right)}}{2}+C"
+            },
+            {
+              ":answer/id": "8d7ad6d3-afb9-5557-8442-85d33f9f65a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(\\frac{x}{4} \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "55a049a0-0c86-5f62-ac6a-5db20d317d50"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "3",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "807cc551bd109e9a7f86b300384ec67789c3bb1706baaf12fe15ae4b2912129b",
+      "model": {
+        "integrand": "3/(sqrt(16*x**2 - 1)*Abs(x))",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(4*x)",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(4*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "multiply_by_inner_derivative",
+        "double_inner_scale_extra_half",
+        "omit_inner_scale_extra_half",
+        "invert_inner_scale_extra_double"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "fdc3dbb3-d5c6-51e3-b377-21e458c11813",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3}{|x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|2 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nBecause $2>0$, $|u|=2|x|$, so $|x|=|u|/2$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $6\\cdot \\frac{1}{2}=3$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3}{|x|\\sqrt{4 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n3\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=3\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\operatorname{arcsec}{\\left(2 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2e10a3d7-2bf5-59f1-9e37-9d9571c05115",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5adc56be-66df-5537-97d3-5d808f211ae4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "26b79692-5653-5117-87ac-213238e67640",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "4504754d-83ef-5095-adb0-a578c0a1d5cd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "0bd41987-b377-5c82-afc2-51a28bc9daff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\operatorname{arcsec}{\\left(x \\right)}+C"
+            },
+            {
+              ":answer/id": "4171edb0-c1a3-5ba9-99f7-c6e2b0b40c71",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\operatorname{arcsec}{\\left(x \\right)}}{2}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4504754d-83ef-5095-adb0-a578c0a1d5cd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "3",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "79e947964c4a64eb0ebae4bfcee596730045cbd6f9b94d9e50e1683593a18746",
+      "model": {
+        "integrand": "3/(sqrt(4*x**2 - 1)*Abs(x))",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "3",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "3*asec(2*x)",
+        "lower": null,
+        "upper": null,
+        "result": "3*asec(2*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "multiply_by_inner_derivative",
+        "lose_factor_two",
+        "correct",
+        "omit_inner_scale",
+        "half_inner_scale_extra_half"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064250,
+      "id": "8d18bdc7-9387-5b2d-98bd-015fa4a1eba7",
+      "title": "Calculating Indefinite Integrals Using Substitution with Inverse Secant"
+    },
+    "question": {
+      ":question/id": "c7145572-ba73-5f7a-aea0-6130b3ca37de",
+      ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2}{|x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\n$$\n\nWork on a connected interval where $|5 x|>1$.\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nBecause $5>0$, $|u|=5|x|$, so $|x|=|u|/5$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $10\\cdot \\frac{1}{5}=2$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2}{|x|\\sqrt{25 x^{2} - 1}}\\,\\mathrm{d}x\\\\&=2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u=\\operatorname{arcsec}{\\left(u \\right)}+C.\n$$\n\n$$\n2\\left(\\int \\frac{1}{\\sqrt{u^{2} - 1} \\left|{u}\\right|}\\,\\mathrm{d}u\\right)=2\\left(\\operatorname{arcsec}{\\left(u \\right)}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\operatorname{arcsec}{\\left(5 x \\right)}+C.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8b8770d9-0ed5-5752-8c4a-bc161dbee4b6",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "588c85c3-bb1a-5e89-a1ee-1bd890b61dad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "b44fa8a2-77be-5549-b15e-bdfeb91886a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(\\frac{x}{5} \\right)}+C"
+            },
+            {
+              ":answer/id": "4212dbe0-19f0-5c9e-a325-0a2cbf5b36de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arcsec}{\\left(\\frac{5 x}{2} \\right)}+C"
+            },
+            {
+              ":answer/id": "9a1fb96c-fb4c-5f80-a4e8-382e9018b71c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "50 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            },
+            {
+              ":answer/id": "45ece88d-7fec-584e-a5f6-620ae11caa78",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\operatorname{arcsec}{\\left(5 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "45ece88d-7fec-584e-a5f6-620ae11caa78"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-substitution-quality-4",
+      "seed": 20261025,
+      "template": "secant",
+      "family": "secant",
+      "challenge": "absolute_value_normalization",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "2",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "b5d801de35cd5e402353ced351d19583abe982398333cd8ebc9512270aa909aa",
+      "model": {
+        "integrand": "2/(sqrt(25*x**2 - 1)*Abs(x))",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "2",
+        "transformed": "1/(sqrt(u**2 - 1)*Abs(u))",
+        "primitive": "2*asec(5*x)",
+        "lower": null,
+        "upper": null,
+        "result": "2*asec(5*x)"
+      },
+      "batch_contract": "inverse-substitution-quality-4",
+      "source_basis": 7098,
+      "source_questions": [
+        "q-69476",
+        "q-73717",
+        "q-114051",
+        "q-114052",
+        "q-114053",
+        "q-114054",
+        "q-114055",
+        "q-114056",
+        "q-114057",
+        "q-49519",
+        "q-49554",
+        "q-49555",
+        "q-69475",
+        "q-69477",
+        "q-73715",
+        "q-73716",
+        "q-73718",
+        "e-5014"
+      ],
+      "band_origin": "Authored coprime two-coefficient normalization for sine/tangent; source-supported absolute-value normalization for secant. Definite integrals use source-supported small radical normalization and familiar endpoint values. No larger-number proxy or all-symmetric interval rule.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "lose_factor_two",
+        "invert_inner_scale",
+        "half_inner_scale_extra_half",
+        "multiply_by_inner_derivative",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  }
+]

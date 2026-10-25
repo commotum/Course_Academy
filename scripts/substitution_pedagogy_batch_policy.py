@@ -6,6 +6,9 @@ KPS={17592186064218,17592186064219,17592186064250,17592186064220,17592186184349,
 def validate_delivery_batch(records,kp_id):
  kp=int(kp_id)
  if kp not in KPS:return
+ if kp in(17592186064218,17592186064219,17592186064220,17592186064250):
+  from scripts.inverse_substitution_batch_policy import validate_delivery_batch as inverse_policy
+  return inverse_policy(records,kp)
  seen=set();groups=defaultdict(list)
  for record in records:
   q=record['question'];m=record.get('generation',{});band=str(q[':question/difficulty']).rsplit('/',1)[-1]

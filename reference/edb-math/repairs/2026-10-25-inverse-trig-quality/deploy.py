@@ -10,12 +10,12 @@ from capture.scripts.storage import atomic_json
 
 def prepare(p,item,d):
  kp=item['kp'];work=d/'publication';assert json.loads((d/'generator-verification.json').read_text())['passed'];assert json.loads((H/'grader-verification.json').read_text())['documented_unresolved_checks']==0;assert json.loads((H/'render/rendering.json').read_text())['passed']
- files=['generator.py','source-evidence.json','band-contract.json']+['integration_answer_bank.py']+(['trig_scaffold.py','trig_format.py']if(d/'package/trig_scaffold.py').exists()else['substitution_pedagogy.py'])
+ files=['generator.py','source-evidence.json','band-contract.json','substitution_pedagogy.py','inverse_substitution_models.py','integration_answer_bank.py']
  manifest=build_manifest(d/'package','generator.py',files,dependencies={'python':platform.python_version(),'packages':{'sympy':sympy.__version__}});package=publish_package(d/'package','generator.py',files,p.config.math_root,dependencies=manifest['dependencies'],expected_digest=manifest_digest(manifest));runtime=work/'runtime'/package.digest
  entry=runtime/'generator.py'if runtime.exists()else materialize_package(package.reference,p.config.math_root,runtime);verify_package(runtime,package.digest)
  records=json.loads((d/'candidate-pool.json').read_text());reproduced=[]
  for band in('easy','moderate','hard'):
-  out=subprocess.run([sys.executable,str(entry),'--difficulty',band,'--count','8','--seed','20261024','--format','json'],check=True,capture_output=True,text=True,timeout=60,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'});reproduced+=json.loads(out.stdout)
+  out=subprocess.run([sys.executable,str(entry),'--difficulty',band,'--count','8','--seed','20261025','--format','json'],check=True,capture_output=True,text=True,timeout=60,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'});reproduced+=json.loads(out.stdout)
  assert reproduced==records
  prepared=p.prepare(kp,records,package.reference,package.digest,work,source_snapshot=json.loads((d/'fresh-source/source.json').read_text()),assets_directory=d/'package',expected_registered_generator=item['registered_generator']);assert prepared['new_questions']+prepared['duplicates']==24 and prepared['new_questions']>=8
  before=loads(prepared['before_edn']);captured=json.loads((d/'before.json').read_text());active=[q for q in before[':knowledge-point/questions']if not q.get(':question/math-academy-id')and not q.get(':question/retired')]
