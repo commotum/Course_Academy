@@ -2027,7 +2027,12 @@ fn normalize_answer_form(value: &str) -> String {
 }
 
 fn normalize_fraction_form(value: &str) -> Option<String> {
-    fn integer(value: &str) -> Option<num_bigint::BigInt> {
+    fn integer(mut value: &str) -> Option<num_bigint::BigInt> {
+        // Parentheses only group an integer token; they do not require any
+        // arithmetic or reduction. Preserve its numerator/denominator pair.
+        while let Some(inner) = value.strip_prefix('(').and_then(|v| v.strip_suffix(')')) {
+            value = inner;
+        }
         let digits = value
             .strip_prefix('-')
             .or_else(|| value.strip_prefix('+'))
@@ -4930,6 +4935,10 @@ pub(crate) mod tests {
             (r"\frac{2}{3}", r"\frac{2}3"),
             (r"\frac{12}{5}", r"\frac{12}5"),
             (r"\frac{-1}{4}", r"-\frac14"),
+            (r"\frac{-1}{4}", "(-1)/4"),
+            (r"\frac{1}{4}", "(1)/(4)"),
+            (r"\frac{1}{4}", "((1))/((4))"),
+            (r"\frac{-1}{4}", r"\frac{(-1)}{(4)}"),
         ] {
             s.entities
                 .get_mut(&300)
@@ -4960,6 +4969,9 @@ pub(crate) mod tests {
             r"\frac{2}{8}",
             "0.25",
             "1/(2+2)",
+            "(2)/(8)",
+            "(1+0)/(4)",
+            "(1)/(2+2)",
             r"\frac{1}{2+2}",
             r"\frac{1}{4}+0",
             "4/1",
