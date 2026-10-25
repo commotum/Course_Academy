@@ -123,11 +123,10 @@ def render(kp,band,case,m,seed,evidence):
  original=integral(m['body_tex'],lo=lo,hi=hi);target=times(r,integral(tex(trans),'u',u0,u1))
  formula=integral(tex(trans),'u')+'='+primtex(prim,U)+'+C'
  problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n'+block(original)
- if True:
-  if kp==17592186064250:problem+='\n\nWork on a connected interval where $|'+tex(inner)+'|>1$.'
-  if kp==EXP[2]and not case.startswith('log'):problem+='\n\nWork where $'+tex(inner)+'>0$.'
-  if not inverse_choice and not easy:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
-  else:problem+='\n\n'+('Choose the exact value.'if definite else 'Choose the antiderivative. In each choice, $C$ is an arbitrary constant.')
+ if kp==17592186064250:problem+='\n\nWork on a connected interval where $|'+tex(inner)+'|>1$.'
+ if kp==EXP[2]and not case.startswith('log'):problem+='\n\nWork where $'+tex(inner)+'>0$.'
+ if not inverse_choice and not easy:problem+='\n\n{{answer}}'+(''if definite else ' $+C$')
+ else:problem+='\n\n'+('Choose the exact value.'if definite else 'Choose the antiderivative. In each choice, $C$ is an arbitrary constant.')
  sol='Let $u='+tex(inner)+'$. Then $'+r'\mathrm{d}u=('+tex(du)+r')\,\mathrm{d}x$.'
  if m['notes']:sol+='\n\n'+'\n\n'.join(m['notes'])
  if definite:sol+='\n\nTransform both bounds:\n\n'+block(r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}')
@@ -156,7 +155,9 @@ def render(kp,band,case,m,seed,evidence):
   sol+='\n\nUse the integration rule:\n\n'+block(formula+'.')+'\n\nEvaluate the primitive and subtract lower from upper:\n\n'+block(times(r,r'\left['+primtex(prim,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}')+'='+times(r,r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right)')+'.')+'\n\nThe exact answer is\n\n'+block(key+'.')
  if easy:
   bank=answer_bank(answer,r*prim,inner,X,U,mathfp,tex,lower=lo,upper=hi)
-  bank=[(key+(''if definite else '+C')if label=='correct'else value,label)for value,label in bank]
+  key=next(value for value,label in bank if label=='correct').removesuffix('+C')
+  prefix,_,suffix=sol.rsplit('$$',2)
+  sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
  uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+mathfp+':'+'evaluate'+':'+role))
  answers=[{':answer/id':uid('answer:'+v),':answer/type':':answer.type/math',':answer/value':v}for v,_ in bank]
  correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
@@ -171,20 +172,19 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  for offset in range(attempt,attempt+300):
   rng=random.Random(f'{seed}:{kp}:{level}:{case}:{index}:{offset}')
   m=instance(kp,level,case,rng);record=render(kp,level,case,m,seed,evidence)
-  if record['generation']['mathematical_fingerprint']in evidence.get('excluded_tasks',[])and level!='easy':continue
+  if record['generation']['mathematical_fingerprint']in evidence.get('easy_excluded_tasks'if level=='easy'else 'excluded_tasks',[]):continue
   return record
  raise ValueError('Bounded variant capacity exhausted')
 def batch(kp,level,count=8,seed=0,*,evidence,template=None):
  if not 1<=count<=100:raise ValueError('Count must be 1..100')
- cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};ranks={};rows=[]
+ cases=list(CASES[kp][level]);random.Random(f'{seed}:{kp}:{level}:order').shuffle(cases);seen=set();shapes={};rows=[]
  for index in range(count):
   for attempt in range(300):
    record=generate(kp,level,seed,template or cases[index%len(cases)],evidence=evidence,index=index,attempt=attempt)
    key=record['generation']['mathematical_fingerprint']
    shape=record['generation']['model']['substitution']
-   rank=record['generation']['bank_correct_rank']
    if key in seen or count>=8 and (shapes.get(shape,0)>=(count+2)//3 ):continue
-   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;ranks[rank]=ranks.get(rank,0)+1;break
+   rows.append(record);seen.add(key);shapes[shape]=shapes.get(shape,0)+1;break
   else:raise ValueError('Finite unique task capacity exhausted')
  return rows
 

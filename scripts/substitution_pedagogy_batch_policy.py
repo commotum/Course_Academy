@@ -9,23 +9,24 @@ def validate_delivery_batch(records,kp_id):
  seen=set();groups=defaultdict(list)
  for record in records:
   q=record['question'];m=record.get('generation',{});band=str(q[':question/difficulty']).rsplit('/',1)[-1]
-  if m.get('batch_contract')!='substitution-prerequisite-recall-2':raise ValueError('Reviewed scaffolded substitution contract required')
+  if m.get('batch_contract')!='substitution-recognition-3':raise ValueError('Reviewed scaffolded substitution contract required')
   if band not in('easy','moderate','hard'):raise ValueError('Unsupported band')
   fields=q[':question/answer-fields'];problem=q[':question/problem'];sol=q[':question/worked-solution']
   from scripts.integration_support_policy import validate_prerequisite_recall
   validate_prerequisite_recall(record)
   if len(fields)!=1:raise ValueError('One assessed response required')
   f=fields[0];easy=band=='easy';choices=f[':answer-field/choices'];ref=f[':answer-field/correct'];cid=str(ref.get(':answer/id'))if isinstance(ref,dict)else str(ref[1]);key=next(a[':answer/value']for a in choices if str(a[':answer/id'])==cid)
+  if m.get('provided_substitution')or m.get('operation')!='evaluate'or 'Use the substitution' in problem:raise ValueError('Practice must retain substitution recognition')
   if easy:
-   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 or not problem.startswith('Use the substitution $u='):raise ValueError('Easy must supply u and assess transformation')
-   if any(r'\int'not in a[':answer/value']for a in choices):raise ValueError('Transformed-integral choices required')
+   if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 :raise ValueError('Easy requires complete-answer choices')
+   if any(r'\int'in a[':answer/value']for a in choices):raise ValueError('Complete-answer choices required')
   elif kp in(17592186064218,17592186064219,17592186064250):
    if f[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5 :raise ValueError('Inverse full calculations require the supported five-choice response ')
   else:
    if f[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1 :raise ValueError('Full calculation needs an exact blank')
    if m['model']['lower']is None and '{{answer}} $+C$'not in problem:raise ValueError('Indefinite C must be external')
   final=re.findall(r'\$\$\s*(.*?)\s*\$\$',sol,re.S)[-1].strip().rstrip('.')
-  if final!=key+('+C'if not easy and m['model']['lower']is None and f[':answer-field/type']==':answer-field.type/blank'else ''):raise ValueError('Solution does not reach displayed key')
+  if final!=key+('+C'if m['model']['lower']is None and f[':answer-field/type']==':answer-field.type/blank'else ''):raise ValueError('Solution does not reach displayed key')
   if any(int(n)>25 for n in re.findall(r'\d+',problem)):raise ValueError('Rendered numbers exceed reviewed workload')
   p=m['parameters']
   families={17592186064218:{'sine'},17592186064219:{'tangent'},17592186064250:{'secant'},17592186064220:{'sine','tangent'},17592186184349:{'square','cube'},17592186184350:{'square','cube'},17592186184351:({'power_e','power_base'}if easy else {'log_composite'}if band=='hard'else {'sqrt_e','root_e','sqrt_base','root_base','log_e','log_base'}),17592186184352:({'square_e','linear_e'}if easy else {'log_e'}if band=='hard'else {'square_base','linear_base'})}
@@ -50,4 +51,6 @@ def validate_delivery_batch(records,kp_id):
   # Scalars may vary within a family, but a full pool must exercise several substitutions.
   if len(rows)>=8 and len({r['generation']['model']['substitution']for r in rows})<3:raise ValueError('Delivered pool overconcentrates one substitution')
 
-  if band=="easy" and len(rows)>=8 and len({r["generation"].get("bank_correct_rank")for r in rows})<2:raise ValueError("A fixed numerical rank reveals the correct bank factor")
+  if band=='easy' and len(rows)>=8:
+   profiles={tuple(sorted(r['generation']['bank_recipes']))for r in rows}
+   if len(profiles)<2:raise ValueError('Fixed answer-bank profiles reveal the answer')

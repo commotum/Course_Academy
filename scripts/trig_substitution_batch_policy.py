@@ -27,7 +27,7 @@ def validate_delivery_batch(records,kp_id):
     groups=defaultdict(list);shapes=set()
     for record in records:
         q,m=record['question'],record.get('generation',{})
-        if m.get('batch_contract')!='trig-prerequisite-recall-v5':
+        if m.get('batch_contract')!='trig-substitution-recognition-v6':
             raise ValueError('Trig substitution requires the reviewed scaffolded band contract')
         band=str(q[':question/difficulty']).rsplit('/',1)[-1];family=m.get('family')
         if family not in FAMILIES[kp].get(band,set()):raise ValueError('Unsupported scaffolded family or difficulty')
@@ -45,10 +45,10 @@ def validate_delivery_batch(records,kp_id):
         easy=band=='easy'
         if easy:
             if field[':answer-field/type']!=':answer-field.type/radio'or len(choices)!=5:
-                raise ValueError('Easy needs the reviewed transformed-integral choice support')
-            if not m.get('provided_substitution')or m.get('operation')!='transform'or 'Use the substitution $u='not in problem:
-                raise ValueError('Easy must supply u and assess transformation only')
-            if any(r'\int'not in a[':answer/value']for a in choices):raise ValueError('Easy options must be transformed integrals')
+                raise ValueError('Easy needs the complete-answer choice support')
+            if m.get('provided_substitution')or m.get('operation')!='evaluate'or 'Use the substitution' in problem:
+                raise ValueError('Easy must retain substitution recognition and full calculation')
+            if any(r'\int'in a[':answer/value']for a in choices):raise ValueError('Easy choices must give complete answers')
         else:
             if field[':answer-field/type']!=':answer-field.type/blank'or len(choices)!=1:
                 raise ValueError('Full calculation needs one canonical exact answer fragment')

@@ -1,0 +1,2546 @@
+[
+  {
+    "label": "17592186068915 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "fa64c59d-5f3f-5931-be67-99fe5fe1efaf",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{2}}^{\\frac{3 \\pi}{4}} 2 \\cos{\\left(2 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+        ":question/worked-solution": "Let $u=2 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{2}&\\Longrightarrow u=\\pi\\\\x=\\frac{3 \\pi}{4}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{2}}^{\\frac{3 \\pi}{4}} 2 \\cos{\\left(2 x \\right)}\\,\\mathrm{d}x\\\\&=\\int_{\\pi}^{\\frac{3 \\pi}{2}} \\cos{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\pi \\right)}=0,\\quad \\sin{\\left(\\frac{3 \\pi}{2} \\right)}=-1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\sin{\\left(u \\right)}\\right]_{\\pi}^{\\frac{3 \\pi}{2}}=\\left(-1\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n-1.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "36d03b85-8ee7-53c0-a0fa-a4163b14f068",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cc61cae7-6338-530b-9138-1d0cb66768ee",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              },
+              {
+                ":answer/id": "b6b09ea2-6fd5-5a17-b1ae-a7f21afc0f38",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-2"
+              },
+              {
+                ":answer/id": "841d287f-b921-555f-a7bd-2ed68b9194e2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "be8ed56a-77e5-5d2f-86d1-c1ec7630b79f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1"
+              },
+              {
+                ":answer/id": "63c42f40-71d8-5fdb-8f32-e1f04145be67",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "be8ed56a-77e5-5d2f-86d1-c1ec7630b79f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "2",
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "3f4ef0335b10df37998f6f0cc4348541f3cb18a3eda4598b71f5043fcd27a4dc",
+        "model": {
+          "integrand": "2*cos(2*x)",
+          "substitution": "2*x",
+          "derivative": "2",
+          "factor": "1",
+          "transformed": "cos(u)",
+          "primitive": "sin(2*x)",
+          "lower": "pi/2",
+          "upper": "3*pi/4",
+          "result": "-1"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "omit_upper_endpoint",
+          "endpoint_offset_-1",
+          "wrong_sign",
+          "correct",
+          "negative_double"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "cc61cae7-6338-530b-9138-1d0cb66768ee",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b6b09ea2-6fd5-5a17-b1ae-a7f21afc0f38",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "841d287f-b921-555f-a7bd-2ed68b9194e2",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "be8ed56a-77e5-5d2f-86d1-c1ec7630b79f",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "63c42f40-71d8-5fdb-8f32-e1f04145be67",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "faa2cd78-ea47-5dd0-a920-89ce06af0eb4",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{2}}^{\\frac{2 \\pi}{3}} \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{2}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\\\x=\\frac{2 \\pi}{3}&\\Longrightarrow u=2 \\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{2}}^{\\frac{2 \\pi}{3}} \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(\\frac{3 \\pi}{2} \\right)}=0,\\quad \\cos{\\left(2 \\pi \\right)}=1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\frac{\\cos{\\left(u \\right)}}{3}\\right]_{\\frac{3 \\pi}{2}}^{2 \\pi}=\\left(- \\frac{1}{3}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{1}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "37160a5f-0f7a-52e6-a471-2cfc5367c04e",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "814bca97-d46a-53aa-924b-2265e2eb4626",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{3}"
+              },
+              {
+                ":answer/id": "c986c1f2-1217-5762-9647-2964aa4fc7e9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{3}"
+              },
+              {
+                ":answer/id": "bc3be031-e85f-5d0a-bc61-0582c03dccb0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4}{3}"
+              },
+              {
+                ":answer/id": "b6110b66-1020-56ef-85ea-6c010c5983df",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5}{3}"
+              },
+              {
+                ":answer/id": "99d3b62c-9882-56a8-aa19-d3ed83fd9ab5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c986c1f2-1217-5762-9647-2964aa4fc7e9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "271589b3a14a1139b761db0a4694f1db32b12c6ae7eb344c7b84e531f2b9af6c",
+        "model": {
+          "integrand": "sin(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "1/3",
+          "transformed": "sin(u)",
+          "primitive": "-cos(3*x)/3",
+          "lower": "pi/2",
+          "upper": "2*pi/3",
+          "result": "-1/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "negative_double",
+          "correct",
+          "endpoint_offset_-1",
+          "endpoint_offset_2",
+          "omit_upper_endpoint"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "814bca97-d46a-53aa-924b-2265e2eb4626",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "c986c1f2-1217-5762-9647-2964aa4fc7e9",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "bc3be031-e85f-5d0a-bc61-0582c03dccb0",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b6110b66-1020-56ef-85ea-6c010c5983df",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "99d3b62c-9882-56a8-aa19-d3ed83fd9ab5",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "2ab783b4-dae3-5806-8178-6b89f00052e5",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{\\cos{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{\\cos{\\left(3 x \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9400ddb2-804b-562b-9fe3-e43ad7b5ad37",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4b61a539-a800-5d5f-a30b-06695677f4e6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(3 x \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "ad4f3ee3-3ab8-500f-aace-22010201a5c6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cos{\\left(3 x \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "bdae9815-2795-5762-afa6-e76435e009c8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(3 x + 1 \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "3f8d42b1-f703-53bf-8f19-1376ee424ff7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(3 x \\right)}}{9}+C"
+              },
+              {
+                ":answer/id": "1e8cb45a-8796-558a-b4d0-e864913116b4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cos{\\left(3 x \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4b61a539-a800-5d5f-a30b-06695677f4e6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "11461dc2b72b2fb4cd669b1b6ac2da00f1e3ebd908299f25260d0f0a2d060501",
+        "model": {
+          "integrand": "sin(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "1/3",
+          "transformed": "sin(u)",
+          "primitive": "-cos(3*x)/3",
+          "lower": null,
+          "upper": null,
+          "result": "-cos(3*x)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "correct",
+          "negative_double",
+          "shift_inner",
+          "extra_third",
+          "double_factor"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "4b61a539-a800-5d5f-a30b-06695677f4e6",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "ad4f3ee3-3ab8-500f-aace-22010201a5c6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "bdae9815-2795-5762-afa6-e76435e009c8",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3f8d42b1-f703-53bf-8f19-1376ee424ff7",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1e8cb45a-8796-558a-b4d0-e864913116b4",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "3dde2202-3bf2-57e3-9868-9c4b0fc89c08",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cos{\\left(2 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=2 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cos{\\left(2 x \\right)}\\,\\mathrm{d}x\\\\&=\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\sin{\\left(2 x \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dffad44f-3886-5dda-a84e-3bef46f61ecc",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "715b2b16-7d4b-5690-8024-457658cfef34",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\sin{\\left(2 x \\right)}+C"
+              },
+              {
+                ":answer/id": "229f00dc-eebc-5374-a767-58a70b5e6e0f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(4 x \\right)}+C"
+              },
+              {
+                ":answer/id": "fff01070-208c-5143-a954-5979fb080d5e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(2 x \\right)}+C"
+              },
+              {
+                ":answer/id": "710505d7-c489-55d0-bf87-c3dd9bd097a3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(x \\right)}+C"
+              },
+              {
+                ":answer/id": "4a1b4f5c-3fbd-5139-abde-77a228bc5240",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(2 x \\right)}}{2}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fff01070-208c-5143-a954-5979fb080d5e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "2",
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "5217976eb1ad07fe5f8103db85eee8fd688d94398fb0a6e905f9c4a3c3862c39",
+        "model": {
+          "integrand": "2*cos(2*x)",
+          "substitution": "2*x",
+          "derivative": "2",
+          "factor": "1",
+          "transformed": "cos(u)",
+          "primitive": "sin(2*x)",
+          "lower": null,
+          "upper": null,
+          "result": "sin(2*x)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "double_factor",
+          "double_inner",
+          "correct",
+          "half_inner",
+          "extra_half"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "715b2b16-7d4b-5690-8024-457658cfef34",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "229f00dc-eebc-5374-a767-58a70b5e6e0f",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "fff01070-208c-5143-a954-5979fb080d5e",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "710505d7-c489-55d0-bf87-c3dd9bd097a3",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4a1b4f5c-3fbd-5139-abde-77a228bc5240",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "66ade998-4eef-53a7-accd-bf6073145230",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{6}}^{\\frac{\\pi}{3}} \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{6}&\\Longrightarrow u=\\frac{\\pi}{2}\\\\x=\\frac{\\pi}{3}&\\Longrightarrow u=\\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{6}}^{\\frac{\\pi}{3}} \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int_{\\frac{\\pi}{2}}^{\\pi} \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\frac{\\pi}{2} \\right)}=1,\\quad \\sin{\\left(\\pi \\right)}=0$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\frac{\\sin{\\left(u \\right)}}{3}\\right]_{\\frac{\\pi}{2}}^{\\pi}=\\left(0\\right)-\\left(\\frac{1}{3}\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{1}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1746cf53-43b7-5430-baf2-fd0b240080f9",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "aee29546-5752-5a1c-a1b5-9c4320867d41",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{3}"
+              },
+              {
+                ":answer/id": "a43c208e-6d08-543c-8f52-6b73d8b5a378",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{6}"
+              },
+              {
+                ":answer/id": "e889e874-4655-57c6-981b-e4e5a9fb7c68",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5}{3}"
+              },
+              {
+                ":answer/id": "d453fbd2-1f3d-5451-92b4-6c4db0262063",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{3}"
+              },
+              {
+                ":answer/id": "c8881746-be52-5dcd-8b63-58033a971a4d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d453fbd2-1f3d-5451-92b4-6c4db0262063"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "a14745a1c3ea88ea1c98f95e7e393b511fc10d078ed8963ad1d7c34fa09d780d",
+        "model": {
+          "integrand": "cos(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "1/3",
+          "transformed": "cos(u)",
+          "primitive": "sin(3*x)/3",
+          "lower": "pi/6",
+          "upper": "pi/3",
+          "result": "-1/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "add_endpoint_values",
+          "extra_half",
+          "endpoint_offset_2",
+          "correct",
+          "endpoint_offset_1"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "aee29546-5752-5a1c-a1b5-9c4320867d41",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "a43c208e-6d08-543c-8f52-6b73d8b5a378",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e889e874-4655-57c6-981b-e4e5a9fb7c68",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d453fbd2-1f3d-5451-92b4-6c4db0262063",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "c8881746-be52-5dcd-8b63-58033a971a4d",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "6329419e-ab03-57ca-88f1-9524cf1bfa92",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{3 \\pi}{4}}^{\\pi} 3 \\sin{\\left(2 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+        ":question/worked-solution": "Let $u=2 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{3 \\pi}{4}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\\\x=\\pi&\\Longrightarrow u=2 \\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{3 \\pi}{4}}^{\\pi} 3 \\sin{\\left(2 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(\\frac{3 \\pi}{2} \\right)}=0,\\quad \\cos{\\left(2 \\pi \\right)}=1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\frac{3 \\cos{\\left(u \\right)}}{2}\\right]_{\\frac{3 \\pi}{2}}^{2 \\pi}=\\left(- \\frac{3}{2}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{3}{2}.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c453aa4c-7753-59ed-bc06-9be90c4f5630",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f662d8d3-2f5b-5913-bd49-f9fc6317084c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{9}{2}"
+              },
+              {
+                ":answer/id": "4d839729-7f15-578f-978e-3a77ba751611",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{5}{2}"
+              },
+              {
+                ":answer/id": "9c8527fb-e71b-5fad-b3a3-b5c7bf37f1e9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{2}"
+              },
+              {
+                ":answer/id": "18ec2bea-206e-5b06-951d-4e2280e5edb6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{4}"
+              },
+              {
+                ":answer/id": "b9ea0365-cb88-50d2-b0c4-888fa040b575",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b9ea0365-cb88-50d2-b0c4-888fa040b575"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "2",
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "d47193a995173e7c6a2d4cac1b73025eac8a6757929d8ac7f01dbafb4c0b4d5e",
+        "model": {
+          "integrand": "3*sin(2*x)",
+          "substitution": "2*x",
+          "derivative": "2",
+          "factor": "3/2",
+          "transformed": "sin(u)",
+          "primitive": "-3*cos(2*x)/2",
+          "lower": "3*pi/4",
+          "upper": "pi",
+          "result": "-3/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "triple_factor",
+          "endpoint_offset_-1",
+          "endpoint_offset_2",
+          "extra_half",
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "f662d8d3-2f5b-5913-bd49-f9fc6317084c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4d839729-7f15-578f-978e-3a77ba751611",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "9c8527fb-e71b-5fad-b3a3-b5c7bf37f1e9",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "18ec2bea-206e-5b06-951d-4e2280e5edb6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b9ea0365-cb88-50d2-b0c4-888fa040b575",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "0b826ead-2d5f-50fb-b094-ec1c658efcc8",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\sin{\\left(4 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=4 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\sin{\\left(4 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{\\cos{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{\\cos{\\left(4 x \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "610c8b82-d29e-5956-aa7b-e2be2ccb4624",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0dccc8fe-ec04-5c69-a772-13cd9900e1b9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\cos{\\left(4 x \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "562a3564-6ffa-53bd-83ad-234ebaf6f7d6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(4 x \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "623b8d6d-4c6a-5ae6-aeb6-d6e4483b3b1a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4 x+C"
+              },
+              {
+                ":answer/id": "d13fd4d1-429c-5e55-a934-b706e8e4b633",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(2 x \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "6614375c-3c55-530b-aefa-f62d35b1e55d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\cos{\\left(4 x \\right)}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "562a3564-6ffa-53bd-83ad-234ebaf6f7d6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "4",
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "bd1eed2259031c3b26bfb8b8f2a0f2393cf9570a0da87899bbecfc5a3816decd",
+        "model": {
+          "integrand": "2*sin(4*x)",
+          "substitution": "4*x",
+          "derivative": "4",
+          "factor": "1/2",
+          "transformed": "sin(u)",
+          "primitive": "-cos(4*x)/2",
+          "lower": null,
+          "upper": null,
+          "result": "-cos(4*x)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "wrong_sign",
+          "correct",
+          "return_substitution",
+          "half_inner",
+          "negative_double"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "0dccc8fe-ec04-5c69-a772-13cd9900e1b9",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "562a3564-6ffa-53bd-83ad-234ebaf6f7d6",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "623b8d6d-4c6a-5ae6-aeb6-d6e4483b3b1a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d13fd4d1-429c-5e55-a934-b706e8e4b633",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "6614375c-3c55-530b-aefa-f62d35b1e55d",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "64b6e5b5-1df5-520e-82de-d885b5a5ff4c",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{\\sin{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\sin{\\left(3 x \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "818d2c32-33ff-59d7-a53b-7643f13ae8b7",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "aa1a2769-faaa-5638-961a-509c01537a31",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3 x+C"
+              },
+              {
+                ":answer/id": "2e97c4a2-cec7-50a6-85f0-0bde138ee683",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(3 x \\right)}}{6}+C"
+              },
+              {
+                ":answer/id": "e9ffe8b5-8eec-5bb2-9b9d-c5977e364435",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(3 x \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "0c64ab8a-a63f-524c-8e5e-8c71a216c690",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(6 x \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "6b6f0ffa-6cb8-52a4-bb8e-3c836cceb250",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(3 x + 1 \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e9ffe8b5-8eec-5bb2-9b9d-c5977e364435"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "c291d77b51a93e926bfef11097b60e84033136177b6806342e26499f0fe15e8e",
+        "model": {
+          "integrand": "cos(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "1/3",
+          "transformed": "cos(u)",
+          "primitive": "sin(3*x)/3",
+          "lower": null,
+          "upper": null,
+          "result": "sin(3*x)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "return_substitution",
+          "extra_half",
+          "correct",
+          "double_inner",
+          "shift_inner"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "aa1a2769-faaa-5638-961a-509c01537a31",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2e97c4a2-cec7-50a6-85f0-0bde138ee683",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e9ffe8b5-8eec-5bb2-9b9d-c5977e364435",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "0c64ab8a-a63f-524c-8e5e-8c71a216c690",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "6b6f0ffa-6cb8-52a4-bb8e-3c836cceb250",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "3fa4f0a8-a5a5-599b-b592-922d02da7a32",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\sin{\\left(4 x + 3 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=4 x + 3$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\sin{\\left(4 x + 3 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{4}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{4}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{\\cos{\\left(u \\right)}}{4}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f4725154-97d7-5a06-956a-ad97366aaa54",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e7dac586-8937-596c-a536-0affac3403ad",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e7dac586-8937-596c-a536-0affac3403ad"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "4",
+          "shift": "3",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "cb62847c1498b7a77043f162297f557976a508de613d8c73c9bce29f30d20c96",
+        "model": {
+          "integrand": "sin(4*x + 3)",
+          "substitution": "4*x + 3",
+          "derivative": "4",
+          "factor": "1/4",
+          "transformed": "sin(u)",
+          "primitive": "-cos(4*x + 3)/4",
+          "lower": null,
+          "upper": null,
+          "result": "-cos(4*x + 3)/4"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{\\cos{\\left(4 x + 3 \\right)}}{4})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "b3ba73e8-b32a-51d2-8418-65a2407941b5",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{3 \\pi}{8}}^{\\frac{\\pi}{2}} 3 \\cos{\\left(4 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=4 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{3 \\pi}{8}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\\\x=\\frac{\\pi}{2}&\\Longrightarrow u=2 \\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{3 \\pi}{8}}^{\\frac{\\pi}{2}} 3 \\cos{\\left(4 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{4}\\left(\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\frac{3 \\pi}{2} \\right)}=-1,\\quad \\sin{\\left(2 \\pi \\right)}=0$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\frac{3 \\sin{\\left(u \\right)}}{4}\\right]_{\\frac{3 \\pi}{2}}^{2 \\pi}=\\left(0\\right)-\\left(- \\frac{3}{4}\\right).\n$$\n\nThe answer is\n\n$$\n\\frac{3}{4}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a0b4fc06-a427-5181-8a39-38358b25ff12",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "29129c0d-63a1-5fa5-b460-2ac6d96d7909",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "29129c0d-63a1-5fa5-b460-2ac6d96d7909"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "4",
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "337e71b72d2cf3af7a6dc02022659d514927c38dd2dd385151e295ea5b5a6141",
+        "model": {
+          "integrand": "3*cos(4*x)",
+          "substitution": "4*x",
+          "derivative": "4",
+          "factor": "3/4",
+          "transformed": "cos(u)",
+          "primitive": "3*sin(4*x)/4",
+          "lower": "3*pi/8",
+          "upper": "pi/2",
+          "result": "3/4"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{3}{4}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{3}{4}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(\\frac{3}{4})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "e7a0f050-2946-58fd-95f9-73a790b95c11",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{4}}^{\\frac{\\pi}{2}} 3 \\sin{\\left(2 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=2 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{4}&\\Longrightarrow u=\\frac{\\pi}{2}\\\\x=\\frac{\\pi}{2}&\\Longrightarrow u=\\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{4}}^{\\frac{\\pi}{2}} 3 \\sin{\\left(2 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int_{\\frac{\\pi}{2}}^{\\pi} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(\\frac{\\pi}{2} \\right)}=0,\\quad \\cos{\\left(\\pi \\right)}=-1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\frac{3 \\cos{\\left(u \\right)}}{2}\\right]_{\\frac{\\pi}{2}}^{\\pi}=\\left(\\frac{3}{2}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n\\frac{3}{2}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "916ef59f-170f-5229-bd63-8912425b4d51",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2cc87d46-26e5-5335-bed4-43c798e56f72",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2cc87d46-26e5-5335-bed4-43c798e56f72"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "2",
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "88bda6b10f3f37c2cb21cb86bc7edb29a72b432a5b4a6af2ed521ce8204102ac",
+        "model": {
+          "integrand": "3*sin(2*x)",
+          "substitution": "2*x",
+          "derivative": "2",
+          "factor": "3/2",
+          "transformed": "sin(u)",
+          "primitive": "-3*cos(2*x)/2",
+          "lower": "pi/4",
+          "upper": "pi/2",
+          "result": "3/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{3}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{3}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(\\frac{3}{2})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "c215995a-d0f1-544a-8474-4f4f0eb8af22",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cos{\\left(4 x + 1 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=4 x + 1$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=4.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cos{\\left(4 x + 1 \\right)}\\,\\mathrm{d}x\\\\&=\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\sin{\\left(4 x + 1 \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8859f456-f493-52a4-9162-19d42cc493e0",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "69a2fb74-23f1-5254-a978-a04c681a417b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(4 x + 1 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "69a2fb74-23f1-5254-a978-a04c681a417b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "4",
+          "shift": "1",
+          "amplitude": "4"
+        },
+        "mathematical_fingerprint": "ce51fa9bee3dd1f2841d59ef7d85341b9c070a90de820641d3adb1a82bcfb9af",
+        "model": {
+          "integrand": "4*cos(4*x + 1)",
+          "substitution": "4*x + 1",
+          "derivative": "4",
+          "factor": "1",
+          "transformed": "cos(u)",
+          "primitive": "sin(4*x + 1)",
+          "lower": null,
+          "upper": null,
+          "result": "sin(4*x + 1)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\sin{\\left(4 x + 1 \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\sin{\\left(4 x + 1 \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\sin{\\left(4 x + 1 \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\sin{\\left(4 x + 1 \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "0b089ae1-11ab-5fa6-bab3-121d25262e59",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\sin{\\left(2 x + 1 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 x + 1$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\sin{\\left(2 x + 1 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{3}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{3 \\cos{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "63f21da6-ff1f-5651-915c-74c67a35db91",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "449e0e1d-9a6c-5fe1-a95b-b639f4ccd423",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "449e0e1d-9a6c-5fe1-a95b-b639f4ccd423"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "2",
+          "shift": "1",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "1cf8a834165a7a961d1476cf6baa783b53e8cf2716d4b372c760e706a2cf521a",
+        "model": {
+          "integrand": "3*sin(2*x + 1)",
+          "substitution": "2*x + 1",
+          "derivative": "2",
+          "factor": "3/2",
+          "transformed": "sin(u)",
+          "primitive": "-3*cos(2*x + 1)/2",
+          "lower": null,
+          "upper": null,
+          "result": "-3*cos(2*x + 1)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{3 \\cos{\\left(2 x + 1 \\right)}}{2})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "2f366558-9e7a-541a-91d0-27b02256448d",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{3}}^{\\frac{\\pi}{2}} 2 \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{3}&\\Longrightarrow u=\\pi\\\\x=\\frac{\\pi}{2}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{3}}^{\\frac{\\pi}{2}} 2 \\cos{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int_{\\pi}^{\\frac{3 \\pi}{2}} \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\pi \\right)}=0,\\quad \\sin{\\left(\\frac{3 \\pi}{2} \\right)}=-1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\frac{2 \\sin{\\left(u \\right)}}{3}\\right]_{\\pi}^{\\frac{3 \\pi}{2}}=\\left(- \\frac{2}{3}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{2}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d26e671a-fc5b-5cf6-9ef2-b441436e52ed",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "db631def-0fa3-54f6-a633-156d28801a11",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "db631def-0fa3-54f6-a633-156d28801a11"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "e3a23d9a9bc9f8d839f32d2245ca26c6df1d427720e1092d154177913202fb93",
+        "model": {
+          "integrand": "2*cos(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "2/3",
+          "transformed": "cos(u)",
+          "primitive": "2*sin(3*x)/3",
+          "lower": "pi/3",
+          "upper": "pi/2",
+          "result": "-2/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{2}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{2}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(- \\frac{2}{3})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "809eb303-b9cb-5d30-aed9-c8aaa494c3bd",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{\\frac{\\pi}{2}}^{\\frac{2 \\pi}{3}} 4 \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=\\frac{\\pi}{2}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\\\x=\\frac{2 \\pi}{3}&\\Longrightarrow u=2 \\pi\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{\\frac{\\pi}{2}}^{\\frac{2 \\pi}{3}} 4 \\sin{\\left(3 x \\right)}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int_{\\frac{3 \\pi}{2}}^{2 \\pi} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(\\frac{3 \\pi}{2} \\right)}=0,\\quad \\cos{\\left(2 \\pi \\right)}=1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\frac{4 \\cos{\\left(u \\right)}}{3}\\right]_{\\frac{3 \\pi}{2}}^{2 \\pi}=\\left(- \\frac{4}{3}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{4}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5be5dc06-c711-5e1b-a9fd-07303d441106",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c7eb6e67-4a18-53d8-ba2a-89bcc5bd5007",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c7eb6e67-4a18-53d8-ba2a-89bcc5bd5007"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "3",
+          "shift": "0",
+          "amplitude": "4"
+        },
+        "mathematical_fingerprint": "d57ef30d474452703d13001d360889d5d85617fec063748bb6d4d2a0acf54563",
+        "model": {
+          "integrand": "4*sin(3*x)",
+          "substitution": "3*x",
+          "derivative": "3",
+          "factor": "4/3",
+          "transformed": "sin(u)",
+          "primitive": "-4*cos(3*x)/3",
+          "lower": "pi/2",
+          "upper": "2*pi/3",
+          "result": "-4/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{4}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{4}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(- \\frac{4}{3})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "7daabcb8-6802-52c0-8ab2-c2275f358b9f",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\cos{\\left(3 x + 2 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=3 x + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\cos{\\left(3 x + 2 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{\\sin{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\sin{\\left(3 x + 2 \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ff3f1e31-a3c3-5586-83f4-993e6c8b7fb1",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e19d6768-369b-5339-b2de-6f778a91814b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sin{\\left(3 x + 2 \\right)}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e19d6768-369b-5339-b2de-6f778a91814b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "positive_affine",
+        "parameters": {
+          "slope": "3",
+          "shift": "2",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "38648dd4e3eede309fa27af0263657fada77fcb26da70358c0807c2680e496a8",
+        "model": {
+          "integrand": "cos(3*x + 2)",
+          "substitution": "3*x + 2",
+          "derivative": "3",
+          "factor": "1/3",
+          "transformed": "cos(u)",
+          "primitive": "sin(3*x + 2)/3",
+          "lower": null,
+          "upper": null,
+          "result": "sin(3*x + 2)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\sin{\\left(3 x + 2 \\right)}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{\\sin{\\left(3 x + 2 \\right)}}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{\\sin{\\left(3 x + 2 \\right)}}{3})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{\\sin{\\left(3 x + 2 \\right)}}{3})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "25017208-d35a-5987-9f5a-ab92bf702b0c",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{6}} 4 \\sin{\\left(- 3 x + 2 \\pi \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=- 3 x + 2 \\pi$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=2 \\pi\\\\x=\\frac{\\pi}{6}&\\Longrightarrow u=\\frac{3 \\pi}{2}\\end{aligned}\n$$\n\nThe new bounds decrease. Keep this order when evaluating the antiderivative.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{6}} 4 \\sin{\\left(- 3 x + 2 \\pi \\right)}\\,\\mathrm{d}x\\\\&=- \\frac{4}{3}\\left(\\int_{2 \\pi}^{\\frac{3 \\pi}{2}} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(2 \\pi \\right)}=1,\\quad \\cos{\\left(\\frac{3 \\pi}{2} \\right)}=0$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\frac{4 \\cos{\\left(u \\right)}}{3}\\right]_{2 \\pi}^{\\frac{3 \\pi}{2}}=\\left(0\\right)-\\left(\\frac{4}{3}\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{4}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9aa79387-ab64-5460-8503-123d889a9347",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "caed2feb-8122-5cc5-b89b-a8b6595154f7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "caed2feb-8122-5cc5-b89b-a8b6595154f7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-3",
+          "shift": "2*pi",
+          "amplitude": "4"
+        },
+        "mathematical_fingerprint": "7684607243f8adb5a2a7ca2ea3dbddf44aea71e13bd7af6f28a8948daabae297",
+        "model": {
+          "integrand": "4*sin(-3*x + 2*pi)",
+          "substitution": "-3*x + 2*pi",
+          "derivative": "-3",
+          "factor": "-4/3",
+          "transformed": "sin(u)",
+          "primitive": "4*cos(-3*x + 2*pi)/3",
+          "lower": "0",
+          "upper": "pi/6",
+          "result": "-4/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{4}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{4}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(- \\frac{4}{3})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "740378f5-b137-5bfc-b059-d2ba0149b6e6",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cos{\\left(1 - 4 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=1 - 4 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cos{\\left(1 - 4 x \\right)}\\,\\mathrm{d}x\\\\&=-\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\sin{\\left(1 - 4 x \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "161bccb0-aea2-5cb1-8227-a531e572519c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3b8f3487-9d02-53db-b2df-307950d8f96a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\sin{\\left(1 - 4 x \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3b8f3487-9d02-53db-b2df-307950d8f96a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-4",
+          "shift": "1",
+          "amplitude": "4"
+        },
+        "mathematical_fingerprint": "a0413ab3d8d676b3dbf42e80ab4a02752ffb3790b8b0068e38fea6716c8199a5",
+        "model": {
+          "integrand": "4*cos(1 - 4*x)",
+          "substitution": "1 - 4*x",
+          "derivative": "-4",
+          "factor": "-1",
+          "transformed": "cos(u)",
+          "primitive": "-sin(1 - 4*x)",
+          "lower": null,
+          "upper": null,
+          "result": "-sin(1 - 4*x)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\sin{\\left(1 - 4 x \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\sin{\\left(1 - 4 x \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\sin{\\left(1 - 4 x \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\sin{\\left(1 - 4 x \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 18",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "73dcbc4d-33eb-5cf3-92de-a76165754dc9",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\sin{\\left(2 - 3 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 - 3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-3.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\sin{\\left(2 - 3 x \\right)}\\,\\mathrm{d}x\\\\&=-\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\cos{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\cos{\\left(2 - 3 x \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7616ef13-c8e1-5b1a-912c-99ace8fa3fbe",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "da9f1059-bca3-5e1d-90e1-8e5fd7177e02",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\cos{\\left(2 - 3 x \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "da9f1059-bca3-5e1d-90e1-8e5fd7177e02"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-3",
+          "shift": "2",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "07caa5c1b33f98a4c0ac19e1ac126eedbd112d1b24010b5dc7e63e7262ee7d05",
+        "model": {
+          "integrand": "3*sin(2 - 3*x)",
+          "substitution": "2 - 3*x",
+          "derivative": "-3",
+          "factor": "-1",
+          "transformed": "sin(u)",
+          "primitive": "cos(2 - 3*x)",
+          "lower": null,
+          "upper": null,
+          "result": "cos(2 - 3*x)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\cos{\\left(2 - 3 x \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\cos{\\left(2 - 3 x \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\cos{\\left(2 - 3 x \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\cos{\\left(2 - 3 x \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 19",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "f14012b1-ed2c-5fa0-b9bf-7eb929926a39",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{8}} 4 \\cos{\\left(- 4 x + \\frac{\\pi}{2} \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=- 4 x + \\frac{\\pi}{2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=\\frac{\\pi}{2}\\\\x=\\frac{\\pi}{8}&\\Longrightarrow u=0\\end{aligned}\n$$\n\nThe new bounds decrease. Keep this order when evaluating the antiderivative.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{8}} 4 \\cos{\\left(- 4 x + \\frac{\\pi}{2} \\right)}\\,\\mathrm{d}x\\\\&=-\\left(\\int_{\\frac{\\pi}{2}}^{0} \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\frac{\\pi}{2} \\right)}=1,\\quad \\sin{\\left(0 \\right)}=0$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\sin{\\left(u \\right)}\\right]_{\\frac{\\pi}{2}}^{0}=\\left(0\\right)-\\left(-1\\right).\n$$\n\nThe answer is\n\n$$\n1.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a5c6d66a-7ebc-5319-82d7-8b948873e5fa",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0b154617-635a-52a4-9050-3f953507ee73",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0b154617-635a-52a4-9050-3f953507ee73"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-4",
+          "shift": "pi/2",
+          "amplitude": "4"
+        },
+        "mathematical_fingerprint": "04b7119623c827e6ec67289006bb4900b5f5e703a7334762ec65a97f19eebc94",
+        "model": {
+          "integrand": "4*cos(-4*x + pi/2)",
+          "substitution": "-4*x + pi/2",
+          "derivative": "-4",
+          "factor": "-1",
+          "transformed": "cos(u)",
+          "primitive": "-sin(-4*x + pi/2)",
+          "lower": "0",
+          "upper": "pi/8",
+          "result": "1"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(1\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(1)+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 20",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "402346c4-9c74-51a8-b1a6-4f25592d8661",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{4}} \\sin{\\left(\\pi - 4 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\pi - 4 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=\\pi\\\\x=\\frac{\\pi}{4}&\\Longrightarrow u=0\\end{aligned}\n$$\n\nThe new bounds decrease. Keep this order when evaluating the antiderivative.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{4}} \\sin{\\left(\\pi - 4 x \\right)}\\,\\mathrm{d}x\\\\&=- \\frac{1}{4}\\left(\\int_{\\pi}^{0} \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\cos{\\left(\\pi \\right)}=-1,\\quad \\cos{\\left(0 \\right)}=1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[\\frac{\\cos{\\left(u \\right)}}{4}\\right]_{\\pi}^{0}=\\left(\\frac{1}{4}\\right)-\\left(- \\frac{1}{4}\\right).\n$$\n\nThe answer is\n\n$$\n\\frac{1}{2}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "226db927-2cc9-5970-ac75-31697172e7bc",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d28d9e19-507c-508e-8f85-ad58d778e94b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d28d9e19-507c-508e-8f85-ad58d778e94b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_sin",
+        "family": "def_sin",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-4",
+          "shift": "pi",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "4ff024ddb5a521d2898c6daa7db8363ca48c5f72e223241a070dca987aa36195",
+        "model": {
+          "integrand": "sin(pi - 4*x)",
+          "substitution": "pi - 4*x",
+          "derivative": "-4",
+          "factor": "-1/4",
+          "transformed": "sin(u)",
+          "primitive": "cos(pi - 4*x)/4",
+          "lower": "0",
+          "upper": "pi/4",
+          "result": "1/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{1}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(\\frac{1}{2})+1",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 21",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "9006d04d-877a-5388-8142-def2377f61b0",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cos{\\left(1 - 2 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=1 - 2 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-2.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cos{\\left(1 - 2 x \\right)}\\,\\mathrm{d}x\\\\&=-\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\sin{\\left(1 - 2 x \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ae662857-2089-5f2d-8ead-82b7e079c7fe",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "876f9885-1d51-543a-84c2-14e22dda74de",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\sin{\\left(1 - 2 x \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "876f9885-1d51-543a-84c2-14e22dda74de"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_cos",
+        "family": "indef_cos",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-2",
+          "shift": "1",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "1fba8c1b0a1eb95037edfe9b3f4e784e8019e671af75785e8041a4ff3335ae5b",
+        "model": {
+          "integrand": "2*cos(1 - 2*x)",
+          "substitution": "1 - 2*x",
+          "derivative": "-2",
+          "factor": "-1",
+          "transformed": "cos(u)",
+          "primitive": "-sin(1 - 2*x)",
+          "lower": null,
+          "upper": null,
+          "result": "-sin(1 - 2*x)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\sin{\\left(1 - 2 x \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\sin{\\left(1 - 2 x \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\sin{\\left(1 - 2 x \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\sin{\\left(1 - 2 x \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 22",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "b1ea7b9e-b991-5167-b5b1-21daf4621433",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\sin{\\left(1 - 4 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=1 - 4 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-4.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\sin{\\left(1 - 4 x \\right)}\\,\\mathrm{d}x\\\\&=- \\frac{1}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n- \\frac{1}{2}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{\\cos{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\cos{\\left(1 - 4 x \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "10c2d165-f0a9-55e4-acba-8ffba03e2106",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0799852e-5690-596e-b806-2bf1449506ba",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\cos{\\left(1 - 4 x \\right)}}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0799852e-5690-596e-b806-2bf1449506ba"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "indef_sin",
+        "family": "indef_sin",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-4",
+          "shift": "1",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "e2d3256ddf55379f16ae24807115861fb2457f5bd98ed849774e23a48de01b1e",
+        "model": {
+          "integrand": "2*sin(1 - 4*x)",
+          "substitution": "1 - 4*x",
+          "derivative": "-4",
+          "factor": "-1/2",
+          "transformed": "sin(u)",
+          "primitive": "cos(1 - 4*x)/2",
+          "lower": null,
+          "upper": null,
+          "result": "cos(1 - 4*x)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\cos{\\left(1 - 4 x \\right)}}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{\\cos{\\left(1 - 4 x \\right)}}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{\\cos{\\left(1 - 4 x \\right)}}{2})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{\\cos{\\left(1 - 4 x \\right)}}{2})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068915 23",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068915,
+        "id": "746d1bc6-98ec-59a1-bec6-9dcfb7081a5d",
+        "title": "Integrating Trigonometric Functions With Linear Arguments"
+      },
+      "question": {
+        ":question/id": "196fe2f7-2cc5-56b3-b0b3-c2bc0194f4ca",
+        ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{\\pi}{6}} \\cos{\\left(\\pi - 3 x \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+        ":question/worked-solution": "Let $u=\\pi - 3 x$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-3.\n$$\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=\\pi\\\\x=\\frac{\\pi}{6}&\\Longrightarrow u=\\frac{\\pi}{2}\\end{aligned}\n$$\n\nThe new bounds decrease. Keep this order when evaluating the antiderivative.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{\\pi}{6}} \\cos{\\left(\\pi - 3 x \\right)}\\,\\mathrm{d}x\\\\&=- \\frac{1}{3}\\left(\\int_{\\pi}^{\\frac{\\pi}{2}} \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nEndpoint values: $\\sin{\\left(\\pi \\right)}=0,\\quad \\sin{\\left(\\frac{\\pi}{2} \\right)}=1$.\n\nIntegrate and evaluate:\n\n$$\n\\left[- \\frac{\\sin{\\left(u \\right)}}{3}\\right]_{\\pi}^{\\frac{\\pi}{2}}=\\left(- \\frac{1}{3}\\right)-\\left(0\\right).\n$$\n\nThe answer is\n\n$$\n- \\frac{1}{3}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7d3edd1e-c3e5-5543-a37f-9d5e1955e37c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e0901d33-2e89-5f39-add8-8a70956d5f7f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e0901d33-2e89-5f39-add8-8a70956d5f7f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "def_cos",
+        "family": "def_cos",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "slope": "-3",
+          "shift": "pi",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "950c35c5455e4fdd7ff5852377dac154851fe2830bbdc39321807e0a84856286",
+        "model": {
+          "integrand": "cos(pi - 3*x)",
+          "substitution": "pi - 3*x",
+          "derivative": "-3",
+          "factor": "-1/3",
+          "transformed": "cos(u)",
+          "primitive": "-sin(pi - 3*x)/3",
+          "lower": "0",
+          "upper": "pi/6",
+          "result": "-1/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-10061",
+          "q-10064",
+          "q-350039",
+          "q-350040"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored single negative-inner-derivative condition, with familiar endpoint values; replaces the uncalibrated compound hard band. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{1}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "(- \\frac{1}{3})+1",
+        "expected": "rejected"
+      }
+    ]
+  }
+]

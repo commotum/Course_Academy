@@ -1,0 +1,2690 @@
+[
+  {
+    "label": "17592186068917 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "7f9a1eea-25dd-5f39-b354-685880d8e60b",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x \\cos{\\left(x^{2} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 x.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x \\cos{\\left(x^{2} \\right)}\\,\\mathrm{d}x\\\\&=\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\sin{\\left(x^{2} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f43b8742-1703-5d21-b8c3-ae48dc835629",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0fe01840-04dd-5352-bde2-245545b58730",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\sin{\\left(x^{2} \\right)}+C"
+              },
+              {
+                ":answer/id": "571c07f7-932a-57b5-aacf-8b1583a9a944",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(x^{2} \\right)}+C"
+              },
+              {
+                ":answer/id": "425f2d13-cbc7-5489-b99d-0848dbb8dc22",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3 \\sin{\\left(x^{2} \\right)}+C"
+              },
+              {
+                ":answer/id": "be32286a-dd54-5df5-98b6-55cb08d2e5a8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(\\frac{x^{2}}{2} \\right)}+C"
+              },
+              {
+                ":answer/id": "7f7053e4-bb12-54d2-8185-09d694e04ff6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sin{\\left(2 x^{2} \\right)}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "571c07f7-932a-57b5-aacf-8b1583a9a944"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "cos",
+        "family": "cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 2,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "de3060d0e0916eef402d92f1390e0c4c7102194dd6fb7341dc148682f4964a24",
+        "model": {
+          "integrand": "2*x*cos(x**2)",
+          "substitution": "x**2",
+          "derivative": "2*x",
+          "factor": "1",
+          "transformed": "cos(u)",
+          "primitive": "sin(x**2)",
+          "lower": null,
+          "upper": null,
+          "result": "sin(x**2)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "wrong_sign",
+          "correct",
+          "triple_factor",
+          "half_inner",
+          "double_inner"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "0fe01840-04dd-5352-bde2-245545b58730",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "571c07f7-932a-57b5-aacf-8b1583a9a944",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "425f2d13-cbc7-5489-b99d-0848dbb8dc22",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "be32286a-dd54-5df5-98b6-55cb08d2e5a8",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "7f7053e4-bb12-54d2-8185-09d694e04ff6",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "639ea0b6-3ae6-5b7b-bd85-9540685724d8",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x^{2} \\sec^{2}{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x^{2} \\sec^{2}{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u=\\tan{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u=\\tan{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n\\tan{\\left(x^{3} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "24a6d7b2-7efc-5026-b297-d5aa3e5006a8",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "21589a3d-26ec-516e-a430-3ffcc471eb2f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{3}+C"
+              },
+              {
+                ":answer/id": "4cd6c568-2c78-5eb2-ba3e-f51e413fa4c0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\tan{\\left(x^{3} \\right)}+C"
+              },
+              {
+                ":answer/id": "3370c20a-0cea-5fa6-8092-f41643dd084a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\tan{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "356cbae2-ca2d-551f-b3db-d3952f13bafc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3 \\tan{\\left(x^{3} \\right)}+C"
+              },
+              {
+                ":answer/id": "7e47a764-2d7c-584a-a809-d264eefbb714",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\tan{\\left(x^{3} \\right)}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7e47a764-2d7c-584a-a809-d264eefbb714"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sec2",
+        "family": "sec2",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "c30236d3f9e13cd35c9be185bb7b0c7f7200d04aed0384dc148f1fe079903794",
+        "model": {
+          "integrand": "3*x**2*sec(x**3)**2",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "sec(u)**2",
+          "primitive": "tan(x**3)",
+          "lower": null,
+          "upper": null,
+          "result": "tan(x**3)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "return_substitution",
+          "wrong_sign",
+          "extra_third",
+          "triple_factor",
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "21589a3d-26ec-516e-a430-3ffcc471eb2f",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4cd6c568-2c78-5eb2-ba3e-f51e413fa4c0",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3370c20a-0cea-5fa6-8092-f41643dd084a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "356cbae2-ca2d-551f-b3db-d3952f13bafc",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "7e47a764-2d7c-584a-a809-d264eefbb714",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "40a4438e-75a4-56e4-b7e6-126b49154631",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int x^{2} \\csc^{2}{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int x^{2} \\csc^{2}{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u=- \\cot{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{\\cot{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{\\cot{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a05eafc0-b5df-5069-ba6d-c40e3f809e0a",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d6045465-8d62-5b64-91ce-17eb6b261460",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cot{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "a7137561-cf39-56f4-8d57-e2bde126de46",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{3}+C"
+              },
+              {
+                ":answer/id": "55c3def3-4693-5a90-9503-ffc553748dc7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\cot{\\left(x^{3} \\right)}+C"
+              },
+              {
+                ":answer/id": "2fb819e4-3830-5049-97f7-d7e952707b7c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cot{\\left(2 x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "cd627ea9-ae32-5fde-b905-65c004961640",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\cot{\\left(x^{3} \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cd627ea9-ae32-5fde-b905-65c004961640"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "csc2",
+        "family": "csc2",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "17fc12d0620aecbbd042bbc6be75302e4266de65cb9f29fd12251b89969089b5",
+        "model": {
+          "integrand": "x**2*csc(x**3)**2",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "1/3",
+          "transformed": "csc(u)**2",
+          "primitive": "-cot(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "-cot(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "double_factor",
+          "return_substitution",
+          "triple_factor",
+          "double_inner",
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d6045465-8d62-5b64-91ce-17eb6b261460",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "a7137561-cf39-56f4-8d57-e2bde126de46",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "55c3def3-4693-5a90-9503-ffc553748dc7",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2fb819e4-3830-5049-97f7-d7e952707b7c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "cd627ea9-ae32-5fde-b905-65c004961640",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "e605fe81-8ae9-5f81-9f29-4e2e03aeb1d5",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x^{2} \\sin{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x^{2} \\sin{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{3}\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{2 \\cos{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{2 \\cos{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "27242213-0e71-5441-a4e6-60da76f03e74",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9e2aa0ca-a27e-5dcf-b802-01f5103ce176",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\cos{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "11d5d6c2-d79a-5012-a688-589d394e29fb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cos{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "9c6cdea2-5650-5956-826f-7d75f1b6ac49",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cos{\\left(\\frac{x^{3}}{2} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "1167156d-e32a-54a6-981c-103cbb54edd4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cos{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "0fb67a20-b5e5-5d37-a10f-49d1d5329541",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cos{\\left(x^{3} + 1 \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1167156d-e32a-54a6-981c-103cbb54edd4"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sin",
+        "family": "sin",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "dc004f102f9a8f39aeaa044e1cc1ca0d7316f01719dccc36b4e190b9fba44eda",
+        "model": {
+          "integrand": "2*x**2*sin(x**3)",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "sin(u)",
+          "primitive": "-2*cos(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "-2*cos(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "negative_double",
+          "wrong_sign",
+          "half_inner",
+          "correct",
+          "shift_inner"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "9e2aa0ca-a27e-5dcf-b802-01f5103ce176",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "11d5d6c2-d79a-5012-a688-589d394e29fb",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "9c6cdea2-5650-5956-826f-7d75f1b6ac49",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1167156d-e32a-54a6-981c-103cbb54edd4",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "0fb67a20-b5e5-5d37-a10f-49d1d5329541",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "e311139a-9e29-5471-bf3a-243aed01977f",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x^{2} \\tan{\\left(x^{3} \\right)} \\sec{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x^{2} \\tan{\\left(x^{3} \\right)} \\sec{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u=\\sec{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{3}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{2 \\sec{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\sec{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "efc8f1de-5cfd-50f8-a0bf-92425fe62faa",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "98ff7521-9b92-5d64-b06a-55c0e295428a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sec{\\left(x^{3} + 1 \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "986e7511-ec1f-5964-b4fd-b65744ea5ed3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4 \\sec{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "4d477e28-646c-5281-8fcc-6c2be444bac3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sec{\\left(\\frac{x^{3}}{2} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "63f25881-951f-5d3d-a9b6-83689776cbe5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sec{\\left(2 x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "c42a4a8d-2041-501d-8b8c-226d9485cd3f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sec{\\left(x^{3} \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c42a4a8d-2041-501d-8b8c-226d9485cd3f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sec_tan",
+        "family": "sec_tan",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "e677a51acbded293834c86b64180fcfb3b0c0e7e552453c1c6c19ff8678ad3eb",
+        "model": {
+          "integrand": "2*x**2*tan(x**3)*sec(x**3)",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "tan(u)*sec(u)",
+          "primitive": "2*sec(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "2*sec(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "shift_inner",
+          "negative_double",
+          "half_inner",
+          "double_inner",
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "98ff7521-9b92-5d64-b06a-55c0e295428a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "986e7511-ec1f-5964-b4fd-b65744ea5ed3",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4d477e28-646c-5281-8fcc-6c2be444bac3",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "63f25881-951f-5d3d-a9b6-83689776cbe5",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "c42a4a8d-2041-501d-8b8c-226d9485cd3f",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "8d058984-a017-5192-92d1-ddd80292fa11",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x^{2} \\cot{\\left(x^{3} \\right)} \\csc{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x^{2} \\cot{\\left(x^{3} \\right)} \\csc{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u=- \\csc{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{3}\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{2 \\csc{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{2 \\csc{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ffd2617a-ea2e-5356-96ff-c5d593c60258",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e4f57ae7-a955-57c2-a0cb-9151822c7800",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\csc{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "e607b06d-3ba0-5bfd-ac67-d2b745f8168b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\csc{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "1d0ded6c-712a-51d5-8d98-9c8d947e7983",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\csc{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "89d6f6e3-eed2-5a8f-acba-22bf10ae8b6c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\csc{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "257fc888-0b6c-5b3c-a4ec-7e329d7b588d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\csc{\\left(x^{3} + 1 \\right)}}{3}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1d0ded6c-712a-51d5-8d98-9c8d947e7983"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "csc_cot",
+        "family": "csc_cot",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "95c4514ec3ebc65da27f04c84df8903b93c68a7c0ab2bf548eab82da5e239479",
+        "model": {
+          "integrand": "2*x**2*cot(x**3)*csc(x**3)",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "cot(u)*csc(u)",
+          "primitive": "-2*csc(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "-2*csc(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "negative_double",
+          "wrong_sign",
+          "correct",
+          "extra_half",
+          "shift_inner"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "e4f57ae7-a955-57c2-a0cb-9151822c7800",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e607b06d-3ba0-5bfd-ac67-d2b745f8168b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1d0ded6c-712a-51d5-8d98-9c8d947e7983",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "89d6f6e3-eed2-5a8f-acba-22bf10ae8b6c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "257fc888-0b6c-5b3c-a4ec-7e329d7b588d",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "2fecdd9d-24dc-5919-8d6e-cfd9385edffe",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x^{2} \\cos{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x^{2} \\cos{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{2 \\sin{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "93bc30a4-c97a-5d5f-b47a-66893b4d9bce",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "345fbf49-c123-513b-9942-467ab8f3a099",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4 \\sin{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "7a56bea5-bc81-5053-978d-69d48a52b1eb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "31a87405-12d1-5965-8b57-28bf462411d1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sin{\\left(\\frac{x^{3}}{2} \\right)}}{3}+C"
+              },
+              {
+                ":answer/id": "dc7bb8dc-54f4-520d-8640-d38feb7266de",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{3}+C"
+              },
+              {
+                ":answer/id": "01f52cb1-7359-5210-a27f-8c2ec1aae0c0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\sin{\\left(x^{3} \\right)}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7a56bea5-bc81-5053-978d-69d48a52b1eb"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "cos",
+        "family": "cos",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "c794a29e69a0f1ddb42e01975f808e8c950a5a19995538f164829f3d3eab1f57",
+        "model": {
+          "integrand": "2*x**2*cos(x**3)",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "cos(u)",
+          "primitive": "2*sin(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "2*sin(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "negative_double",
+          "correct",
+          "half_inner",
+          "return_substitution",
+          "triple_factor"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "345fbf49-c123-513b-9942-467ab8f3a099",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "7a56bea5-bc81-5053-978d-69d48a52b1eb",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "31a87405-12d1-5965-8b57-28bf462411d1",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "dc7bb8dc-54f4-520d-8640-d38feb7266de",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "01f52cb1-7359-5210-a27f-8c2ec1aae0c0",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "836e3cff-5a63-5505-90cd-9ba385b65fb2",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x \\sec^{2}{\\left(x^{2} \\right)}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 x.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x \\sec^{2}{\\left(x^{2} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u=\\tan{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{3}{2}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{3 \\tan{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\tan{\\left(x^{2} \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1803a769-2043-5e90-894c-dc2cfddf718f",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d3652321-73af-5af5-81a1-f8606ecb2b62",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\tan{\\left(x \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "1b303114-90f6-53da-9684-1f7ba22d0fd5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\tan{\\left(x^{2} \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "9b87b68a-4006-589d-9c30-70eef6721874",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\tan{\\left(x^{2} \\right)}}{4}+C"
+              },
+              {
+                ":answer/id": "f0c15454-7fb6-5689-b8a5-a28364a66647",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{9 \\tan{\\left(x^{2} \\right)}}{2}+C"
+              },
+              {
+                ":answer/id": "85291b8c-46f2-56ed-9300-7ad5be0cde43",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\tan{\\left(2 x^{2} \\right)}}{2}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1b303114-90f6-53da-9684-1f7ba22d0fd5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sec2",
+        "family": "sec2",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "inner_role": "power",
+          "power": 2,
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "55697ca1ce50bd8f9e2d48c4f2624671601f43f551a68131be00481d2185af28",
+        "model": {
+          "integrand": "3*x*sec(x**2)**2",
+          "substitution": "x**2",
+          "derivative": "2*x",
+          "factor": "3/2",
+          "transformed": "sec(u)**2",
+          "primitive": "3*tan(x**2)/2",
+          "lower": null,
+          "upper": null,
+          "result": "3*tan(x**2)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "complete antiderivative or exact value with authored error choices",
+        "bank_recipes": [
+          "omit_inner",
+          "correct",
+          "extra_half",
+          "triple_factor",
+          "double_inner"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d3652321-73af-5af5-81a1-f8606ecb2b62",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1b303114-90f6-53da-9684-1f7ba22d0fd5",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "9b87b68a-4006-589d-9c30-70eef6721874",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "f0c15454-7fb6-5689-b8a5-a28364a66647",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "85291b8c-46f2-56ed-9300-7ad5be0cde43",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "f5308edd-7673-58fe-9d05-ac0871e43493",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x \\cot{\\left(x^{2} + 2 \\right)} \\csc{\\left(x^{2} + 2 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{2} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 x.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x \\cot{\\left(x^{2} + 2 \\right)} \\csc{\\left(x^{2} + 2 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u=- \\csc{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{3}{2}\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{3 \\csc{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e0be59d9-b5a8-5760-be31-45b6eaff99a3",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ccde88b6-ac98-5d48-9756-10d67944b78e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ccde88b6-ac98-5d48-9756-10d67944b78e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "csc_cot",
+        "family": "csc_cot",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 2,
+          "shift": "2",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "108348deea1145c0162938697ce8446a3239f12bcd4004035b353b2079fc745b",
+        "model": {
+          "integrand": "3*x*cot(x**2 + 2)*csc(x**2 + 2)",
+          "substitution": "x**2 + 2",
+          "derivative": "2*x",
+          "factor": "3/2",
+          "transformed": "cot(u)*csc(u)",
+          "primitive": "-3*csc(x**2 + 2)/2",
+          "lower": null,
+          "upper": null,
+          "result": "-3*csc(x**2 + 2)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{3 \\csc{\\left(x^{2} + 2 \\right)}}{2})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "ddddb292-1f71-57a4-beb3-28f714287ab4",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x \\sin{\\left(x^{2} + 1 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{2} + 1$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 x.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x \\sin{\\left(x^{2} + 1 \\right)}\\,\\mathrm{d}x\\\\&=\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\cos{\\left(x^{2} + 1 \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c4fc48b1-8659-572c-8200-8f98e6cf48c9",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cc1437e3-3127-553e-aff2-8606aa433d0d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\cos{\\left(x^{2} + 1 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cc1437e3-3127-553e-aff2-8606aa433d0d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sin",
+        "family": "sin",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 2,
+          "shift": "1",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "f5e996f12d3b9ae2739683e305d075f33720723c02d1f6e941fa644b1fb1db06",
+        "model": {
+          "integrand": "2*x*sin(x**2 + 1)",
+          "substitution": "x**2 + 1",
+          "derivative": "2*x",
+          "factor": "1",
+          "transformed": "sin(u)",
+          "primitive": "-cos(x**2 + 1)",
+          "lower": null,
+          "upper": null,
+          "result": "-cos(x**2 + 1)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\cos{\\left(x^{2} + 1 \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\cos{\\left(x^{2} + 1 \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\cos{\\left(x^{2} + 1 \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\cos{\\left(x^{2} + 1 \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "98059661-accc-5315-978a-90a341d6bb2a",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 x^{2} \\cos{\\left(x^{3} \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 x^{2} \\cos{\\left(x^{3} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{2}{3}\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{2 \\sin{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "cd093c04-e9ef-5d69-8a4a-7f5636fa8e1f",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e07b30ad-aa06-521b-b902-c76f75ed2338",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e07b30ad-aa06-521b-b902-c76f75ed2338"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "cos",
+        "family": "cos",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "c794a29e69a0f1ddb42e01975f808e8c950a5a19995538f164829f3d3eab1f57",
+        "model": {
+          "integrand": "2*x**2*cos(x**3)",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "cos(u)",
+          "primitive": "2*sin(x**3)/3",
+          "lower": null,
+          "upper": null,
+          "result": "2*sin(x**3)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{2 \\sin{\\left(x^{3} \\right)}}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{2 \\sin{\\left(x^{3} \\right)}}{3})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{2 \\sin{\\left(x^{3} \\right)}}{3})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "3503c64b-c34d-5a2f-b993-ed88e86c9520",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int x^{2} \\sec^{2}{\\left(x^{3} + 1 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 1$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int x^{2} \\sec^{2}{\\left(x^{3} + 1 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u=\\tan{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{\\tan{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "92dd62e8-b7ac-5ecc-8995-8dea1a20db53",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6b769e32-8845-56ab-898e-74647012294d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6b769e32-8845-56ab-898e-74647012294d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sec2",
+        "family": "sec2",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "1",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "a357c6c168630963deeec635845fe755e5112c86dd54d7822b03633b223d1fa4",
+        "model": {
+          "integrand": "x**2*sec(x**3 + 1)**2",
+          "substitution": "x**3 + 1",
+          "derivative": "3*x**2",
+          "factor": "1/3",
+          "transformed": "sec(u)**2",
+          "primitive": "tan(x**3 + 1)/3",
+          "lower": null,
+          "upper": null,
+          "result": "tan(x**3 + 1)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{\\tan{\\left(x^{3} + 1 \\right)}}{3})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "6ae8b686-a96a-50fc-8811-70b1525a9d1d",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int x^{2} \\tan{\\left(x^{3} + 2 \\right)} \\sec{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int x^{2} \\tan{\\left(x^{3} + 2 \\right)} \\sec{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u=\\sec{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{1}{3}\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right)=\\frac{\\sec{\\left(u \\right)}}{3}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "71e5bf37-d1d5-51b7-b220-136cee071d47",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b7396f35-1ab8-53ba-8d5a-a46dd1780146",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b7396f35-1ab8-53ba-8d5a-a46dd1780146"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sec_tan",
+        "family": "sec_tan",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "2",
+          "amplitude": "1"
+        },
+        "mathematical_fingerprint": "f9f1657d20c986509f3995c5aad7aaefa696ad46f51b4501088a4e4c79f96f90",
+        "model": {
+          "integrand": "x**2*tan(x**3 + 2)*sec(x**3 + 2)",
+          "substitution": "x**3 + 2",
+          "derivative": "3*x**2",
+          "factor": "1/3",
+          "transformed": "tan(u)*sec(u)",
+          "primitive": "sec(x**3 + 2)/3",
+          "lower": null,
+          "upper": null,
+          "result": "sec(x**3 + 2)/3"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{\\sec{\\left(x^{3} + 2 \\right)}}{3})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "ac491912-d824-5384-8703-127f1691c94e",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x \\csc^{2}{\\left(x^{2} \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=2 x.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x \\csc^{2}{\\left(x^{2} \\right)}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u=- \\cot{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\frac{3}{2}\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- \\frac{3 \\cot{\\left(u \\right)}}{2}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0251f4ac-63e8-56d7-ade1-7936222eba9e",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8d96e438-b7bc-5216-b58a-f610c2253712",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8d96e438-b7bc-5216-b58a-f610c2253712"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "csc2",
+        "family": "csc2",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 2,
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "dc63cdb884acdfe258d42840689a3093e28a9f0b95a86f1a873ff8dc9f1de16e",
+        "model": {
+          "integrand": "3*x*csc(x**2)**2",
+          "substitution": "x**2",
+          "derivative": "2*x",
+          "factor": "3/2",
+          "transformed": "csc(u)**2",
+          "primitive": "-3*cot(x**2)/2",
+          "lower": null,
+          "upper": null,
+          "result": "-3*cot(x**2)/2"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{3 \\cot{\\left(x^{2} \\right)}}{2})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "3b0ac0bb-7ce8-5044-b70d-7560fb1e7c2d",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x^{2} \\cot{\\left(x^{3} + 2 \\right)} \\csc{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x^{2} \\cot{\\left(x^{3} + 2 \\right)} \\csc{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\\\\&=\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u=- \\csc{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u=- \\csc{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\csc{\\left(x^{3} + 2 \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5411168e-fae7-53b0-bc95-989c45f44b61",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0f04a7c2-6cd6-580d-82a3-6cf8a3f4e878",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\csc{\\left(x^{3} + 2 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0f04a7c2-6cd6-580d-82a3-6cf8a3f4e878"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "csc_cot",
+        "family": "csc_cot",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "2",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "c9ed7f01f6aa02d8b9fed8e45bda6b0b3e644ec840bc502d44ec66c7ffc1c70c",
+        "model": {
+          "integrand": "3*x**2*cot(x**3 + 2)*csc(x**3 + 2)",
+          "substitution": "x**3 + 2",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "cot(u)*csc(u)",
+          "primitive": "-csc(x**3 + 2)",
+          "lower": null,
+          "upper": null,
+          "result": "-csc(x**3 + 2)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\csc{\\left(x^{3} + 2 \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\csc{\\left(x^{3} + 2 \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\csc{\\left(x^{3} + 2 \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\csc{\\left(x^{3} + 2 \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "213953a6-0aa3-5fc6-a5b4-b88d4ecec95f",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 x^{2} \\sin{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 2$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=3 x^{2}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 x^{2} \\sin{\\left(x^{3} + 2 \\right)}\\,\\mathrm{d}x\\\\&=\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- \\cos{\\left(x^{3} + 2 \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a4b55cdc-8729-5076-9a78-48d1952ff386",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0ee5177d-e676-5627-870a-0cc765478b65",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\cos{\\left(x^{3} + 2 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0ee5177d-e676-5627-870a-0cc765478b65"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sin",
+        "family": "sin",
+        "challenge": "recognize_power",
+        "parameters": {
+          "inner_role": "power",
+          "power": 3,
+          "shift": "2",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "a6434ca6fa64aa2dcbb1876f0c04d500e6c458fb84a7e54cc135369d327b0a5f",
+        "model": {
+          "integrand": "3*x**2*sin(x**3 + 2)",
+          "substitution": "x**3 + 2",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "sin(u)",
+          "primitive": "-cos(x**3 + 2)",
+          "lower": null,
+          "upper": null,
+          "result": "-cos(x**3 + 2)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\cos{\\left(x^{3} + 2 \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\cos{\\left(x^{3} + 2 \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\cos{\\left(x^{3} + 2 \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\cos{\\left(x^{3} + 2 \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "24777013-b8d3-5e04-b08c-96de9e04799e",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\tan{\\left(\\frac{1}{x + 1} \\right)} \\sec{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x + 1}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{\\left(x + 1\\right)^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\tan{\\left(\\frac{1}{x + 1} \\right)} \\sec{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\\\\&=-3\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u=\\sec{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-3\\left(\\int \\tan{\\left(u \\right)} \\sec{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- 3 \\sec{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "87314e5a-9205-558c-9967-f8c8388551d2",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "28c836a2-8b2d-50c3-b89d-9bd2bc1ee84e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "28c836a2-8b2d-50c3-b89d-9bd2bc1ee84e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_sec_tan",
+        "family": "reciprocal_sec_tan",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "1",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "f41c882e16bad0e1d73a60a6061c378d67a1666e5b480356e2c6cc209cf38fe3",
+        "model": {
+          "integrand": "3*tan(1/(x + 1))*sec(1/(x + 1))/(x + 1)**2",
+          "substitution": "1/(x + 1)",
+          "derivative": "-1/(x + 1)**2",
+          "factor": "-3",
+          "transformed": "tan(u)*sec(u)",
+          "primitive": "-3*sec(1/(x + 1))",
+          "lower": null,
+          "upper": null,
+          "result": "-3*sec(1/(x + 1))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- 3 \\sec{\\left(\\frac{1}{x + 1} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "22800ce1-22b4-5647-895c-5fa618aed8f1",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 \\cos{\\left(\\frac{1}{x} \\right)}}{x^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{x^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 \\cos{\\left(\\frac{1}{x} \\right)}}{x^{2}}\\,\\mathrm{d}x\\\\&=-2\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-2\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- 2 \\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- 2 \\sin{\\left(\\frac{1}{x} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5986715d-a74a-5b9a-b607-4c452d53ca11",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "99cb5b39-8bb1-5c72-a923-b3ac1322ce6d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 2 \\sin{\\left(\\frac{1}{x} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "99cb5b39-8bb1-5c72-a923-b3ac1322ce6d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_cos",
+        "family": "reciprocal_cos",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "0",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "0e6f101cc888dbe8f78f892cd9f813603ace278507484ec96b2af7d4501fea69",
+        "model": {
+          "integrand": "2*cos(1/x)/x**2",
+          "substitution": "1/x",
+          "derivative": "-1/x**2",
+          "factor": "-2",
+          "transformed": "cos(u)",
+          "primitive": "-2*sin(1/x)",
+          "lower": null,
+          "upper": null,
+          "result": "-2*sin(1/x)"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 2 \\sin{\\left(\\frac{1}{x} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- 2 \\sin{\\left(\\frac{1}{x} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- 2 \\sin{\\left(\\frac{1}{x} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- 2 \\sin{\\left(\\frac{1}{x} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 18",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "c682838c-441d-52c4-bca4-1c893d76ddf0",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\cos{\\left(\\sqrt{x} \\right)}}{\\sqrt{x}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\sqrt{x}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{1}{2 \\sqrt{x}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\cos{\\left(\\sqrt{x} \\right)}}{\\sqrt{x}}\\,\\mathrm{d}x\\\\&=6\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u=\\sin{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n6\\left(\\int \\cos{\\left(u \\right)}\\,\\mathrm{d}u\\right)=6 \\sin{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n6 \\sin{\\left(\\sqrt{x} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0faef82f-02d8-5038-818a-943e69f8cdd6",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c92f433a-937c-5532-a6df-6b18894cce0a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6 \\sin{\\left(\\sqrt{x} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c92f433a-937c-5532-a6df-6b18894cce0a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sqrt_cos",
+        "family": "sqrt_cos",
+        "challenge": "recognize_sqrt",
+        "parameters": {
+          "inner_role": "sqrt",
+          "shift": "0",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "fec45dfd7d1d8ed6722f82945959ad53ba31dfaa581b51ad9dbc7b5fa8638a98",
+        "model": {
+          "integrand": "3*cos(sqrt(x))/sqrt(x)",
+          "substitution": "sqrt(x)",
+          "derivative": "1/(2*sqrt(x))",
+          "factor": "6",
+          "transformed": "cos(u)",
+          "primitive": "6*sin(sqrt(x))",
+          "lower": null,
+          "upper": null,
+          "result": "6*sin(sqrt(x))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "6 \\sin{\\left(\\sqrt{x} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(6 \\sin{\\left(\\sqrt{x} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(6 \\sin{\\left(\\sqrt{x} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(6 \\sin{\\left(\\sqrt{x} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 19",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "a4521fc6-cec0-581c-b41b-3c4297dc34f4",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\cot{\\left(\\frac{1}{x + 2} \\right)} \\csc{\\left(\\frac{1}{x + 2} \\right)}}{\\left(x + 2\\right)^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x + 2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{\\left(x + 2\\right)^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\cot{\\left(\\frac{1}{x + 2} \\right)} \\csc{\\left(\\frac{1}{x + 2} \\right)}}{\\left(x + 2\\right)^{2}}\\,\\mathrm{d}x\\\\&=-3\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u=- \\csc{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-3\\left(\\int \\cot{\\left(u \\right)} \\csc{\\left(u \\right)}\\,\\mathrm{d}u\\right)=3 \\csc{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\csc{\\left(\\frac{1}{x + 2} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d2c077f1-ff65-5ca9-9bf2-de0b82cbbd6a",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ca3b5931-f6f4-509b-9e40-761a804b4cc5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3 \\csc{\\left(\\frac{1}{x + 2} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ca3b5931-f6f4-509b-9e40-761a804b4cc5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_csc_cot",
+        "family": "reciprocal_csc_cot",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "2",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "db56cd164aa4b9f165874f89691910eb3ae884ad5b5cabb7129bd9819e17912e",
+        "model": {
+          "integrand": "3*cot(1/(x + 2))*csc(1/(x + 2))/(x + 2)**2",
+          "substitution": "1/(x + 2)",
+          "derivative": "-1/(x + 2)**2",
+          "factor": "-3",
+          "transformed": "cot(u)*csc(u)",
+          "primitive": "3*csc(1/(x + 2))",
+          "lower": null,
+          "upper": null,
+          "result": "3*csc(1/(x + 2))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "3 \\csc{\\left(\\frac{1}{x + 2} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(3 \\csc{\\left(\\frac{1}{x + 2} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(3 \\csc{\\left(\\frac{1}{x + 2} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(3 \\csc{\\left(\\frac{1}{x + 2} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 20",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "e19875d8-3438-5edf-9e74-07e21ace86b3",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{2 \\sin{\\left(\\frac{1}{x + 2} \\right)}}{\\left(x + 2\\right)^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x + 2}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{\\left(x + 2\\right)^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{2 \\sin{\\left(\\frac{1}{x + 2} \\right)}}{\\left(x + 2\\right)^{2}}\\,\\mathrm{d}x\\\\&=-2\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-2\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=2 \\cos{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n2 \\cos{\\left(\\frac{1}{x + 2} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c909eb6e-d85d-5f5d-abf7-70781ca5732c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2730e8aa-499d-5cb6-b163-5f63d3219b35",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\cos{\\left(\\frac{1}{x + 2} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2730e8aa-499d-5cb6-b163-5f63d3219b35"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_sin",
+        "family": "reciprocal_sin",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "2",
+          "amplitude": "2"
+        },
+        "mathematical_fingerprint": "a96b6e12bc2e5ef7003d9f3cf415518e5b1e8af4802de7a23c61d09f712ff7b7",
+        "model": {
+          "integrand": "2*sin(1/(x + 2))/(x + 2)**2",
+          "substitution": "1/(x + 2)",
+          "derivative": "-1/(x + 2)**2",
+          "factor": "-2",
+          "transformed": "sin(u)",
+          "primitive": "2*cos(1/(x + 2))",
+          "lower": null,
+          "upper": null,
+          "result": "2*cos(1/(x + 2))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "2 \\cos{\\left(\\frac{1}{x + 2} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(2 \\cos{\\left(\\frac{1}{x + 2} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(2 \\cos{\\left(\\frac{1}{x + 2} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(2 \\cos{\\left(\\frac{1}{x + 2} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 21",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "2f8236fc-77ad-5c64-a431-aa60a8046451",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\sec^{2}{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x + 1}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{\\left(x + 1\\right)^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\sec^{2}{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\\\\&=-3\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u=\\tan{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-3\\left(\\int \\sec^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- 3 \\tan{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6b60acb8-5432-523c-8dad-41923bfdbd12",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a299121f-f4cf-5c1c-b79d-ecf655605c39",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a299121f-f4cf-5c1c-b79d-ecf655605c39"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_sec2",
+        "family": "reciprocal_sec2",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "1",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "459a80ab9d3054ab81606a030106f08f450f105968e95fbaafcd3c32a14853ff",
+        "model": {
+          "integrand": "3*sec(1/(x + 1))**2/(x + 1)**2",
+          "substitution": "1/(x + 1)",
+          "derivative": "-1/(x + 1)**2",
+          "factor": "-3",
+          "transformed": "sec(u)**2",
+          "primitive": "-3*tan(1/(x + 1))",
+          "lower": null,
+          "upper": null,
+          "result": "-3*tan(1/(x + 1))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- 3 \\tan{\\left(\\frac{1}{x + 1} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 22",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "4431d68e-8101-5cb4-87da-6ca47c7b03dc",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\sin{\\left(\\sqrt{x + 1} \\right)}}{\\sqrt{x + 1}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\sqrt{x + 1}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=\\frac{1}{2 \\sqrt{x + 1}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\sin{\\left(\\sqrt{x + 1} \\right)}}{\\sqrt{x + 1}}\\,\\mathrm{d}x\\\\&=6\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u=- \\cos{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n6\\left(\\int \\sin{\\left(u \\right)}\\,\\mathrm{d}u\\right)=- 6 \\cos{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n- 6 \\cos{\\left(\\sqrt{x + 1} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "566a9c50-0c75-5972-9f2c-4b8dac58354b",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2218cbe4-bd68-5685-ad28-4aca4e2ba34c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 6 \\cos{\\left(\\sqrt{x + 1} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2218cbe4-bd68-5685-ad28-4aca4e2ba34c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "sqrt_sin",
+        "family": "sqrt_sin",
+        "challenge": "recognize_sqrt",
+        "parameters": {
+          "inner_role": "sqrt",
+          "shift": "1",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "fd0aea6fb842ebe410d3d3de93070844636ab00b1a3e0b7fef12ba77d2aa0172",
+        "model": {
+          "integrand": "3*sin(sqrt(x + 1))/sqrt(x + 1)",
+          "substitution": "sqrt(x + 1)",
+          "derivative": "1/(2*sqrt(x + 1))",
+          "factor": "6",
+          "transformed": "sin(u)",
+          "primitive": "-6*cos(sqrt(x + 1))",
+          "lower": null,
+          "upper": null,
+          "result": "-6*cos(sqrt(x + 1))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 6 \\cos{\\left(\\sqrt{x + 1} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- 6 \\cos{\\left(\\sqrt{x + 1} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- 6 \\cos{\\left(\\sqrt{x + 1} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- 6 \\cos{\\left(\\sqrt{x + 1} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186068917 23",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068917,
+        "id": "d359337c-4ec2-5100-bdac-d0858619db3b",
+        "title": "Integrating Products Containing Trigonometric Functions Using Substitution"
+      },
+      "question": {
+        ":question/id": "dfa86080-eedd-5b9e-8afb-c8a9ebb355f4",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int \\frac{3 \\csc^{2}{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=\\frac{1}{x + 1}$. Then\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}x}=- \\frac{1}{\\left(x + 1\\right)^{2}}.\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int \\frac{3 \\csc^{2}{\\left(\\frac{1}{x + 1} \\right)}}{\\left(x + 1\\right)^{2}}\\,\\mathrm{d}x\\\\&=-3\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u=- \\cot{\\left(u \\right)}+C.\n$$\n\nIntegrate with respect to $u$:\n\n$$\n-3\\left(\\int \\csc^{2}{\\left(u \\right)}\\,\\mathrm{d}u\\right)=3 \\cot{\\left(u \\right)}+C.\n$$\n\nSubstitute back:\n\n$$\n3 \\cot{\\left(\\frac{1}{x + 1} \\right)}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "34957e6c-2d37-5113-825b-15316edadb96",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5dd68423-d4c5-51c3-b56c-78a3b6ece56f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3 \\cot{\\left(\\frac{1}{x + 1} \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5dd68423-d4c5-51c3-b56c-78a3b6ece56f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "6.0.0-substitution-recognition",
+        "seed": 20261024,
+        "template": "reciprocal_csc2",
+        "family": "reciprocal_csc2",
+        "challenge": "recognize_reciprocal",
+        "parameters": {
+          "inner_role": "reciprocal",
+          "shift": "1",
+          "amplitude": "3"
+        },
+        "mathematical_fingerprint": "20546be1a273dc2e3f05cf54d46f573e7da24aa964383737e8091a4016cf1dd0",
+        "model": {
+          "integrand": "3*csc(1/(x + 1))**2/(x + 1)**2",
+          "substitution": "1/(x + 1)",
+          "derivative": "-1/(x + 1)**2",
+          "factor": "-3",
+          "transformed": "csc(u)**2",
+          "primitive": "3*cot(1/(x + 1))",
+          "lower": null,
+          "upper": null,
+          "result": "3*cot(1/(x + 1))"
+        },
+        "batch_contract": "trig-substitution-recognition-v6",
+        "source_questions": [
+          "q-13461",
+          "q-13474",
+          "q-13464",
+          "q-13471",
+          "q-13467",
+          "q-13470",
+          "q-2377",
+          "q-3038"
+        ],
+        "source_basis": 6501,
+        "band_origin": "Reciprocal-inner hard source q-3038 and square-root moderate source q-2377; authored band uses recognition of the less obvious inner function with small coefficients. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_profile": "exact fragment with external C for antiderivatives",
+        "bank_recipes": [
+          "correct"
+        ],
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "domain": "Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "3 \\cot{\\left(\\frac{1}{x + 1} \\right)}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(3 \\cot{\\left(\\frac{1}{x + 1} \\right)}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(3 \\cot{\\left(\\frac{1}{x + 1} \\right)})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(3 \\cot{\\left(\\frac{1}{x + 1} \\right)})+1",
+        "expected": "accepted"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2722 @@
+[
+  {
+    "label": "17592186184350 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "9c3d97b0-c388-5846-b671-21162ba60fb3",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3} + 1$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n\\frac{1}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=\\frac{1}{3}\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2^{x^{3} + 1}}{3 \\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ffe4f4f3-37ec-5331-b8dd-d208cf268e9d",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ded207fb-cb56-58eb-9a0f-d658894755b8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{3} + 1}}{9 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "291c5943-96df-5d10-9847-480ba9dcddbb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{3} + 1+C"
+              },
+              {
+                ":answer/id": "bdb0dd4b-eeea-5f7c-b1ab-c6f7d800e244",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{3} + 1}}{3 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "2042cd43-aab5-5e29-bdf4-614c1ea3eff1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{\\frac{x^{3}}{2} + \\frac{1}{2}}}{3 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "39387465-0e87-5704-a1c8-1b1ad04bbc29",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{3} + 1}}{6 \\ln{\\left(2 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bdb0dd4b-eeea-5f7c-b1ab-c6f7d800e244"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "1",
+          "amplitude": "1",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "86cb24a5bfa30ab851bec1b1e47851407d2e24ee1f2e5855f5278fe85d7ae0fb",
+        "model": {
+          "integrand": "2**(x**3 + 1)*x**2",
+          "substitution": "x**3 + 1",
+          "derivative": "3*x**2",
+          "factor": "1/3",
+          "transformed": "2**u",
+          "primitive": "2**(x**3 + 1)/(3*log(2))",
+          "lower": null,
+          "upper": null,
+          "result": "2**(x**3 + 1)/(3*log(2))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "extra_third",
+          "return_substitution",
+          "correct",
+          "half_inner",
+          "extra_half"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ded207fb-cb56-58eb-9a0f-d658894755b8",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "291c5943-96df-5d10-9847-480ba9dcddbb",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "bdb0dd4b-eeea-5f7c-b1ab-c6f7d800e244",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "2042cd43-aab5-5e29-bdf4-614c1ea3eff1",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "39387465-0e87-5704-a1c8-1b1ad04bbc29",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "020a327c-92c6-5388-8a95-b20d9601b8c5",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cdot 2^{x^{2} + 1} x\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2} + 1$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cdot 2^{x^{2} + 1} x\\,\\mathrm{d}x\\\\&=\\int 2^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2^{x^{2} + 1}}{\\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "be101cab-47de-5287-bd1e-2b03fb43c43e",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "05d84426-7666-5209-bd86-0181d68d3028",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cdot 2^{x^{2} + 1}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "20594db3-2c76-5f32-aed0-1e829e31b03d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{2} + 2}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "632755a5-e798-5f45-9adf-6e7422d0b930",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{2} + 1+C"
+              },
+              {
+                ":answer/id": "b9336dce-7b07-5e1f-895a-8b873990c0a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{2} + 1}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "0991615d-3b9b-526f-b4b7-8c1e29536f8d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{2} + 1}}{3 \\ln{\\left(2 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b9336dce-7b07-5e1f-895a-8b873990c0a9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 2,
+          "slope": "1",
+          "shift": "1",
+          "amplitude": "2",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "ce42ab38e3f1a96f0c62df63995420c7d2a5049f1912991901af532ff53b024c",
+        "model": {
+          "integrand": "2*2**(x**2 + 1)*x",
+          "substitution": "x**2 + 1",
+          "derivative": "2*x",
+          "factor": "1",
+          "transformed": "2**u",
+          "primitive": "2**(x**2 + 1)/log(2)",
+          "lower": null,
+          "upper": null,
+          "result": "2**(x**2 + 1)/log(2)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "negative_double",
+          "shift_inner",
+          "return_substitution",
+          "correct",
+          "extra_third"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "05d84426-7666-5209-bd86-0181d68d3028",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "20594db3-2c76-5f32-aed0-1e829e31b03d",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "632755a5-e798-5f45-9adf-6e7422d0b930",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b9336dce-7b07-5e1f-895a-8b873990c0a9",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "0991615d-3b9b-526f-b4b7-8c1e29536f8d",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "6ffd53e5-76c7-5bad-8a59-8afa6c29060a",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cdot 2^{x^{3} + 2} x^{2}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3} + 2$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cdot 2^{x^{3} + 2} x^{2}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n\\frac{2}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=\\frac{2}{3}\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\cdot 2^{x^{3} + 2}}{3 \\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "642da68d-048c-5998-8287-97f2df3c4876",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3471e510-e255-594f-aa67-8acab134b520",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\cdot 2^{x^{3} + 2}}{3 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "14d94783-3a20-52c4-b0f5-8298e9814dab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cdot 2^{\\frac{x^{3}}{2} + 1}}{3 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "0592c29a-7b69-5574-987f-aecf9ed916b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{3} + 2+C"
+              },
+              {
+                ":answer/id": "595aba01-69fa-5682-86db-9a2153259409",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cdot 2^{x^{3} + 2}}{3 \\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "31ede55b-7195-5ddd-bbdb-71e3df89cb06",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\cdot 2^{x^{3} + 2}}{3 \\ln{\\left(2 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "595aba01-69fa-5682-86db-9a2153259409"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "2",
+          "amplitude": "2",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "7f696e92064979e69c9eaf5659cbd529f8b900f537e346c3d0d046065dc1503d",
+        "model": {
+          "integrand": "2*2**(x**3 + 2)*x**2",
+          "substitution": "x**3 + 2",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "2**u",
+          "primitive": "2**(x**3 + 3)/(3*log(2))",
+          "lower": null,
+          "upper": null,
+          "result": "2**(x**3 + 3)/(3*log(2))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "wrong_sign",
+          "half_inner",
+          "return_substitution",
+          "correct",
+          "double_factor"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "3471e510-e255-594f-aa67-8acab134b520",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "14d94783-3a20-52c4-b0f5-8298e9814dab",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "0592c29a-7b69-5574-987f-aecf9ed916b3",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "595aba01-69fa-5682-86db-9a2153259409",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "31ede55b-7195-5ddd-bbdb-71e3df89cb06",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "4dfc0e63-2999-5774-98bc-05236b3ac68c",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cdot 2^{x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2} + 2$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cdot 2^{x^{2} + 2} x\\,\\mathrm{d}x\\\\&=2\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n2\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=2\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2 \\cdot 2^{x^{2} + 2}}{\\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "63624b73-96f5-588d-989a-4724c1ba2cd1",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "41edcda1-989a-5c89-a17d-134cabaae0bd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4 \\cdot 2^{x^{2} + 2}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "4c5cb4ff-8f48-52a0-a014-f706e50aad72",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cdot 2^{x^{2} + 2}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "94b97ef6-7f6b-59f8-a1fc-bf969cc20644",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cdot 2^{x^{2} + 3}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "303fb4c3-634d-52fb-b4ed-07d2e186e940",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\cdot 2^{2 x^{2} + 4}}{\\ln{\\left(2 \\right)}}+C"
+              },
+              {
+                ":answer/id": "8a85250b-83bf-5226-890b-62aa8ff993ee",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{2} + 2+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4c5cb4ff-8f48-52a0-a014-f706e50aad72"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 2,
+          "slope": "1",
+          "shift": "2",
+          "amplitude": "4",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "b42538a5ff5651b661a4e70a5cec9de8b3e935905bbe32d44fa67db43fb31a63",
+        "model": {
+          "integrand": "4*2**(x**2 + 2)*x",
+          "substitution": "x**2 + 2",
+          "derivative": "2*x",
+          "factor": "2",
+          "transformed": "2**u",
+          "primitive": "2**(x**2 + 3)/log(2)",
+          "lower": null,
+          "upper": null,
+          "result": "2**(x**2 + 3)/log(2)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "negative_double",
+          "correct",
+          "shift_inner",
+          "double_inner",
+          "return_substitution"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "41edcda1-989a-5c89-a17d-134cabaae0bd",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4c5cb4ff-8f48-52a0-a014-f706e50aad72",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "94b97ef6-7f6b-59f8-a1fc-bf969cc20644",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "303fb4c3-634d-52fb-b4ed-07d2e186e940",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "8a85250b-83bf-5226-890b-62aa8ff993ee",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "5b6a6f1f-4468-57c5-a6a5-2bccc4588ce3",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 3^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3} + 1$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 3^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\\\\&=\\int 3^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "648fb65d-abe9-5a5f-8eb1-6a09fa6b62ea",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5432832c-4000-52fb-bd00-2a831c92f478",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3^{2 x^{3} + 2}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "1937a7ab-1362-520d-99da-166a6cc0b3c2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3^{x}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "53a02a4a-38eb-55c7-a68f-b5cf4ae596a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "3e5155c9-ed7a-5480-a86c-54a4fda2d8ae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "1839e32d-239d-5063-9ce1-02682c4c122f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3^{x^{3} + 1}}{2 \\ln{\\left(3 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "53a02a4a-38eb-55c7-a68f-b5cf4ae596a9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "1",
+          "amplitude": "3",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "d53bdc37a03c9e26e900fa44f9222c7b5454dd5cd6b1243717457baa33a9dda3",
+        "model": {
+          "integrand": "3*3**(x**3 + 1)*x**2",
+          "substitution": "x**3 + 1",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "3**u",
+          "primitive": "3**(x**3 + 1)/log(3)",
+          "lower": null,
+          "upper": null,
+          "result": "3**(x**3 + 1)/log(3)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "double_inner",
+          "omit_inner",
+          "correct",
+          "shift_inner",
+          "extra_half"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "5432832c-4000-52fb-bd00-2a831c92f478",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1937a7ab-1362-520d-99da-166a6cc0b3c2",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "53a02a4a-38eb-55c7-a68f-b5cf4ae596a9",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "3e5155c9-ed7a-5480-a86c-54a4fda2d8ae",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1839e32d-239d-5063-9ce1-02682c4c122f",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "35b4f45d-5d8d-5022-a323-571d675b96e8",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 3^{x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2} + 2$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 3^{x^{2} + 2} x\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=\\frac{3}{2}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\cdot 3^{x^{2} + 2}}{2 \\ln{\\left(3 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c0a45d5d-7311-52d0-a504-9c52cd7a8ccb",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "515cf912-4b56-59d9-b7b3-94c2224fe7b0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3 \\cdot 3^{x^{2} + 2}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "d6d9b23d-b143-5ea6-9cf6-add19c52554b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x^{2} + 2}}{4 \\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "3c453b09-77db-5288-81ed-d0142351a39b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x^{2} + 2}}{\\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "aeb04342-f57f-5558-9049-13d67f66ca0e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x^{2} + 2}}{2 \\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "91b537e6-773b-51e3-a66d-e7102d79018a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x}}{2 \\ln{\\left(3 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "aeb04342-f57f-5558-9049-13d67f66ca0e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 2,
+          "slope": "1",
+          "shift": "2",
+          "amplitude": "3",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "4a4d85c9d91d188c6e4b77ff77e97eee62a7e7dbf33a54e62f0978b7b2159e9a",
+        "model": {
+          "integrand": "3*3**(x**2 + 2)*x",
+          "substitution": "x**2 + 2",
+          "derivative": "2*x",
+          "factor": "3/2",
+          "transformed": "3**u",
+          "primitive": "3**(x**2 + 3)/(2*log(3))",
+          "lower": null,
+          "upper": null,
+          "result": "3**(x**2 + 3)/(2*log(3))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "negative_double",
+          "extra_half",
+          "double_factor",
+          "correct",
+          "omit_inner"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "515cf912-4b56-59d9-b7b3-94c2224fe7b0",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "d6d9b23d-b143-5ea6-9cf6-add19c52554b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3c453b09-77db-5288-81ed-d0142351a39b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "aeb04342-f57f-5558-9049-13d67f66ca0e",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "91b537e6-773b-51e3-a66d-e7102d79018a",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "6c2c6b95-8ccb-5e75-9061-4847f2cb4264",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 5^{x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{3}$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 5^{x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=\\int 5^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c7f54a67-957e-5e8d-abbf-48f12b3f6533",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ab2954fc-e36e-5c77-a45f-c1838b4914fd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}+C"
+              },
+              {
+                ":answer/id": "8ffb7ee0-d72d-5393-b215-b516541d8bb9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5^{x}}{\\ln{\\left(5 \\right)}}+C"
+              },
+              {
+                ":answer/id": "46989eee-c378-5ce0-9a62-e7e22c163257",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5^{x^{3}}}{3 \\ln{\\left(5 \\right)}}+C"
+              },
+              {
+                ":answer/id": "8ce9306d-3521-5845-9030-64ddcf6a569a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5^{x^{3} + 1}}{\\ln{\\left(5 \\right)}}+C"
+              },
+              {
+                ":answer/id": "b558404e-9117-5a58-8455-f62142c5259b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 5^{x^{3}}}{\\ln{\\left(5 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ab2954fc-e36e-5c77-a45f-c1838b4914fd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "0",
+          "amplitude": "3",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "87b6f865ec94fe51f8d8966c2f16dccb82a521bae54f8fc29a3f76243b326e68",
+        "model": {
+          "integrand": "3*5**(x**3)*x**2",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "5**u",
+          "primitive": "5**(x**3)/log(5)",
+          "lower": null,
+          "upper": null,
+          "result": "5**(x**3)/log(5)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct",
+          "omit_inner",
+          "extra_third",
+          "shift_inner",
+          "triple_factor"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ab2954fc-e36e-5c77-a45f-c1838b4914fd",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "8ffb7ee0-d72d-5393-b215-b516541d8bb9",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "46989eee-c378-5ce0-9a62-e7e22c163257",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "8ce9306d-3521-5845-9030-64ddcf6a569a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "b558404e-9117-5a58-8455-f62142c5259b",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "f755098d-0436-563b-a5bd-55634d7a5b27",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 3^{x^{2}} x\\,\\mathrm{d}x\n$$\n\nChoose the antiderivative. In each choice, $C$ is an arbitrary constant.",
+        ":question/worked-solution": "Let $u=x^{2}$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 3^{x^{2}} x\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=\\frac{3}{2}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{3 \\cdot 3^{x^{2}}}{2 \\ln{\\left(3 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "03f80d55-71ea-5f0f-a492-b6cf5313b7a5",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8ae61529-6805-52b3-872c-2cce02eae907",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{9 \\cdot 3^{x^{2}}}{2 \\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "ecf6f19b-b286-53dd-beeb-b62f689ebc47",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x^{2}}}{2 \\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "da17c905-18be-587f-bafd-d0593b67804c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "x^{2}+C"
+              },
+              {
+                ":answer/id": "96b393ba-962a-542a-8a26-a11436b41bae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{x}}{2 \\ln{\\left(3 \\right)}}+C"
+              },
+              {
+                ":answer/id": "f8c4fa70-69ff-5666-b0ee-a64ecc64d96d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3 \\cdot 3^{\\frac{x^{2}}{2}}}{2 \\ln{\\left(3 \\right)}}+C"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ecf6f19b-b286-53dd-beeb-b62f689ebc47"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "recognize_substitution_with_answer_choices",
+        "parameters": {
+          "power": 2,
+          "slope": "1",
+          "shift": "0",
+          "amplitude": "3",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "802692e3ccba45165c1bab8f5363c7c0039b5a27007b62b87fc49d3a88604ce5",
+        "model": {
+          "integrand": "3*3**(x**2)*x",
+          "substitution": "x**2",
+          "derivative": "2*x",
+          "factor": "3/2",
+          "transformed": "3**u",
+          "primitive": "3**(x**2 + 1)/(2*log(3))",
+          "lower": null,
+          "upper": null,
+          "result": "3**(x**2 + 1)/(2*log(3))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "triple_factor",
+          "correct",
+          "return_substitution",
+          "omit_inner",
+          "half_inner"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "8ae61529-6805-52b3-872c-2cce02eae907",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "ecf6f19b-b286-53dd-beeb-b62f689ebc47",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "da17c905-18be-587f-bafd-d0593b67804c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "96b393ba-962a-542a-8a26-a11436b41bae",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "f8c4fa70-69ff-5666-b0ee-a64ecc64d96d",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "1898d626-72c7-56d3-8a6b-3c2da1bca302",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cdot 5^{x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{2} + 2$. Then $\\mathrm{d}u=(2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cdot 5^{x^{2} + 2} x\\,\\mathrm{d}x\\\\&=\\int 5^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "fb3bbebe-f98e-5bb4-8c5b-2deaa93fe59e",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9546d0a3-3833-53ce-901a-acef02be3cae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9546d0a3-3833-53ce-901a-acef02be3cae"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 2,
+          "slope": "1",
+          "shift": "2",
+          "amplitude": "2",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "2c673ec81e7ad8b3b00f6600fbdbbf6672e099fe590847273560702b5b6c887c",
+        "model": {
+          "integrand": "2*5**(x**2 + 2)*x",
+          "substitution": "x**2 + 2",
+          "derivative": "2*x",
+          "factor": "1",
+          "transformed": "5**u",
+          "primitive": "5**(x**2 + 2)/log(5)",
+          "lower": null,
+          "upper": null,
+          "result": "5**(x**2 + 2)/log(5)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{5^{x^{2} + 2}}{\\ln{\\left(5 \\right)}})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "f8595572-e87a-5ca7-862d-a74e226b68c3",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 5^{x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3}$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 5^{x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=\\frac{1}{3}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n\\frac{1}{3}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=\\frac{1}{3}\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f39dc10c-b3bb-5528-ae6c-bef5b79d64cb",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "67707ceb-6697-578d-b856-335b78ba8fd5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "67707ceb-6697-578d-b856-335b78ba8fd5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "0",
+          "amplitude": "1",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "303b0022e2619fbb5520fbe3d27b4fe0c42dce2ae0284535989badf1fbbe1720",
+        "model": {
+          "integrand": "5**(x**3)*x**2",
+          "substitution": "x**3",
+          "derivative": "3*x**2",
+          "factor": "1/3",
+          "transformed": "5**u",
+          "primitive": "5**(x**3)/(3*log(5))",
+          "lower": null,
+          "upper": null,
+          "result": "5**(x**3)/(3*log(5))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{1}{3}\\left(\\frac{5^{x^{3}}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "a79c698d-aa8a-5c1a-a47d-a7699e987c74",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3^{2 x^{2} + 1} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 x^{2} + 1$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3^{2 x^{2} + 1} x\\,\\mathrm{d}x\\\\&=\\frac{1}{4}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\frac{1}{4}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=\\frac{1}{4}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "fb31adc0-7252-50e6-b90f-b68475349a5d",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "dafbcda9-25ea-50f1-b091-b2b4ac54ccfb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dafbcda9-25ea-50f1-b091-b2b4ac54ccfb"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 2,
+          "slope": "2",
+          "shift": "1",
+          "amplitude": "1",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "e73a75549c05553e8483300f4e88ecb01f73c6645fed368d332bfac57ef217e2",
+        "model": {
+          "integrand": "3**(2*x**2 + 1)*x",
+          "substitution": "2*x**2 + 1",
+          "derivative": "4*x",
+          "factor": "1/4",
+          "transformed": "3**u",
+          "primitive": "3**(2*x**2 + 1)/(4*log(3))",
+          "lower": null,
+          "upper": null,
+          "result": "3**(2*x**2 + 1)/(4*log(3))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{1}{4}\\left(\\frac{3^{2 x^{2} + 1}}{\\ln{\\left(3 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "6941e475-e2c8-55fc-9046-07b89f3e32ac",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cdot 3^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 1$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cdot 3^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\\\\&=\\frac{2}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\frac{2}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=\\frac{2}{3}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "283d50df-027e-5483-8b65-baa866db8d7f",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "40c43222-85bb-5afc-81ad-93437117477f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "40c43222-85bb-5afc-81ad-93437117477f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "1",
+          "amplitude": "2",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "2871519c613d12d4b51eb71a164dfbf0d08cbedc13857f73b20a7b8b64a645bc",
+        "model": {
+          "integrand": "2*3**(x**3 + 1)*x**2",
+          "substitution": "x**3 + 1",
+          "derivative": "3*x**2",
+          "factor": "2/3",
+          "transformed": "3**u",
+          "primitive": "2*3**(x**3)/log(3)",
+          "lower": null,
+          "upper": null,
+          "result": "2*3**(x**3)/log(3)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{2}{3}\\left(\\frac{3^{x^{3} + 1}}{\\ln{\\left(3 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "7746da8f-7089-591a-a1f0-589f0aecf3cc",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cdot 2^{2 x^{2} + 3} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 x^{2} + 3$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cdot 2^{2 x^{2} + 3} x\\,\\mathrm{d}x\\\\&=\\int 2^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b69a5ad7-675c-58ca-bca9-f31634520e2d",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c3f411c2-3b85-54af-b0a9-b821bea620ef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c3f411c2-3b85-54af-b0a9-b821bea620ef"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 2,
+          "slope": "2",
+          "shift": "3",
+          "amplitude": "4",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "ae917f95fcbdc88ca6996954a0405da906f333f317c15b3c01414aef8f3b5839",
+        "model": {
+          "integrand": "4*2**(2*x**2 + 3)*x",
+          "substitution": "2*x**2 + 3",
+          "derivative": "4*x",
+          "factor": "1",
+          "transformed": "2**u",
+          "primitive": "2**(2*x**2 + 3)/log(2)",
+          "lower": null,
+          "upper": null,
+          "result": "2**(2*x**2 + 3)/log(2)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{2^{2 x^{2} + 3}}{\\ln{\\left(2 \\right)}})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "cf4fbb11-d763-5213-b3b5-c8985f0bda00",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 2^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 1$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 2^{x^{3} + 1} x^{2}\\,\\mathrm{d}x\\\\&=\\int 2^{u}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}}+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c754e812-189f-52cd-a235-3133bf69de0c",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e6fe4f18-c8e1-5652-b50a-f985a88fae61",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e6fe4f18-c8e1-5652-b50a-f985a88fae61"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "1",
+          "amplitude": "3",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "06c41df9cadafef4337bc7c37d7203a3eb6b744dbc9a6464aec25a3f1175be16",
+        "model": {
+          "integrand": "3*2**(x**3 + 1)*x**2",
+          "substitution": "x**3 + 1",
+          "derivative": "3*x**2",
+          "factor": "1",
+          "transformed": "2**u",
+          "primitive": "2**(x**3 + 1)/log(2)",
+          "lower": null,
+          "upper": null,
+          "result": "2**(x**3 + 1)/log(2)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}}\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}})",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{2^{x^{3} + 1}}{\\ln{\\left(2 \\right)}})+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "073aa4c3-53d5-5a59-bd4c-84ab25680b3b",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 5^{2 x^{2} + 2} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 x^{2} + 2$. Then $\\mathrm{d}u=(4 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 5^{2 x^{2} + 2} x\\,\\mathrm{d}x\\\\&=\\frac{1}{4}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n\\frac{1}{4}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=\\frac{1}{4}\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f01766df-5970-536f-802b-26f64e69b664",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ea8ad20d-467b-51fd-b10d-24508c665706",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ea8ad20d-467b-51fd-b10d-24508c665706"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 2,
+          "slope": "2",
+          "shift": "2",
+          "amplitude": "1",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "13d94e8116bf469631501165a2728cf9d2e7fa5cc9f2ad64bdd0e724b6a4fcf8",
+        "model": {
+          "integrand": "5**(2*x**2 + 2)*x",
+          "substitution": "2*x**2 + 2",
+          "derivative": "4*x",
+          "factor": "1/4",
+          "transformed": "5**u",
+          "primitive": "5**(2*x**2 + 2)/(4*log(5))",
+          "lower": null,
+          "upper": null,
+          "result": "5**(2*x**2 + 2)/(4*log(5))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{1}{4}\\left(\\frac{5^{2 x^{2} + 2}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "5c862b91-ffa3-5f06-b881-ebf3f3e052f8",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cdot 3^{x^{3} + 2} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=x^{3} + 2$. Then $\\mathrm{d}u=(3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cdot 3^{x^{3} + 2} x^{2}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n\\frac{4}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=\\frac{4}{3}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9d7797d5-db3b-57b9-b4e7-eb270b2f983d",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "eacdeab8-8835-50c6-922a-b26dc67098ab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "eacdeab8-8835-50c6-922a-b26dc67098ab"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "positive_power_inner",
+        "parameters": {
+          "power": 3,
+          "slope": "1",
+          "shift": "2",
+          "amplitude": "4",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "7ed235ad811a679c47f88264016bcb7c68e24d342b4efd7876db1d8b232c92b2",
+        "model": {
+          "integrand": "4*3**(x**3 + 2)*x**2",
+          "substitution": "x**3 + 2",
+          "derivative": "3*x**2",
+          "factor": "4/3",
+          "transformed": "3**u",
+          "primitive": "12*3**(x**3)/log(3)",
+          "lower": null,
+          "upper": null,
+          "result": "12*3**(x**3)/log(3)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(\\frac{4}{3}\\left(\\frac{3^{x^{3} + 2}}{\\ln{\\left(3 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "90977ace-1fa5-5078-93a2-c5eab441a8e9",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2^{2 - x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 - x^{3}$. Then $\\mathrm{d}u=(- 3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2^{2 - x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=- \\frac{1}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n- \\frac{1}{3}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{3}\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b399cb7e-07d5-5c73-b091-7d6161716cd5",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bc333dcb-61d0-5262-8125-acdd7f40adaa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bc333dcb-61d0-5262-8125-acdd7f40adaa"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 3,
+          "slope": "-1",
+          "shift": "2",
+          "amplitude": "1",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "15f7fd60919cecefa45a2d0220713e31e943131ef5f94bd08bf0507aa1db907f",
+        "model": {
+          "integrand": "2**(2 - x**3)*x**2",
+          "substitution": "2 - x**3",
+          "derivative": "-3*x**2",
+          "factor": "-1/3",
+          "transformed": "2**u",
+          "primitive": "-2**(2 - x**3)/(3*log(2))",
+          "lower": null,
+          "upper": null,
+          "result": "-2**(2 - x**3)/(3*log(2))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{1}{3}\\left(\\frac{2^{2 - x^{3}}}{\\ln{\\left(2 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "7df17760-71c4-5fce-bb06-bbd9c14ecc92",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2 \\cdot 5^{- x^{2}} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=- x^{2}$. Then $\\mathrm{d}u=(- 2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2 \\cdot 5^{- x^{2}} x\\,\\mathrm{d}x\\\\&=-1\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n-1\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=-1\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c62b90b2-b172-57ec-a784-8725557694b0",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "deee0061-e7e4-586e-b3c9-3f6e1dbd9489",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "deee0061-e7e4-586e-b3c9-3f6e1dbd9489"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 2,
+          "slope": "-1",
+          "shift": "0",
+          "amplitude": "2",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "09667321f58b38757085edc5903b11e3989c92de99876e56f007afa61393a3e8",
+        "model": {
+          "integrand": "2*x/5**(x**2)",
+          "substitution": "-x**2",
+          "derivative": "-2*x",
+          "factor": "-1",
+          "transformed": "5**u",
+          "primitive": "-1/(5**(x**2)*log(5))",
+          "lower": null,
+          "upper": null,
+          "result": "-1/(5**(x**2)*log(5))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(-1\\left(\\frac{5^{- x^{2}}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 18",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "5f6bec19-2b35-5f73-a91f-fdd6e8a1cf7c",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cdot 5^{2 - x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 - x^{3}$. Then $\\mathrm{d}u=(- 3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cdot 5^{2 - x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=- \\frac{4}{3}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n- \\frac{4}{3}\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=- \\frac{4}{3}\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0612426d-9944-5b56-9d4b-d98ca50672f7",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3b3321aa-5851-5599-8c6f-a80afe4483ae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3b3321aa-5851-5599-8c6f-a80afe4483ae"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 3,
+          "slope": "-1",
+          "shift": "2",
+          "amplitude": "4",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "de65aa6c2bb032d83ab0ffe3ab4d33061dacd5dca7bf0ed6653d2cba849a7f98",
+        "model": {
+          "integrand": "4*5**(2 - x**3)*x**2",
+          "substitution": "2 - x**3",
+          "derivative": "-3*x**2",
+          "factor": "-4/3",
+          "transformed": "5**u",
+          "primitive": "-100/(3*5**(x**3)*log(5))",
+          "lower": null,
+          "upper": null,
+          "result": "-100/(3*5**(x**3)*log(5))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{4}{3}\\left(\\frac{5^{2 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 19",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "7593621f-52dc-55c7-bc26-c7f5be2cbb08",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 2^{2 - 2 x^{2}} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=2 - 2 x^{2}$. Then $\\mathrm{d}u=(- 4 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 2^{2 - 2 x^{2}} x\\,\\mathrm{d}x\\\\&=- \\frac{1}{4}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 2^{u}\\,\\mathrm{d}u=\\frac{2^{u}}{\\ln{\\left(2 \\right)}}+C.\n$$\n\n$$\n- \\frac{1}{4}\\left(\\int 2^{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{4}\\left(\\frac{2^{u}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "590cfd08-a1d1-5e22-a922-50409c4cec92",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7bd03977-368b-5862-b214-324ed33c3361",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7bd03977-368b-5862-b214-324ed33c3361"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 2,
+          "slope": "-2",
+          "shift": "2",
+          "amplitude": "1",
+          "base": "2"
+        },
+        "mathematical_fingerprint": "7a8c52493df339414866020fae1cff2d66e54c7968bc2d79b8d33955674b3921",
+        "model": {
+          "integrand": "2**(2 - 2*x**2)*x",
+          "substitution": "2 - 2*x**2",
+          "derivative": "-4*x",
+          "factor": "-1/4",
+          "transformed": "2**u",
+          "primitive": "-1/(4**(x**2)*log(2))",
+          "lower": null,
+          "upper": null,
+          "result": "-1/(4**(x**2)*log(2))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{1}{4}\\left(\\frac{2^{2 - 2 x^{2}}}{\\ln{\\left(2 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 20",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "b35b2516-6c9f-5cf1-9e55-703bd917afce",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3^{3 - x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=3 - x^{3}$. Then $\\mathrm{d}u=(- 3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3^{3 - x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=- \\frac{1}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n- \\frac{1}{3}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=- \\frac{1}{3}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e75041ba-add3-500f-91c4-ac5488974d62",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "950ecc3a-1f1a-55b8-9868-e91e50d421af",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "950ecc3a-1f1a-55b8-9868-e91e50d421af"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 3,
+          "slope": "-1",
+          "shift": "3",
+          "amplitude": "1",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "1b193d49a4a6fa13f3d9423169184a7d5e0a19b8772e0dab236439241caf969e",
+        "model": {
+          "integrand": "3**(3 - x**3)*x**2",
+          "substitution": "3 - x**3",
+          "derivative": "-3*x**2",
+          "factor": "-1/3",
+          "transformed": "3**u",
+          "primitive": "-3**(2 - x**3)/log(3)",
+          "lower": null,
+          "upper": null,
+          "result": "-3**(2 - x**3)/log(3)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{1}{3}\\left(\\frac{3^{3 - x^{3}}}{\\ln{\\left(3 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 21",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "6ef0dc98-90a4-5c10-801f-af317313f9c0",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 4 \\cdot 5^{3 - x^{2}} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=3 - x^{2}$. Then $\\mathrm{d}u=(- 2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 4 \\cdot 5^{3 - x^{2}} x\\,\\mathrm{d}x\\\\&=-2\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n-2\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=-2\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4e11d1e7-c177-515e-9990-5456c8d5476b",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bd17ed4b-2848-502a-bc9d-6668e01a3e4e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bd17ed4b-2848-502a-bc9d-6668e01a3e4e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 2,
+          "slope": "-1",
+          "shift": "3",
+          "amplitude": "4",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "cc14063579dfe0cdda71fab977473df7a5f84ce0d49a8818370ff8ff34c1a6a4",
+        "model": {
+          "integrand": "4*5**(3 - x**2)*x",
+          "substitution": "3 - x**2",
+          "derivative": "-2*x",
+          "factor": "-2",
+          "transformed": "5**u",
+          "primitive": "-250/(5**(x**2)*log(5))",
+          "lower": null,
+          "upper": null,
+          "result": "-250/(5**(x**2)*log(5))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(-2\\left(\\frac{5^{3 - x^{2}}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 22",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "225f0b86-4c15-5153-ad4b-874bc11b2463",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 5^{3 - x^{3}} x^{2}\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=3 - x^{3}$. Then $\\mathrm{d}u=(- 3 x^{2})\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 5^{3 - x^{3}} x^{2}\\,\\mathrm{d}x\\\\&=-1\\left(\\int 5^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 5^{u}\\,\\mathrm{d}u=\\frac{5^{u}}{\\ln{\\left(5 \\right)}}+C.\n$$\n\n$$\n-1\\left(\\int 5^{u}\\,\\mathrm{d}u\\right)=-1\\left(\\frac{5^{u}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "408b5250-251d-5619-aa85-54f86ce3f0a1",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "902bd2d9-67e7-55f8-9cad-6d82c9c8e312",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "902bd2d9-67e7-55f8-9cad-6d82c9c8e312"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "cube",
+        "family": "cube",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 3,
+          "slope": "-1",
+          "shift": "3",
+          "amplitude": "3",
+          "base": "5"
+        },
+        "mathematical_fingerprint": "90733401b3cb38cbd4d094a447892c528b5eb9de6a0b0d4337b55680b1469843",
+        "model": {
+          "integrand": "3*5**(3 - x**3)*x**2",
+          "substitution": "3 - x**3",
+          "derivative": "-3*x**2",
+          "factor": "-1",
+          "transformed": "5**u",
+          "primitive": "-5**(3 - x**3)/log(5)",
+          "lower": null,
+          "upper": null,
+          "result": "-5**(3 - x**3)/log(5)"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(-1\\left(\\frac{5^{3 - x^{3}}}{\\ln{\\left(5 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186184350 23",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186184350,
+        "id": "e8720b44-317d-590e-a251-bfcec97e0513",
+        "title": "Integrating Products Containing Other Exponential Functions"
+      },
+      "question": {
+        ":question/id": "f576c1d1-f7cf-52de-8011-35a5fa8d26a7",
+        ":question/problem": "Find an antiderivative.\n\n$$\n\\int 3 \\cdot 3^{1 - x^{2}} x\\,\\mathrm{d}x\n$$\n\n{{answer}} $+C$",
+        ":question/worked-solution": "Let $u=1 - x^{2}$. Then $\\mathrm{d}u=(- 2 x)\\,\\mathrm{d}x$.\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int 3 \\cdot 3^{1 - x^{2}} x\\,\\mathrm{d}x\\\\&=- \\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nUse the integration rule:\n\n$$\n\\int 3^{u}\\,\\mathrm{d}u=\\frac{3^{u}}{\\ln{\\left(3 \\right)}}+C.\n$$\n\n$$\n- \\frac{3}{2}\\left(\\int 3^{u}\\,\\mathrm{d}u\\right)=- \\frac{3}{2}\\left(\\frac{3^{u}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$\n\nSubstitute back:\n\n$$\n- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right)+C.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "27d93757-311f-591c-9e4c-1bb93552df1f",
+            ":answer-field/key": "answer",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "265672ab-e42e-5222-a4a6-177c1d1ae500",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "265672ab-e42e-5222-a4a6-177c1d1ae500"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "substitution-recognition-3",
+        "seed": 20261024,
+        "template": "square",
+        "family": "square",
+        "challenge": "negative_inner_derivative",
+        "parameters": {
+          "power": 2,
+          "slope": "-1",
+          "shift": "1",
+          "amplitude": "3",
+          "base": "3"
+        },
+        "mathematical_fingerprint": "0f2e79d7c6d1cf2487b0c3b004814a437918bf05e6f8b0588f1521c45dca3be9",
+        "model": {
+          "integrand": "3*3**(1 - x**2)*x",
+          "substitution": "1 - x**2",
+          "derivative": "-2*x",
+          "factor": "-3/2",
+          "transformed": "3**u",
+          "primitive": "-3**(2 - x**2)/(2*log(3))",
+          "lower": null,
+          "upper": null,
+          "result": "-3**(2 - x**2)/(2*log(3))"
+        },
+        "batch_contract": "substitution-recognition-3",
+        "source_basis": 6550,
+        "source_questions": [
+          "q-31420",
+          "q-73800",
+          "q-211989",
+          "q-31419",
+          "q-31426",
+          "q-73665",
+          "q-73801",
+          "q-73802",
+          "q-211992",
+          "q-73799",
+          "e-14403"
+        ],
+        "band_origin": "Authored relative band: Recognize a negative inner derivative; no extra fraction or larger powers. Ordinary practice retrieves mastered prerequisites.",
+        "operation": "evaluate",
+        "provided_substitution": false,
+        "provided_primitive": false,
+        "provided_endpoint_values": false,
+        "support_policy": "mastered-prerequisite-recall",
+        "bank_correct_rank": null,
+        "bank_recipes": [
+          "correct"
+        ],
+        "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right)",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "\\frac{2\\left(- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right)\\right)}{2}",
+        "expected": "accepted"
+      },
+      {
+        "submitted": "2(- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right))",
+        "expected": "rejected"
+      },
+      {
+        "submitted": "(- \\frac{3}{2}\\left(\\frac{3^{1 - x^{2}}}{\\ln{\\left(3 \\right)}}\\right))+1",
+        "expected": "accepted"
+      }
+    ]
+  }
+]

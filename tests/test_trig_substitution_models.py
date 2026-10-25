@@ -10,6 +10,7 @@ import uuid
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'generate/scratch/17592186068915'))
 sys.path.insert(0,str(ROOT))
+sys.path.insert(0,str(ROOT/'generate'))
 from scripts.trig_substitution_batch_policy import validate_delivery_batch
 
 
@@ -31,17 +32,18 @@ class TrigSubstitutionTests(unittest.TestCase):
     def rows(self,kp,band,count=8):
         return self.g.batch(kp,band,count,17,evidence=evidence(kp))
 
-    def test_easy_supplies_the_substitution_and_stops_at_transformation(self):
+    def test_easy_retains_recognition_and_complete_calculation(self):
         for kp in self.g.CASES:
             rows=self.rows(kp,'easy')
             validate_delivery_batch(rows,kp)
             for row in rows:
                 q=row['question'];f=q[':question/answer-fields'][0]
-                self.assertIn('Use the substitution $u=',q[':question/problem'])
+                self.assertNotIn('Use the substitution',q[':question/problem'])
+                self.assertIn('Use the integration rule:',q[':question/worked-solution'])
                 self.assertEqual(f[':answer-field/type'],':answer-field.type/radio')
                 self.assertEqual(len(f[':answer-field/choices']),5)
-                self.assertTrue(all(r'\int'in a[':answer/value']for a in f[':answer-field/choices']))
-                self.assertEqual(row['generation']['operation'],'transform')
+                self.assertTrue(all(r'\int'not in a[':answer/value']for a in f[':answer-field/choices']))
+                self.assertEqual(row['generation']['operation'],'evaluate')
 
     def test_full_questions_recall_prerequisites_and_explain_them_in_solutions(self):
         for kp in self.g.CASES:

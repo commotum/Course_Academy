@@ -3,7 +3,7 @@ import copy,json
 from pathlib import Path
 import unittest
 from scripts.substitution_pedagogy_batch_policy import validate_delivery_batch,KPS
-H=Path(__file__).resolve().parents[1]/'reference/edb-math/repairs/2026-10-24-remove-blanket-integration-hints'
+H=Path(__file__).resolve().parents[1]/'reference/edb-math/repairs/2026-10-25-restore-substitution-recognition'
 def rows(kp):return json.loads((H/str(kp)/'accepted-pool.json').read_text())
 class SubstitutionPedagogyPolicyTests(unittest.TestCase):
  def test_reviewed_delivered_pools_pass(self):
@@ -25,10 +25,10 @@ class SubstitutionPedagogyPolicyTests(unittest.TestCase):
   with self.assertRaises(ValueError):validate_delivery_batch([r],kp)
   r=rows(kp)[8];r['question'][':question/worked-solution']+='\n\n$$1$$'
   with self.assertRaisesRegex(ValueError,'key'):validate_delivery_batch([r],kp)
- def test_prior_numerical_rank_shortcut_is_rejected(self):
+ def test_fixed_answer_bank_profile_is_rejected(self):
   kp=17592186064218;old=rows(kp)[:8]
-  for r in old:r['generation']['bank_correct_rank']=0
-  with self.assertRaisesRegex(ValueError,'rank'):validate_delivery_batch(old,kp)
+  for r in old:r['generation']['bank_recipes']=['correct','wrong_sign','double_factor','omit_inner','double_inner']
+  with self.assertRaisesRegex(ValueError,'profiles'):validate_delivery_batch(old,kp)
  def test_task_clones_are_rejected(self):
   kp=17592186184350;r=rows(kp)[0]
   with self.assertRaisesRegex(ValueError,'Duplicate'):validate_delivery_batch([r,copy.deepcopy(r)],kp)

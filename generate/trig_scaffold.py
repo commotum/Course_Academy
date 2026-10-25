@@ -203,16 +203,15 @@ def render(kp,level,case,m,seed,evidence,rng):
     if m.get('rearranged'):
         sol+='Since $'+tex(fun(m['trig_fn'],m['theta']))+'=u-'+tex(m['d'])+'$, rewrite the remaining factor:\n\n$$\n'+r'\frac{u-'+tex(m['d'])+r'}{u}=1-\frac{'+tex(m['d'])+'}{u}.\n$$\n\n'
     sol+='Including the differential factor gives\n\n$$\n'+r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}'+'\n$$\n\n'
-    if True:
-        formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
-        sol+='Use the integration rule:\n\n$$\n'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C.\n$$\n\n'
-        if definite:
-            if m.get('log'):
-                fn=m['trig_fn'];facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
-            else:
-                pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
-                facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
-            sol+='Endpoint values: $'+r',\quad '.join(facts)+'$.\n\n'
+    formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
+    sol+='Use the integration rule:\n\n$$\n'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C.\n$$\n\n'
+    if definite:
+        if m.get('log'):
+            fn=m['trig_fn'];facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
+        else:
+            pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
+            facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
+        sol+='Endpoint values: $'+r',\quad '.join(facts)+'$.\n\n'
     if not definite:
         pu=primitive_tex(m,U);key=primitive_tex(m,inner)
         sol+='Integrate with respect to $u$:\n\n$$\n'+target+'='+pu+'+C.\n$$\n\nSubstitute back:\n\n$$\n'+key+'+C.\n$$'
@@ -236,7 +235,9 @@ def render(kp,level,case,m,seed,evidence,rng):
             return text
         bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
                          lower=lo,upper=hi,max_number=12)
-        bank=[(key+(''if definite else '+C')if label=='correct'else value,label)for value,label in bank]
+        key=next(value for value,label in bank if label=='correct').removesuffix('+C')
+        prefix,_,suffix=sol.rsplit('$$',2)
+        sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
     uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+'evaluate'+':'+role))
     answers=[{':answer/id':uid('answer:'+text),':answer/type':':answer.type/math',':answer/value':normalize_tex(text)}for text,_ in bank]
     correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')

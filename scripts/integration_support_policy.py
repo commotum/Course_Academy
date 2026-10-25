@@ -10,3 +10,8 @@ def validate_prerequisite_recall(record):
     prompt=record['question'][':question/problem']
     if re.search(r'(?im)^(?:You (?:may|can) use|Endpoint values|Recall(?: that)?)\b',prompt):
         raise ValueError('Blanket primitive/endpoint hints must be in the worked solution')
+
+    if re.search(r'(?i)(?:use|let|take|set|given|with) (?:the substitution )?\$?u\s*=',prompt) or 'Which integral is obtained' in prompt:
+        raise ValueError('Ordinary practice must retain recognition of the substitution')
+    if meta.get('provided_substitution') is not False or meta.get('operation')!='evaluate':
+        raise ValueError('Ordinary practice must assess the complete integral')

@@ -1,0 +1,2570 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "728e3a7e-3fda-554d-89b0-33362b3e704a",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{10}} \\frac{3}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{5}=\\frac{3}{5}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{10}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{10}} \\frac{3}{\\sqrt{1 - 25 x^{2}}}\\,\\mathrm{d}x\\\\&=\\frac{3}{5}\\left(\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{3}{5}\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}\\right)=\\frac{3}{5}\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{10}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2ce46dd8-bba1-54d4-8d47-a9fffecee72c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f1641d31-8155-5ae8-a351-3f4962b7b035",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{10} + 1"
+            },
+            {
+              ":answer/id": "42bc262c-e8a2-5f64-98d5-49db65aa2891",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{10}"
+            },
+            {
+              ":answer/id": "d700f3a2-abce-5c5a-a247-0334e533bccc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{10}"
+            },
+            {
+              ":answer/id": "35997c78-dce5-51d0-816e-23d21d79f69d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "d73dcc0b-93f5-56a7-a440-b1f8f8ea9053",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{10} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d700f3a2-abce-5c5a-a247-0334e533bccc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "3",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "8fd7a5bee2f554962ceb3d2af8b0e4b0d108bee1b1e6bf47accfc3486b9f42d1",
+      "model": {
+        "integrand": "3/sqrt(1 - 25*x**2)",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "3/5",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "3*asin(5*x)/5",
+        "lower": "0",
+        "upper": "1/10",
+        "result": "pi/10"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "endpoint_offset_1",
+        "triple_factor",
+        "correct",
+        "omit_upper_endpoint",
+        "endpoint_offset_2"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "e373f46e-b59a-5886-a152-d0ba81fa32fb",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{3}} \\frac{4}{9 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{3}=\\frac{4}{3}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{3}&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{3}} \\frac{4}{9 x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{4}{3}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{4}{3}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7ecbe39d-c13a-5f7e-9a94-b87622a7b98a",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "83e2d56c-434d-55b6-b089-e2f8895eaa22",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{3} + 2"
+            },
+            {
+              ":answer/id": "de58a039-1b88-5d99-bd31-0fcc19275e78",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\pi}{3}"
+            },
+            {
+              ":answer/id": "dc7402d6-1e53-5b57-9c46-14ca6f98eef6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\pi"
+            },
+            {
+              ":answer/id": "598b65c6-4264-564e-ae4b-5416985d5512",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{3}"
+            },
+            {
+              ":answer/id": "cc609707-07fb-57fe-adfd-f1e07b80b59c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "598b65c6-4264-564e-ae4b-5416985d5512"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "4",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "ce821a924f53dfe207635125c844cd1bc8cfdb99b994bf593d7371fb257b2b32",
+      "model": {
+        "integrand": "4/(9*x**2 + 1)",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "4/3",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "4*atan(3*x)/3",
+        "lower": "0",
+        "upper": "1/3",
+        "result": "pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "endpoint_offset_2",
+        "wrong_sign",
+        "triple_factor",
+        "correct",
+        "double_factor"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "8f202a1f-8b38-5b1c-8c84-72a361b638c0",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{4}} \\frac{2}{\\sqrt{1 - 4 x^{2}}}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{2}=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{4}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{4}} \\frac{2}{\\sqrt{1 - 4 x^{2}}}\\,\\mathrm{d}x\\\\&=\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}=\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{6}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "da498ab6-a15a-5110-b910-d6daac7b5941",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "40238ba9-91c1-5946-824b-0e11b25f48bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{2}"
+            },
+            {
+              ":answer/id": "ac5fe9eb-2502-55f1-a583-beac571a3b7a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{12}"
+            },
+            {
+              ":answer/id": "40e626fa-4849-5b44-bf76-1d87206b2586",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{18}"
+            },
+            {
+              ":answer/id": "df361281-529c-5714-b4a3-e2f860c816a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{6}"
+            },
+            {
+              ":answer/id": "76e08bd4-4482-57d9-a2fd-2ae01cf5ce8b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{6} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "df361281-529c-5714-b4a3-e2f860c816a5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "2",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "612bab9e9e5d536e97788efe059e81271ffc3a831334a652ccd65ab6b0bab03f",
+      "model": {
+        "integrand": "2/sqrt(1 - 4*x**2)",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "1",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "asin(2*x)",
+        "lower": "0",
+        "upper": "1/4",
+        "result": "pi/6"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "triple_factor",
+        "extra_half",
+        "extra_third",
+        "correct",
+        "endpoint_offset_2"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "d0d056f6-4b44-525e-87d4-21fc7f9b4575",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{2}} \\frac{3}{4 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=2 x$. Then $\\mathrm{d}u=(2)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{2}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{2}=\\frac{3}{2}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{2}&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{2}} \\frac{3}{4 x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{3}{2}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{3}{2}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{3 \\pi}{8}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7032ee37-d5ce-50bd-8c7a-339aafbd33b3",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6e0f2449-195c-53f3-b0f6-a8397a7efc1d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{8}"
+            },
+            {
+              ":answer/id": "91eb0c89-fdc7-501d-b45a-e4adba7f3ad0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\pi}{4}"
+            },
+            {
+              ":answer/id": "8b807006-5e60-58cf-a980-e949004b5f75",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{8}"
+            },
+            {
+              ":answer/id": "d2e9e6a1-04a1-5092-896b-9b94ef91f4e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "19e06c9d-8c4e-5d1d-b19d-c45c6dd05b4c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{16}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6e0f2449-195c-53f3-b0f6-a8397a7efc1d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "4",
+        "numerator": "3",
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "51630ef9cbcf95284c6c839b4d1583f907635feac08e643e3d933676065164fd",
+      "model": {
+        "integrand": "3/(4*x**2 + 1)",
+        "substitution": "2*x",
+        "derivative": "2",
+        "factor": "3/2",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "3*atan(2*x)/2",
+        "lower": "0",
+        "upper": "1/2",
+        "result": "3*pi/8"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "negative_double",
+        "extra_third",
+        "omit_upper_endpoint",
+        "extra_half"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "afa3dd10-b913-5eb4-b3a6-a111416c6d43",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{6}} \\frac{4}{\\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=3 x$. Then $\\mathrm{d}u=(3)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{3}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{3}=\\frac{4}{3}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{6}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{6}} \\frac{4}{\\sqrt{1 - 9 x^{2}}}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{4}{3}\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}\\right)=\\frac{4}{3}\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2 \\pi}{9}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "642398c3-5a91-5f49-9086-68c53d41464a",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b659fc30-619f-54a8-9c73-1583617d32e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{9} + 1"
+            },
+            {
+              ":answer/id": "9585a648-1845-5968-9217-97e01dac1088",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "683ef930-425d-52c4-8755-1fcc5bb966a9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{9}"
+            },
+            {
+              ":answer/id": "35daa21b-2736-514f-ac4f-1f877a9368a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{2 \\pi}{9}"
+            },
+            {
+              ":answer/id": "a26fb854-e426-5cec-a5c9-db741ede6b7f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{9} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "683ef930-425d-52c4-8755-1fcc5bb966a9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "9",
+        "numerator": "4",
+        "scale": "3"
+      },
+      "mathematical_fingerprint": "31e57c7c5f730aeab2138fc8d0cab80302ea92b2d768b4d753e9a7e1ecb5d69c",
+      "model": {
+        "integrand": "4/sqrt(1 - 9*x**2)",
+        "substitution": "3*x",
+        "derivative": "3",
+        "factor": "4/3",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "4*asin(3*x)/3",
+        "lower": "0",
+        "upper": "1/6",
+        "result": "2*pi/9"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "endpoint_offset_1",
+        "omit_upper_endpoint",
+        "correct",
+        "wrong_sign",
+        "endpoint_offset_2"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "03ba9515-79f8-57dd-8b5e-055c05fd2486",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{5}} \\frac{3}{25 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=5 x$. Then $\\mathrm{d}u=(5)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{5}\\,\\mathrm{d}u$. The outside factor is $3\\cdot \\frac{1}{5}=\\frac{3}{5}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{5}&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{5}} \\frac{3}{25 x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{3}{5}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{3}{5}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{3}{5}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{3 \\pi}{20}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8317e385-5210-500e-a0e3-e20eb860e1dd",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e3774806-cb56-5b25-aba6-10725936cf2f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{20}"
+            },
+            {
+              ":answer/id": "8936ba39-fcde-58e8-9bd9-16283b8e13b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "f242c97c-c24e-5988-87de-4149c798d4d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\pi}{10}"
+            },
+            {
+              ":answer/id": "1bdac188-e871-5534-a1e3-1b0bee04256d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{10}"
+            },
+            {
+              ":answer/id": "63213bfe-7203-5bca-9f6e-d713d075830e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{20} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e3774806-cb56-5b25-aba6-10725936cf2f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "25",
+        "numerator": "3",
+        "scale": "5"
+      },
+      "mathematical_fingerprint": "3cada01b44693f035ee8866d668cc167bab7929f97d6ca1ef336730d805673e9",
+      "model": {
+        "integrand": "3/(25*x**2 + 1)",
+        "substitution": "5*x",
+        "derivative": "5",
+        "factor": "3/5",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "3*atan(5*x)/5",
+        "lower": "0",
+        "upper": "1/5",
+        "result": "3*pi/20"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct",
+        "omit_upper_endpoint",
+        "negative_double",
+        "double_factor",
+        "endpoint_offset_2"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "efe71b73-897f-51f1-98d6-1e79fd147435",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{8}} \\frac{4}{\\sqrt{1 - 16 x^{2}}}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $4\\cdot \\frac{1}{4}=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{8}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{8}} \\frac{4}{\\sqrt{1 - 16 x^{2}}}\\,\\mathrm{d}x\\\\&=\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}=\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{6}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "99f200c2-2c8e-5da6-8fc9-2da0d87525df",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "acf66512-e201-5095-88eb-e091d42e6dda",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{\\pi}{6}"
+            },
+            {
+              ":answer/id": "0f6676a9-c064-5548-812b-a2c27a7d51d3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{2}"
+            },
+            {
+              ":answer/id": "f06a8b09-9265-5466-8075-ec935aeb736d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "f8a904d7-03bc-5599-af85-3fac13253b94",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{12}"
+            },
+            {
+              ":answer/id": "9f13a489-d9c4-5696-8e40-1130571a223f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{6}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9f13a489-d9c4-5696-8e40-1130571a223f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "4",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "602062bf5049285b4a9f80127eb0849b00629d6752b3ba4dea304a3ae582bb12",
+      "model": {
+        "integrand": "4/sqrt(1 - 16*x**2)",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "1",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "asin(4*x)",
+        "lower": "0",
+        "upper": "1/8",
+        "result": "pi/6"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "wrong_sign",
+        "triple_factor",
+        "omit_upper_endpoint",
+        "extra_half",
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "1a381923-301e-5880-a846-40d377d4ac3d",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{1}{4}} \\frac{2}{16 x^{2} + 1}\\,\\mathrm{d}x\n$$\n\nChoose the exact value.",
+      ":question/worked-solution": "Let $u=4 x$. Then $\\mathrm{d}u=(4)\\,\\mathrm{d}x$.\n\nThe differential is $\\mathrm{d}x=\\frac{1}{4}\\,\\mathrm{d}u$. The outside factor is $2\\cdot \\frac{1}{4}=\\frac{1}{2}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{1}{4}&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{1}{4}} \\frac{2}{16 x^{2} + 1}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{2}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{1}{2}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{8}.\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "eb7b4741-3b24-5404-b82a-3be0add21a92",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b26bc6a4-2eec-54d5-829d-a20d3047d8af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1 + \\frac{\\pi}{8}"
+            },
+            {
+              ":answer/id": "0f0030f2-67cc-5697-b924-9bc3234172ed",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{8}"
+            },
+            {
+              ":answer/id": "5b9dbb40-3f10-5982-889e-e4353401045a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "8a9a8914-67a8-5798-9130-83cea619e491",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{8} + 1"
+            },
+            {
+              ":answer/id": "22ca2542-5389-538c-8564-4fb7a1439daf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{16}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0f0030f2-67cc-5697-b924-9bc3234172ed"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "recognize_substitution_with_answer_choices",
+      "parameters": {
+        "A": "1",
+        "B": "16",
+        "numerator": "2",
+        "scale": "4"
+      },
+      "mathematical_fingerprint": "480e59da6bd74559505c4440bf3ebba97243b2ec12e3418c8eab456f7290597f",
+      "model": {
+        "integrand": "2/(16*x**2 + 1)",
+        "substitution": "4*x",
+        "derivative": "4",
+        "factor": "1/2",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(4*x)/2",
+        "lower": "0",
+        "upper": "1/4",
+        "result": "pi/8"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored easy complete-calculation practice using small source-supported forms and full-answer choices. The learner must choose the substitution; no primitive or substitution is provided.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "endpoint_offset_-1",
+        "correct",
+        "omit_upper_endpoint",
+        "endpoint_offset_1",
+        "extra_half"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "45e779a1-68ea-528c-bc42-c004ac02e23c",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{2} \\frac{4}{\\sqrt{16 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{16 - x^{2}}=4\\sqrt{1-(\\frac{x}{4})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $1\\cdot 4=4$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=2&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{2} \\frac{4}{\\sqrt{16 - x^{2}}}\\,\\mathrm{d}x\\\\&=4\\left(\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n4\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}\\right)=4\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2 \\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "39ba316a-1f70-5e6e-8467-34ce00e595ca",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fedb4fd8-697b-5bf4-8401-90162e8cb89b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fedb4fd8-697b-5bf4-8401-90162e8cb89b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "4",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "0355683fac98a012bfb418e2feacad44ae0471fd038738538bddd189b29580da",
+      "model": {
+        "integrand": "4/sqrt(16 - x**2)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "4",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "4*asin(x/4)",
+        "lower": "0",
+        "upper": "2",
+        "result": "2*pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "6c29a351-0669-5d99-ba8a-1b24dab8e683",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{4} \\frac{4}{x^{2} + 16}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 16=16\\left(1+(\\frac{x}{4})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{4}\\cdot 4=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=4&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{4} \\frac{4}{x^{2} + 16}\\,\\mathrm{d}x\\\\&=\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}=\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{4}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1366914c-d545-5376-a558-2501c2fe5c8c",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0c5f96c9-1026-523d-9e43-e2ef296dc38b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0c5f96c9-1026-523d-9e43-e2ef296dc38b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "4",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "d76788e55342290be8bc84b41941ae9f825d98f698a5ac0daa4d12743d283b4c",
+      "model": {
+        "integrand": "4/(x**2 + 16)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "1",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(x/4)",
+        "lower": "0",
+        "upper": "4",
+        "result": "pi/4"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "5303c601-978c-5927-9c0c-29cd7844589a",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{3}{2}} \\frac{1}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{3}$. Then $\\mathrm{d}u=(\\frac{1}{3})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{9 - x^{2}}=3\\sqrt{1-(\\frac{x}{3})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=3\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{3}\\cdot 3=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{3}{2}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{3}{2}} \\frac{1}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\\\\&=\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}=\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{6}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ca3b120a-c9dc-5f46-b52b-9d2183ecad96",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5481a8d9-a79b-5db9-9513-ef5ab3e35cb5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{6}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5481a8d9-a79b-5db9-9513-ef5ab3e35cb5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "9",
+        "B": "1",
+        "numerator": "1",
+        "scale": "1/3"
+      },
+      "mathematical_fingerprint": "84c74cb7c913c4b874d8bd04e9a3af8d8dacb82aa3f0f86efbd78174eacc1993",
+      "model": {
+        "integrand": "1/sqrt(9 - x**2)",
+        "substitution": "x/3",
+        "derivative": "1/3",
+        "factor": "1",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "asin(x/3)",
+        "lower": "0",
+        "upper": "3/2",
+        "result": "pi/6"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "ba861d1c-b9bd-52e1-a154-4e101b8426be",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{4} \\frac{2}{x^{2} + 16}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 16=16\\left(1+(\\frac{x}{4})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{8}\\cdot 4=\\frac{1}{2}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=4&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{4} \\frac{2}{x^{2} + 16}\\,\\mathrm{d}x\\\\&=\\frac{1}{2}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{2}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{1}{2}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{8}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c1cca4a5-763c-5472-b954-25400dc717a0",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "40df6c3f-973b-580b-878e-4889198600e3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "40df6c3f-973b-580b-878e-4889198600e3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "2",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "d1ace2fb1946f7e04b940d5dfb1917804d929685c7a3e29501b7d20ecdbfcaa1",
+      "model": {
+        "integrand": "2/(x**2 + 16)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "1/2",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(x/4)/2",
+        "lower": "0",
+        "upper": "4",
+        "result": "pi/8"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "257d48e6-5b94-5fd9-acac-d21d5b7c15f9",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{1} \\frac{3}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{2}$. Then $\\mathrm{d}u=(\\frac{1}{2})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{4 - x^{2}}=2\\sqrt{1-(\\frac{x}{2})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=2\\,\\mathrm{d}u$. The outside factor is $\\frac{3}{2}\\cdot 2=3$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=1&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{1} \\frac{3}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}\\right)=3\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{2}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ab7fd508-a717-5e26-ab67-49cc18fdc061",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "925eff91-ab5a-5806-8906-e70d23b798b4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "925eff91-ab5a-5806-8906-e70d23b798b4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "4",
+        "B": "1",
+        "numerator": "3",
+        "scale": "1/2"
+      },
+      "mathematical_fingerprint": "661fbc3f009bf0d42034d96115d639fe2f5d9de9f57765833ae3902577a549ac",
+      "model": {
+        "integrand": "3/sqrt(4 - x**2)",
+        "substitution": "x/2",
+        "derivative": "1/2",
+        "factor": "3",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "3*asin(x/2)",
+        "lower": "0",
+        "upper": "1",
+        "result": "pi/2"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "44c12c09-a15b-5afc-abd1-9d35569e4a2c",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{2} \\frac{2}{x^{2} + 4}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{2}$. Then $\\mathrm{d}u=(\\frac{1}{2})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 4=4\\left(1+(\\frac{x}{2})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=2\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{2}\\cdot 2=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=2&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{2} \\frac{2}{x^{2} + 4}\\,\\mathrm{d}x\\\\&=\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}=\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{4}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "96abf5c3-610f-5238-b47c-8236144a33e5",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "182ff1d9-418d-5302-b66e-79ad30d034d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "182ff1d9-418d-5302-b66e-79ad30d034d2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "4",
+        "B": "1",
+        "numerator": "2",
+        "scale": "1/2"
+      },
+      "mathematical_fingerprint": "a2640f580a5d85612bd4cf23a9d5776fa706b71e700d2cfdabbe70795dc6be2d",
+      "model": {
+        "integrand": "2/(x**2 + 4)",
+        "substitution": "x/2",
+        "derivative": "1/2",
+        "factor": "1",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(x/2)",
+        "lower": "0",
+        "upper": "2",
+        "result": "pi/4"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "d09eb331-4959-538c-9e9f-614f90cc8817",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{\\frac{3}{2}} \\frac{2}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{3}$. Then $\\mathrm{d}u=(\\frac{1}{3})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{9 - x^{2}}=3\\sqrt{1-(\\frac{x}{3})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=3\\,\\mathrm{d}u$. The outside factor is $\\frac{2}{3}\\cdot 3=2$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=\\frac{3}{2}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{\\frac{3}{2}} \\frac{2}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{0}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(0 \\right)}=0,\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{0}^{\\frac{1}{2}}\\right)=2\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9cc88eaf-69d6-594e-b37b-5ae7e5347ad3",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ca18ec57-96b5-537e-81a6-ac6a70b32cff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ca18ec57-96b5-537e-81a6-ac6a70b32cff"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "9",
+        "B": "1",
+        "numerator": "2",
+        "scale": "1/3"
+      },
+      "mathematical_fingerprint": "c749e309d027d93ce94a4922629bd4f6e7398e2c2569b2b5d9ba03e50bb6d453",
+      "model": {
+        "integrand": "2/sqrt(9 - x**2)",
+        "substitution": "x/3",
+        "derivative": "1/3",
+        "factor": "2",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "2*asin(x/3)",
+        "lower": "0",
+        "upper": "3/2",
+        "result": "pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "a30388ef-ba10-57f8-bec7-1d914dfe7bd3",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{0}^{3} \\frac{4}{x^{2} + 9}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{3}$. Then $\\mathrm{d}u=(\\frac{1}{3})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 9=9\\left(1+(\\frac{x}{3})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=3\\,\\mathrm{d}u$. The outside factor is $\\frac{4}{9}\\cdot 3=\\frac{4}{3}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=0&\\Longrightarrow u=0\\\\x=3&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{0}^{3} \\frac{4}{x^{2} + 9}\\,\\mathrm{d}x\\\\&=\\frac{4}{3}\\left(\\int_{0}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(0 \\right)}=0,\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{4}{3}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{0}^{1}\\right)=\\frac{4}{3}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(0\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8f8dc559-d3c6-5e6f-b632-c6801998aedd",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e7a9ad8b-596f-5cc1-b226-600907fa0d18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e7a9ad8b-596f-5cc1-b226-600907fa0d18"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "constant_normalization",
+      "parameters": {
+        "A": "9",
+        "B": "1",
+        "numerator": "4",
+        "scale": "1/3"
+      },
+      "mathematical_fingerprint": "523606d302a1ca205e69b3a4f9b73474e9590256e3b95355a7b05f46a4f79e40",
+      "model": {
+        "integrand": "4/(x**2 + 9)",
+        "substitution": "x/3",
+        "derivative": "1/3",
+        "factor": "4/3",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "4*atan(x/3)/3",
+        "lower": "0",
+        "upper": "3",
+        "result": "pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "12cf6c62-7151-5bb7-ae46-ebef60c8c111",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-2}^{2} \\frac{2}{\\sqrt{16 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{16 - x^{2}}=4\\sqrt{1-(\\frac{x}{4})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{2}\\cdot 4=2$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-2&\\Longrightarrow u=- \\frac{1}{2}\\\\x=2&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-2}^{2} \\frac{2}{\\sqrt{16 - x^{2}}}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{- \\frac{1}{2}}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(- \\frac{1}{2} \\right)}=- \\frac{\\pi}{6},\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{- \\frac{1}{2}}^{\\frac{1}{2}}\\right)=2\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(- \\frac{\\pi}{6}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2 \\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "06547fb7-1365-5d31-b7ce-ec3414946928",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a1bf8ade-16ac-5700-806f-e60d1a1bb783",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a1bf8ade-16ac-5700-806f-e60d1a1bb783"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "2",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "714ed142b4a03a1c78487ebaadf8e4157393268f839ea50ad90373de88fecc65",
+      "model": {
+        "integrand": "2/sqrt(16 - x**2)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "2",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "2*asin(x/4)",
+        "lower": "-2",
+        "upper": "2",
+        "result": "2*pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "76483978-db1f-5ce0-bd11-e8fa9be54a2d",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-4}^{4} \\frac{1}{x^{2} + 16}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 16=16\\left(1+(\\frac{x}{4})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{16}\\cdot 4=\\frac{1}{4}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-4&\\Longrightarrow u=-1\\\\x=4&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-4}^{4} \\frac{1}{x^{2} + 16}\\,\\mathrm{d}x\\\\&=\\frac{1}{4}\\left(\\int_{-1}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(-1 \\right)}=- \\frac{\\pi}{4},\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{1}{4}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{-1}^{1}\\right)=\\frac{1}{4}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(- \\frac{\\pi}{4}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{8}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bf8656f6-8086-56e3-adab-1ddf4e446035",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "12080c4e-e81b-5575-b940-49cda0d8479c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "12080c4e-e81b-5575-b940-49cda0d8479c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "1",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "af7fd57109122f807dc3ab361245ff299fba8533950348071e351d60a094b589",
+      "model": {
+        "integrand": "1/(x**2 + 16)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "1/4",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(x/4)/4",
+        "lower": "-4",
+        "upper": "4",
+        "result": "pi/8"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "ad1d1ad7-0857-53bc-afb0-f3a115565308",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{- \\frac{3}{2}}^{\\frac{3}{2}} \\frac{4}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{3}$. Then $\\mathrm{d}u=(\\frac{1}{3})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{9 - x^{2}}=3\\sqrt{1-(\\frac{x}{3})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=3\\,\\mathrm{d}u$. The outside factor is $\\frac{4}{3}\\cdot 3=4$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=- \\frac{3}{2}&\\Longrightarrow u=- \\frac{1}{2}\\\\x=\\frac{3}{2}&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{- \\frac{3}{2}}^{\\frac{3}{2}} \\frac{4}{\\sqrt{9 - x^{2}}}\\,\\mathrm{d}x\\\\&=4\\left(\\int_{- \\frac{1}{2}}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(- \\frac{1}{2} \\right)}=- \\frac{\\pi}{6},\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n4\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{- \\frac{1}{2}}^{\\frac{1}{2}}\\right)=4\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(- \\frac{\\pi}{6}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{4 \\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8920f74f-34d0-5649-b2e8-f5272ec81d40",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b50d94f0-2566-5675-9df9-fa456956d446",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b50d94f0-2566-5675-9df9-fa456956d446"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "9",
+        "B": "1",
+        "numerator": "4",
+        "scale": "1/3"
+      },
+      "mathematical_fingerprint": "64b4967bf0e3ac759fcfc6353987a8a1180a973e065609d6024cfe7a10920500",
+      "model": {
+        "integrand": "4/sqrt(9 - x**2)",
+        "substitution": "x/3",
+        "derivative": "1/3",
+        "factor": "4",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "4*asin(x/3)",
+        "lower": "-3/2",
+        "upper": "3/2",
+        "result": "4*pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "9254830e-6edd-5839-b457-4d5634197110",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-3}^{3} \\frac{3}{x^{2} + 9}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{3}$. Then $\\mathrm{d}u=(\\frac{1}{3})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 9=9\\left(1+(\\frac{x}{3})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=3\\,\\mathrm{d}u$. The outside factor is $\\frac{1}{3}\\cdot 3=1$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-3&\\Longrightarrow u=-1\\\\x=3&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-3}^{3} \\frac{3}{x^{2} + 9}\\,\\mathrm{d}x\\\\&=\\int_{-1}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u.\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(-1 \\right)}=- \\frac{\\pi}{4},\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\left[\\arctan{\\left(u \\right)}\\right]_{-1}^{1}=\\left(\\frac{\\pi}{4}\\right)-\\left(- \\frac{\\pi}{4}\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{\\pi}{2}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8c110aa6-2bc5-569e-8514-c1da9b4b3081",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ad8de2ba-adf7-5257-ab71-1aada1ded0d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\pi}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ad8de2ba-adf7-5257-ab71-1aada1ded0d5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "9",
+        "B": "1",
+        "numerator": "3",
+        "scale": "1/3"
+      },
+      "mathematical_fingerprint": "b0f240bf4723c4ad2d128f853ec09c20f41d3f77965fd1ed914185b453d1d504",
+      "model": {
+        "integrand": "3/(x**2 + 9)",
+        "substitution": "x/3",
+        "derivative": "1/3",
+        "factor": "1",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "atan(x/3)",
+        "lower": "-3",
+        "upper": "3",
+        "result": "pi/2"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "27ab890c-7a7d-5dba-89b7-ad81fa533666",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-1}^{1} \\frac{3}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{2}$. Then $\\mathrm{d}u=(\\frac{1}{2})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{4 - x^{2}}=2\\sqrt{1-(\\frac{x}{2})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=2\\,\\mathrm{d}u$. The outside factor is $\\frac{3}{2}\\cdot 2=3$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-1&\\Longrightarrow u=- \\frac{1}{2}\\\\x=1&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-1}^{1} \\frac{3}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\\\\&=3\\left(\\int_{- \\frac{1}{2}}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(- \\frac{1}{2} \\right)}=- \\frac{\\pi}{6},\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n3\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{- \\frac{1}{2}}^{\\frac{1}{2}}\\right)=3\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(- \\frac{\\pi}{6}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\pi.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7e63d007-4da4-52ac-95fc-bf23685eb724",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ffa35a20-5ff4-5006-b275-825a821f32a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\pi"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ffa35a20-5ff4-5006-b275-825a821f32a5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "4",
+        "B": "1",
+        "numerator": "3",
+        "scale": "1/2"
+      },
+      "mathematical_fingerprint": "1f82cbf522251c173f9137b50b69dd49cff8eda709b664fed7b7bd23f69c2835",
+      "model": {
+        "integrand": "3/sqrt(4 - x**2)",
+        "substitution": "x/2",
+        "derivative": "1/2",
+        "factor": "3",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "3*asin(x/2)",
+        "lower": "-1",
+        "upper": "1",
+        "result": "pi"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "56c16b97-a22d-5f14-94ab-06856a1436c2",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-4}^{4} \\frac{3}{x^{2} + 16}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{4}$. Then $\\mathrm{d}u=(\\frac{1}{4})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 16=16\\left(1+(\\frac{x}{4})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=4\\,\\mathrm{d}u$. The outside factor is $\\frac{3}{16}\\cdot 4=\\frac{3}{4}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-4&\\Longrightarrow u=-1\\\\x=4&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-4}^{4} \\frac{3}{x^{2} + 16}\\,\\mathrm{d}x\\\\&=\\frac{3}{4}\\left(\\int_{-1}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(-1 \\right)}=- \\frac{\\pi}{4},\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{3}{4}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{-1}^{1}\\right)=\\frac{3}{4}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(- \\frac{\\pi}{4}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{3 \\pi}{8}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d7b4e698-85e5-567a-8989-c81ac6b4659e",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8392eec9-5d77-5eed-88ff-8f30e7e9409b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{8}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8392eec9-5d77-5eed-88ff-8f30e7e9409b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "16",
+        "B": "1",
+        "numerator": "3",
+        "scale": "1/4"
+      },
+      "mathematical_fingerprint": "bdeb32fd03bdd5fb8ebdee732fe1329d30e77b272e64de0b838fd438582538d2",
+      "model": {
+        "integrand": "3/(x**2 + 16)",
+        "substitution": "x/4",
+        "derivative": "1/4",
+        "factor": "3/4",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "3*atan(x/4)/4",
+        "lower": "-4",
+        "upper": "4",
+        "result": "3*pi/8"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "96caa436-ae34-56ef-a31a-61ac84f175d0",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-1}^{1} \\frac{2}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{2}$. Then $\\mathrm{d}u=(\\frac{1}{2})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\n\\sqrt{4 - x^{2}}=2\\sqrt{1-(\\frac{x}{2})^2}.\n$$\n\nThe differential is $\\mathrm{d}x=2\\,\\mathrm{d}u$. The outside factor is $1\\cdot 2=2$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-1&\\Longrightarrow u=- \\frac{1}{2}\\\\x=1&\\Longrightarrow u=\\frac{1}{2}\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-1}^{1} \\frac{2}{\\sqrt{4 - x^{2}}}\\,\\mathrm{d}x\\\\&=2\\left(\\int_{- \\frac{1}{2}}^{\\frac{1}{2}} \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arcsin{\\left(- \\frac{1}{2} \\right)}=- \\frac{\\pi}{6},\\quad \\arcsin{\\left(\\frac{1}{2} \\right)}=\\frac{\\pi}{6}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{\\sqrt{1 - u^{2}}}\\,\\mathrm{d}u=\\arcsin{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n2\\left(\\left[\\arcsin{\\left(u \\right)}\\right]_{- \\frac{1}{2}}^{\\frac{1}{2}}\\right)=2\\left(\\left(\\frac{\\pi}{6}\\right)-\\left(- \\frac{\\pi}{6}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{2 \\pi}{3}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "34cc9375-b1b6-5fb1-88e7-e69ef3d8e7d4",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "912588cd-7fdb-51c7-acb3-674197b4a532",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\pi}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "912588cd-7fdb-51c7-acb3-674197b4a532"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "sine",
+      "family": "sine",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "4",
+        "B": "1",
+        "numerator": "2",
+        "scale": "1/2"
+      },
+      "mathematical_fingerprint": "e4ef1dbdb4a4dd964198aeceacfd7583bf1ed42a10cace71139238be752a8f0f",
+      "model": {
+        "integrand": "2/sqrt(4 - x**2)",
+        "substitution": "x/2",
+        "derivative": "1/2",
+        "factor": "2",
+        "transformed": "1/sqrt(1 - u**2)",
+        "primitive": "2*asin(x/2)",
+        "lower": "-1",
+        "upper": "1",
+        "result": "2*pi/3"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186064220,
+      "id": "f2f9806d-3a72-5f0a-a6f4-db8dad8871f6",
+      "title": "Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions"
+    },
+    "question": {
+      ":question/id": "711dd00d-4067-546e-8ef3-c2edffdeb083",
+      ":question/problem": "Evaluate exactly.\n\n$$\n\\int_{-2}^{2} \\frac{3}{x^{2} + 4}\\,\\mathrm{d}x\n$$\n\n{{answer}}",
+      ":question/worked-solution": "Let $u=\\frac{x}{2}$. Then $\\mathrm{d}u=(\\frac{1}{2})\\,\\mathrm{d}x$.\n\nFactor the constant in the denominator:\n\n$$\nx^{2} + 4=4\\left(1+(\\frac{x}{2})^2\\right).\n$$\n\nThe differential is $\\mathrm{d}x=2\\,\\mathrm{d}u$. The outside factor is $\\frac{3}{4}\\cdot 2=\\frac{3}{2}$.\n\nTransform both bounds:\n\n$$\n\\begin{aligned}x=-2&\\Longrightarrow u=-1\\\\x=2&\\Longrightarrow u=1\\end{aligned}\n$$\n\nIncluding the differential factor gives\n\n$$\n\\begin{aligned}&\\int_{-2}^{2} \\frac{3}{x^{2} + 4}\\,\\mathrm{d}x\\\\&=\\frac{3}{2}\\left(\\int_{-1}^{1} \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u\\right).\\end{aligned}\n$$\n\nEndpoint values: $\\arctan{\\left(-1 \\right)}=- \\frac{\\pi}{4},\\quad \\arctan{\\left(1 \\right)}=\\frac{\\pi}{4}$.\n\nUse the integration rule:\n\n$$\n\\int \\frac{1}{u^{2} + 1}\\,\\mathrm{d}u=\\arctan{\\left(u \\right)}+C.\n$$\n\nEvaluate the primitive and subtract lower from upper:\n\n$$\n\\frac{3}{2}\\left(\\left[\\arctan{\\left(u \\right)}\\right]_{-1}^{1}\\right)=\\frac{3}{2}\\left(\\left(\\frac{\\pi}{4}\\right)-\\left(- \\frac{\\pi}{4}\\right)\\right).\n$$\n\nThe exact answer is\n\n$$\n\\frac{3 \\pi}{4}.\n$$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c6d56f73-e9c8-5ee3-840e-e0eb2a0b2bcb",
+          ":answer-field/key": "answer",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e7040dc7-ffb6-5fae-bfcc-d02e0b3813b7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3 \\pi}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e7040dc7-ffb6-5fae-bfcc-d02e0b3813b7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "substitution-recognition-3",
+      "seed": 20261024,
+      "template": "tangent",
+      "family": "tangent",
+      "challenge": "two_nonzero_bounds",
+      "parameters": {
+        "A": "4",
+        "B": "1",
+        "numerator": "3",
+        "scale": "1/2"
+      },
+      "mathematical_fingerprint": "34c06b9da2a9b37cc3ead41ebe6a5855819f0079bccdf3ee9516ed061c88c4a7",
+      "model": {
+        "integrand": "3/(x**2 + 4)",
+        "substitution": "x/2",
+        "derivative": "1/2",
+        "factor": "3/2",
+        "transformed": "1/(u**2 + 1)",
+        "primitive": "3*atan(x/2)/2",
+        "lower": "-2",
+        "upper": "2",
+        "result": "3*pi/4"
+      },
+      "batch_contract": "substitution-recognition-3",
+      "source_basis": 6550,
+      "source_questions": [
+        "q-19394",
+        "q-19397",
+        "q-114074",
+        "q-114078",
+        "q-114080",
+        "q-114084",
+        "q-19393",
+        "q-19395",
+        "q-19396",
+        "q-346451",
+        "q-346458",
+        "q-351291",
+        "q-351827",
+        "q-351834",
+        "q-351835",
+        "q-351839",
+        "q-351855",
+        "q-49538",
+        "q-49546",
+        "q-351850",
+        "q-351845",
+        "q-114075",
+        "q-114073",
+        "q-49549",
+        "q-49536",
+        "q-351854",
+        "q-19398",
+        "e-472"
+      ],
+      "band_origin": "Authored relative band: Evaluate from two nonzero transformed bounds; inverse endpoint facts recalled. Ordinary practice retrieves mastered prerequisites.",
+      "operation": "evaluate",
+      "provided_substitution": false,
+      "provided_primitive": false,
+      "provided_endpoint_values": false,
+      "support_policy": "mastered-prerequisite-recall",
+      "bank_correct_rank": null,
+      "bank_recipes": [
+        "correct"
+      ],
+      "domain": "Connected real intervals where the displayed integrand is defined; definite intervals contain no singularities."
+    }
+  }
+]
