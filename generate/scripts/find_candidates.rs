@@ -19,11 +19,6 @@ const PENDING: &str = include_str!("queries/pending-activities.edn");
 const PENDING_TOPICS: &str = include_str!("queries/pending-topics.edn");
 const PENDING_CONTENT: &str = include_str!("queries/pending-content.edn");
 const RETAKE_CONTENT: &str = include_str!("queries/retake-content.edn");
-const CONTENT_TOPICS: [&str; 3] = [
-    include_str!("queries/kp-content-topics.edn"),
-    include_str!("queries/question-content-topics.edn"),
-    include_str!("queries/example-content-topics.edn"),
-];
 const REVIEWS: &str = include_str!("queries/review-state.edn");
 const CHANGED: &str = include_str!("queries/changed-activities.edn");
 const TOPICS: &str = include_str!("queries/topics.edn");
@@ -107,6 +102,39 @@ fn ids(v: &BTreeSet<u64>) -> Result<EdnValue> {
     Ok(EdnValue::Vector(
         v.iter().map(|v| input_eid(*v)).collect::<Result<_>>()?,
     ))
+}
+
+fn content_topics(db: &DatabaseValue, contents: &BTreeSet<u64>) -> Result<BTreeSet<(u64, u64)>> {
+    let attribute = |namespace, name| -> Result<u32> {
+        db.schema()
+            .resolve_ident(&Keyword::new(namespace, name))
+            .ok_or_else(|| format!("missing {namespace}/{name}").into())
+    };
+    let topic_kps = attribute("topic", "knowledge-points")?;
+    let questions = attribute("knowledge-point", "questions")?;
+    let examples = attribute("knowledge-point", "canonical-example")?;
+    let reverse = |entity, attribute| -> Result<BTreeSet<u64>> {
+        Ok(db.collect_datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+            value: Value::Ref(entity), attribute: Some(attribute), entity: None,
+        })?.into_iter().map(|datom| datom.entity).collect())
+    };
+    // These refs have VAET support, but no AVET index. A reverse Datalog join
+    // can scan the entire question catalog once per assessment item. Seek only
+    // the bound content refs, then reuse topic ownership for shared KPs.
+    let mut owners = BTreeMap::<u64, BTreeSet<u64>>::new();
+    let mut mapped = BTreeSet::new();
+    for &content in contents {
+        let mut kps = BTreeSet::from([content]);
+        kps.extend(reverse(content, questions)?);
+        kps.extend(reverse(content, examples)?);
+        for kp in kps {
+            if !owners.contains_key(&kp) {
+                owners.insert(kp, reverse(kp, topic_kps)?);
+            }
+            mapped.extend(owners[&kp].iter().map(|&topic| (topic, content)));
+        }
+    }
+    Ok(mapped)
 }
 
 #[derive(Default)]
@@ -502,13 +530,11 @@ fn candidates_scoped(
         }
         let content_ids = contents.keys().copied().collect();
         if !contents.is_empty() {
-            for text in CONTENT_TOPICS {
-                for row in query(db, text, vec![ids(&content_ids)?])? {
-                    for content in &contents[&eid(&row[1])?] {
-                        let mut mapped = content.clone();
-                        mapped[0] = row[0].clone();
-                        pending_topics.push(mapped);
-                    }
+            for (topic, content_id) in content_topics(db, &content_ids)? {
+                for content in &contents[&content_id] {
+                    let mut mapped = content.clone();
+                    mapped[0] = json!(topic);
+                    pending_topics.push(mapped);
                 }
             }
         }

@@ -95,6 +95,31 @@ fn at(s: &str) -> i64 {
 }
 
 #[test]
+fn assessment_content_mapping_uses_bound_reverse_refs_for_questions_examples_and_kps() -> Result<()> {
+    let db = fixture()?;
+    let topic = identity(&db, "topic/title", "Assessment")?;
+    let kp = identity(&db, "knowledge-point/title", "KP Assessment")?;
+    let other = identity(&db, "topic/title", "Retake")?;
+    let question = db.values(kp, db.schema().resolve_ident(&Keyword::new("knowledge-point", "questions")).unwrap())?
+        .into_iter().find_map(|value| match value { Value::Ref(id) => Some(id), _ => None }).unwrap();
+    let forms = format!(r#"[
+        [:db/add {other} :topic/knowledge-points {kp}]
+        {{:db/id "example" :db/ident :fixture/example}}
+        [:db/add {kp} :knowledge-point/canonical-example "example"]
+        {{:db/id "unrelated" :db/ident :fixture/unrelated}}
+    ]"#);
+    let db = db.with_edn(&forms, 0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
+    let example = db.entid(&Keyword::new("fixture", "example")).unwrap();
+    let unrelated = db.entid(&Keyword::new("fixture", "unrelated")).unwrap();
+    let contents = BTreeSet::from([kp, question, example, unrelated]);
+    let expected = [kp, question, example].into_iter()
+        .flat_map(|content| [(topic, content), (other, content)]).collect();
+    assert_eq!(content_topics(&db, &contents)?, expected);
+    assert!(content_topics(&db, &BTreeSet::new())?.is_empty());
+    Ok(())
+}
+
+#[test]
 fn eligibility_includes_selected_studied_and_actual_pending_work() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
