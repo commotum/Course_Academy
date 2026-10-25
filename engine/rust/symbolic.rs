@@ -1097,6 +1097,23 @@ impl Algebra {
                     // Larger root degrees keep the existing opaque exp form.
                     return self.power(&Value::atom(Atom::E), &Value::number(c));
                 }
+                // Distribute a rational argument's numerator sum over its
+                // common denominator: exp(2 - 1/x) = e^2 / exp(1/x).
+                // Normalize each summand to cancel shared monomials before
+                // evaluating it. Original domain guards remain in force;
+                // no numerical identity test or logarithm law is involved.
+                if x.den != Poly::integer(1) && x.num.0.len() > 1 {
+                    let mut result = Value::integer(1);
+                    for (m, c) in &x.num.0 {
+                        let term = self.value(
+                            Poly(BTreeMap::from([(m.clone(), c.clone())])),
+                            x.den.clone(),
+                        )?;
+                        let factor = self.function("exp", &term)?;
+                        result = self.mul(&result, &factor)?;
+                    }
+                    return Ok(result);
+                }
                 if x.den == Poly::integer(1)
                     && x.num.0.values().all(|c| {
                         c.is_integer()
@@ -2143,6 +2160,26 @@ mod tests {
         }
         assert!(compare("exp(-x/x)", "exp(-1)", Context::default()).is_err());
         assert!(!supports("exp(-1/0)", Context::default()));
+    }
+    #[test]
+    fn split_rational_exponential_arguments_preserve_domains() {
+        for (a, b) in [
+            ("exp(2-1/x)", "exp(2)*exp(-1/x)"),
+            ("e^(2-1/x)", "e^2/exp(1/x)"),
+            ("exp(1/x+2/x^2)", "exp(1/x)*exp(2/x^2)"),
+            ("exp((x+1)/(x-1))", "exp(x/(x-1))*exp(1/(x-1))"),
+            ("exp(1/2-1/x)", "sqrt(e)/exp(1/x)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for wrong in ["exp(2)*exp(1/x)", "exp(-1/x)", "exp(3)*exp(-1/x)"] {
+            assert_eq!(compare("exp(2-1/x)", wrong, Context::default()), Ok(false));
+        }
+        // Algebraic cancellation must not erase a hole in the original domain.
+        assert!(compare("exp(2-x/x)", "exp(1)", Context::default()).is_err());
+        assert!(compare("exp((x^2+x)/x)", "exp(x+1)", Context::default()).is_err());
+        assert!(!supports("exp(2+1/0)", Context::default()));
     }
     #[test]
     fn bounded_real_trig_arguments_normalize_absolute_logarithms() {
