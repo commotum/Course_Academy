@@ -1,7 +1,5 @@
-# Substitution practice — KP 17592186064219
+# Inverse substitution — KP 17592186064219
 
-Version: substitution-recognition-3.
+Complete calculation with no supplied substitution. Diagnostic answer choices, cancellation-aware difficulty and balanced familiar endpoint profiles. Imported labels remain unchanged; indefinite sine/tangent hard bands are explicit authored extrapolations.
 
-All bands require choosing the substitution and completing the integral. Easy uses full-answer choices and small parameters. Full calculations retrieve mastered integration formulas and routine endpoint values. Complete worked solutions and mathematical domain assumptions remain.
-
-Current immutable package and validation: `reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/`. Older extraction and validation artifacts are historical evidence.
+Published package and verification: `reference/edb-math/repairs/2026-10-25-inverse-trig-quality/`. Older reports are historical.

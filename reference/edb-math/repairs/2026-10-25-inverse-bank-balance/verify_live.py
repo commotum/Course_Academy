@@ -28,8 +28,12 @@ for row,k in zip(cap['knowledge_points'],current):
    for value,expected in ((key,'correct'),(r'\frac{2\left('+key+r'\right)}{2}','correct'),('('+key+')+1','incorrect')):grade(q,f,{'value':value},expected)
  for eid in proof['retired_questions']:assert next(q for q in qmap.values()if q[':db/id']==eid)[':question/retired']is True
  mapping+=proof['replacements'];summaries.append({'kp':kp,'active_generated':24,'retired':len(proof['retired_questions']),'imports_preserved':proof['imported_questions_preserved'],'generator':ref,'committed_basis':proof['basis_after']});print(kp,'live pool, package and grading verified',flush=True)
-assert len(mapping)==96 and sum(r['imports_preserved']for r in summaries)==75
-assert{17592186682785,17592186691202}.issubset({r['old']for r in mapping})
-result={'passed':True,'committed':True,'basis_readback':basis,'topic':17592186048189,'generators_updated':4,'active_generated_questions':96,'retired_and_replaced':96,'imported_questions_preserved':75,'canonicals_preserved':4,'learner_history_preserved':True,'live_grading_checks':len(checks),'reported_replacements':[r for r in mapping if r['old']in(17592186682785,17592186691202)],'knowledge_points':summaries}
-for name,value in [('completion',result),('replacement-map',mapping),('live-grading-verification',{'passed':True,'database_writes':0,'checks':checks})]:(H/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
+assert len(mapping)==5 and sum(r['imports_preserved']for r in summaries)==75
+first=H.with_name('2026-10-25-inverse-trig-quality');original=[]
+for row in cap['knowledge_points']:original+=json.loads((first/str(row['kp'])/'verification.json').read_text())['replacements']
+for r in original:
+ r['new']=next((m['new']for m in mapping if m['old']==r['new']),r['new'])
+assert len(original)==96
+result={'passed':True,'committed':True,'basis_readback':basis,'topic':17592186048189,'generators_updated':4,'active_generated_questions':96,'original_questions_replaced':96,'additional_bank_replacements':5,'imported_questions_preserved':75,'canonicals_preserved':4,'learner_history_preserved':True,'live_grading_checks':len(checks),'reported_replacements':[r for r in original if r['old']in(17592186682785,17592186691202)],'knowledge_points':summaries}
+for name,value in [('completion',result),('replacement-map',original),('live-grading-verification',{'passed':True,'database_writes':0,'checks':checks})]:(H/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
 print(json.dumps({k:v for k,v in result.items()if k!='knowledge_points'}))
