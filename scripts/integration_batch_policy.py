@@ -19,6 +19,9 @@ FAMILIES={
 def clone_key(record):
  m=record['generation'];return m['family'],tuple(sorted((str(abs(F(c))),str(F(p)))for c,p in m['input_terms']))
 def validate_delivery_batch(records,kp_id):
+ if int(kp_id)==17592186184154 and records and records[0].get('generation',{}).get('batch_contract')=='sum-factor-kp2-v3':
+  from scripts.kp2_integration_policy import validate_delivery_batch as validate_kp2
+  return validate_kp2(records,kp_id)
  if int(kp_id)==17592186184153 and records and records[0].get('generation',{}).get('batch_contract')=='sum-rule-kp1-v3':
   return validate_kp1_v3(records,kp_id)
  if int(kp_id)not in KPS or not records:return
