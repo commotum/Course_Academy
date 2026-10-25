@@ -97,7 +97,14 @@ def asset_hashes(records, runtime, math_root):
             continue
         path = Path(reference)
         if not path.is_absolute():
-            path = (Path(math_root) if path.parts and path.parts[0] == 'images' else Path(runtime)) / path
+            local = Path(runtime) / path
+            if path.parts and path.parts[0] == 'images':
+                canonical = Path(math_root) / path
+                # New byte-addressed output is still local until publication.
+                # Match ImageLibrary's canonical-first, local-fallback lookup.
+                path = canonical if canonical.is_file() else local
+            else:
+                path = local
         result[str(path.resolve())] = hashlib.sha256(path.read_bytes()).hexdigest()
     return result
 
