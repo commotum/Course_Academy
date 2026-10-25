@@ -2273,10 +2273,16 @@ fn fractional_power_form(value: &str) -> Option<(num_bigint::BigInt, num_rationa
     let base = base.parse().ok()?;
     // 5^2/3 means (5^2)/3, not 5^(2/3). A bare TeX fraction is one macro.
     if !exponent.starts_with(['{', '(']) && !exponent.starts_with(r"\frac") { return None; }
-    let exponent = normalize_fraction_form(ungroup_power_slot(exponent)?)?;
-    let fraction = exponent.strip_prefix(r"\frac{")?.strip_suffix('}')?;
-    let (numerator, denominator) = fraction.split_once("}{")?;
-    let exponent = num_rational::BigRational::new(numerator.parse().ok()?, denominator.parse().ok()?);
+    let exponent = ungroup_power_slot(exponent)?;
+    let exponent = if let Some(fraction) = normalize_fraction_form(exponent) {
+        let fraction = fraction.strip_prefix(r"\frac{")?.strip_suffix('}')?;
+        let (numerator, denominator) = fraction.split_once("}{")?;
+        num_rational::BigRational::new(numerator.parse().ok()?, denominator.parse().ok()?)
+    } else {
+        // A literal decimal such as 0.500 preserves the same exponent slot as
+        // 1/2. Do not evaluate compound expressions or change the supplied base.
+        plain_decimal_numeral(exponent)?
+    };
     if exponent.is_integer() { return None; }
     Some((base, exponent))
 }
@@ -4417,7 +4423,17 @@ pub(crate) mod tests {
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("2^{1/2}"));
         assert_eq!(grade_field(&s,100,200,r"2^{\frac12}"), Ok(true));
         assert_eq!(grade_field(&s,100,200,r"\sqrt{2}"), Ok(false));
+        for value in ["2^{0.5}", "(2)^(0.500)", "2^{.50}"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(true), "{value}");
+        }
+        for value in ["2^{0.499}", "2^{0.501}", "2^{0.5+0}", "4^{0.25}"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(false), "{value}");
+        }
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("7^{3/2}"));
+        assert_eq!(grade_field(&s,100,200,"7^{1.500}"), Ok(true));
+        assert_eq!(grade_field(&s,100,200,"7^{1.499}"), Ok(false));
         // Ordinary value equivalence keeps its original semantics.
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("2^{1/2}"));
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Evaluate. {{x}}"));
         assert_eq!(grade_field(&s,100,200,r"\sqrt{2}"), Ok(true));
     }
