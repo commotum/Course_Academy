@@ -56,7 +56,7 @@ def apply(p,item,d,prepared,committer,request):
   replacement_map.extend({'old':a,'new':b}for a,b in zip(old_ids,new_ids))
 
  result={'passed':True,'committed':True,'basis_after':basis,'new_reference':prepared['generator_path'],'new_questions':final,'new_question_entities':[r['entity']for r in final if r['entity']not in{q[':db/id']for q in before[':knowledge-point/questions']}],'retired_questions':sorted(retired),'replacements':replacement_map,'unchanged_full_questions':prepared['duplicates'],'imported_questions_preserved':sum(bool(q.get(':question/math-academy-id'))for q in before[':knowledge-point/questions']),'canonical_preserved':True,'old_question_and_answer_content_preserved':True,'saved_attempt_references_preserved':True,'request_key':request['request_key'],**proof}
- atomic_json(work/'verification.json',result);atomic_json(d/'verification.json',result);committer.retire(request,'verified',result);print(kp,'registered; replaced 8, preserved 16 full calculations; basis',basis,flush=True)
+ atomic_json(work/'verification.json',result);atomic_json(d/'verification.json',result);committer.retire(request,'verified',result);print(kp,'registered; replaced',prepared['new_questions'],'and preserved',prepared['duplicates'],'full calculations; basis',basis,flush=True)
 
 def main():
  p=Publisher.from_environment(source=':agent/codex')
