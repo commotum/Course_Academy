@@ -2179,6 +2179,14 @@ pub fn compare_math_in_context(
     {
         return Ok(integer_power_form(a).is_some_and(|actual| actual == expected));
     }
+    // Log-to-exponential conversion must retain the supplied base even when
+    // the requested exponent is fractional. Numeric equivalence alone would
+    // accept a different base (25^(1/3) for 5^(2/3)) or a radical.
+    if requests_power_form(prompt)
+        && let Some(expected) = fractional_power_form(b)
+    {
+        return Ok(fractional_power_form(a).is_some_and(|actual| actual == expected));
+    }
     if requires_answer_form(prompt) {
         let a = normalize_answer_form(a);
         let b = normalize_answer_form(b);
@@ -2208,47 +2216,69 @@ fn requests_power_form(prompt: &str) -> bool {
     POWER_FORM.is_match(&prompt.to_lowercase())
 }
 
+fn ungroup_power_slot(mut text: &str) -> Option<&str> {
+    loop {
+        let closing = match text.as_bytes().first()? {
+            b'{' => b'}',
+            b'(' => b')',
+            _ => return Some(text),
+        };
+        let mut stack = Vec::new();
+        let mut end = None;
+        for (index, byte) in text.bytes().enumerate() {
+            match byte {
+                b'{' => stack.push(b'}'),
+                b'(' => stack.push(b')'),
+                b'}' | b')' => {
+                    if stack.pop()? != byte { return None; }
+                    if stack.is_empty() { end = Some(index); break; }
+                }
+                _ => {}
+            }
+        }
+        if closing != *text.as_bytes().last()? || end != Some(text.len() - 1) {
+            return Some(text);
+        }
+        text = &text[1..text.len() - 1];
+    }
+}
+
 /// A direct integer base and exponent, allowing harmless TeX/parenthesis groups.
 /// Do not evaluate expressions inside either slot: 7^(2+3) has not supplied
 /// the factor count, and 16807 or 49^(5/2) has lost the intended representation.
 /// Other canonical answer shapes retain their existing comparison semantics.
 fn integer_power_form(value: &str) -> Option<(num_bigint::BigInt, num_bigint::BigInt)> {
-    fn ungroup(mut text: &str) -> Option<&str> {
-        loop {
-            let closing = match text.as_bytes().first()? {
-                b'{' => b'}',
-                b'(' => b')',
-                _ => return Some(text),
-            };
-            let mut stack = Vec::new();
-            let mut end = None;
-            for (index, byte) in text.bytes().enumerate() {
-                match byte {
-                    b'{' => stack.push(b'}'),
-                    b'(' => stack.push(b')'),
-                    b'}' | b')' => {
-                        if stack.pop()? != byte { return None; }
-                        if stack.is_empty() { end = Some(index); break; }
-                    }
-                    _ => {}
-                }
-            }
-            if closing != *text.as_bytes().last()? || end != Some(text.len() - 1) {
-                return Some(text);
-            }
-            text = &text[1..text.len() - 1];
-        }
-    }
     fn integer(text: &str) -> Option<num_bigint::BigInt> {
-        let text = ungroup(text)?;
+        let text = ungroup_power_slot(text)?;
         let digits = text.strip_prefix('-').or_else(|| text.strip_prefix('+')).unwrap_or(text);
         if digits.is_empty() || !digits.bytes().all(|c| c.is_ascii_digit()) { return None; }
         text.parse().ok()
     }
     let normalized = normalize_math(value);
-    let text = ungroup(&normalized)?;
+    let text = ungroup_power_slot(&normalized)?;
     let (base, exponent) = text.split_once('^')?;
     Some((integer(base)?, integer(exponent)?))
+}
+
+/// A literal integer base with a literal nonintegral rational exponent.
+/// Normalize TeX/slash fraction spelling and harmless grouping, but do not
+/// evaluate arithmetic in the base or exponent or convert a radical to a power.
+fn fractional_power_form(value: &str) -> Option<(num_bigint::BigInt, num_rational::BigRational)> {
+    let normalized = normalize_math(value);
+    let text = ungroup_power_slot(&normalized)?;
+    let (base, exponent) = text.split_once('^')?;
+    let base = ungroup_power_slot(base)?;
+    let digits = base.strip_prefix('-').or_else(|| base.strip_prefix('+')).unwrap_or(base);
+    if digits.is_empty() || !digits.bytes().all(|c| c.is_ascii_digit()) { return None; }
+    let base = base.parse().ok()?;
+    // 5^2/3 means (5^2)/3, not 5^(2/3). A bare TeX fraction is one macro.
+    if !exponent.starts_with(['{', '(']) && !exponent.starts_with(r"\frac") { return None; }
+    let exponent = normalize_fraction_form(ungroup_power_slot(exponent)?)?;
+    let fraction = exponent.strip_prefix(r"\frac{")?.strip_suffix('}')?;
+    let (numerator, denominator) = fraction.split_once("}{")?;
+    let exponent = num_rational::BigRational::new(numerator.parse().ok()?, denominator.parse().ok()?);
+    if exponent.is_integer() { return None; }
+    Some((base, exponent))
 }
 
 fn plain_decimal_numeral(text: &str) -> Option<num_rational::BigRational> {
@@ -4364,6 +4394,32 @@ pub(crate) mod tests {
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Exponent form: $7^?$; fill the exponent. {{x}}"));
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("5"));
         assert_eq!(grade_field(&s,100,200,"5"), Ok(true));
+    }
+
+    #[test]
+    fn exponential_form_preserves_fractional_base_exponent_roles() {
+        let mut s = fixture();
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(
+            r"Express $\log_5(2.924)\approx 2/3$ in exponential form. {{x}} $\approx$ {{y}}"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("5^{2/3}"));
+        for value in ["5^{2/3}", "(5)^(2/3)", r"5^{\frac{2}{3}}", r"5^{\frac23}",
+            r"{\left(5\right)^{\dfrac{2}{3}}}", "5^{4/6}"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(true), "{value}");
+        }
+        for value in ["25^{1/3}", r"\sqrt[3]{25}", "5^{3/2}", "2.924", "(2/3)^5",
+            "5^(2/(1+2))", "5^2/3", "5^{2/3}+0", "5^{2/3}^1", "5^{2/3", "{5)^{2/3}"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(false), "{value}");
+        }
+        // The other field is a supplied decimal, not a complete power.
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("2.924"));
+        assert_eq!(grade_field(&s,100,200,"2.9240"), Ok(true));
+        // The original unit-fraction conversion has the same contract.
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("2^{1/2}"));
+        assert_eq!(grade_field(&s,100,200,r"2^{\frac12}"), Ok(true));
+        assert_eq!(grade_field(&s,100,200,r"\sqrt{2}"), Ok(false));
+        // Ordinary value equivalence keeps its original semantics.
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Evaluate. {{x}}"));
+        assert_eq!(grade_field(&s,100,200,r"\sqrt{2}"), Ok(true));
     }
 
     #[test]
