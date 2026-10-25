@@ -2013,6 +2013,16 @@ fn counterexample_samples() -> impl Iterator<Item = Q> {
     // Substitutions prove inequality only; equality still needs a normal form.
     [-4, -2, 0, 1, 3].into_iter().map(|n| Q::from_integer(n.into()))
         .chain((-16..=8).filter(|n| n % 2 != 0).map(|n| Q::new(n.into(), 2.into())))
+        // Radicals can share only a narrow real interval, and can agree at
+        // its lone integer/half-integer witness. Refine the same bounded
+        // search dyadically rather than treating domain mismatch as equality
+        // or using a question-specific evaluation point. These exact samples
+        // can only reject; acceptance still requires the symbolic normal form.
+        .chain([4_i64, 8, 16].into_iter().flat_map(|den| {
+            (-8 * den..=8 * den)
+                .filter(|num| num % 2 != 0)
+                .map(move |num| Q::new(num.into(), den.into()))
+        }))
 }
 fn condition_at(c: &Condition, sample: &Q) -> bool {
     match c {
@@ -2030,6 +2040,24 @@ fn condition_at(c: &Condition, sample: &Q) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn unequal_radicals_in_narrow_overlapping_domains_are_rejected() {
+        // Both expressions equal one at x=1, the only old common-domain
+        // sample. At x=7/8 they are real and provably unequal.
+        for (a, b) in [
+            ("sqrt(3-2*x^4)", "sqrt(2*x^4-1)"),
+            ("sqrt(3-2*x^4)", "-sqrt(3-2*x^4)"),
+            ("sqrt(3-2*x^4)", "sqrt(4-2*x^4)"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false));
+            assert_eq!(compare(b, a, Context::default()), Ok(false));
+        }
+        eq("sqrt(3-2*x^4)", "(3-2*x^4)^(1/2)");
+        eq("sqrt(3-2*x^4)", "sqrt(6-4*x^4)/sqrt(2)");
+        // More rejection witnesses must never erase a domain obligation.
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+        assert!(compare("(x^2-1)/(x-1)", "x+1", Context::default()).is_err());
+    }
     #[test]
     fn constant_binomial_square_roots_keep_principal_sign() {
         use super::{compare, Context};
