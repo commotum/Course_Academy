@@ -1992,6 +1992,57 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
     compare(a, b, context)
 }
 
+/// Compare full polynomial antiderivative families written with an explicit C.
+/// C must have a nonzero rational coefficient independent of every variable;
+/// C^2, x*C and missing C are not the complete family. Unsupported forms fall
+/// back to ordinary expression comparison at the caller, not guessed equality.
+pub fn compare_polynomial_constant_family(a: &str, b: &str, context: Context) -> Result<Option<bool>> {
+    fn primitive(v: &Value) -> Option<Value> {
+        let den = v.den.constant()?;
+        if den.is_zero() || !v.num.rational_variables_only() { return None; }
+        let c = Atom::Variable("C".into());
+        let mut num = v.num.clone();
+        let mut coefficient = Q::zero();
+        for (mono, value) in &v.num.0 {
+            if let Some(power) = mono.get(&c) {
+                if mono.len() != 1 || *power != 1 { return None; }
+                coefficient += value / &den;
+                num.0.remove(mono);
+            }
+        }
+        if coefficient.is_zero() { return None; }
+        Some(Value {num, den:v.den.clone()})
+    }
+    let (Answer::Expression(av, ac), Answer::Expression(bv, bc)) =
+        (parse(a, context)?, parse(b, context)?) else { return Ok(None); };
+    let (Some(av), Some(bv)) = (primitive(&av), primitive(&bv)) else { return Ok(None); };
+    if ac != bc {
+        return Err("antiderivative family has unresolved domain differences".into());
+    }
+    let mut algebra = Algebra {work:0, depth:0, conditions:BTreeSet::new(),
+        nonzero_power_bases:BTreeMap::new(), context};
+    Ok(Some(algebra.add(&av, &bv.neg())?.constant().is_some()))
+}
+
+#[cfg(test)]
+mod explicit_constant_family_tests {
+    use super::*;
+    #[test]
+    fn polynomial_antiderivative_families_preserve_full_constant_freedom() {
+        let key = "x^5/5+C";
+        for answer in [key, "(x^5+5*C)/5", "x^5/5+C+1", "x^5/5+2*C", "x^5/5-C"] {
+            assert_eq!(compare_polynomial_constant_family(answer,key,Context::default()),Ok(Some(true)),"{answer}");
+        }
+        for answer in ["x^4/5+C", "x^5+C", "x^5/5+x+C"] {
+            assert_eq!(compare_polynomial_constant_family(answer,key,Context::default()),Ok(Some(false)),"{answer}");
+        }
+        for answer in ["x^5/5", "x^5/5+C^2", "x^5/5+x*C", "x^5/5+C-C"] {
+            assert_eq!(compare_polynomial_constant_family(answer,key,Context::default()),Ok(None),"{answer}");
+        }
+        assert!(compare_polynomial_constant_family("x^5/5+C+x/x",key,Context::default()).is_err());
+    }
+}
+
 /// True is proved by exact normal forms. A nonzero rational polynomial proves
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.

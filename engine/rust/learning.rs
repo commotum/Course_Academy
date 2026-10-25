@@ -1908,6 +1908,15 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
                     || displayed_solution_family_constant(&prompt, key)
                 {
                     symbolic::compare_up_to_constant(submitted, canonical, context)?
+                } else if key == "antiderivative" && prompt.contains("arbitrary constant")
+                    && !requires_answer_form(&prompt)
+                    && !["initial condition", "particular solution", "constant term is zero"]
+                        .iter().any(|text| prompt.contains(text))
+                {
+                    match symbolic::compare_polynomial_constant_family(submitted, canonical, context)? {
+                        Some(equal) => equal,
+                        None => compare_math_in_context(submitted, canonical, &prompt, context)?,
+                    }
                 } else {
                     compare_math_in_context(submitted, canonical, &prompt, context)?
                 }
