@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..'),assert=require('node:assert/strict');
 const learning=fs.readFileSync(root+'/ui/learning.js','utf8');
 const controllers=learning.slice(learning.indexOf('const $'),learning.indexOf("$('retryButton').addEventListener"));
 const html=`<!doctype html><html data-theme="light" style="--site-header-height:0px"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="img-src 'none'; connect-src 'none'"><link rel="stylesheet" href="/ui/learning.css"><link rel="stylesheet" href="/ui/navigation.css"><script src="/ui/vendor/dompurify/purify.min.js"></script><body><main id="main"></main><script type="module">
-import {marked} from '/ui/vendor/marked/marked.esm.js';
+import {marked} from '/ui/vendor/marked/marked.esm.js';import {decorateSourceTables} from '/ui/content-tables.js';
 import {romanLists} from '/ui/prose-lists.js';
 import {inlinePrompt,mountInlineFields,blankInput,checkboxControl,choiceIndicator,fieldFeedback,richSelect,freeInput,questionFeedback,feedbackHeading,responsesComplete} from '/ui/question-fields.js';
 const isDeveloperMode=()=>false,attachStepMenu=()=>{};

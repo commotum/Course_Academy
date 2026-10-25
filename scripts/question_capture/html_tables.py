@@ -30,6 +30,7 @@ def alignment(value):return value if value in {'left','right','center','justify'
 
 def attrs(node,last_rows):
     tag=node.name.lower();s=properties(node);a=[]
+    if s.get('display')in {'grid','inline-grid','flex','inline-flex'}or s.get('position')in {'absolute','fixed'}:raise ValueError('Unsupported table layout style')
     def put(k,v):a.append(' '+k+'="'+html.escape(str(v),quote=True)+'"')
     if tag=='table':
         put('class','source-table');put('data-rules',node.get('rules')if node.get('rules')in {'all','rows','cols'}else'none')
@@ -80,7 +81,9 @@ def source_table_html(table,render_leaf,skip=lambda node:False):
             return '<div class="source-table-scroll">'+result+'</div>'if tag=='table'else result
         if tag=='br':return '<br>'
         normalized={'b':'strong','i':'em'}.get(tag,tag);body=''.join(walk(c)for c in node.children)
-        if normalized in INLINE:return '<'+normalized+'>'+body+'</'+normalized+'>'
+        if normalized in INLINE:
+            extra=''.join(' '+k+'="'+html.escape(str(node[k]),quote=True)+'"'for k in ['type','start','reversed','value']if node.has_attr(k))
+            return '<'+normalized+extra+'>'+body+'</'+normalized+'>'
         if tag=='a'and node.get('href'):return '<a href="'+html.escape(node['href'],quote=True)+'">'+body+'</a>'
         return body
     return '\n\n'+walk(table)+'\n\n'

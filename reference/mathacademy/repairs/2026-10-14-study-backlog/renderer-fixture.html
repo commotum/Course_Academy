@@ -7,12 +7,14 @@ import {marked} from '/ui/vendor/marked/marked.esm.js';
 import {romanLists} from '/ui/prose-lists.js';
 import {inlinePrompt} from '/ui/question-fields.js';
 import {protectMath} from '/ui/math-protection.js';
+import {decorateSourceTables} from '/ui/content-tables.js';
+window.decorateSourceTables=decorateSourceTables;
 function el(tag, className, text) {const e=document.createElement(tag);if(className)e.className=className;if(text)e.textContent=text;return e;}
 const source = await (await fetch('/ui/learning.js')).text();
 // Exercise the actual Markdown protection and sanitization used by the player.
 const renderer = source.slice(source.indexOf('function escapeHTML('), source.indexOf('function answerValue('));
 const labels = source.slice(source.indexOf('function fieldLabel('), source.indexOf('\n}', source.indexOf('function fieldLabel(')) + 2);
-const make = new Function('el','marked','romanLists','inlinePrompt','protectMath', labels+';'+renderer+'; return markdown;');
+const make = new Function('el','marked','romanLists','inlinePrompt','protectMath', 'const decorateSourceTables=window.decorateSourceTables;'+labels+';'+renderer+'; return markdown;');
 window.render = make(el,marked,romanLists,inlinePrompt,protectMath);
 await MathJax.startup.promise; window.ready=true;
 </script>
