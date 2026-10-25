@@ -26,19 +26,23 @@ def main():
   evidence['easy_excluded_tasks']=sorted(excluded | (set(evidence.get('excluded_tasks',[]))if kp!=17592186064250 else set()))
   evidence['band_origin']['moderate']='Full calculation with source-supported families and small parameters; mastered prerequisite formulas and routine endpoint values are recalled.'
   evidence['band_origin']['hard']=old_origins['hard'].replace('endpoint values supplied','endpoint values').replace('endpoint facts supplied','endpoint facts recalled').replace('values supplied','values').replace('with familiar endpoint values supplied','with familiar endpoint values')
+  if kp==17592186064250:
+   evidence['band_origin']['easy']+=' The numerator matches the inner derivative with an integer outside factor of at most three.'
+   evidence['band_origin']['moderate']='Full inverse-secant recognition with a small fractional differential adjustment; the absolute-value factor remains visible. All bands use full-answer choices because inverse-function exact entry is unsupported.'
   evidence['support_policy']='mastered-prerequisite-recall';evidence['support_policy_evidence']='reference/edb-math/audits/2026-10-24-integration-hint-provenance/README.md';save(target/'source-evidence.json',evidence)
   contract=json.loads((target/'band-contract.json').read_text());contract['version']=model.VERSION;contract['support_policy']='mastered-prerequisite-recall';contract['band_origin']=evidence['band_origin'];contract['support']='All bands assess complete calculation and recognition of the substitution. Easy uses complete-answer choices and small forms. Moderate uses exact entry where supported. No substitution, primitive or routine endpoint reminders appear before answering. Domain assumptions remain; worked solutions explain every step.'
   for band in('easy','moderate','hard'):
    if isinstance(contract.get(band),dict):contract[band]['provided_substitution']=False;contract[band]['operation']='evaluate';contract[band]['provided_primitive']=False;contract[band]['provided_endpoint_values']=False
+  contract['sampling']='Seeded family-first sampling of complete calculations, with distinct tasks within each band. For inverse secant, absolute-value presentation matters: hard |x| tasks do not exclude an easy matching |ax| presentation merely because their integrands simplify to the same function.'
   if isinstance(contract.get('easy'),dict):contract['easy']['displayed_bank_coefficient_maximum']=12
   save(target/'band-contract.json',contract)
   records=[]
   for band in('easy','moderate','hard'):records+=model.batch(kp,band,8,20261024,evidence=evidence)
   before=json.loads((d/'records-before.json').read_text());assert len(before)==len(records)==24
   for old,new in zip(before,records):
-   if not old['question'][':question/difficulty'].endswith('/easy'):
+   if not old['question'][':question/difficulty'].endswith('/easy')and not(kp==17592186064250 and old['question'][':question/difficulty'].endswith('/moderate')):
     assert content_fingerprint(old['question'])==content_fingerprint(new['question'])
-   else:assert content_fingerprint(old['question'])!=content_fingerprint(new['question'])
+   elif old['question'][':question/difficulty'].endswith('/easy'):assert content_fingerprint(old['question'])!=content_fingerprint(new['question'])
   save(d/'candidate-pool.json',records)
   accepted=copy.deepcopy(records)
   for r in accepted:r['question']=stable_identities(r['question'],evidence['kp']['id'])
@@ -50,6 +54,7 @@ def main():
     shutil.copy2(target/name,ROOT/f'generate/scratch/{kp}.py'if name=='generator.py'else local/name)
    save(local/'capabilities.json',{'supported_levels':['easy','moderate','hard'],'implementation_version':model.VERSION,'band_contract':'band-contract.json','support_policy':'mastered-prerequisite-recall','band_origin':evidence['band_origin'],'maximum_records_per_call':100})
    (local/'README.md').write_text(f'# Substitution practice — KP {kp}\n\nVersion: {model.VERSION}.\n\nAll bands require choosing the substitution and completing the integral. Easy uses full-answer choices and small parameters. Full calculations retrieve mastered integration formulas and routine endpoint values. Complete worked solutions and mathematical domain assumptions remain.\n\nCurrent immutable package and validation: `reference/edb-math/repairs/2026-10-25-restore-substitution-recognition/`. Older extraction and validation artifacts are historical evidence.\n')
-  summary.append({'kp':kp,'version':model.VERSION,'changed_questions':8,'unchanged_full_questions':16});print(kp,'built; retained full-calculation questions preserved',flush=True)
+  old_fps={content_fingerprint(r['question'])for r in before};nnew=sum(content_fingerprint(r['question'])not in old_fps for r in records)
+  summary.append({'kp':kp,'version':model.VERSION,'changed_questions':nnew,'unchanged_full_questions':24-nnew});print(kp,'built; retained full-calculation questions preserved',flush=True)
  save(H/'build-verification.json',{'passed':True,'knowledge_points':summary})
 if __name__=='__main__':main()

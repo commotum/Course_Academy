@@ -64,7 +64,7 @@ def main():
    validate_question(row['question']);validate_prerequisite_recall(row);full_check(row,kp);pairs+=bank_check(row,kp)
    q=row['question'];assert 'Use the substitution'not in q[':question/problem']and 'You may use'not in q[':question/problem']and 'Endpoint values:'not in q[':question/problem']
    assert 'Use the integration rule:'in q[':question/worked-solution']
-  current=json.loads((d/'before.json').read_text());fps=inventory_fingerprints(current[':knowledge-point/questions']+[current[':knowledge-point/canonical-example']]);accepted,duplicates=prepare_records(pool,kp,current[':knowledge-point/id'],fps,ROOT,d/'package');assert len(accepted)==8 and duplicates==16,(kp,len(accepted),duplicates)
+  current=json.loads((d/'before.json').read_text());fps=inventory_fingerprints(current[':knowledge-point/questions']+[current[':knowledge-point/canonical-example']]);accepted,duplicates=prepare_records(pool,kp,current[':knowledge-point/id'],fps,ROOT,d/'package');assert len(accepted)+duplicates==24 and (len(accepted)>=8 if kp==17592186064250 else len(accepted)==8),(kp,len(accepted),duplicates)
   for hint in ('Use the substitution $u=x^2$.','Let $u=x^2$.','You may use $\\int 1/u\\,du=\\ln|u|+C$.'):
    bad=copy.deepcopy(pool[0]);bad['question'][':question/problem']+='\n\n'+hint
    try:policy([bad],kp)
@@ -78,9 +78,9 @@ def main():
     tests=[{'submitted':key,'expected':'accepted'},{'submitted':r'\frac{2\left('+key+r'\right)}{2}','expected':'accepted'},{'submitted':'2('+key+')'if indef else '('+key+')+1','expected':'rejected'}]
     if indef:tests.append({'submitted':'('+key+')+1','expected':'accepted'})
    checks.append({'label':str(kp)+' '+str(i),'record':row,'checks':tests})
-  report={'passed':True,'questions_checked':24,'complete_answer_replacements':8,'unchanged_full_questions':16,'complete_worked_solutions':True,'actual_delivery_duplicates':duplicates,'leaked_target_decision_negative_controls_rejected':True}
+  report={'passed':True,'questions_checked':24,'complete_answer_replacements':len(accepted),'unchanged_full_questions':duplicates,'complete_worked_solutions':True,'actual_delivery_duplicates':duplicates,'leaked_target_decision_negative_controls_rejected':True}
   save(d/'generator-verification.json',report);save(d/'grader-input.json',checks);summaries.append({'kp':kp,**report});graders+=checks
   render.extend([full[0],full[3],full[8],full[16]])
   print(kp,'printed mathematics, complete banks and delivery checked',flush=True)
- save(H/'generator-verification.json',{'passed':True,'knowledge_points':summaries,'questions_checked':288,'distinct_answer_pairs_checked':pairs,'replacements':96,'unchanged_full':192});save(H/'grader-input.json',graders);save(H/'render-input.json',render)
+ save(H/'generator-verification.json',{'passed':True,'knowledge_points':summaries,'questions_checked':288,'distinct_answer_pairs_checked':pairs,'replacements':sum(r['complete_answer_replacements']for r in summaries),'unchanged_full':sum(r['unchanged_full_questions']for r in summaries)});save(H/'grader-input.json',graders);save(H/'render-input.json',render)
 if __name__=='__main__':main()

@@ -38,8 +38,11 @@ def validate_delivery_batch(records,kp_id):
   if kp==17592186064250 and not easy:
    expected='absolute_value_normalization'if band=='hard'else'visible_linear_scaling'
    if m.get('challenge')!=expected:raise ValueError('Secant band challenge mismatch')
+  if kp==17592186064250:
+   factor=Fraction(m['model']['factor'])
+   if easy and factor.denominator!=1 or band=='moderate'and factor.denominator==1:raise ValueError('Secant easy must match the derivative; moderate requires a fractional adjustment')
   if 'numerator'in p:
-   if not 1<=Fraction(p['numerator'])<=4 or Fraction(p['numerator']).denominator!=1:raise ValueError('No fractional numerator composition')
+   if not 1<=Fraction(p['numerator'])<=(12 if kp==17592186064250 and easy else 4) or Fraction(p['numerator']).denominator!=1:raise ValueError('No fractional numerator composition')
    if int(p['A'])not in(1,4,9,16,25)or int(p['B'])not in(1,4,9,16,25):raise ValueError('Only small perfect-square inverse coefficients')
   if 'amplitude'in p and not 1<=int(p['amplitude'])<=4:raise ValueError('Small integer amplitudes required')
   if kp in(17592186184349,17592186184350):

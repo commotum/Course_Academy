@@ -42,6 +42,7 @@ def instance(kp,band,case,rng):
   trans=1/s.sqrt(1-U*U)if fn=='sine'else 1/(1+U*U)if fn=='tangent'else 1/(s.Abs(U)*s.sqrt(U*U-1))
   prim=inverse(fn,U)
   if fn=='secant':
+   if band=='easy':n=a*s.Integer(rng.randint(1,min(3,12//int(a))))
    # Keep the source's absolute-value factor visible; only hard rewrites it.
    body=n/((s.Abs(X)if band=='hard'else s.Abs(a*X))*s.sqrt(a*a*X*X-1))
    factor=n if band=='hard'else n/a
@@ -171,7 +172,9 @@ def generate(kp,level,seed=0,template=None,*,evidence,index=0,attempt=0):
  if case not in CASES[kp][level]:raise ValueError('Unsupported family')
  for offset in range(attempt,attempt+300):
   rng=random.Random(f'{seed}:{kp}:{level}:{case}:{index}:{offset}')
-  m=instance(kp,level,case,rng);record=render(kp,level,case,m,seed,evidence)
+  m=instance(kp,level,case,rng)
+  if kp==17592186064250 and level=='moderate' and m['factor'].is_Integer:continue
+  record=render(kp,level,case,m,seed,evidence)
   if record['generation']['mathematical_fingerprint']in evidence.get('easy_excluded_tasks'if level=='easy'else 'excluded_tasks',[]):continue
   return record
  raise ValueError('Bounded variant capacity exhausted')
