@@ -53,6 +53,7 @@ def current_tables(value):
  return sorted(out,key=lambda r:r['start'])
 
 def key(value):
+ value=re.sub(r'<img\b[^>]*\bsrc=["\']([^"\']+)["\'][^>]*>',lambda m:' IMAGE:'+m[1].rsplit('/',1)[-1]+' ',value,flags=re.I)
  value=re.sub(r'<[^>]+>',' ',value);value=html.unescape(value)
  value=value.replace('[MATH:','').replace(']','')if '[MATH:'in value else value
  value=value.replace(r'\pi','π').replace(r'\alpha','α').replace(r'\beta','β').replace(r'\mu','μ').replace(r'\sigma','σ')
@@ -81,6 +82,7 @@ def source_cell(cell):
    svg.replace_with(NavigableString('$'+value+'$'))
  for node in n.select('input,select,.freeResponseTextbox,.selectList'):
   if node.parent is not None:node.replace_with(NavigableString('BLANK'))
+ for node in n.find_all('img'):node.replace_with(NavigableString('IMAGE:'+node.get('src','').rsplit('/',1)[-1]))
  for node in n.select('script,style,mjx-assistive-mml'):node.decompose()
  return re.sub(r'\s+',' ',n.get_text(' ',strip=True)).strip()
 
