@@ -85,6 +85,9 @@
         },
         "decision_variation": {
           "$ref": "#/$defs/check"
+        },
+        "progression": {
+          "$ref": "#/$defs/check"
         }
       },
       "required": [
@@ -95,7 +98,8 @@
         "grading",
         "rendering",
         "packaging",
-        "decision_variation"
+        "decision_variation",
+        "progression"
       ],
       "additionalProperties": false
     },
@@ -144,6 +148,26 @@
         ],
         "additionalProperties": false
       }
+    },
+    "band_verification": {
+      "type": "object",
+      "properties": {
+        "easy": {
+          "$ref": "#/$defs/band_verification"
+        },
+        "moderate": {
+          "$ref": "#/$defs/band_verification"
+        },
+        "hard": {
+          "$ref": "#/$defs/band_verification"
+        }
+      },
+      "required": [
+        "easy",
+        "moderate",
+        "hard"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -151,7 +175,8 @@
     "summary",
     "source_analysis",
     "checks",
-    "findings"
+    "findings",
+    "band_verification"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -178,6 +203,39 @@
       },
       "required": [
         "status",
+        "evidence_paths",
+        "details"
+      ],
+      "additionalProperties": false
+    },
+    "band_verification": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "batch_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "batch_sha256",
         "evidence_paths",
         "details"
       ],

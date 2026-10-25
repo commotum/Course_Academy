@@ -841,15 +841,16 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertEqual(request['observed_difficulties'], ['moderate'])
         self.assertEqual({job['request']['difficulty'] for job in self.records()
                           if job['request']['jobKind'] == 'refill'}, {'easy', 'moderate', 'hard'})
-        # Rejecting a band is definitive for this variant even if inventory
-        # continues to report observations of that band. Other bands can run.
+        # One rejected all-band review cannot be rerun merely by selecting a
+        # different publication band for the same package.
         def fail(command, **kwargs):
             build.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
             return subprocess.CompletedProcess(command, 1)
         with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
             self.assertTrue(self.jobs.run_one('build', 2))
         self.jobs.accept(inventory)
-        self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], 'moderate')
+        self.assertEqual(json.loads(build.read_text())['state'], 'rejected')
+        self.assertFalse(self.jobs.run_one('build', 2))
         self.assertEqual(len(json.loads(build.read_text())['rejectedVariants']), 1)
 
     def test_review_slot_prefers_observed_reserves_then_falls_back_to_unobserved(self):
@@ -992,7 +993,7 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertEqual(reopened['cycle'], 2)
         self.assertFalse(self.jobs.run_one('build'))
 
-    def test_rejected_band_does_not_retry_unchanged_or_block_another_band(self):
+    def test_rejected_all_band_package_does_not_retry_as_another_band(self):
         ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))
         self.jobs.accept(ranked)
         for band in ('hard', 'moderate'):
@@ -1006,12 +1007,137 @@ class RankedInventoryJobTests(unittest.TestCase):
         with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
             self.jobs.run_one()
         self.jobs.accept(ranked)
-        self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], first_band)
+        self.assertEqual(json.loads(build.read_text())['request']['difficulty'], first_band)
         with patch('inventory_jobs.InventoryJobs._run_pipeline', side_effect=fail):
-            self.jobs.run_one()
+            self.assertFalse(self.jobs.run_one())
         self.jobs.accept(ranked)
         self.assertFalse(self.jobs.run_one())
-        self.assertEqual(len(json.loads(build.read_text())['rejectedVariants']), 2)
+        self.assertEqual(len(json.loads(build.read_text())['rejectedVariants']), 1)
+
+    def test_one_all_band_verification_reopens_all_three_refills(self):
+        script = 'generators/aa/hash/main.py'
+        ranked = self.ranked(self.kp(script=script))
+        self.jobs.accept(ranked)
+        for band in ('easy', 'moderate', 'hard'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        self.assertEqual(json.loads(build.read_text())['request']['verification_bands'], ['easy', 'moderate', 'hard'])
+        self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                'outcome': {'outcome': 'generated', 'verified_package': script,
+                                            'verified_bands': ['easy', 'moderate', 'hard']}})
+        self.jobs.accept(ranked)
+        for band in ('easy', 'moderate', 'hard'):
+            refill = json.loads(self.path_for(1, 'refill', band).read_text())
+            self.assertEqual(refill['state'], 'pending')
+            self.assertEqual(refill['cycle'], 2)
+        self.assertEqual(json.loads(build.read_text())['state'], 'verified')
+        self.assertFalse(self.jobs.run_one('build'))
+
+    def test_explicit_verification_requires_matching_final_package_and_actual_band(self):
+        for package, bands in [('generators/old/hash/main.py', ['easy', 'moderate', 'hard']),
+                               ('generators/aa/hash/main.py', ['easy']),
+                               ('generators/aa/hash/main.py', None)]:
+            with self.subTest(package=package, bands=bands), tempfile.TemporaryDirectory() as directory:
+                self.jobs = InventoryJobs(self.directory, Path(directory), 'learner')
+                ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))
+                self.jobs.accept(ranked)
+                refill = self.path_for(1, 'refill', 'hard')
+                self.jobs.finish(refill, {'state': 'repair-needed', 'completedAt': 10})
+                self.jobs.accept(ranked)
+                build = self.path_for(1, 'build')
+                self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                        'outcome': {'outcome': 'generated', 'verified_package': package,
+                                                    'verified_bands': bands}})
+                self.jobs.accept(ranked)
+                self.assertEqual(json.loads(refill.read_text())['state'], 'repair-needed')
+
+    def test_catchup_reuses_completed_work_across_inventory_refreshes(self):
+        script = 'generators/aa/hash/main.py'
+        ranked = self.ranked(self.kp(script=script))
+        self.jobs.accept(ranked)
+        for band in ('easy', 'moderate', 'hard'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        completed = build.with_suffix('.pipeline') / '1'
+        (completed / 'workspace').mkdir(parents=True)
+        save(completed / 'investigation/result.json', {'verdict': 'ready'})
+        save(completed / 'job.json', {'stage': 'verified', 'request': {'kp': 1},
+                                    'registration': script, 'investigation_complete': True})
+        self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                'outcome': {'outcome': 'generated'}})
+        for _ in range(2):
+            self.jobs.accept(ranked)
+            catchup = json.loads(build.read_text())
+            self.assertEqual(catchup['cycle'], 2)
+            self.assertEqual(catchup['request']['reuse_pipeline'], str(completed))
+            self.assertEqual(catchup['request']['verification_bands'], ['easy', 'moderate', 'hard'])
+
+    def test_legacy_pending_band_reviews_collapse_without_losing_drafts(self):
+        script = 'generators/aa/hash/main.py'
+        ranked = self.ranked(self.kp(script=script))
+        self.jobs.accept(ranked)
+        for band in ('easy', 'moderate', 'hard'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        duplicate = self.jobs.directory / 'legacy-band.json'
+        old = json.loads(build.read_text())
+        old['request'] = {**old['request'], 'difficulty': 'hard'}
+        old['request'].pop('verification_bands')
+        save(duplicate, {**old, 'key': duplicate.stem})
+        saved = duplicate.with_suffix('.pipeline') / '1/job.json'
+        save(saved, {'stage': 'validate'})
+        self.jobs.accept(ranked)
+        builds = [job for job in self.records() if job['request']['jobKind'] == 'build']
+        self.assertEqual(sum(job['state'] in {'pending', 'running'} for job in builds), 1)
+        self.assertEqual(json.loads(duplicate.read_text())['state'], 'running')
+        self.assertEqual(json.loads(build.read_text())['state'], 'withdrawn')
+        self.assertEqual(json.loads(build.read_text())['supersededBy'], str(duplicate))
+        self.assertEqual(json.loads(saved.read_text()), {'stage': 'validate'})
+        self.jobs.accept(ranked)
+        self.assertEqual(json.loads(duplicate.read_text())['cycle'], 1)
+
+    def test_later_engine_review_does_not_resurrect_superseded_draft_except_pending_publication(self):
+        for pending_publication in (False, True):
+            with self.subTest(pending_publication=pending_publication), tempfile.TemporaryDirectory() as directory:
+                self.jobs = InventoryJobs(self.directory, Path(directory), 'learner')
+                script = 'generators/aa/hash/main.py'
+                ranked = self.ranked(self.kp(script=script))
+                self.jobs.accept(ranked)
+                for band in ('easy', 'moderate', 'hard'):
+                    self.jobs.finish(self.path_for(1, 'refill', band),
+                                     {'state': 'repair-needed', 'completedAt': 10})
+                self.jobs.accept(ranked)
+                build = self.path_for(1, 'build')
+                duplicate = self.jobs.directory / 'superseded-band.json'
+                original = json.loads(build.read_text())
+                save(duplicate, {**original, 'key': duplicate.stem, 'state': 'withdrawn',
+                                 'supersededBy': str(build)})
+                draft = duplicate.with_suffix('.pipeline') / '1'
+                save(draft / 'job.json', {'stage': 'validate'})
+                self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                        'outcome': {'outcome': 'generated', 'verified_package': script,
+                                                    'verified_bands': ['easy', 'moderate', 'hard']}})
+                self.jobs.accept(ranked)
+                for band in ('easy', 'moderate', 'hard'):
+                    self.jobs.finish(self.path_for(1, 'refill', band),
+                                     {'state': 'repair-needed', 'completedAt': 30,
+                                      'outcome': {'reason': {'code': 'approval_engine_changed'}}})
+                if pending_publication:
+                    save(draft / 'publication/request.json', {'exact_intent': 'preserve'})
+                self.jobs.accept(ranked)
+                old = json.loads(duplicate.read_text())
+                latest = json.loads(build.read_text())
+                self.assertEqual(old['state'], 'running' if pending_publication else 'withdrawn')
+                self.assertEqual(old['cycle'], 1)
+                self.assertEqual(latest['state'], 'verified' if pending_publication else 'pending')
+                if pending_publication:
+                    self.assertEqual(json.loads((draft / 'publication/request.json').read_text()),
+                                     {'exact_intent': 'preserve'})
+                else:
+                    self.assertEqual(latest['cycle'], 2)
 
     def test_successful_band_review_cannot_be_mistaken_for_next_bands_approval(self):
         ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))

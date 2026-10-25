@@ -2,12 +2,14 @@
 import argparse
 import json
 from pathlib import Path
+import re
 import sys
 import uuid
 
 
-REVIEW_POLICY_VERSION = 5
-CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging")
+REVIEW_POLICY_VERSION = 6
+DIFFICULTIES = ("easy", "moderate", "hard")
+CHECKS = ("source_replay", "math", "variety", "decision_variation", "scope", "grading", "rendering", "packaging", "progression")
 FINDING_KINDS = ("restriction", "drift", "math", "grading", "rendering",
                  "source_fidelity", "decision_shortcut", "packaging", "evidence", "inventory")
 
@@ -180,7 +182,48 @@ def _inventory_evidence(root):
         _evidence([row.get("evidence_path")], root, "affected-inventory.evidence_path", required=True)
 
 
-def validate_review(result, evidence_root):
+def _band_verification(result, evidence_root, binding, accepted):
+    """Check the verifier's explicit results against the runner's final batches.
+
+    Approval concerns generated capabilities, not which sampled records were
+    published. The reviewer judges quality; these checks prevent an omitted,
+    failed, or stale difficulty band from inheriting another band's approval.
+    """
+    bands = result.get("band_verification")
+    if bands is None and not accepted:
+        return
+    if not isinstance(bands, dict) or set(bands) != set(DIFFICULTIES):
+        raise ValueError("band_verification must contain exactly easy, moderate, and hard")
+    if binding is None and accepted:
+        try:
+            binding = json.loads((Path(evidence_root) / "final-binding.json").read_text())
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise ValueError("accepted review requires the runner's final-binding.json") from error
+    batches = binding.get("verification_batches") if isinstance(binding, dict) else None
+    if accepted and (not isinstance(batches, dict) or set(batches) != set(DIFFICULTIES)):
+        raise ValueError("accepted review requires final verification batches for all three bands")
+    for band in DIFFICULTIES:
+        row = bands[band]
+        if not isinstance(row, dict):
+            raise ValueError(f"band_verification.{band} must be an object")
+        status = row.get("status")
+        if status not in {"passed", "failed", "not_applicable"}:
+            raise ValueError(f"band_verification.{band}: invalid status")
+        _text(row.get("details"), f"band_verification.{band}.details")
+        _evidence(row.get("evidence_paths"), evidence_root,
+                  f"band_verification.{band}.evidence_paths", required=status == "passed")
+        claimed_hash = row.get("batch_sha256")
+        if not isinstance(claimed_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", claimed_hash):
+            raise ValueError(f"band_verification.{band} requires a valid batch_sha256")
+        if accepted and status != "passed":
+            raise ValueError(f"accepted review requires passing {band}")
+        if batches is not None:
+            batch = batches.get(band) if isinstance(batches, dict) else None
+            if not isinstance(batch, dict) or claimed_hash != batch.get("batch_hash"):
+                raise ValueError(f"band_verification.{band} does not match the final batch")
+
+
+def validate_review(result, evidence_root, binding=None):
     """Validate structure and on-disk evidence; never infer pedagogical truth.
 
     Raises ValueError for malformed verdicts or an acceptance without evidence.
@@ -212,7 +255,7 @@ def validate_review(result, evidence_root):
             raise ValueError("independent source analysis must be a nonempty JSON object")
     checks = result.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(CHECKS):
-        raise ValueError("review must contain exactly the eight named checks")
+        raise ValueError("review must contain exactly the nine named checks")
     for name in CHECKS:
         check = checks[name]
         if not isinstance(check, dict):
@@ -229,6 +272,7 @@ def validate_review(result, evidence_root):
         _decision_evidence(checks["decision_variation"], evidence_root)
     if checks["scope"]["status"] == "passed":
         _solution_path_evidence(checks["scope"], evidence_root)
+    _band_verification(result, evidence_root, binding, accepted)
     findings = result.get("findings")
     if not isinstance(findings, list):
         raise ValueError("findings must be a list")

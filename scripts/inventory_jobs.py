@@ -17,6 +17,30 @@ import threading
 import time
 from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, priority_key
 
+VERIFICATION_BANDS = ('easy', 'moderate', 'hard')
+
+
+def reviewed_band(job: dict, request: dict) -> bool:
+    """Match completed verification to the current immutable package and band.
+
+    Legacy outcomes prove only their original requested band. New outcomes
+    carry the final package and the actual verified bands, including when a
+    verifier repaired the originally requested package before publishing it.
+    """
+    original, outcome = job.get('request', {}), job.get('outcome', {})
+    if (original.get('jobKind', 'build') != 'build'
+            or original.get('knowledgePoint') != request['knowledgePoint']
+            or outcome.get('outcome') != 'generated'):
+        return False
+    if 'verified_bands' in outcome or 'verified_package' in outcome:
+        bands = outcome.get('verified_bands')
+        return (outcome.get('verified_package') == request.get('script')
+                and isinstance(bands, list) and bool(bands)
+                and all(band in VERIFICATION_BANDS for band in bands)
+                and request['difficulty'] in bands)
+    return (original.get('script') == request.get('script')
+            and original.get('difficulty') == request['difficulty'])
+
 
 def build_worker_count(environment: dict) -> int:
     value = environment.get('COURSE_ACADEMY_GENERATOR_BUILD_WORKERS', '3')
@@ -69,7 +93,8 @@ def speculative_review(request: dict) -> bool:
 
 def review_request(path: Path, previous: dict, request: dict) -> dict:
     """Prefer the failed refill's eligible source over broad inventory ratings."""
-    request = {**request, 'jobKind': 'build', 'stage': 'review-generator'}
+    request = {**request, 'jobKind': 'build', 'stage': 'review-generator',
+               'verification_bands': list(VERIFICATION_BANDS)}
     try:
         source = json.loads((path.with_suffix('.pipeline') / str(previous.get('cycle', 1))
                              / 'source/source.json').read_text())
@@ -151,6 +176,12 @@ def ranked_requests(inventory: dict) -> list[dict]:
 
 def request_variant(request: dict) -> str:
     """Content failures reopen only after a material request change."""
+    if (request.get('stage') == 'review-generator'
+            and request.get('verification_bands') == list(VERIFICATION_BANDS)):
+        # An all-band review is one package task. Changing the publication band
+        # or its shortage cannot turn the same failed review into fresh work.
+        return hashlib.sha256(json.dumps([request.get('knowledgePoint'),
+            'review-generator', request.get('script'), list(VERIFICATION_BANDS)]).encode()).hexdigest()
     return hashlib.sha256(json.dumps([request.get(k) for k in
         ('knowledgePoint', 'stage', 'script', 'difficulty', 'missing')]).encode()).hexdigest()
 
@@ -255,11 +286,7 @@ class InventoryJobs:
                 if old.get('state') != 'repair-needed' or old['request'].get('script') != request['script']:
                     continue
                 successful_review = any(
-                    job['request'].get('jobKind') == 'build'
-                    and job['request']['knowledgePoint'] == request['knowledgePoint']
-                    and job['request']['difficulty'] == request['difficulty']
-                    and job['request'].get('script') == request['script']
-                    and job.get('outcome', {}).get('outcome') == 'generated'
+                    reviewed_band(job, request)
                     and job.get('completedAt', 0) > old.get('completedAt', 0)
                     for _, job in build_records.get(request['knowledgePoint'], []))
                 if successful_review:
@@ -268,8 +295,8 @@ class InventoryJobs:
                     # A refill with missing/stale approval cannot start an
                     # outside agent review while selected work is incomplete.
                     build_requests.append(review_request(refill_path, old, request))
-            # Each package/band is allowed its own independent review, but a
-            # rejected unchanged band must not prevent other bands from running.
+            # New review tasks cover the complete package. Old single-band
+            # rejections do not suppress its first all-band catch-up review.
             blocked = {}
             for job in existing.values():
                 if job['request'].get('jobKind', 'build') == 'build':
@@ -282,7 +309,7 @@ class InventoryJobs:
                 if request_variant(request) not in blocked.get(kp, set()):
                     selected_builds.setdefault(kp, request)
             requests = [*selected_builds.values(), *refill_requests]
-            current = set()
+            current, selected_paths = set(), {}
             for request in requests:
                 kind, kp = request['jobKind'], request['knowledgePoint']
                 key = hashlib.sha256(json.dumps([self.learner, kp, kind,
@@ -291,17 +318,24 @@ class InventoryJobs:
                 if kind == 'build':
                     # Preserve old workspace paths and exact publication request
                     # identities while collapsing old per-band build requests.
-                    candidates = [(p, job) for p, job in build_records.get(kp, []) if p not in current]
+                    candidates = [(p, job) for p, job in build_records.get(kp, [])
+                                  if p not in current and (not job.get('supersededBy')
+                                      or self.publication_recovery(p, job))]
                     if candidates:
                         path, _ = min(candidates, key=lambda pair: (
                             not self.publication_recovery(pair[0], pair[1]),
                             not self.recoverable(pair[0], pair[1]),
+                            pair[1].get('state') != 'running',
                             pair[1]['request'].get('jobKind') != 'build',
                             pair[1].get('state') in {'verified', 'withdrawn'}, pair[0].name))
                         key = path.stem
                 current.add(path)
                 old = existing.get(path, {})
                 recovering = self.recoverable(path, old)
+                if kind == 'build' and request.get('stage') == 'review-generator' and not recovering:
+                    reusable = self.reusable_verification(build_records.get(kp, []), request)
+                    if reusable is not None:
+                        request = {**request, 'reuse_pipeline': str(reusable)}
                 if recovering or old.get('state') == 'running':
                     request = {**request, **{field: old['request'].get(field) for field in
                         ('stage', 'missing', 'script', 'difficulty')},
@@ -327,6 +361,8 @@ class InventoryJobs:
                     # Resume the saved inputs and cycle without promoting an
                     # unfinished draft above currently higher-priority work.
                     state = 'running'
+                if kind == 'build':
+                    selected_paths[kp] = (path, request.get('script'))
                 value = {**old, 'key': key, 'learner': self.learner, 'lineage': lineage,
                          'request': request, 'state': state, 'cycle': cycle, 'recoveryOnly': False}
                 previous = existing.get(path)
@@ -349,6 +385,18 @@ class InventoryJobs:
                 if self.publication_recovery(path, old):
                     save(path, {**old, 'request': {**old['request'], 'jobKind': old['request'].get('jobKind', 'build')},
                                 'state': 'running', 'recoveryOnly': True})
+                elif (old['request'].get('jobKind', 'build') == 'build'
+                      and old['request']['knowledgePoint'] in selected_paths
+                      and old['request'].get('script') == selected_paths[old['request']['knowledgePoint']][1]
+                      and old.get('state') not in {'verified', 'rejected'}):
+                    # One catch-up owns this package's complete verification.
+                    # Keep older drafts/evidence available without dispatching
+                    # another agent just because its original band differed.
+                    replacement = selected_paths[old['request']['knowledgePoint']][0]
+                    updates = {**old, 'state': 'withdrawn', 'recoveryOnly': False,
+                               'supersededBy': str(replacement)}
+                    if updates != old:
+                        save(path, updates)
                 elif self.recoverable(path, old):
                     # Keep the unfinished workspace and cycle, but resume it
                     # only when the inventory supplies a current demand again.
@@ -368,6 +416,31 @@ class InventoryJobs:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
             save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': PRIORITY_POLICY,
                                **({'selection_gate': inventory['selection_gate']} if 'selection_gate' in inventory else {})})
+
+    @staticmethod
+    def reusable_verification(records: list, request: dict) -> Path | None:
+        """Reuse a completed package's investigation and authored workspace.
+
+        This is a resume hint, never an approval: the runner still checks the
+        source identity and verifies every band under its current policy.
+        """
+        for path, job in sorted(records, key=lambda pair: pair[1].get('completedAt', 0), reverse=True):
+            directories = sorted((directory for directory in path.with_suffix('.pipeline').glob('*')
+                                  if directory.is_dir() and directory.name.isdigit()),
+                                 key=lambda directory: int(directory.name), reverse=True)
+            for directory in directories:
+                try:
+                    state = json.loads((directory / 'job.json').read_text())
+                except (OSError, ValueError):
+                    continue
+                if (state.get('stage') == 'verified'
+                        and state.get('request', {}).get('kp') == request['knowledgePoint']
+                        and state.get('registration') == request.get('script')
+                        and state.get('investigation_complete')
+                        and (directory / 'workspace').is_dir()
+                        and (directory / 'investigation/result.json').is_file()):
+                    return directory
+        return None
 
     def _accept_legacy(self, inventory: dict) -> None:
         """Cursor advances only after durable jobs are accepted at this basis."""

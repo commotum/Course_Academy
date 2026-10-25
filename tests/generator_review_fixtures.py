@@ -1,6 +1,26 @@
 """Structured boundary fixtures; these are not pedagogical certification."""
 import json
+import hashlib
 from pathlib import Path
+
+
+def write_band_evidence(directory, binding=None):
+    """Write explicit three-band boundary evidence for structured test agents."""
+    directory = Path(directory)
+    if binding is None:
+        binding = {'verification_batches': {band: {
+            'batch_hash': hashlib.sha256(band.encode()).hexdigest()}
+            for band in ('easy', 'moderate', 'hard')}}
+    (directory / 'final-binding.json').write_text(json.dumps(binding))
+    result = {}
+    for band in ('easy', 'moderate', 'hard'):
+        name = f'{band}-verification.json'
+        row = {'fixture': True, 'band': band,
+               'batch_sha256': binding['verification_batches'][band]['batch_hash']}
+        (directory / name).write_text(json.dumps(row))
+        result[band] = {'status': 'passed', 'batch_sha256': row['batch_sha256'],
+                        'evidence_paths': [name], 'details': 'Structured boundary fixture, not pedagogical certification.'}
+    return result
 
 
 def write_decision_evidence(directory):

@@ -15,7 +15,7 @@ from generator_packages import publish_package, resolve_registered_script
 from generator_pipeline import CodexSession, Pipeline, SessionRetryExhausted, main
 from generator_publish import SourceChanged, digest as source_digest
 from generator_review import CHECKS, REVIEW_POLICY_VERSION
-from generator_review_fixtures import write_decision_evidence
+from generator_review_fixtures import write_decision_evidence, write_band_evidence
 
 
 GENERATOR = textwrap.dedent('''\
@@ -152,7 +152,8 @@ class FakeSession:
         if not self.reject:
             (directory / 'final-binding.json').write_text(json.dumps(context['review_binding']))
         return {"verdict": "revise" if self.reject else "accepted", "summary": "Structured review fixture.",
-                "source_analysis": analysis, "checks": checks, "findings": findings}
+                "source_analysis": analysis, "checks": checks, "findings": findings,
+                "band_verification": write_band_evidence(directory, context["review_binding"])}
 
 
 class FakePublisher:
@@ -885,7 +886,9 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertTrue(result["assets"])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
         approval = json.loads((self.math / "generators/approvals" / approved["package_hash"] / "123.json").read_text())
-        self.assertEqual(set(approval["bands"]), {"easy"})
+        self.assertEqual(set(approval["bands"]), {"easy", "moderate", "hard"})
+        self.assertEqual(approval["publication"]["difficulty"], "easy")
+        self.assertNotIn("publication", approval["bands"]["hard"])
         self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
 
     def downgrade_saved_review(self):
@@ -1090,6 +1093,10 @@ class GeneratorPipelineTests(unittest.TestCase):
                     self.publisher.material = {"question": "Cube 7.", "source_eligibility":{"policy_version":1,"excluded_questions":[]}}
                 elif failure == "band":
                     current["difficulty"] = "hard"
+                    path = self.math / "generators/approvals" / approved["package_hash"] / "123.json"
+                    approval = json.loads(path.read_text())
+                    approval["bands"].pop("hard")
+                    path.write_text(json.dumps(approval))
                 else:
                     (self.math / "generators/approvals" / approved["package_hash"] / "123.json").unlink()
                 session = FakeSession()

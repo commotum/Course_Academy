@@ -22,8 +22,10 @@ from generator_packages import package_digest, publish_package, resolve_register
 from generator_review import REVIEW_POLICY_VERSION, validate_review, evidence_only_review
 from generator_report_repair import generator_repair_findings, pending_report_repair
 from generator_progress import failure_signature, material_identity
+from generator_approval import make_approval, approved_band, ApprovalError
 
 PHASE_POLICY_VERSION = 2
+VERIFICATION_BANDS = ('easy', 'moderate', 'hard')
 
 
 def read(path):
@@ -270,7 +272,9 @@ class Pipeline:
         return {'policy_version': REVIEW_POLICY_VERSION,
                 **{key: self.state.get(key) for key in
                    ('package_hash', 'batch_hash', 'source_hash', 'inventory_hash', 'assets', 'effective_difficulty')},
-                **({'engine_hash': self.state['engine_hash']} if 'engine_hash' in self.state else {})}
+                **({'engine_hash': self.state['engine_hash']} if 'engine_hash' in self.state else {}),
+                'verification_batches': {band: {key: row[key] for key in ('batch_hash', 'assets', 'seed', 'count')}
+                    for band, row in self.state.get('verification_batches', {}).items()}}
 
     def ensure_inventory(self):
         """Backfill delivery evidence for saved jobs without changing their source."""
@@ -302,7 +306,7 @@ class Pipeline:
             raise ValueError('Generator requires a review under the current policy')
         path = Path(self.state['review'])
         review = read(path)
-        validate_review(review, path.parent)
+        validate_review(review, path.parent, self.review_binding())
         if review['verdict'] != 'accepted':
             raise ValueError('Generator publication requires an accepted review')
         return review
@@ -314,23 +318,24 @@ class Pipeline:
         self.verify_approval_inputs()
         review_path = Path(self.state['review'])
         review = self.validate_approved_review()
-        if review['verdict'] != 'accepted' or not self.state.get('publication', {}).get('passed'):
+        if review['verdict'] != 'accepted' or not (self.state.get('publication') or {}).get('passed'):
             raise ValueError('Generator approval requires accepted review and verified publication')
         reference = self.state['registration']
         resolve_registered_script(reference, self.root, self.math_root)
+        if Path(reference).parts[2] != self.state['package_hash']:
+            raise ValueError('Published registration does not match the verified package')
         identity = {**source_identity(read(self.directory / 'source/source.json')),
                     'package_sha256': self.state['package_hash'], 'registration': reference}
         path = self.approval_path()
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.with_suffix('.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
-            old = read(path) if path.exists() else {}
-            bands = old.get('bands', {}) if old.get('identity') == identity else {}
-            bands[self.state['effective_difficulty']] = {
-                'review_policy_version': REVIEW_POLICY_VERSION,
-                'review_sha256': digest(review), 'batch_sha256': self.state['batch_hash'],
-                'evidence': str(review_path), 'publication': self.state['publication']}
-            save(path, {'format': 1, 'identity': identity, 'bands': bands})
+            value = make_approval(identity, review, self.review_binding(), str(review_path),
+                                  self.state['publication'], self.state['effective_difficulty'],
+                                  REVIEW_POLICY_VERSION,
+                                  publication_batch_hash=self.state.get('publication_batch_hash'))
+            save(path, value)
+        self.persist(verified_bands=list(VERIFICATION_BANDS))
 
     def refill_approval(self):
         """A hash alone is not approval: require current registration and scope."""
@@ -345,20 +350,11 @@ class Pipeline:
             raise RefillNeedsReview('approval_missing', 'Registered package needs an independent review before fast refill')
         value = read(path)
         identity = {**source_identity(snapshot), 'package_sha256': self.state['package_hash'], 'registration': reference}
-        if value.get('format') != 1 or value.get('identity') != identity:
-            raise RefillNeedsReview('source_changed', 'Registered package approval does not match current instructional source')
-        band = self.state['request']['difficulty']
-        if band not in value.get('bands', {}):
-            raise RefillNeedsReview('approval_band_missing', 'Registered package has not been reviewed for ' + band)
-        approval = value['bands'][band]
-        if not isinstance(approval, dict) or approval.get('review_policy_version') != REVIEW_POLICY_VERSION:
-            raise RefillNeedsReview('approval_policy_stale',
-                                    'Registered package needs an independent review under the current policy')
-        if (not isinstance(approval, dict) or not approval.get('publication', {}).get('passed')
-                or any(not re.fullmatch(r'[0-9a-f]{64}', str(approval.get(key, '')))
-                       for key in ('review_sha256', 'batch_sha256'))):
-            raise RefillNeedsReview('approval_invalid', 'Registered generator approval is incomplete')
-        return {'identity': identity, 'difficulty': band, 'approval': approval}
+        try:
+            return approved_band(value, identity, self.state['request']['difficulty'],
+                                 REVIEW_POLICY_VERSION, self.engine_identity())
+        except ApprovalError as error:
+            raise RefillNeedsReview(error.code, str(error)) from error
 
     def load_registered_package(self, reference):
         resolve_registered_script(reference, self.root, self.math_root)
@@ -435,6 +431,10 @@ class Pipeline:
                 'review_policy_version': REVIEW_POLICY_VERSION, 'review_binding': self.review_binding(),
                 'math_root': self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math'),
                 'batch_file': str(self.directory / 'samples.json'),
+                'verification_bands': list(VERIFICATION_BANDS),
+                'verification_batches': self.state.get('verification_batches', {}),
+                'sampling_errors': self.state.get('sampling_errors', {}),
+                'prior_verification': self.state.get('prior_verification'),
                 'repair_history_file': str(self.directory / 'repair-history.json'),
                 'repair_mode': 'root_cause' if self.state.get('repair_cycle', 0) or self.state.get('repeated_candidate') else 'targeted',
                 'repair_regressions_file': str(self.directory / 'workspace/repair-regressions.json'),
@@ -500,7 +500,7 @@ class Pipeline:
                                      exemplar_publication={k: v for k, v in published.items()
                                                            if k not in {'questions', 'fresh_source'}},
                                      source_hash=digest(published['fresh_source']), inventory_hash=None)
-                    self.persist(stage='generate', investigation_result=str(directory / 'result.json'),
+                    self.persist(stage='sample' if self.state['request'].get('review_existing') and self.state.get('manifest') else 'generate', investigation_result=str(directory / 'result.json'),
                                  investigation_complete=True, phase_policy_version=PHASE_POLICY_VERSION,
                                  investigation_error=None)
                     return
@@ -516,30 +516,33 @@ class Pipeline:
     def finalize_review(self, evidence):
         """Refresh final bytes before the verifier checks and accepts its repair."""
         evidence = inside(self.directory, evidence)
-        previous_hash = self.state.get('package_hash')
+        previous_hash = self.state.get('publication_package_hash') or self.state.get('package_hash')
+        if (self.state.get('publication') or {}).get('passed') and not self.state.get('publication_batch_hash'):
+            self.persist(publication_batch_hash=self.state['batch_hash'])
         self.check_repair_regressions()
         self.sample()
         candidate = self.candidate_hash()
         if self.state.get('review_after_publication') and candidate != previous_hash:
             publication = self.directory / 'publication'
-            if not (publication / 'verification.json').exists() and not self.state.get('publication', {}).get('passed'):
+            if not (publication / 'verification.json').exists() and not (self.state.get('publication') or {}).get('passed'):
                 raise ValueError('Recover the existing publication before repairing a published package')
             if publication.exists():
                 publication.rename(self.directory / ('publication-before-repair-' + str(time.time_ns())))
-            self.persist(review_after_publication=False, publication=None, registration=None)
+            self.persist(review_after_publication=False, publication=None, registration=None, publication_batch_hash=None, publication_package_hash=None)
         self.persist(package_hash=candidate, stage='validate', approval_recorded=False)
         self.ensure_inventory()
         binding = self.review_binding()
         save(evidence / 'final-binding.json', binding)
         return {'binding': binding, 'batch_file': str(self.directory / 'samples.json'),
                 'assets_directory': self.state['assets_directory'],
-                'instruction': 'Check this final batch, including delivery, grading and visible rendering, before returning accepted.'}
+                'verification_batches': self.state['verification_batches'],
+                'instruction': 'Check every final easy/moderate/hard batch, including delivery, grading, visible rendering, and progression, before returning accepted.'}
 
     def refresh_engine_review(self):
         """Refresh changed grading evidence while keeping its verifier thread."""
         active = (self.state.get('active_review_directory') or self.state.get('report_repair_directory')
                   or (str(Path(self.state['review']).parent) if self.state.get('review') else None))
-        self.sample()
+        self.sample(tolerate_failures=True)
         if not active:
             return
         evidence = inside(self.directory, active)
@@ -606,9 +609,9 @@ class Pipeline:
                     final_path = evidence / 'final-binding.json'
                     if not final_path.exists() or read(final_path) != self.review_binding():
                         raise ValueError('Run finalize_review_command, check its final batch, then return acceptance bound to final-binding.json.')
-                validate_review(result, evidence)
+                validate_review(result, evidence, self.review_binding())
             except EngineChanged:
-                self.sample()
+                self.sample(tolerate_failures=True)
                 save(binding_path, self.review_binding())
                 error = {'error': 'The shared engine changed during verification.',
                          'instruction': 'Continue this same verification session: finalize again and rerun grading plus checks affected by the engine repair.'}
@@ -663,7 +666,7 @@ class Pipeline:
                      review_report_result_file=str(evidence / 'result.json'))
         return True
 
-    def sample(self):
+    def sample(self, *, tolerate_failures=False):
         source, manifest = self.manifest()
         difficulty = self.state['request']['difficulty']
         if difficulty == 'unclassified':
@@ -677,11 +680,41 @@ class Pipeline:
             if difficulty not in {'easy', 'moderate', 'hard'}:
                 raise ValueError('Classification requires a source-justified default_difficulty in package.json')
         self.persist(effective_difficulty=difficulty)
-        runtime = self.directory / f'runtime-{self.state["attempt"]}'
+        bands = (difficulty,) if self.is_refill else VERIFICATION_BANDS
+        batches, errors = {}, {}
+        for index, band in enumerate(bands):
+            primary = band == difficulty
+            seed = self.state['seed'] if primary else (self.state['seed'] + index + 1) % (2 ** 32)
+            count = self.state['request']['count'] if primary else max(5, self.state['request']['count'])
+            try:
+                batches[band] = self.sample_band(source, manifest, band, count, seed,
+                                                 '' if primary else '-' + band)
+            except (OSError, ValueError, subprocess.SubprocessError) as error:
+                if not tolerate_failures:
+                    raise
+                errors[band] = str(error)
+        primary = batches.get(difficulty)
+        if primary is None:
+            # A broken catch-up package belongs to the verifier. This explicit
+            # empty placeholder cannot be approved: finalization must produce
+            # every complete batch before the report contract can pass.
+            path = self.directory / 'samples.json'
+            save(path, [])
+            primary = {'batch_hash': digest([]), 'runtime': str(self.directory / f'runtime-{self.state["attempt"]}'),
+                       'assets_directory': str(self.directory / f'outputs-{self.state["attempt"]}'), 'assets': {}}
+
+        self.persist(batch_hash=primary['batch_hash'], runtime=primary['runtime'],
+                     assets_directory=primary['assets_directory'], assets=primary['assets'],
+                     engine_hash=self.engine_identity(), verification_batches={} if self.is_refill else batches,
+                     sampling_errors=errors,
+                     report_repair_directory=None, review_report_error=None, review_report_result_file=None)
+
+    def sample_band(self, source, manifest, difficulty, count, seed, suffix):
+        runtime = self.directory / f'runtime-{self.state["attempt"]}{suffix}'
         if runtime.exists():
             shutil.rmtree(runtime)
         runtime.mkdir(exist_ok=True)
-        output = self.directory / f'outputs-{self.state["attempt"]}'
+        output = self.directory / f'outputs-{self.state["attempt"]}{suffix}'
         if output.exists():
             shutil.rmtree(output)
         for name in manifest['files']:
@@ -689,8 +722,8 @@ class Pipeline:
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(inside(source, name), destination)
         command = [python_executable(self.root, self.environment), '-E', '-s', '-B', str(inside(runtime, manifest['entrypoint'])),
-                   '--difficulty', difficulty, '--count', str(self.state['request']['count']),
-                   '--seed', str(self.state['seed']), '--format', 'json']
+                   '--difficulty', difficulty, '--count', str(count),
+                   '--seed', str(seed), '--format', 'json']
         env = {**self.environment, 'PYTHONDONTWRITEBYTECODE': '1', 'MPLBACKEND': 'Agg',
                'COURSE_ACADEMY_REPO_ROOT': str(self.root),
                'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR': str(output)}
@@ -711,7 +744,7 @@ class Pipeline:
         records = outputs[0]
         if isinstance(records, dict):
             records = records.get('records', records.get('questions', [records] if 'question' in records else None))
-        if not isinstance(records, list) or len(records) != self.state['request']['count']:
+        if not isinstance(records, list) or len(records) != count:
             raise ValueError('Generator must return exactly the requested number of records; report finite limits explicitly')
         if any(not isinstance(r, dict) or not isinstance(r.get('question'), dict) for r in records):
             raise ValueError('Each generated record must contain a question object')
@@ -723,12 +756,11 @@ class Pipeline:
                 raise ValueError('Generated question is in the wrong difficulty band')
         if self.candidate_hash() != package_digest(runtime, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies')):
             raise ValueError('Running generator modified its declared package files')
-        save(self.directory / 'samples.json', records)
-        self.persist(batch_hash=digest(records), runtime=str(runtime), assets_directory=str(output),
-                     engine_hash=self.engine_identity(),
-                     report_repair_directory=None, review_report_error=None,
-                     review_report_result_file=None,
-                     assets=asset_hashes(records, output, self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')))
+        batch_file = self.directory / ('samples' + suffix + '.json')
+        save(batch_file, records)
+        return {'batch_file': str(batch_file), 'batch_hash': digest(records),
+                'runtime': str(runtime), 'assets_directory': str(output), 'seed': seed, 'count': count,
+                'assets': asset_hashes(records, output, self.math_root)}
 
     def verify_approval_inputs(self):
         if self.candidate_hash() != self.state['package_hash'] or digest(read(self.directory / 'samples.json')) != self.state['batch_hash']:
@@ -740,6 +772,12 @@ class Pipeline:
             raise ValueError('Reviewed delivery inventory changed')
         if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in self.state['assets'].items()):
             raise ValueError('Reviewed image bytes changed')
+        for band, batch in self.state.get('verification_batches', {}).items():
+            if digest(read(batch['batch_file'])) != batch['batch_hash']:
+                raise ValueError('Reviewed ' + band + ' verification batch changed')
+            if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha
+                   for path, sha in batch['assets'].items()):
+                raise ValueError('Reviewed ' + band + ' image bytes changed')
         _, manifest = self.manifest()
         observed = check_dependencies(manifest['dependencies'], python_executable(self.root, self.environment), environment=self.environment)
         if observed != read(self.directory / 'runtime-dependencies.json'):
@@ -983,6 +1021,81 @@ class Pipeline:
                      author_attempt_limit=self.state['attempt'] + self.max_attempts,
                      review_session_limit=len(self.state.get('review_sessions', [])) + self.max_attempts * 3)
 
+    def upgrade_verification(self):
+        """Resume saved single-band work in its verifier, never grant new bands."""
+        if self.is_refill or self.state.get('verification_policy_version') == REVIEW_POLICY_VERSION:
+            return
+        if self.state['stage'] not in {'validate', 'prepare', 'verified'}:
+            return
+        previous = self.state.get('review')
+        active = self.state.get('active_review_directory') or self.state.get('report_repair_directory')
+        if self.state.get('publication') and self.state['publication'].get('passed'):
+            self.persist(publication_batch_hash=self.state.get('publication_batch_hash', self.state.get('batch_hash')),
+                         publication_package_hash=self.state.get('publication_package_hash') or self.state.get('package_hash'))
+        # A new sample checkpoint already contains all bands. Old saved jobs do
+        # not, so sample them once without authoring or publishing again.
+        extending_scope = (set(self.state.get('verification_batches', {})) != set(VERIFICATION_BANDS)
+                           or bool(previous) and self.state.get('review_policy_version') != REVIEW_POLICY_VERSION)
+        if set(self.state.get('verification_batches', {})) != set(VERIFICATION_BANDS):
+            self.sample(tolerate_failures=True)
+        self.persist(package_hash=self.candidate_hash())
+        updates = {'verification_policy_version': REVIEW_POLICY_VERSION}
+        if extending_scope:
+            updates.update(review_session_limit=max(self.state.get('review_session_limit', 0),
+                                len(self.state.get('review_sessions', [])) + 3),
+                           verification_upgrade={'policy': REVIEW_POLICY_VERSION, 'time': time.time(),
+                               'reason': 'One bounded catch-up allowance for newly required difficulty bands.'})
+        if previous:
+            updates['prior_verification'] = previous
+        if active:
+            evidence = inside(self.directory, active)
+            path = evidence / 'review-binding.json'
+            if path.exists():
+                save(evidence / ('binding-before-all-bands-' + str(time.time_ns()) + '.json'), read(path))
+            save(path, self.review_binding())
+            rounds = self.state.get('review_report_rounds', {})
+            count = max(1, rounds.get(str(evidence), 0))
+            while (evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}') / 'result.json').exists():
+                count += 1
+            rounds[str(evidence)] = count
+            if extending_scope:
+                limits = self.state.get('review_report_limits', {})
+                limits[str(evidence)] = max(limits.get(str(evidence), self.max_attempts * 3), count + 3)
+                updates['review_report_limits'] = limits
+            updates.update(active_review_directory=str(evidence), report_repair_directory=str(evidence),
+                review_report_rounds=rounds,
+                review_report_error={'error': 'Verification now covers easy, moderate and hard together.',
+                    'instruction': 'Reuse your investigation and checks, test and repair all three final batches, check progression, and finalize again. Earlier single-band acceptance is evidence, not all-band approval.'})
+        self.persist(**updates)
+
+    def reuse_completed_work(self):
+        """Adopt same-package investigation and authored workspace for catch-up."""
+        previous = self.state['request'].get('reuse_pipeline')
+        if not previous:
+            return False
+        directory = Path(previous).resolve()
+        prior = read(directory / 'job.json')
+        if (prior.get('stage') != 'verified' or prior['request']['kp'] != self.state['request']['kp']
+                or prior.get('registration') != self.state['request'].get('registered_package')
+                or not prior.get('investigation_complete')
+                or source_identity(read(directory / 'source/source.json')) != source_identity(read(self.directory / 'source/source.json'))):
+            return False
+        old_workspace = directory / 'workspace'
+        if not old_workspace.is_dir():
+            return False
+        shutil.copytree(old_workspace, self.directory / 'workspace', dirs_exist_ok=True)
+        self.persist(manifest=prior['manifest'])
+        if self.candidate_hash() != prior.get('package_hash'):
+            # A retained workspace can have later edits; reload the immutable
+            # registered version rather than trusting those unreviewed bytes.
+            self.load_registered_package(prior['registration'])
+        self.persist(stage='sample', investigation_complete=True,
+                     investigation_file=prior.get('investigation_file'),
+                     investigation_result=prior.get('investigation_result'),
+                     exemplars_file=prior.get('exemplars_file'),
+                     reused_pipeline=str(directory), prior_verification=prior.get('review'))
+        return True
+
     def _run(self, stop_after):
         stale_retries = 0
         while True:
@@ -1016,6 +1129,7 @@ class Pipeline:
                                  review=None,review_binding=None,review_policy_version=None,approval_recorded=False,
                                  source_eligibility_refreshed=True)
                     continue
+            self.upgrade_verification()
             error = self.state.get('error')
             if stage == 'failed' and isinstance(error, dict) and error.get('code') == 'review_contract_invalid':
                 rounds = self.state.get('review_report_rounds', {})
@@ -1071,6 +1185,8 @@ class Pipeline:
                         self.persist(manifest=str(manifest.relative_to(self.directory / 'workspace')))
                     else:
                         self.load_registered_package(reference)
+                    if self.state['request'].get('reuse_pipeline'):
+                        self.reuse_completed_work()
             elif stage == 'investigate':
                 self.investigate()
             elif stage == 'refill':
@@ -1122,7 +1238,7 @@ class Pipeline:
                         self.block('no_progress', {'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}, 'generate')
                         return self.state
                     self.check_repair_regressions()
-                    self.sample()
+                    self.sample(tolerate_failures=bool(self.state['request'].get('review_existing')))
                     self.persist(stage='validate', package_hash=candidate)
                 except (OSError, ValueError, subprocess.SubprocessError) as error:
                     self.repair({'error': str(error)})
@@ -1183,7 +1299,8 @@ class Pipeline:
                         raise
                     self.repair({'code': 'preparation_invalid', 'error': str(error)})
                     continue
-                self.persist(stage='push', registration=package.reference)
+                self.persist(stage='push', registration=package.reference, publication_batch_hash=self.state['batch_hash'],
+                             publication_package_hash=package.digest)
             elif stage == 'push':
                 if stop_after != 'push':
                     return self.state
@@ -1257,6 +1374,10 @@ def main(argv=None):
             request = {'kp': kp, 'difficulty': difficulty, 'count': count, 'existing_entrypoint': existing}
             if job_kind:
                 request['job_kind'] = job_kind
+            if args.inventory_job and job['request'].get('stage') == 'review-generator':
+                request['review_existing'] = True
+            if args.inventory_job and job['request'].get('reuse_pipeline'):
+                request['reuse_pipeline'] = job['request']['reuse_pipeline']
             if registered and (registered.startswith('generators/') or job_kind == 'refill'):
                 request['registered_package'] = registered
             # Once admitted, keep the original inputs across inventory refreshes.
@@ -1271,7 +1392,9 @@ def main(argv=None):
                     'evidence': str(directory / 'job.json'), 'generator': result.get('registration'),
                     'publication': result.get('publication'), 'needs_repair': result.get('needs_repair', False),
                     'difficulty': result.get('effective_difficulty', request['difficulty']),
-                    'package': request.get('registered_package'), 'reason': result.get('error')})
+                    'package': request.get('registered_package'), 'reason': result.get('error'),
+                    'verified_bands': result.get('verified_bands', []) if result['stage'] == 'verified' else [],
+                    'verified_package': result.get('registration') if result.get('approval_recorded') else None})
             failed |= result['stage'] in {'blocked', 'failed', 'unsupported', 'repair', 'report-repair'}
         except RunnerChanged:
             # Completed agent output and durable DB intents are already saved.

@@ -14,12 +14,15 @@ adopted from `generate/runs/current/manifest.json`; the command does not start
 the whole campaign.
 
 Omit `--difficulty` (or use `auto`) to classify the source and choose a justified
-band. An explicit band is never silently replaced. Inventory classification
-requests likewise produce a reviewed initial batch; existing source questions
-are preserved.
+initial publication band. An explicit band is never silently replaced. Every
+build implements and verifies easy, moderate, and hard together; the requested
+band controls immediate inventory publication, not generator coverage. Existing
+source questions are preserved.
 
 When generation is enabled, the learner application defaults to three concurrent
-generator builders and one independent refill worker. Builders use the
+generator builders and one independent refill worker. This installation sets
+`COURSE_ACADEMY_GENERATOR_BUILD_WORKERS=6`, so it runs six builders plus the refill
+worker. Builders use the
 [finder's urgency ordering](scripts/README.md). With two or more builders, one
 slot prefers queued reviews of existing packages, so a continuing lesson backlog
 cannot consume all approval-review capacity. Immediate activity deficits and
@@ -29,14 +32,13 @@ finder order. Shared KP locks prevent builders and refills from publishing
 competing versions. Builder slot locks preserve the total concurrency limit
 across service restarts.
 
-Within routine reserve reviews, bands observed in the KP's question inventory
-come before unobserved bands, both when selecting a KP's next review and when the
-review slot claims work. A failed refill's saved eligible-source capture takes
-precedence over the broader inventory ratings when its KP, lineage and registered
-package still match. Shortage and assessment-variety requests retain their
-priority. Observed ratings are a scheduling hint, not proof that a package can
-generate that band or permission to publish it. Unobserved bands remain queued as
-background work. Missing imported examples do not make a difficulty unsupported; investigation supplies complete exemplars.
+Each review covers the entire package's three difficulty bands. Pending review
+requests for different bands of the same KP/package are consolidated into one
+catch-up review; they do not create a separate background approval backlog per
+band. Observed imported ratings can still prioritize routine reserve work, but
+they neither limit the review's coverage nor approve a package. Shortage and
+assessment-variety requests retain their priority. Missing imported examples do
+not make a difficulty unsupported; investigation supplies complete exemplars.
 
 In self-directed mode, ordinary lesson preparation follows the same L30+ targets,
 queue, and depth-two prerequisite scope as Study, with the same below-band-one
@@ -75,14 +77,16 @@ Each build uses three headless `gpt-6.1-sol` agents with `high` reasoning:
    three complete exemplars, one easy, one moderate, and one hard. The runner
    publishes them as ordinary questions under the target KP using `:agent/codex`
    provenance. No reconstruction labels or imported Math Academy IDs are added.
-2. **Author:** The author builds or continues a relocatable Python generator from
-   the target material and completed exemplars. It may revise earlier assumptions
-   and repair relevant shared tools or the answer engine. The runner samples twice
-   at the saved seed and compares records and asset bytes for deterministic replay.
+2. **Author:** The author builds or continues one relocatable Python generator
+   supporting easy, moderate, and hard from the target material and completed
+   exemplars. It may revise earlier assumptions and repair relevant shared tools
+   or the answer engine. The runner samples every band twice at its saved seed
+   and compares records and asset bytes for deterministic replay.
 3. **Verify and repair:** The verifier first examines the instructional evidence
    independently, then tests and repairs the generator in the same persistent
    session. It owns mathematics, pedagogy, grading, rendering, packaging, and
-   delivered variation. Earlier requirements may be overridden with evidence.
+   delivered variation across all three bands, including their progression.
+   Earlier requirements may be overridden with evidence.
    Shared-tool defects and report omissions are corrected by this verifier rather
    than handed to another agent. There is no fourth approval agent.
 
@@ -94,8 +98,9 @@ new output must be repaired and checked before acceptance.
 `:knowledge-point/level-coverage` is a cardinality-many ref recording observed
 imported labels independently of completeness. Its values are easy, moderate,
 hard, or `:question.difficulty/unobserved` alone when no imported label exists.
-Authored exemplars do not add observed coverage, and unobserved is not a served
-question difficulty. The script installs/backfills coverage through the existing
+Authored exemplars and verified generator capabilities do not add observed
+coverage, and unobserved is not a served question difficulty. The script
+installs/backfills coverage through the existing
 EDB transport, with durable requests and exact-basis readback:
 
 ```bash
@@ -115,13 +120,16 @@ build outputs are declared with repeated `--artifact` options. The same agent
 resolves conflicts and retries its repair. Ordinary per-KP package changes need
 no shared lock, and workers never edit another KP's job or imported questions.
 
-The verifier calls `finalize_review_command` after its repairs. This regenerates
-the final batch and assets and saves `final-binding.json` for the actual package,
-source, inventory, and engine. It checks those final outputs and validates its
+The verifier calls `finalize_review_command` before acceptance, including when
+no repair was needed. This regenerates all three final batches and assets and
+saves `final-binding.json` for the actual package, source, inventory, and engine.
+It checks those final outputs and validates its
 report with `scripts/generator_review.py --result FILE --evidence-root DIRECTORY`
 before returning. Report corrections resume the same persistent verifier session.
-Acceptance requires evidence for all eight checks: source replay, mathematics,
-variety, decision-relevant variation, scope, grading, rendering, and packaging.
+Acceptance requires explicit passing results for easy, moderate, and hard with
+their final batch hashes, plus nine shared checks: source replay, mathematics,
+variety, decision-relevant variation, scope, grading, rendering, packaging, and
+progression. Shared analysis need not be repeated in three separate reports.
 
 [Shared validation tools](pipeline/validation-tools.md) use the actual publication
 filter, native grader, and learning UI. The renderer ignores hidden native
@@ -134,13 +142,29 @@ immutable package/assets, preview the typed EDB forms, retain the exact guarded
 request, submit it, and verify receipt and readback. Lost replies recover the
 same request before new work. No human approval is required.
 
-Approval remains specific to package, instructional source, database lineage,
-KP, difficulty, and review policy. Policy 5 supports the three phases and verifier
-repairs. Existing certificates that lack the current policy enter the normal
-review queue; earlier published questions remain available. One approved band
-does not certify other bands. Saved pre-policy blocked jobs are migrated into
-investigation while retaining their work and original error history; uncertain
-publication requests are recovered first.
+Policy 6 records all three verified capabilities together, tied to one final
+package, instructional source, database lineage, KP, answer engine, and review
+session. Its format-2 approval record stores the actual publication receipt and
+published band separately from the three verification results. Testing a band
+does not claim that its sampled questions were published. Only needed inventory
+is published, and later refills use the recorded verified band set instead of
+the original review request's difficulty.
+
+Existing single-band approvals require one all-band catch-up review per
+KP/package. That review reuses the completed investigation, exemplars, authored
+package, and applicable evidence; it does not restart those phases merely to
+obtain the other band approvals. A policy upgrade does not relabel old evidence
+as new passes. Earlier published questions remain available, and uncertain
+publication requests are recovered before any new work. Older jobs that never
+completed the three-phase investigation still use its existing migration, which
+retains drafts and error history.
+
+If an existing package cannot initially sample one of the new verification
+bands, the catch-up verifier receives the actual sampling errors and repairs
+that capability in its session. Strict finalization must then produce all three
+complete batches before acceptance. The policy migration grants a recorded,
+bounded allowance for its newly required review work; ordinary restarts still
+do not replenish retry budgets.
 
 `--stop-after generate`, `validate`, or `prepare` stops after sampling, final
 verification, or preparation respectively. Preparation publishes files to the
@@ -152,7 +176,7 @@ to resume through verified publication.
 Manual jobs live under `.local/generation/<database>/<kp>-<difficulty>/`.
 Inventory jobs keep their pipeline directory beside the existing inventory job.
 Each has `job.json`, the source snapshot, investigation/author/verifier JSONL logs and evidence,
-the sampled batch, and a publication directory containing preparation, request,
+the sampled batches, and a publication directory containing preparation, request,
 receipt and verification records. Read `job.json` for the current stage and last
 content failure. A process or transport failure leaves its current stage resumable.
 Unfinished authoring and review drafts resume according to the current generator
@@ -206,7 +230,8 @@ contributor. Codex uses the existing login; every phase explicitly selects
 - `COURSE_ACADEMY_CODEX_EXECUTABLE`: explicit Codex CLI path.
 - `COURSE_ACADEMY_GENERATOR_PYTHON`: Python interpreter; defaults to `.venv/bin/python`.
 - `COURSE_ACADEMY_GENERATOR_BUILD_WORKERS`: simultaneous builder pipelines;
-  defaults to 3. Each pipeline runs investigation, authorship, and verification/repair. The
+  defaults to 3; this installation configures 6. Each pipeline runs investigation,
+  authorship, and verification/repair. The
   refill worker runs separately. Set to 1 for sequential builds; restart the
   service after changing the setting.
 - `COURSE_ACADEMY_GENERATOR_REVIEW_WORKERS`: builder slots that prefer pending

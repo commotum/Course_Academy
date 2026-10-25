@@ -13,6 +13,7 @@ def main():
    c['fields'].append({'id':f[':db/id'],'key':f[':answer-field/key'],'type':str(f[':answer-field/type'][':db/ident']).split('/')[-1],'answerType':'math','choices':[{'id':a[':db/id'],'value':a[':answer/value'],'type':str(a[':answer/type'][':db/ident']).split('/')[-1]}for a in f.get(':answer-field/choices',[])]})
  fixture=(R/'reference/mathacademy/repairs/2026-10-14-study-backlog/renderer-fixture.html').read_text().replace('<!doctype html>','<!doctype html><html data-theme="light"><link rel="stylesheet" href="/ui/navigation.css">')
  css=(H/'presentation.css').read_text();fixture=fixture.replace('<style>','<style>'+css,1)
+ fixture=fixture.replace('html{color-scheme:light}body{background:white;color:#171717}.content-card{background:white}','')
  fixture=fixture.replace('import {inlinePrompt}', 'import {inlinePrompt,mountInlineFields,blankInput,richSelect,loadMathInputs}')
  extra="""
 import {sourceTable,decorateSourceTables} from '/reference/edb-math/audits/2026-10-24-html-table-fidelity/presentation.js';

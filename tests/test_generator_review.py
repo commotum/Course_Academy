@@ -10,7 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_review import CHECKS, validate_review, _inventory_evidence, main
-from generator_review_fixtures import write_decision_evidence
+from generator_review_fixtures import write_decision_evidence, write_band_evidence
 
 
 def load(path, name):
@@ -35,6 +35,7 @@ class ReviewEvidenceTests(unittest.TestCase):
             "checks": {name: {"status": "passed", "details": "Recorded reproducible check.",
                               "evidence_paths": ["measurements.json"]} for name in CHECKS},
             "findings": [],
+            "band_verification": write_band_evidence(self.directory),
         }
 
         evidence = write_decision_evidence(self.directory)
@@ -95,11 +96,59 @@ class ReviewEvidenceTests(unittest.TestCase):
     def test_old_or_cosmetic_only_reviews_cannot_pass_new_gate(self):
         legacy = copy.deepcopy(self.review)
         del legacy["checks"]["decision_variation"]
-        with self.assertRaisesRegex(ValueError, "eight named checks"):
+        with self.assertRaisesRegex(ValueError, "nine named checks"):
             validate_review(legacy, self.directory)
         self.review["checks"]["decision_variation"]["evidence_paths"] = ["measurements.json"]
         with self.assertRaisesRegex(ValueError, "pedagogical-variation.json"):
             validate_review(self.review, self.directory)
+
+    def test_all_bands_require_explicit_current_evidence(self):
+        for mutation in (
+            lambda r: r.pop('band_verification'),
+            lambda r: r['band_verification'].pop('hard'),
+            lambda r: r['band_verification'].update(unobserved=r['band_verification']['easy']),
+            lambda r: r['band_verification']['hard'].update(status='failed'),
+            lambda r: r['band_verification']['moderate'].update(status='not_applicable'),
+            lambda r: r['band_verification']['easy'].update(evidence_paths=[]),
+            lambda r: r['band_verification']['hard'].update(evidence_paths=['invented.json']),
+            lambda r: r['band_verification']['hard'].update(batch_sha256='bad'),
+            lambda r: r['band_verification']['hard'].update(batch_sha256=r['band_verification']['easy']['batch_sha256']),
+        ):
+            result = copy.deepcopy(self.review)
+            mutation(result)
+            with self.assertRaises(ValueError):
+                validate_review(result, self.directory)
+        validate_review(self.review, self.directory)
+
+    def test_stale_final_binding_cannot_approve_an_unchanged_report(self):
+        path = self.directory / 'final-binding.json'
+        binding = json.loads(path.read_text())
+        validate_review(self.review, self.directory, binding)
+        binding['verification_batches']['hard']['batch_hash'] = 'f' * 64
+        with self.assertRaisesRegex(ValueError, 'hard does not match the final batch'):
+            validate_review(self.review, self.directory, binding)
+        path.write_text(json.dumps(binding))
+        with self.assertRaisesRegex(ValueError, 'hard does not match the final batch'):
+            validate_review(self.review, self.directory)
+
+    def test_band_approval_requires_runner_finalization_and_progression(self):
+        original = copy.deepcopy(self.review)
+        self.review['checks']['progression'].update(status='failed')
+        with self.assertRaisesRegex(ValueError, 'passing progression'):
+            validate_review(self.review, self.directory)
+        self.review = original
+        (self.directory / 'final-binding.json').unlink()
+        with self.assertRaisesRegex(ValueError, 'final-binding.json'):
+            validate_review(self.review, self.directory)
+        with self.assertRaisesRegex(ValueError, 'verification batches for all three bands'):
+            validate_review(self.review, self.directory, {'verification_batches': {'easy': {}}})
+
+    def test_review_schema_requires_three_bands_and_progression(self):
+        schema = json.loads((ROOT / 'generate/pipeline/review.schema.json').read_text())
+        self.assertIn('band_verification', schema['required'])
+        self.assertEqual(set(schema['properties']['band_verification']['required']),
+                         {'easy', 'moderate', 'hard'})
+        self.assertEqual(set(schema['properties']['checks']['required']), set(CHECKS))
 
     def test_distribution_evidence_rejects_missing_pairs_aggregate_only_and_known_shortcuts(self):
         path = self.directory / "pedagogical-variation.json"
