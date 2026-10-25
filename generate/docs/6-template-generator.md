@@ -4,6 +4,8 @@ Treat imported formatting as evidence to normalize, not a template to copy blind
 
 Use the templates from [Template Extraction](4-template-extraction.md), including any attached plot specifications. Start with one Python script in `generate/scratch/<knowledge-point-db-id>.py`, with documented sections for each difficulty and shared helpers.
 
+For source HTML tables, preserve the source-table HTML contract described in [activity capture](../../capture/docs/3-activity-capture.md): actual cell roles, merged cells, nested tables, alignment, grid rules, and shading. Source replay must use the corrected canonical table layout. Keep existing field keys and answer entity identities. Markdown tables are appropriate for newly authored simple tables with genuine column headers; never infer headers or flatten an imported table into a line of text.
+
 For matrix-entry questions, use `matrix_operands()` and `matrix_answer()` from [math_format.py](../../scripts/question_capture/math_format.py). Put separately wrapping, centered given matrices below the prose. Render the answer as a borderless rectangular matrix with external brackets and the expression outside it. Pass bare TeX for supplied entries and the existing `{{field-key}}` placeholders for editable entries, preserving row and column order. Do not use padded Markdown tables, blank label columns, or spreadsheet grid lines. Radio choices remain their existing matrix answers.
 
 1. Use SymPy for exact symbolic work, seeded randomness for reproducible sampling, and Matplotlib for plots, with TikZ when needed.

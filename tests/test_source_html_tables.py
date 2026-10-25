@@ -33,6 +33,9 @@ class SourceTableTests(unittest.TestCase):
  def test_no_invented_headers_and_safe_text(self):
   for name,value in self.values('<table><tr><td>A &amp; B</td><td>3 &lt; 4</td></tr></table>').items():
    self.assertNotIn('<th',value,name);self.assertIn('A &amp; B',value);self.assertIn('3 &lt; 4',value)
+ def test_literal_dollar_is_not_a_math_delimiter(self):
+  for name,value in self.values('<table><tr><td>Price ($)</td><td>Number</td></tr><tr><td><math><mn>50</mn></math></td><td><math><mn>2</mn></math></td></tr></table>').items():
+   self.assertIn(r'Price (\$)',value,name);self.assertIn('$50$',value,name)
  def test_widgets_and_assets_preserve_markers(self):
   renderer=Renderer(None);html='<table><tr><td><span class="freeResponseTextbox"><math><mn>2</mn></math></span></td></tr></table>';value=renderer.render(BeautifulSoup(html,'html.parser').find('table'),True);self.assertIn('{{field-1}}',value);self.assertEqual(renderer.fields[0]['correct_value'],'2')
   value=html_to_markdown('<table><tr><td><img src="images/diagram.png" alt="Graph"></td></tr></table>');self.assertIn('<img src="images/diagram.png" alt="Graph">',value)

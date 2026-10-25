@@ -12,8 +12,8 @@ def escaped_text(value):
     """Keep protected TeX exact; escape only ordinary HTML text."""
     value=str(value);parts=[];end=0
     for m in MATH.finditer(value):
-        parts.extend([html.escape(value[end:m.start()],quote=False),m[0]]);end=m.end()
-    return ''.join(parts)+html.escape(value[end:],quote=False)
+        parts.extend([re.sub(r'(?<!\\)\$',lambda m:r'\$',html.escape(value[end:m.start()],quote=False)),m[0]]);end=m.end()
+    return ''.join(parts)+re.sub(r'(?<!\\)\$',lambda m:r'\$',html.escape(value[end:],quote=False))
 
 def properties(node):
     return {k.strip().lower():v.strip() for k,v in

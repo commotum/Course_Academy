@@ -108,7 +108,7 @@ def version():
     digest = hashlib.sha256()
     paths = [PACKAGE/name for name in ('core.py','database.py','edb_transport.py','edn.py',
                                       'provenance.py','math_notation.py','native_comparison.py','import_repair.py',
-                                      'math_database.py','math_content.py','activities.py','image_library.py','authoritative.py')]
+                                      'math_database.py','math_content.py','activities.py','html_tables.py','image_library.py','authoritative.py')]
     # The checker runs an installed executable, not its Rust source files.
     # Unbuilt edits and changes to sweep bookkeeping cannot fix old imports.
     # availability() below hashes the actual executable when it changes.

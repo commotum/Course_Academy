@@ -88,7 +88,7 @@ Extract every authored problem section, including sibling `.questionBody` and `.
 
 Preserve ordered-list labels, nesting, and observed numbering resets from source list styles, `type`, `start`, and item `value` attributes; saved Math Academy `questionStatements` lists retain the upper-Roman labels verified in its public stylesheet.
 
-Preserve tables with cell spans or nested tables as normalized HTML with their authored structure and safe table attributes, rendered mathematics, field placeholders, and captured assets. Ordinary tables remain Markdown; unsupported spans or CSS layouts receive explicit extraction gaps instead of guessed cell positions.
+Preserve every source HTML table as normalized HTML using the source-table contract in `scripts/question_capture/html_tables.py` and `scripts/question_capture/table_html.js`. Retain actual `td`/`th` roles, row and column spans, nested tables, captions, source alignment, rules, and shading through validated data attributes. Retain rendered mathematics, field placeholders, list boundaries, and captured assets. Never turn the first data row into an invented Markdown header, flatten a table inside a list, or discard cell shading. Unsupported spans or CSS layouts receive explicit extraction gaps instead of guessed cell positions. The shared player decorator makes source colors readable in both themes; arbitrary source styles remain forbidden.
 
 Preserve Markdown paragraph and list boundaries around complex HTML tables. Preserve zero-rule MathML fractions as unfenced TeX stacks while keeping any source parentheses; unknown fraction-rule attributes receive explicit gaps rather than inferred division or binomial semantics.
 
