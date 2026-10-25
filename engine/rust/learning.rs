@@ -2083,6 +2083,11 @@ pub fn equivalent_math(a: &str, b: &str) -> bool {
 
 fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
     let (original_a, original_b) = (a, b);
+    // The numeric shortcut must use the same e interpretation as the exact
+    // symbolic path, including when the canonical result happens to be numeric.
+    if context.natural_exponential {
+        return symbolic::compare(original_a, original_b, context);
+    }
     let a = normalize_math(a);
     let b = normalize_math(b);
     if a.is_empty() || b.is_empty() {
@@ -2413,14 +2418,21 @@ fn requires_answer_form(prompt: &str) -> bool {
     REQUIRED_FORM.is_match(&NEGATED_ROUNDING.replace_all(&prompt, ""))
 }
 
-/// Prompt and owning KP wording determine the interpretation of i and indices.
+/// Prompt and owning KP wording determine the interpretation of i, e and indices.
 pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context {
     let wording = std::iter::once(prompt.to_owned())
         .chain(titles.iter().cloned())
         .collect::<Vec<_>>()
         .join(" ")
         .to_lowercase();
+    // Rendered e^... denotes Euler's constant. In this setting 6e-6 is an
+    // implicit product followed by subtraction, not a decimal exponent.
+    static NATURAL_EXPONENTIAL: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
+        regex::Regex::new(r"(?:^|[^a-z\\])e(?:\s*\})?\s*\^").expect("valid natural exponential expression")
+    });
     symbolic::Context {
+        natural_exponential: NATURAL_EXPONENTIAL.is_match(&wording)
+            || wording.contains(r"\exp"),
         symbolic_i: ["riemann", "sigma", "\\sum", "vector"]
             .iter()
             .any(|v| wording.contains(v)),
@@ -4633,6 +4645,28 @@ pub(crate) mod tests {
         ] {
             assert!(!equivalent_math(a, b));
         }
+    }
+
+    #[test]
+    fn natural_exponential_answers_disambiguate_euler_products() {
+        for prompt in [r"Evaluate $\int_0^2 3e^{x/2}\,\mathrm{d}x$.",
+                       r"Evaluate $\int_0^2 3{e}^{x/2}\,\mathrm{d}x$."] {
+            let context = comparison_context(prompt, &[]);
+            assert!(context.natural_exponential);
+            assert_eq!(compare_math_in_context("1e-3", "0.001", prompt, context), Ok(false));
+            assert_eq!(compare_math_in_context("1 e -3", "0.001", prompt, context), Ok(false));
+            assert_eq!(compare_math_in_context("1E-3", "0.001", prompt, context), Ok(true));
+            for submitted in ["6e-6", r"\frac{12e-12}{2}", "6*(e-1)"] {
+                assert_eq!(compare_math_in_context(submitted, "6(e-1)", prompt, context), Ok(true));
+            }
+            for submitted in ["0.000006", "3e-3", "6e+6"] {
+                assert_eq!(compare_math_in_context(submitted, "6(e-1)", prompt, context), Ok(false));
+            }
+        }
+        let prompt = "Write 0.001 in scientific notation.";
+        let context = comparison_context(prompt, &[]);
+        assert!(!context.natural_exponential);
+        assert_eq!(compare_math_in_context("1e-3", "0.001", prompt, context), Ok(true));
     }
 
     #[test]

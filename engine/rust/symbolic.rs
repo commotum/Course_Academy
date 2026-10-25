@@ -22,6 +22,9 @@ pub struct Context {
     pub symbolic_i: bool,
     /// Sequence/sigma indices n, k, j, and i are integers in these prompts.
     pub integer_indices: bool,
+    /// In natural-exponential prompts, lowercase e is Euler's constant even
+    /// next to digits (6e-6 means 6*e-6). Uppercase E retains scientific notation.
+    pub natural_exponential: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -1335,7 +1338,7 @@ enum Token {
     Command(String),
     Mark(char),
 }
-fn lex(source: &str) -> Result<Vec<Token>> {
+fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
     if source.len() > 4096 {
         return Err("math input exceeds 4096 bytes".into());
     }
@@ -1379,7 +1382,8 @@ fn lex(source: &str) -> Result<Vec<Token>> {
             while at < chars.len() && (chars[at].is_ascii_digit() || chars[at] == '.') {
                 at += 1;
             }
-            if at < chars.len() && matches!(chars[at], 'e' | 'E') {
+            if at < chars.len() && (chars[at] == 'E'
+                || (chars[at] == 'e' && !context.natural_exponential)) {
                 let exp = at;
                 let mut end = at + 1;
                 if end < chars.len() && matches!(chars[end], '+' | '-') {
@@ -1833,7 +1837,7 @@ fn parse(source: &str, context: Context) -> Result<Answer> {
         return Ok(Answer::Special(s));
     }
     let mut parser = Parser {
-        tokens: lex(source)?,
+        tokens: lex(source, context)?,
         at: 0,
         depth: 0,
     };
@@ -2582,6 +2586,21 @@ mod tests {
     }
 
     #[test]
+    fn euler_products_and_scientific_notation_follow_context() {
+        let context = Context { natural_exponential: true, ..Context::default() };
+        for (a, b) in [("6e-6", "6*(e-1)"), ("6e+6", "6*(e+1)"),
+                       (r"\frac{12e-12}{2}", "6*(e-1)"), ("1E-3", "0.001")] {
+            assert_eq!(compare(a, b, context), Ok(true), "{a} != {b}");
+        }
+        for (a, b) in [("6e-6", "0.000006"), ("6e+6", "6000000"),
+                       ("6e-6", "3*(e-1)"), ("1E-3", "e-3")] {
+            assert_eq!(compare(a, b, context), Ok(false), "{a} == {b}");
+        }
+        assert_eq!(compare("6e-6", "0.000006", Context::default()), Ok(true));
+        assert_eq!(compare("1e-3", "0.001", Context::default()), Ok(true));
+    }
+
+    #[test]
     fn exact_polynomial_and_rational_equivalence() {
         for (a, b) in [
             ("x+x", "2x"),
@@ -2858,6 +2877,7 @@ mod tests {
             let context = Context {
                 symbolic_i: case["symbolic_i"].as_bool().unwrap_or(false),
                 integer_indices: case["integer_indices"].as_bool().unwrap_or(false),
+                ..Context::default()
             };
             let actual = compare(
                 case["canonical"].as_str().unwrap(),
