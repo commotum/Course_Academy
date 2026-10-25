@@ -1098,11 +1098,13 @@ impl Algebra {
                     return self.power(&Value::atom(Atom::E), &Value::number(c));
                 }
                 // Distribute a rational argument's numerator sum over its
-                // common denominator: exp(2 - 1/x) = e^2 / exp(1/x).
+                // common denominator, including rational polynomial coefficients:
+                // exp(2 - 1/x) = e^2 / exp(1/x), and
+                // exp(3*x/2 + 1/2) = exp(3*x/2) * sqrt(e).
                 // Normalize each summand to cancel shared monomials before
                 // evaluating it. Original domain guards remain in force;
                 // no numerical identity test or logarithm law is involved.
-                if x.den != Poly::integer(1) && x.num.0.len() > 1 {
+                if x.num.0.len() > 1 {
                     let mut result = Value::integer(1);
                     for (m, c) in &x.num.0 {
                         let term = self.value(
@@ -2180,6 +2182,16 @@ mod tests {
         assert!(compare("exp(2-x/x)", "exp(1)", Context::default()).is_err());
         assert!(compare("exp((x^2+x)/x)", "exp(x+1)", Context::default()).is_err());
         assert!(!supports("exp(2+1/0)", Context::default()));
+    }
+    #[test]
+    fn rational_polynomial_exponential_sums_split_exactly() {
+        for (a, b) in [
+            ("exp(3/2-3*(x-2)^2/2)-1", "exp(6*x)*exp(-3*x^2/2)/exp(9/2)-1"),
+            ("exp((x-2)^2/2)/2-1", "exp(x^2/2)*exp(-2*x)*exp(2)/2-1"),
+            ("exp(x/2+1/3)", "exp(x/2)*exp(1/3)"),
+        ] { eq(a, b); eq(b, a); }
+        assert_eq!(compare("exp(x/2+1/3)", "exp(x/2)*exp(2/3)", Context::default()), Ok(false));
+        assert!(compare("exp(x/x+x/2)", "exp(1)*exp(x/2)", Context::default()).is_err());
     }
     #[test]
     fn bounded_real_trig_arguments_normalize_absolute_logarithms() {
