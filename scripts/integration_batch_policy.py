@@ -13,6 +13,7 @@ FAMILIES={
  (17592186184153,'hard'):{'quarter-power-blank'},
  (17592186184154,'easy'):{'polynomial-pair'},
  (17592186184154,'moderate'):{'radical-product','power-quotient','direct-quotient-blank'},
+ (17592186184155,'easy'):{'easy-power-three'},
  (17592186184155,'moderate'):{'polynomial-three','expanded-square','square-root-three','root-cube-three'},
  (17592186184155,'hard'):{'positive-fractional-three','negative-fractional-three'},
 }
@@ -42,6 +43,8 @@ def validate_delivery_batch(records,kp_id):
    elif m['family']=='radical-product':valid=powers==[F(1,2),F(3,2)]and all(abs(c)<=4 for c,p in terms)
    elif m['family']=='power-quotient':valid=powers[0]in(-3,-2)and powers[1]in(2,3,4)and all(abs(c)<=6 for c,p in terms)
    else:valid=powers==[-2,0]and all(abs(c)<=6 for c,p in terms)
+  elif difficulty=='easy':
+   valid=powers==[0,1,2] and all(c.denominator==1 and abs(c)<=3 for c,p in terms)
   elif difficulty=='moderate':
    profiles={'expanded-square':[0,2,4],'polynomial-three':[0,1,2],
              'square-root-three':[0,F(1,2),2],'root-cube-three':[0,F(3,2),2]}
