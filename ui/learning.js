@@ -825,7 +825,7 @@ function previewContent(data, step, index, archived = false) {
     solution.append(el('summary', 'solution-heading', 'Solution:'));
     for (const field of fields) {
       if (field.correctAnswer) {
-        solution.append(el('p', 'response-summary', `${fieldLabel(field.key)} · ${short(field.type) === 'free' ? 'reference answer' : 'correct value'}:`), answerValue(field.correctAnswer));
+        solution.append(markdown(`${fieldLabel(field.key)} · ${short(field.type) === 'free' ? 'reference answer' : 'correct value'}:`, 'response-summary'), answerValue(field.correctAnswer));
         if (field.correctAnswer.feedback) solution.append(markdown(field.correctAnswer.feedback));
       }
     }
@@ -952,7 +952,7 @@ function taskContent(data, step, number, total, archived = false) {
     for (const field of fields) {
       if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
       if (step.status === 'incorrect' && field.correctAnswer) {
-        feedback.append(el('p', 'response-summary', `${field.key === 'selection' ? 'Correct answer' : fieldLabel(field.key) + ' · correct value'}:`), answerValue(field.correctAnswer));
+        feedback.append(markdown(`${field.key === 'selection' ? 'Correct answer' : fieldLabel(field.key) + ' · correct value'}:`, 'response-summary'), answerValue(field.correctAnswer));
       }
     }
     card.append(feedback);
