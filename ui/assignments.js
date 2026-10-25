@@ -1,3 +1,4 @@
+import { decorateSourceTables } from './content-tables.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
@@ -112,6 +113,7 @@ function markdown(value, fields = []) {
     else { anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
   }
   container.append(fragment);
+  if (container.querySelector('.source-table')) decorateSourceTables(container);
   if (math.length) container.dataset.math = 'true';
   return container;
 }

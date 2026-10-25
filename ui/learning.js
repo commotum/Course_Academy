@@ -1,3 +1,4 @@
+import { decorateSourceTables } from './content-tables.js';
 import { createStudySidebar } from './study-stats.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
@@ -306,6 +307,7 @@ function markdown(value, className = 'prose', fields = []) {
     else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
   }
   container.append(fragment);
+  if (container.querySelector('.source-table')) decorateSourceTables(container);
   return container;
 }
 function answerValue(answer) {

@@ -870,6 +870,50 @@ impl Algebra {
         }
         Ok(result)
     }
+    /// Denest a constant sqrt(A+B*sqrt(C)) only when the quadratic
+    /// discriminant is an exact rational square. The larger half u is first,
+    /// so sqrt(u)-sqrt(v) is nonnegative when B<0: no branch is lost.
+    fn denest_square_root(&mut self, p: &Poly) -> Result<Option<Value>> {
+        if p.0.len() != 2 { return Ok(None); }
+        let Some(a) = p.0.get(&Mono::new()) else { return Ok(None); };
+        if !a.is_positive() { return Ok(None); }
+        let Some((mono, b)) = p.0.iter().find(|(m, _)| !m.is_empty()) else { return Ok(None); };
+        let mut c = Q::one();
+        for (atom, exponent) in mono {
+            self.spend(1)?;
+            let Atom::Root(2, radicand) = atom else { return Ok(None); };
+            let Some(q) = radicand.constant() else { return Ok(None); };
+            if *exponent != 1 || !q.is_positive() { return Ok(None); }
+            c *= q;
+        }
+        // Bound this optional rewrite independently of the fallback root.
+        if [a, b, &c].iter().any(|q| q.numer().bits().max(q.denom().bits()) > 64) {
+            return Ok(None);
+        }
+        let discriminant = a*a - b*b*c;
+        if discriminant.is_negative() { return Ok(None); }
+        let sn = discriminant.numer().sqrt();
+        let sd = discriminant.denom().sqrt();
+        if &sn*&sn != *discriminant.numer() || &sd*&sd != *discriminant.denom() {
+            return Ok(None);
+        }
+        let delta = Q::new(sn, sd);
+        let two = Q::from_integer(2.into());
+        let u = (a + &delta)/&two;
+        let v = (a - delta)/two;
+        if v.is_negative() || [&u, &v].iter().any(|q|
+            q.numer() > &BigInt::from(1_000_000) || q.denom() > &BigInt::from(1_000_000)) {
+            return Ok(None);
+        }
+        let ru = self.root(&Value::number(u), 2)?;
+        let rv = self.root(&Value::number(v), 2)?;
+        let candidate = self.add(&ru, &if b.is_negative() { rv.neg() } else { rv })?;
+        // Exact square and the proven principal sign are both required.
+        let square = self.mul(&candidate, &candidate)?;
+        let expected = self.pmul(p, &square.den)?;
+        if square.num != expected { return Ok(None); }
+        Ok(Some(candidate))
+    }
     fn root(&mut self, v: &Value, degree: u8) -> Result<Value> {
         if !(2..=8).contains(&degree) {
             return Err("only roots of degree 2 through 8 are supported".into());
@@ -890,6 +934,9 @@ impl Algebra {
             let numerator = self.root(&Value { num: v.num.clone(), den: Poly::integer(1) }, degree)?;
             let denominator = self.root(&Value { num: v.den.clone(), den: Poly::integer(1) }, degree)?;
             return self.div(&numerator, &denominator);
+        }
+        if degree == 2 {
+            if let Some(value) = self.denest_square_root(&v.num)? { return Ok(value); }
         }
         // Give positive rational multiples the same root atom and domain
         // guard: root(c*p) = root(c)*root(p) for c > 0. Use the magnitude
@@ -1964,6 +2011,26 @@ fn condition_at(c: &Condition, sample: &Q) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn constant_binomial_square_roots_keep_principal_sign() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("sqrt(15+4sqrt(14))", "2sqrt(2)+sqrt(7)"),
+            ("sqrt(15-4sqrt(14))", "2sqrt(2)-sqrt(7)"),
+            ("sqrt(5-2sqrt(6))", "sqrt(3)-sqrt(2)"),
+            ("sqrt(5/4-sqrt(6)/2)", "(sqrt(3)-sqrt(2))/2"),
+            ("-sqrt(15+4sqrt(14))/4-sqrt(7)/4+sqrt(2)/2", "-sqrt(7)/2"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a}");
+            assert_eq!(compare(a, &format!("-({b})"), Context::default()), Ok(false), "{a}");
+            assert_eq!(compare(a, &format!("({b})+1/100"), Context::default()), Ok(false), "{a}");
+        }
+        assert_eq!(compare("sqrt(15-4sqrt(14))", "sqrt(7)-2sqrt(2)", Context::default()), Ok(false));
+        assert_eq!(compare("sqrt(16+4sqrt(14))", "2sqrt(2)+sqrt(7)", Context::default()), Ok(false));
+        // This rule must not remove variable domains or principal signs.
+        assert_eq!(compare("sqrt(x^2)", "x", Context::default()), Ok(false));
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+    }
     #[test]
     fn source_imaginary_unit_font_variants() {
         use super::{compare, supports, Context};

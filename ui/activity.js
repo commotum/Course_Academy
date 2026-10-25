@@ -1,3 +1,4 @@
+import { decorateSourceTables } from './content-tables.js';
 import { attachStepMenu } from './step-menu.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
@@ -106,6 +107,7 @@ function markdown(value, fields = []) {
     else { anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
   }
   container.append(fragment);
+  if (container.querySelector('.source-table')) decorateSourceTables(container);
   if (math.length) container.dataset.math = 'true';
   return container;
 }
