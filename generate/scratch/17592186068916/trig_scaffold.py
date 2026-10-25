@@ -1,7 +1,7 @@
 """Topic478: scaffolded substitution, with controlled prerequisite work.
 
-Easy asks for a supplied substitution's transformed integral. Moderate asks for
-the whole calculation. Hard changes one target condition, keeping arithmetic
+Easy asks for a complete integral with full-answer choices. Moderate asks for
+the whole calculation through exact entry. Hard changes one target condition, keeping arithmetic
 small. Full calculations retrieve mastered primitive formulas and endpoint values; the worked solution explains their use.
 """
 import argparse
@@ -14,10 +14,11 @@ import uuid
 
 import sympy as s
 from trig_format import normalize_prose, normalize_tex
+from integration_answer_bank import answer_bank
 
 X,U=s.symbols('x u',real=True)
 R,PI=s.Rational,s.pi
-VERSION='5.0.0-prerequisite-recall'
+VERSION='6.0.0-substitution-recognition'
 TRIG=('sin','cos','sec2','csc2','sec_tan','csc_cot')
 RECIP=TRIG[2:]
 LINEAR=('indef_sin','indef_cos','def_sin','def_cos')
@@ -183,38 +184,6 @@ def primitive_tex(m,z):
     return times(r,logabs(z))
 
 
-def easy_bank(m,rng):
-    r=m['factor'];lo,hi=m['lo'],m['hi']
-    u0,u1=(None,None) if lo is None else tuple(s.simplify(m['inner'].subs(X,v))for v in (lo,hi))
-    def value(c,l,h):
-        if l is None:return c # same nonconstant transformed integrand, different coefficient
-        return s.simplify(c*(hfun(h)-hfun(l)))
-    hfun=lambda z:h(m['kind'],z)
-    correct_value=value(r,u0,u1)
-    options=[(r,u0,u1,'correct')]
-    if lo is not None:
-        A=m['amplitude'];a=m['scale']
-        candidates=[(A,u0,u1,'omit reciprocal derivative'),(A*a,u0,u1,'multiply by derivative'),
-                    (r,lo,hi,'keep original bounds'),(r,u1,u0,'reverse only bounds')]
-    else:
-        A=m['amplitude'];a=m['scale']
-        candidates=[(A,None,None,'omit reciprocal derivative'),(A*a,None,None,'multiply by derivative'),
-                    (r/a,None,None,'divide twice'),(-r,None,None,'reverse factor sign'),
-                    (r/2,None,None,'extra half'),(2*r,None,None,'extra double'),
-                    (-A,None,None,'omit factor and reverse sign'),(-2*r,None,None,'double and reverse sign')]
-        rng.shuffle(candidates)
-    values=[correct_value]
-    for c,l,h_,label in candidates:
-        c=s.cancel(c)
-        if c==0 or abs(c)>8 or c.q>8:continue
-        v=value(c,l,h_)
-        if any(s.simplify(s.trigsimp(v-old))==0 for old in values):continue
-        options.append((c,l,h_,label));values.append(v)
-        if len(options)==5:break
-    if len(options)!=5:raise ValueError('Ambiguous or incomplete authored transformed-integral bank')
-    rng.shuffle(options)
-    return [(times(c,integral(tex(m['transformed']),'u',l,h_)),label)for c,l,h_,label in options]
-
 
 def render(kp,level,case,m,seed,evidence,rng):
     inner,du,r,lo,hi=(m[k]for k in ('inner','du','factor','lo','hi'))
@@ -223,11 +192,10 @@ def render(kp,level,case,m,seed,evidence,rng):
     fp=task_key(m['body'],lo,hi)
     u0,u1=(None,None)if not definite else tuple(s.simplify(inner.subs(X,v))for v in(lo,hi))
     target=times(r,integral(tex(m['transformed']),'u',u0,u1))
+    problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n$$\n'+original+'\n$$\n\n'
     if easy:
-        problem='Use the substitution $u='+tex(inner)+'$. Which integral is obtained?\n\n$$\n'+original+'\n$$'
-    else:
-        problem=('Evaluate exactly.'if definite else 'Find an antiderivative.')+'\n\n$$\n'+original+'\n$$\n\n'
-        problem+='{{answer}}'+(''if definite else ' $+C$')
+        problem+='Choose the exact value.'if definite else 'Choose the antiderivative. In each choice, $C$ is an arbitrary constant.'
+    else:problem+='{{answer}}'+(''if definite else ' $+C$')
     sol='Let $u='+tex(inner)+'$. Then\n\n$$\n'+r'\frac{\mathrm{d}u}{\mathrm{d}x}='+tex(du)+'.\n$$\n\n'
     if definite:
         sol+='Transform both bounds:\n\n$$\n'+r'\begin{aligned}x='+tex(lo)+r'&\Longrightarrow u='+tex(u0)+r'\\x='+tex(hi)+r'&\Longrightarrow u='+tex(u1)+r'\end{aligned}'+'\n$$\n\n'
@@ -235,24 +203,16 @@ def render(kp,level,case,m,seed,evidence,rng):
     if m.get('rearranged'):
         sol+='Since $'+tex(fun(m['trig_fn'],m['theta']))+'=u-'+tex(m['d'])+'$, rewrite the remaining factor:\n\n$$\n'+r'\frac{u-'+tex(m['d'])+r'}{u}=1-\frac{'+tex(m['d'])+'}{u}.\n$$\n\n'
     sol+='Including the differential factor gives\n\n$$\n'+r'\begin{aligned}&'+original+r'\\&='+target+r'.\end{aligned}'+'\n$$\n\n'
-    if not easy:
-        formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
-        sol+='Use the integration rule:\n\n$$\n'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C.\n$$\n\n'
-        if definite:
-            if m.get('log'):
-                fn=m['trig_fn'];facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
-            else:
-                pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
-                facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
-            sol+='Endpoint values: $'+r',\quad '.join(facts)+'$.\n\n'
-    if easy:
-        sol+='The transformed integral is\n\n$$\n'+target+'.\n$$'
-        key=target;answer=None
-        # A different sampling seed must not turn one mathematical instance
-        # into fresh practice just by changing its distractors or their order.
-        bank_rng=random.Random('bank:'+fp+str(inner))
-        bank=easy_bank(m,bank_rng)
-    elif not definite:
+    formula=logabs(U)if m.get('log')else tex(h(m['kind'],U))
+    sol+='Use the integration rule:\n\n$$\n'+integral('1/u'if m.get('log')else tex(g(m['kind'],U)),'u')+'='+formula+'+C.\n$$\n\n'
+    if definite:
+        if m.get('log'):
+            fn=m['trig_fn'];facts=[tex(fun(fn,v))+'='+tex(s.simplify(getattr(s,fn)(v)))for v in(lo,hi)]
+        else:
+            pf={'sin':'cos','cos':'sin','sec2':'tan','csc2':'cot','sec_tan':'sec','csc_cot':'csc'}[m['kind']]
+            facts=[tex(fun(pf,v))+'='+tex(s.simplify(getattr(s,pf)(v)))for v in(u0,u1)]
+        sol+='Endpoint values: $'+r',\quad '.join(facts)+'$.\n\n'
+    if not definite:
         pu=primitive_tex(m,U);key=primitive_tex(m,inner)
         sol+='Integrate with respect to $u$:\n\n$$\n'+target+'='+pu+'+C.\n$$\n\nSubstitute back:\n\n$$\n'+key+'+C.\n$$'
         answer=m['primitive'];bank=[(key,'correct')]
@@ -267,7 +227,18 @@ def render(kp,level,case,m,seed,evidence,rng):
         answer=s.simplify(last-first);key=tex(answer)
         sol+='Integrate and evaluate:\n\n$$\n'+r'\left['+primitive_tex(m,U)+r'\right]_{'+tex(u0)+'}^{'+tex(u1)+'}='+r'\left('+tex(last)+r'\right)-\left('+tex(first)+r'\right).'+'\n$$\n\nThe answer is\n\n$$\n'+key+'.\n$$'
         bank=[(key,'correct')]
-    uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+('transform'if easy else 'evaluate')+':'+role))
+    if easy:
+        def banktex(value):
+            text=tex(value)
+            for node in sorted(value.atoms(s.log),key=str):
+                text=text.replace(tex(node),logabs(node.args[0]))
+            return text
+        bank=answer_bank(answer,m['primitive_u'],inner,X,U,fp,banktex,
+                         lower=lo,upper=hi,max_number=12)
+        key=next(value for value,label in bank if label=='correct').removesuffix('+C')
+        prefix,_,suffix=sol.rsplit('$$',2)
+        sol=prefix+'$$\n'+key+(''if definite else '+C')+'.\n$$'+suffix
+    uid=lambda role:str(uuid.uuid5(uuid.UUID(evidence['kp']['id']),VERSION+':'+fp+':'+str(inner)+':'+str(m['body'])+':'+'evaluate'+':'+role))
     answers=[{':answer/id':uid('answer:'+text),':answer/type':':answer.type/math',':answer/value':normalize_tex(text)}for text,_ in bank]
     correct=next(a[':answer/id']for a,(_,label)in zip(answers,bank)if label=='correct')
     question={':question/id':uid('question'),':question/problem':normalize_prose(problem),
@@ -279,13 +250,13 @@ def render(kp,level,case,m,seed,evidence,rng):
         derivative=du,factor=r,transformed=m['transformed'],primitive=m['primitive'],
         lower=lo,upper=hi,result=answer).items()}
     return {'knowledge_point':evidence['kp'],'question':question,'generation':{
-        'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':m['challenge'],
+        'version':VERSION,'seed':seed,'template':case,'family':case,'challenge':'recognize_substitution_with_answer_choices'if easy else m['challenge'],
         'parameters':m['parameters'],'mathematical_fingerprint':fp,'model':model,
-        'batch_contract':'trig-prerequisite-recall-v5','source_questions':m['source_questions'],
+        'batch_contract':'trig-substitution-recognition-v6','source_questions':m['source_questions'],
         'source_basis':evidence['basis'],'band_origin':evidence['band_origin'][level],
-        'operation':'transform'if easy else 'evaluate','provided_substitution':easy,
+        'operation':'evaluate','provided_substitution':False,
         'provided_primitive':False,'provided_endpoint_values':False,'support_policy':'mastered-prerequisite-recall',
-        'bank_profile':'authored transformed-integral bank; no imported-bank replay claim'if easy else 'exact fragment with external C for antiderivatives',
+        'bank_profile':'complete antiderivative or exact value with authored error choices'if easy else 'exact fragment with external C for antiderivatives',
         'bank_recipes':[label for _,label in bank],'dependencies':{'sympy':s.__version__},
         'domain':'Connected real intervals where the displayed integrand is defined; all definite intervals avoid poles.'}}
 
