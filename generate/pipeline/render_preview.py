@@ -31,7 +31,7 @@ VISIBLE_DOM_AUDIT = r"""() => {
         let node;
         while ((node = walker.nextNode())) {
           if (!visible(node.parentElement) || node.parentElement.closest('mjx-container,math,script,style,textarea,math-field')) continue;
-          if (/\\(?:begin|end)\{|\\(?:eqalign|dfrac|frac|sqrt)\b|\[\/?math\]/.test(node.textContent)) rawTex.push(node.textContent.slice(0,200));
+          if (/\\(?:begin|end)\{|\\(?:eqalign|dfrac|frac|sqrt)\b|\$\$|\[\/?math\]/.test(node.textContent)) rawTex.push(node.textContent.slice(0,200));
           if (node.parentElement.closest('pre,code') && /\$|\\(?:begin|dfrac|frac)/.test(node.textContent)) codeMath.push(node.textContent.slice(0,200));
         }
         return {

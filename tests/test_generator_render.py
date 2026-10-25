@@ -99,3 +99,35 @@ const audit = AUDIT;
         self.assertEqual(report['opened']['rawTex'], [r'\sqrt{x}'])
         self.assertEqual(report['repaired']['rawTex'], [])
         self.assertEqual(report['visibleAriaHidden']['rawTex'], [r'\frac{a}{b}'])
+
+    def test_visible_display_delimiters_fail_outside_rendered_math(self):
+        import json
+        import subprocess
+        from render_preview import VISIBLE_DOM_AUDIT
+        playwright = Path.home() / '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'
+        browser = next(iter(sorted(Path.home().glob('.cache/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-linux64/chrome-headless-shell'), reverse=True)), None)
+        if not playwright.exists() or browser is None:
+            self.skipTest('Installed Playwright and Chromium are required')
+        source = r'''
+const {chromium} = require(PLAYWRIGHT);
+const audit = AUDIT;
+(async () => {
+  const browser = await chromium.launch({headless:true, executablePath:BROWSER, args:['--disable-dev-shm-usage']});
+  try {
+    const page = await browser.newPage();
+    await page.setContent('<main class="lesson-content"><p>$$ {</p><mjx-container>$$</mjx-container><p hidden>$$ hidden</p><p>Costs $5</p></main>');
+    const broken = await page.evaluate(audit);
+    await page.evaluate(() => document.querySelector('p').innerHTML='<mjx-container>x+y&gt;0</mjx-container>');
+    const repaired = await page.evaluate(audit);
+    console.log(JSON.stringify({broken,repaired}));
+  } finally { await browser.close(); }
+})().catch(error=>{console.error(error);process.exitCode=1});
+'''.replace('PLAYWRIGHT', json.dumps(str(playwright))).replace('BROWSER', json.dumps(str(browser))).replace('AUDIT', VISIBLE_DOM_AUDIT)
+        with tempfile.TemporaryDirectory() as directory:
+            script = Path(directory) / 'delimiters.cjs'
+            script.write_text(source)
+            result = subprocess.run([resolve_node(playwright), str(script)], capture_output=True, text=True, timeout=45, check=False)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report['broken']['rawTex'], ['$$ {'])
+        self.assertEqual(report['repaired']['rawTex'], [])
