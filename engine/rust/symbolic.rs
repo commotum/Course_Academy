@@ -1888,9 +1888,51 @@ fn parse(source: &str, context: Context) -> Result<Answer> {
     Ok(Answer::Expression(value, conditions))
 }
 
+// Matrices compare by shape and exact scalar entries. Keep their structure out
+// of the scalar lexer: flattening would confuse rows, columns, and scalars.
+// Nested environments and array/determinant notation remain unsupported.
+fn matrix_cells(source: &str) -> Result<Option<Vec<Vec<&str>>>> {
+    let source = source.trim();
+    if source.len() > 4096 {
+        return Err("oversized mathematical answer".into());
+    }
+    let mut body = source;
+    for (left, right) in [(r"\left[", r"\right]"), (r"\left(", r"\right)")] {
+        if let Some(inner) = body.strip_prefix(left) {
+            body = inner.trim().strip_suffix(right)
+                .ok_or("unclosed matrix delimiter")?.trim();
+            break;
+        }
+    }
+    for env in ["bmatrix", "pmatrix", "matrix"] {
+        let start = format!(r"\begin{{{env}}}");
+        let end = format!(r"\end{{{env}}}");
+        if let Some(inner) = body.strip_prefix(&start) {
+            let inner = inner.strip_suffix(&end).ok_or("unclosed matrix environment")?;
+            if inner.contains(r"\begin") || inner.contains(r"\end") {
+                return Err("nested matrix environments are unsupported".into());
+            }
+            let rows: Vec<Vec<&str>> = inner.split(r"\\")
+                .map(|row| row.split('&').map(str::trim).collect()).collect();
+            let cols = rows[0].len();
+            if rows.iter().any(|row| row.len() != cols || row.iter().any(|cell| cell.is_empty()))
+                || rows.len() * cols > 128
+            {
+                return Err("matrix must be nonempty, rectangular, and at most 128 entries".into());
+            }
+            return Ok(Some(rows));
+        }
+    }
+    Ok(None)
+}
+
 /// Whether a canonical answer has a bounded, supported representation.
 pub fn supports(source: &str, context: Context) -> bool {
-    parse(source, context).is_ok()
+    match matrix_cells(source) {
+        Ok(Some(rows)) => rows.iter().flatten().all(|cell| parse(cell, context).is_ok()),
+        Ok(None) => parse(source, context).is_ok(),
+        Err(_) => false,
+    }
 }
 
 /// Compare the expression before an explicitly displayed arbitrary +C.
@@ -1954,6 +1996,24 @@ pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
 pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
+    match (matrix_cells(a)?, matrix_cells(b)?) {
+        (Some(a), Some(b)) => {
+            // Validate every cell even when shapes differ, so unsupported input
+            // is never silently recorded as a learner error.
+            for cell in a.iter().chain(b.iter()).flatten() { parse(cell, context)?; }
+            if a.len() != b.len() || a[0].len() != b[0].len() { return Ok(false); }
+            for (a, b) in a.iter().flatten().zip(b.iter().flatten()) {
+                if !compare_single(a, b, context)? { return Ok(false); }
+            }
+            return Ok(true);
+        }
+        (Some(rows), None) | (None, Some(rows)) => {
+            for cell in rows.iter().flatten() { parse(cell, context)?; }
+            parse(if matrix_cells(a)?.is_some() { b } else { a }, context)?;
+            return Ok(false);
+        }
+        (None, None) => {}
+    }
     // A leading plus/minus denotes two possible values. Against a scalar,
     // both branches must equal it: an extra, provably distinct value is wrong.
     // This does not claim support for arbitrary set-valued expressions.
@@ -2440,6 +2500,36 @@ mod tests {
     fn eq(a: &str, b: &str) {
         assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} != {b}");
     }
+    #[test]
+    fn matrix_answers_preserve_shape_order_and_scalar_domains() {
+        let row = r"\begin{bmatrix}p-q & -2r & s+t\end{bmatrix}";
+        let equivalent = r"\left[\begin{matrix}-q+p & -r-r & t+s\end{matrix}\right]";
+        assert!(supports(row, Context::default()));
+        eq(row, equivalent);
+        eq(r"\begin{pmatrix}1 & 2\\3 & 4\end{pmatrix}",
+           r"\begin{bmatrix}2/2 & 1+1\\6/2 & 8/2\end{bmatrix}");
+        for wrong in [r"\begin{bmatrix}p-q\\-2r\\s+t\end{bmatrix}",
+                      r"\begin{bmatrix}s+t & -2r & p-q\end{bmatrix}",
+                      r"\begin{bmatrix}q-p & 2r & s+t\end{bmatrix}",
+                      r"\begin{bmatrix}p & -q & -2r & s+t\end{bmatrix}", "p-q"] {
+            assert_eq!(compare(row, wrong, Context::default()), Ok(false), "{wrong}");
+        }
+        assert_eq!(compare(r"\begin{bmatrix}1\end{bmatrix}", "1", Context::default()), Ok(false));
+        for invalid in [r"\begin{bmatrix}\end{bmatrix}",
+                        r"\begin{bmatrix}1 & 2\\3\end{bmatrix}",
+                        r"\begin{bmatrix}1 & \end{bmatrix}",
+                        r"\begin{bmatrix}1\end{bmatrix}+2",
+                        r"\begin{bmatrix}\begin{bmatrix}1\end{bmatrix}\end{bmatrix}",
+                        r"\begin{vmatrix}1\end{vmatrix}"] {
+            assert!(!supports(invalid, Context::default()), "{invalid}");
+            assert!(compare(invalid, invalid, Context::default()).is_err(), "{invalid}");
+        }
+        assert!(compare(r"\begin{bmatrix}x/x & 2\end{bmatrix}",
+                        r"\begin{bmatrix}1 & 2\end{bmatrix}", Context::default()).is_err());
+        let huge = format!(r"\begin{{bmatrix}}{}\end{{bmatrix}}", vec!["1";129].join(" & "));
+        assert!(!supports(&huge, Context::default()));
+    }
+
     #[test]
     fn exact_polynomial_and_rational_equivalence() {
         for (a, b) in [
