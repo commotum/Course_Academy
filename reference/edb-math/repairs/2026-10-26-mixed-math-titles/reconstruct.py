@@ -7,6 +7,10 @@ from import_historical_question_content import Renderer
 from question_capture.math_format import normalize_source_tex
 class SourceRenderer(Renderer):
  def m(self,n):
+  if isinstance(n,Tag)and n.name=='menclose':
+   notation=n.get('notation','longdiv');allowed={'longdiv','actuarial','radical','box','roundedbox','circle','left','right','top','bottom','updiagonalstrike','downdiagonalstrike','verticalstrike','horizontalstrike','madruwb','phasorangle'}
+   if not set(notation.split())<=allowed:raise ValueError('Unsupported enclosure notation '+notation)
+   return '\\enclose{'+notation+'}{'+''.join(self.m(c)for c in n.children)+'}'
   if isinstance(n,Tag)and n.name=='mphantom':return '\\phantom{'+''.join(self.m(c)for c in n.children)+'}'
   if isinstance(n,Tag)and n.name=='mspace':
    if any(n.get(a)not in [None,'0','0em','0pt']for a in ['height','depth']):raise ValueError('Nontrivial MathML space height/depth requires review')
