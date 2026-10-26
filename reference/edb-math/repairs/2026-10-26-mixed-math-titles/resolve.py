@@ -22,7 +22,7 @@ def main():
  for line in(W/'current.jsonl').open():
   d=json.loads(line)
   if(d['e'],d['a'])in wanted:values[d['e'],d['a']]=d
- (W/'values.json').write_text(json.dumps(list(values.values()))+'\n');contexts={};soups={};aligns={};out=[];remaining=[];skips=[];seen=set()
+ (W/'values.json').write_text(json.dumps(list(values.values()))+'\n');contexts={};partcache={};soups={};aligns={};out=[];remaining=[];skips=[];seen=set()
  # Candidates refer to one exact source title and current math span. DP
  # includes every source math item, so equal numbers elsewhere are anchors,
  # not evidence to replace all repeated occurrences indiscriminately.
@@ -55,12 +55,14 @@ def main():
    f,b=matrix(len(source),len(pieces),source,pieces);aligns[ak]=(f,b)
   f,b=aligns[ak];score=f[-1][-1];options=[k for k,s in enumerate(source)if pieces[j]['key']in s and f[k][j]+1+b[k+1][j+1]==score];ratio=score/max(1,min(len(source),len(pieces)))
   skip_score=max(f[k][j]+b[k][j+1]for k in range(len(source)+1))
+  if i not in options:
+   skips.append({**row,'reason':'This matching inner value belongs to another source formula','target_source_index':i,'alignment_options':options});continue
   if len(options)!=1 or options[0]!=i or ratio<.7 or skip_score==score:
-   remaining.append({**row,'alignment_options':options,'alignment_score':score,'source_math_count':len(source),'current_math_count':len(pieces),'ratio':ratio});continue
+   remaining.append({**row,'target_source_index':i,'skip_score':skip_score,'alignment_options':options,'alignment_score':score,'source_math_count':len(source),'current_math_count':len(pieces),'ratio':ratio});continue
   try:tex=reconstruct(title)
   except Exception as err:remaining.append({**row,'reason':str(err)});continue
   if audit.key(tex)==pieces[j]['key']:skips.append({**row,'reason':'Complete expression already present'});continue
-  old=pieces[j]['text'];marker='$$'if old.startswith(('$$',r'\['))else'$';after=(marker+'\n'+tex+'\n'+marker)if marker=='$$'else'$'+tex+'$';out.append({**row,'after_formula':after,'matching':'unique-in-all-optimal-source-math-alignments','alignment_score':score,'source_math_count':len(source),'current_math_count':len(pieces)})
+  old=pieces[j]['text'];marker='$$'if old.startswith(('$$',r'\['))else'$';after=(marker+'\n'+tex+'\n'+marker)if marker=='$$'else'$'+tex+'$';out.append({**row,'before_formula':old,'after_formula':after,'matching':'unique-in-all-optimal-source-math-alignments','alignment_score':score,'source_math_count':len(source),'current_math_count':len(pieces)})
   if len(contexts)%100==0:print('Source contexts',len(contexts),'confirmed',len(out),'pending',len(remaining),flush=True)
  groups=collections.defaultdict(list)
  for r in out:groups[r['entity'],r['attribute'],tuple(r['span'])].append(r)
