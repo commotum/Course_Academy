@@ -1493,7 +1493,10 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                 return Err("unsupported TeX escape".into());
             }
             match word.as_str() {
-                "left" | "right" | "displaystyle" | "textstyle" => {}
+                "left" | "right" | "displaystyle" | "textstyle"
+                | "big" | "Big" | "bigg" | "Bigg"
+                | "bigl" | "bigr" | "bigm" | "Bigl" | "Bigr" | "Bigm"
+                | "biggl" | "biggr" | "biggm" | "Biggl" | "Biggr" | "Biggm" => {}
                 "cdot" | "times" => tokens.push(Token::Mark('*')),
                 "div" => tokens.push(Token::Mark('/')),
                 "vert" | "lvert" | "rvert" => tokens.push(Token::Mark('|')),
@@ -2945,6 +2948,22 @@ mod tests {
         eq(r"2*(\pi/2)", r"\pi");
         eq(r"(\pi/2)^2", r"\pi^2/4");
         assert_ne!(compare(r"\pi", "3.14159", Context::default()), Ok(true));
+    }
+
+    #[test]
+    fn tex_delimiter_sizes_preserve_math() {
+        for (left, right) in [
+            ("bigl", "bigr"), ("Bigl", "Bigr"), ("biggl", "biggr"),
+            ("Biggl", "Biggr"), ("big", "big"), ("Big", "Big"),
+            ("bigg", "bigg"), ("Bigg", "Bigg"),
+        ] {
+            let sized = format!(r"\{left}(x+1\{right})^2");
+            eq(&sized, "(x+1)^2");
+            assert_eq!(compare(&sized, "(x-1)^2", Context::default()), Ok(false));
+        }
+        eq(r"\bigl(\frac{x}{1+e^t}\bigr)", r"\frac{x}{1+e^t}");
+        assert!(compare(r"\bigly(x+1)", "x+1", Context::default()).is_err());
+        assert!(compare(r"\bigl(x+1", "x+1", Context::default()).is_err());
     }
 
     #[test]
