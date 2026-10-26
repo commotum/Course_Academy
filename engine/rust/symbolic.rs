@@ -202,7 +202,10 @@ impl Poly {
             let mut interval = (c.clone(), c.clone());
             for (a, e) in m {
                 let bounds = match a {
-                    Atom::Pi => (Q::from_integer(3.into()), Q::from_integer(4.into())),
+                    // Classical rational bounds 3 < pi < 22/7. The old upper
+                    // bound 4 hid ordinary unequal answers such as pi^2/4
+                    // versus pi. Enclosures prove rejection only.
+                    Atom::Pi => (Q::from_integer(3.into()), Q::new(22.into(), 7.into())),
                     Atom::E => exp_bounds(&Q::one())?,
                     Atom::I => return None,
                     Atom::Variable(name) => {
@@ -2626,6 +2629,23 @@ mod tests {
         }
         assert_eq!(compare("6e-6", "0.000006", Context::default()), Ok(true));
         assert_eq!(compare("1e-3", "0.001", Context::default()), Ok(true));
+    }
+
+    #[test]
+    fn pi_bounds_reject_unequal_exact_constant_answers() {
+        for (a, b) in [
+            (r"\pi^2/4", r"\pi"),
+            (r"\pi", "4"),
+            (r"\pi^2", "10"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+            assert_eq!(compare(b, a, Context::default()), Ok(false), "{b} vs {a}");
+        }
+        // Tighter rejection bounds must not replace exact equality or claim
+        // that a nearby decimal approximation is the exact constant.
+        eq(r"2*(\pi/2)", r"\pi");
+        eq(r"(\pi/2)^2", r"\pi^2/4");
+        assert_ne!(compare(r"\pi", "3.14159", Context::default()), Ok(true));
     }
 
     #[test]
