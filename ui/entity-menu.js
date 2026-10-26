@@ -24,7 +24,7 @@ export function closeEntityMenu(restoreFocus = false) {
   generation++;
   if (menu) menu.hidden = true;
   current?.setAttribute('aria-expanded', 'false');
-  returnFocus?.matches?.('.entity-actions-trigger') && returnFocus.setAttribute('aria-expanded', 'false');
+  if (returnFocus?.matches?.('.entity-actions-trigger')) returnFocus.setAttribute('aria-expanded', 'false');
   for (const cleanup of cleanups.splice(0)) cleanup();
   if (restoreFocus && returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
   current = returnFocus = null;

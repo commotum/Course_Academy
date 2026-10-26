@@ -1672,7 +1672,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     }
     function scheduleClose(){
       cancelClose();closeTimer=setTimeout(()=>{
-        if(popup.contains(document.activeElement)||opener?.contains(document.activeElement)||popup.matches(':hover')||opener?.matches(':hover'))return;
+        if(popup.querySelector('[aria-haspopup="menu"][aria-expanded="true"]')||popup.contains(document.activeElement)||opener?.contains(document.activeElement)||popup.matches(':hover')||opener?.matches(':hover'))return;
         close();
       },160);
     }

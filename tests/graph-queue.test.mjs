@@ -106,7 +106,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
       document.getElementById('nodeQueueAction').replaceChildren(queueControls.createToggle(node,{menuItem:true}));
       document.getElementById('nodeTargetAction').replaceChildren(targetControls.createToggle(node,{menuItem:true}));
     }};
-    return { queueControls, targetControls, menu: nodeContextMenu, nodeAppearance };
+    return { queueControls, targetControls, menu: nodeContextMenu, nodeAppearance, createPeer: () => createQueueControls({ readLearner }) };
   })()`, context);
   f.document = document; f.window = window; f.opener = opener; f.svg = svg;
   f.open = (shiftKey = false) => f.h.menu.open({ id: 20, uuid: 'topic-uuid', name: 'Topic twenty' }, { type: 'contextmenu', shiftKey, clientX: 50, clientY: 70, preventDefault() {}, stopPropagation() {} }, opener);
@@ -271,3 +271,14 @@ function dispatch(target, type, values) {
   return event;
 }
 
+
+test('a menu selection refreshes other controls on the same page', async () => {
+  const f = fixture();
+  const peer = f.h.createPeer();
+  peer.setLearner(structuredClone(f.learner));
+  const host = peer.createToggle({ id: 20, name: 'Topic twenty' });
+  f.document.body.append(host);
+  f.open(); f.queueButton().click(); await settle(); await settle();
+  assert.equal(host.children[0].textContent, 'Queued');
+  assert.equal(f.calls.length, 1);
+});

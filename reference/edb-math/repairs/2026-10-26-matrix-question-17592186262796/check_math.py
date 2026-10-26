@@ -11,11 +11,11 @@ def solve(q,unknown):
  return rows,det,target,equation
 
 def main():
- qs=json.loads((H/'questions.json').read_text());topic=json.loads((H/'topic.json').read_text());unknown={v[':db/id']for kp in topic[':topic/knowledge-points']if kp[':db/id']==17592186059750 for a in [':knowledge-point/questions',':knowledge-point/canonical-example']for v in(kp[a]if isinstance(kp[a],list)else[kp[a]])};report=[]
+ qs=json.loads((H/('final-questions.json'if(H/'final-questions.json').exists()else'questions.json')).read_text());topic=json.loads((H/'topic.json').read_text());unknown={v[':db/id']for kp in topic[':topic/knowledge-points']if kp[':db/id']==17592186059750 for a in [':knowledge-point/questions',':knowledge-point/canonical-example']for v in(kp[a]if isinstance(kp[a],list)else[kp[a]])};report=[]
  for q in qs:
   rows,det,target,eq=solve(q,q[':db/id']in unknown);r={'entity':q[':db/id'],'source_id':q.get(':question/math-academy-id'),'matrix':rows,'determinant':str(det),'expected':str(target),'determinant_equation':str(eq)if eq is not None else None,'fields':[]}
   for f in q.get(':question/answer-fields',[]):
    matching=[a for a in f[':answer-field/choices']if s.simplify(scalar(a[':answer/value'].split('=')[-1])-target)==0];assert len(matching)==1,(q[':db/id'],'ambiguous or wrong bank');actual=f.get(':answer-field/correct');assert actual is None or actual[':db/id']==matching[0][':db/id'],(q[':db/id'],'wrong correct');r['fields'].append({'field':f[':db/id'],'correct':matching[0][':db/id'],'value':matching[0][':answer/value'],'missing_correct':actual is None})
   report.append(r)
- (H/'independent-math.json').write_text(json.dumps(report,indent=2)+'\n');print('Independent exact determinant and canonical-answer checks passed:',len(report))
+ (H/('final-independent-math.json'if(H/'final-questions.json').exists()else'independent-math.json')).write_text(json.dumps(report,indent=2)+'\n');print('Independent exact determinant and canonical-answer checks passed:',len(report))
 if __name__=='__main__':main()
