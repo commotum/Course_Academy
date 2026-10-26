@@ -24,6 +24,7 @@ export function closeEntityMenu(restoreFocus = false) {
   generation++;
   if (menu) menu.hidden = true;
   current?.setAttribute('aria-expanded', 'false');
+  returnFocus?.matches?.('.entity-actions-trigger') && returnFocus.setAttribute('aria-expanded', 'false');
   for (const cleanup of cleanups.splice(0)) cleanup();
   if (restoreFocus && returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
   current = returnFocus = null;
@@ -75,6 +76,7 @@ export function openEntityMenu(element, event = {}) {
   };
   for (const action of typeof metadata.actions === 'function' ? metadata.actions(context) : metadata.actions || []) addAction(action, context);
   element.setAttribute('aria-expanded', 'true');
+  if (returnFocus?.matches?.('.entity-actions-trigger')) returnFocus.setAttribute('aria-expanded', 'true');
   menu.hidden = false; shiftMode(event.shiftKey); position();
   items()[0]?.focus({ preventScroll: true });
 }
@@ -150,7 +152,7 @@ function editing(event) {
 
 function initialize() {
   if (menu) return;
-  menu = document.createElement('div'); menu.className = 'entity-context-menu'; menu.hidden = true; menu.setAttribute('role', 'menu');
+  menu = document.createElement('div'); menu.className = 'entity-context-menu'; menu.id = 'entity-context-menu'; menu.hidden = true; menu.setAttribute('role', 'menu');
   notice = document.createElement('div'); notice.className = 'entity-copy-notice'; notice.setAttribute('role', 'status'); notice.setAttribute('aria-atomic', 'true');
   document.body.append(menu, notice);
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(position).observe(menu);
@@ -192,6 +194,7 @@ export function attachMenuButton(element, label = 'Content actions') {
   const tools = document.createElement('div'); tools.className = 'entity-menu-tools';
   const button = document.createElement('button'); button.type = 'button'; button.className = 'entity-actions-trigger'; button.textContent = '⋯';
   button.setAttribute('aria-label', label); button.setAttribute('aria-haspopup', 'menu');
+  button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-controls', 'entity-context-menu');
   button.addEventListener('click', event => openEntityMenu(element, event));
   tools.append(button); element.append(tools);
 }

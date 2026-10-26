@@ -258,6 +258,43 @@ class InventoryJobs:
                 or shutil.which('codex', path=self.environment.get('PATH', os.defpath))
                 or str(Path.home() / '.local/bin/codex'))
 
+    def priority_builds(self, records, lineage):
+        """Read a temporary explicit backlog; completion permanently releases it.
+
+        Call under jobs.lock. These IDs change admission/order only; all normal
+        generator phases, failure budgets and publication checks still apply.
+        """
+        path = self.directory / 'overrides/priority-builds.json'
+        if not path.exists():
+            return set()
+        override = json.loads(path.read_text())
+        targets = override.get('knowledge_points')
+        completed = override.get('completed_knowledge_points', [])
+        if (override.get('lineage') != lineage or not isinstance(targets, list)
+                or not isinstance(completed, list)
+                or any(type(kp) is not int or kp <= 0 for kp in [*targets, *completed])):
+            raise ValueError('Invalid priority-build override or database lineage')
+        targets, completed = set(targets), set(completed)
+        if not completed <= targets:
+            raise ValueError('Completed priority builds must belong to the explicit backlog')
+        previous = set(completed)
+        for job in records:
+            request, outcome = job.get('request', {}), job.get('outcome') or {}
+            kp = request.get('knowledgePoint')
+            package = outcome.get('verified_package')
+            publication = outcome.get('publication') or {}
+            if (kp in targets and request.get('jobKind', 'build') == 'build'
+                    and outcome.get('outcome') == 'generated'
+                    and set(outcome.get('verified_bands') or []) == set(VERIFICATION_BANDS)
+                    and isinstance(package, str) and package.startswith('generators/')
+                    and len(Path(package).parts) >= 4
+                    and outcome.get('generator') == package and publication.get('passed') is True
+                    and publication.get('package_sha256') == Path(package).parts[2]):
+                completed.add(kp)
+        if completed != previous:
+            save(path, {**override, 'completed_knowledge_points': sorted(completed)})
+        return targets - completed
+
     def accept(self, inventory: dict) -> None:
         if 'knowledge_points' not in inventory:
             return self._accept_legacy(inventory)
@@ -284,6 +321,18 @@ class InventoryJobs:
                 else:
                     refill_records[(request['knowledgePoint'], request['difficulty'])] = path, job
             build_requests = [request for request in requests if request['jobKind'] == 'build']
+            priority_builds = self.priority_builds(existing.values(), lineage)
+            represented = {request['knowledgePoint'] for request in build_requests}
+            for kp in sorted(priority_builds - represented):
+                candidates = [(path, job) for path, job in build_records.get(kp, [])
+                              if not job.get('supersededBy') or self.publication_recovery(path, job)]
+                if candidates:
+                    _, prior = min(candidates, key=lambda pair: (
+                        not self.publication_recovery(pair[0], pair[1]),
+                        not self.recoverable(pair[0], pair[1]), pair[1].get('state') != 'running',
+                        pair[1]['request'].get('jobKind') != 'build',
+                        pair[1].get('state') in {'verified', 'withdrawn'}, pair[0].name))
+                    build_requests.append({**prior['request'], 'jobKind': 'build', 'basis': inventory['basis']})
             refill_requests = [request for request in requests if request['jobKind'] == 'refill']
             reopened_refills = set()
             for request in refill_requests:
@@ -556,12 +605,16 @@ class InventoryJobs:
             kp_lock = None
             with (self.directory / 'jobs.lock').open('a') as jobs_lock:
                 fcntl.flock(jobs_lock, fcntl.LOCK_EX)
-                jobs = []
+                jobs, records = [], []
                 for path in self.directory.glob('*.json'):
                     job = json.loads(path.read_text())
+                    records.append(job)
                     if (job.get('state') in {'pending', 'running'} and job.get('retryAt', 0) <= time.time()
                             and job['request'].get('jobKind', 'build') == lane):
                         jobs.append((path, job))
+                cursor_path = self.directory / 'cursor.json'
+                lineage = json.loads(cursor_path.read_text()).get('lineage') if cursor_path.exists() else None
+                priority_builds = self.priority_builds(records, lineage) if lane == 'build' else set()
                 def ordering(pair):
                     path, job = pair
                     request = job['request']
@@ -583,7 +636,8 @@ class InventoryJobs:
                     preference = (0 if rank[0] == 0 else
                                   1 + speculative_review(request) if request.get('stage') == 'review-generator'
                                   else 3) if prefer_reviews else 0
-                    return (not self.publication_recovery(path, job), preference, *rank, job['key'])
+                    return (not self.publication_recovery(path, job),
+                            request['knowledgePoint'] not in priority_builds, preference, *rank, job['key'])
                 for path, job in sorted(jobs, key=ordering):
                     candidate_lock = (self.directory / f'kp-{job["request"]["knowledgePoint"]}.lock').open('a')
                     try:

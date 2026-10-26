@@ -157,6 +157,7 @@ function createTopicSelectionControls({ readLearner = readCurrentLearner, onChan
     profileChanging = false;
     setLearner({ ...event.detail.learner, courseId: event.detail.course.id });
   });
+  window.addEventListener(changeEvent, invalidate);
   window.addEventListener('storage', event => { if (event.key === changeKey) invalidate(); });
   window.addEventListener('focus', invalidate);
   window.addEventListener('pageshow', event => { if (event.persisted) invalidate(); });

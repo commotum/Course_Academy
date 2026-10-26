@@ -37,7 +37,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
   const nodes = [1, 2, 3, 4, 5, 6].map(id => ({ id, name: `Topic ${id}`, layer: 29 + ({ 4: 0, 1: 1, 6: 1, 2: 2, 3: 2, 5: 3 })[id], order: 0 }));
   const links = [{ source: 1, target: 3 }, { source: 1, target: 2 }, { source: 4, target: 1 }, { source: 3, target: 5 }, { source: 4, target: 6 }];
   const context = vm.createContext({
-    URL, $, document: { createElement: element, createElementNS: element, getElementById: $, querySelector: () => $('.app'), title: '' },
+    URL, $, attachGraphTopicMenu() {}, document: { createElement: element, createElementNS: element, getElementById: $, querySelector: () => $('.app'), title: '' },
     location: { href: 'http://example.test/?view=targets&course=course-a&topic=2' },
     snapshot: { learner: { targets, courseId: 'course-a' }, courses: [{ id: 'course-a', title: 'Course A', topicIds: [1, 2] }] },
     storage: new Map(),

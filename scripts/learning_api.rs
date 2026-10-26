@@ -3478,8 +3478,10 @@ mod study_queue_tests {
     #[test]
     fn topic_menu_distinguishes_completed_lessons_from_resumable_study() {
         let mut s = fixture();
-        s.entities.get_mut(&81).unwrap().insert("learner-task/status".into(), json!("learner-task.status/completed"));
-        let s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
+        s.entities.insert(2000, json!({"db/ident":kw("learner-task.status/completed")}).as_object().unwrap().clone());
+        s.entities.get_mut(&81).unwrap().insert("learner-task/status".into(), json!(2000));
+        let mut s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
+        s.status_history.push(StatusAssertion { entity: 81, attribute: "learner-task/status".into(), value: kw("learner-task.status/completed"), t: 42, at: json!({"$instant":1000}) });
         let at = Utc::now();
         let view = topic_study_availability(&s, 1, 6, at);
         assert_eq!(view["available"], true);
