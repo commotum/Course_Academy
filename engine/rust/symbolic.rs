@@ -1729,6 +1729,13 @@ impl Parser {
         if self.mark('^') {
             power = Some(self.group_or_tex_atom()?);
         }
+        // A -1 superscript on the sine name denotes principal inverse sine.
+        // A power applied after the argument, (sin(x))^-1, remains reciprocal.
+        if name == "sin" && matches!(power.as_ref(), Some(Ast::Neg(n))
+            if matches!(n.as_ref(), Ast::Number(value) if value == "1")) {
+            name = "asin".into();
+            power = None;
+        }
         // Grouped arguments stop at their close. Ungrouped arguments consume
         // one signed power; write sin(2*x) for a product argument.
         let arg = if matches!(self.peek(), Some(Token::Mark('(' | '{'))) {
@@ -2200,6 +2207,30 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
     compare_single(a, b, context)
 }
 
+// A quotient containing a square root can have strictly disjoint real
+// domains, e.g. 1/sqrt(1-exp(2x)) versus 1/sqrt(1-exp(-2x)). There is no
+// common point at which to find a numerical counterexample. Prove the domain
+// conflict exactly from opposite strict polynomial guards with positive
+// denominators. Require a witnessed point in each original domain, so an
+// unsupported or empty domain is never converted into a learner failure.
+fn disjoint_strict_radical_domains(a: &Value, ca: &BTreeSet<Condition>,
+                                  b: &Value, cb: &BTreeSet<Condition>) -> bool {
+    let radical = |v: &Value| v.num.0.keys().chain(v.den.0.keys())
+        .any(|m| m.keys().any(|a| matches!(a, Atom::Root(2, _))));
+    if !radical(a) || !radical(b) { return false; }
+    let guards = |conditions: &BTreeSet<Condition>| conditions.iter().filter_map(|c| {
+        let Condition::Positive(v) = c else { return None; };
+        if !v.den.positive() { return None; }
+        let (_, coefficient) = v.num.0.first_key_value()?;
+        Some((v.num.monic(), coefficient.is_positive()))
+    }).collect::<Vec<_>>();
+    let opposite = guards(ca).iter().any(|(pa, sa)| guards(cb).iter()
+        .any(|(pb, sb)| pa == pb && sa != sb));
+    opposite && [ca, cb].into_iter().all(|conditions|
+        counterexample_samples().any(|sample|
+            conditions.iter().all(|c| condition_at(c, &sample))))
+}
+
 fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
     let a = parse(a, context)?;
     let b = parse(b, context)?;
@@ -2227,6 +2258,9 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
             // A counterexample valid in BOTH domains proves inequality even
             // when their restrictions differ. Never cancel away domain guards.
             if ca != cb {
+                if disjoint_strict_radical_domains(&a, &ca, &b, &cb) {
+                    return Ok(false);
+                }
                 for sample in counterexample_samples() {
                     if ca.iter().chain(cb.iter()).all(|c| condition_at(c, &sample))
                         && diff.nonzero_at(Some(&sample)) {
@@ -2369,6 +2403,41 @@ mod tests {
         let (lo, hi) = super::asin_bounds(&super::Q::new(1.into(), 4.into())).unwrap();
         assert!(lo > super::Q::new(1.into(), 4.into()));
         assert!(hi < super::Q::new(13.into(), 50.into()));
+    }
+    #[test]
+    fn inverse_sine_name_superscript_is_not_reciprocal_sine() {
+        use super::{compare, Context};
+        for (a, b) in [
+            (r"\sin^{-1}(2x)", r"\arcsin(2x)"),
+            (r"\operatorname{sin}^{-1}(2x)", "asin(2*x)"),
+            (r"(\sin^{-1}(-2x))^3", "asin(-2*x)^3"),
+            (r"4\sin^{-1}(2x)/\sqrt{1-4x^2}",
+             r"4\arcsin(2x)/\sqrt{1-4x^2}"),
+            (r"(\sin(x))^{-1}", r"1/\sin(x)"),
+            (r"\sin^{-2}(x)", r"1/(\sin(x))^2"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} vs {b}");
+        }
+        assert_ne!(compare(r"\sin^{-1}(x)", r"1/\sin(x)", Context::default()), Ok(true));
+        assert!(compare(r"\sin^{-1}(2)", r"\sin^{-1}(2)", Context::default()).is_err());
+        assert!(compare(r"\sin^{-1}(x)-\sin^{-1}(x)", "0", Context::default()).is_err());
+    }
+    #[test]
+    fn disjoint_exponential_radical_derivatives_are_wrong_answers() {
+        use super::{compare, Context};
+        for (a,b) in [
+            ("3*exp(x)/sqrt(1-exp(2*x))", "-3*exp(-x)/sqrt(1-exp(-2*x))"),
+            ("1/sqrt(1-exp(2*x))", "1/sqrt(1-exp(-2*x))"),
+            ("1/sqrt(x)", "1/sqrt(-x)"),
+        ] {
+            assert_eq!(compare(a,b,Context::default()), Ok(false));
+            assert_eq!(compare(b,a,Context::default()), Ok(false));
+        }
+        // Mere domain mismatch, shared boundary values, and cancelled guards
+        // remain unresolved. No equality is inferred from domain samples.
+        assert!(compare("sqrt(x)", "sqrt(-x)", Context::default()).is_err());
+        assert!(compare("ln(x)", "ln(-x)", Context::default()).is_err());
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
     }
     #[test]
     fn reciprocal_radical_derivatives_use_interior_counterexamples() {
