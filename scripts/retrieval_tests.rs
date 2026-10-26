@@ -2334,17 +2334,11 @@ fn topic_menu_review_availability_explains_rejected_starts_without_writes() -> R
     let topic = original.entities.with_attribute("topic/title").into_iter()
         .find(|topic| text(&original, *topic, "topic/title") == "Topic 0").unwrap();
     let at = DateTime::from_timestamp_millis(f.now+100).unwrap();
-    for scenario in ["unlearned", "exhausted", "invalid"] {
+    for scenario in ["exhausted", "invalid"] {
         let mut s = original.clone();
         let mut selected = topic;
         if scenario == "invalid" { selected = f.learner; }
-        else if scenario == "unlearned" {
-            for progress in s.refs(f.learner, "learner/knowledge-profile")? {
-                if s.optional_ref(progress, "progress/topic")? == Some(topic) {
-                    s.entities.get_mut(&progress).unwrap().insert("progress/learned".into(), json!(false));
-                }
-            }
-        } else {
+        else {
             for kp in s.refs(topic, "topic/knowledge-points")? {
                 s.entities.get_mut(&kp).unwrap().insert("knowledge-point/questions".into(), json!([]));
             }
@@ -2396,6 +2390,52 @@ fn explicit_topic_reviews_ignore_unrelated_required_work_and_remain_resumable() 
             let required_task=task_for(&before,f.learner,candidate.activity)?.unwrap();
             assert_eq!(after.entity(required_task)?,before.entity(required_task)?);
         }
+    }
+    Ok(())
+}
+
+#[test]
+fn manual_review_before_a_first_lesson_can_start_answer_and_complete() -> Result<()> {
+    for missing_progress in [false, true] {
+        let mut f = Fixture::with_admission(false,3*86400000,false)?;
+        let snapshot=f.snapshot()?;
+        let topic=snapshot.entities.with_attribute("topic/title").into_iter()
+            .find(|topic|text(&snapshot,*topic,"topic/title")=="Topic 0").unwrap();
+        let progress=snapshot.refs(f.learner,"learner/knowledge-profile")?.into_iter()
+            .find(|progress|snapshot.optional_ref(*progress,"progress/topic").unwrap()==Some(topic)).unwrap();
+        let mut forms=vec![];
+        for task in snapshot.refs(f.learner,"learner/activity")? {
+            let activity=snapshot.reference(task,"learner-task/activity")?;
+            if snapshot.optional_ref(activity,"activity/scope")?==Some(topic) {
+                forms.push(json!([kw("db/retract"),f.learner,kw("learner/activity"),task]));
+            }
+        }
+        if missing_progress {
+            forms.push(json!([kw("db/retract"),f.learner,kw("learner/knowledge-profile"),progress]));
+        } else { forms.push(add(json!(progress),"progress/learned",json!(false))); }
+        f.tx(forms,f.now+10)?;
+        let before=f.snapshot()?;
+        let view=topic_study_availability(&before,f.learner,topic,DateTime::from_timestamp_millis(f.now+20).unwrap());
+        assert_eq!(view["review"]["available"],true,"{view}");
+        assert_eq!(f.snapshot()?.entities,before.entities);
+        let mut s=f.act("review-topic",json!({"topicId":topic}),f.now+100)?;
+        let task=s.refs(f.learner,"learner/activity")?.into_iter().find(|task| {
+            let activity=s.reference(*task,"learner-task/activity").unwrap();
+            retrieval::kind(&s,activity).unwrap()=="review" && s.optional_ref(activity,"activity/scope").unwrap()==Some(topic)
+        }).unwrap();
+        assert_eq!(status(&s,task,"learner-task/status")?,"started");
+        let mut at=f.now+200;
+        for _ in 0..3 {
+            let item=*items(&s,task)?.last().unwrap();
+            let question=s.reference(item,"task-item/content")?;
+            let field=s.refs(question,"question/answer-fields")?[0];
+            f.act("answer",json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}),at)?;
+            at+=100;
+            s=f.act("continue",json!({"taskId":task,"itemId":item}),at)?;
+            at+=100;
+        }
+        assert_eq!(status(&s,task,"learner-task/status")?,"completed");
+        assert_eq!(items(&s,task)?.len(),3);
     }
     Ok(())
 }

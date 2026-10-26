@@ -155,7 +155,7 @@ function initialize() {
   document.body.append(menu, notice);
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(position).observe(menu);
   document.addEventListener('contextmenu', event => {
-    if (event.shiftKey || editing(event)) { closeEntityMenu(); return; }
+    if (editing(event)) { closeEntityMenu(); return; }
     const element = subjectAt(event.target);
     if (!element) { closeEntityMenu(); return; }
     openEntityMenu(element, event);

@@ -671,16 +671,10 @@ fn review_definition(
 /// Explicit practice uses the ordinary review selector and lifecycle policies.
 pub fn selected_review(s: &EntitySnapshot, learner: u64, topic: u64) -> Result<Definition> {
     if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
-    if !s.refs(learner, "learner/knowledge-profile")?.iter().any(|progress| {
-        s.optional_ref(*progress, "progress/topic").ok().flatten() == Some(topic)
-            && s.entities[progress].get("progress/learned") == Some(&json!(true))
-    }) {
-        return Err("Study this topic before reviewing it".into());
-    }
+    // Manual review is the learner's choice, including before a first lesson
+    // or while relearning is recommended. Automatic scheduling still uses its
+    // own learned/due rules; only usable question supply limits this selector.
     let h = history(s, learner)?;
-    if h.repairs.iter().any(|((_, t), kind)| *t == topic && kind == "lesson") {
-        return Err("Complete the required relearning before reviewing this topic".into());
-    }
     let seen = learning::unavailable_questions(s, learner)?;
     let policy = crate::question_selection::active_policy(s)?;
     review_definition(s, learner, topic, &seen, &h, policy)?
@@ -1037,7 +1031,7 @@ mod tests {
             .unwrap()
             .insert("learner/activity".into(), json!([]));
         assert!(schedule(&s, 1, 5, at).unwrap().is_empty()); // Partial imports.
-        assert!(selected_review(&s, 1, 3).unwrap_err().contains("before reviewing"));
+        assert_eq!(selected_review(&s, 1, 3).unwrap().questions.len(), 5);
         progress(&mut s, 21, 3, at, 0.1);
         let plan = schedule(&s, 1, 5, at).unwrap();
         assert_eq!(plan.len(), 1);
