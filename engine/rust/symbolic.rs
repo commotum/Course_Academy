@@ -167,6 +167,30 @@ impl Poly {
             .keys()
             .all(|m| m.keys().all(|a| matches!(a, Atom::Variable(_) | Atom::I)))
     }
+    /// A rational univariate quadratic with zero discriminant is a nonzero
+    /// scalar times (x+b/(2a))^2. Its nonzero domain guard is exactly that
+    /// linear guard, even when the learner expanded the denominator. Do not
+    /// infer a root or discard a hole for a near-square or another atom type.
+    fn repeated_quadratic_base(&self) -> Option<Poly> {
+        let atoms: BTreeSet<_> = self.0.keys().flat_map(|m| m.keys()).collect();
+        if atoms.len() != 1 { return None; }
+        let atom = (*atoms.first()?).clone();
+        if !matches!(atom, Atom::Variable(_)) { return None; }
+        let mut coefficients = [Q::zero(), Q::zero(), Q::zero()];
+        for (m, c) in &self.0 {
+            let degree = usize::from(*m.get(&atom).unwrap_or(&0));
+            if degree > 2 { return None; }
+            coefficients[degree] += c;
+        }
+        let [c, b, a] = coefficients;
+        if a.is_zero() || &b * &b != Q::from_integer(4.into()) * &a * c {
+            return None;
+        }
+        let constant = b / (Q::from_integer(2.into()) * a);
+        let mut terms = Poly::atom(atom).0;
+        if !constant.is_zero() { terms.insert(BTreeMap::new(), constant); }
+        Some(Poly(terms).monic())
+    }
     /// Prove a difference nonzero using real/imaginary component bounds.
     /// Each remaining atom must have real bounds; nested unsupported complex
     /// functions therefore stay unresolved. These bounds only reject answers.
@@ -783,6 +807,9 @@ impl Algebra {
             .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
         {
             return Ok(());
+        }
+        if let Some(base) = p.repeated_quadratic_base() {
+            return self.nonzero(&base);
         }
         let power_key = p.monic();
         if let Some(base) = self.nonzero_power_bases.remove(&power_key) {
@@ -3200,6 +3227,27 @@ mod tests {
         }
         assert!(!supports("sqrt(-4-4x^2)", Context::default()));
     }
+
+    #[test]
+    fn expanded_repeated_quadratic_denominators_preserve_holes() {
+        for (a, b) in [
+            ("1/(x^2+2x+1)", "1/(x+1)^2"),
+            ("1/(4x^2-12x+9)", "1/(2x-3)^2"),
+            ("1/(x+1)-x/(x^2+2x+1)", "1/(x+1)^2"),
+            ("-x*sin(x)/(x+1)-x*cos(x)/(x+1)^2+cos(x)/(x+1)",
+             "-x*cos(x)/(x^2+2x+1)-x*sin(x)/(x+1)+cos(x)/(x+1)"),
+        ] { eq(a, b); }
+        for (a, b) in [
+            ("1/(x^2+2x+2)", "1/(x+1)^2"),
+            ("1/(x^2+2x+1)", "1/(x+2)^2"),
+            ("(cos(x)-x*(x+1)*sin(x))/(x+1)^2", "cos(x)/(x+1)"),
+        ] { assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} == {b}"); }
+        for (a, b) in [
+            ("(x^2+2x+1)/(x^2+2x+1)", "1"),
+            ("(x+1)/(x^2+2x+1)", "1/(x+1)+(x-2)/(x-2)-1"),
+        ] { assert!(compare(a, b, Context::default()).is_err(), "lost hole: {a} == {b}"); }
+    }
+
     #[test]
     fn domains_limits_and_unknown_identities_are_explicit() {
         for (a, b) in [("x/x", "1"), ("sqrt(x)^2", "x")] {
