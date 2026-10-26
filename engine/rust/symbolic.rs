@@ -16,6 +16,15 @@ const MAX_WORK: usize = 100_000;
 const MAX_BITS: u64 = 16_384;
 const MAX_STRUCTURE: usize = 4_096;
 
+/// Exact rejection witnesses. Retain the original common-translation family
+/// and add distinct coordinate slopes: a fixed difference such as y-x=1 must
+/// not make ln(y-x) vanish at every counterexample probe.
+struct Witness {
+    base: Q,
+    distinct_slopes: bool,
+}
+
+
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Context {
     /// Sigma indices and vector basis labels use i as a formal symbol.
@@ -157,7 +166,7 @@ impl Poly {
     /// Prove a difference nonzero using real/imaginary component bounds.
     /// Each remaining atom must have real bounds; nested unsupported complex
     /// functions therefore stay unresolved. These bounds only reject answers.
-    fn nonzero_at(&self, sample: Option<&Q>) -> bool {
+    fn nonzero_at(&self, sample: Option<&Witness>) -> bool {
         let mut real = BTreeMap::new();
         let mut imaginary = BTreeMap::new();
         for (mono, coefficient) in &self.0 {
@@ -187,7 +196,7 @@ impl Poly {
             Atom::Power(base, exponent) => base.real_on_domain() && exponent.real_on_domain(),
         }))
     }
-    fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
+    fn interval_at(&self, sample: Option<&Witness>) -> Option<(Q, Q)> {
         if self.0.len() > 16
             || self.0.iter().any(|(m, c)| {
                 m.values().map(|e| u32::from(*e)).sum::<u32>() > 4 * MAX_POWER
@@ -209,11 +218,11 @@ impl Poly {
                     Atom::E => exp_bounds(&Q::one())?,
                     Atom::I => return None,
                     Atom::Variable(name) => {
-                        let n = sample?;
-                        // Distinct values prevent x-y from vanishing at every
-                        // witness. These are exact substitutions, not floats.
+                        let witness = sample?;
                         let offset = name.bytes().map(u64::from).sum::<u64>() % 7;
-                        let v = n + Q::from_integer(offset.into());
+                        let slope = if witness.distinct_slopes { offset + 1 } else { 1 };
+                        let v = &witness.base * Q::from_integer(slope.into())
+                            + Q::from_integer(offset.into());
                         (v.clone(), v)
                     }
                     Atom::Function(name, arg) => {
@@ -510,7 +519,7 @@ impl Value {
     fn real_on_domain(&self) -> bool {
         self.num.real_on_domain() && self.den.real_on_domain()
     }
-    fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
+    fn interval_at(&self, sample: Option<&Witness>) -> Option<(Q, Q)> {
         let a = self.num.interval_at(sample)?;
         let (l, h) = self.den.interval_at(sample)?;
         if l <= Q::zero() && h >= Q::zero() {
@@ -2205,7 +2214,7 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
                     let samples = [4_i64, 8, 16].into_iter().flat_map(|den| {
                         (-8 * den..=8 * den)
                             .filter(|num| num % 2 != 0)
-                            .map(move |num| Q::new(num.into(), den.into()))
+                            .map(move |num| Witness { base: Q::new(num.into(), den.into()), distinct_slopes: false })
                     });
                     for sample in samples {
                         if ca.iter().chain(cb.iter()).all(|c| condition_at(c, &sample))
@@ -2234,14 +2243,18 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
         }
     }
 }
-fn counterexample_samples() -> impl Iterator<Item = Q> {
+fn counterexample_samples() -> impl Iterator<Item = Witness> {
     // Include exact fractional witnesses inside bounded radical domains.
     // Substitutions prove inequality only; equality still needs a normal form.
     [-4, -2, 0, 1, 3].into_iter().map(|n| Q::from_integer(n.into()))
         .chain((-16..=8).filter(|n| n % 2 != 0).map(|n| Q::new(n.into(), 2.into())))
+        .flat_map(|base| [
+            Witness { base: base.clone(), distinct_slopes: false },
+            Witness { base, distinct_slopes: true },
+        ])
 
 }
-fn condition_at(c: &Condition, sample: &Q) -> bool {
+fn condition_at(c: &Condition, sample: &Witness) -> bool {
     match c {
         Condition::Nonzero(p) => p
             .interval_at(Some(sample))
@@ -2257,6 +2270,21 @@ fn condition_at(c: &Condition, sample: &Q) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn multivariate_logarithm_witnesses_do_not_freeze_differences() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("ln(y-x)", "-ln(y-x)"),
+            ("ln(x-y)", "-ln(x-y)"),
+            ("ln(z-y)", "2ln(z-y)"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+            assert_eq!(compare(b, a, Context::default()), Ok(false), "{b} vs {a}");
+        }
+        assert_eq!(compare("ln(y-x)", "ln(-x+y)+(z-z)", Context::default()), Ok(true));
+        assert!(compare("ln(y-x)", "ln(x-y)", Context::default()).is_err());
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+    }
     #[test]
     fn unequal_radicals_in_narrow_overlapping_domains_are_rejected() {
         // Both expressions equal one at x=1, the only old common-domain
