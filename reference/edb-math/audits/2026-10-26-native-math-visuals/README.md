@@ -1,5 +1,7 @@
 # Original math images suitable for native reconstruction
 
+**Source-fidelity decision:** These original illustrations are not import errors. Preserve them by default. The user chose to restore the original determinant mnemonic while keeping the necessary formula repairs. This inventory records optional redesign possibilities and does not authorize replacements.
+
 Read-only audit of database `math` at **T8100**, after the determinant mnemonic in tutorial **17592186060931** was replaced at T8086. Found **88 source raster assets used 124 times in 91 content fields/entities across 24 lessons** that are good candidates for native mathematical reconstruction. No database content was changed by this audit.
 
 These are visually reviewed candidates, not completed repairs. **77 assets** are primarily annotated mathematical notation: formulas, arithmetic/sequence steps, labels, arrows, boxed steps, or schematic matrices. **11 assets** are symbolic dependency/change-of-coordinate diagrams. A repair must retain the explanatory structure and color; replacing a diagram with only its final equation would lose information.

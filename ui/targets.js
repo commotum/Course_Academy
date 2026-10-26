@@ -148,7 +148,7 @@ function createTopicSelectionControls({ readLearner = readCurrentLearner, onChan
     return host;
   }
 
-  function invalidate() { refreshNeeded = true; void refresh(); }
+  function invalidate() { refreshNeeded = true; return refresh(); }
   void developerModeReady.then(renderAll);
   window.addEventListener('course-academy:developer-mode-changing', renderAll);
   window.addEventListener('course-academy:developer-mode-changed', renderAll);
@@ -166,5 +166,5 @@ function createTopicSelectionControls({ readLearner = readCurrentLearner, onChan
     for (const control of controls) if (control.host === host) controls.delete(control);
   }
 
-  return { setLearner, createToggle, remove, clear: () => controls.clear() };
+  return { setLearner, createToggle, remove, refresh: invalidate, clear: () => controls.clear() };
 }
