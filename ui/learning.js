@@ -248,6 +248,11 @@ async function mutation(path, values) {
         // Invalidate other tabs only after the completion transaction succeeds.
         try { localStorage.setItem('course-academy-queue-changed', crypto.randomUUID()); } catch { /* Other pages also refresh on return. */ }
       }
+      if (path === '/api/resume' && resumingAnswerForm && task?.taskId === nextTask.taskId && task?.step?.itemId === nextTask.step?.itemId) {
+        // Math editors can defer input events. Read the actual controls before
+        // reconnecting them so an early response cannot discard recent typing.
+        drafts.set(task.step.itemId, collectResponses(resumingAnswerForm, task.step.fields));
+      }
       task = result.task || result;
       if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic' || path === '/api/review-topic') setManualPause(task.taskId, false);
       if (path === '/api/pause' || path === '/api/resume') timerPausePending = false;

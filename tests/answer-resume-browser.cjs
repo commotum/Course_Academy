@@ -7,6 +7,7 @@ const cache = path.join(os.homedir(), '.cache/ms-playwright');
 const executablePath = fs.readdirSync(cache).filter(n => n.startsWith('chromium_headless_shell-')).sort().reverse().map(n => path.join(cache,n,'chrome-headless-shell-linux64/chrome-headless-shell')).find(fs.existsSync);
 const source = fs.readFileSync(path.join(root,'ui/learning.js'),'utf8');
 const controllers = source.slice(source.indexOf('const $'), source.indexOf("$('retryButton').addEventListener"));
+const visibility = source.slice(source.indexOf('async function syncAfterVisibility()'), source.indexOf("document.addEventListener('visibilitychange'"));
 const html = `<!doctype html><html><head><link rel="stylesheet" href="/ui/learning.css"><link rel="stylesheet" href="/ui/navigation.css"><script src="/ui/vendor/dompurify/purify.min.js"></script></head><body>
 <main id="main"></main><div id="learnerName"></div><a id="courseLink"></a><div id="errorBanner" hidden><span id="errorText"></span><button id="retryButton">Retry</button></div><div id="announcement"></div>
 <script type="module">
@@ -14,8 +15,9 @@ import {marked} from '/ui/vendor/marked/marked.esm.js';import {decorateSourceTab
 import {loadMathInputs,inlinePrompt,mountInlineFields,blankInput,checkboxControl,choiceIndicator,fieldFeedback,richSelect,freeInput,questionFeedback,feedbackHeading,responsesComplete} from '/ui/question-fields.js';
 let developer=false;const isDeveloperMode=()=>developer,attachStepMenu=()=>{},createStudySidebar=()=>document.createElement('aside');
 ${controllers}
+${visibility}
 typeset=async()=>{};loadMath=async()=>{};
-window.focusEvents=[];document.addEventListener('focusin',e=>focusEvents.push(['in',e.target.tagName,e.target.className]));document.addEventListener('focusout',e=>focusEvents.push(['out',e.target.tagName,e.relatedTarget?.tagName]));window.calls=[];window.pending=[];window.hold=false;window.failNext=false;window.nextTask=null;
+window.calls=[];window.pending=[];window.hold=false;window.failNext=false;window.nextTask=null;
 window.fetch=async(path,options)=>{
  const body=options.body?JSON.parse(options.body):null;calls.push({path,body});
  if(path!=='/api/resume')throw Error('Unexpected API request: '+path);
@@ -26,6 +28,7 @@ window.fetch=async(path,options)=>{
 };
 document.getElementById('retryButton').addEventListener('click',()=>retryOperation?.());
 window.configure=async(kind,type='lesson',options={})=>{
+ document.activeElement?.blur();seenTaskSteps.clear();
  calls.length=0;pending.length=0;hold=false;failNext=false;window.nextTask=null;resumingAnswerForm=null;developer=!!options.preview;
  drafts.clear();manuallyPausedTasks.clear();sessionStorage.clear();lessonView=null;task=null;busy=false;retryOperation=null;timerPausePending=false;
  const field={id:30,key:'value',type:kind,choices:[]};
@@ -43,6 +46,7 @@ window.configure=async(kind,type='lesson',options={})=>{
 };
 window.state=()=>({status:task.status,item:task.step?.itemId,running:clock.running,manual:isManuallyPaused(task.taskId),responses:drafts.get(task.step?.itemId),busy,elapsed:clock.elapsed});
 window.release=()=>pending.splice(0).forEach(resolve=>resolve());
+window.responses=()=>collectResponses(lessonView.current.querySelector('form'),task.step.fields);
 window.ready=true;
 </script></body></html>`;
 const server=http.createServer((req,res)=>{
@@ -60,13 +64,14 @@ const server=http.createServer((req,res)=>{
  for(const type of ['lesson','review'])for(const kind of ['blank','free','math','radio','checkbox','select']){
   await configure(kind,type);await page.evaluate(()=>hold=true);
   if(kind==='radio'||kind==='checkbox')await page.locator('.lesson-feed .choice').first().click();
-  else if(kind==='select'){await page.locator('.answer-select-trigger').click();await page.waitForFunction(()=>pending.length===1);await page.locator('.answer-select-option').nth(1).click();}
-  else{const input=page.locator(kind==='free'?'textarea':kind==='math'?'math-field':'input:not([type=hidden])');await input.click();await page.waitForFunction(()=>pending.length===1);await page.keyboard.type(kind==='math'?'2+3':'typed answer');}
+  else if(kind==='select'){await page.locator('.answer-select-trigger').click();await page.waitForFunction(()=>pending.length===1);await page.locator('.answer-select-option').filter({hasText:'Second option'}).click();}
+  else{const input=page.locator(kind==='free'?'textarea':kind==='math'?'math-field':'input:not([type=hidden])');await input.click();await page.waitForFunction(()=>pending.length===1);if(kind==='math')await page.waitForFunction(()=>document.querySelector('math-field').shadowRoot.activeElement);await page.keyboard.type(kind==='math'?'2+3':'typed answer');}
   await page.waitForFunction(()=>pending.length===1);assert.equal((await page.evaluate(()=>state())).running,false);
-  const before=await page.evaluate(()=>JSON.stringify(state().responses));assert.ok(before);
+  const before=await page.evaluate(()=>JSON.stringify(responses()));
   await page.evaluate(()=>release());await started();assert.equal(await page.evaluate(()=>JSON.stringify(state().responses)),before);
+  await page.waitForFunction(()=>document.activeElement?.closest('.answer-field'));
   const focused=await page.evaluate(()=>{const node=document.activeElement;return {tag:node.tagName,type:node.type,value:node.value,checked:node.checked};});
-  if(kind==='blank'){if(focused.value!=='typed answer')console.log({focused,events:await page.evaluate(()=>focusEvents),state:await page.evaluate(()=>state())});assert.equal(focused.value,'typed answer');await page.keyboard.type('!');assert.equal(await page.locator('input:not([type=hidden])').inputValue(),'typed answer!');}
+  if(kind==='blank'){assert.equal(focused.value,'typed answer');await page.keyboard.type('!');assert.equal(await page.locator('input:not([type=hidden])').inputValue(),'typed answer!');}
   if(kind==='free')assert.equal(focused.value,'typed answer');
   if(kind==='math'){assert.equal(focused.tag,'MATH-FIELD');assert.equal(focused.value,'2+3');}
   if(kind==='radio'||kind==='checkbox')assert.equal(focused.checked,true);
