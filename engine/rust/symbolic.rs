@@ -34,6 +34,10 @@ pub struct Context {
     /// In natural-exponential prompts, lowercase e is Euler's constant even
     /// next to digits (6e-6 means 6*e-6). Uppercase E retains scientific notation.
     pub natural_exponential: bool,
+    /// Explicit prompt declarations for single lowercase real variables.
+    /// Bit zero is a, bit one b, etc. Conflicting declarations are discarded.
+    pub positive_variables: u32,
+    pub negative_variables: u32,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -1025,6 +1029,14 @@ impl Algebra {
             let (m, c) = v.num.0.first_key_value().unwrap();
             if m.len() == 1 && c.is_one() {
                 let (atom, exponent) = m.first_key_value().unwrap();
+                // A known nonnegative atom (exp, abs, even root, positive
+                // constant) has no principal-root sign ambiguity when the
+                // whole power is extracted. Unknown-sign variables still go
+                // through the absolute-value branch below.
+                let atom_value = Value::atom(atom.clone());
+                if exponent % u16::from(degree) == 0 && atom_value.num.nonnegative() {
+                    return self.integer_power(&atom_value, i32::from(exponent / u16::from(degree)));
+                }
                 // Positive constants have no even-root sign ambiguity. Reduce
                 // the exponent fraction so sqrt(e^3) and e^(3/2), including
                 // reducible forms such as fourth_root(e^2), share root atoms.
@@ -1367,12 +1379,31 @@ impl Algebra {
         self.spend(1)?;
         match ast {
             Ast::Number(s) => Ok(Value::number(decimal_number(s)?)),
-            Ast::Symbol(s) => Ok(Value::atom(match s.as_str() {
-                "pi" => Atom::Pi,
-                "e" => Atom::E,
-                "i" if !self.context.symbolic_i => Atom::I,
-                _ => Atom::Variable(s.clone()),
-            })),
+            Ast::Symbol(s) => {
+                let atom = match s.as_str() {
+                    "pi" => Atom::Pi,
+                    "e" => Atom::E,
+                    "i" if !self.context.symbolic_i => Atom::I,
+                    _ => Atom::Variable(s.clone()),
+                };
+                let value = Value::atom(atom.clone());
+                if matches!(atom, Atom::Variable(_)) && s.len() == 1
+                    && s.as_bytes()[0].is_ascii_lowercase()
+                {
+                    let bit = 1_u32 << (s.as_bytes()[0] - b'a');
+                    let positive = self.context.positive_variables & bit != 0;
+                    let negative = self.context.negative_variables & bit != 0;
+                    if positive != negative {
+                        // exp(t) parametrizes all strictly positive reals, and
+                        // -exp(t) all strictly negative reals. Use the existing
+                        // exact sign/root rules on these bijections, rather than
+                        // dropping absolute values or guessing from samples.
+                        let signed = Value::atom(Atom::Function("exp".into(), Box::new(value)));
+                        return Ok(if negative { signed.neg() } else { signed });
+                    }
+                }
+                Ok(value)
+            },
             Ast::Neg(a) => Ok(self.eval(a)?.neg()),
             Ast::Binary(op, a, b) => {
                 let a = self.eval(a)?;
@@ -1464,6 +1495,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                 "left" | "right" | "displaystyle" | "textstyle" => {}
                 "cdot" | "times" => tokens.push(Token::Mark('*')),
                 "div" => tokens.push(Token::Mark('/')),
+                "vert" | "lvert" | "rvert" => tokens.push(Token::Mark('|')),
                 "dfrac" | "tfrac" => tokens.push(Token::Command("frac".into())),
                 _ => tokens.push(Token::Command(word)),
             }
@@ -1559,6 +1591,7 @@ struct Parser {
     tokens: Vec<Token>,
     at: usize,
     depth: usize,
+    absolute_depth: usize,
 }
 impl Parser {
     fn peek(&self) -> Option<&Token> {
@@ -1620,7 +1653,9 @@ impl Parser {
         // (11/4)x and 11/4*x still mean (11/4)*x. TeX fractions keep their groups.
         let mut a = self.signed()?;
         while matches!(self.peek(), Some(Token::Number(_) | Token::Word(_) |
-            Token::Command(_) | Token::Mark('(' | '{'))) {
+            Token::Command(_) | Token::Mark('(' | '{')))
+            || (self.absolute_depth == 0 && self.peek() == Some(&Token::Mark('|')))
+        {
             a = Ast::Binary('*', Box::new(a), Box::new(self.signed()?));
         }
         Ok(a)
@@ -1894,7 +1929,10 @@ impl Parser {
                 Ok(Ast::Symbol(n))
             }
             Token::Mark('|') => {
-                let a = self.nested(Self::sum)?;
+                self.absolute_depth += 1;
+                let a = self.nested(Self::sum);
+                self.absolute_depth -= 1;
+                let a = a?;
                 if !self.mark('|') {
                     return Err("unclosed absolute value".into());
                 }
@@ -1945,6 +1983,7 @@ fn parse(source: &str, context: Context) -> Result<Answer> {
         tokens: lex(source, context)?,
         at: 0,
         depth: 0,
+        absolute_depth: 0,
     };
     let ast = parser.sum()?;
     if parser.at != parser.tokens.len() {
@@ -3218,5 +3257,28 @@ mod tests {
                 _ => panic!("invalid expected result"),
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod explicit_signed_variable_regressions {
+    use super::{compare, Context};
+    #[test]
+    fn declared_sign_preserves_principal_roots_and_absolute_values() {
+        let bit = 1 << (b'b' - b'a');
+        let positive = Context { positive_variables: bit, ..Context::default() };
+        let negative = Context { negative_variables: bit, ..Context::default() };
+        for answer in [r"10\vert b\vert", r"10\lvert b\rvert", "10|b|", r"\sqrt{100b^2}", "10abs(b)"] {
+            assert_eq!(compare(answer, "10b", positive), Ok(true), "{answer}");
+            assert_eq!(compare(answer, "-10b", negative), Ok(true), "{answer}");
+            assert_eq!(compare(answer, "-10b", positive), Ok(false), "{answer}");
+            assert_eq!(compare(answer, "10b", negative), Ok(false), "{answer}");
+            assert_ne!(compare(answer, "10b", Context::default()), Ok(true), "{answer}");
+        }
+        assert_eq!(compare("b/b", "1", positive), Ok(true));
+        assert_eq!(compare("10abs(-b)", "10b", positive), Ok(true));
+        assert_eq!(compare("10abs(b-1)", "10b-10", positive), Ok(false));
+        assert_eq!(compare("10abs(c)", "10c", positive), Ok(false));
+        assert_eq!(compare("10abs(b)", "10b", Context { positive_variables: bit, negative_variables: bit, ..Context::default() }), Ok(false));
     }
 }
