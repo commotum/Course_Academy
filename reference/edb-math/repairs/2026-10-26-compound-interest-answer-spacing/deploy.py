@@ -39,7 +39,7 @@ def apply(p,item,d,prepared,committer,request):
   assert questions[str(q[':question/id'])]==expected,('Existing content changed',q[':db/id'])
  final=[]
  for record in prepared['all_final_records']:
-  q=questions[record['question'][':question/id']];assert not q.get(':question/retired')and not q.get(':question/math-academy-id');assert normalized_question(q)==normalized_question(record['question']);final.append({'entity':q[':db/id'],'uuid':str(q[':question/id']),'band':record['question'][':question/difficulty'],'family':record['generation']['family']})
+  q=questions[record['question'][':question/id']];assert not q.get(':question/retired')and not q.get(':question/math-academy-id');assert normalized_question(q)==normalized_question(record['question']);final.append({'entity':q[':db/id'],'uuid':str(q[':question/id']),'band':record['question'][':question/difficulty'],'family':record['generation'].get('family',record['generation'].get('template'))})
  assert len(final)==5 and{q[':db/id']for q in questions.values()if not q.get(':question/math-academy-id')and not q.get(':question/retired')}=={r['entity']for r in final}
  for q in questions.values():
   if q[':db/id']in{r['entity']for r in final}:assert'You may use $'not in q[':question/problem']and'Endpoint values:'not in q[':question/problem']
