@@ -6,6 +6,9 @@ H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/mixed-math-titl
 from reconstruct import reconstruct,SourceRenderer
 from import_historical_question_content import Renderer
 from question_capture.math_format import MATH,normalize_source_tex
+SHARD=int(sys.argv[1])if len(sys.argv)>1 else None
+if SHARD is not None:
+ H=W/f'shard-{SHARD}';H.mkdir(exist_ok=True)
 BASE=Path('/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source')
 def module(name,path):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
@@ -57,9 +60,11 @@ def main():
   d={**d,'pieces':pieces}
   for identity in identities:
    if identity:index[identity,a].append(d)
- save(W/'metadata.json',meta);save(W/'owners.json',owners);save(W/'idents.json',idents)
+ if SHARD in [None,0]:save(W/'metadata.json',meta);save(W/'owners.json',owners);save(W/'idents.json',idents)
  matches=[];sources=[];unresolved=[];counts=collections.Counter();all_values={}
- for p in sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.html')):
+ paths=sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.html'))
+ if SHARD is not None:paths=paths[SHARD::3]
+ for p in paths:
   counts['archived_lessons_examined']+=1;raw=p.read_text();title_chunks=re.findall(r'<title\b[^>]*>[\s\S]*?</title>',raw,re.I)
   potential=[x for x in title_chunks if '<math'in x and'<mjx-container'in x]
   if not potential:continue
@@ -111,5 +116,5 @@ def main():
  for key_,rows in grouped.items():
   if len({key(r['after_formula'])for r in rows})==1:confirmed.append(rows[0])
   else:unresolved.append({'entity':key_[0],'attribute':key_[1],'span':key_[2],'reason':'Conflicting complete source formulas','options':rows})
- save(W/'values.json',list(all_values.values()));save(H/'source-formulas.json',sources);save(H/'confirmed.json',confirmed);save(H/'unresolved.json',unresolved);report={**counts,'mixed_source_formulas':len(sources),'confirmed_formula_repairs':len(confirmed),'affected_fields':len({(m['entity'],m['attribute'])for m in confirmed}),'unresolved_candidates':len(unresolved),'attributes':dict(collections.Counter(m['attribute']for m in confirmed))};save(H/'audit-summary.json',report);print(json.dumps(report,indent=2))
+ save((W if SHARD is None else H)/'values.json',list(all_values.values()));save(H/'source-formulas.json',sources);save(H/'confirmed.json',confirmed);save(H/'unresolved.json',unresolved);report={**counts,'mixed_source_formulas':len(sources),'confirmed_formula_repairs':len(confirmed),'affected_fields':len({(m['entity'],m['attribute'])for m in confirmed}),'unresolved_candidates':len(unresolved),'attributes':dict(collections.Counter(m['attribute']for m in confirmed))};save(H/'audit-summary.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

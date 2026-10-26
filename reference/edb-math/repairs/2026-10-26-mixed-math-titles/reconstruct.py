@@ -7,8 +7,20 @@ from import_historical_question_content import Renderer
 from question_capture.math_format import normalize_source_tex
 class SourceRenderer(Renderer):
  def m(self,n):
+  if isinstance(n,Tag)and n.name=='mphantom':return '\\phantom{'+''.join(self.m(c)for c in n.children)+'}'
+  if isinstance(n,Tag)and n.name=='mspace':
+   if any(n.get(a)not in [None,'0','0em','0pt']for a in ['height','depth']):raise ValueError('Nontrivial MathML space height/depth requires review')
+   width=n.get('width')
+   if width:
+    if not re.fullmatch(r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:em|ex|px|pt|pc|in|cm|mm)',width):raise ValueError('Unsupported MathML space width '+width)
+    return '\\hspace{'+width+'}'
   value=super().m(n)
-  if isinstance(n,Tag)and n.name=='mstyle'and n.get('mathcolor'):
+  if isinstance(n,Tag)and n.get('mathvariant'):
+   fonts={'normal':'mathrm','bold':'mathbf','italic':'mathit','bold-italic':'mathbfit','double-struck':'mathbb','script':'mathcal','monospace':'mathtt','sans-serif':'mathsf'}
+   font=fonts.get(n['mathvariant'])
+   if font is None:raise ValueError('Unsupported mathvariant '+n['mathvariant'])
+   value='\\'+font+'{'+value+'}'
+  if isinstance(n,Tag)and n.get('mathcolor'):
    color=n['mathcolor'];assert re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{6}',color)
    value='{\\color{'+color+'}{'+value+'}}'
   return value
