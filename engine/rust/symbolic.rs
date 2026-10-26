@@ -191,7 +191,7 @@ impl Poly {
             Atom::Variable(_) | Atom::Pi | Atom::E => true,
             Atom::I => false,
             Atom::Root(_, p) => p.real_on_domain(),
-            Atom::Function(name, v) => matches!(name.as_str(), "sin" | "cos" | "ln" | "exp" | "abs" | "atan")
+            Atom::Function(name, v) => matches!(name.as_str(), "sin" | "cos" | "ln" | "exp" | "abs" | "atan" | "asin")
                 && v.real_on_domain(),
             Atom::Power(base, exponent) => base.real_on_domain() && exponent.real_on_domain(),
         }))
@@ -459,9 +459,28 @@ fn atan_bounds(x: &Q) -> Option<(Q, Q)> {
     let upper = &sum + power / Q::from_integer(65.into());
     Some((bounded_endpoints(&sum)?.0, bounded_endpoints(&upper)?.1))
 }
+// Monotonic principal arcsine, with rational enclosures only. For an
+// interior real input, asin(x)=atan(x/sqrt(1-x*x)); atan and root bounds
+// already round outwards. These intervals reject inequalities, never accept
+// numeric agreement or alter the displayed inverse-trigonometric branch.
+fn asin_bounds(x: &Q) -> Option<(Q, Q)> {
+    if x.abs() > Q::one() { return None; }
+    if x.is_negative() {
+        let (lo, hi) = asin_bounds(&-x.clone())?;
+        return Some((-hi, -lo));
+    }
+    if x.is_zero() { return Some((Q::zero(), Q::zero())); }
+    if x == &Q::one() {
+        return Some((Q::new(3.into(), 2.into()), Q::new(11.into(), 7.into())));
+    }
+    let (lo, hi) = root_bounds(&(Q::one()-x*x), 2)?;
+    if !lo.is_positive() { return None; }
+    Some((atan_bounds(&(x / hi))?.0, atan_bounds(&(x / lo))?.1))
+}
 fn function_interval(name: &str, l: &Q, h: &Q) -> Option<(Q, Q)> {
     match name {
         "atan" => Some((atan_bounds(l)?.0, atan_bounds(h)?.1)),
+        "asin" => Some((asin_bounds(l)?.0, asin_bounds(h)?.1)),
         "ln" => Some((log_bounds(l)?.0, log_bounds(h)?.1)),
         "exp" => Some((exp_bounds(l)?.0, exp_bounds(h)?.1)),
         "sin" | "cos" => {
@@ -1065,8 +1084,21 @@ impl Algebra {
         )))
     }
     fn function(&mut self, name: &str, x: &Value) -> Result<Value> {
-        let name = if name == "arctan" { "atan" } else { name };
+        let name = match name { "arctan" => "atan", "arcsin" => "asin", _ => name };
         match name {
+            "asin" => {
+                if !x.real_on_domain() {
+                    return Err("arcsine requires a real argument".into());
+                }
+                let square = self.mul(x, x)?;
+                let radicand = self.add(&Value::integer(1), &square.neg())?;
+                self.sign_condition(&radicand, false)?;
+                if x.is_zero() { return Ok(Value::integer(0)); }
+                if *x == Value::integer(1) || *x == Value::integer(-1) {
+                    let half_pi = self.div(&Value::atom(Atom::Pi), &Value::integer(2))?;
+                    return Ok(if *x == Value::integer(-1) { half_pi.neg() } else { half_pi });
+                }
+            }
             "atan" => {
                 if !x.real_on_domain() {
                     return Err("arctangent requires a real argument".into());
@@ -1254,7 +1286,7 @@ impl Algebra {
             _ => return Err(format!("unsupported function: {name}")),
         }
         // Odd/even symmetry; choose the argument with positive leading term.
-        if matches!(name, "sin" | "cos" | "abs" | "atan")
+        if matches!(name, "sin" | "cos" | "abs" | "atan" | "asin")
             && x.num
                 .0
                 .first_key_value()
@@ -1262,7 +1294,7 @@ impl Algebra {
         {
             let y = x.neg();
             let f = self.function(name, &y)?;
-            return Ok(if name == "sin" || name == "atan" { f.neg() } else { f });
+            return Ok(if name == "sin" || name == "atan" || name == "asin" { f.neg() } else { f });
         }
         Ok(Value::atom(Atom::Function(
             name.into(),
@@ -1488,6 +1520,8 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                     | "cot"
                     | "atan"
                     | "arctan"
+                    | "asin"
+                    | "arcsin"
                     | "ln"
                     | "log"
                     | "exp"
@@ -1761,6 +1795,8 @@ impl Parser {
                         | "cot"
                         | "atan"
                         | "arctan"
+                    | "asin"
+                    | "arcsin"
                         | "ln"
                         | "log"
                         | "exp"
@@ -2204,7 +2240,7 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
                 // keep the existing bounded search. Exact witnesses reject;
                 // they never prove equality or discard a domain obligation.
                 let polynomial_radical_domain = ca.iter().chain(cb.iter())
-                    .any(|c| matches!(c, Condition::Nonnegative(_)))
+                    .any(|c| matches!(c, Condition::Nonnegative(_) | Condition::Positive(_)))
                     && ca.iter().chain(cb.iter()).all(|c| match c {
                         Condition::Nonzero(p) => p.rational_variables_only(),
                         Condition::Nonnegative(v) | Condition::Positive(v) =>
@@ -2237,6 +2273,29 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
                 }
                 if diff.nonzero_at(Some(&sample)) {
                     return Ok(false);
+                }
+            }
+            // Denominators turn nonnegative radical guards into positive
+            // guards. Equal bounded domains can also contain only x=0 among
+            // the coarse samples; an added x term vanishes at that witness.
+            // Refine these polynomial guards before leaving a wrong answer
+            // unresolved. Exact interval witnesses prove inequality only.
+            let polynomial_radical_domain = ca.iter()
+                .any(|c| matches!(c, Condition::Nonnegative(_) | Condition::Positive(_)))
+                && ca.iter().all(|c| match c {
+                    Condition::Nonzero(p) => p.rational_variables_only(),
+                    Condition::Nonnegative(v) | Condition::Positive(v) =>
+                        v.num.rational_variables_only() && v.den.rational_variables_only(),
+                });
+            if polynomial_radical_domain {
+                for den in [4_i64, 8, 16] {
+                    for num in (-8 * den..=8 * den).filter(|n| n % 2 != 0) {
+                        let sample = Witness { base: Q::new(num.into(), den.into()), distinct_slopes: false };
+                        if ca.iter().all(|c| condition_at(c, &sample))
+                            && diff.nonzero_at(Some(&sample)) {
+                            return Ok(false);
+                        }
+                    }
                 }
             }
             Err("symbolic equivalence is not established by the supported rules".into())
@@ -2284,6 +2343,58 @@ mod tests {
         assert_eq!(compare("ln(y-x)", "ln(-x+y)+(z-z)", Context::default()), Ok(true));
         assert!(compare("ln(y-x)", "ln(x-y)", Context::default()).is_err());
         assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+    }
+    #[test]
+    fn principal_arcsine_answers_preserve_domains_and_aliases() {
+        use super::{compare, Context};
+        for (a, b) in [
+            (r"\arcsin(2x)", "asin(2*x)"),
+            (r"\operatorname{arcsin}(2x)", "arcsin(2*x)"),
+            ("asin(-2*x)", "-asin(2*x)"),
+            ("asin(0)", "0"), ("asin(1)", "pi/2"),
+            ("asin(-1)", "-pi/2"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} vs {b}");
+        }
+        for (a, b) in [
+            ("asin(x)", "-asin(x)"), ("asin(x)", "atan(x)"),
+            ("asin(x)", "asin(x)+1"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+        }
+        assert!(compare("asin(2)", "asin(2)", Context::default()).is_err());
+        assert!(compare("asin(i*x)", "asin(i*x)", Context::default()).is_err());
+        assert!(compare("asin(x)-asin(x)", "0", Context::default()).is_err());
+        // Bounds enclose known interior values and retain the principal sign.
+        let (lo, hi) = super::asin_bounds(&super::Q::new(1.into(), 4.into())).unwrap();
+        assert!(lo > super::Q::new(1.into(), 4.into()));
+        assert!(hi < super::Q::new(13.into(), 50.into()));
+    }
+    #[test]
+    fn reciprocal_radical_derivatives_use_interior_counterexamples() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("8/sqrt(1-4*x^2)", "8/sqrt(1+4*x^2)"),
+            ("8/sqrt(1-4*x^2)", "8/sqrt(1-4*x^2)+x"),
+            ("20*arcsin(4*x)^4/sqrt(1-16*x^2)",
+             "20*arcsin(4*x)^4/sqrt(1+16*x^2)"),
+            ("20*arcsin(4*x)^4/sqrt(1-16*x^2)",
+             "20*arcsin(4*x)^4/sqrt(1-16*x^2)+x"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+            assert_eq!(compare(b, a, Context::default()), Ok(false), "{b} vs {a}");
+        }
+        for (a, b) in [
+            ("8/sqrt(1-4*x^2)", "16/(2*sqrt(1-4*x^2))"),
+            ("20*arcsin(4*x)^4/sqrt(1-16*x^2)",
+             "40*arcsin(4*x)^4/(2*sqrt(1-16*x^2))"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(true));
+        }
+        // The additional inequality witnesses must not prove equality by
+        // sampling or remove a genuine domain difference.
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+        assert!(compare("(x^2-1)/(x-1)", "x+1", Context::default()).is_err());
     }
     #[test]
     fn unequal_radicals_in_narrow_overlapping_domains_are_rejected() {
