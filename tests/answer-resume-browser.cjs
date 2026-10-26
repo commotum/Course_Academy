@@ -29,7 +29,7 @@ window.fetch=async(path,options)=>{
 document.getElementById('retryButton').addEventListener('click',()=>retryOperation?.());
 window.configure=async(kind,type='lesson',options={})=>{
  document.activeElement?.blur();seenTaskSteps.clear();
- calls.length=0;pending.length=0;hold=false;failNext=false;window.nextTask=null;resumingAnswerForm=null;developer=!!options.preview;
+ calls.length=0;pending.length=0;hold=false;failNext=false;window.nextTask=null;answerResume=null;developer=!!options.preview;
  drafts.clear();manuallyPausedTasks.clear();sessionStorage.clear();lessonView=null;task=null;busy=false;retryOperation=null;timerPausePending=false;
  const field={id:30,key:'value',type:kind,choices:[]};
  if(kind==='math'){field.type='blank';field.answerType='math';}
@@ -62,7 +62,7 @@ const server=http.createServer((req,res)=>{
  const configure=async(kind,type='lesson',options={})=>page.evaluate(args=>configure(...args),[kind,type,options]);
  const started=async()=>{await page.waitForFunction(()=>state().status==='started'&&!state().busy);assert.equal(await page.evaluate(()=>calls.length),1);assert.equal((await page.evaluate(()=>state())).running,true);assert.equal((await page.evaluate(()=>state())).manual,false);};
  for(const type of ['lesson','review'])for(const kind of ['blank','free','math','radio','checkbox','select']){
-  await configure(kind,type);await page.evaluate(()=>hold=true);
+  await configure(kind,type);assert.equal(await page.evaluate(()=>calls.length),0);await page.evaluate(()=>hold=true);
   if(kind==='radio'||kind==='checkbox')await page.locator('.lesson-feed .choice').first().click();
   else if(kind==='select'){await page.locator('.answer-select-trigger').click();await page.waitForFunction(()=>pending.length===1);await page.locator('.answer-select-option').filter({hasText:'Second option'}).click();}
   else{const input=page.locator(kind==='free'?'textarea':kind==='math'?'math-field':'input:not([type=hidden])');await input.click();await page.waitForFunction(()=>pending.length===1);if(kind==='math')await page.waitForFunction(()=>document.querySelector('math-field').shadowRoot.activeElement);await page.keyboard.type(kind==='math'?'2+3':'typed answer');}
@@ -80,17 +80,17 @@ const server=http.createServer((req,res)=>{
  }
  // A response that arrives before pointer-up must not eat the selected choice.
  for(const kind of ['radio','checkbox']){
-  await configure(kind,'review');const input=page.locator('.choice input:not([type=hidden])').first();const box=await input.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.waitForTimeout(60);assert.equal(await page.evaluate(()=>calls.length),0);await page.mouse.up();await started();assert.equal(await page.locator('.choice input:not([type=hidden])').first().isChecked(),true);
+  await configure(kind,'review');const input=page.locator('.choice input:not([type=hidden])').first();const box=await input.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.waitForTimeout(60);assert.equal(await page.evaluate(()=>calls.length),0);await page.mouse.up();await started();assert.equal(await page.locator('.choice input:not([type=hidden])').first().isChecked(),true,kind+' '+JSON.stringify(await page.evaluate(()=>({responses:state().responses,inputs:[...document.querySelectorAll('input')].map(n=>({value:n.value,checked:n.checked,type:n.type})),calls}))));
  }
  checks.push('fast resume cannot consume the first radio or checkbox click');
  await configure('blank');await page.locator('input').focus();await started();assert.equal(await page.locator('input').evaluate(n=>n===document.activeElement),true);checks.push('keyboard focus resumes and restores the field');
  await configure('select');await page.locator('.answer-select-trigger').click();await started();await page.locator('.answer-select-menu').waitFor({state:'visible'});checks.push('select choices stay open after resume');
  await configure('blank');await page.locator('input').click({button:'right'});assert.equal(await page.evaluate(()=>calls.length),0);checks.push('native editing context menu does not resume');
- await configure('blank');await page.evaluate(()=>failNext=true);await page.locator('input').fill('keep my draft');await page.locator('#errorBanner').waitFor({state:'visible'});assert.equal((await page.evaluate(()=>state())).running,false);
+ await configure('blank');await page.evaluate(()=>{hold=true;failNext=true;});await page.locator('input').click();await page.waitForFunction(()=>pending.length===1);await page.keyboard.type('keep my draft');await page.evaluate(()=>{hold=false;release();});await page.locator('#errorBanner').waitFor({state:'visible'});assert.equal((await page.evaluate(()=>state())).running,false);
  const original=await page.evaluate(()=>calls[0].body);await page.locator('input').press('End');await page.keyboard.type('!');await page.waitForFunction(()=>state().status==='started'&&!state().busy);assert.deepEqual(await page.evaluate(()=>calls[1].body),original);assert.equal(await page.locator('input').inputValue(),'keep my draft!');checks.push('failed resume preserves draft and retries the same request');
- await configure('radio');await page.evaluate(()=>{hold=true;nextTask=structuredClone(server);nextTask.step.itemId=11;nextTask.step.contentId=102;});await page.locator('.choice').first().click();await page.evaluate(()=>release());await page.waitForFunction(()=>state().item===11&&!state().busy);assert.equal(await page.locator('.choice input:checked').count(),0);checks.push('another tab advancing cannot apply the old choice to a new question');
+ await configure('radio');await page.evaluate(()=>{hold=true;nextTask=structuredClone(server);nextTask.step.itemId=11;nextTask.step.contentId=102;});await page.locator('.choice').first().click();await page.waitForFunction(()=>pending.length===1);await page.evaluate(()=>release());await page.waitForFunction(()=>state().item===11&&!state().busy);assert.equal(await page.locator('.choice input:checked').count(),0);checks.push('another tab advancing cannot apply the old choice to a new question');
  for(const options of [{answered:true},{archived:true},{preview:true}]){
-  await configure('blank','lesson',options);const inputs=page.locator('[data-answer-input]');assert.equal(await inputs.first().isDisabled(),true);
+  await configure('blank','lesson',options);const inputs=page.locator('[data-answer-input]');assert.equal(await inputs.first().isDisabled(),!options.preview);
   if(options.archived){await inputs.first().dispatchEvent('focusin');assert.equal(await page.evaluate(()=>calls.length),0);}else{await page.locator('.content-card').first().click();assert.equal(await page.evaluate(()=>calls.length),0);}
  }
  await configure('blank','assessment');assert.equal(await page.locator('[data-answer-input]').first().isDisabled(),true);await page.locator('.content-card').click();assert.equal(await page.evaluate(()=>calls.length),0);checks.push('answered and archived content, previews and assessments do not auto-resume');

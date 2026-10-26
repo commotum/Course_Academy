@@ -24,7 +24,7 @@ let mathLoader = null;
 const drafts = new Map();
 const manuallyPausedTasks = new Set();
 let timerPausePending = false;
-let resumingAnswerForm = null;
+let answerResume = null;
 function manualPauseKey(id) { return 'course-academy.manual-pause.' + String(id); }
 function pausedDraftKey(id) { return 'course-academy.paused-draft.' + String(id); }
 function isManuallyPaused(id) {
@@ -181,7 +181,7 @@ function setBusy(value) {
   for (const control of document.querySelectorAll('[data-answer-input]')) {
     // Keep the initiating answer usable while its resume is being confirmed.
     // Its input/change events retain the first choice or any text entered.
-    control.disabled = value && !resumingAnswerForm?.contains(control) || control.dataset.readOnly === 'true';
+    control.disabled = value && !answerResume?.form.contains(control) || control.dataset.readOnly === 'true';
   }
   refreshPauseControl();
 }
@@ -248,10 +248,10 @@ async function mutation(path, values) {
         // Invalidate other tabs only after the completion transaction succeeds.
         try { localStorage.setItem('course-academy-queue-changed', crypto.randomUUID()); } catch { /* Other pages also refresh on return. */ }
       }
-      if (path === '/api/resume' && resumingAnswerForm && task?.taskId === nextTask.taskId && task?.step?.itemId === nextTask.step?.itemId) {
-        // Math editors can defer input events. Read the actual controls before
-        // reconnecting them so an early response cannot discard recent typing.
-        drafts.set(task.step.itemId, collectResponses(resumingAnswerForm, task.step.fields));
+      if (path === '/api/resume' && answerResume?.taskId === nextTask.taskId && answerResume?.itemId === nextTask.step?.itemId) {
+        // Snapshot controls before reconnecting them: math editors can defer
+        // input events, and dropdown teardown otherwise loses its open state.
+        answerResume.capture();
       }
       task = result.task || result;
       if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic' || path === '/api/review-topic') setManualPause(task.taskId, false);
@@ -869,6 +869,7 @@ async function renderPreview() {
 
 function resumeOnAnswerInteraction(form, content, data, step) {
   let pending = false, pointerDown = false, focused = null, retry = null;
+  let resumeFocus = null, dropdownOpen = false, textSelection = null, mathSelection = null;
   const sameQuestion = () => task?.taskId === data.taskId && task?.step?.itemId === step.itemId;
   const targetControl = event => {
     for (const node of event.composedPath?.() || [event.target]) {
@@ -890,28 +891,40 @@ function resumeOnAnswerInteraction(form, content, data, step) {
     if (pending || busy || timerPausePending || document.hidden || modeChanging || isDeveloperMode()
       || lessonView?.current !== content || !sameQuestion()
       || !['paused', 'locked', 'unlocked'].includes(short(task.status))) return;
-    pending = true; resumingAnswerForm = form;
+    pending = true;
+    const attempt = { form, taskId: data.taskId, itemId: step.itemId, capture() {
+      saveDraft(); resumeFocus = focused;
+      dropdownOpen = focused?.classList.contains('answer-select-trigger') && focused.getAttribute('aria-expanded') === 'true';
+      textSelection = typeof focused?.selectionStart === 'number'
+        ? [focused.selectionStart, focused.selectionEnd, focused.selectionDirection || 'none'] : null;
+      mathSelection = focused?.tagName === 'MATH-FIELD' ? JSON.parse(JSON.stringify(focused.selection)) : null;
+    } };
+    answerResume = attempt;
     // A failed resume retains the existing mutation's exact request identity.
     const request = retry || (() => mutation('/api/resume', { taskId: data.taskId }));
-    void request().then(() => {
+    // Finish native click/label activation before a fast resume can replace
+    // the form, including the checkbox/radio change events it generates.
+    void new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+      if (document.hidden || modeChanging || isDeveloperMode() || lessonView?.current !== content || !sameQuestion()) return;
+      return request();
+    }).then(() => {
       if (!sameQuestion() || document.hidden || modeChanging || isDeveloperMode()) return;
       if (short(task.status) !== 'started') {
         if (lessonView?.current === content && retryOperation) retry = retryOperation;
         return;
       }
-      if (!focused || document.activeElement && document.activeElement !== document.body && !form.contains(document.activeElement)) return;
-      const index = [...form.querySelectorAll('[data-answer-input]')].indexOf(focused);
+      if (!resumeFocus || document.activeElement && document.activeElement !== document.body && !form.contains(document.activeElement)) return;
+      const index = [...form.querySelectorAll('[data-answer-input]')].indexOf(resumeFocus);
       const replacement = lessonView?.current?.querySelectorAll('[data-answer-input]')[index];
       if (!replacement || replacement.disabled) return;
       replacement.focus({ preventScroll: true });
-      if (typeof focused.selectionStart === 'number' && replacement.setSelectionRange) {
-        replacement.setSelectionRange(focused.selectionStart, focused.selectionEnd, focused.selectionDirection || 'none');
-      }
+      if (textSelection && replacement.setSelectionRange) replacement.setSelectionRange(...textSelection);
+      if (mathSelection) replacement.selection = mathSelection;
       // A click on a select opens its choices as well as resuming the timer.
-      if (focused.classList.contains('answer-select-trigger') && focused.getAttribute('aria-expanded') === 'true') replacement.click();
+      if (dropdownOpen) replacement.click();
     }).catch(error => showError(error)).finally(() => {
       pending = false;
-      if (resumingAnswerForm === form) resumingAnswerForm = null;
+      if (answerResume === attempt) answerResume = null;
     });
   };
   form.addEventListener('pointerdown', () => { pointerDown = true; });
