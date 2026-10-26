@@ -2258,9 +2258,10 @@ pub fn compare_math_in_context(
     // the requested exponent is fractional. Numeric equivalence alone would
     // accept a different base (25^(1/3) for 5^(2/3)) or a radical.
     if requests_power_form(prompt)
-        && let Some(expected) = fractional_power_form(b)
+        && let Some(expected) = fractional_power_form(b, false)
     {
-        return Ok(fractional_power_form(a).is_some_and(|actual| actual == expected));
+        return Ok(fractional_power_form(a, requires_reduced_fraction(prompt))
+            .is_some_and(|actual| actual == expected));
     }
     if requires_answer_form(prompt) {
         let a = normalize_answer_form(a);
@@ -2377,7 +2378,7 @@ fn integer_power_form(value: &str) -> Option<(num_bigint::BigInt, num_bigint::Bi
 /// A literal integer base with a literal nonintegral rational exponent.
 /// Normalize TeX/slash fraction spelling and harmless grouping, but do not
 /// evaluate arithmetic in the base or exponent or convert a radical to a power.
-fn fractional_power_form(value: &str) -> Option<(num_bigint::BigInt, num_rational::BigRational)> {
+fn fractional_power_form(value: &str, reduced_exponent: bool) -> Option<(num_bigint::BigInt, num_rational::BigRational)> {
     let normalized = normalize_math(value);
     let text = ungroup_power_slot(&normalized)?;
     let (base, exponent) = text.split_once('^')?;
@@ -2391,14 +2392,33 @@ fn fractional_power_form(value: &str) -> Option<(num_bigint::BigInt, num_rationa
     let exponent = if let Some(fraction) = normalize_fraction_form(exponent) {
         let fraction = fraction.strip_prefix(r"\frac{")?.strip_suffix('}')?;
         let (numerator, denominator) = fraction.split_once("}{")?;
-        num_rational::BigRational::new(numerator.parse().ok()?, denominator.parse().ok()?)
+        let numerator: num_bigint::BigInt = numerator.parse().ok()?;
+        let denominator: num_bigint::BigInt = denominator.parse().ok()?;
+        let value = num_rational::BigRational::new(numerator.clone(), denominator.clone());
+        // Value equality must not discard an explicit lowest-terms instruction.
+        // normalize_fraction_form preserves the submitted integer pair while
+        // accepting the UI's TeX and slash spellings.
+        if reduced_exponent && (value.numer() != &numerator || value.denom() != &denominator) {
+            return None;
+        }
+        value
     } else {
+        if reduced_exponent { return None; }
         // A literal decimal such as 0.500 preserves the same exponent slot as
         // 1/2. Do not evaluate compound expressions or change the supplied base.
         plain_decimal_numeral(exponent)?
     };
     if exponent.is_integer() { return None; }
     Some((base, exponent))
+}
+
+fn requires_reduced_fraction(prompt: &str) -> bool {
+    use std::sync::LazyLock;
+    static REDUCED: LazyLock<regex::Regex> = LazyLock::new(|| {
+        regex::Regex::new(r"(?i)\b(?:simplest\s+form|lowest\s+terms|reduced\s+fraction)\b")
+            .expect("valid reduced fraction instruction")
+    });
+    REDUCED.is_match(prompt)
 }
 
 fn plain_decimal_numeral(text: &str) -> Option<num_rational::BigRational> {
@@ -4601,6 +4621,23 @@ pub(crate) mod tests {
         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("m^k=t"));
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Evaluate. {{x}}"));
         assert!(grade_field(&s,100,200,"m^k=t").is_err());
+    }
+
+    #[test]
+    fn fractional_power_lowest_terms_preserves_the_submitted_fraction() {
+        let context = symbolic::Context::default();
+        for instruction in ["lowest terms", "simplest form", "reduced fraction"] {
+            let prompt = format!("Express the radical as a single power with a fractional exponent in {instruction}.");
+            for answer in ["7^(2/3)", r"7^{\frac{2}{3}}", "{7}^{2/3}", "(7)^((2)/(3))"] {
+                assert!(compare_math_in_context(answer, "7^{2/3}", &prompt, context).unwrap(), "{answer}");
+            }
+            for answer in ["7^(4/6)", r"7^{\frac{8}{12}}", "7^(-2/-3)", "7^(0.6666666667)", "49^(1/3)", r"\sqrt[6]{7^4}"] {
+                assert!(!compare_math_in_context(answer, "7^{2/3}", &prompt, context).unwrap(), "{answer}");
+            }
+        }
+        // Without a reduction instruction, equivalent literal exponents still work.
+        assert!(compare_math_in_context("7^(4/6)", "7^{2/3}", "Write as a single power.", context).unwrap());
+        assert!(compare_math_in_context("7^(0.5)", "7^{1/2}", "Write in exponential form.", context).unwrap());
     }
 
     #[test]
