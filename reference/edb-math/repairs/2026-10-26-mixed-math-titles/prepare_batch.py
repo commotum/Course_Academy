@@ -8,9 +8,9 @@ from reconstruct import reconstruct
 from question_capture.math_format import MATH
 
 def main():
- rows=json.loads((H/'resolved.json').read_text());values={(d['e'],d['a']):d for d in json.loads((W/'values.json').read_text())};groups=collections.defaultdict(list)
+ rows=json.loads((H/'final-resolved.json').read_text());values={(d['e'],d['a']):d for d in json.loads((W/'values.json').read_text())};groups=collections.defaultdict(list)
  for r in rows:
-  tex=reconstruct(BeautifulSoup(r['source']['title'],'html.parser').title);old=values[r['entity'],r['attribute']]['v'][r['span'][0]:r['span'][1]];marker='$$'if old.startswith(('$$',r'\['))else'$';r['after_formula']=marker+'\n'+tex+'\n'+marker if marker=='$$'else'$'+tex+'$';groups[r['entity'],r['attribute']].append(r)
+  tex=reconstruct(BeautifulSoup(r['source']['title'],'html.parser').title);old=values[r['entity'],r['attribute']]['v'][r['span'][0]:r['span'][1]];marker='$$'if (r.get('force_display') or old.startswith(('$$',r'\[')))else'$';r['after_formula']=marker+'\n'+tex+'\n'+marker if marker=='$$'else'$'+tex+'$';groups[r['entity'],r['attribute']].append(r)
  fields=[];reviews=[]
  for (e,a),edits in sorted(groups.items()):
   assert a in ['tutorial/content','question/problem','question/worked-solution'];before=values[e,a]['v'];after=before;last=len(before)
