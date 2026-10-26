@@ -1,0 +1,152 @@
+{
+  "verdict": "accepted",
+  "summary": "Repaired local batch sampling to vary linear coefficients before constants. Final easy/moderate/hard samples pass independent mathematics, native grading, actual UI rendering and delivery checks. Question construction and source replay are unchanged.",
+  "source_analysis": {
+    "skill": "Complete the square on monic quadratic expressions with a negative odd linear coefficient.",
+    "reasoning_steps": [
+      "Identify b in v\u00b2-bv+c and halve b.",
+      "Add and subtract (b/2)\u00b2.",
+      "Factor the perfect square and combine c-b\u00b2/4 exactly.",
+      "Select the completed square or enter the requested numeric fragments."
+    ],
+    "invariants": [
+      "Monic quadratic; negative odd integral linear coefficient; rational constant.",
+      "Preserve equality and produce (v-b/2)\u00b2+c-b\u00b2/4.",
+      "No solving quadratic equations or leading-coefficient factoring."
+    ],
+    "permitted_variations": [
+      "Variable name and negative odd coefficient magnitude.",
+      "Constant absent, integer or simple quarter-valued; residual sign may vary or cancel.",
+      "Radio completed-expression banks and source-anchored numeric blanks; complete-answer construction may conservatively fade support.",
+      "Correct option position and plausible mistake profiles must follow each instance."
+    ],
+    "source_refs": [
+      "e-15021 / 2308b4bc-c09f-5f4c-b879-3bb67c92f885: add then subtract (7/2)\u00b2, factor, evaluate -49/4",
+      "q-221418 / bba4eb6f-40c0-51f9-bd6c-081261134bc2: y\u00b2-15y numeric blanks",
+      "q-140310 / 7d192e29-3a22-5afd-a4d3-7c411bdd4923: x\u00b2-7x+5/4 \u2192 (x-7/2)\u00b2-11",
+      "q-140312 / 282ce0db-5af9-5d46-bb3e-cd818faa2d16: x\u00b2-7x+8 \u2192 (x-7/2)\u00b2-17/4",
+      "tutorial 9422 / dba1a2d3-8092-514c-905c-9f6c001081ae: add/subtract half-coefficient square, combine quarters",
+      "tutorial 9421 / 858a20e8-2e9b-5ab0-ae5f-811c370a9b56: perfect-square identity and odd-coefficient fractions"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampler-regression.json",
+        "prior/source-replay-checks.json"
+      ],
+      "details": "Current replay is unchanged from the independently reviewed source/exemplar replay. Current instructional source identity also matches that review. Imports were not edited."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-math.json"
+      ],
+      "details": "Independently parsed visible polynomials, expanded every displayed derivation row, and checked both keyed fragments for all 15 final records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampler-regression.json",
+        "delivery-summary.json"
+      ],
+      "details": "The reported repeated-coefficient batch is repaired. 78 short batches have unique coefficients, larger batches choose least-used eligible coefficients, and all 251/353/353 original mathematical cases remain available through finite exhaustion."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "sampler-regression.json",
+        "independent-math.json"
+      ],
+      "details": "Coefficient choice now varies the actual halving/squaring work. Retained source-directed counterfactual and shortcut checks apply to identical construction; changed sampling and delivered variety are checked separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "sampler-regression.json"
+      ],
+      "details": "Both answer fragments agree with the displayed completed square in every final record. Signed hard parameters and supplied-sign easy/moderate magnitudes retain the reviewed response scope."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading-input.json",
+        "grading-report.json"
+      ],
+      "details": "150 current native learner-engine checks pass: 90 exact/equivalent fractions and decimals accepted, 60 nearby wrong values/sign errors rejected, no unresolved results."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "All 15 final records render through the unmodified study UI. Representative easy, moderate and hard screenshots were inspected; equations, answer controls and worked solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-binding.json",
+        "sampler-regression.json"
+      ],
+      "details": "Runner relocated the declared package, verified dependencies and replayed every final band deterministically. Package, source, inventory, batch and asset identities were checked before this acceptance."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "prior/progression.json",
+        "final-records.json",
+        "sampler-regression.json"
+      ],
+      "details": "Unchanged construction retains easy procedural guidance, moderate retrieval and hard reordered terms with signed parameters. All three final bands contain positive, zero and negative remainders; original source calibration is unchanged."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "d5ebb6c4593a14a1ef8bfc65ce2af07dd780f425b38e80cd0d9cde92aa51e05d",
+      "evidence_paths": [
+        "final-easy.json",
+        "independent-math.json",
+        "grading-report.json",
+        "render/rendering.json",
+        "delivery-easy/delivery.json",
+        "sampler-regression.json"
+      ],
+      "details": "Five final records: five distinct coefficients, all three remainder signs; independent math, native grading, UI rendering and delivery passed."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "3604c03f7673619ec032d37f13369ca7703f54d452f8e004651fd2b06ca9e4b2",
+      "evidence_paths": [
+        "final-moderate.json",
+        "independent-math.json",
+        "grading-report.json",
+        "render/rendering.json",
+        "delivery-moderate/delivery.json",
+        "sampler-regression.json"
+      ],
+      "details": "Five final records: five distinct coefficients, all three remainder signs; independent math, native grading, UI rendering and delivery passed."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "98f08d976ad5c425b0d908f21869e1ec29438bdcd7bd100ffc140d5c61e3d129",
+      "evidence_paths": [
+        "final-hard.json",
+        "independent-math.json",
+        "grading-report.json",
+        "render/rendering.json",
+        "delivery-hard/delivery.json",
+        "sampler-regression.json"
+      ],
+      "details": "Five final records: five distinct coefficients, all three remainder signs; independent math, native grading, UI rendering and delivery passed."
+    }
+  }
+}

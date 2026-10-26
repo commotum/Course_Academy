@@ -1,0 +1,2276 @@
+{
+  "learner_operation": "Complete a monic quadratic with negative odd linear coefficient: infer the half, preserve value by adding/subtracting its square, factor, and combine the residual constant. Produce both numeric fragments; hard also requires signed parameters.",
+  "fixed_features": [
+    {
+      "feature": "Monic quadratic and negative odd integer linear term",
+      "justification": "Target KP e-15021 and tutorial9421 teach the fractional-half completion for this sign. Varying to a nonmonic polynomial or solving an equation would add another operation."
+    },
+    {
+      "feature": "Two numeric blanks; factored sign support in easy/moderate",
+      "justification": "Complete source q-223639/q-223640 explicitly supply signs. Both blanks still require calculation. Ordinary sampling uses this captured contract; full radio banks remain in source replay."
+    },
+    {
+      "feature": "Minus sign inside the completed square; hard a is negative",
+      "justification": "Expanding (v-h)^2 with h>0 necessarily gives the negative linear term. Its fixed sign is a mathematical invariant, while its magnitude and the residual constant vary."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "half of coefficient",
+      "eligible_variation": "Odd m=3..15; variable rename irrelevant to numeric value.",
+      "observed": "Fresh controls and boundary samples cover multiple halves; matched coefficient counterfactual changes both responses."
+    },
+    {
+      "role": "surviving constant c-m\u00b2/4",
+      "eligible_variation": "Negative, zero and positive; vary original c independently using integer/source-quarter profiles as well as near-square values.",
+      "observed": "All three final bands include all three outcome signs after delivery. Catalog regression restores all five complete source polynomials and permits negative original constants in each band."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "final-easy: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ],
+      "result": "{\"count\": 5, \"distinct_response_pairs\": 5, \"original_constant_signs\": {\"negative\": 1, \"positive\": 4}, \"remainder_cases\": {\"negative\": 2, \"positive\": 2, \"zero\": 1}}"
+    },
+    {
+      "case": "control-easy: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"positive\": 6}, \"remainder_cases\": {\"negative\": 1, \"positive\": 4, \"zero\": 1}}"
+    },
+    {
+      "case": "delivered-final-easy: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ],
+      "result": "{\"count\": 5, \"distinct_response_pairs\": 5, \"original_constant_signs\": {\"negative\": 1, \"positive\": 4}, \"remainder_cases\": {\"negative\": 2, \"positive\": 2, \"zero\": 1}}"
+    },
+    {
+      "case": "delivered-control-easy: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"positive\": 6}, \"remainder_cases\": {\"negative\": 1, \"positive\": 4, \"zero\": 1}}"
+    },
+    {
+      "case": "final-moderate: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ],
+      "result": "{\"count\": 5, \"distinct_response_pairs\": 5, \"original_constant_signs\": {\"positive\": 5}, \"remainder_cases\": {\"negative\": 1, \"positive\": 2, \"zero\": 2}}"
+    },
+    {
+      "case": "control-moderate: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"negative\": 1, \"positive\": 5}, \"remainder_cases\": {\"negative\": 2, \"positive\": 3, \"zero\": 1}}"
+    },
+    {
+      "case": "delivered-final-moderate: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ],
+      "result": "{\"count\": 5, \"distinct_response_pairs\": 5, \"original_constant_signs\": {\"positive\": 5}, \"remainder_cases\": {\"negative\": 1, \"positive\": 2, \"zero\": 2}}"
+    },
+    {
+      "case": "delivered-control-moderate: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"negative\": 1, \"positive\": 5}, \"remainder_cases\": {\"negative\": 2, \"positive\": 3, \"zero\": 1}}"
+    },
+    {
+      "case": "final-hard: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ],
+      "result": "{\"count\": 4, \"distinct_response_pairs\": 4, \"original_constant_signs\": {\"negative\": 1, \"positive\": 3}, \"remainder_cases\": {\"negative\": 2, \"positive\": 1, \"zero\": 1}}"
+    },
+    {
+      "case": "control-hard: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"positive\": 6}, \"remainder_cases\": {\"negative\": 3, \"positive\": 2, \"zero\": 1}}"
+    },
+    {
+      "case": "delivered-final-hard: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ],
+      "result": "{\"count\": 4, \"distinct_response_pairs\": 4, \"original_constant_signs\": {\"negative\": 1, \"positive\": 3}, \"remainder_cases\": {\"negative\": 2, \"positive\": 1, \"zero\": 1}}"
+    },
+    {
+      "case": "delivered-control-hard: original constant and remainder signs, response pairs",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ],
+      "result": "{\"count\": 6, \"distinct_response_pairs\": 6, \"original_constant_signs\": {\"positive\": 6}, \"remainder_cases\": {\"negative\": 3, \"positive\": 2, \"zero\": 1}}"
+    },
+    {
+      "case": "Diversity within an ordinary short batch",
+      "result": "Reported four-question failure now has four coefficients. All 78 checked five/seven-question batches have distinct coefficients. All 15 final records and their delivery survivors retain distinct coefficients within each band.",
+      "sample_refs": [
+        "sampler-regression.json",
+        "independent-math.json",
+        "delivery-summary.json"
+      ]
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold m=5 and variable x fixed; c=17/4,25/4,29/4 crosses compensation boundary. Also hold c=29/4 fixed and change m=5 to7.",
+      "expected": "First change updates residual -2,0,+1 and supplied sign/magnitude or signed b; second change updates h and residual. Prompts, solution and actual grader must track both.",
+      "observed": "Responses match exact arithmetic in all bands; stale answers fail native grading. Rendered prompts/explanations use each changed input.",
+      "status": "passed",
+      "justification": "Only answer-bearing original data changes; the same completing-square identity determines both fragments.",
+      "sample_refs": [
+        "prior/counterfactual-records.json",
+        "prior/counterfactual-results.json",
+        "prior/grading-report.json",
+        "prior/render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename x to z at fixed m=5,c=29/4 in each band.",
+      "expected": "Numeric answers and grader outcomes preserved; all polynomial/square occurrences change variable.",
+      "observed": "The numeric pairs agree, both records pass native grading, and actual UI displays the renamed prompt and solution.",
+      "status": "passed",
+      "justification": "Variable names have no effect on the numeric completion parameters.",
+      "sample_refs": [
+        "prior/counterfactual-records.json",
+        "prior/counterfactual-results.json",
+        "prior/grading-report.json",
+        "prior/render-controls/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "final-easy",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/final-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "control-easy",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/control-easy.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-easy/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-easy/variable:y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-easy/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-final-easy",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-final-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-easy/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-easy/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.2). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-easy/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-easy/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-control-easy",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-control-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "final-moderate",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/final-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "control-moderate",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/control-moderate.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.4). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-final-moderate",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-final-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-moderate/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:+",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-moderate/supplied-remainder-sign:-",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-moderate/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-moderate/variable:z",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-control-moderate",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-control-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "final-hard",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/final-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "control-hard",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/control-hard.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.25). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-final-hard/variable:x",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.5). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-final-hard",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-final-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-hard/all",
+      "scope": "within_template",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-hard/supplied-remainder-sign:unsigned-param",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.16666666666666666). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "second blank is always zero",
+      "subgroup": "delivered-control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; second blank is always zero. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible original constant into second blank",
+      "subgroup": "delivered-control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible original constant into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy visible linear magnitude into second blank",
+      "subgroup": "delivered-control-hard/variable:t",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict the numeric second response using only displayed variable, coefficients and supplied sign; copy visible linear magnitude into second blank. No key, generation metadata or answer catalog is consulted.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is the empirical most-frequent numeric second response in this same subgroup (0.3333333333333333). This fixed surface strategy does not solve the subgroup. Singletons are retained in records but cannot support repeatability claims.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative odd linear coefficient",
+      "subgroup": "delivered-control-hard",
+      "scope": "within_template",
+      "strategy": "Read linear coefficient and halve it, using the signed parameter convention in hard. Does not compute the second response.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.3333333333333333,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the most frequent first numeric response. Halving is explicitly the target operation, not a shape-only shortcut, and alone cannot finish either field contract.",
+      "sample_refs": [
+        "prior/delivery-control-hard/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Least-used eligible coefficient, then compatible constant, without replacement",
+      "Final all-band samples through actual publisher filtering against captured inventory"
+    ],
+    "result": "All 15 final records survive; every five-question band contains five coefficients and all remainder signs. Original generated forms, fixed mathematical invariants and retained counterfactual checks are unchanged.",
+    "sample_refs": [
+      "final-records.json",
+      "delivery-summary.json",
+      "sampler-regression.json"
+    ]
+  },
+  "limitations": [
+    "This finite audit challenges declared simple cues; it does not prove absence of every possible shortcut.",
+    "No ordinary answer banks exist; numerical rank, counterpart and modal-bank probes are inapplicable. All original radio banks are replayed and checked separately rather than claimed as a newly randomized radio family.",
+    "Only easy imported labels exist. Moderate/hard are authored support/response progressions, not empirical imported calibration.",
+    "Live learner history and changing inventory are outside the captured offline evidence. Selection conclusions are conditional on fresh usable candidates and configured band weights.",
+    "A genuine perfect-square cancellation can be recognized directly. That is valid completion knowledge; zero cases remain eligible.",
+    "Coefficient balancing is per generator call. It does not impose history-aware spacing across separately generated batches or rewrite existing learner tasks. Retained counterfactual/shortcut observations concern the unchanged construction; current sampler observations are separately recorded."
+  ]
+}
