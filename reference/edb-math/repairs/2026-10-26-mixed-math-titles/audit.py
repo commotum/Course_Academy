@@ -61,7 +61,9 @@ def main():
  matches=[];sources=[];unresolved=[];counts=collections.Counter();all_values={}
  for p in sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.html')):
   counts['archived_lessons_examined']+=1;raw=p.read_text();title_chunks=re.findall(r'<title\b[^>]*>[\s\S]*?</title>',raw,re.I)
-  if not any('<math'in x and'<mjx-container'in x for x in title_chunks):continue
+  potential=[x for x in title_chunks if '<math'in x and'<mjx-container'in x]
+  if not potential:continue
+  if not any(re.search(r'<title\b[^>]*>\s*[^<\s]|</mjx-container>\s*[^<\s]',x,re.I)for x in potential):continue
   data=json.loads(p.with_suffix('.json').read_text());items=data.get('lesson',{}).get('items',[])
   use=[]
   for item in items:
@@ -75,6 +77,7 @@ def main():
    if root is None:continue
    parts=[('tutorial/content',root)]if kind=='tutorial'else [('question/problem',n)for n in root.find_all(class_=['exampleQuestion','questionText','questionWidget-text'])]+[('question/worked-solution',n)for n in root.find_all(class_=['exampleExplanation','questionExplanation','questionWidget-explanation'])]+[('answer/value',n)for n in root.find_all(class_=['questionWidget-choiceText','choiceText','selectListOption'])]
    for attr,part in parts:
+    if not any(title.find('math')and any(isinstance(x,NavigableString)and x.strip()for x in title.children)for title in part.find_all('title')):continue
     entries=[]
     for n in roots(part):
      title=n.find('title');mixed=bool(title and title.find('math')and any(isinstance(x,NavigableString)and x.strip()for x in title.children));entry={'keys':variants(n),'mixed':mixed}
