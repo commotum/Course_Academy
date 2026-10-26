@@ -101,7 +101,7 @@ class GeneratorReportFlowTests(unittest.TestCase):
         self.assertEqual(result["attempt"], 1)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
-    def test_engine_change_during_report_correction_continues_same_verifier(self):
+    def test_engine_change_does_not_add_another_report_correction(self):
         pipeline = self.pipeline(fixtures.FakeSession())
         pipeline.run(stop_after="generate")
         original_evidence = pipeline.review_directory()
@@ -119,23 +119,18 @@ class GeneratorReportFlowTests(unittest.TestCase):
                         json.dumps({'type': 'thread.started', 'thread_id': 'engine-repair-thread'}) + '\n')
                     engine = Path(context["repo_root"]) / "engine/rust/grader.rs"
                     engine.parent.mkdir(parents=True)
-                    engine.write_text("// Different grader requires independent verification.\n")
+                    engine.write_text("// Shared grader extension with its own regression tests.\n")
                 return result
 
         session = ChangedEngine()
         result = self.pipeline(session).run()
         self.assertEqual(result["stage"], "verified")
-        self.assertEqual([role for role, _ in session.calls], ["review", "review"])
-        first_directory, first_context = session.review_contexts[0]
-        second_directory, second_context = session.review_contexts[1]
-        self.assertEqual(first_directory, original_evidence / "contract-repair")
-        self.assertEqual(first_context["evidence_root"], second_context["evidence_root"])
-        self.assertEqual(second_directory, original_evidence / 'contract-repair-2')
-        self.assertEqual(second_context['resume_session_id'], 'engine-repair-thread')
-        self.assertNotEqual(first_context["review_binding"]["engine_hash"], second_context["review_binding"]["engine_hash"])
-        self.assertEqual(first_context['review_binding'], original_binding)
-        self.assertEqual(Path(result["review"]), original_evidence / "result.json")
-        self.assertEqual(json.loads((original_evidence / "review-binding.json").read_text()), second_context["review_binding"])
+        self.assertEqual([role for role, _ in session.calls], ['review'])
+        directory, context = session.review_contexts[0]
+        self.assertEqual(directory, original_evidence / 'contract-repair')
+        self.assertEqual(context['review_binding'], original_binding)
+        self.assertEqual(Path(result['review']), original_evidence / 'result.json')
+        self.assertEqual(json.loads((original_evidence / 'review-binding.json').read_text()), original_binding)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_demonstrated_generator_defect_is_fixed_rechecked_and_published_by_verifier(self):

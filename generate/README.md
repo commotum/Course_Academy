@@ -90,6 +90,11 @@ Each build uses three headless `gpt-6.1-sol` agents with `high` reasoning:
    Shared-tool defects and report omissions are corrected by this verifier rather
    than handed to another agent. There is no fourth approval agent.
 
+Engine hashes record the environment used for verification. An engine rebuild or
+shared engine change does not invalidate an accepted generator or stop refills.
+Engine repairs require their own relevant regressions; generator repairs are
+triggered by actual defects or changed package/source evidence.
+
 Incomplete imports remain unchanged. Missing fields, keys, solutions, or labels
 are partial evidence, never inventory-repair obligations or publication blockers.
 Historical inventory observations need no blocking handoff artifact. Defects in

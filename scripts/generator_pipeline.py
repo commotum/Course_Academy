@@ -42,10 +42,6 @@ class RefillNeedsReview(ValueError):
         self.code = code
 
 
-class EngineChanged(ValueError):
-    pass
-
-
 class RunnerChanged(RuntimeError):
     """Reload this worker after its agent repaired shared Python code."""
 
@@ -305,7 +301,6 @@ class Pipeline:
     def has_current_review(self):
         return (self.state.get('review_policy_version') == REVIEW_POLICY_VERSION
                 and self.state.get('review_binding') == digest(self.review_binding())
-                and ('engine_hash' not in self.state or self.state['engine_hash'] == self.engine_identity())
                 and bool(self.state.get('review')))
 
     def validate_approved_review(self):
@@ -359,7 +354,7 @@ class Pipeline:
         identity = {**source_identity(snapshot), 'package_sha256': self.state['package_hash'], 'registration': reference}
         try:
             return approved_band(value, identity, self.state['request']['difficulty'],
-                                 REVIEW_POLICY_VERSION, self.engine_identity())
+                                 REVIEW_POLICY_VERSION)
         except ApprovalError as error:
             raise RefillNeedsReview(error.code, str(error)) from error
 
@@ -545,29 +540,6 @@ class Pipeline:
                 'verification_batches': self.state['verification_batches'],
                 'instruction': 'Check every final easy/moderate/hard batch, including delivery, grading, visible rendering, and progression, before returning accepted.'}
 
-    def refresh_engine_review(self):
-        """Refresh changed grading evidence while keeping its verifier thread."""
-        active = (self.state.get('active_review_directory') or self.state.get('report_repair_directory')
-                  or (str(Path(self.state['review']).parent) if self.state.get('review') else None))
-        self.sample(tolerate_failures=True)
-        if not active:
-            return
-        evidence = inside(self.directory, active)
-        path = evidence / 'review-binding.json'
-        if path.exists():
-            save(evidence / ('engine-binding-before-' + str(time.time_ns()) + '.json'), read(path))
-        save(path, self.review_binding())
-        rounds = self.state.get('review_report_rounds', {})
-        if (evidence / 'result.json').exists():
-            count = max(1, rounds.get(str(evidence), 0))
-            while (evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}') / 'result.json').exists():
-                count += 1
-            rounds[str(evidence)] = count
-        self.persist(active_review_directory=str(evidence), report_repair_directory=str(evidence),
-                     review_report_rounds=rounds,
-                     review_report_error={'error': 'The shared engine changed since these checks.',
-                         'instruction': 'Continue your verification, finalize again, and rerun grading and affected checks against the current engine.'})
-
     def resume_unfinished_review_draft(self):
         """Refresh an interrupted verifier's edits without approving its draft."""
         active = self.state.get('active_review_directory')
@@ -590,11 +562,8 @@ class Pipeline:
             return False
         # Only the editable package may have changed. Never hide altered source,
         # inventory, sampled questions, asset bytes, or dependency evidence by
-        # regenerating over them. A changed engine is rechecked by this verifier.
-        try:
-            self.verify_approval_inputs(allow_draft_package_change=True)
-        except EngineChanged:
-            pass
+        # regenerating over them.
+        self.verify_approval_inputs(allow_draft_package_change=True)
         archive = evidence / ('draft-recovery-before-' + str(time.time_ns()))
         archive.mkdir()
         save(archive / 'state-binding.json', self.review_binding())
@@ -643,6 +612,8 @@ class Pipeline:
         while count < limit:
             directory = evidence if count == 0 else evidence / ('contract-repair' if count == 1 else f'contract-repair-{count}')
             context = self.context(evidence)
+            if session_thread(evidence):
+                context['resume_session_id'] = session_thread(evidence)
             if error:
                 context['review_contract_feedback'] = {
                     'error': error, 'result_file': self.state.get('review_report_result_file', str(evidence / 'result.json')),
@@ -664,11 +635,6 @@ class Pipeline:
                     if not final_path.exists() or read(final_path) != self.review_binding():
                         raise ValueError('Run finalize_review_command, check its final batch, then return acceptance bound to final-binding.json.')
                 validate_review(result, evidence, self.review_binding())
-            except EngineChanged:
-                self.sample(tolerate_failures=True)
-                save(binding_path, self.review_binding())
-                error = {'error': 'The shared engine changed during verification.',
-                         'instruction': 'Continue this same verification session: finalize again and rerun grading plus checks affected by the engine repair.'}
             except (OSError, ValueError) as invalid:
                 error = str(invalid)
             else:
@@ -703,10 +669,6 @@ class Pipeline:
             return False
         try:
             self.verify_approval_inputs()
-        except EngineChanged:
-            self.sample()
-            self.persist(stage='validate', author_running=False)
-            return True
         except (OSError, ValueError):
             return False
         evidence = inside(self.directory, pending['directory'])
@@ -837,8 +799,6 @@ class Pipeline:
         observed = check_dependencies(manifest['dependencies'], python_executable(self.root, self.environment), environment=self.environment)
         if observed != read(self.directory / 'runtime-dependencies.json'):
             raise ValueError('Runtime dependencies changed after generation')
-        if self.state.get('engine_hash') is not None and self.state['engine_hash'] != self.engine_identity():
-            raise EngineChanged('Grading engine changed after sampling; a fresh independent review is required')
         if self.is_refill:
             resolve_registered_script(self.state['request']['registered_package'], self.root, self.math_root)
             if digest(self.refill_approval()) != self.state['approval_hash']:
@@ -963,13 +923,6 @@ class Pipeline:
                     self.persist(stage='validate')
                     return False
                 self.validate_approved_review()
-        except EngineChanged:
-            if self.is_refill:
-                self.repair({'code': 'engine_changed', 'error': 'Grading engine changed during refill; independent review is required.'})
-                return False
-            self.refresh_engine_review()
-            self.persist(stage='validate')
-            return False
         except (ValueError, FileNotFoundError) as error:
             if not self.is_refill:
                 raise
@@ -1211,10 +1164,7 @@ class Pipeline:
                                      review_binding=None,review_policy_version=None,approval_recorded=False)
                         continue
                     if not self.has_current_review():
-                        try:
-                            self.verify_approval_inputs()
-                        except EngineChanged:
-                            self.refresh_engine_review()
+                        self.verify_approval_inputs()
                         self.persist(stage='validate', review_after_publication=True)
                         continue
                     if not self.state.get('approval_recorded'):
@@ -1307,10 +1257,7 @@ class Pipeline:
                     return self.state
                 self.ensure_inventory()
                 self.resume_unfinished_review_draft()
-                try:
-                    self.verify_approval_inputs()
-                except EngineChanged:
-                    self.refresh_engine_review()
+                self.verify_approval_inputs()
                 active = self.state.get('report_repair_directory') or self.state.get('active_review_directory')
                 evidence = Path(active) if active else self.review_directory()
                 result = self.review_candidate(evidence)

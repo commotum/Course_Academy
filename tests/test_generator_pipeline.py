@@ -401,7 +401,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         with patch('generator_pipeline.REVIEW_POLICY_VERSION', REVIEW_POLICY_VERSION + 1):
             self.assertIsNone(pipeline.context(self.job / 'author-next')['previous_review'])
 
-    def test_interrupted_review_evidence_survives_engine_refresh_without_stale_approval(self):
+    def test_interrupted_review_continues_without_engine_only_resampling(self):
         class InterruptedReview(FakeSession):
             def __call__(self, role, context, directory):
                 result = super().__call__(role, context, directory)
@@ -435,8 +435,8 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual([role for role, _ in session.calls], ['review'])
         self.assertIsNone(contexts[0]['interrupted_review'])
         self.assertEqual(contexts[0]['resume_session_id'], 'interrupted-verifier')
-        self.assertIn('engine', str(contexts[0]['review_contract_feedback']).lower())
-        self.assertNotEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
+        self.assertNotIn('review_contract_feedback', contexts[0])
+        self.assertEqual(contexts[0]['review_binding']['engine_hash'], binding['engine_hash'])
         self.assertEqual(Path(contexts[0]['evidence_root']), interrupted)
         self.assertEqual(json.loads((interrupted / 'review-binding.json').read_text()), contexts[0]['review_binding'])
         self.assertTrue((interrupted / 'result.json').exists())
@@ -618,27 +618,21 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual(restarted.state['error']['code'], 'review_sessions_exhausted')
         self.assertEqual(len(restarted.state['review_sessions']), 3)
 
-    def test_engine_refresh_reviews_share_a_durable_budget_until_explicit_resume(self):
+    def test_engine_rebuilds_do_not_consume_review_budgets_or_republish(self):
         session = FakeSession()
         state = self.pipeline(session, attempts=1).run()
         self.assertEqual(state['stage'], 'verified')
+        original_review = Path(state['review']).read_bytes()
         engine = self.root / 'engine/rust'
         engine.mkdir(parents=True)
         for revision in range(3):
             (engine / 'grading.rs').write_text(f'// engine revision {revision}\n')
             state = self.pipeline(session, attempts=1).run()
-        self.assertEqual(state['stage'], 'blocked')
-        self.assertEqual(state['error']['code'], 'verification_unfinished')
-        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review', 'review'])
+            self.assertEqual(state['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review'])
         self.assertEqual(state['review_session_limit'], 3)
-        for _ in range(2):
-            self.assertEqual(self.pipeline(session, attempts=99).run()['stage'], 'blocked')
-        self.assertEqual(len(session.calls), 4)
-        state = self.pipeline(session, attempts=1).run(resume_reason='Engine updates have stabilized; review current engine')
-        self.assertEqual(state['stage'], 'verified')
-        self.assertEqual(state['review_session_limit'], 6)
-        self.assertEqual(len(state['review_sessions']), 4)
-        self.assertEqual(state['attempt'], 1)
+        self.assertEqual(len(state['review_sessions']), 1)
+        self.assertEqual(Path(state['review']).read_bytes(), original_review)
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_scheduler_locks_survive_the_author_reviewer_handoff(self):
@@ -655,7 +649,7 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual(result['stage'], 'verified')
         self.assertEqual([role for role, _ in fake.calls], ['author', 'review'])
 
-    def test_engine_update_gets_a_fresh_review_without_reauthoring_or_stale_cache(self):
+    def test_engine_update_preserves_accepted_review_without_another_agent(self):
         first = FakeSession()
         state = self.pipeline(first).run('validate')
         old_review = state['review']
@@ -666,11 +660,11 @@ class GeneratorPipelineTests(unittest.TestCase):
         second = FakeSession()
         state = self.pipeline(second).run()
         self.assertEqual(state['stage'], 'verified')
-        self.assertEqual([role for role, _ in second.calls], ['review'])
+        self.assertEqual(second.calls, [])
         self.assertEqual(state['review'], old_review)
         final_binding = json.loads((Path(state['review']).parent / 'final-binding.json').read_text())
-        self.assertNotEqual(final_binding['engine_hash'], old_binding['engine_hash'])
-        self.assertTrue(list(Path(old_review).parent.glob('engine-binding-before-*.json')))
+        self.assertEqual(final_binding, old_binding)
+        self.assertFalse(list(Path(old_review).parent.glob('engine-binding-before-*.json')))
         self.assertEqual(self.publisher.publishes, 1)
 
     def test_old_attempt_failure_requires_explicit_resume_with_feedback_and_workspace(self):
@@ -906,6 +900,24 @@ class GeneratorPipelineTests(unittest.TestCase):
         state.pop("review_binding", None)
         (self.job / "job.json").write_text(json.dumps(state))
         return path, path.read_bytes()
+
+    def test_approved_refill_survives_engine_updates_before_and_during_run(self):
+        request, approved = self.approve_for_refill()
+        engine = self.root / 'engine/rust/grader.rs'
+        engine.parent.mkdir(parents=True, exist_ok=True)
+        engine.write_text('// Compatible grading extension.\n')
+        session = FakeSession()
+        pipeline = self.pipeline(session, request=request)
+        sample = pipeline.sample
+        def sample_then_engine_update():
+            sample()
+            engine.write_text('// Another independently tested extension.\n')
+        with patch.object(pipeline, 'sample', side_effect=sample_then_engine_update):
+            result = pipeline.run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual(session.calls, [])
+        self.assertEqual(result['registration'], approved['registration'])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_legacy_band_approval_requests_review_without_running_generator(self):
         request, approved = self.approve_for_refill()
