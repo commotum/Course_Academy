@@ -1354,7 +1354,9 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
     while at < chars.len() {
         let c = chars[at];
         at += 1;
-        if c.is_whitespace() || c == '$' {
+        // Captured MathML/TeX uses U+2061 to mark function application.
+        // The parser already derives application from the adjacent argument.
+        if c.is_whitespace() || c == '$' || c == '\u{2061}' {
             continue;
         }
         if c == '\\' {
@@ -2665,6 +2667,14 @@ mod tests {
         assert_eq!(compare("(11/4)x", "11/(4x)", Context::default()), Ok(false));
         assert_eq!(compare("0", "11/(4x)", Context::default()), Ok(false));
         assert!(compare("x/x", "1", Context::default()).is_err());
+    }
+    #[test]
+    fn captured_invisible_function_application() {
+        eq("8\\operatorname{cos}\u{2061}t", "8\\cos(t)");
+        eq("{sin}^{2}\u{2061}t", "sin(t)^2");
+        eq("\\operatorname{ln}\u{2061}(t+1)", "ln(t+1)");
+        assert_eq!(compare("8\\operatorname{cos}\u{2061}t", "8*sin(t)", Context::default()), Ok(false));
+        assert!(compare("\\unsupported\u{2061}t", "t", Context::default()).is_err());
     }
     #[test]
     fn roots_and_functions() {
