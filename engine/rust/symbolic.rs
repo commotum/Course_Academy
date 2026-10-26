@@ -215,10 +215,11 @@ impl Poly {
             let mut interval = (c.clone(), c.clone());
             for (a, e) in m {
                 let bounds = match a {
-                    // Classical rational bounds 3 < pi < 22/7. The old upper
-                    // bound 4 hid ordinary unequal answers such as pi^2/4
-                    // versus pi. Enclosures prove rejection only.
-                    Atom::Pi => (Q::from_integer(3.into()), Q::new(22.into(), 7.into())),
+                    // Archimedes' rational bounds 223/71 < pi < 22/7.
+                    // The weaker lower bound 3 cannot distinguish pi/6 from
+                    // 1/2 because the difference enclosure touches zero.
+                    // Enclosures prove rejection only, never exact equality.
+                    Atom::Pi => (Q::new(223.into(), 71.into()), Q::new(22.into(), 7.into())),
                     Atom::E => exp_bounds(&Q::one())?,
                     Atom::I => return None,
                     Atom::Variable(name) => {
@@ -2932,6 +2933,9 @@ mod tests {
             (r"\pi^2/4", r"\pi"),
             (r"\pi", "4"),
             (r"\pi^2", "10"),
+            (r"-\pi/6", "-1/2"),
+            (r"\pi/6", "1/2"),
+            (r"\pi", "3.1"),
         ] {
             assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
             assert_eq!(compare(b, a, Context::default()), Ok(false), "{b} vs {a}");
