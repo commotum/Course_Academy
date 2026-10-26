@@ -240,7 +240,7 @@ function renderQuestionFeedback(view) {
 }
 function questionView(question) {
   const node = el('section', 'assignment-question');
-  attachStepMenu(node, question.entityId, question.mathAcademyId, { kind: 'question' });
+  attachStepMenu(node, question.entityId, question.mathAcademyId, { kind: 'question', actionsButton: true });
   const key = questionKey(question);
   node.dataset.question = key;
   const meta = el('div', 'step-meta');
@@ -657,7 +657,8 @@ function renderAssignment(data) {
       number++;
       section.id = 'problem-' + number;
       const title = step.title || `Problem ${number}`;
-      section.append(el('h2', 'step-title', title)); toc.append(link(title, '#' + section.id));
+      section.append(el('h2', 'step-title', title));
+      const entry = link(title, '#' + section.id); attachStepMenu(entry, step.entityId); toc.append(entry);
     } else if (step.title || step.content?.title) section.append(el('h2', 'step-title', step.title || step.content.title));
     const card = el('div', 'content-card'); card.append(contentView(step.content)); section.append(card); problems.append(section);
   }

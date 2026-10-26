@@ -650,33 +650,76 @@ fn check_activity_start(s: &EntitySnapshot, l: u64, activity: u64,
     Ok(())
 }
 
+// The menu and the mutation use the same immutable review plan. Checking an
+// action never creates a definition, reserves questions, or changes an attempt.
+enum TopicReviewPlan {
+    Existing { task: u64, activity: u64, state: String },
+    New(retrieval::Definition),
+}
+
+fn topic_review_plan(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) -> Result<TopicReviewPlan> {
+    if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
+    let mut existing = vec![];
+    for task in s.refs(l, "learner/activity")? {
+        let activity = s.reference(task, "learner-task/activity")?;
+        if retrieval::kind(s, activity)? != "review" || s.optional_ref(activity, "activity/scope")? != Some(topic) { continue; }
+        let state = status(s, task, "learner-task/status")?;
+        if matches!(state.as_str(), "started" | "paused") {
+            existing.push((0, task, activity, state));
+        } else if matches!(state.as_str(), "locked" | "unlocked") && retrieval::fresh(s, l, activity)? {
+            existing.push((1, task, activity, state));
+        }
+    }
+    existing.sort();
+    let selected = existing.first().map(|(_, _, activity, _)| *activity);
+    let candidates = learning::study_candidates(s, l, course(s, l)?, at)?;
+    if candidates.iter().any(|p| p.priority >= 11000.0)
+        && selected.is_none_or(|activity| !candidates.iter().any(|p| p.activity == activity)) {
+        return Err("Complete the required activity before starting unrelated study".into());
+    }
+    if let Some((_, task, activity, state)) = existing.into_iter().next() {
+        // Resume/start have their own continuation and freshness checks too.
+        // Validate their plan here so an enabled action matches its mutation.
+        let action = if state == "paused" { "resume" } else { "start" };
+        mutate_with_selection(s, l, action, &json!({"taskId":task,"activityId":activity}), at, Some(topic))?;
+        return Ok(TopicReviewPlan::Existing { task, activity, state });
+    }
+    Ok(TopicReviewPlan::New(retrieval::selected_review(s, l, topic)?))
+}
+
 fn topic_study_availability(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) -> Json {
-    let check = || -> Result<bool> {
+    let check = || -> Result<(bool, bool)> {
         let activity = topic_lesson(s, topic)?;
         check_lesson_retry(s, l, activity)?;
         let existing = task_for(s, l, activity)?;
         if existing.is_none() && !retrieval::relearn_topics(s, l)?.contains(&topic)
-            && completed_task_for(s, l, activity)?.is_some() { return Ok(false); }
+            && completed_task_for(s, l, activity)?.is_some() { return Ok((false, true)); }
         if let Some(task) = existing {
             match status(s, task, "learner-task/status")?.as_str() {
-                "started" => return Ok(true),
+                "started" => return Ok((true, false)),
                 "paused" => {
                     let chain = items(s, task)?;
                     chain.last().ok_or("Task has no presentation")?;
                     learning::continuation_state(s, activity, &chain, false, false)?;
-                    return Ok(true);
+                    return Ok((true, false));
                 }
                 _ => {}
             }
         }
         check_activity_start(s, l, activity, Some(topic), at)?;
         learning::first_content(s, activity, l)?.ok_or("Lesson has no available content")?;
-        Ok(false)
+        Ok((false, false))
     };
-    match check() {
-        Ok(resumable) => json!({"basis":s.basis_t,"topicId":topic,"available":true,"resumable":resumable}),
-        Err(error) => json!({"basis":s.basis_t,"topicId":topic,"available":false,"resumable":false,"reason":error.to_string()}),
-    }
+    let mut view = match check() {
+        Ok((resumable, completed)) => json!({"basis":s.basis_t,"topicId":topic,"available":true,"resumable":resumable,"completed":completed}),
+        Err(error) => json!({"basis":s.basis_t,"topicId":topic,"available":false,"resumable":false,"completed":false,"reason":error.to_string()}),
+    };
+    view["review"] = match topic_review_plan(s, l, topic, at) {
+        Ok(TopicReviewPlan::Existing { state, .. }) => json!({"available":true,"resumable":matches!(state.as_str(),"started"|"paused")}),
+        Ok(TopicReviewPlan::New(_)) => json!({"available":true,"resumable":false}),
+        Err(error) => json!({"available":false,"resumable":false,"reason":error.to_string()}),
+    };
+    view
 }
 fn learner_json(s: &EntitySnapshot, l: u64) -> Json {
     json!({"id":text(s,l,"learner/id"),"name":text(s,l,"learner/name"),
@@ -2125,33 +2168,16 @@ fn mutate_with_selection(
     }
     if action == "review-topic" {
         let topic = required(body, "topicId")?;
-        if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
-        let mut existing = vec![];
-        for task in s.refs(l, "learner/activity")? {
-            let activity = s.reference(task, "learner-task/activity")?;
-            if retrieval::kind(s, activity)? != "review" || s.optional_ref(activity, "activity/scope")? != Some(topic) { continue; }
-            let state = status(s, task, "learner-task/status")?;
-            if matches!(state.as_str(), "started" | "paused") {
-                existing.push((0, task, activity, state));
-            } else if matches!(state.as_str(), "locked" | "unlocked") && retrieval::fresh(s, l, activity)? {
-                existing.push((1, task, activity, state));
+        let definition = match topic_review_plan(s, l, topic, at)? {
+            TopicReviewPlan::Existing { task, activity, state } => {
+                return match state.as_str() {
+                    "started" => Ok((forms, json!({"taskId":task}))),
+                    "paused" => mutate(s, l, "resume", &json!({"taskId":task}), at),
+                    _ => mutate_with_selection(s, l, "start", &json!({"activityId":activity}), at, Some(topic)),
+                };
             }
-        }
-        existing.sort();
-        let selected = existing.first().map(|(_, _, activity, _)| *activity);
-        let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
-        if plan.iter().any(|p| p.priority >= 11000.0)
-            && selected.is_none_or(|activity| !plan.iter().any(|p| p.activity == activity)) {
-            return Err("Complete the required activity before starting unrelated study".into());
-        }
-        if let Some((_, task, activity, state)) = existing.first() {
-            return match state.as_str() {
-                "started" => Ok((forms, json!({"taskId":task}))),
-                "paused" => mutate(s, l, "resume", &json!({"taskId":task}), at),
-                _ => mutate_with_selection(s, l, "start", &json!({"activityId":activity}), at, Some(topic)),
-            };
-        }
-        let definition = retrieval::selected_review(s, l, topic)?;
+            TopicReviewPlan::New(definition) => definition,
+        };
         pause_other_lessons(s, l, None, at, &mut forms)?;
         forms.extend(definition_forms(s, &definition, "review-activity", Some(course(s, l)?))?);
         let id = uid()?;
@@ -3447,6 +3473,21 @@ mod study_queue_tests {
         }
         let s = fixture();
         assert_eq!(topic_study_availability(&s, 1, 6, at)["available"], true);
+    }
+
+    #[test]
+    fn topic_menu_distinguishes_completed_lessons_from_resumable_study() {
+        let mut s = fixture();
+        s.entities.get_mut(&81).unwrap().insert("learner-task/status".into(), json!("learner-task.status/completed"));
+        let s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
+        let at = Utc::now();
+        let view = topic_study_availability(&s, 1, 6, at);
+        assert_eq!(view["available"], true);
+        assert_eq!(view["completed"], true);
+        assert_eq!(view["resumable"], false);
+        let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
+        assert!(forms.is_empty());
+        assert_eq!(result["taskId"], 81);
     }
 
     #[test]

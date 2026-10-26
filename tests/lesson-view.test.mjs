@@ -169,7 +169,7 @@ test('reviews link to the topic reference outside the question card without star
   await f.h.render(data);
   const view = f.h.view;
   assert.equal(view.reference.hidden, false);
-  assert.equal(view.reviewLink.textContent, 'Review topic');
+  assert.equal(view.reviewLink.textContent, 'Open topic lesson');
   assert.equal(view.reviewLink.href, '/topic?topic=topic-uuid&course=course');
   assert.equal(view.reviewLink.target, '_blank');
   assert.equal(view.reviewLink.rel, 'noopener');

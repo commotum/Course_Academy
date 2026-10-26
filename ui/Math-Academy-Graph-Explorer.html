@@ -245,26 +245,7 @@ button,input,select { font:inherit; }
 .target-week-strip button:disabled{cursor:wait;opacity:.5}
 @media(max-width:570px){.target-week-strip{padding:8px 12px}.target-week-heading{justify-content:flex-start;flex-wrap:wrap;gap:4px 12px;font-size:10px}.target-week-hint{font-size:9px}.target-week-controls{gap:8px;justify-content:flex-start}.target-week-presets button{padding:0 7px}.target-week-button{flex-basis:32px}.target-week-bar{width:20px}}
 </style>
-<style id="node-context-style">/* Node-only context actions. Connections remain completely non-interactive. */
-#nodeContextMenu{position:fixed;z-index:100;min-width:224px;max-width:calc(100vw - 16px);padding:4px;background:var(--tone-0b);border:1px solid var(--tone-66);box-shadow:0 8px 25px #000b;color:var(--tone-ff);font-family:var(--font)}
-#nodeContextMenu[hidden],#copyNodeNotice[hidden]{display:none}
-#nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
-#nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
-#nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
-#nodeContextMenu [aria-disabled="true"],#nodeContextMenu [aria-disabled="true"]:hover{opacity:.45;cursor:not-allowed;background:transparent;color:inherit}
-#nodeContextMenu [hidden]{display:none}
-#nodeContextMenu .menu-new-tab-indicator{float:right;margin-left:16px}
-#nodeContextMenu .target-control{display:flex;width:100%;gap:0}
-#nodeContextMenu .target-status:not(:empty){padding:0 12px 10px}
-#copyNodeNotice{position:fixed;z-index:101;bottom:60px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:10px 14px;background:var(--tone-11);border:1px solid var(--tone-77);color:var(--tone-ff);font:11px var(--font);box-shadow:0 6px 20px #0008;pointer-events:none}
-#manualNodeCopy{background:var(--tone-0b);color:var(--tone-ff);border:1px solid var(--tone-77);padding:20px;width:min(540px,calc(100vw - 32px));font:12px var(--font)}
-#manualNodeCopy::backdrop{background:#000a}
-#manualNodeCopy h2{font:500 15px var(--font);margin:0 0 12px}
-#manualNodeCopy p{color:var(--tone-bb);line-height:1.6;margin:0 0 12px}
-#manualNodeText{display:block;width:100%;min-height:110px;resize:vertical;padding:10px;background:var(--tone-05);color:var(--tone-ff);border:1px solid var(--tone-55);font:12px var(--font);line-height:1.6}
-#manualNodeDone{margin-top:12px;float:right}
-
-</style><style id="competency-styles">
+<style id="competency-styles">
 /* Fill shows repetitions or topic status. Selection uses separate corner marks. */
 #nodes .node .title-shape{fill:var(--node);stroke:var(--node-border);stroke-dasharray:var(--competency-dash,none)}
 #nodes .node .title-text{fill:var(--node-text)}
@@ -378,30 +359,13 @@ button,input,select { font:inherit; }
 <div id="edgeConnectionPopover" role="dialog" aria-modal="false" aria-labelledby="edgeConnectionHeading" hidden>
 <div id="edgeConnectionHeading"></div><div id="edgeConnectionTopics"></div>
 </div>
-<div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
-<div id="nodeQueueAction" role="none"></div>
-<div id="nodeTargetAction" role="none"></div>
-<a id="studyTopicLink" role="menuitem" href="/learn">Study now<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
-<a id="reviewTopicLink" role="menuitem" href="/learn">Review Topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
-<a id="goToTopicLink" role="menuitem" href="/topic">Go to topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
-<button id="copyNodeDbId" type="button" role="menuitem">Copy topic :db/id</button>
-<button id="copyNodeMaId" type="button" role="menuitem" hidden>Copy topic :ma/id</button>
-<button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
-<button id="copyCanvasDbIds" type="button" role="menuitem" hidden>Copy all topic DB IDs</button>
-</div>
-<div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
-<dialog id="manualNodeCopy" aria-labelledby="manualNodeTitle">
-<h2 id="manualNodeTitle">Copy node</h2>
-<p>Clipboard access was blocked. Copy the selected text with Ctrl+C (or ⌘C).</p>
-<textarea id="manualNodeText" readonly aria-label="Topic ID and full name"></textarea>
-<button id="manualNodeDone" class="pill" type="button">Done</button>
-</dialog>
 <script type="module">
 import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 import { createTargetControls, createQueueControls } from "/ui/targets.js";
 import { isLightTheme, themeColor } from "/ui/profile.js";
-import { copyEntityId, academyEntityId } from "/ui/step-menu.js";
-import { readRequest, readTopicStudyAvailability } from "/ui/requests.js";
+import { attachTopicMenu } from "/ui/topic-menu.js";
+import { attachEntityMenu, detachEntityMenu, closeEntityMenu, copyText } from "/ui/entity-menu.js";
+import { readRequest } from "/ui/requests.js";
 import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabel, normalizeTargetWeekSelection,
   selectTargetWeek, filterScheduledTargets, targetWeekSelectionLabel } from "/ui/target-weeks.js";
 
@@ -1461,6 +1425,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     updateCompetencyReadout();
     titleReaderboards.set($('infoTitle'), selectedTitle(), { focusable:true });
     const selectedNode = state.selected ? nodeById.get(state.selected) : null;
+    if (selectedNode) attachGraphTopicMenu($('infoTitle'), selectedNode);
+    else detachEntityMenu($('infoTitle'));
     $('selectedActions').classList.toggle('hidden', !selectedNode);
     $('targetActions').classList.toggle('hidden', !selectedNode || snapshot?.learner.selfDirected !== true);
     if (targetTopicId !== (selectedNode?.id ?? null)) {
@@ -1495,6 +1461,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
         el.className = 'crumb' + (i === state.historyIndex ? ' current' : '');
         titleReaderboards.set(el, nodeById.get(nid)?.name || (targetsView ? 'Your targets' : 'Full map'), { focusable:true });
         el.setAttribute('role', 'button');
+        const topic = nodeById.get(nid); if (topic) attachGraphTopicMenu(el, topic);
         el.onclick = () => jumpHistory(i);
         el.addEventListener('keydown', event => {
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); jumpHistory(i); }
@@ -1719,6 +1686,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       for(const peer of peers){
         const badge=document.createElement('button');badge.type='button';badge.className='edge-topic-badge';badge.dataset.topicId=peer.id;
         badge.setAttribute('aria-label','Show '+peer.name+' in the graph');
+        attachGraphTopicMenu(badge, peer);
         const layer=document.createElement('span');layer.className='edge-topic-layer';layer.textContent=layerLabel(peer);
         const name=document.createElement('span');name.className='edge-topic-name';name.textContent=peer.name;
         badge.append(layer,name);badge.addEventListener('click',()=>{close();setSelected(peer.id,true);});topics.appendChild(badge);
@@ -1781,228 +1749,19 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     }
   }
 
-  // Right-clicking opens topic or canvas actions without changing the active set.
-  const nodeContextMenu = (() => {
-    const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
-    const canvasButton=$('copyCanvasDbIds');
-    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink'),reviewLink=$('reviewTopicLink');
-    const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
-    const navigation=[{link:studyLink,label:'Study now'},{link:reviewLink,label:'Review Topic'},{link:topicLink,label:'Go to topic'}];
-    let topic=null,canvasIds=null,opener=null,noticeTimer=0,shiftHeld=false,studyCheck=0;
-    function studyLabel(resumable=false) {
-      navigation[0].label=resumable?'Resume Study':'Study now';
-      const indicator=studyLink.querySelector('.menu-new-tab-indicator');
-      studyLink.replaceChildren();
-      studyLink.textContent=navigation[0].label;
-      studyLink.append(indicator);
-      shiftMode(shiftHeld);
-    }
-    function shiftMode(held) {
-      shiftHeld=Boolean(held);
-      for(const {link,label} of navigation) {
-        const newTab=shiftHeld && link.getAttribute('aria-disabled')!=='true';
-        link.querySelector('.menu-new-tab-indicator').hidden=!newTab;
-        link.setAttribute('aria-label',label+(newTab?' · Opens in a new tab':''));
-      }
-    }
-    function close(restoreFocus=false) {
-      studyCheck++;
-      menu.hidden=true;shiftMode(false);
-      for(const host of targetAction.children)targetControls.remove(host);
-      targetAction.replaceChildren();
-      for(const host of queueAction.children)queueControls.remove(host);
-      queueAction.replaceChildren();
-      if(opener?.isConnected){
-        opener.setAttribute('aria-expanded','false');
-        if(restoreFocus)opener.focus({preventScroll:true});
-      }
-      topic=null;canvasIds=null;opener=null;
-    }
-    function menuItems() {
-      return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&item.getAttribute('aria-disabled')!=='true'&&!item.closest('[hidden]'));
-    }
-    function canvasMode(enabled) {
-      for(const element of [targetAction,queueAction,topicLink,studyLink,reviewLink,button,$('copyNodeDbId'),$('copyNodeMaId')])element.hidden=enabled;
-      canvasButton.hidden=!enabled;
-    }
-    function studyAvailability(available,reason='') {
-      studyLink.setAttribute('aria-disabled',String(!available));
-      studyLink.tabIndex=available?0:-1;
-      studyLink.title=reason;
-      if(available)studyLink.href='/learn?topicId='+encodeURIComponent(topic.id);
-      else studyLink.removeAttribute('href');
-      shiftMode(shiftHeld);
-    }
-    function open(node,event,element) {
-      event.preventDefault();event.stopPropagation();close();
-      topic=node;opener=element;button.disabled=false;
-      canvasMode(false);
-      $('copyNodeMaId').hidden=!academyEntityId(node.mathAcademyId);
-      const queue=queueControls.createToggle(node,{menuItem:true});
-      if(queue)queueAction.append(queue);
-      const target=targetControls.createToggle(node,{menuItem:true});
-      if(target)targetAction.append(target);
-      topicLink.href=topicReferenceURL(snapshot,node,courseId);
-      reviewLink.href='/learn?reviewTopicId='+encodeURIComponent(node.id);
-      studyLabel();
-      studyAvailability(false,'Checking lesson question availability…');
-      const check=studyCheck;
-      void readTopicStudyAvailability(node.id).then(data=>{
-        if(check===studyCheck && !menu.hidden){
-          studyLabel(data.resumable);
-          studyAvailability(data.available,data.reason || '');
-        }
-      }).catch(error=>{
-        if(check===studyCheck && !menu.hidden)studyAvailability(false,error.message);
-      });
-      menu.setAttribute('aria-label','Actions for '+node.name);
-      show(event,element);
-    }
-    function openCanvas(event) {
-      event.preventDefault();event.stopPropagation();close();
-      // Use all rendered topics, including expanded prerequisites and topics
-      // outside the current pan/zoom window. No database reads are needed.
-      canvasIds=[...new Set((state.layout?.activeNodes || []).map(node=>String(node.id)))];
-      opener=$('svg');canvasMode(true);
-      canvasButton.disabled=!canvasIds.length;
-      canvasButton.textContent='Copy all topic DB IDs ('+canvasIds.length+')';
-      menu.setAttribute('aria-label','Canvas actions');
-      show(event,opener);
-    }
-    function show(event,element) {
-      element.setAttribute('aria-expanded','true');
-      menu.hidden=false;shiftMode(event.shiftKey);
-      const box=(topic?(element.querySelector('.node-hit') || element):element).getBoundingClientRect();
-      const keyboard=event.type==='keydown'||(!event.clientX&&!event.clientY);
-      const x=keyboard?box.left+Math.min(box.width/2,100):event.clientX;
-      const y=keyboard?box.bottom+5:event.clientY;
-      menu.style.left=Math.max(8,Math.min(window.innerWidth-menu.offsetWidth-8,x))+'px';
-      menu.style.top=Math.max(8,Math.min(window.innerHeight-menu.offsetHeight-8,y))+'px';
-      menuItems()[0]?.focus({preventScroll:true});
-    }
-    function legacyCopy(value) {
-      const prior=document.activeElement,area=document.createElement('textarea');
-      area.value=value;area.setAttribute('readonly','');area.setAttribute('aria-label','Copy node text');
-      area.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0';
-      document.body.appendChild(area);area.focus({preventScroll:true});area.select();
-      area.setSelectionRange(0,value.length);
-      let copied=false;
-      try{copied=typeof document.execCommand==='function'&&document.execCommand('copy');}catch(_){}
-      area.remove();if(prior?.isConnected)prior.focus({preventScroll:true});
-      return copied;
-    }
-    async function writeText(value) {
-      if(navigator.clipboard?.writeText){
-        try{await navigator.clipboard.writeText(value);return true;}catch(_){}
-      }
-      // Some browsers do not expose the async Clipboard API for local HTML.
-      // The fallback still runs from the user's explicit menu-button action.
-      return legacyCopy(value);
-    }
-    function notify(message) {
-      clearTimeout(noticeTimer);notice.textContent=message;notice.hidden=false;
-      noticeTimer=setTimeout(()=>{notice.hidden=true;},2400);
-    }
-    function offerManualCopy(value, title='Copy node', label='Topic ID and full name') {
-      $('manualNodeTitle').textContent=title;
-      fallbackText.setAttribute('aria-label',label);
-      fallbackText.value=value;
-      if(typeof fallback.showModal==='function')fallback.showModal();
-      else fallback.setAttribute('open','');
-      fallbackText.focus({preventScroll:true});fallbackText.select();
-    }
-    for (const [id, key, label] of [['copyNodeDbId', 'id', ':db/id'], ['copyNodeMaId', 'mathAcademyId', ':ma/id']]) {
-      $(id).addEventListener('click', event => {
-        event.preventDefault(); event.stopPropagation();
-        if (!topic) return;
-        const value = topic[key];
-        close(true);
-        void copyEntityId(value, label, 'topic');
-      });
-    }
-    button.addEventListener('click',async event=>{
-      event.preventDefault();event.stopPropagation();if(!topic||button.disabled)return;
-      const node=topic;
-      const value='topic-id: '+node.uuid+(node.mathAcademyId!=null?'\nmath-academy-id: '+node.mathAcademyId:'')+'\ntopic-name: '+node.name;
-      button.disabled=true;
-      const copied=await writeText(value);
-      if(topic===node)close(true);
-      button.disabled=false;
-      if(copied)notify('Copied topic '+node.id+' to clipboard.');
-      else offerManualCopy(value);
-    });
-    canvasButton.addEventListener('click',async event=>{
-      event.preventDefault();event.stopPropagation();
-      if(!canvasIds?.length || canvasButton.disabled)return;
-      const ids=canvasIds,value=ids.join('\n');
-      canvasButton.disabled=true;
-      const copied=await writeText(value);
-      if(canvasIds===ids)close(true);
-      canvasButton.disabled=false;
-      if(copied)notify('Copied '+ids.length+' topic DB IDs to clipboard.');
-      else offerManualCopy(value,'Copy topic DB IDs','Topic database IDs, one per line');
-    });
-    for(const {link} of navigation)link.addEventListener('click',event=>{
-      if(menu.hidden)return;
-      if(link.getAttribute('aria-disabled')==='true'){event.preventDefault();event.stopPropagation();return;}
-      // Programmatic keyboard activation has no modifiers on its click event.
-      const newTab=event.shiftKey || (event.detail===0 && shiftHeld);
-      if(newTab) {
-        event.preventDefault();event.stopPropagation();
-        const href=link.href;
-        // A synchronous synthetic click still inherits the original input's
-        // Shift navigation policy. Leave that event before activating _blank.
-        setTimeout(()=>{
-          const tabLink=document.createElement('a');
-          tabLink.href=href;tabLink.target='_blank';tabLink.rel='noopener noreferrer';
-          document.body.append(tabLink);tabLink.click();tabLink.remove();
-        },0);
-      }
-      close(newTab);
-    });
-    studyLink.addEventListener('auxclick',event=>{
-      if(studyLink.getAttribute('aria-disabled')==='true'){event.preventDefault();event.stopPropagation();}
-    });
-    $('manualNodeDone').addEventListener('click',()=>{
-      if(typeof fallback.close==='function')fallback.close();else fallback.removeAttribute('open');
-    });
-    menu.addEventListener('keydown',event=>{
-      if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);}
-      else if(event.key==='Tab'){close(false);}
-      else if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
-        event.preventDefault();event.stopPropagation();
-        const items=menuItems(),current=items.indexOf(document.activeElement);
-        const index=event.key==='Home'?0:event.key==='End'?items.length-1:
-          (current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
-        items[index]?.focus({preventScroll:true});
-      }
-      else if(event.key===' '&&navigation.some(({link})=>event.target===link)){event.preventDefault();event.target.click();}
-    });
-    document.addEventListener('pointerdown',event=>{if(!menu.hidden&&!menu.contains(event.target))close(false);},true);
-    document.addEventListener('wheel',()=>close(false),{capture:true,passive:true});
-    document.addEventListener('keydown',event=>{
-      if(menu.hidden)return;
-      if(event.key==='Escape')close(true);
-      else shiftMode(event.shiftKey || event.key==='Shift');
-    });
-    document.addEventListener('keyup',event=>{if(!menu.hidden)shiftMode(event.shiftKey);});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)close(false);});
-    window.addEventListener('blur',()=>close(false));
-    window.addEventListener('resize',()=>close(false));
-    window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
-    window.addEventListener('course-academy:queue-changed',()=>{if(!menu.hidden)close(true);});
-    for(const type of ['contextmenu','keydown'])$('svg').addEventListener(type,event=>{
-      if(event.target.closest?.('.node, .edge-stub'))return;
-      if(type==='keydown' && (event.target!==$('svg') || !(event.key==='ContextMenu' || event.shiftKey && event.key==='F10')))return;
-      openCanvas(event);
-    });
-    return {open,close};
-  })();
-
-  for (const type of ['contextmenu', 'keydown']) $('infoTitle').addEventListener(type, event => {
-    if (type === 'keydown' && !(event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10')) return;
-    const node = state.selected && nodeById.get(state.selected);
-    if (node) nodeContextMenu.open(node, event, $('infoTitle'));
+  function attachGraphTopicMenu(element, topic) {
+    attachTopicMenu(element, topic, { queueControls, targetControls,
+      topicHref: () => topicReferenceURL(snapshot, topic, courseId) });
+  }
+  attachEntityMenu($('svg'), {
+    kind: 'Canvas',
+    ignore: target => target?.closest?.('.edge-stub'),
+    actions: () => {
+      // Snapshot every rendered topic, including expanded and offscreen nodes.
+      const ids = [...new Set((state.layout?.activeNodes || []).map(node => String(node.id)))];
+      return [{ id: 'copy-canvas-ids', label: 'Copy all topic DB IDs (' + ids.length + ')', disabled: !ids.length,
+        reason: ids.length ? '' : 'No topics are displayed.', run: () => copyText(ids.join('\n'), ids.length + ' topic DB IDs') }];
+    },
   });
 
   function renderNodes() {
@@ -2017,10 +1776,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       g.id='topic-'+node.id;g.dataset.topicId=node.id;g.setAttribute('aria-pressed',String(state.activeIds.has(node.id)));g.dataset.layer=node.layer+1;g.dataset.sourceLayer=node.layer;g.dataset.localColumn=p.col;
       g.setAttribute('transform',`translate(${p.x},${p.y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');
       g.setAttribute('aria-haspopup','menu');g.setAttribute('aria-expanded','false');
-      g.addEventListener('contextmenu',event=>nodeContextMenu.open(node,event,g));
-      g.addEventListener('keydown',event=>{
-        if(event.key==='ContextMenu'||(event.shiftKey&&event.key==='F10'))nodeContextMenu.open(node,event,g);
-      });
+      attachGraphTopicMenu(g, node);
       function rect(cls,x,w){
         const r=document.createElementNS(ns,'rect'),inset=cls.includes('node-shape')?.5:0;
         r.setAttribute('class',cls);r.setAttribute('x',x+inset);r.setAttribute('y',inset);
@@ -2069,7 +1825,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   }
 
   function redraw(focus = false) {
-    nodeContextMenu.close(false);
+    closeEntityMenu(false);
     layoutCurrent();
     renderGuides();
     renderEdges();
@@ -2086,7 +1842,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function applyView() {
     edgeConnectionPopover.close();
-    nodeContextMenu.close(false);
+    closeEntityMenu(false);
     camera.setAttribute('transform', `translate(${state.view.x} ${state.view.y}) scale(${state.view.k})`);
     renderSelectionMarks();
     $('zoomReadout').textContent = Math.round(state.view.k * 100) + '%';
@@ -2408,10 +2164,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     const starters=preferred.length?preferred:members.sort((a,b)=>a.layer-b.layer||a.order-b.order).slice(0,6);
     starters.forEach(n=>{
       const btn=document.createElement('button');btn.className='pill';titleReaderboards.set(btn,n.name);
-      btn.addEventListener('contextmenu', event => nodeContextMenu.open(n, event, btn));
-      btn.addEventListener('keydown', event => {
-        if (event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10') nodeContextMenu.open(n, event, btn);
-      });
+      attachGraphTopicMenu(btn, n);
       btn.setAttribute('aria-label',n.name);btn.onclick=event=>setSelected(n.id,true,event.shiftKey);startersHost.appendChild(btn);
     });
     remember();

@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from question_capture.html_tables import source_table_html
-from question_capture.math_format import normalize_math_boundaries, markdown_emphasis, mathml_ruled_table
+from question_capture.math_format import normalize_math_boundaries, normalize_source_tex, markdown_emphasis, mathml_ruled_table
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
@@ -143,7 +143,10 @@ class Renderer:
         if t in ('mjx-container','math'):
             math=n if t=='math' else n.find('math')
             if math is None:self.errors.append('Formula without MathML');return ''
-            tex=self.m(math);self.formulas.append(tex)
+            # A fenced MathML table is a matrix, while an unfenced table may
+            # align equations. Normalize the complete expression after its
+            # fences are available so adjacent matrix entries stay distinct.
+            tex=normalize_source_tex(self.m(math));self.formulas.append(tex)
             return '\n\n$$\n'+tex+'\n$$\n\n' if n.get('display')=='true' else '$'+tex+'$'
         if t=='img':return '![]('+self.asset(n.get('src',''))+')'
         if t=='svg':self.errors.append('Inline SVG needs saved asset');return ''

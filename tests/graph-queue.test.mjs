@@ -3,12 +3,13 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-// Actual selection controller and graph menu, with a DOM/API stand-in.
+// Actual selection controllers and graph color callbacks with a DOM/API stand-in.
+// Menu interactions use the real browser DOM in entity-menu-browser.cjs.
 // These tests do not change a live learner or create study attempts.
 const controlsSource = (await readFile(new URL('../ui/targets.js', import.meta.url), 'utf8'))
   .replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const html = await readFile(new URL('../ui/Math-Academy-Graph-Explorer.html', import.meta.url), 'utf8');
-const menuSource = html.slice(html.indexOf('  const nodeContextMenu ='), html.indexOf("\n  for (const type of ['contextmenu', 'keydown'])"));
+
 const statusPaletteSource = html.slice(html.indexOf('  const STATUS_PALETTES ='), html.indexOf('  let snapshot ='));
 const appearanceSource = html.slice(html.indexOf('  function competencyFor('), html.indexOf('  function paintNode('));
 const queueStart = html.indexOf('    onChange: learner => {', html.indexOf('  const queueControls ='));
@@ -99,7 +100,12 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
     queueControls.setLearner(snapshot.learner); targetControls.setLearner(snapshot.learner);
     ${statusPaletteSource}
     ${appearanceSource}
-    ${menuSource}
+    // Mount the production selection controls without the retired graph menu.
+    const nodeContextMenu = { open(node) {
+      document.getElementById('nodeContextMenu').hidden = false;
+      document.getElementById('nodeQueueAction').replaceChildren(queueControls.createToggle(node,{menuItem:true}));
+      document.getElementById('nodeTargetAction').replaceChildren(targetControls.createToggle(node,{menuItem:true}));
+    }};
     return { queueControls, targetControls, menu: nodeContextMenu, nodeAppearance };
   })()`, context);
   f.document = document; f.window = window; f.opener = opener; f.svg = svg;
@@ -108,108 +114,6 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
   return f;
 }
 const settle = async () => { await new Promise(resolve => setImmediate(resolve)); };
-
-test('graph right-click queues the clicked topic in course mode and restores focus after saving', async () => {
-  const f = fixture(); f.open();
-  const button = f.queueButton();
-  assert.equal(button.textContent, 'Add to queue');
-  assert.equal(button.disabled, false);
-  assert.equal(f.document.activeElement, button);
-  assert.equal(f.document.getElementById('nodeTargetAction').children[0].hidden, true);
-  button.click(); await settle();
-  assert.equal(f.calls[0].path, '/api/queue-topic');
-  assert.equal(f.calls[0].body.action, 'queue-topic');
-  assert.equal(f.calls[0].body.topicId, 20);
-  assert.equal(f.calls[0].body.selected, true);
-  assert.deepEqual(f.learner.targets, [30]);
-  assert.deepEqual(f.learner.queue, [20]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
-  assert.equal(f.learner.selfDirected, false);
-  assert.ok(f.storage.has('course-academy-queue-changed'));
-  assert.deepEqual(f.events, ['queue']);
-  assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
-  assert.equal(f.document.activeElement, f.opener);
-  f.open(); assert.equal(f.queueButton().textContent, 'Remove from queue');
-});
-
-test('already queued topics can be removed without changing targets', async () => {
-  const f = fixture({ queue: [20], selfDirected: true }); f.open();
-  assert.equal(f.h.nodeAppearance(20).fill, '#3464df');
-  f.queueButton().click(); await settle();
-  assert.equal(f.calls[0].body.selected, false);
-  assert.deepEqual(f.learner.queue, []);
-  assert.deepEqual(f.learner.targets, [30]);
-  assert.equal(f.h.nodeAppearance(20).fill, '#D6D6D6');
-  f.open(); assert.equal(f.queueButton().textContent, 'Add to queue');
-});
-
-test('Study now links to the right-clicked topic without changing graph or learner selections', async () => {
-  const f = fixture(); f.open(); await settle();
-  const link = f.document.getElementById('studyTopicLink');
-  assert.equal(link.href, '/learn?topicId=20');
-  const event = new Event('keydown', { cancelable: true });
-  Object.defineProperty(event, 'key', { value: 'ArrowDown' });
-  f.document.getElementById('nodeContextMenu').dispatchEvent(event);
-  assert.equal(f.document.activeElement, link);
-  f.h.menu.open({ id: 25, uuid: 'another-topic', name: 'Another topic' }, { type: 'contextmenu', clientX: 50, clientY: 70, preventDefault() {}, stopPropagation() {} }, f.opener);
-  await settle();
-  assert.equal(link.href, '/learn?topicId=25');
-  assert.equal(f.calls.length, 0);
-  assert.deepEqual(f.learner.queue, []);
-  assert.deepEqual(f.learner.targets, [30]);
-  f.dev = true; f.open(); await settle();
-  assert.equal(link.href, '/learn?topicId=20');
-});
-
-test('Study now stays disabled while checking, for insufficient supply, and when the check fails', async () => {
-  const f = fixture();
-  f.availability.set(20, { available: false, reason: 'Needs five fresh, gradable questions per skill' });
-  f.open(true);
-  const link = f.document.getElementById('studyTopicLink');
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  assert.equal(link.href, undefined);
-  assert.equal(dispatch(link, 'click', { shiftKey: true }).defaultPrevented, true);
-  await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  assert.match(link.title, /five fresh/);
-  assert.equal(link.querySelector('.menu-new-tab-indicator').hidden, true);
-  for (const values of [{}, { shiftKey: true }, { ctrlKey: true }, { metaKey: true }]) {
-    assert.equal(dispatch(link, 'click', values).defaultPrevented, true);
-  }
-  assert.equal(dispatch(link, 'auxclick', { button: 1 }).defaultPrevented, true);
-  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', target: link });
-  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: 'ArrowDown' });
-  assert.equal(f.document.activeElement, f.document.getElementById('reviewTopicLink'));
-  assert.deepEqual(f.opened, []);
-  assert.equal(f.calls.length, 0);
-  f.availability.set(20, { available: true });
-  f.open(); await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'false');
-  assert.equal(link.href, '/learn?topicId=20');
-  f.availabilityHold = async () => { throw new Error('offline'); };
-  f.open(); await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  assert.match(link.title, /offline/);
-  assert.equal(link.href, undefined);
-});
-
-test('an earlier availability response cannot enable a different or reopened topic menu', async () => {
-  const f = fixture();
-  const pending = [];
-  f.availabilityHold = id => new Promise(resolve => pending.push({ id, resolve }));
-  f.open();
-  f.h.menu.open({ id: 25, name: 'Other topic' }, { type: 'contextmenu', preventDefault() {}, stopPropagation() {} }, f.opener);
-  const link = f.document.getElementById('studyTopicLink');
-  pending[0].resolve({ available: true }); await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  pending[1].resolve({ available: false, reason: 'Unavailable' }); await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  f.open(); f.open();
-  pending[2].resolve({ available: true }); await settle();
-  assert.equal(link.getAttribute('aria-disabled'), 'true');
-  pending[3].resolve({ available: true }); await settle();
-  assert.equal(link.href, '/learn?topicId=20');
-});
 
 test('an uncertain queue response retries the same request and intent without duplicates', async () => {
   const f = fixture(); f.fail = true; f.open();
@@ -367,150 +271,3 @@ function dispatch(target, type, values) {
   return event;
 }
 
-test('Shift pressed after opening the graph menu shows navigation arrows only while held', async () => {
-  const f = fixture(); f.open(); await settle();
-  const links = ['studyTopicLink', 'reviewTopicLink', 'goToTopicLink'].map(id => f.document.getElementById(id));
-  const arrows = links.map(link => link.querySelector('.menu-new-tab-indicator'));
-  assert.equal(arrows.every(arrow => arrow.hidden), true);
-  dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
-  assert.equal(arrows.every(arrow => !arrow.hidden), true);
-  assert.equal(links.every(link => /Opens in a new tab/.test(link.getAttribute('aria-label'))), true);
-  dispatch(f.document, 'keyup', { key: 'Shift', shiftKey: false });
-  assert.equal(arrows.every(arrow => arrow.hidden), true);
-  assert.equal(links.some(link => /Opens in a new tab/.test(link.getAttribute('aria-label'))), false);
-  assert.equal(f.document.getElementById('nodeContextMenu').hidden, false);
-});
-
-test('Shift-click activates each navigation action after its input event, without same-tab navigation or learner writes', async () => {
-  for (const [id, href] of [['studyTopicLink', '/learn?topicId=20'], ['reviewTopicLink', '/learn?reviewTopicId=20'], ['goToTopicLink', '/topic?topic=topic-uuid']]) {
-    const f = fixture(); f.open(); await settle();
-    dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
-    const event = dispatch(f.document.getElementById(id), 'click', { shiftKey: true, detail: 1, button: 0 });
-    assert.equal(event.defaultPrevented, true);
-    assert.deepEqual(f.opened, []); // The original Shift input must finish first.
-    await new Promise(resolve => setTimeout(resolve, 5));
-    assert.deepEqual(f.opened, [[href, '_blank', 'noopener noreferrer']]);
-    assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
-    assert.equal(f.calls.length, 0);
-    assert.equal(f.document.activeElement, f.opener);
-  }
-});
-
-test('releasing Shift restores ordinary link navigation; menu reopening and blur clear its state', async () => {
-  const f = fixture(); f.open(true); await settle();
-  const link = f.document.getElementById('studyTopicLink'), arrow = link.querySelector('.menu-new-tab-indicator');
-  assert.equal(arrow.hidden, false);
-  dispatch(f.document, 'keyup', { key: 'Shift', shiftKey: false });
-  const event = dispatch(link, 'click', { shiftKey: false, detail: 1, button: 0 });
-  assert.equal(event.defaultPrevented, false);
-  assert.deepEqual(f.opened, []);
-  f.open(true); f.window.dispatchEvent(new Event('blur'));
-  assert.equal(arrow.hidden, true);
-  f.open(); assert.equal(arrow.hidden, true);
-});
-
-test('keyboard activation retains the held Shift modifier and preserves native Control and Meta clicks', async () => {
-  const f = fixture(); f.open(); await settle();
-  const link = f.document.getElementById('studyTopicLink');
-  dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
-  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', shiftKey: true, target: link });
-  await new Promise(resolve => setTimeout(resolve, 5));
-  assert.deepEqual(f.opened, [['/learn?topicId=20', '_blank', 'noopener noreferrer']]);
-  for (const modifier of ['ctrlKey', 'metaKey']) {
-    f.open(); await settle();
-    const event = dispatch(link, 'click', { [modifier]: true, shiftKey: false, detail: 1, button: 0 });
-    assert.equal(event.defaultPrevented, false);
-  }
-  assert.equal(f.opened.length, 1);
-});
-
-test('both graph modes copy the clicked database ID independently of UUID and source ID', () => {
-  for (const targetsView of [false, true]) {
-    const f = fixture({targetsView});
-    const open = node => f.h.menu.open(node, {type:'contextmenu',clientX:50,clientY:70,preventDefault(){},stopPropagation(){}}, f.opener);
-    open({id:20,uuid:'stable-topic',mathAcademyId:42,name:'First topic'});
-    f.document.getElementById('copyNodeDbId').click();
-    assert.deepEqual(f.copied, [[20, ':db/id']]);
-    open({id:25,uuid:'other-topic',mathAcademyId:43,name:'Second topic'});
-    f.document.getElementById('copyNodeMaId').click();
-    assert.deepEqual(f.copied, [[20, ':db/id'], [43, ':ma/id']]);
-    assert.equal(f.calls.length, 0);
-    open({id:30,uuid:'local-topic',name:'Local topic'});
-    assert.equal(f.document.getElementById('copyNodeMaId').hidden, true);
-  }
-});
-
-test('canvas context menu copies every displayed topic DB ID once, one per line, in both graph modes', async () => {
-  for (const targetsView of [false, true]) {
-    const nodes = [
-      { id: 20, uuid: 'target-uuid', mathAcademyId: 42 },
-      { id: 17592186044417, uuid: 'prerequisite-uuid', mathAcademyId: 43 },
-      { id: 20, uuid: 'target-uuid', mathAcademyId: 42 },
-      { id: 30, uuid: 'queued-uuid' },
-    ];
-    const f = fixture({ targetsView, nodes });
-    const state = structuredClone(f.state), learner = structuredClone(f.learner);
-    const event = dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
-    assert.equal(event.defaultPrevented, true);
-    const button = f.document.getElementById('copyCanvasDbIds');
-    assert.equal(button.hidden, false);
-    assert.equal(button.textContent, 'Copy all topic DB IDs (3)');
-    assert.equal(f.document.activeElement, button);
-    for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'reviewTopicLink', 'goToTopicLink', 'copyNodeDbId', 'copyNodeMaId', 'copyNodeButton']) {
-      assert.equal(f.document.getElementById(id).hidden, true);
-    }
-    button.click(); await settle();
-    assert.deepEqual(f.clipboard, ['20\n17592186044417\n30']);
-    assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
-    assert.equal(f.document.activeElement, f.svg);
-    assert.deepEqual(f.state, state);
-    assert.deepEqual(f.learner, learner);
-    assert.equal(f.calls.length, 0);
-    assert.deepEqual(f.copied, []);
-    // Reopening reads the latest filtered/expanded layout rather than saved IDs.
-    f.state.layout.activeNodes = [{ id: 25, uuid: 'new-topic-uuid', mathAcademyId: 99 }];
-    dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
-    button.click(); await settle();
-    assert.deepEqual(f.clipboard, ['20\n17592186044417\n30', '25']);
-    f.open();
-    assert.equal(button.hidden, true);
-    assert.equal(f.document.getElementById('copyNodeDbId').hidden, false);
-    f.document.getElementById('copyNodeDbId').click();
-    assert.deepEqual(f.copied, [[20, ':db/id']]);
-  }
-});
-
-test('canvas copy supports keyboard opening and Escape, and ignores topic context events', () => {
-  const f = fixture({ nodes: [{ id: 20 }] });
-  dispatch(f.svg, 'contextmenu', { target: f.opener.children[0] });
-  assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
-  const event = dispatch(f.svg, 'keydown', { key: 'F10', shiftKey: true });
-  assert.equal(event.defaultPrevented, true);
-  assert.equal(f.document.activeElement, f.document.getElementById('copyCanvasDbIds'));
-  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: 'Escape' });
-  assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
-  assert.equal(f.document.activeElement, f.svg);
-  assert.equal(f.svg.getAttribute('aria-expanded'), 'false');
-});
-
-test('empty canvas disables copying and blocked clipboard offers the same newline-separated IDs for manual copy', async () => {
-  const empty = fixture();
-  dispatch(empty.svg, 'contextmenu', { clientX: 50, clientY: 70 });
-  const emptyButton = empty.document.getElementById('copyCanvasDbIds');
-  assert.equal(emptyButton.disabled, true);
-  emptyButton.click(); await settle();
-  assert.deepEqual(empty.clipboard, []);
-
-  const f = fixture({ nodes: [{ id: 20 }, { id: 30 }] });
-  f.clipboardBlocked = true;
-  dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
-  f.document.getElementById('copyCanvasDbIds').click(); await settle();
-  const text = f.document.getElementById('manualNodeText');
-  assert.equal(text.value, '20\n30');
-  assert.equal(text.selected, true);
-  assert.equal(text.getAttribute('aria-label'), 'Topic database IDs, one per line');
-  assert.equal(f.document.getElementById('manualNodeTitle').textContent, 'Copy topic DB IDs');
-  assert.equal(f.document.getElementById('manualNodeCopy').getAttribute('open'), '');
-  assert.deepEqual(f.clipboard, []);
-  assert.equal(f.calls.length, 0);
-});

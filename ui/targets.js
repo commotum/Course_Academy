@@ -130,7 +130,7 @@ function createTopicSelectionControls({ readLearner = readCurrentLearner, onChan
     switchControl = switchControl && !menuItem;
     const host = document.createElement('span'); host.className = 'target-control' + (switchControl ? ' target-switch-control' : '');
     const button = document.createElement('button'); button.type = 'button'; button.className = switchControl ? 'profile-switch target-switch' : 'target-toggle';
-    if (menuItem) button.setAttribute('role', 'menuitem');
+    if (menuItem) { button.setAttribute('role', 'menuitem'); button.tabIndex = -1; }
     if (switchControl) button.setAttribute('role', 'switch');
     const label = switchControl ? document.createElement('span') : null;
     const status = document.createElement('span'); status.className = 'target-status'; status.setAttribute('role', 'status');

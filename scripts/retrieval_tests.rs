@@ -2279,7 +2279,15 @@ fn selected_topic_review_uses_regular_policies_and_reuses_unfinished_attempts() 
                 && before.optional_ref(activity, "activity/scope").unwrap() == Some(topic)
                 && matches!(status(&before, *task, "learner-task/status").unwrap().as_str(), "locked" | "unlocked")
         }).collect();
+        let basis = f.db.basis_t();
+        let available = topic_study_availability(&before, f.learner, topic, DateTime::from_timestamp_millis(f.now+100).unwrap());
+        assert_eq!(available["review"]["available"], true);
+        assert_eq!(available["review"]["resumable"], false);
+        assert_eq!(f.db.basis_t(), basis);
         let mut s = f.act("review-topic", json!({"topicId":topic}), f.now+100)?;
+        let available = topic_study_availability(&s, f.learner, topic, DateTime::from_timestamp_millis(f.now+150).unwrap());
+        assert_eq!(available["review"]["available"], true);
+        assert_eq!(available["review"]["resumable"], true);
         let task = s.refs(f.learner, "learner/activity")?.into_iter().find(|task| {
             status(&s, *task, "learner-task/status").unwrap() == "started"
         }).unwrap();
@@ -2297,7 +2305,8 @@ fn selected_topic_review_uses_regular_policies_and_reuses_unfinished_attempts() 
         s = f.act("review-topic", json!({"topicId":topic}), f.now+200)?;
         assert_eq!(s.refs(f.learner, "learner/activity")?.len(), count);
         assert_eq!(items(&s, task)?, vec![item]);
-        f.act("pause", json!({"taskId":task}), f.now+300)?;
+        let paused = f.act("pause", json!({"taskId":task}), f.now+300)?;
+        assert_eq!(topic_study_availability(&paused, f.learner, topic, DateTime::from_timestamp_millis(f.now+350).unwrap())["review"]["resumable"], true);
         s = f.act("review-topic", json!({"topicId":topic}), f.now+400)?;
         assert_eq!(status(&s, task, "learner-task/status")?, "started");
         assert_eq!(items(&s, task)?, vec![item]);
@@ -2314,6 +2323,40 @@ fn selected_topic_review_uses_regular_policies_and_reuses_unfinished_attempts() 
         assert_eq!(status(&s, task, "learner-task/status")?, "completed");
         assert_eq!(items(&s, task)?.len(), 3);
         assert_eq!(number(&s, task, "learner-task/xp-earned"), retrieval::xp(&s, activity, &items(&s, task)?, base_xp::activity_base(&s, activity)?)? as f64);
+    }
+    Ok(())
+}
+
+#[test]
+fn topic_menu_review_availability_explains_rejected_starts_without_writes() -> Result<()> {
+    let f = Fixture::with_admission(false, 3*86400000, false)?;
+    let original = f.snapshot()?;
+    let topic = original.entities.with_attribute("topic/title").into_iter()
+        .find(|topic| text(&original, *topic, "topic/title") == "Topic 0").unwrap();
+    let at = DateTime::from_timestamp_millis(f.now+100).unwrap();
+    for scenario in ["unlearned", "exhausted", "invalid"] {
+        let mut s = original.clone();
+        let mut selected = topic;
+        if scenario == "invalid" { selected = f.learner; }
+        else if scenario == "unlearned" {
+            for progress in s.refs(f.learner, "learner/knowledge-profile")? {
+                if s.optional_ref(progress, "progress/topic")? == Some(topic) {
+                    s.entities.get_mut(&progress).unwrap().insert("progress/learned".into(), json!(false));
+                }
+            }
+        } else {
+            for kp in s.refs(topic, "topic/knowledge-points")? {
+                s.entities.get_mut(&kp).unwrap().insert("knowledge-point/questions".into(), json!([]));
+            }
+        }
+        let s = EntitySnapshot::new(s.entities.into(), s.basis_t)?;
+        let before = s.entities.clone();
+        let view = topic_study_availability(&s, f.learner, selected, at);
+        assert_eq!(view["review"]["available"], false, "{scenario}: {view}");
+        assert!(!view["review"]["reason"].as_str().unwrap().is_empty());
+        let error = mutate(&s, f.learner, "review-topic", &json!({"topicId":selected}), at).unwrap_err();
+        assert_eq!(view["review"]["reason"], error.to_string());
+        assert_eq!(s.entities, before);
     }
     Ok(())
 }

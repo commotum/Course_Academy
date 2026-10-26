@@ -322,6 +322,7 @@ pub(super) fn topic(db: &DatabaseValue, learner_id: &str, selector: &str) -> Res
     let topic_eid = facts.keys().copied().find(|eid| {
         uuid(&facts, *eid, "topic/id").is_some_and(|id| {
             id.eq_ignore_ascii_case(selector)
+                || eid.to_string() == selector
                 || academy_id
                     .is_some_and(|id| long(&facts, *eid, "topic/math-academy-id") == Some(id))
         })

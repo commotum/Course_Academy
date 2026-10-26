@@ -182,7 +182,7 @@ function resultLabel(item) {
 }
 function renderItem(item, number) {
   const card = el('article', 'history-question');
-  attachStepMenu(card, item.contentId, item.mathAcademyId, { kind: item.kind === 'tutorial' ? 'tutorial' : 'question' });
+  attachStepMenu(card, item.contentId, item.mathAcademyId, { kind: item.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
   card.append(el('h3', 'history-question-title', item.kind === 'question' ? `Question ${number}` : item.title || 'Worked example'));
   const prompt = markdown(item.markdown, item.fields); card.append(prompt);
   if (item.fields?.length) {

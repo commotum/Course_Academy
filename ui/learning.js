@@ -425,7 +425,7 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
     const timing = el('div', 'lesson-timing'); timing.append(timer, pause);
     toolbar.append(exit, track, position, timing);
     const reference = el('div', 'lesson-reference');
-    const reviewLink = el('a', '', 'Review topic');
+    const reviewLink = el('a', '', 'Open topic lesson');
     reviewLink.target = '_blank'; reviewLink.rel = 'noopener';
     reviewLink.title = 'Open the topic lesson in a new tab';
     reference.append(reviewLink);
@@ -597,6 +597,7 @@ async function loadHome(signal, preserve) {
       waiting.append(el('h2', 'step-title', 'Unfinished practice'));
       for (const activity of data.waitingActivities) {
         const row = el('div', 'waiting-lesson');
+        attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
         row.append(el('span', '', `${activity.title} · ${activity.pendingCount} unfinished ${activity.pendingCount === 1 ? 'skill' : 'skills'}`), actionButton(activity.canResumePractice ? 'Resume practice →' : 'Review · waiting for questions →', 'secondary', () => openTask(activity.taskId)));
         waiting.append(row);
       }
@@ -774,7 +775,7 @@ async function openPreview(query) {
 function previewContent(data, step, index, archived = false) {
   const content = el('section', 'lesson-content');
   content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
-  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
   const kind = short(step.kind), fields = step.fields || [];
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
@@ -862,7 +863,7 @@ function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
-  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
   const kind = short(step.kind);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
@@ -1052,6 +1053,13 @@ function updateTaskTimer() {
   }
 }
 
+// Menu links use the same durable pause path as the other ways to leave study.
+document.addEventListener('click', event => {
+  const anchor = event.target.closest('a[href]');
+  if (!anchor || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || anchor.target === '_blank' || anchor.hasAttribute('download')) return;
+  if (!anchor.closest('.entity-context-menu') || !task || isDeveloperMode()) return;
+  event.preventDefault(); void explore(anchor.href).catch(showError);
+});
 $('retryButton').addEventListener('click', () => retryOperation?.());
 $('homeLink').addEventListener('click', leaveTask);
 document.querySelector('.brand').addEventListener('click', leaveTask);
