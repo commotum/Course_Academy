@@ -689,6 +689,13 @@ def _matrix_layouts(text):
             if not left or not right or (left[1], right[1]) not in [('[', ']'), ('(', ')'), ('|', '|')]: continue
             body = text[opening.end():closing.start()]; rows = cells(body)
             if not rows or any(_system_row([cell]) for row in rows for cell in row): continue
+            # An empty alignment column plus an explicit binary continuation
+            # denotes a wrapped scalar expression, not matrix cells. Preserve
+            # the author's aligned layout; explicit matrix environments still
+            # carry matrix semantics regardless of their cell contents.
+            if opening[2] == 'aligned' and all(len(row) == 2 and not row[0].strip() for row in rows) \
+                    and any(re.match(r'\s*\{\}\s*\+', row[1]) for row in rows[1:]):
+                continue
             width = min(map(len, rows))
             if any(len(row) != width for row in rows):
                 if not all(not cell for row in rows for cell in row[width:]): continue

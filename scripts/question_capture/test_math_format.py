@@ -6,6 +6,17 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_wrapped_additive_scalar_is_not_a_matrix(self):
+        source = r'e^t\left(\begin{aligned}&x\\&{}+(y)\end{aligned}\right)'
+        result = normalize_tex(source)
+        self.assertIn(r'\begin{aligned}', result)
+        self.assertNotIn('matrix', result)
+        self.assertEqual(normalize_tex(result), result)
+        self.assertEqual(normalize_tex(r'\left(\begin{aligned}1&2\\3&4\end{aligned}\right)'),
+                         r'\begin{pmatrix}1&2\\3&4\end{pmatrix}')
+        self.assertIn(r'\begin{pmatrix}',
+            normalize_tex(r'\left(\begin{matrix}&x\\&{}+(y)\end{matrix}\right)'))
+
     def test_ruled_mathml_tables_keep_cells_rules_and_alignment(self):
         from math_format import mathml_ruled_table
         rows = [['x', '-1', '2'], ['u', '1', '10']]
