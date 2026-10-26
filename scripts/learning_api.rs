@@ -671,12 +671,8 @@ fn topic_review_plan(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) 
         }
     }
     existing.sort();
-    let selected = existing.first().map(|(_, _, activity, _)| *activity);
-    let candidates = learning::study_candidates(s, l, course(s, l)?, at)?;
-    if candidates.iter().any(|p| p.priority >= 11000.0)
-        && selected.is_none_or(|activity| !candidates.iter().any(|p| p.activity == activity)) {
-        return Err("Complete the required activity before starting unrelated study".into());
-    }
+    // Required queue work is a recommendation, not a lock on an explicitly
+    // selected review. Keep eligibility and content checks local to this topic.
     if let Some((_, task, activity, state)) = existing.into_iter().next() {
         // Resume/start have their own continuation and freshness checks too.
         // Validate their plan here so an enabled action matches its mutation.
@@ -1975,15 +1971,15 @@ fn mutate_with_selection(
                     .as_u64()
                     .and_then(|t| topic_lesson(s, t).ok())
             });
-        // Study now chooses a lesson independently of queue priority. A later
-        // resume must keep that lesson usable after pausing or leaving the page.
-        let explicit_lesson = selected_topic.is_some()
+        // Explicit topic study is independent of queue priority. Resuming a
+        // lesson or review must preserve that choice after leaving the page.
+        let explicit_study = selected_topic.is_some()
             || action == "study-topic"
             || (action == "resume"
                 && requested.is_some_and(|activity| {
-                    retrieval::kind(s, activity).ok().as_deref() == Some("lesson")
+                    matches!(retrieval::kind(s, activity).ok().as_deref(), Some("lesson" | "review"))
                 }));
-        if !explicit_lesson {
+        if !explicit_study {
             let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
             let gated = plan.iter().any(|p| p.priority >= 11000.0);
             if gated && requested.is_none_or(|a| !plan.iter().any(|p| p.activity == a)) {
@@ -2172,7 +2168,7 @@ fn mutate_with_selection(
             TopicReviewPlan::Existing { task, activity, state } => {
                 return match state.as_str() {
                     "started" => Ok((forms, json!({"taskId":task}))),
-                    "paused" => mutate(s, l, "resume", &json!({"taskId":task}), at),
+                    "paused" => mutate_with_selection(s, l, "resume", &json!({"taskId":task}), at, Some(topic)),
                     _ => mutate_with_selection(s, l, "start", &json!({"activityId":activity}), at, Some(topic)),
                 };
             }

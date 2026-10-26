@@ -24,7 +24,6 @@ export function closeEntityMenu(restoreFocus = false) {
   generation++;
   if (menu) menu.hidden = true;
   current?.setAttribute('aria-expanded', 'false');
-  if (returnFocus?.matches?.('.entity-actions-trigger')) returnFocus.setAttribute('aria-expanded', 'false');
   for (const cleanup of cleanups.splice(0)) cleanup();
   if (restoreFocus && returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
   current = returnFocus = null;
@@ -76,7 +75,6 @@ export function openEntityMenu(element, event = {}) {
   };
   for (const action of typeof metadata.actions === 'function' ? metadata.actions(context) : metadata.actions || []) addAction(action, context);
   element.setAttribute('aria-expanded', 'true');
-  if (returnFocus?.matches?.('.entity-actions-trigger')) returnFocus.setAttribute('aria-expanded', 'true');
   menu.hidden = false; shiftMode(event.shiftKey); position();
   items()[0]?.focus({ preventScroll: true });
 }
@@ -188,15 +186,6 @@ function initialize() {
   window.addEventListener('resize', () => closeEntityMenu()); window.addEventListener('blur', () => closeEntityMenu());
   for (const name of ['profile-changing', 'developer-mode-changing', 'queue-changed', 'targets-changed'])
     window.addEventListener('course-academy:' + name, () => closeEntityMenu(true));
-}
-
-export function attachMenuButton(element, label = 'Content actions') {
-  const tools = document.createElement('div'); tools.className = 'entity-menu-tools';
-  const button = document.createElement('button'); button.type = 'button'; button.className = 'entity-actions-trigger'; button.textContent = '⋯';
-  button.setAttribute('aria-label', label); button.setAttribute('aria-haspopup', 'menu');
-  button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-controls', 'entity-context-menu');
-  button.addEventListener('click', event => openEntityMenu(element, event));
-  tools.append(button); element.append(tools);
 }
 
 function showNotice(message) {

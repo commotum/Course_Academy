@@ -1,4 +1,4 @@
-import { attachEntityMenu, attachMenuButton, copyText } from './entity-menu.js';
+import { attachEntityMenu, copyText } from './entity-menu.js';
 
 export function stepEntityId(value) {
   if (typeof value === 'number' && !Number.isSafeInteger(value)) return null;
@@ -30,7 +30,6 @@ export function attachStepMenu(element, value, mathAcademyId = null, options = {
     actions: context => [...entityIdActions(id, mathAcademyId, kind), ...(options.actions?.(context) || [])],
   });
   element.dataset.stepDbId = id;
-  if (options.actionsButton) attachMenuButton(element, `${kind[0].toUpperCase() + kind.slice(1)} actions`);
 }
 
 export async function copyEntityId(value, label = ':db/id', kind = '') {

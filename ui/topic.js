@@ -176,7 +176,7 @@ function canonicalAnswers(fields) {
 }
 function instructionalSection(section) {
   const article = el('section', 'topic-section'); article.id = section.anchor;
-  attachStepMenu(article, section.contentId, section.mathAcademyId, { kind: section.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
+  attachStepMenu(article, section.contentId, section.mathAcademyId, { kind: section.kind === 'tutorial' ? 'tutorial' : 'question' });
   article.setAttribute('aria-labelledby', section.anchor + '-title');
   const header = el('div', 'section-heading');
   const label = el('div');

@@ -2360,3 +2360,42 @@ fn topic_menu_review_availability_explains_rejected_starts_without_writes() -> R
     }
     Ok(())
 }
+
+#[test]
+fn explicit_topic_reviews_ignore_unrelated_required_work_and_remain_resumable() -> Result<()> {
+    for self_directed in [false, true] {
+        let mut f = Fixture::new(false)?;
+        f.tx(vec![add(json!(f.learner), "learner/self-directed", json!(self_directed))], f.now+10)?;
+        let before = f.snapshot()?;
+        let at = DateTime::from_timestamp_millis(f.now+100).unwrap();
+        let required = learning::study_candidates(&before, f.learner, course(&before,f.learner)?, at)?;
+        assert!(required.iter().any(|candidate|candidate.priority>=11000.0));
+        let topic = before.entities.with_attribute("topic/title").into_iter()
+            .find(|topic|text(&before,*topic,"topic/title")=="Topic 0").unwrap();
+        let view = topic_study_availability(&before,f.learner,topic,at);
+        assert_eq!(view["review"]["available"],true,"{view}");
+        assert_eq!(f.snapshot()?.entities,before.entities);
+        let started = f.act("review-topic",json!({"topicId":topic}),f.now+100)?;
+        let task = started.refs(f.learner,"learner/activity")?.into_iter().find(|task| {
+            let activity=started.reference(*task,"learner-task/activity").unwrap();
+            retrieval::kind(&started,activity).unwrap()=="review"
+                && started.optional_ref(activity,"activity/scope").unwrap()==Some(topic)
+                && status(&started,*task,"learner-task/status").unwrap()=="started"
+        }).unwrap();
+        let presentations=items(&started,task)?;
+        for (resume,offset) in [("review-topic",200),("resume",400)] {
+            f.act("pause",json!({"taskId":task}),f.now+offset)?;
+            let paused=f.snapshot()?;
+            assert_eq!(topic_study_availability(&paused,f.learner,topic,DateTime::from_timestamp_millis(f.now+offset+50).unwrap())["review"]["available"],true);
+            let resumed=f.act(resume,json!({"taskId":task,"topicId":topic}),f.now+offset+100)?;
+            assert_eq!(status(&resumed,task,"learner-task/status")?,"started");
+            assert_eq!(items(&resumed,task)?,presentations);
+        }
+        let after=f.snapshot()?;
+        for candidate in required.iter().filter(|candidate|candidate.priority>=11000.0) {
+            let required_task=task_for(&before,f.learner,candidate.activity)?.unwrap();
+            assert_eq!(after.entity(required_task)?,before.entity(required_task)?);
+        }
+    }
+    Ok(())
+}

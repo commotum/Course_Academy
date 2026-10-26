@@ -240,7 +240,7 @@ function renderQuestionFeedback(view) {
 }
 function questionView(question) {
   const node = el('section', 'assignment-question');
-  attachStepMenu(node, question.entityId, question.mathAcademyId, { kind: 'question', actionsButton: true });
+  attachStepMenu(node, question.entityId, question.mathAcademyId, { kind: 'question' });
   const key = questionKey(question);
   node.dataset.question = key;
   const meta = el('div', 'step-meta');

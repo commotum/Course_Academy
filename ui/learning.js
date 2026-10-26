@@ -425,7 +425,7 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
     const timing = el('div', 'lesson-timing'); timing.append(timer, pause);
     toolbar.append(exit, track, position, timing);
     const reference = el('div', 'lesson-reference');
-    const reviewLink = el('a', '', 'Open topic lesson');
+    const reviewLink = el('a', '', 'Review topic');
     reviewLink.target = '_blank'; reviewLink.rel = 'noopener';
     reviewLink.title = 'Open the topic lesson in a new tab';
     reference.append(reviewLink);
@@ -775,7 +775,7 @@ async function openPreview(query) {
 function previewContent(data, step, index, archived = false) {
   const content = el('section', 'lesson-content');
   content.dataset.stepNumber = String(index + 1); content.dataset.totalSteps = String(data.steps.length);
-  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
   const kind = short(step.kind), fields = step.fields || [];
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
@@ -863,7 +863,7 @@ function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
-  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question', actionsButton: true });
+  attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
   const kind = short(step.kind);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
