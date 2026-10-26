@@ -182,7 +182,7 @@ impl Poly {
             Atom::Variable(_) | Atom::Pi | Atom::E => true,
             Atom::I => false,
             Atom::Root(_, p) => p.real_on_domain(),
-            Atom::Function(name, v) => matches!(name.as_str(), "sin" | "cos" | "ln" | "exp" | "abs")
+            Atom::Function(name, v) => matches!(name.as_str(), "sin" | "cos" | "ln" | "exp" | "abs" | "atan")
                 && v.real_on_domain(),
             Atom::Power(base, exponent) => base.real_on_domain() && exponent.real_on_domain(),
         }))
@@ -418,8 +418,41 @@ fn exp_bounds(x: &Q) -> Option<(Q, Q)> {
     Some((bounded_endpoints(&(&sum - &remainder))?.0,
           bounded_endpoints(&(sum + remainder))?.1))
 }
+// Principal real arctangent. Alternating-series bounds are rational and
+// are used only to prove inequality, never to accept numerical agreement.
+fn atan_bounds(x: &Q) -> Option<(Q, Q)> {
+    if x.is_negative() {
+        let (lo, hi) = atan_bounds(&-x.clone())?;
+        return Some((-hi, -lo));
+    }
+    let pi_lo = Q::from_integer(3.into());
+    let pi_hi = Q::new(22.into(), 7.into());
+    if x > &Q::one() {
+        let (lo, hi) = atan_bounds(&x.recip())?;
+        return Some((pi_lo / Q::from_integer(2.into()) - hi,
+                     pi_hi / Q::from_integer(2.into()) - lo));
+    }
+    if x > &Q::new(1.into(), 2.into()) {
+        let z = (x - Q::one()) / (x + Q::one());
+        let (lo, hi) = atan_bounds(&z)?;
+        return Some((pi_lo / Q::from_integer(4.into()) + lo,
+                     pi_hi / Q::from_integer(4.into()) + hi));
+    }
+    let mut sum = Q::zero();
+    let mut power = x.clone();
+    let square = x * x;
+    for n in 0..32 {
+        let term = &power / Q::from_integer((2*n+1).into());
+        if n % 2 == 0 { sum += term; } else { sum -= term; }
+        power *= &square;
+    }
+    // 32 terms end below atan(x); the next positive term bounds the tail.
+    let upper = &sum + power / Q::from_integer(65.into());
+    Some((bounded_endpoints(&sum)?.0, bounded_endpoints(&upper)?.1))
+}
 fn function_interval(name: &str, l: &Q, h: &Q) -> Option<(Q, Q)> {
     match name {
+        "atan" => Some((atan_bounds(l)?.0, atan_bounds(h)?.1)),
         "ln" => Some((log_bounds(l)?.0, log_bounds(h)?.1)),
         "exp" => Some((exp_bounds(l)?.0, exp_bounds(h)?.1)),
         "sin" | "cos" => {
@@ -1023,7 +1056,18 @@ impl Algebra {
         )))
     }
     fn function(&mut self, name: &str, x: &Value) -> Result<Value> {
+        let name = if name == "arctan" { "atan" } else { name };
         match name {
+            "atan" => {
+                if !x.real_on_domain() {
+                    return Err("arctangent requires a real argument".into());
+                }
+                if x.is_zero() { return Ok(Value::integer(0)); }
+                if *x == Value::integer(1) || *x == Value::integer(-1) {
+                    let quarter_pi = self.div(&Value::atom(Atom::Pi), &Value::integer(4))?;
+                    return Ok(if *x == Value::integer(-1) { quarter_pi.neg() } else { quarter_pi });
+                }
+            }
             "sqrt" => return self.root(x, 2),
             "cbrt" => return self.root(x, 3),
             "sec" | "csc" | "cot" | "tan" => {
@@ -1201,7 +1245,7 @@ impl Algebra {
             _ => return Err(format!("unsupported function: {name}")),
         }
         // Odd/even symmetry; choose the argument with positive leading term.
-        if matches!(name, "sin" | "cos" | "abs")
+        if matches!(name, "sin" | "cos" | "abs" | "atan")
             && x.num
                 .0
                 .first_key_value()
@@ -1209,7 +1253,7 @@ impl Algebra {
         {
             let y = x.neg();
             let f = self.function(name, &y)?;
-            return Ok(if name == "sin" { f.neg() } else { f });
+            return Ok(if name == "sin" || name == "atan" { f.neg() } else { f });
         }
         Ok(Value::atom(Atom::Function(
             name.into(),
@@ -1433,6 +1477,8 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                     | "sec"
                     | "csc"
                     | "cot"
+                    | "atan"
+                    | "arctan"
                     | "ln"
                     | "log"
                     | "exp"
@@ -1704,6 +1750,8 @@ impl Parser {
                         | "sec"
                         | "csc"
                         | "cot"
+                        | "atan"
+                        | "arctan"
                         | "ln"
                         | "log"
                         | "exp"
@@ -2922,6 +2970,21 @@ mod tests {
             nested = format!("ln(({nested}+1)^7)");
         }
         assert!(!supports(&nested, Context::default()));
+    }
+    #[test]
+    fn principal_arctangent_answers_and_rejections() {
+        eq(r"\frac{12}{37}+2\arctan{\left(6\right)}", "2*atan(6)+12/37");
+        eq(r"\arctan(-2)", "-atan(2)");
+        eq("atan(1)", "pi/4");
+        eq("atan(-1)", "-pi/4");
+        eq("atan(0)", "0");
+        for (a, b) in [("atan(6)", "atan(3)"), ("atan(2)", "atan(2)+1"),
+                       ("atan(2)", "atan(3)"), ("atan(2)", "-atan(2)"),
+                       ("atan(x)", "atan(x+1)")] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+        }
+        assert!(!supports("atan(i)", Context::default()));
+        assert!(!supports("atan(1/(x-x))", Context::default()));
     }
     #[test]
     fn captured_answers_and_independent_correctness_cases() {
