@@ -27,3 +27,10 @@ test('unclosed or mismatched environments are left for validation', () => {
     assert.equal(protectMath(tex, () => 'BAD'), tex);
   }
 });
+
+test('literal dollars inside currency formulas do not close their math spans', () => {
+  const formulas = [String.raw`$\$450\,000$`, String.raw`$- \$72.25$`, String.raw`$V(4)=\$409.60$`, String.raw`$$P=P_0e^{rt}$$`];
+  const saved = [];
+  protectMath(formulas.join(' and '), s => { saved.push(s); return 'MATH'; });
+  assert.deepEqual(saved, formulas);
+});
