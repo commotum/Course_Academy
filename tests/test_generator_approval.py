@@ -99,13 +99,25 @@ class GeneratorApprovalTests(unittest.TestCase):
             with self.subTest(publication=publication), self.assertRaises(ValueError):
                 self.make(publication=publication)
 
-    def test_source_package_and_engine_changes_reject_refill(self):
+    def test_source_and_package_changes_reject_refill(self):
         record = self.make()
         for name in ('source_sha256', 'package_sha256', 'registration', 'kp_id', 'lineage'):
             with self.subTest(name=name):
                 identity = {**self.identity, name: 'changed'}
                 self.assert_rejected(record, 'source_changed', identity=identity)
-        self.assert_rejected(record, 'approval_engine_changed', engine_hash='f' * 64)
+
+    def test_engine_changes_preserve_all_band_eligibility_and_original_review(self):
+        record = self.make()
+        original = deepcopy(record)
+        for band in BANDS:
+            with self.subTest(band=band):
+                prior = approved_band(record, self.identity, band, self.policy, self.engine)
+                changed = approved_band(record, self.identity, band, self.policy, 'f' * 64)
+                without_engine = approved_band(record, self.identity, band, self.policy)
+                self.assertEqual(changed, prior)
+                self.assertEqual(without_engine, prior)
+                self.assertEqual(changed['approval']['engine_sha256'], self.engine)
+        self.assertEqual(record, original)
 
     def test_current_policy_is_required(self):
         self.assert_rejected(self.make(), 'approval_policy_stale', policy_version=self.policy + 1)

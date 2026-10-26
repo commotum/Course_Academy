@@ -1,8 +1,9 @@
 """Persist generator verification independently of question publication.
 
 The pipeline validates the verifier's report and files before calling this
-module. These checks bind that decision to the final package, engine and every
-difficulty's sampled questions; they do not make pedagogical judgments.
+module. These checks bind that decision to the package and every difficulty's
+sampled questions. The recorded engine is historical review metadata, not an
+expiration condition; these checks do not make pedagogical judgments.
 """
 from copy import deepcopy
 import hashlib
@@ -27,14 +28,13 @@ def _hash(value):
     return isinstance(value, str) and re.fullmatch(r'[0-9a-f]{64}', value) is not None
 
 
-def _binding_valid(binding, identity, policy_version, engine_hash):
+def _binding_valid(binding, identity, policy_version):
     if (not isinstance(binding, dict)
             or binding.get('policy_version') != policy_version
             or binding.get('package_hash') != identity.get('package_sha256')
             or not _hash(binding.get('package_hash'))
             or not _hash(binding.get('source_hash'))
-            or not _hash(binding.get('engine_hash'))
-            or binding.get('engine_hash') != engine_hash):
+            or not _hash(binding.get('engine_hash'))):
         return False
     batches = binding.get('verification_batches')
     return (isinstance(batches, dict) and set(batches) == set(BANDS)
@@ -53,7 +53,7 @@ def make_approval(identity, review, binding, review_path, publication, published
     ``publication_batch_hash`` identifies the actual published questions. It
     may differ from a newly sampled verification batch during catch-up review.
     """
-    if not isinstance(binding, dict) or not _binding_valid(binding, identity, policy_version, binding.get('engine_hash')):
+    if not isinstance(binding, dict) or not _binding_valid(binding, identity, policy_version):
         raise ValueError('Generator approval requires complete final all-band input bindings')
     if not isinstance(review, dict) or review.get('verdict') != 'accepted':
         raise ValueError('Generator approval requires an accepted review')
@@ -100,8 +100,13 @@ def make_approval(identity, review, binding, review_path, publication, published
     }
 
 
-def approved_band(value, identity, band, policy_version, engine_hash):
-    """Resolve eligibility from recorded verification, never publication scope."""
+def approved_band(value, identity, band, policy_version, engine_hash=None):
+    """Resolve approval for this package, source and band.
+
+    ``engine_hash`` remains accepted for older callers but does not affect
+    eligibility. Rebuilding or changing the engine does not expire a completed
+    content review. Saved engine hashes must still agree within that review.
+    """
     if not isinstance(value, dict) or value.get('identity') != identity:
         raise ApprovalError('source_changed', 'Registered package approval does not match current instructional source')
     bands = value.get('bands')
@@ -118,9 +123,7 @@ def approved_band(value, identity, band, policy_version, engine_hash):
     if value.get('format') != 2:
         raise ApprovalError('approval_invalid', 'Registered generator approval format is not supported')
     binding = value.get('verification_binding')
-    if isinstance(binding, dict) and binding.get('engine_hash') != engine_hash:
-        raise ApprovalError('approval_engine_changed', 'Registered package needs verification against the current answer engine')
-    if not _binding_valid(binding, identity, policy_version, engine_hash) or set(bands) != set(BANDS):
+    if not _binding_valid(binding, identity, policy_version) or set(bands) != set(BANDS):
         raise ApprovalError('approval_invalid', 'Registered generator approval has incomplete all-band input bindings')
     publication = value.get('publication')
     if (not isinstance(publication, dict) or publication.get('difficulty') not in BANDS
@@ -134,7 +137,7 @@ def approved_band(value, identity, band, policy_version, engine_hash):
         if (not isinstance(record, dict) or record.get('review_policy_version') != policy_version
                 or not _hash(record.get('review_sha256'))
                 or record.get('batch_sha256') != binding['verification_batches'][name]['batch_hash']
-                or record.get('engine_sha256') != engine_hash
+                or record.get('engine_sha256') != binding['engine_hash']
                 or not isinstance(record.get('evidence'), str) or not record['evidence']
                 or not isinstance(record.get('evidence_paths'), list) or not record['evidence_paths']
                 or any(not isinstance(path, str) or not path.strip() for path in record['evidence_paths'])
