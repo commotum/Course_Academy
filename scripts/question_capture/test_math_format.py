@@ -6,6 +6,15 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_limit_operator_keeps_its_tendency_condition(self):
+        for source in (r'{lim}_{x\to 2}4^{x/2}', r'{\lim}_{x\to 2}4^{x/2}',
+                       r'lim_{x\to 2}4^{x/2}', r'\lim_\limits{x\to 2}4^{x/2}'):
+            self.assertEqual(normalize_tex(source), r'\lim_{x\to 2}4^{x/2}')
+        self.assertEqual(normalize_tex('lim_(x → - ∞)2^x'), r'\lim_{x \to  - \infty}2^x')
+        self.assertEqual(normalize_tex(r'a_{lim}+\text{lim}'), r'a_{lim}+\text{lim}')
+        for source in (r'\text{lim}_{x\to 2}', r'\operatorname*{lim}_{x\to 2}', r'\mathbf {lim}_{x\to 2}'):
+            self.assertEqual(normalize_tex(source), source)
+
     def test_wrapped_additive_scalar_is_not_a_matrix(self):
         source = r'e^t\left(\begin{aligned}&x\\&{}+(y)\end{aligned}\right)'
         result = normalize_tex(source)

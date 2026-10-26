@@ -78,6 +78,7 @@ class Renderer:
         if t=='msub':return base+'_{'+cs[1]+'}'
         if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
         if t=='munder':
+            if cs[0]=='lim':return '\\lim_{'+cs[1]+'}'
             if self.brace_glyph(n.find_all(recursive=False)[1],'⏟'):return '\\underbrace{'+cs[0]+'}'
             return self.brace_label(n,cs,'munder','⏟','\\underbrace','_','\\underset') or base+'_{'+cs[1]+'}'
         if t=='mover':
@@ -147,7 +148,7 @@ class Renderer:
             # align equations. Normalize the complete expression after its
             # fences are available so adjacent matrix entries stay distinct.
             tex=normalize_source_tex(self.m(math));self.formulas.append(tex)
-            return '\n\n$$\n'+tex+'\n$$\n\n' if n.get('display')=='true' else '$'+tex+'$'
+            return '\n\n$$\n'+tex+'\n$$\n\n' if n.get('display') in ('true','block') else '$'+tex+'$'
         if t=='img':return '![]('+self.asset(n.get('src',''))+')'
         if t=='svg':self.errors.append('Inline SVG needs saved asset');return ''
         if t=='br':return '\n'

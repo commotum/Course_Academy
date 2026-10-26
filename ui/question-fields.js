@@ -95,6 +95,8 @@ export function blankInput(field, label, name, readOnly = false) {
   input.setAttribute('name', String(name)); input.setAttribute('aria-label', label);
   if (kind === 'math') {
     input.mathVirtualKeyboardPolicy = 'auto';
+    // Extend the shortcut buffer so `inf` becomes infinity after the built-in `in` match.
+    input.onInlineShortcut = (_mathfield, shortcut) => shortcut === 'inf' ? '\\infty' : '';
     input.setAttribute('placeholder', '');
   } else {
     input.type = 'text'; input.autocomplete = 'off'; input.spellcheck = false;

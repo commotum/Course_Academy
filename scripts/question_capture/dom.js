@@ -319,7 +319,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
-      case 'munder': return braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
+      case 'munder': return cs[0] === 'lim' ? '\\lim_{' + cs[1] + '}' : braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
         braceLabel(n, cs, 'munder', '⏟', '\\underbrace', '_', '\\underset') ?? '{' + cs[0] + '}_{' + cs[1] + '}';
       case 'mover': return braceGlyph(n.children[1], '⏞') ? '\\overbrace{' + cs[0] + '}' :
         braceLabel(n, cs, 'mover', '⏞', '\\overbrace', '^', '\\overset') ?? hatAccent(n, cs) ?? (n.children[1]?.textContent === 'ˆ' ?
@@ -449,7 +449,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
         .map(([control,key]) => [control.id.match(/-(\d+)$/)?.[1], key]));
       const tex = m(math);
       formulaFields = previous;
-      return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
+      return ['true', 'block'].includes(n.getAttribute('display')) ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
     if (t === 'table') return sourceHTMLTable(n, render, message => errors.push(message));
     const children = [...n.childNodes].map(render).join('');

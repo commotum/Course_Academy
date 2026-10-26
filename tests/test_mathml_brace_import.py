@@ -25,6 +25,16 @@ SPEC.loader.exec_module(HISTORY)
 
 
 class MathMLBraceImportTests(unittest.TestCase):
+    def test_block_limit_preserves_operator_and_display_in_every_importer(self):
+        formula = '<math display="block"><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>2</mn></mrow></munder><mi>f</mi></math>'
+        for name, source in self.sources.items():
+            self.page.set_content('<div id="fixture"><div class="questionWidget-text">' + formula + '</div></div>')
+            result = self.page.locator('#fixture').evaluate(source)
+            with self.subTest(importer=name):
+                self.assertEqual(result['problem'], '$$\n' + r'\lim_{x\to 2}f' + '\n$$')
+        self.assertEqual(HISTORY.Renderer(None).text(BeautifulSoup(formula, 'html.parser').math),
+                         '$$\n' + r'\lim_{x\to 2}f' + '\n$$')
+
     def test_literal_currency_and_percent_are_escaped_by_every_importer(self):
         self.assert_formula('<mtext>$</mtext><mn>12</mn><mo>%</mo>', r'\text{\$}12\%')
         self.assert_formula('<mtext>12% off</mtext>', r'\text{12\% off}')
@@ -95,9 +105,9 @@ class MathMLBraceImportTests(unittest.TestCase):
         for name, value in self.extract_all(fixture['mathml']).items():
             with self.subTest(importer=name):
                 self.assertEqual(value.count(r'\underbrace{'), 2)
-                self.assertIn(r'\underbrace{{lim}_{h\to 0}\frac{\operatorname{cos}', value)
+                self.assertIn(r'\underbrace{\lim_{h\to 0}\frac{\operatorname{cos}', value)
                 self.assertIn(r'(h)-1}{h}}_{0}', value)
-                self.assertIn(r'\underbrace{{lim}_{h\to 0}\frac{\operatorname{sin}', value)
+                self.assertIn(r'\underbrace{\lim_{h\to 0}\frac{\operatorname{sin}', value)
                 self.assertIn(r'(h)}{h}}_{1}', value)
                 self.assertNotIn('⏟', value)
                 self.assertNotIn(r'{\underbrace', value)
@@ -133,7 +143,7 @@ class MathMLBraceImportTests(unittest.TestCase):
                             '<munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder>'
                             '<munderover><mo>∑</mo><mi>i</mi><mi>n</mi></munderover>'
                             '<mover><mi>x</mi><mi>y</mi></mover>',
-                            r'{x}_{i}{y}^{2}{a}_{i}^{3}{lim}_{x\to 0}{\sum }_{i}^{n}\overset{y}{x}')
+                            r'{x}_{i}{y}^{2}{a}_{i}^{3}\lim_{x\to 0}{\sum }_{i}^{n}\overset{y}{x}')
 
     def test_brace_glyph_must_be_the_accent_operator_not_label_prose(self):
         self.assert_formula('<munder><mi>x</mi><mtext>⏟</mtext></munder>'

@@ -836,6 +836,24 @@ def scalable_fraction_parentheses(text):
     return text
 
 
+def normalize_limit_operators(text):
+    """Recover limit operators only when a tendency condition identifies them."""
+    text = re.sub(r'\\lim_\\limits(?=\s*\{)', lambda _: r'\lim_', text)
+    condition = r'(?=\s*_\{[^{}]*(?:\\to\b|→))'
+    # A group around the operator would turn it back into an ordinary atom and
+    # move its condition to the side, even in display math.
+    def ungroup(match):
+        if re.search(r'\\[A-Za-z]+\*?\s*$', text[:match.start()]):
+            return match[0]  # Preserve an explicit font/text/operator argument.
+        return r'\lim'
+    text = re.sub(r'\{(?:lim|\\lim)\}' + condition, ungroup, text)
+    text = re.sub(r'(?<![\\A-Za-z])lim' + condition, lambda _: r'\lim', text)
+    def legacy(match):
+        body = match[1].replace('→', r'\to ').replace('∞', r'\infty')
+        return r'\lim_{' + body.strip() + '}'
+    return re.sub(r'(?<![\\A-Za-z])lim_\(([^()]*(?:→|\\to\b)[^()]*)\)', legacy, text)
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
@@ -844,7 +862,7 @@ def normalize_tex(value):
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
-    text = _label_row_spacing(text)
+    text = normalize_limit_operators(_label_row_spacing(text))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
     text = re.sub(r'\\require\s*\{(?:cancel|enclose)\}\s*', '', text)

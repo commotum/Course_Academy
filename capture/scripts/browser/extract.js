@@ -303,7 +303,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
-      case 'munder': return braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
+      case 'munder': return cs[0] === 'lim' ? '\\lim_{' + cs[1] + '}' : braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
         braceLabel(n, cs, 'munder', '⏟', '\\underbrace', '_', '\\underset') ?? '{' + cs[0] + '}_{' + cs[1] + '}';
       case 'mover': return braceGlyph(n.children[1], '⏞') ? '\\overbrace{' + cs[0] + '}' :
         braceLabel(n, cs, 'mover', '⏞', '\\overbrace', '^', '\\overset') ?? hatAccent(n, cs) ?? '\\overset{' + cs[1] + '}{' + cs[0] + '}';
@@ -402,7 +402,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       // Bare phantom spacing has no visible content. Empty inline delimiters
       // would become an unmatched display opener in the saved Markdown.
       if (!tex.trim()) return '';
-      return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
+      return ['true', 'block'].includes(n.getAttribute('display')) ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
     if (t === 'table') return sourceHTMLTable(n, render, fail);
     if (t === 'ol') {
