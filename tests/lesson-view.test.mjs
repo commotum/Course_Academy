@@ -102,7 +102,7 @@ function fixture(storage = new Map()) {
 }
 
 const activity = (itemId, number = 1, overrides = {}) => ({
-  taskId: 123, activityId: 456, learner: { id: 'test', name: 'Learner' }, course: { id: 'course' },
+  taskId: 123, activityId: 456, type: 'lesson', learner: { id: 'test', name: 'Learner' }, course: { id: 'course' },
   title: 'The lesson title', status: 'started', elapsedSeconds: 10,
   progress: { stepNumber: number, totalSteps: 3, presented: number },
   step: { itemId, stepId: 'step-' + itemId, contentId: 9000 + itemId, mathAcademyId: '100' + itemId, kind: 'tutorial', title: 'Introduction', markdown: 'Read this.', status: 'started', canContinue: true, fields: [] },
@@ -450,7 +450,7 @@ test('manual pause stops working time, preserves a draft, and stays paused acros
   assert.equal(f.h.clock.elapsed, 13);
   assert.equal(f.h.view.pause.textContent, 'Resume');
   assert.equal(f.h.view.current.querySelector('input').value, 'typed draft');
-  assert.equal(f.h.view.current.querySelector('input').disabled, true);
+  assert.equal(f.h.view.current.querySelector('input').disabled, false);
   f.now += 60000; f.h.updateTaskTimer();
   assert.equal(f.h.view.timer.textContent, '0:13');
   f.document.hidden = true; await f.h.pauseWhenHidden();

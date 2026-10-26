@@ -24,6 +24,7 @@ let mathLoader = null;
 const drafts = new Map();
 const manuallyPausedTasks = new Set();
 let timerPausePending = false;
+let resumingAnswerForm = null;
 function manualPauseKey(id) { return 'course-academy.manual-pause.' + String(id); }
 function pausedDraftKey(id) { return 'course-academy.paused-draft.' + String(id); }
 function isManuallyPaused(id) {
@@ -178,7 +179,9 @@ function setBusy(value) {
     control.disabled = value || control.dataset.unavailable === 'true';
   }
   for (const control of document.querySelectorAll('[data-answer-input]')) {
-    control.disabled = value || control.dataset.readOnly === 'true';
+    // Keep the initiating answer usable while its resume is being confirmed.
+    // Its input/change events retain the first choice or any text entered.
+    control.disabled = value && !resumingAnswerForm?.contains(control) || control.dataset.readOnly === 'true';
   }
   refreshPauseControl();
 }
@@ -859,6 +862,72 @@ async function renderPreview() {
     previewContent(data, step, previewStepIndex), entry => previewContent(data, entry.step, entry.index, true));
 }
 
+function resumeOnAnswerInteraction(form, content, data, step) {
+  let pending = false, pointerDown = false, focused = null, retry = null;
+  const sameQuestion = () => task?.taskId === data.taskId && task?.step?.itemId === step.itemId;
+  const targetControl = event => {
+    for (const node of event.composedPath?.() || [event.target]) {
+      if (node?.dataset?.answerInput === 'true') return node;
+      const trigger = node?.closest?.('.answer-dropdown')?.querySelector('.answer-select-trigger');
+      if (trigger && form.contains(trigger)) return trigger;
+    }
+    return null;
+  };
+  const saveDraft = () => {
+    const responses = collectResponses(form, step.fields);
+    drafts.set(step.itemId, responses);
+    if (isManuallyPaused(data.taskId)) {
+      try { sessionStorage.setItem(pausedDraftKey(data.taskId), JSON.stringify({ itemId: step.itemId, responses })); }
+      catch { /* The in-page draft remains usable without storage. */ }
+    }
+  };
+  const resume = () => {
+    if (pending || busy || timerPausePending || document.hidden || modeChanging || isDeveloperMode()
+      || lessonView?.current !== content || !sameQuestion()
+      || !['paused', 'locked', 'unlocked'].includes(short(task.status))) return;
+    pending = true; resumingAnswerForm = form;
+    // A failed resume retains the existing mutation's exact request identity.
+    const request = retry || (() => mutation('/api/resume', { taskId: data.taskId }));
+    void request().then(() => {
+      if (!sameQuestion() || document.hidden || modeChanging || isDeveloperMode()) return;
+      if (short(task.status) !== 'started') {
+        if (lessonView?.current === content && retryOperation) retry = retryOperation;
+        return;
+      }
+      if (!focused || document.activeElement && document.activeElement !== document.body && !form.contains(document.activeElement)) return;
+      const index = [...form.querySelectorAll('[data-answer-input]')].indexOf(focused);
+      const replacement = lessonView?.current?.querySelectorAll('[data-answer-input]')[index];
+      if (!replacement || replacement.disabled) return;
+      replacement.focus({ preventScroll: true });
+      if (typeof focused.selectionStart === 'number' && replacement.setSelectionRange) {
+        replacement.setSelectionRange(focused.selectionStart, focused.selectionEnd, focused.selectionDirection || 'none');
+      }
+      // A click on a select opens its choices as well as resuming the timer.
+      if (focused.classList.contains('answer-select-trigger') && focused.getAttribute('aria-expanded') === 'true') replacement.click();
+    }).catch(error => showError(error)).finally(() => {
+      pending = false;
+      if (resumingAnswerForm === form) resumingAnswerForm = null;
+    });
+  };
+  form.addEventListener('pointerdown', () => { pointerDown = true; });
+  for (const type of ['pointerup', 'pointercancel']) form.addEventListener(type, () => { pointerDown = false; });
+  form.addEventListener('focusout', event => { if (event.relatedTarget && !form.contains(event.relatedTarget)) focused = null; });
+  form.addEventListener('focusin', event => {
+    const control = targetControl(event); if (!control) return;
+    focused = control;
+    // Let a pointer click complete its native selection before a fast response
+    // can replace the form. Keyboard focus can resume immediately.
+    if (!pointerDown) resume();
+  });
+  form.addEventListener('click', event => {
+    if (event.button !== 0) return;
+    const control = targetControl(event); if (!control) return;
+    focused = control; saveDraft(); resume();
+  });
+  for (const type of ['input', 'change']) form.addEventListener(type, () => { saveDraft(); resume(); });
+  form.addEventListener('submit', event => event.preventDefault());
+}
+
 function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
   if (number) content.dataset.stepNumber = String(number);
@@ -870,7 +939,9 @@ function taskContent(data, step, number, total, archived = false) {
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
   card.append(prompt);
   const isAnswered = answered(short(step.status));
-  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || ['paused', 'locked', 'unlocked'].includes(short(data.status));
+  const paused = ['paused', 'locked', 'unlocked'].includes(short(data.status));
+  const resumeFromAnswer = paused && !archived && !isAnswered && !data.awaitingQuestions && ['lesson', 'review'].includes(data.type);
+  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || paused && !resumeFromAnswer;
   const fields = step.fields || [];
   let assessmentControls = null;
   if (kind === 'question' && fields.length) {
@@ -882,7 +953,8 @@ function taskContent(data, step, number, total, archived = false) {
       return fieldControl(!isAnswered && saved ? { ...field, response: saved } : field, readOnly, step.itemId, step.markdown ?? step.problem, step.status);
     });
     form.append(prompt, fieldList);
-    if (!readOnly) {
+    if (resumeFromAnswer) resumeOnAnswerInteraction(form, content, data, step);
+    if (!readOnly && !resumeFromAnswer) {
       const actions = el('div', data.type === 'assessment' ? 'assessment-actions' : 'answer-actions');
       if (data.type === 'assessment') {
         assessmentResponses = () => collectResponses(form, fields);
