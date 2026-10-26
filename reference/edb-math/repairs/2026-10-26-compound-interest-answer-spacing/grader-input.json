@@ -1,0 +1,1542 @@
+[
+  {
+    "label": "17592186059796:0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059796,
+        "id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "title": "Calculating an Initial Amount"
+      },
+      "question": {
+        ":question/id": "af6c6d60-cae6-5d18-8d70-a0531e86ff1d",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A forex trader's annual profits have been *decreasing* continuously at a rate of $12\\%$ per year. Her profit this year is $\\$24900$. What was her profit $3$ years ago? Round your answer to the nearest dollar.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "Use the continuously compounded growth equation $P=P_0e^{rt}$. The current amount is $P=24900$, the rate is $r=-0.12$ (negative for decay), and the elapsed time is $t=3$ years. The time unit matches the rate. Substitute and divide by the exponential factor:\n\n$$\n\\begin{aligned}\n24900 &= P_0e^{(-0.12)(3)} \\\\\n24900 &= P_0e^{-0.36} \\\\\ne^{-0.36} &\\approx 0.69767633 \\\\\nP_0 &= \\frac{24900}{e^{-0.36}} \\\\\n&\\approx 35689.90242255 \\\\\n&\\approx 35690\n\\end{aligned}\n$$\n\nThe earlier profit was $\\$35690$. Round only the final amount; keep full calculator precision in the exponential factor.",
+        ":question/requires-calculator": true,
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "864c5598-9156-5d36-8b8b-5bc486fb360e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "da28792d-7e06-5767-aad7-2595e7c73360",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$40240$"
+              },
+              {
+                ":answer/id": "5624578c-9ed4-5d1d-8308-55acb5c32d9e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$35690$"
+              },
+              {
+                ":answer/id": "2d100bf7-7d4f-5af6-af2c-db16d0a8adb6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$17372$"
+              },
+              {
+                ":answer/id": "0865e5e6-e6c7-5296-9fa7-7d15cea50189",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$28075$"
+              },
+              {
+                ":answer/id": "58e1f332-72b1-5ff5-b964-d3df0cfeeb03",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$24900$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5624578c-9ed4-5d1d-8308-55acb5c32d9e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "generator_version": 2,
+        "knowledge_point_id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "template": "profit",
+        "bank_profile": "separated-calculation-errors-v2",
+        "bank_recipes": [
+          "one_period_extra",
+          "correct",
+          "reverse_rate_sign",
+          "ignore_elapsed_time",
+          "ignore_interest"
+        ],
+        "bank_minimum_gap_units": 36,
+        "rounding_places": 0,
+        "unrounded_answer": "35689.902422552472418614694726015797505832575230951",
+        "source_difficulty": null,
+        "source_ids": [
+          17592186060238,
+          "4eff42d8-d1d0-524c-93c8-09ae369be166",
+          "q-24145"
+        ],
+        "supporting_examples": [
+          "e-5166",
+          17592186059595,
+          "e-5185",
+          17592186059597
+        ],
+        "parameters": {
+          "current": 24900,
+          "percent": -12,
+          "time": 3
+        },
+        "domain": "positive amount; nonzero signed rate; positive elapsed time",
+        "final_expression": "35690",
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "da28792d-7e06-5767-aad7-2595e7c73360",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "5624578c-9ed4-5d1d-8308-55acb5c32d9e",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "2d100bf7-7d4f-5af6-af2c-db16d0a8adb6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "0865e5e6-e6c7-5296-9fa7-7d15cea50189",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "58e1f332-72b1-5ff5-b964-d3df0cfeeb03",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059796:1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059796,
+        "id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "title": "Calculating an Initial Amount"
+      },
+      "question": {
+        ":question/id": "5aab128d-76b8-53ec-b6cf-8ee91e4ac6bc",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A forex trader's annual profits have been *growing* continuously at a rate of $6\\%$ per year. Her profit this year is $\\$36850$. What was her profit $3$ years ago? Round your answer to the nearest dollar.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "Use the continuously compounded growth equation $P=P_0e^{rt}$. The current amount is $P=36850$, the rate is $r=0.06$ (positive for growth), and the elapsed time is $t=3$ years. The time unit matches the rate. Substitute and divide by the exponential factor:\n\n$$\n\\begin{aligned}\n36850 &= P_0e^{(0.06)(3)} \\\\\n36850 &= P_0e^{0.18} \\\\\ne^{0.18} &\\approx 1.19721736 \\\\\nP_0 &= \\frac{36850}{e^{0.18}} \\\\\n&\\approx 30779.70729051 \\\\\n&\\approx 30780\n\\end{aligned}\n$$\n\nThe earlier profit was $\\$30780$. Round only the final amount; keep full calculator precision in the exponential factor.",
+        ":question/requires-calculator": true,
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7c3706a9-8822-510d-9ec2-89e80c981911",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "94702a09-fc38-5e72-9fb5-c7fd6406efb5",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$30780$"
+              },
+              {
+                ":answer/id": "46450210-3fd7-54d4-bd47-9297589adfa0",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$32683$"
+              },
+              {
+                ":answer/id": "1d6538f1-97d1-5e21-8e9e-c06558496998",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$44117$"
+              },
+              {
+                ":answer/id": "3cd06c5b-6dbd-5e0c-b70c-041903948d42",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$34704$"
+              },
+              {
+                ":answer/id": "fe559293-d95b-5a64-8277-53bc29cda379",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$30217$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "94702a09-fc38-5e72-9fb5-c7fd6406efb5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "generator_version": 2,
+        "knowledge_point_id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "template": "profit",
+        "bank_profile": "separated-calculation-errors-v2",
+        "bank_recipes": [
+          "correct",
+          "one_period_short",
+          "reverse_rate_sign",
+          "ignore_elapsed_time",
+          "use_linear_change"
+        ],
+        "bank_minimum_gap_units": 31,
+        "rounding_places": 0,
+        "unrounded_answer": "30779.707290505373985361386292591904312716974934725",
+        "source_difficulty": null,
+        "source_ids": [
+          17592186060238,
+          "4eff42d8-d1d0-524c-93c8-09ae369be166",
+          "q-24145"
+        ],
+        "supporting_examples": [
+          "e-5166",
+          17592186059595,
+          "e-5185",
+          17592186059597
+        ],
+        "parameters": {
+          "current": 36850,
+          "percent": 6,
+          "time": 3
+        },
+        "domain": "positive amount; nonzero signed rate; positive elapsed time",
+        "final_expression": "30780",
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 1
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "94702a09-fc38-5e72-9fb5-c7fd6406efb5",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "46450210-3fd7-54d4-bd47-9297589adfa0",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "1d6538f1-97d1-5e21-8e9e-c06558496998",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3cd06c5b-6dbd-5e0c-b70c-041903948d42",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "fe559293-d95b-5a64-8277-53bc29cda379",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059796:2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059796,
+        "id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "title": "Calculating an Initial Amount"
+      },
+      "question": {
+        ":question/id": "cd7bbf30-51ef-516d-ac13-4000c7f30771",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The average gas price in Chicago is $\\$2.06$ per gallon. Gas prices have been *decreasing* continuously at a rate of $2.1\\%$ per month. What was the gas price $2$ months ago? Round your answer to the nearest cent.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "Use the continuously compounded growth equation $P=P_0e^{rt}$. The current amount is $P=2.06$, the rate is $r=-0.021$ (negative for decay), and the elapsed time is $t=2$ months. The time unit matches the rate. Substitute and divide by the exponential factor:\n\n$$\n\\begin{aligned}\n2.06 &= P_0e^{(-0.021)(2)} \\\\\n2.06 &= P_0e^{-0.042} \\\\\ne^{-0.042} &\\approx 0.95886978 \\\\\nP_0 &= \\frac{2.06}{e^{-0.042}} \\\\\n&\\approx 2.14836263 \\\\\n&\\approx 2.15\n\\end{aligned}\n$$\n\nThe earlier gas price was $\\$2.15$ per gallon. Round only the final amount; keep full calculator precision in the exponential factor.",
+        ":question/requires-calculator": true,
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d05938ca-1928-5730-9ba6-52102c984bb7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9f5f554d-d5a7-5beb-a268-2070a23d0c27",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$2.24$ per gallon"
+              },
+              {
+                ":answer/id": "c5501144-58a6-5349-941e-25916a88033c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$3.41$ per gallon"
+              },
+              {
+                ":answer/id": "58d21fc9-0d91-5c0f-a19c-1c8a63df8836",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$2.15$ per gallon"
+              },
+              {
+                ":answer/id": "86ca8b1f-93b0-528d-8959-1d11ee11ada7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$1.98$ per gallon"
+              },
+              {
+                ":answer/id": "8eff0b29-0180-5bba-a520-49576e944aba",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$2.06$ per gallon"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "58d21fc9-0d91-5c0f-a19c-1c8a63df8836"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "generator_version": 2,
+        "knowledge_point_id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "template": "gas",
+        "bank_profile": "separated-calculation-errors-v2",
+        "bank_recipes": [
+          "double_duration",
+          "double_convert_duration_to_months",
+          "correct",
+          "reverse_rate_sign",
+          "ignore_interest"
+        ],
+        "bank_minimum_gap_units": 5,
+        "rounding_places": 2,
+        "unrounded_answer": "2.1483626262265722711075864472564332889606205671297",
+        "source_difficulty": null,
+        "source_ids": [
+          17592186060389,
+          "6b6ec097-b6d5-5784-87e4-5077b4b39769",
+          "q-69937"
+        ],
+        "supporting_examples": [
+          "e-5166",
+          17592186059595,
+          "e-5185",
+          17592186059597
+        ],
+        "parameters": {
+          "current": 2.06,
+          "percent": -2.1,
+          "time": 2
+        },
+        "domain": "positive amount; nonzero signed rate; positive elapsed time",
+        "final_expression": "2.15",
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 2
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "9f5f554d-d5a7-5beb-a268-2070a23d0c27",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "c5501144-58a6-5349-941e-25916a88033c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "58d21fc9-0d91-5c0f-a19c-1c8a63df8836",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "86ca8b1f-93b0-528d-8959-1d11ee11ada7",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "8eff0b29-0180-5bba-a520-49576e944aba",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059796:3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059796,
+        "id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "title": "Calculating an Initial Amount"
+      },
+      "question": {
+        ":question/id": "ba14475a-2082-5ab3-b0c8-98a0a5cde4da",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The average gas price in Chicago is $\\$3.46$ per gallon. Gas prices have been *growing* continuously at a rate of $2.2\\%$ per month. What was the gas price $7$ months ago? Round your answer to the nearest cent.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "Use the continuously compounded growth equation $P=P_0e^{rt}$. The current amount is $P=3.46$, the rate is $r=0.022$ (positive for growth), and the elapsed time is $t=7$ months. The time unit matches the rate. Substitute and divide by the exponential factor:\n\n$$\n\\begin{aligned}\n3.46 &= P_0e^{(0.022)(7)} \\\\\n3.46 &= P_0e^{0.154} \\\\\ne^{0.154} &\\approx 1.16649089 \\\\\nP_0 &= \\frac{3.46}{e^{0.154}} \\\\\n&\\approx 2.96616119 \\\\\n&\\approx 2.97\n\\end{aligned}\n$$\n\nThe earlier gas price was $\\$2.97$ per gallon. Round only the final amount; keep full calculator precision in the exponential factor.",
+        ":question/requires-calculator": true,
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b250450b-71e2-5a0f-b210-ed72a27b9f96",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "312e7f0e-d133-528f-b7c7-02ffdf6cff7b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$2.54$ per gallon"
+              },
+              {
+                ":answer/id": "3421f0dd-1987-54ef-bc0a-d9b8f8811033",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$3.38$ per gallon"
+              },
+              {
+                ":answer/id": "4d67f81f-fbc1-5160-80bc-b035d6bcee9c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$4.04$ per gallon"
+              },
+              {
+                ":answer/id": "97fd4ab8-100b-53fa-a441-7e8da7fbb4d5",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$3.46$ per gallon"
+              },
+              {
+                ":answer/id": "ea11209d-adbf-53f7-a37c-feb7c19047d0",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$2.97$ per gallon"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ea11209d-adbf-53f7-a37c-feb7c19047d0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "generator_version": 2,
+        "knowledge_point_id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "template": "gas",
+        "bank_profile": "separated-calculation-errors-v2",
+        "bank_recipes": [
+          "double_duration",
+          "ignore_elapsed_time",
+          "reverse_rate_sign",
+          "ignore_interest",
+          "correct"
+        ],
+        "bank_minimum_gap_units": 5,
+        "rounding_places": 2,
+        "unrounded_answer": "2.9661611926996427419251822350803021992260200923261",
+        "source_difficulty": null,
+        "source_ids": [
+          17592186060389,
+          "6b6ec097-b6d5-5784-87e4-5077b4b39769",
+          "q-69937"
+        ],
+        "supporting_examples": [
+          "e-5166",
+          17592186059595,
+          "e-5185",
+          17592186059597
+        ],
+        "parameters": {
+          "current": 3.46,
+          "percent": 2.2,
+          "time": 7
+        },
+        "domain": "positive amount; nonzero signed rate; positive elapsed time",
+        "final_expression": "2.97",
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 3
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "312e7f0e-d133-528f-b7c7-02ffdf6cff7b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3421f0dd-1987-54ef-bc0a-d9b8f8811033",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4d67f81f-fbc1-5160-80bc-b035d6bcee9c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "97fd4ab8-100b-53fa-a441-7e8da7fbb4d5",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "ea11209d-adbf-53f7-a37c-feb7c19047d0",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186059796:4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059796,
+        "id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "title": "Calculating an Initial Amount"
+      },
+      "question": {
+        ":question/id": "0b570077-e6f8-5a37-946f-d9c06a31ad0d",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A forex trader's annual profits have been *growing* continuously at a rate of $4\\%$ per year. Her profit this year is $\\$31400$. What was her profit $3$ years ago? Round your answer to the nearest dollar.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "Use the continuously compounded growth equation $P=P_0e^{rt}$. The current amount is $P=31400$, the rate is $r=0.04$ (positive for growth), and the elapsed time is $t=3$ years. The time unit matches the rate. Substitute and divide by the exponential factor:\n\n$$\n\\begin{aligned}\n31400 &= P_0e^{(0.04)(3)} \\\\\n31400 &= P_0e^{0.12} \\\\\ne^{0.12} &\\approx 1.12749685 \\\\\nP_0 &= \\frac{31400}{e^{0.12}} \\\\\n&\\approx 27849.30171292 \\\\\n&\\approx 27849\n\\end{aligned}\n$$\n\nThe earlier profit was $\\$27849$. Round only the final amount; keep full calculator precision in the exponential factor.",
+        ":question/requires-calculator": true,
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dd23d94f-48bb-5788-9bc6-bb8735d2fa18",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0f8ee2f8-2e55-5f7e-af51-be6842b25904",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$31362$"
+              },
+              {
+                ":answer/id": "e6aeaf52-4e30-5840-8f5d-1dc5bdda4072",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$30169$"
+              },
+              {
+                ":answer/id": "7df1d530-a918-5038-b657-d44cc1b6c8c5",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$28986$"
+              },
+              {
+                ":answer/id": "fc1d87e7-7a71-56fb-a19c-3774ca121d84",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$27849$"
+              },
+              {
+                ":answer/id": "4b81ee12-aa86-5745-9b1d-09633de518b3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$\\$31400$"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fc1d87e7-7a71-56fb-a19c-3774ca121d84"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "generator_version": 2,
+        "knowledge_point_id": "0c9581f5-67cb-5752-8a45-b84ba4f3577e",
+        "template": "profit",
+        "bank_profile": "separated-calculation-errors-v2",
+        "bank_recipes": [
+          "convert_percent_twice",
+          "ignore_elapsed_time",
+          "one_period_short",
+          "correct",
+          "ignore_interest"
+        ],
+        "bank_minimum_gap_units": 28,
+        "rounding_places": 0,
+        "unrounded_answer": "27849.301712918745987565548183372892861563381479738",
+        "source_difficulty": null,
+        "source_ids": [
+          17592186060238,
+          "4eff42d8-d1d0-524c-93c8-09ae369be166",
+          "q-24145"
+        ],
+        "supporting_examples": [
+          "e-5166",
+          17592186059595,
+          "e-5185",
+          17592186059597
+        ],
+        "parameters": {
+          "current": 31400,
+          "percent": 4,
+          "time": 3
+        },
+        "domain": "positive amount; nonzero signed rate; positive elapsed time",
+        "final_expression": "27849",
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 4
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "0f8ee2f8-2e55-5f7e-af51-be6842b25904",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e6aeaf52-4e30-5840-8f5d-1dc5bdda4072",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "7df1d530-a918-5038-b657-d44cc1b6c8c5",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "fc1d87e7-7a71-56fb-a19c-3774ca121d84",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "4b81ee12-aa86-5745-9b1d-09633de518b3",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059797:0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059797,
+        "id": "2c0a7b30-b6b4-584e-9816-506f8ec00813"
+      },
+      "question": {
+        ":question/id": "88863802-911c-559b-a7a4-c6fd80ee55d9",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/requires-calculator": true,
+        ":question/problem": "There are currently $498$ koalas living in a secluded forest, but their population is decreasing at a continuously compounded rate of $3.4\\%$ per year. How many years must pass for there to be only $12$ koalas left in that forest? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The initial population is $P_0=498$ and the final population is $P=12$. A decrease of $3.4\\%$ per year means $r=-0.034$, with $t$ in years.\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n12 &= 498e^{-0.034t} \\\\\ne^{-0.034t} &= \\frac{12}{498} \\\\\n\\ln\\left(e^{-0.034t}\\right) &= \\ln\\left(\\frac{12}{498}\\right) \\\\\n-0.034t &= \\ln\\left(\\frac{12}{498}\\right) \\\\\nt &= \\frac{\\ln\\left(\\frac{12}{498}\\right)}{-0.034} \\\\\nt &\\approx 109.57922 \\\\\nt &\\approx 110\\text{ years}\n\\end{aligned}\n$$\n\nTherefore, the time is approximately $110$ years.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "fb70bd51-1fd8-57f8-b3ab-44c130aa64bc",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a666c559-f529-56ad-9486-a2b1e8b2db68",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$108$ years"
+              },
+              {
+                ":answer/id": "ebb1a0bf-293e-56a7-a6cb-2bd758c22d7b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$110$ years"
+              },
+              {
+                ":answer/id": "4d6b8174-642d-58e0-ae3d-4406879ea648",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$114$ years"
+              },
+              {
+                ":answer/id": "ee77ff5d-d3ef-5a08-a02e-371a3435c0e2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$112$ years"
+              },
+              {
+                ":answer/id": "ef913d26-3ead-5e56-a257-bb5a581f5780",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$116$ years"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ebb1a0bf-293e-56a7-a6cb-2bd758c22d7b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "version": 3,
+        "template": "time",
+        "profile": "bank-first-separated-integers-v3",
+        "source_questions": [
+          {
+            "db_id": 17592186060056,
+            "id": "6b547ba8-6bef-5f97-b295-98d6170d064b",
+            "ma_id": "q-1434"
+          }
+        ],
+        "source_difficulty": null,
+        "parameters": {
+          "initial": 498,
+          "final": 12,
+          "supplied": 3.4
+        },
+        "domains": "positive unequal counts; positive supplied rate magnitude or duration",
+        "displayed_final": "$110$ years",
+        "required_conversions": [
+          "percent to signed decimal"
+        ],
+        "source_support": [
+          "e-5167",
+          "tutorial-3396",
+          "e-4103",
+          "e-4104"
+        ],
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 0,
+        "rejected_before_acceptance": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "a666c559-f529-56ad-9486-a2b1e8b2db68",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "ebb1a0bf-293e-56a7-a6cb-2bd758c22d7b",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "4d6b8174-642d-58e0-ae3d-4406879ea648",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "ee77ff5d-d3ef-5a08-a02e-371a3435c0e2",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "ef913d26-3ead-5e56-a257-bb5a581f5780",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059797:1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059797,
+        "id": "2c0a7b30-b6b4-584e-9816-506f8ec00813"
+      },
+      "question": {
+        ":question/id": "7ad32226-32ee-52d3-ad07-c7cf248ffbb3",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/requires-calculator": true,
+        ":question/problem": "In a biology class, the teacher began the experiment with $25$ bacteria in a petri dish. After $14$ minutes, the number of bacteria increased to $184$. What was the continuously compounded growth rate of the bacteria? Round your answer to the nearest percent.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The initial population is $P_0=25$, the final population is $P=184$, and the elapsed time is $t=14$ minutes. The decimal rate $r$ is per minute.\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n184 &= 25e^{14r} \\\\\ne^{14r} &= \\frac{184}{25} \\\\\n\\ln\\left(e^{14r}\\right) &= \\ln\\left(\\frac{184}{25}\\right) \\\\\n14r &= \\ln\\left(\\frac{184}{25}\\right) \\\\\nr &= \\frac{\\ln\\left(\\frac{184}{25}\\right)}{14} \\\\\nr &\\approx 0.1425757 \\\\\n100r &\\approx 14.25757\n\\end{aligned}\n$$\n\nConverting the decimal rate to a percentage and rounding to the nearest percent gives approximately $14\\%$ per minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b6e01186-83ec-5681-9bc8-c56b5eedba65",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9718cd12-6a3a-59f8-9358-ca178c4f0045",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$19\\%$ per minute"
+              },
+              {
+                ":answer/id": "60a3693b-c84e-5489-821d-08e118be639f",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$30\\%$ per minute"
+              },
+              {
+                ":answer/id": "0822be71-2c04-5d27-b42f-62e8fe74b25e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$22\\%$ per minute"
+              },
+              {
+                ":answer/id": "99891059-8278-5f3d-bad3-bf3531b618f2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$14\\%$ per minute"
+              },
+              {
+                ":answer/id": "170d0680-a11f-55df-b42b-ffc13dd8fdcc",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$33\\%$ per minute"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "99891059-8278-5f3d-bad3-bf3531b618f2"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "version": 3,
+        "template": "rate",
+        "profile": "bank-first-separated-integers-v3",
+        "source_questions": [
+          {
+            "db_id": 17592186060057,
+            "id": "f32196ff-a1c3-58c8-8249-0c13bdced6e4",
+            "ma_id": "q-1435"
+          }
+        ],
+        "source_difficulty": null,
+        "parameters": {
+          "initial": 25,
+          "final": 184,
+          "supplied": 14
+        },
+        "domains": "positive unequal counts; positive supplied rate magnitude or duration",
+        "displayed_final": "$14\\%$ per minute",
+        "required_conversions": [
+          "decimal to percent"
+        ],
+        "source_support": [
+          "e-5167",
+          "tutorial-3396",
+          "e-4103",
+          "e-4104"
+        ],
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 1,
+        "rejected_before_acceptance": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "9718cd12-6a3a-59f8-9358-ca178c4f0045",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "60a3693b-c84e-5489-821d-08e118be639f",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "0822be71-2c04-5d27-b42f-62e8fe74b25e",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "99891059-8278-5f3d-bad3-bf3531b618f2",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "170d0680-a11f-55df-b42b-ffc13dd8fdcc",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059797:2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059797,
+        "id": "2c0a7b30-b6b4-584e-9816-506f8ec00813"
+      },
+      "question": {
+        ":question/id": "6282714f-86f7-539d-8dcf-29f522eab8ab",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/requires-calculator": true,
+        ":question/problem": "In a biology class, the teacher began the experiment with $14$ bacteria in a petri dish. After $5$ minutes, the number of bacteria increased to $658$. What was the continuously compounded growth rate of the bacteria? Round your answer to the nearest percent.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The initial population is $P_0=14$, the final population is $P=658$, and the elapsed time is $t=5$ minutes. The decimal rate $r$ is per minute.\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n658 &= 14e^{5r} \\\\\ne^{5r} &= \\frac{658}{14} \\\\\n\\ln\\left(e^{5r}\\right) &= \\ln\\left(\\frac{658}{14}\\right) \\\\\n5r &= \\ln\\left(\\frac{658}{14}\\right) \\\\\nr &= \\frac{\\ln\\left(\\frac{658}{14}\\right)}{5} \\\\\nr &\\approx 0.7700295 \\\\\n100r &\\approx 77.00295\n\\end{aligned}\n$$\n\nConverting the decimal rate to a percentage and rounding to the nearest percent gives approximately $77\\%$ per minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5886e3c9-2962-546e-b42b-4cd2bbbe535d",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "573ca87e-b81a-5c0e-b878-5f5403e71553",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$74\\%$ per minute"
+              },
+              {
+                ":answer/id": "7b4017a4-42e9-5326-a589-4eec872a59aa",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$83\\%$ per minute"
+              },
+              {
+                ":answer/id": "2504313d-b288-5df3-8cdc-0fd8dfc044e5",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$67\\%$ per minute"
+              },
+              {
+                ":answer/id": "eaf162e4-3acf-5b86-93bc-5b7a27c58e2d",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$71\\%$ per minute"
+              },
+              {
+                ":answer/id": "3a084adf-b930-5b02-b48d-c8a7cfce2cd9",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$77\\%$ per minute"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3a084adf-b930-5b02-b48d-c8a7cfce2cd9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "version": 3,
+        "template": "rate",
+        "profile": "bank-first-separated-integers-v3",
+        "source_questions": [
+          {
+            "db_id": 17592186060057,
+            "id": "f32196ff-a1c3-58c8-8249-0c13bdced6e4",
+            "ma_id": "q-1435"
+          }
+        ],
+        "source_difficulty": null,
+        "parameters": {
+          "initial": 14,
+          "final": 658,
+          "supplied": 5
+        },
+        "domains": "positive unequal counts; positive supplied rate magnitude or duration",
+        "displayed_final": "$77\\%$ per minute",
+        "required_conversions": [
+          "decimal to percent"
+        ],
+        "source_support": [
+          "e-5167",
+          "tutorial-3396",
+          "e-4103",
+          "e-4104"
+        ],
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 2,
+        "rejected_before_acceptance": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "573ca87e-b81a-5c0e-b878-5f5403e71553",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "7b4017a4-42e9-5326-a589-4eec872a59aa",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2504313d-b288-5df3-8cdc-0fd8dfc044e5",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "eaf162e4-3acf-5b86-93bc-5b7a27c58e2d",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3a084adf-b930-5b02-b48d-c8a7cfce2cd9",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186059797:3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059797,
+        "id": "2c0a7b30-b6b4-584e-9816-506f8ec00813"
+      },
+      "question": {
+        ":question/id": "dd13a5ec-3f35-5991-8ad7-2b401a1a0073",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/requires-calculator": true,
+        ":question/problem": "There are currently $543$ koalas living in a secluded forest, but their population is decreasing at a continuously compounded rate of $2.9\\%$ per year. How many years must pass for there to be only $23$ koalas left in that forest? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The initial population is $P_0=543$ and the final population is $P=23$. A decrease of $2.9\\%$ per year means $r=-0.029$, with $t$ in years.\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n23 &= 543e^{-0.029t} \\\\\ne^{-0.029t} &= \\frac{23}{543} \\\\\n\\ln\\left(e^{-0.029t}\\right) &= \\ln\\left(\\frac{23}{543}\\right) \\\\\n-0.029t &= \\ln\\left(\\frac{23}{543}\\right) \\\\\nt &= \\frac{\\ln\\left(\\frac{23}{543}\\right)}{-0.029} \\\\\nt &\\approx 109.02121 \\\\\nt &\\approx 109\\text{ years}\n\\end{aligned}\n$$\n\nTherefore, the time is approximately $109$ years.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a9206112-579e-5e6a-9e48-dcd910b9c49e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1d67cb49-009a-566e-9248-70e5577b3dac",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$126$ years"
+              },
+              {
+                ":answer/id": "fdd7f327-f838-5246-9d0d-249524b64271",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$130$ years"
+              },
+              {
+                ":answer/id": "752c4308-5934-5c79-a462-64f87f1e0ef9",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$116$ years"
+              },
+              {
+                ":answer/id": "71424a84-6149-5baa-b6ce-545fbc2c40e4",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$120$ years"
+              },
+              {
+                ":answer/id": "32453c9e-4936-5721-9cd7-caa1a1bfe345",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$109$ years"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "32453c9e-4936-5721-9cd7-caa1a1bfe345"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "version": 3,
+        "template": "time",
+        "profile": "bank-first-separated-integers-v3",
+        "source_questions": [
+          {
+            "db_id": 17592186060056,
+            "id": "6b547ba8-6bef-5f97-b295-98d6170d064b",
+            "ma_id": "q-1434"
+          }
+        ],
+        "source_difficulty": null,
+        "parameters": {
+          "initial": 543,
+          "final": 23,
+          "supplied": 2.9
+        },
+        "domains": "positive unequal counts; positive supplied rate magnitude or duration",
+        "displayed_final": "$109$ years",
+        "required_conversions": [
+          "percent to signed decimal"
+        ],
+        "source_support": [
+          "e-5167",
+          "tutorial-3396",
+          "e-4103",
+          "e-4104"
+        ],
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 3,
+        "rejected_before_acceptance": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1d67cb49-009a-566e-9248-70e5577b3dac",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "fdd7f327-f838-5246-9d0d-249524b64271",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "752c4308-5934-5c79-a462-64f87f1e0ef9",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "71424a84-6149-5baa-b6ce-545fbc2c40e4",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "32453c9e-4936-5721-9cd7-caa1a1bfe345",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186059797:4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059797,
+        "id": "2c0a7b30-b6b4-584e-9816-506f8ec00813"
+      },
+      "question": {
+        ":question/id": "f6ec8216-66e5-56d8-884e-056c853ffa5a",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/requires-calculator": true,
+        ":question/problem": "In a biology class, the teacher began the experiment with $34$ bacteria in a petri dish. After $7$ minutes, the number of bacteria increased to $2372$. What was the continuously compounded growth rate of the bacteria? Round your answer to the nearest percent.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The initial population is $P_0=34$, the final population is $P=2372$, and the elapsed time is $t=7$ minutes. The decimal rate $r$ is per minute.\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n2372 &= 34e^{7r} \\\\\ne^{7r} &= \\frac{2372}{34} \\\\\n\\ln\\left(e^{7r}\\right) &= \\ln\\left(\\frac{2372}{34}\\right) \\\\\n7r &= \\ln\\left(\\frac{2372}{34}\\right) \\\\\nr &= \\frac{\\ln\\left(\\frac{2372}{34}\\right)}{7} \\\\\nr &\\approx 0.6064469 \\\\\n100r &\\approx 60.64469\n\\end{aligned}\n$$\n\nConverting the decimal rate to a percentage and rounding to the nearest percent gives approximately $61\\%$ per minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "890957f7-308f-5ec1-b8ff-30e14a3050ba",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7d3a3d21-e3e1-5503-8ce4-d06000037f07",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$61\\%$ per minute"
+              },
+              {
+                ":answer/id": "430db582-af40-570b-a5c3-4ef1c2f0d034",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$64\\%$ per minute"
+              },
+              {
+                ":answer/id": "40e81a47-41a8-5efe-b8ba-544e5d50b471",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$57\\%$ per minute"
+              },
+              {
+                ":answer/id": "c3fc5218-26f5-564f-b70c-a8e66705d04a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$54\\%$ per minute"
+              },
+              {
+                ":answer/id": "70786690-4a26-54db-9ea8-72c5999e4729",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$67\\%$ per minute"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7d3a3d21-e3e1-5503-8ce4-d06000037f07"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "version": 3,
+        "template": "rate",
+        "profile": "bank-first-separated-integers-v3",
+        "source_questions": [
+          {
+            "db_id": 17592186060057,
+            "id": "f32196ff-a1c3-58c8-8249-0c13bdced6e4",
+            "ma_id": "q-1435"
+          }
+        ],
+        "source_difficulty": null,
+        "parameters": {
+          "initial": 34,
+          "final": 2372,
+          "supplied": 7
+        },
+        "domains": "positive unequal counts; positive supplied rate magnitude or duration",
+        "displayed_final": "$61\\%$ per minute",
+        "required_conversions": [
+          "decimal to percent"
+        ],
+        "source_support": [
+          "e-5167",
+          "tutorial-3396",
+          "e-4103",
+          "e-4104"
+        ],
+        "math_format": "course-academy-tex-v1",
+        "seed": 20261026,
+        "index": 4,
+        "rejected_before_acceptance": 0
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "7d3a3d21-e3e1-5503-8ce4-d06000037f07",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "430db582-af40-570b-a5c3-4ef1c2f0d034",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "40e81a47-41a8-5efe-b8ba-544e5d50b471",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "c3fc5218-26f5-564f-b70c-a8e66705d04a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "70786690-4a26-54db-9ea8-72c5999e4729",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059798:0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059798,
+        "id": "3dcfc681-0632-57a5-bd1e-e03d91d13f37",
+        "title": "Calculating a Final Amount After Continuous Compounding Is Applied"
+      },
+      "question": {
+        ":question/problem": "In the year $2014$, there were approximately $8990$ crimes in a particular city. The police department then promised a $4.7\\%$ annual *decrease* in crime, continuously compounded. According to this model, how many crimes occurred in $2022$? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The continuously compounded growth equation is $P=P_0e^{rt}$. The initial amount is $P_0=8990$. Since the amount decreases, the signed decimal rate is $r=-4.7/100=-0.047$. The elapsed time is $t=2022-2014=8$ years.\n\nSubstitute these values and round only the final amount:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n&= 8990e^{(-0.047)(8)} \\\\\n&= 8990e^{-0.376} \\\\\n&= 8990(0.6866023\\ldots) \\\\\n&\\approx 6173\n\\end{aligned}\n$$\n\nAccording to this model, approximately $6173$ crimes occurred in $2022$.",
+        ":question/requires-calculator": true,
+        ":question/id": "3baaacd5-ce43-59a2-b728-fb3d5a7a28e0",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/id": "37ae0f79-55ed-5e57-88a6-2f7362ba9443",
+            ":answer-field/correct": [
+              ":answer/id",
+              "aba8c665-5e72-587e-a064-4602ba23a281"
+            ],
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6196",
+                ":answer/id": "281ce7cd-75bd-525f-b070-a847f2ebaf4b"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4163",
+                ":answer/id": "87f5bfa7-88f3-5afa-a30a-75b0e0af97fe"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5964",
+                ":answer/id": "979d9353-e771-5fe7-baec-282f4e2ff3d8"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6173",
+                ":answer/id": "aba8c665-5e72-587e-a064-4602ba23a281"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "8900",
+                ":answer/id": "bc8b2883-af5b-59d0-abf4-b2accbe58bf7"
+              }
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "template": "annual",
+        "retained_existing_bank": true
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "281ce7cd-75bd-525f-b070-a847f2ebaf4b",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "87f5bfa7-88f3-5afa-a30a-75b0e0af97fe",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "979d9353-e771-5fe7-baec-282f4e2ff3d8",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "aba8c665-5e72-587e-a064-4602ba23a281",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "bc8b2883-af5b-59d0-abf4-b2accbe58bf7",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059798:1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059798,
+        "id": "3dcfc681-0632-57a5-bd1e-e03d91d13f37",
+        "title": "Calculating a Final Amount After Continuous Compounding Is Applied"
+      },
+      "question": {
+        ":question/problem": "In medieval times, there were $9660$ people living in a city struck by a plague. If the disease resulted in a daily *decrease* in the population at a continuously compounded rate of $5.2\\%$, what was the city's population after $3$ weeks? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The continuously compounded growth equation is $P=P_0e^{rt}$. The initial amount is $P_0=9660$. Since the amount decreases, the signed decimal rate is $r=-5.2/100=-0.052$. The rate is daily, so convert the duration to days: $t=3\\times 7=21$ days.\n\nSubstitute these values and round only the final amount:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n&= 9660e^{(-0.052)(21)} \\\\\n&= 9660e^{-1.092} \\\\\n&= 9660(0.3355447\\ldots) \\\\\n&\\approx 3241\n\\end{aligned}\n$$\n\nAfter $3$ weeks, the population was approximately $3241$ people.",
+        ":question/requires-calculator": true,
+        ":question/id": "3cb6a6d9-d90c-5424-8cd2-1b6b6fde595b",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/id": "939ecfb2-57f8-568c-8c8c-78970d1045a9",
+            ":answer-field/correct": [
+              ":answer/id",
+              "e6de0a79-a0fa-5c42-92df-9de589be7f94"
+            ],
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "935",
+                ":answer/id": "04485d0f-3f7a-59db-9aef-fb8411716374"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4290",
+                ":answer/id": "807bb38b-5e8d-5584-9db0-17f05605881a"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2418",
+                ":answer/id": "e07b1d93-fba5-52db-86e2-e69cd56916f2"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3241",
+                ":answer/id": "e6de0a79-a0fa-5c42-92df-9de589be7f94"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "195",
+                ":answer/id": "ed36c281-a90f-5ab1-8917-8bf42bccea4b"
+              }
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "template": "daily",
+        "retained_existing_bank": true
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "04485d0f-3f7a-59db-9aef-fb8411716374",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "807bb38b-5e8d-5584-9db0-17f05605881a",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e07b1d93-fba5-52db-86e2-e69cd56916f2",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e6de0a79-a0fa-5c42-92df-9de589be7f94",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "ed36c281-a90f-5ab1-8917-8bf42bccea4b",
+        "expected": "rejected"
+      }
+    ]
+  },
+  {
+    "label": "17592186059798:2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059798,
+        "id": "3dcfc681-0632-57a5-bd1e-e03d91d13f37",
+        "title": "Calculating a Final Amount After Continuous Compounding Is Applied"
+      },
+      "question": {
+        ":question/problem": "In the year $2006$, there were approximately $19180$ crimes in a particular city. The police department then promised a $5.1\\%$ annual *decrease* in crime, continuously compounded. According to this model, how many crimes occurred in $2008$? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The continuously compounded growth equation is $P=P_0e^{rt}$. The initial amount is $P_0=19180$. Since the amount decreases, the signed decimal rate is $r=-5.1/100=-0.051$. The elapsed time is $t=2008-2006=2$ years.\n\nSubstitute these values and round only the final amount:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n&= 19180e^{(-0.051)(2)} \\\\\n&= 19180e^{-0.102} \\\\\n&= 19180(0.9030295\\ldots) \\\\\n&\\approx 17320\n\\end{aligned}\n$$\n\nAccording to this model, approximately $17320$ crimes occurred in $2008$.",
+        ":question/requires-calculator": true,
+        ":question/id": "894ca8fd-a74a-585e-ad54-7c29860968cb",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/id": "9acd7707-ff3e-5c11-a573-1a5e4ac65e6f",
+            ":answer-field/correct": [
+              ":answer/id",
+              "3c521202-85bd-5399-beb8-be2ae71319e9"
+            ],
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2395",
+                ":answer/id": "0d257551-e35c-5207-9243-1a4da759d210"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "7367",
+                ":answer/id": "2540320f-0d7b-5fcb-a660-fcf1de91cea6"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13674",
+                ":answer/id": "273e80d1-df98-56f2-9507-8d44699e009e"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "17715",
+                ":answer/id": "2c2def10-79aa-539e-89ea-171e75397758"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "17320",
+                ":answer/id": "3c521202-85bd-5399-beb8-be2ae71319e9"
+              }
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "template": "annual",
+        "retained_existing_bank": true
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "0d257551-e35c-5207-9243-1a4da759d210",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2540320f-0d7b-5fcb-a660-fcf1de91cea6",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "273e80d1-df98-56f2-9507-8d44699e009e",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "2c2def10-79aa-539e-89ea-171e75397758",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "3c521202-85bd-5399-beb8-be2ae71319e9",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186059798:3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059798,
+        "id": "3dcfc681-0632-57a5-bd1e-e03d91d13f37",
+        "title": "Calculating a Final Amount After Continuous Compounding Is Applied"
+      },
+      "question": {
+        ":question/problem": "In the year $1996$, there were approximately $6500$ crimes in a particular city. The police department then promised a $4.2\\%$ annual *decrease* in crime, continuously compounded. According to this model, how many crimes occurred in $2004$? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The continuously compounded growth equation is $P=P_0e^{rt}$. The initial amount is $P_0=6500$. Since the amount decreases, the signed decimal rate is $r=-4.2/100=-0.042$. The elapsed time is $t=2004-1996=8$ years.\n\nSubstitute these values and round only the final amount:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n&= 6500e^{(-0.042)(8)} \\\\\n&= 6500e^{-0.336} \\\\\n&= 6500(0.7146231\\ldots) \\\\\n&\\approx 4645\n\\end{aligned}\n$$\n\nAccording to this model, approximately $4645$ crimes occurred in $2004$.",
+        ":question/requires-calculator": true,
+        ":question/id": "b430f767-4592-541a-b047-59097359d724",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/id": "0ad5b29c-d2a8-5cd3-a8ee-e4bcc75e6042",
+            ":answer-field/correct": [
+              ":answer/id",
+              "6cbd8192-ee84-5762-8a25-ec77a0e938af"
+            ],
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4683",
+                ":answer/id": "1bed54f6-e9b5-579f-9532-810ec4b5064c"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5825",
+                ":answer/id": "29611da7-14a4-5c74-a979-430dfe99ff17"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6182",
+                ":answer/id": "322ecb41-2c37-566d-9df1-42471c1cddbd"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5985",
+                ":answer/id": "4561de8e-f07d-5935-bc0e-aada72a05a90"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4645",
+                ":answer/id": "6cbd8192-ee84-5762-8a25-ec77a0e938af"
+              }
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "template": "annual",
+        "retained_existing_bank": true
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1bed54f6-e9b5-579f-9532-810ec4b5064c",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "29611da7-14a4-5c74-a979-430dfe99ff17",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "322ecb41-2c37-566d-9df1-42471c1cddbd",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "4561de8e-f07d-5935-bc0e-aada72a05a90",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "6cbd8192-ee84-5762-8a25-ec77a0e938af",
+        "expected": "accepted"
+      }
+    ]
+  },
+  {
+    "label": "17592186059798:4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059798,
+        "id": "3dcfc681-0632-57a5-bd1e-e03d91d13f37",
+        "title": "Calculating a Final Amount After Continuous Compounding Is Applied"
+      },
+      "question": {
+        ":question/problem": "In medieval times, there were $2630$ people living in a city struck by a plague. If the disease resulted in a daily *decrease* in the population at a continuously compounded rate of $13.9\\%$, what was the city's population after $1$ weeks? Round your answer to the nearest integer.\n\n> A scientific calculator is required to answer this question.",
+        ":question/worked-solution": "The continuously compounded growth equation is $P=P_0e^{rt}$. The initial amount is $P_0=2630$. Since the amount decreases, the signed decimal rate is $r=-13.9/100=-0.139$. The rate is daily, so convert the duration to days: $t=1\\times 7=7$ days.\n\nSubstitute these values and round only the final amount:\n\n$$\n\\begin{aligned}\nP &= P_0e^{rt} \\\\\n&= 2630e^{(-0.139)(7)} \\\\\n&= 2630e^{-0.973} \\\\\n&= 2630(0.3779474\\ldots) \\\\\n&\\approx 994\n\\end{aligned}\n$$\n\nAfter $1$ weeks, the population was approximately $994$ people.",
+        ":question/requires-calculator": true,
+        ":question/id": "d70606cc-3373-5e20-bd92-6ee87d5c95c9",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/id": "897180fb-f477-5896-8afd-c3c124f31bd6",
+            ":answer-field/correct": [
+              ":answer/id",
+              "abd60026-61dd-535c-8d74-52451eb315b0"
+            ],
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "31",
+                ":answer/id": "1480e555-ffbf-5106-9203-305f7f75be76"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2627",
+                ":answer/id": "59be0d94-9790-5c02-8357-f44d19c4c97f"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "994",
+                ":answer/id": "abd60026-61dd-535c-8d74-52451eb315b0"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "643",
+                ":answer/id": "d170e0e5-ab44-5c56-b875-0336249787d4"
+              },
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1784",
+                ":answer/id": "e42952a4-78ea-5507-ab03-9ee303b01154"
+              }
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "batch_contract": "rounded-finance-spacing-v1",
+        "template": "daily",
+        "retained_existing_bank": true
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1480e555-ffbf-5106-9203-305f7f75be76",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "59be0d94-9790-5c02-8357-f44d19c4c97f",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "abd60026-61dd-535c-8d74-52451eb315b0",
+        "expected": "accepted"
+      },
+      {
+        "submitted_answer_id": "d170e0e5-ab44-5c56-b875-0336249787d4",
+        "expected": "rejected"
+      },
+      {
+        "submitted_answer_id": "e42952a4-78ea-5507-ab03-9ee303b01154",
+        "expected": "rejected"
+      }
+    ]
+  }
+]

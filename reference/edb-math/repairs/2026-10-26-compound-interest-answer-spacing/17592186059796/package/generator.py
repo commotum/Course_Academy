@@ -62,7 +62,7 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
                 f'{p} &= P_0e^{{{rt}}} \\\\\n'
                 f'e^{{{rt}}} &\\approx {math.exp(float(exponent)):.8f} \\\\\n'
                 f'P_0 &= \\frac{{{p}}}{{e^{{{rt}}}}} \\\\\n'
-                f'&\\approx {raw:.8f} \\\\'+chr(10)+
+                f'&\\approx {raw:.8f} \\\\\n'
                 f'&\\approx {final}\n\\end{{aligned}}\n$$\n\n'
                 f'The earlier {"profit" if context=="profit" else "gas price"} was '
                 f'$\\${final}$'+(' per gallon.' if context=='gas' else '.')+
