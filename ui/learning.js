@@ -181,7 +181,7 @@ function setBusy(value) {
   for (const control of document.querySelectorAll('[data-answer-input]')) {
     // Keep the initiating answer usable while its resume is being confirmed.
     // Its input/change events retain the first choice or any text entered.
-    control.disabled = value && !answerResume?.form.contains(control) || control.dataset.readOnly === 'true';
+    control.disabled = (value && !answerResume?.form.contains(control)) || control.dataset.readOnly === 'true';
   }
   refreshPauseControl();
 }

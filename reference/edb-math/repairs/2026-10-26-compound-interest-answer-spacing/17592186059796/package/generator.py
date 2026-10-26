@@ -5,7 +5,9 @@ import math
 from pathlib import Path
 import random
 import uuid
-from decimal import Decimal
+from decimal import Decimal, localcontext
+from rounded_finance import initial_bank, away_from_halfway
+from rounded_finance import minimum_gap, separated
 from math_format import normalize_prose, validate_generated_record
 
 KP = '0c9581f5-67cb-5752-8a45-b84ba4f3577e'
@@ -23,8 +25,10 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
     unit = 10**places
     rate = Decimal(str(percent))/100
     exponent = rate*time
-    raw = current*math.exp(-float(exponent))
-    key = int(math.floor(raw*unit+0.5))
+    with localcontext()as ctx:
+        ctx.prec=50
+        raw=Decimal(str(current))*(-exponent).exp()
+        key=int((raw*unit).to_integral_value(rounding='ROUND_HALF_UP'))
     show = lambda n: f'{n/unit:.{places}f}'
     source = SOURCES[0 if context == 'profit' else 1]
     if replay:
@@ -32,14 +36,7 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
         prompt = source[':question/problem']
         profile = 'observed-offset-bank'
     else:
-        gap = abs(key-round(current*unit))
-        maxoff = min(max(6,round(key*.025)), gap-1, key-1)
-        if maxoff < 4:
-            raise ValueError('Insufficient distinct nearby distractors')
-        offsets = rng.sample(range(1,maxoff+1),4)
-        bank = [key-v for v in offsets[:rank]]+[key+v for v in offsets[rank:]]
-        rng.shuffle(bank)
-        bank.insert(position,key)
+        raw,key,bank,recipes=initial_bank(current,rate,time,places,rank,position,rng)
         direction = '*growing*' if percent>0 else '*decreasing*'
         if context=='profit':
             prompt = (f'A forex trader\'s annual profits have been {direction} continuously at a rate of '
@@ -50,7 +47,7 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
                       f'Gas prices have been {direction} continuously at a rate of ${dec(abs(percent))}\\%$ per month. '
                       f'What was the gas price ${time}$ months ago? Round your answer to the nearest cent.')
         prompt += '\n\n> A scientific calculator is required to answer this question.'
-        profile = 'authored-nearby-rounded-amounts'
+        profile = 'separated-calculation-errors-v2'
     if key not in bank or len(set(bank)) != 5:
         raise ValueError('Invalid bank')
     p = dec(current); r=dec(rate); rt=dec(exponent)
@@ -65,6 +62,7 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
                 f'{p} &= P_0e^{{{rt}}} \\\\\n'
                 f'e^{{{rt}}} &\\approx {math.exp(float(exponent)):.8f} \\\\\n'
                 f'P_0 &= \\frac{{{p}}}{{e^{{{rt}}}}} \\\\\n'
+                f'&\\approx {raw:.8f} \\\\'+chr(10)+
                 f'&\\approx {final}\n\\end{{aligned}}\n$$\n\n'
                 f'The earlier {"profit" if context=="profit" else "gas price"} was '
                 f'$\\${final}$'+(' per gallon.' if context=='gas' else '.')+
@@ -80,8 +78,8 @@ def make(context, current, percent, time, rank, position, rng, replay=False):
          ':question/answer-fields':[{':answer-field/id':fid, ':answer-field/key':'selection',
          ':answer-field/type':':answer-field.type/radio', ':answer-field/choices':choices,
          ':answer-field/correct':[':answer/id',choices[bank.index(key)][':answer/id']]}]}
-    record = {'question':q,'generation':{'generator_version':1,'knowledge_point_id':KP,
-       'template':context,'bank_profile':profile,'source_difficulty':None,
+    record = {'knowledge_point':{'db_id':17592186059796,'id':KP,'title':'Calculating an Initial Amount'},'question':q,'generation':{'batch_contract':'rounded-finance-spacing-v1','generator_version':2,'knowledge_point_id':KP,
+       'template':context,'bank_profile':profile,'bank_recipes':recipes if not replay else ['source_replay']*5,'bank_minimum_gap_units':minimum_gap(key,context),'rounding_places':places,'unrounded_answer':str(raw),'source_difficulty':None,
        'source_ids':[source[':db/id'],source[':question/id'],source[':question/math-academy-id']],
        'supporting_examples':['e-5166',17592186059595,'e-5185',17592186059597],
        'parameters':{'current':current,'percent':percent,'time':time},
@@ -100,17 +98,22 @@ def generate(count,seed,difficulty='moderate'):
         if not cases:
             cases=[(c,s) for c in ('profit','gas') for s in (-1,1)];rng.shuffle(cases)
         context,sign=cases.pop()
-        while True:
+        for attempt in range(2000):
             current=rng.randrange(8000,40001,50) if context=='profit' else rng.randint(200,600)/100
             percent=sign*(rng.randint(2,18) if context=='profit' else rng.randint(5,30)/10)
             time=rng.randint(2,8 if context=='profit' else 10)
             semantic=(context,current,percent,time)
             if semantic in seen:continue
+            with localcontext()as ctx:
+                ctx.prec=50
+                trial=Decimal(str(current))*(-Decimal(str(percent))/100*time).exp()
+            if not away_from_halfway(trial,0 if context=='profit'else 2):continue
             try: record=make(context,current,percent,time,ranks[i%5],positions[i%5],rng)
             except ValueError as e:
                 if str(e).startswith('Insufficient'):continue
                 raise
             seen.add(semantic);record['generation'].update(seed=seed,index=i);result.append(record);break
+        else:raise RuntimeError('No separated source-supported bank within bounded attempts')
     return result
 
 if __name__=='__main__':

@@ -6,6 +6,7 @@ import json
 import math
 import random
 import uuid
+from rounded_finance import minimum_gap, separated
 from math_format import normalize_prose, validate_generated_record
 
 KP = '2c0a7b30-b6b4-584e-9816-506f8ec00813'
@@ -20,9 +21,11 @@ KEY_DOMAINS = {'time': (6, 191), 'rate': (8, 88)}
 def sample_bank(family, rng):
     """Construct answer candidates before assigning which one is correct."""
     low, high = KEY_DOMAINS[family]
-    width = rng.randint(8, 30)
+    gap=2 if family=='time'else 3
+    width = rng.randint(4*gap, 30)
     start = rng.randint(low, high - width)
-    return sorted(rng.sample(range(start, start + width + 1), 5))
+    base=sorted(rng.sample(range(start,start+width-4*(gap-1)+1),5))
+    return [value+i*(gap-1)for i,value in enumerate(base)]
 
 def compatible_parameters(family, target, rng):
     """Invert the rounding interval, then sample integer population evidence."""
@@ -115,6 +118,7 @@ def make(family, initial, final, supplied, *, rank=2, position=2, rng=None, repl
             values = [n for n in bank if n != key]
         rng.shuffle(values)
         values.insert(position, key)
+    if not separated(values,key,family):raise ValueError('Rounded answers require source-sized spacing')
     prompt += '\n\n> A scientific calculator is required to answer this question.'
     solution = intro + '\n\nUse the continuously compounded growth equation, isolate the exponential, take natural logarithms, and solve:\n\n' + display(rows) + '\n\n' + finish
     prompt, solution = map(normalize_prose, (prompt, solution))
@@ -130,7 +134,7 @@ def make(family, initial, final, supplied, *, rank=2, position=2, rng=None, repl
         ':question/answer-fields': [{':answer-field/id': str(fid), ':answer-field/key': 'selection',
         ':answer-field/type': ':answer-field.type/radio', ':answer-field/choices': answers,
         ':answer-field/correct': [':answer/id', answer_id]}]},
-        'generation': {'version': 2, 'template': family, 'profile': 'source-replay' if replay else 'bank-first-integers',
+        'generation': {'batch_contract':'rounded-finance-spacing-v1','version': 3, 'template': family, 'profile': 'source-replay' if replay else 'bank-first-separated-integers-v3',
         'source_questions': [SOURCE[family]], 'source_difficulty': None,
         'parameters': {'initial': initial, 'final': final, 'supplied': supplied},
         'domains': 'positive unequal counts; positive supplied rate magnitude or duration',
