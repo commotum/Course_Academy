@@ -2487,7 +2487,7 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
     // be decided, a worked solution, or the owning KP's title. Restrict each
     // protected math span to a single strict sign assertion.
     static DECLARED_SIGN: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
-        regex::Regex::new(r"\b(?:with|where|given that|assuming|assume|for)\s+\$\s*([a-z])\s*(>|<|\\gt|\\lt)\s*0\s*[.,;]?\s*\$")
+        regex::Regex::new(r"(?i:\b(?:with|where|given that|assuming|assume|for))\s+\$\s*([a-z])\s*(>|<|\\gt|\\lt)\s*0\s*[.,;]?\s*\$")
             .expect("valid explicit sign declaration")
     });
     let mut positive_variables = 0;
@@ -2498,7 +2498,7 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
         let after = prompt[span.end()..].trim_start().trim_start_matches(',').trim_start();
         // A hypothetical/disjunctive or negated clause supplies no assumption.
         let clause = before.rsplit(['.', '!', '?', ';']).next().unwrap_or("");
-        if clause.split_whitespace().any(|word| matches!(word, "not" | "never" | "whether" | "unless"))
+        if clause.split_whitespace().any(|word| matches!(word, "not" | "never" | "whether" | "unless" | "or" | "if"))
             || after.starts_with("or ") || after.starts_with("and/or ")
         { continue; }
         let bit = 1_u32 << (capture[1].as_bytes()[0] - b'a');
@@ -5286,13 +5286,13 @@ mod explicit_prompt_sign_regressions {
     #[test]
     fn prompt_signs_are_declarations_not_questions_or_titles() {
         for prompt in ["Coordinates, with $b>0$.", "Given that $b>0.$ Find the radius.", r"For $b \gt 0$, simplify."] {
-            let context = comparison_context(&prompt.to_lowercase(), &[]);
+            let context = comparison_context(prompt, &[]);
             assert_eq!(compare(r"\sqrt{100b^2}", "10b", context), Ok(true), "{prompt}");
             assert_eq!(compare("-10b", "10b", context), Ok(false));
         }
         let negative = comparison_context("with $b<0$, simplify.", &[]);
         assert_eq!(compare("10|b|", "-10b", negative), Ok(true));
-        for prompt in ["Determine whether $b>0$.", "Is $b>0$?", "Do not assume $b>0$.", "with $b>0$ and with $b<0$.", "with $b>0$ or $b<0$."] {
+        for prompt in ["Determine whether $b>0$.", "Is $b>0$?", "Do not assume $b>0$.", "with $b>0$ and with $b<0$.", "with $b>0$ or $b<0$.", "with $c>0$ or with $b>0$."] {
             let context = comparison_context(prompt, &["with $b>0$".into()]);
             assert_ne!(compare("10|b|", "10b", context), Ok(true), "{prompt}");
         }

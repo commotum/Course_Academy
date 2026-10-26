@@ -517,6 +517,11 @@ class Pipeline:
 
     def finalize_review(self, evidence):
         """Refresh final bytes before the verifier checks and accepts its repair."""
+        # The CLI accepts both paths relative to the repository/cwd and paths
+        # relative to the job. Do not prepend the job twice to a CLI path.
+        evidence = Path(evidence)
+        if not evidence.is_absolute() and evidence.resolve().is_relative_to(self.directory):
+            evidence = evidence.resolve()
         evidence = inside(self.directory, evidence)
         previous_hash = self.state.get('publication_package_hash') or self.state.get('package_hash')
         if (self.state.get('publication') or {}).get('passed') and not self.state.get('publication_batch_hash'):
@@ -584,11 +589,30 @@ class Pipeline:
                          'previous_binding_directory': str(archive)})
         return True
 
+    def restore_misplaced_final_binding(self, evidence):
+        """Recover an exact finalizer receipt saved under the old doubled path."""
+        evidence = inside(self.directory, evidence)
+        final_path = evidence / 'final-binding.json'
+        if final_path.exists() or not evidence.is_relative_to(self.root):
+            return False
+        misplaced = self.directory / evidence.relative_to(self.root) / 'final-binding.json'
+        if misplaced == final_path or not misplaced.is_file():
+            return False
+        binding = read(misplaced)
+        if binding != self.review_binding():
+            return False
+        # Preserve the completed sampling evidence and the verifier's session.
+        # A matching saved receipt cannot excuse changed package/source bytes.
+        self.verify_approval_inputs()
+        save(final_path, binding)
+        return True
+
     def review_candidate(self, evidence):
         """Keep verification, repairs, and report corrections with one agent."""
         evidence.mkdir(parents=True, exist_ok=True)
         binding_path = evidence / 'review-binding.json'
         binding = self.review_binding()
+        self.restore_misplaced_final_binding(evidence)
         recorded = read(binding_path) if binding_path.exists() else None
         finalized = read(evidence / 'final-binding.json') if (evidence / 'final-binding.json').exists() else None
         if recorded is not None and recorded != binding and finalized != binding:
