@@ -1903,6 +1903,13 @@ fn matrix_cells(source: &str) -> Result<Option<Vec<Vec<&str>>>> {
     let mut body = source;
     for (left, right) in [(r"\left[", r"\right]"), (r"\left(", r"\right)")] {
         if let Some(inner) = body.strip_prefix(left) {
+            // A leading scalable scalar group may be followed by more scalar
+            // arithmetic. Only unwrap delimiters around an actual matrix.
+            if !["bmatrix", "pmatrix", "matrix"].iter().any(|env|
+                inner.trim_start().starts_with(&format!(r"\begin{{{env}}}")))
+            {
+                return Ok(None);
+            }
             body = inner.trim().strip_suffix(right)
                 .ok_or("unclosed matrix delimiter")?.trim();
             break;
@@ -2555,6 +2562,25 @@ mod tests {
     fn eq(a: &str, b: &str) {
         assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} != {b}");
     }
+
+    #[test]
+    fn leading_scalar_groups_are_not_matrix_wrappers() {
+        let tangent = r"\left(1+\frac{1}{\sqrt{2}}\right)y+1-\frac{1}{\sqrt{2}}";
+        assert_eq!(matrix_cells(tangent), Ok(None));
+        assert!(supports(tangent, Context::default()));
+        eq(tangent, "2+(1+1/sqrt(2))*(y-1)");
+        eq(r"\left(2+1\right)y+1", "3*y+1");
+        assert_eq!(matrix_cells(r"\left[2+1\right]y+1"), Ok(None));
+        assert_eq!(compare(tangent, "2-(1+1/sqrt(2))*(y-1)", Context::default()), Ok(false));
+        eq(r"\left(\begin{matrix}1 & 2\end{matrix}\right)",
+           r"\begin{pmatrix}1 & 2\end{pmatrix}");
+        for malformed in [r"\left(\begin{matrix}1\end{matrix}",
+                          r"\left(\begin{matrix}1\end{matrix}\right]"] {
+            assert!(!supports(malformed, Context::default()));
+            assert!(compare(malformed, malformed, Context::default()).is_err());
+        }
+    }
+
     #[test]
     fn matrix_answers_preserve_shape_order_and_scalar_domains() {
         let row = r"\begin{bmatrix}p-q & -2r & s+t\end{bmatrix}";
