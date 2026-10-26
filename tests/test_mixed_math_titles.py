@@ -20,6 +20,12 @@ class MixedTitleTests(unittest.TestCase):
  def test_phantom_and_explicit_space_are_not_silently_erased(self):
   value=reconstruct(title(r'\fbox{','<mphantom><mi>x</mi><mspace width="2em"/></mphantom>','}'))
   self.assertEqual(value,r'\fbox{\phantom{x\hspace{2em}}}')
+ def test_cases_keep_rows_and_outer_label(self):
+  value=reconstruct(title(r'\textrm{III. }','<mrow><mo>{</mo><mtable><mtr><mtd><mi>x</mi><mo>=</mo><mn>1</mn></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mn>2</mn></mtd></mtr></mtable></mrow>',''))
+  self.assertEqual(value,r'\textrm{III. }\left\{\begin{aligned}x &=1 \\ y &=2\end{aligned}\right.')
+ def test_decorated_phantom_remains_hidden_inside_its_border(self):
+  value=reconstruct(title('x=', '<mstyle mathbackground="white" style="border: 1pt solid black"><mpadded depth="+2pt" height="+2pt" lspace="2pt" width="+4pt"><mphantom><mn>17</mn></mphantom></mpadded></mstyle>',''))
+  self.assertEqual(value,r'x=\bbox[2pt,white,border: 1pt solid black]{\phantom{17}}')
  def test_unknown_structures_are_gaps(self):
   with self.assertRaises(ValueError):reconstruct(title('', '<mspace height="3em"/>','+x'))
   with self.assertRaises(ValueError):reconstruct(BeautifulSoup('<title>A=<span><math><mi>x</mi></math></span>+1</title>','html.parser').title)
