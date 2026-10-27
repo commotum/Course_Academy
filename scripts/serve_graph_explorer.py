@@ -110,6 +110,21 @@ def save_json(path: Path, value: dict) -> None:
         os.close(fd)
 
 
+def focused_mode_path(directory: Path, learner: str) -> Path:
+    return directory / f"{learner}-focused-mode.json"
+
+
+def focused_mode(path: Path) -> bool | None:
+    """An absent profile preference retains the code's existing default."""
+    try:
+        value = json.loads(path.read_text())
+    except FileNotFoundError:
+        return None
+    if not isinstance(value, dict) or type(value.get('enabled')) is not bool:
+        raise ValueError('Invalid focused-mode preference')
+    return value['enabled']
+
+
 def assignment_request(body: dict, directory: Path, learner: str) -> dict:
     """Under api.lock, let an unload pause cancel a focus that arrives later."""
     action = body.get("action")
@@ -204,6 +219,14 @@ class NativeWorker:
     def request(self, body: dict, timeout: float = 55) -> dict:
         with self.lock:
             try:
+                # Only the server's saved preference can set this internal policy.
+                # It is removed by the native boundary before durable journaling.
+                if len(self.command) >= 5 and 'LEARNING_REQUEST_DIR' in self.environment:
+                    body = {k: v for k, v in body.items() if k != '_focusedMode'}
+                    preference = focused_mode(focused_mode_path(
+                        Path(self.environment['LEARNING_REQUEST_DIR']), self.command[2]))
+                    if preference is not None:
+                        body['_focusedMode'] = preference
                 if self.process is None or self.process.poll() is not None:
                     self._stop()
                     self.log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -487,6 +510,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     if body.get("action") in MUTATING_ACTIONS and developer_mode(mode_path):
                         self.send_bytes(409, b'{"error":"Developer mode is on. No activity or learner changes are recorded.","code":"developer-mode"}', "application/json")
                         return
+                    focus_change = body.get('action') == 'focused-mode'
+                    if focus_change:
+                        if type(body.get('focusedMode')) is not bool:
+                            raise ValueError('Focused mode must be a boolean')
+                        save_json(focused_mode_path(directory, learner), {'enabled': body['focusedMode']})
+                        body = {'action': 'profile'}
                     if body.get("action") == "assignment":
                         # The server setting selects inspection-only answer keys;
                         # a request cannot promote itself into developer mode.
@@ -496,7 +525,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     worker = stats_worker if body.get("action") == "study-stats" else page_worker if page_read else learning_worker
                     response = worker.request(body)
                     finished = time.monotonic()
-                    refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
+                    refresh_inventory = response.get('ok') and (focus_change or body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
                     if refresh_inventory:
@@ -553,7 +582,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 return
             action = urlsplit(self.path).path.removeprefix("/api/")
             # Profile preferences remain editable in inspection mode; study writes do not.
-            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings", "daily-xp-goal"}:
+            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings", "daily-xp-goal", "focused-mode"}:
                 self.send_bytes(404, b"Not found", "text/plain")
                 return
             try:
@@ -712,7 +741,13 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             self.send_bytes(404, json.dumps({"error": f"{label} not found.", "code": "not-found"}).encode(), "application/json; charset=utf-8")
                             return
                         raise OSError("The graph reader could not capture current data")
-                    self.send_bytes(200, json.dumps(result["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8", cache=True)
+                    data = result['data']
+                    if path == '/api/graph-explorer':
+                        preference = focused_mode(focused_mode_path(request_directory, learner))
+                        if preference is not None:
+                            data = {**data, 'studyDefaults': {**data.get('studyDefaults', {}),
+                                'targetPrerequisiteDepth': 0 if preference else 2}}
+                    self.send_bytes(200, json.dumps(data, separators=(",", ":")).encode(), "application/json; charset=utf-8", cache=True)
                 except (subprocess.SubprocessError, OSError, ValueError) as error:
                     self.log_error("EDB read failed (%s)", type(error).__name__)
                     if isinstance(error, subprocess.CalledProcessError):

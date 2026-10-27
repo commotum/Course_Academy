@@ -374,10 +374,18 @@ impl Application {
         Ok(())
     }
 
-    fn handle(&mut self, body: Json) -> Result<Json> {
+    fn handle(&mut self, mut body: Json) -> Result<Json> {
         let started = Instant::now();
         self.adopt(self.conn.sync()?)?;
         trace("sync", started);
+        if let Some(value) = body.as_object_mut().and_then(|body| body.remove("_focusedMode")) {
+            let focused = value.as_bool().ok_or("Focused mode must be a boolean")?;
+            if self.snapshot.focused_mode != focused {
+                self.snapshot.focused_mode = focused;
+                self.home_cache = None;
+                self.inventory_cache = None;
+            }
+        }
         let action = body["action"].as_str().ok_or("Action required")?;
         if action=="inventory" {
             if let Some((at,lifetime,result))=&self.inventory_cache {
@@ -726,6 +734,7 @@ fn topic_study_availability(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime
 }
 fn learner_json(s: &EntitySnapshot, l: u64) -> Json {
     json!({"id":text(s,l,"learner/id"),"name":text(s,l,"learner/name"),
+        "focusedMode":s.focused_mode,
         "dailyXpGoal":s.entities.get(&l).and_then(|r|r.get("learner/daily-xp-goal")),
         "selfDirected":s.entities.get(&l).and_then(|r|r.get("learner/self-directed")).and_then(Json::as_bool).unwrap_or(false),
         "targets":s.refs(l,"learner/targets").unwrap_or_default(),

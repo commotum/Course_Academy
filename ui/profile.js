@@ -81,9 +81,13 @@ if (trigger) {
   const directed = node('button', 'profile-switch'); directed.type = 'button'; directed.id = 'selfDirectedToggle';
   directed.setAttribute('role', 'switch'); directed.setAttribute('aria-label', 'Self-directed mode');
   directed.setAttribute('aria-checked', 'false');
+  const focused = node('button', 'profile-switch'); focused.type = 'button'; focused.id = 'focusedModeToggle';
+  focused.setAttribute('role', 'switch'); focused.setAttribute('aria-label', 'Focused mode');
+  focused.setAttribute('aria-checked', 'false');
   fields.append(
     modeRow('Developer mode', 'Inspect lessons without recording answers, time, or progress.', developerModeControl),
     modeRow('Self-directed mode', 'Study topics from your selected queue.', directed),
+    modeRow('Focused mode', 'Study only your target topics. Open Targets without expanded prerequisites.', focused),
   );
   const themeSwitch = node('button', 'profile-switch'); themeSwitch.type = 'button'; themeSwitch.id = 'lightModeToggle';
   themeSwitch.setAttribute('role', 'switch'); themeSwitch.setAttribute('aria-label', 'Light mode');
@@ -109,7 +113,7 @@ if (trigger) {
     window.dispatchEvent(new Event('course-academy:profile-changing'));
   }
   async function request(body) {
-    const response = await fetch(body ? ('dailyXpGoal' in body ? '/api/daily-xp-goal' : '/api/profile-settings') : '/api/profile', {
+    const response = await fetch(body ? ('dailyXpGoal' in body ? '/api/daily-xp-goal' : 'focusedMode' in body ? '/api/focused-mode' : '/api/profile-settings') : '/api/profile', {
       method: body ? 'POST' : 'GET', cache: 'no-store', credentials: 'same-origin',
       headers: body ? { 'Content-Type': 'application/json' } : {},
       body: body ? JSON.stringify(body) : undefined,
@@ -129,12 +133,14 @@ if (trigger) {
     goalInput.value = operation && 'dailyXpGoal' in operation ? operation.dailyXpGoal : profile.learner.dailyXpGoal ?? '';
     const checked = String(profile.learner.selfDirected);
     if (directed.getAttribute('aria-checked') !== checked) directed.setAttribute('aria-checked', checked);
+    focused.setAttribute('aria-checked', String(profile.learner.focusedMode === true));
   }
   function applyProfile(result, notify = false) {
     const changedCourse = profile?.course?.id !== result.course?.id;
+    const changedFocusedMode = profile?.learner.focusedMode !== result.learner.focusedMode;
     profile = result; frozen = false; render();
     if (notify) window.dispatchEvent(new CustomEvent('course-academy:profile-changed', {
-      detail: { ...result, changedCourse },
+      detail: { ...result, changedCourse, changedFocusedMode },
     }));
   }
   function fail(failure) {
@@ -156,10 +162,15 @@ if (trigger) {
   async function save() {
     if (busy || !operation) return;
     const goalChange = 'dailyXpGoal' in operation;
+    const focusChange = 'focusedMode' in operation;
     busy = true; fields.disabled = true; fields.setAttribute('aria-busy', 'true'); retry.hidden = true; error.hidden = true;
-    if (!goalChange && directed.getAttribute('aria-checked') !== String(operation.selfDirected)) {
+    if (!goalChange && !focusChange && directed.getAttribute('aria-checked') !== String(operation.selfDirected)) {
       directed.dataset.animate = 'true';
       directed.setAttribute('aria-checked', String(operation.selfDirected));
+    }
+    if (focusChange) {
+      focused.dataset.animate = 'true';
+      focused.setAttribute('aria-checked', String(operation.focusedMode));
     }
     if (!goalChange) freeze();
     try {
@@ -197,6 +208,11 @@ if (trigger) {
     void save();
   });
   directed.addEventListener('click', () => change(!profile.learner.selfDirected));
+  focused.addEventListener('click', () => {
+    if (!profile || busy || frozen || operation) return;
+    operation = { focusedMode: !profile.learner.focusedMode, requestId: crypto.randomUUID() };
+    void save();
+  });
   retry.addEventListener('click', () => { if (operation) void save(); else void load(); });
   trigger.addEventListener('click', () => {
     dialog.append(developerModeNotice);

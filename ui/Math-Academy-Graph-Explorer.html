@@ -2247,6 +2247,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     } finally {loading=false;renderTargetCourseFilters();renderTargetWeekStrip();}
   }
   $('retryLoad').onclick=loadData;
+  window.addEventListener('course-academy:profile-changed', event => {
+    if(event.detail.changedFocusedMode)void loadData();
+  });
   $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
   $('targetColorToggle').addEventListener('click',()=>{
     $('targetColorToggle').dataset.animate='true';setColorCode(!colorCodeEnabled);
