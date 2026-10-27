@@ -30,4 +30,4 @@ for d in rows:
  fields.append({'entity':d['e'],'attribute':d['a'],'before':d['v'],'after':after,'before_sha256':hashlib.sha256(d['v'].encode()).hexdigest(),'after_sha256':hashlib.sha256(after.encode()).hexdigest(),'math_answer':False,'answer_fields':[],'reasons':['source-evaluation-bar-recovery']})
 b=H/'batch-04';b.mkdir(exist_ok=True);(b/'fields.json').write_text(json.dumps(fields,indent=2)+'\n');(b/'source-edits.json').write_text(json.dumps(edits,indent=2)+'\n');(b/'transaction.edn').write_text(dumps([[kw('db/cas'),f['entity'],kw(f['attribute']),f['before'],f['after']]for f in fields])+'\n')
 for name in ['verify_render.py','verify_db.py','apply.py']:(b/name).write_text((H/name).read_text().replace('R=H.parents[3]','R=H.parents[4]'))
-print('Exact-source evaluation-bar repairs:',len(fields),'fields;',len(edits),'formula blocks.')
+print('Reviewed evaluation-bar repairs:',len(fields),'fields;',len(edits),'formula blocks.')
