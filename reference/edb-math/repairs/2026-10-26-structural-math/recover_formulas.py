@@ -7,6 +7,17 @@ from reconstruct import SourceRenderer
 from bs4 import NavigableString,Tag
 class CompleteSourceRenderer(SourceRenderer):
  def m(self,n):
+  if isinstance(n,Tag)and n.name=='mtext'and'[math]'in n.get_text():
+   # Archived label text can contain explicit nested-math placeholders.
+   # Recover their math role without displaying the transport markers.
+   text=n.get_text();parts=[]
+   for part in re.split(r'(\[math\][\s\S]*?\[/math\])',text):
+    if part.startswith('[math]')and part.endswith('[/math]'):
+     parts.append(part[6:-7])
+    elif part:
+     if '[math]'in part or'[/math]'in part:raise ValueError('Unbalanced nested math label')
+     parts.append(r'\text{'+re.sub(r'[$%#]',lambda m:'\\'+m[0],part)+'}')
+   return ''.join(parts)
   if isinstance(n,Tag)and n.get("mathvariant")=="fraktur":
    import copy
    bare=copy.copy(n);del bare.attrs["mathvariant"];return r"\mathfrak{"+super().m(bare)+"}"

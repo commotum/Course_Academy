@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 R=Path.cwd();H=R/'reference/edb-math/repairs/2026-10-26-structural-math';W=R/'.local/edb/structural-math-2026-10-26'
 ns={'__file__':str(H/'recover_formulas.py')};exec(compile((H/'recover_formulas.py').read_text().split('index=collections.defaultdict(list)')[0],str(H/'recover_formulas.py'),'exec'),ns);formulas=ns['formulas'];MATH=ns['MATH']
 meta=json.loads((W/'metadata.json').read_text());parents=json.loads((W/'parents.json').read_text())
-rows=json.loads(Path('/tmp/structural-pipe-equals.json').read_text());targets=[]
+rows=json.loads(Path('/tmp/structural-pipe-extended.json').read_text());targets=[]
 for d in rows:
- matches=[m for m in MATH.finditer(d['v']) if re.search(r'(?<!\\)\|\s*=',m[0]) and ';'in m[0] and not re.search(r'\\begin\{(?:aligned|array|.*matrix)\}',m[0])]
+ matches=[m for m in MATH.finditer(d['v']) if m[0] in d['suspicious_math']]
  if matches:targets.append((d,matches))
 print('target fields',len(targets),flush=True)
 def identities(d):
@@ -15,6 +15,8 @@ def identities(d):
  if d['a']=='answer/value':return [meta.get(str(q),{}).get('question/math-academy-id')for f,a in parents.get(str(d['e']),[])if a=='answer-field/choices'for q,a in parents.get(str(f),[])if a=='question/answer-fields']
  return [m.get('question/math-academy-id')]
 wanted={(i,d['a'])for d,ms in targets for i in identities(d)if i};index=collections.defaultdict(list)
+for src in json.loads(Path('/tmp/structural-pipe-source-index.json').read_text()):index[src['identity'],src['attribute']].append({k:v for k,v in src.items()if k not in ('identity','attribute')})
+cached=set(index)
 def slim(raw):return re.sub(r'<svg\b[\s\S]*?</svg>',lambda m:'<svg>'+''.join(re.findall(r'<title\b[^>]*>[\s\S]*?</title>',m[0],re.I))+'</svg>',raw,flags=re.I)
 domcache={}
 def captured(raw,identity,path,rootid=None):
@@ -26,25 +28,23 @@ def captured(raw,identity,path,rootid=None):
  if identity.startswith('tutorial:'):parts=[('tutorial/content',root)]
  else:parts=[(a,n)for a,classes in [('question/problem',['exampleQuestion','questionWidget-text','questionText']),('question/worked-solution',['exampleExplanation','questionExplanation','questionWidget-explanation']),('answer/value',['questionWidget-choiceText','choiceText','selectListOption'])]for c in classes for n in root.find_all(class_=c)]
  for a,n in parts:
-  if(identity,a)in wanted:index[identity,a].append({'path':str(path),'html':str(n)})
-for p in ([] if Path('/tmp/structural-pipe-source-index.json').exists() else Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.json')):
+  if(identity,a)in wanted and(identity,a)not in cached:index[identity,a].append({'path':str(path),'html':str(n)})
+for p in Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.json'):
  data=json.loads(p.read_text());use=[]
  for i in data.get('lesson',{}).get('items',[]):
   identity=('tutorial:'+str(i['content_id'])if i.get('step_type')=='tutorial'else'e-'+str(i['content_id']))if i.get('item_type')=='step'else'q-'+str(i['question_id'])if i.get('question_id')else None
-  if any(ident==identity for ident,a in wanted):use.append((i,identity))
+  if any(ident==identity and(ident,a)not in cached for ident,a in wanted):use.append((i,identity))
  if use and p.with_suffix('.html').exists():
   raw=p.with_suffix('.html').read_text()
   for i,identity in use:captured(raw,identity,p.with_suffix('.html'),i.get('dom_id'))
-for line in ([] if Path('/tmp/structural-pipe-source-index.json').exists() else (R/'.local/edb/mathml-tables-work/source-paths.txt').read_text().splitlines()):
+for line in (R/'.local/edb/mathml-tables-work/source-paths.txt').read_text().splitlines():
  p=Path(line);mt=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
  if not mt:continue
  identity=mt[1]or mt[2]or'e-'+mt[3]
- if not any(ident==identity for ident,a in wanted):continue
+ if not any(ident==identity and(ident,a)not in cached for ident,a in wanted):continue
  if not p.is_absolute():p=R/p
  if p.exists():
   data=json.loads(p.read_text());captured(data.get('html')or data.get('raw_html'),identity,p)
-if Path('/tmp/structural-pipe-source-index.json').exists():
- for src in json.loads(Path('/tmp/structural-pipe-source-index.json').read_text()):index[src['identity'],src['attribute']].append({k:v for k,v in src.items()if k not in ('identity','attribute')})
 Path('/tmp/structural-pipe-source-index.json').write_text(json.dumps([{'identity':i,'attribute':a,**v}for(i,a),items in index.items()for v in items]))
 def sig(s):
  s=re.sub(r'\\(?:begin|end)\{[^{}]+\}(?:\{[clr| ]+\})?','',s)

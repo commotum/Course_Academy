@@ -37,6 +37,10 @@ class MathContentTests(unittest.TestCase):
                          r'\big\vert A\big\vert=P(A\mid B)')
 
     def test_limit_operator_keeps_its_tendency_condition(self):
+        self.assertEqual(normalize_tex('\\displaystyle lim_(x → 2)f(x)'),
+                         r'\displaystyle \lim_{x \to  2}f(x)')
+        self.assertEqual(normalize_tex(r'\displaystyle {lim}_{x\to2}f(x)'),
+                         r'\displaystyle \lim_{x\to2}f(x)')
         for source in (r'{lim}_{x\to 2}4^{x/2}', r'{\lim}_{x\to 2}4^{x/2}',
                        r'lim_{x\to 2}4^{x/2}', r'\lim_\limits{x\to 2}4^{x/2}'):
             self.assertEqual(normalize_tex(source), r'\lim_{x\to 2}4^{x/2}')

@@ -914,7 +914,9 @@ def normalize_limit_operators(text):
     pattern = re.compile(r'(?P<operator>\{(?:lim|\\lim)\}|(?<![\\A-Za-z])lim)\s*_\s*(?P<opening>[{(])')
     for match in pattern.finditer(text):
         if any(a <= match.start() < b for a, b in protected): continue
-        if re.search(r'\\[A-Za-z]+\*?\s*$', text[:match.start()]): continue
+        preceding = re.search(r'\\([A-Za-z]+)\*?\s*$', text[:match.start()])
+        if preceding and preceding[1] not in ('displaystyle', 'textstyle', 'scriptstyle', 'scriptscriptstyle', 'quad', 'qquad'):
+            continue
         left = match['opening']; end = end_group(match.end() - 1, left, '}' if left == '{' else ')')
         if not end: continue
         body = text[match.end():end - 1]
