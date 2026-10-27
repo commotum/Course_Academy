@@ -713,7 +713,12 @@ function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
   const type = short(field.type), response = field.response;
   const genericChoice = type === 'radio' && (!field.key || field.key === 'selection' || field.key === 'answer');
   const label = genericChoice || field.key === 'selection' ? 'Choose an answer' : fieldLabel(field.key);
-  set.append(el('legend', genericChoice || field.key === 'selection' || type === 'checkbox' ? 'sr-only' : '', label));
+  const legend = el('legend', genericChoice || field.key === 'selection' || type === 'checkbox' ? 'sr-only' : '');
+  const legendContent = markdown(label);
+  // Legends use the same sanitized math/Markdown boundary as visible choices.
+  for (const paragraph of legendContent.querySelectorAll('p')) paragraph.replaceWith(...paragraph.childNodes);
+  legend.append(...legendContent.childNodes);
+  set.append(legend);
   const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
   const checklist = checkboxControl(field, label => answerValue({ type: 'text', value: label }), readOnly);
