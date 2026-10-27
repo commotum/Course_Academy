@@ -12,5 +12,6 @@ def validate_delivery_batch(records, kp_id):
         # The partial matrix can supply unassessed entries. The learner must
         # still choose the row and column and form each requested dot product.
         process = r'\b(?:use|multiply|multiplying|match|matching)\b[^.!?]{0,120}\b(?:row|column)\b|\b(?:dot[ -]?product|pairwise|hint)\b'
-        if re.search(process, prompt, re.I) or re.search(r'\d\s*\+(?:cdot|times)', prompt):
+        numeric_product = r'\d\s*' + re.escape(chr(92)) + r'+(?:cdot|times)'
+        if re.search(process, prompt, re.I) or re.search(numeric_product, prompt):
             raise ValueError('Matrix practice prompt supplies the multiplication process or an entry calculation')

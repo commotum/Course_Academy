@@ -14,6 +14,7 @@ import random
 import uuid
 from math_format import (matrix_answer, matrix_operands, matrix_tex,
                          normalize_prose, normalize_tex, validate_generated_record)
+from matrix_product_prompt_policy import validate_delivery_batch
 
 VERSION = '1.1.0'
 KP = {'db_id': 17592186059747, 'id': '9c7a77cf-163a-542a-b4a3-4274344b9cf8',
@@ -136,6 +137,7 @@ def generate(difficulty, count, seed):
         if signature not in seen:
             result.append(record)
             seen.add(signature)
+    validate_delivery_batch(result, KP['db_id'])
     return result
 
 

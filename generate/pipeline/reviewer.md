@@ -55,6 +55,8 @@ Review difficulty separately from correctness. Inspect what support the learner 
 
 Record this comparison in `checks.progression`, with evidence from easy, moderate, and hard. Explain the target work, available support, response demand, and source or instructional justification for the progression. Judge appropriate scaffolding and difficulty yourself; earlier source labels or agent requirements may need correction in the generated design. Missing imported anchors do not prevent a defensible authored progression and must not trigger changes to the imported coverage attribute.
 
+For ordinary matrix multiplication practice, distinguish source-supported partial output matrices from added procedural hints. Supplied entries can reduce repetition while leaving the requested row/column selections intact. An expanded dot product for a requested entry, or a reminder of the process to follow, belongs in the worked solution unless an explicitly guided teaching stage justifies it. Easy difficulty alone does not justify either addition.
+
 Save `evidence_root/pedagogical-variation.json` using `generate/pipeline/pedagogical-variation.schema.json` under repo_root, and cite it in `checks.decision_variation.evidence_paths`. Include these exact fields:
 
 * `learner_operation`: a string describing the necessary learner reasoning; `fixed_features`: an array of objects with `feature` and `justification`; `answer_roles`: an array of objects with `role`, `eligible_variation`, and `observed`.
