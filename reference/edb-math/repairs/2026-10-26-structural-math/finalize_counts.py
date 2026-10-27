@@ -2,7 +2,7 @@ import collections,json
 from pathlib import Path
 h=Path('reference/edb-math/repairs/2026-10-26-structural-math');w=Path('.local/edb/structural-math-2026-10-26')
 m=json.loads((w/'metadata.json').read_text());p=json.loads((w/'parents.json').read_text());first={};last={};updates=0;tx=[]
-for n in ['', 'batch-02','batch-03','batch-04','batch-05']:
+for n in ['', 'batch-02','batch-03','batch-04','batch-05','batch-06']:
  d=h/n
  tx.append(json.loads((d/'verification.json').read_text())['basis_t'])
  for f in json.loads((d/'fields.json').read_text()):
