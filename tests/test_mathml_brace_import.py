@@ -25,6 +25,10 @@ SPEC.loader.exec_module(HISTORY)
 
 
 class MathMLBraceImportTests(unittest.TestCase):
+    def test_zero_rule_fraction_keeps_stack_instead_of_division(self):
+        self.assert_formula('<mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac>',
+                            r'\genfrac{}{}{0pt}{}{n}{k}')
+
     def test_unruled_data_columns_keep_source_alignment(self):
         self.assert_formula('<mtable columnalign="left center right" columnspacing="1em"><mtr><mtd><mi>x</mi></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mi>y</mi></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable>',
                             r'\begin{array}{lcr}x & 1 & 2 \\ y & 3 & 4\end{array}')

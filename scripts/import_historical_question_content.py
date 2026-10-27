@@ -78,7 +78,10 @@ class Renderer:
                 return '\\begin{cases}'+' \\\\ '.join(rows)+'\\end{cases}'
         if t in ('mphantom','annotation','annotation-xml'):return ''
         cs=[self.m(c) for c in n.children];base=cs[0] if cs and cs[0] in (')',']','}') else '{'+(cs[0] if cs else '')+'}'
-        if t=='mfrac':return '\\frac{'+cs[0]+'}{'+cs[1]+'}'
+        if t=='mfrac':
+            if re.fullmatch(r'0(?:\.0+)?(?:[A-Za-z%]+)?',n.get('linethickness','')):
+                return '\\genfrac{}{}{0pt}{}{'+cs[0]+'}{'+cs[1]+'}'
+            return '\\frac{'+cs[0]+'}{'+cs[1]+'}'
         if t=='msup':return base+'^{'+cs[1]+'}'
         if t=='msub':return base+'_{'+cs[1]+'}'
         if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'

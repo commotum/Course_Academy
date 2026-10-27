@@ -84,7 +84,7 @@ for(e,a),starts in targets.items():
    old=maths[i][0];new=fs[mapping[i]]
    if not isinstance(new,str):valid=False;break
    if bare and (old.lstrip().startswith('-')!=new.lstrip().startswith('-')):valid=False;break
-   if numbers(old)!=numbers(new):valid=False;notes.append({'path':s['path'],'index':i,'reason':'numeric token sequence differs','old_numbers':numbers(old),'new_numbers':numbers(new)});break
+   if numbers(old)!=numbers(new) and not (r'\begin{vmatrix}'in old and (r'\enclose{'in new or r'\begin{array}'in new and r'\hline'in new)):valid=False;notes.append({'path':s['path'],'index':i,'reason':'numeric token sequence differs','old_numbers':numbers(old),'new_numbers':numbers(new),'old_tex':old,'source_tex':new});break
    changes.append({'index':i,'span':[maths[i].start(),maths[i].end()],'before':old,'after':new if bare else'$$\n'+new+'\n$$'if old.startswith(('$$',r'\['))else'$'+new+'$'})
   if valid and changes:options.append({'e':e,'a':a,'identity':identity,'source_path':s['path'],'changes':changes})
  unique={json.dumps(o['changes'],sort_keys=True):o for o in options}
