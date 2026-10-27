@@ -11,6 +11,11 @@ class MathContentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'matrix environment'):
             validate_math_structure(r'$D=|\begin{aligned}1&3\\2&-3\end{aligned}|$')
         validate_math_structure(r'$D=\begin{vmatrix}1&3\\2&-3\end{vmatrix}$')
+        with self.assertRaisesRegex(ValueError, 'fence scope'):
+            validate_tex(r'\left.\int\frac{\mid x\right|^3}{1+x}')
+        with self.assertRaisesRegex(ValueError, 'Sizing command'):
+            validate_tex(r'\left.x^2\Big\right|_0^1')
+        validate_tex(r'\int\frac{\left|x\right|^3}{1+x}')
 
     def test_piecewise_brace_is_not_a_group_and_sized_bars_are_delimiters(self):
         source = r'f(x)={\begin{aligned}x^2&x<0\\0&x=0\\x&x>0\end{aligned}'

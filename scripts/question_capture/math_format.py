@@ -1022,7 +1022,10 @@ def normalize_prose(value):
 
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
-    text = str(value); depth = 0; stack = []
+    text = str(value); depth = 0; stack = []; fences = []
+    check_fences = not re.search(r'\\(?:newcommand|renewcommand|def)(?![A-Za-z])', text)
+    if re.search(r'\\[Bb]ig(?:g)?[lrm]?\s*\\(?:left|right|middle)(?![A-Za-z])', text):
+        raise ValueError('Sizing command cannot take a left/right command as its delimiter')
     if legacy_system_rows(text):
         raise ValueError('Flattened equation system; use explicit system rows')
     for token in re.findall(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|.', text, re.S):
@@ -1032,6 +1035,10 @@ def validate_tex(value):
             elif not stack or stack.pop() != env[2]: raise ValueError('Mismatched TeX environment')
         elif token == '{': depth += 1
         elif token == '}': depth -= 1
+        elif check_fences and token == r'\left': fences.append((depth, tuple(stack)))
+        elif check_fences and token == r'\right':
+            if not fences or fences.pop() != (depth, tuple(stack)):
+                raise ValueError('Crossed or unmatched left/right fence scope')
         if depth < 0: raise ValueError('Unmatched closing TeX brace')
         if token in [r'\matrix', r'\eqalign']: raise ValueError('Legacy TeX layout command')
         if token in [r'\[', r'\]', r'\(', r'\)']:
@@ -1042,6 +1049,7 @@ def validate_tex(value):
             raise ValueError('Runtime TeX extension loading is unsupported; use a preloaded extension')
         if token == '$': raise ValueError('Math fields must not contain nested dollar delimiters')
     if depth or stack: raise ValueError('Unclosed TeX group or environment')
+    if fences: raise ValueError('Unclosed left/right fence scope')
     for match in re.finditer(r'\\begin\{aligned\}', text):
         span = environment(text, match.start())
         rows = cells(text[span[0]:span[1]]) if span else None
