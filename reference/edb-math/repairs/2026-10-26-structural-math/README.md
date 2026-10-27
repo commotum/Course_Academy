@@ -9,7 +9,7 @@ Committed repairs to **5,020 distinct content fields on 3,862 entities, spanning
 | `tutorial/content` | 338 |
 | `answer/value` | 629 |
 
-The audit expanded beyond the earlier fenced-matrix spacing signature. It checked structure, recovered whole formulas, compared source grids and renders, and replayed the legacy converters where possible. The final full-database scan at **T8666** covered 2,940,190 facts and 1,468,728 strings. All **5,021 touched field values** matched the expected final values; the extra field was a reconstruction regression that was reverted to its original good value. The repaired mechanical signatures have zero remaining matches. See [postscan-final.json](postscan-final.json) and [final-structure-verification.json](final-structure-verification.json).
+The audit expanded beyond the earlier fenced-matrix spacing signature. It checked structure, recovered whole formulas, compared source grids and renders, and replayed the legacy converters where possible. The final full-database scan at **T8669** covered 2,940,430 facts and 1,468,848 strings. All **5,021 touched field values** matched the expected final values; the extra field was a reconstruction regression that was reverted to its original good value. The repaired mechanical signatures have zero remaining matches. See [postscan-final.json](postscan-final.json) and [final-structure-verification.json](final-structure-verification.json).
 
 The related failures came from several lossy import paths:
 
