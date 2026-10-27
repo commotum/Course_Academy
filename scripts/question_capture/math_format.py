@@ -1070,6 +1070,7 @@ def validate_prose(value):
 
 def validate_math_structure(value, *, bare_math=False):
     """Check groups, environments and grids at an authoring boundary."""
+    validate_matrix_layouts(value, bare_math=bare_math)
     spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
     for span in spans:
         if MATH.fullmatch(span):

@@ -2,25 +2,26 @@
 import collections,json,sys,re
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/structural-math-2026-10-26';sys.path.insert(0,str(R/'scripts'))
-from question_capture.math_format import MATH,normalize_limit_operators,normalize_piecewise_cases,normalize_sized_bars,legacy_choice
+from question_capture.math_format import MATH,_matrix_layouts,normalize_limit_operators,normalize_piecewise_cases,normalize_sized_bars,legacy_choice
 attrs={'question/problem','question/worked-solution','tutorial/content','answer/value','answer/feedback','answer-field/feedback','multistep/context','multistep/content','assigned-problem/instructions'}
 meta=json.loads((W/'metadata.json').read_text());potential=[];counts=collections.Counter();fields={(f['entity'],f['attribute']):f for f in json.loads((H/'fields.json').read_text())};seen=set();final='--final'in sys.argv
 if final:
  fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-02/fields.json').read_text())})
+ if(H/'batch-03/fields.json').exists():fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-03/fields.json').read_text())})
 snapshot=W/('final.jsonl'if final else'after.jsonl')
 for line in snapshot.open():
  d=json.loads(line);e,a,v=d['e'],d['a'],d['v'];counts['facts']+=1
  if a=='answer/type':meta.setdefault(str(e),{})[a]=v
  if isinstance(v,str):counts['strings']+=1
  if(e,a)in fields:assert v==fields[e,a]['after'];seen.add((e,a))
- if a in attrs and isinstance(v,str)and('lim'in v or'\\mid'in v or'{'in v and(';'in v or'\\begin{aligned}'in v)):potential.append(d)
+ if a in attrs and isinstance(v,str)and('lim'in v or'\\mid'in v or'{'in v and(';'in v or'\\begin{aligned}'in v or'\\begin{matrix}'in v)):potential.append(d)
 remaining=[];classes=collections.Counter()
 for d in potential:
  math_answer=d['a']=='answer/value'and meta.get(str(d['e']),{}).get('answer/type')==17592186045498
  reasons=set()
  def fix(whole):
   match=MATH.fullmatch(whole);size=(2 if whole.startswith(('$$',r'\[',r'\('))else 1)if match else 0;body=whole[size:-size]if size else whole
-  for name,fn in [('limit-operator',normalize_limit_operators),('piecewise-brace',normalize_piecewise_cases),('sized-bar',normalize_sized_bars),('flattened-system',legacy_choice)]:
+  for name,fn in [('fenced-matrix',_matrix_layouts),('limit-operator',normalize_limit_operators),('piecewise-brace',normalize_piecewise_cases),('sized-bar',normalize_sized_bars),('flattened-system',legacy_choice)]:
    new=fn(body)
    if new!=body:reasons.add(name)
    body=new

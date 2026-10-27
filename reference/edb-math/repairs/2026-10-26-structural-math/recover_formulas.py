@@ -23,7 +23,7 @@ def reconstruct(title):
  if r.errors:raise ValueError(r.errors)
  from question_capture.math_format import normalize_source_tex
  return normalize_source_tex("".join(parts))
-from question_capture.math_format import MATH,validate_tex,ENV,environment
+from question_capture.math_format import MATH,validate_tex,normalize_source_tex,ENV,environment
 parents=json.loads((W/'parents.json').read_text());meta=json.loads((W/'metadata.json').read_text());values={(r['e'],r['a']):r['v']for r in json.loads((W/'values.json').read_text())};sourcefields=json.loads((W/'source-fields.json').read_text());targets=collections.defaultdict(set)
 for d in json.loads((H/'malformed-structure.json').read_text()):targets[d['e'],d['a']].add(d['start'])
 for d in json.loads((H/'table-candidates.json').read_text()):
@@ -39,7 +39,7 @@ def formulas(html):
    else:
     m=n if n.name=='math'else n.find('math');r=CompleteSourceRenderer(None);tex=r.m(m)
     if r.errors:raise ValueError(r.errors)
-   validate_tex(tex);out.append(tex)
+   tex=normalize_source_tex(tex);validate_tex(tex);out.append(tex)
   except Exception as ex:out.append({'error':str(ex)})
  return out
 def visible(tex):

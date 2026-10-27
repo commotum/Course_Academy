@@ -6,6 +6,12 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_structural_check_includes_matrix_layout_after_source_recovery(self):
+        from math_format import validate_math_structure
+        with self.assertRaisesRegex(ValueError, 'matrix environment'):
+            validate_math_structure(r'$D=|\begin{aligned}1&3\\2&-3\end{aligned}|$')
+        validate_math_structure(r'$D=\begin{vmatrix}1&3\\2&-3\end{vmatrix}$')
+
     def test_piecewise_brace_is_not_a_group_and_sized_bars_are_delimiters(self):
         source = r'f(x)={\begin{aligned}x^2&x<0\\0&x=0\\x&x>0\end{aligned}'
         self.assertEqual(normalize_tex(source), r'f(x)=\begin{cases}x^2&x<0\\0&x=0\\x&x>0\end{cases}')
