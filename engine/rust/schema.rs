@@ -242,7 +242,7 @@ impl<'a> IntoIterator for &'a SnapshotRecords {
 
 #[derive(Clone, Debug)]
 pub struct EntitySnapshot {
-    /// Application policy, supplied by code rather than entity facts or JSON input.
+    /// Server-side study preference, separate from entity facts and user request fields.
     /// Database-free callers default to ordinary study and can test either mode.
     pub focused_mode: bool,
     pub entities: SnapshotRecords,

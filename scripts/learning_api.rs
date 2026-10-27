@@ -378,13 +378,13 @@ impl Application {
         let started = Instant::now();
         self.adopt(self.conn.sync()?)?;
         trace("sync", started);
-        if let Some(value) = body.as_object_mut().and_then(|body| body.remove("_focusedMode")) {
-            let focused = value.as_bool().ok_or("Focused mode must be a boolean")?;
-            if self.snapshot.focused_mode != focused {
-                self.snapshot.focused_mode = focused;
-                self.home_cache = None;
-                self.inventory_cache = None;
-            }
+        let focused = body.as_object_mut().and_then(|body| body.remove("_focusedMode"))
+            .map(|value| value.as_bool().ok_or("Focused mode must be a boolean"))
+            .transpose()?.unwrap_or(course_academy_engine::study_mode::FOCUSED_MODE);
+        if self.snapshot.focused_mode != focused {
+            self.snapshot.focused_mode = focused;
+            self.home_cache = None;
+            self.inventory_cache = None;
         }
         let action = body["action"].as_str().ok_or("Action required")?;
         if action=="inventory" {

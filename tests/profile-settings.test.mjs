@@ -35,7 +35,7 @@ async function fixture(theme = 'dark', courseId = 'one') {
   document.getElementById = id => find(node => node.id === id);
   const trigger = new Element('button'); trigger.id = 'learnerName'; document.body.append(trigger);
   const window = new EventTarget();
-  const profile = { learner: { name: 'Test learner', selfDirected: true }, course: courseId ? { id: courseId } : null, courses: [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }] };
+  const profile = { learner: { name: 'Test learner', selfDirected: true, focusedMode: true }, course: courseId ? { id: courseId } : null, courses: [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }] };
   const state = { enabled: false, fail: null, calls: [], events: [], stored: new Map() };
   for (const name of ['developer-mode-changing', 'developer-mode-settled', 'profile-changing', 'profile-changed', 'daily-xp-goal-changed']) {
     window.addEventListener(`course-academy:${name}`, event => state.events.push({ name, detail: event.detail }));
@@ -53,6 +53,7 @@ async function fixture(theme = 'dark', courseId = 'one') {
         if (state.hold?.path === path) await state.hold.promise;
         if (path === '/api/developer-mode') state.enabled = body.enabled;
         else if (path === '/api/daily-xp-goal') profile.learner.dailyXpGoal = body.dailyXpGoal;
+        else if (path === '/api/focused-mode') profile.learner.focusedMode = body.focusedMode;
         else { profile.learner.selfDirected = body.selfDirected; profile.course = { id: body.courseId }; }
         if (state.fail === path) { state.fail = null; throw new Error('Reply lost after commit'); }
       }
@@ -97,6 +98,42 @@ test('switches save in place, preserve the other switch, and keep the same dialo
   assert.equal(f.state.events.filter(e => e.name === 'developer-mode-settled').length, 2);
   f.get('profileCourse').value = 'two'; f.get('profileCourse').dispatchEvent(new Event('change')); await f.settle();
   assert.equal(f.state.events.at(-1).detail.changedCourse, true);
+});
+
+test('focused mode saves immediately, preserves other preferences, and notifies the current page', async () => {
+  const f = await fixture();
+  const toggle = f.get('focusedModeToggle'), dialog = f.get('userProfile');
+  assert.equal(toggle.getAttribute('aria-checked'), 'true');
+  const release = f.hold('/api/focused-mode');
+  toggle.click();
+  assert.equal(toggle.getAttribute('aria-checked'), 'false');
+  assert.equal(f.profile.learner.focusedMode, true);
+  release(); await f.settle();
+  assert.equal(f.profile.learner.focusedMode, false);
+  assert.equal(f.profile.learner.selfDirected, true);
+  assert.equal(f.profile.course.id, 'one');
+  assert.equal(dialog.open, true);
+  assert.equal(f.state.events.at(-1).detail.changedFocusedMode, true);
+  assert.equal(f.state.stored.has('course-academy-profile-changed'), true);
+  f.get('selfDirectedToggle').click(); await f.settle();
+  assert.equal(toggle.getAttribute('aria-checked'), 'false');
+  assert.equal(f.state.events.at(-1).detail.changedFocusedMode, false);
+});
+
+test('focused mode retries an uncertain save and follows changes from another tab', async () => {
+  const f = await fixture('dark', null);
+  const toggle = f.get('focusedModeToggle');
+  f.state.fail = '/api/focused-mode'; toggle.click(); await f.settle();
+  f.find(node => node.className === 'profile-retry').click(); await f.settle();
+  const writes = f.state.calls.filter(call => call.path === '/api/focused-mode');
+  assert.equal(writes.length, 2); assert.deepEqual(writes[0].body, writes[1].body);
+  assert.equal(toggle.getAttribute('aria-checked'), 'false');
+  assert.equal(f.profile.course, null);
+  f.profile.learner.focusedMode = true;
+  const event = new Event('storage'); Object.assign(event, { key: 'course-academy-profile-changed' });
+  f.window.dispatchEvent(event); await f.settle();
+  assert.equal(toggle.getAttribute('aria-checked'), 'true');
+  assert.equal(f.state.events.at(-1).detail.changedFocusedMode, true);
 });
 
 test('daily XP goal saves in the profile without changing course, modes, or the running lesson', async () => {

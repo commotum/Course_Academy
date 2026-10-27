@@ -2197,6 +2197,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   });
 
   let loading=false;
+  let focusedModeRefresh=false;
   let progressRefresh=null;
   async function refreshLearningProgress() {
     if(!snapshot || loading || document.hidden || progressRefresh)return;
@@ -2244,11 +2245,16 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       $('retryLoad').hidden=location.protocol==='file:';
       $('localServerLink').hidden=location.protocol!=='file:';
       if(snapshot)$('courseBrowse').disabled=false;
-    } finally {loading=false;renderTargetCourseFilters();renderTargetWeekStrip();}
+    } finally {
+      loading=false;renderTargetCourseFilters();renderTargetWeekStrip();
+      if(focusedModeRefresh){focusedModeRefresh=false;void loadData();}
+    }
   }
   $('retryLoad').onclick=loadData;
   window.addEventListener('course-academy:profile-changed', event => {
-    if(event.detail.changedFocusedMode)void loadData();
+    if(!event.detail.changedFocusedMode)return;
+    if(loading)focusedModeRefresh=true;
+    else void loadData();
   });
   $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
   $('targetColorToggle').addEventListener('click',()=>{
