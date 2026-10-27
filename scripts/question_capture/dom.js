@@ -392,6 +392,27 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
           const fences = {bmatrix:['[',']'], pmatrix:['(',')'], Bmatrix:['\\{','\\}'], vmatrix:['|','|'], Vmatrix:['\\Vert','\\Vert']}[environment];
           return fences ? '\\left' + fences[0] + array + '\\right' + fences[1] : array;
         }
+
+        let child = n, fenced = false;
+        for (let depth = 0; depth < 8 && child.parentElement; depth++) {
+          const parent = child.parentElement, siblings = [...parent.children], index = siblings.indexOf(child);
+          if (parent.localName === 'mfenced') { fenced = true; break; }
+          if (index > 0 && index + 1 < siblings.length && siblings[index-1].localName === 'mo' && siblings[index+1].localName === 'mo' &&
+              ['[]','()','||','‖‖','{}'].includes(siblings[index-1].textContent + siblings[index+1].textContent)) { fenced = true; break; }
+          if (siblings.length !== 1) break;
+          child = parent;
+        }
+        const spacing = (n.getAttribute('columnspacing') || '').trim().split(/\s+/);
+        if (!fenced && spacing.length && spacing.every(value => value === '1em')) {
+          const grid = [...n.children].filter(row => row.localName === 'mtr').map(row => [...row.children].map(cell => m(cell)));
+          const width = Math.max(0,...grid.map(row => row.length));
+          if (width >= 2) {
+            const align = (n.getAttribute('columnalign') || 'center').trim().split(/\s+/);
+            if (align.some(value => !['left','center','right'].includes(value))) errors.push('Unsupported MathML table columnalign');
+            const columns = Array.from({length:width},(_,i) => ({left:'l',center:'c',right:'r'}[align[Math.min(i,align.length-1)]] || 'c')).join('');
+            return '\\begin{array}{'+columns+'}'+grid.map(row => [...row,...Array(width-row.length).fill('')].join(' & ')).join(' \\\\ ')+'\\end{array}';
+          }
+        }
         const layout = environment || (centered && n.getAttribute('columnalign') ? 'matrix' : 'aligned');
         return '\\begin{' + layout + '}' + cs.join(' \\\\ ') + '\\end{' + layout + '}';
       }

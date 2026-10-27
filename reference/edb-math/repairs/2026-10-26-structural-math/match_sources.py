@@ -42,7 +42,7 @@ for p in sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.js
   root=soup.find(id=i.get('dom_id'))
   if root is None:continue
   if identity.startswith('tutorial:'):parts=[('tutorial/content',root)]
-  else:parts=[(a,n)for a,cs in [('question/problem',['exampleQuestion','questionWidget-text','questionText']),('question/worked-solution',['exampleExplanation','questionExplanation','questionWidget-explanation'])]for cls in cs for n in root.find_all(class_=cls)]
+  else:parts=[(a,n)for a,cs in [('question/problem',['exampleQuestion','questionWidget-text','questionText']),('question/worked-solution',['exampleExplanation','questionExplanation','questionWidget-explanation']),('answer/value',['questionWidget-choiceText','choiceText','selectListOption'])]for cls in cs for n in root.find_all(class_=cls)]
   for a,part in parts:
    if(identity,a)not in wanted:continue
    field_sources.append({'identity':identity,'attribute':a,'path':str(p.with_suffix('.html')),'html':str(part)})
@@ -53,7 +53,7 @@ for p in sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.js
 def captured(html,identity,path):
  if not isinstance(html,str)or '<'not in html:return
  soup=BeautifulSoup(slim_dom(html),'html.parser')
- for a,classes in [('question/problem',['exampleQuestion','questionWidget-text','questionText']),('question/worked-solution',['exampleExplanation','questionExplanation','questionWidget-explanation'])]:
+ for a,classes in [('question/problem',['exampleQuestion','questionWidget-text','questionText']),('question/worked-solution',['exampleExplanation','questionExplanation','questionWidget-explanation']),('answer/value',['questionWidget-choiceText','choiceText','selectListOption'])]:
   if(identity,a)not in wanted:continue
   seen=set()
   for cls in classes:

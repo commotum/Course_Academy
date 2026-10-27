@@ -25,6 +25,14 @@ SPEC.loader.exec_module(HISTORY)
 
 
 class MathMLBraceImportTests(unittest.TestCase):
+    def test_unruled_data_columns_keep_source_alignment(self):
+        self.assert_formula('<mtable columnalign="left center right" columnspacing="1em"><mtr><mtd><mi>x</mi></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mi>y</mi></mtd><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable>',
+                            r'\begin{array}{lcr}x & 1 & 2 \\ y & 3 & 4\end{array}')
+
+    def test_piecewise_brace_keeps_value_and_condition_columns(self):
+        self.assert_formula('<mrow><mo>{</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mi>x</mi><mo>&lt;</mo><mn>1</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mi>x</mi><mo>≥</mo><mn>1</mn></mtd></mtr></mtable></mrow>',
+                            r'\begin{cases}0 & x<1 \\ 2 & x\ge 1\end{cases}')
+
     def test_block_limit_preserves_operator_and_display_in_every_importer(self):
         formula = '<math display="block"><munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>2</mn></mrow></munder><mi>f</mi></math>'
         for name, source in self.sources.items():

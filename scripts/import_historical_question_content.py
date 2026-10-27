@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from question_capture.html_tables import source_table_html
-from question_capture.math_format import normalize_math_boundaries, normalize_source_tex, markdown_emphasis, mathml_ruled_table
+from question_capture.math_format import normalize_math_boundaries, normalize_source_tex, markdown_emphasis, mathml_ruled_table, mathml_unruled_table
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
@@ -71,6 +71,11 @@ class Renderer:
         if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%#]',lambda m:'\\'+m[0],str(n))))
         if not isinstance(n,Tag):return ''
         t=n.name.lower()
+        if t=='mrow':
+            children=n.find_all(recursive=False)
+            if len(children) in (2,3) and children[0].name=='mo' and children[0].get_text()=='{' and children[1].name=='mtable' and (len(children)==2 or children[2].name=='mo' and not children[2].get_text().strip()):
+                rows=[' & '.join(self.m(c) for c in row.find_all('mtd',recursive=False)) for row in children[1].find_all('mtr',recursive=False)]
+                return '\\begin{cases}'+' \\\\ '.join(rows)+'\\end{cases}'
         if t in ('mphantom','annotation','annotation-xml'):return ''
         cs=[self.m(c) for c in n.children];base=cs[0] if cs and cs[0] in (')',']','}') else '{'+(cs[0] if cs else '')+'}'
         if t=='mfrac':return '\\frac{'+cs[0]+'}{'+cs[1]+'}'
@@ -100,7 +105,22 @@ class Renderer:
                 ruled=mathml_ruled_table(rows,n.attrs)
             except ValueError as error:
                 self.errors.append(str(error));ruled=None
-            return ruled or '\\begin{aligned}'+' \\\\ '.join(cs)+'\\end{aligned}'
+            # A surrounding matrix fence supplies the role after the whole
+            # formula is available. Unfenced data tables retain their explicit
+            # column alignment instead of inheriting equation-pair spacing.
+            child=n;fenced=False
+            for _ in range(8):
+                parent=child.parent
+                if not isinstance(parent,Tag):break
+                if parent.name=='mfenced':fenced=True;break
+                siblings=parent.find_all(recursive=False)
+                index=next((i for i,x in enumerate(siblings) if x is child),-1)
+                if 0<index<len(siblings)-1 and siblings[index-1].name=='mo' and siblings[index+1].name=='mo' and siblings[index-1].get_text()+siblings[index+1].get_text() in ('[]','()','||','‖‖','{}'):
+                    fenced=True;break
+                if len(siblings)!=1:break
+                child=parent
+            unruled=mathml_unruled_table(rows,n.attrs) if not ruled and not fenced else None
+            return ruled or unruled or '\\begin{aligned}'+' \\\\ '.join(cs)+'\\end{aligned}'
         if t in ('mtr','mlabeledtr'):return ' & '.join(cs)
         if t=='menclose':
             if 'strike' in n.get('notation',''):return '\\cancel{'+''.join(cs)+'}'

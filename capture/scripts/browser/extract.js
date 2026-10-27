@@ -263,6 +263,12 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     const enclosure = t === 'menclose' && n.querySelector('mphantom') &&
       (n.getAttribute('notation') === null || n.getAttribute('notation') === 'longdiv');
     if (t === 'mphantom' && !preservePhantom) return '';
+    if (t === 'mrow' && [2,3].includes(n.children.length) && n.children[0].localName === 'mo' &&
+        n.children[0].textContent === '{' && n.children[1].localName === 'mtable' &&
+        (n.children.length === 2 || n.children[2].localName === 'mo' && !n.children[2].textContent.trim())) {
+      const rows = [...n.children[1].children].filter(row => row.localName === 'mtr');
+      return '\\begin{cases}'+rows.map(row => [...row.children].map(cell => m(cell)).join(' & ')).join(' \\\\ ')+'\\end{cases}';
+    }
     const cs = [...n.childNodes].map(child => m(child, preservePhantom || enclosure));
     if (preservePhantom && (n.closest('mphantom') || n.querySelector('mphantom'))) {
       if (!['mphantom','mi','mstyle','mrow','mn','mo','msup','msub','msqrt'].includes(t))
@@ -344,6 +350,27 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
           }
           if (frame === 'solid') body += ' \\\\ \\hline';
           return '\\begin{array}{' + columns + '}' + body + '\\end{array}';
+        }
+
+        let child = n, fenced = false;
+        for (let depth = 0; depth < 8 && child.parentElement; depth++) {
+          const parent = child.parentElement, siblings = [...parent.children], index = siblings.indexOf(child);
+          if (parent.localName === 'mfenced') { fenced = true; break; }
+          if (index > 0 && index + 1 < siblings.length && siblings[index-1].localName === 'mo' && siblings[index+1].localName === 'mo' &&
+              ['[]','()','||','‖‖','{}'].includes(siblings[index-1].textContent + siblings[index+1].textContent)) { fenced = true; break; }
+          if (siblings.length !== 1) break;
+          child = parent;
+        }
+        const spacing = (n.getAttribute('columnspacing') || '').trim().split(/\s+/);
+        if (!fenced && spacing.length && spacing.every(value => value === '1em')) {
+          const grid = [...n.children].filter(row => row.localName === 'mtr').map(row => [...row.children].map(cell => m(cell)));
+          const width = Math.max(0,...grid.map(row => row.length));
+          if (width >= 2) {
+            const align = (n.getAttribute('columnalign') || 'center').trim().split(/\s+/);
+            if (align.some(value => !['left','center','right'].includes(value))) fail('Unsupported MathML table columnalign');
+            const columns = Array.from({length:width},(_,i) => ({left:'l',center:'c',right:'r'}[align[Math.min(i,align.length-1)]] || 'c')).join('');
+            return '\\begin{array}{'+columns+'}'+grid.map(row => [...row,...Array(width-row.length).fill('')].join(' & ')).join(' \\\\ ')+'\\end{array}';
+          }
         }
         return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       }

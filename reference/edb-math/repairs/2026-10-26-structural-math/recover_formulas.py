@@ -3,7 +3,26 @@ import collections,json,re,sys,difflib
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/structural-math-2026-10-26';sys.path[:0]=[str(R/'scripts'),str(R/'reference/edb-math/repairs/2026-10-26-mixed-math-titles')]
-from reconstruct import reconstruct,SourceRenderer
+from reconstruct import SourceRenderer
+from bs4 import NavigableString,Tag
+class CompleteSourceRenderer(SourceRenderer):
+ def m(self,n):
+  if isinstance(n,Tag)and n.get("mathvariant")=="fraktur":
+   import copy
+   bare=copy.copy(n);del bare.attrs["mathvariant"];return r"\mathfrak{"+super().m(bare)+"}"
+  return super().m(n)
+def reconstruct(title):
+ r=CompleteSourceRenderer(None);parts=[]
+ for child in title.children:
+  if isinstance(child,NavigableString):parts.append(str(child))
+  elif isinstance(child,Tag)and child.name=="mjx-container":
+   roots=child.select("mjx-assistive-mml math")
+   if len(roots)!=1:raise ValueError("Expected one complete MathML fragment")
+   parts.append(r.m(roots[0]))
+  else:raise ValueError("Unsupported title child")
+ if r.errors:raise ValueError(r.errors)
+ from question_capture.math_format import normalize_source_tex
+ return normalize_source_tex("".join(parts))
 from question_capture.math_format import MATH,validate_tex,ENV,environment
 meta=json.loads((W/'metadata.json').read_text());values={(r['e'],r['a']):r['v']for r in json.loads((W/'values.json').read_text())};sourcefields=json.loads((W/'source-fields.json').read_text());targets=collections.defaultdict(set)
 for d in json.loads((H/'malformed-structure.json').read_text()):targets[d['e'],d['a']].add(d['start'])
@@ -18,7 +37,7 @@ def formulas(html):
   try:
    if t:tex=reconstruct(t)
    else:
-    m=n if n.name=='math'else n.find('math');r=SourceRenderer(None);tex=r.m(m)
+    m=n if n.name=='math'else n.find('math');r=CompleteSourceRenderer(None);tex=r.m(m)
     if r.errors:raise ValueError(r.errors)
    validate_tex(tex);out.append(tex)
   except Exception as ex:out.append({'error':str(ex)})
@@ -33,10 +52,17 @@ for(e,a),starts in targets.items():
  m=meta.get(str(e),{});identity='tutorial:'+str(m.get('tutorial/math-academy-id'))if a=='tutorial/content'else m.get('question/math-academy-id');before=values[e,a];maths=list(MATH.finditer(before));where=[i for i,x in enumerate(maths)if any(x.start()<=start<x.end()for start in starts)];sources=index.get((identity,a),[]);options=[];notes=[]
  for s in sources:
   fs=formulas(s['html'])
-  if len(fs)!=len(maths):notes.append({'path':s['path'],'source_formulas':len(fs),'stored_formulas':len(maths)});continue
+  # Match malformed blocks to a unique source formula with the same ordered numeric tokens.
+  # Exact sequence-position matches are preferred; extra diagram labels are not formulas to overwrite.
+  mapping={i:i for i in where}if len(fs)==len(maths)else{}
+  for i in where:
+   if i in mapping:continue
+   ns=numbers(maths[i][0]);choices=[j for j,src in enumerate(fs)if isinstance(src,str)and numbers(src)==ns]
+   if len(choices)==1:mapping[i]=choices[0]
+  if len(mapping)!=len(where):notes.append({'path':s['path'],'source_formulas':len(fs),'stored_formulas':len(maths)});continue
   changes=[];valid=True
   for i in where:
-   old=maths[i][0];new=fs[i]
+   old=maths[i][0];new=fs[mapping[i]]
    if not isinstance(new,str):valid=False;break
    if numbers(old)!=numbers(new):valid=False;notes.append({'path':s['path'],'index':i,'reason':'numeric token sequence differs','old_numbers':numbers(old),'new_numbers':numbers(new)});break
    changes.append({'index':i,'span':[maths[i].start(),maths[i].end()],'before':old,'after':'$$\n'+new+'\n$$'if old.startswith(('$$',r'\['))else'$'+new+'$'})

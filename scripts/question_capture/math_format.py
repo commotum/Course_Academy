@@ -68,6 +68,27 @@ def mathml_ruled_table(rows, attributes):
         body += r' \\ \hline'
     return r'\begin{array}{' + columns + '}' + body + r'\end{array}'
 
+def mathml_unruled_table(rows, attributes):
+    """Keep explicit 1em column layout on an unfenced source data table.
+
+    Callers handle fences and ruled tables first. Equation alignments normally
+    declare zero spacing between their right/left pairs and stay aligned.
+    """
+    spacing = str(attributes.get('columnspacing') or '').split()
+    if not spacing or any(value != '1em' for value in spacing):
+        return None
+    if not rows or max(map(len, rows)) < 2:
+        return None
+    alignment = str(attributes.get('columnalign') or 'center').split()
+    if not alignment or any(value not in ('left', 'center', 'right') for value in alignment):
+        raise ValueError('Unsupported MathML table columnalign')
+    width = max(map(len, rows))
+    columns = ''.join({'left': 'l', 'center': 'c', 'right': 'r'}[
+        alignment[min(i, len(alignment) - 1)]] for i in range(width))
+    body = r' \\ '.join(' & '.join(row + [''] * (width - len(row))) for row in rows)
+    return r'\begin{array}{' + columns + '}' + body + r'\end{array}'
+
+
 ENV = re.compile(r'\\(begin|end)\{([^{}]+)\}')
 
 def environment(text, start):
