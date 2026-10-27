@@ -24,7 +24,7 @@ def reconstruct(title):
  from question_capture.math_format import normalize_source_tex
  return normalize_source_tex("".join(parts))
 from question_capture.math_format import MATH,validate_tex,ENV,environment
-meta=json.loads((W/'metadata.json').read_text());values={(r['e'],r['a']):r['v']for r in json.loads((W/'values.json').read_text())};sourcefields=json.loads((W/'source-fields.json').read_text());targets=collections.defaultdict(set)
+parents=json.loads((W/'parents.json').read_text());meta=json.loads((W/'metadata.json').read_text());values={(r['e'],r['a']):r['v']for r in json.loads((W/'values.json').read_text())};sourcefields=json.loads((W/'source-fields.json').read_text());targets=collections.defaultdict(set)
 for d in json.loads((H/'malformed-structure.json').read_text()):targets[d['e'],d['a']].add(d['start'])
 for d in json.loads((H/'table-candidates.json').read_text()):
  if d['env']!='aligned':targets[d['e'],d['a']].add(d['span'][0])
@@ -42,14 +42,33 @@ def formulas(html):
    validate_tex(tex);out.append(tex)
   except Exception as ex:out.append({'error':str(ex)})
  return out
+def visible(tex):
+ for start in list(re.finditer(r'\\phantom\s*\{',tex))[::-1]:
+  depth=1;end=start.end()
+  while end<len(tex)and depth:
+   if tex[end]=='\\'and end+1<len(tex):end+=2;continue
+   depth+=(tex[end]=='{')-(tex[end]=='}');end+=1
+  tex=tex[:start.start()]+tex[end:]
+ return tex
 def numbers(tex):
+ tex=visible(tex)
  tex=re.sub(r'\\(?:hspace|vspace|kern|mkern)\{[^{}]*\}','',tex)
  return re.findall(r'(?<![A-Za-z])\d+(?:\.\d+)?',tex)
 index=collections.defaultdict(list)
 for s in sourcefields:index[s['identity'],s['attribute']].append(s)
 proposals=[];unresolved=[]
 for(e,a),starts in targets.items():
- m=meta.get(str(e),{});identity='tutorial:'+str(m.get('tutorial/math-academy-id'))if a=='tutorial/content'else m.get('question/math-academy-id');before=values[e,a];maths=list(MATH.finditer(before));where=[i for i,x in enumerate(maths)if any(x.start()<=start<x.end()for start in starts)];sources=index.get((identity,a),[]);options=[];notes=[]
+ m=meta.get(str(e),{});identity='tutorial:'+str(m.get('tutorial/math-academy-id'))if a=='tutorial/content'else m.get('question/math-academy-id');before=values[e,a];maths=list(MATH.finditer(before));bare=a=='answer/value'and m.get('answer/type')==17592186045498
+ if bare:
+  class Span:
+   def __getitem__(self,i):return before
+   def start(self):return 0
+   def end(self):return len(before)
+  maths=[Span()]
+ where=[i for i,x in enumerate(maths)if any(x.start()<=start<x.end()for start in starts)]
+ ids=[identity]
+ if a=='answer/value':ids=list({meta.get(str(q),{}).get('question/math-academy-id')for f,attr in parents.get(str(e),[])if attr=='answer-field/choices'for q,attr in parents.get(str(f),[])if attr=='question/answer-fields'})
+ sources=[s for ident in ids for s in index.get((ident,a),[])];options=[];notes=[]
  for s in sources:
   fs=formulas(s['html'])
   # Match malformed blocks to a unique source formula with the same ordered numeric tokens.
@@ -64,8 +83,9 @@ for(e,a),starts in targets.items():
   for i in where:
    old=maths[i][0];new=fs[mapping[i]]
    if not isinstance(new,str):valid=False;break
+   if bare and (old.lstrip().startswith('-')!=new.lstrip().startswith('-')):valid=False;break
    if numbers(old)!=numbers(new):valid=False;notes.append({'path':s['path'],'index':i,'reason':'numeric token sequence differs','old_numbers':numbers(old),'new_numbers':numbers(new)});break
-   changes.append({'index':i,'span':[maths[i].start(),maths[i].end()],'before':old,'after':'$$\n'+new+'\n$$'if old.startswith(('$$',r'\['))else'$'+new+'$'})
+   changes.append({'index':i,'span':[maths[i].start(),maths[i].end()],'before':old,'after':new if bare else'$$\n'+new+'\n$$'if old.startswith(('$$',r'\['))else'$'+new+'$'})
   if valid and changes:options.append({'e':e,'a':a,'identity':identity,'source_path':s['path'],'changes':changes})
  unique={json.dumps(o['changes'],sort_keys=True):o for o in options}
  if len(unique)==1:proposals.append(next(iter(unique.values())))

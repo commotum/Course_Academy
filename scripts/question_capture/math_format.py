@@ -871,21 +871,40 @@ def scalable_fraction_parentheses(text):
 
 
 def normalize_limit_operators(text):
-    """Recover limit operators only when a tendency condition identifies them."""
+    """Recover a limit's role from a balanced, explicit tendency condition."""
     text = re.sub(r'\\lim_\\limits(?=\s*\{)', lambda _: r'\lim_', text)
-    condition = r'(?=\s*_\{[^{}]*(?:\\to\b|→))'
-    # A group around the operator would turn it back into an ordinary atom and
-    # move its condition to the side, even in display math.
-    def ungroup(match):
-        if re.search(r'\\[A-Za-z]+\*?\s*$', text[:match.start()]):
-            return match[0]  # Preserve an explicit font/text/operator argument.
-        return r'\lim'
-    text = re.sub(r'\{(?:lim|\\lim)\}' + condition, ungroup, text)
-    text = re.sub(r'(?<![\\A-Za-z])lim' + condition, lambda _: r'\lim', text)
-    def legacy(match):
-        body = match[1].replace('→', r'\to ').replace('∞', r'\infty')
-        return r'\lim_{' + body.strip() + '}'
-    return re.sub(r'(?<![\\A-Za-z])lim_\(([^()]*(?:→|\\to\b)[^()]*)\)', legacy, text)
+    def end_group(opening, left='{', right='}'):
+        depth, cursor = 1, opening + 1
+        while cursor < len(text):
+            if text[cursor] == '\\' and cursor + 1 < len(text):
+                cursor += 2
+                continue
+            depth += (text[cursor] == left) - (text[cursor] == right)
+            cursor += 1
+            if not depth:
+                return cursor
+        return None
+    protected = []
+    for match in re.finditer(r'\\(?:text|textrm|mathrm|mathit|mathbf|mathbfit|operatorname\*?)\s*\{', text):
+        end = end_group(match.end() - 1)
+        if end: protected.append((match.start(), end))
+    tendency = re.compile(r'\\(?:to|rightarrow|longrightarrow|uparrow|downarrow)(?![A-Za-z])|[→⟶↑↓]')
+    edits = []
+    pattern = re.compile(r'(?P<operator>\{(?:lim|\\lim)\}|(?<![\\A-Za-z])lim)\s*_\s*(?P<opening>[{(])')
+    for match in pattern.finditer(text):
+        if any(a <= match.start() < b for a, b in protected): continue
+        if re.search(r'\\[A-Za-z]+\*?\s*$', text[:match.start()]): continue
+        left = match['opening']; end = end_group(match.end() - 1, left, '}' if left == '{' else ')')
+        if not end: continue
+        body = text[match.end():end - 1]
+        if not tendency.search(body): continue
+        if left == '{':
+            edits.append((match.start('operator'), match.end('operator'), r'\lim'))
+        else:
+            body = body.replace('→', r'\to ').replace('⟶', r'\longrightarrow ').replace('∞', r'\infty')
+            edits.append((match.start(), end, r'\lim_{' + body.strip() + '}'))
+    for start, end, value in reversed(edits): text = text[:start] + value + text[end:]
+    return text
 
 
 def normalize_tex(value):
@@ -1026,6 +1045,17 @@ def validate_prose(value):
     outside = MATH.sub('', text)
     if re.search(r'(?<!\\)\$', outside): raise ValueError('Unpaired math dollar delimiter')
     return text
+
+
+def validate_math_structure(value, *, bare_math=False):
+    """Check groups, environments and grids at an authoring boundary."""
+    spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
+    for span in spans:
+        if MATH.fullmatch(span):
+            size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
+            span = span[size:-size]
+        validate_tex(span)
+    return value
 
 
 def validate_generated_record(record):

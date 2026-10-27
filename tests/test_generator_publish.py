@@ -36,6 +36,14 @@ def record(number=2):
 
 
 class MatrixLayoutPublicationTests(unittest.TestCase):
+    def test_rejects_group_crossing_fake_determinant_and_ragged_grid(self):
+        for value in (r'\frac{5\begin{vmatrix}x &}{3\mid y\end{vmatrix}}',
+                      r'\begin{bmatrix}1&2\\3\end{bmatrix}'):
+            q = record()['question']
+            q[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                validate_question(q)
+
     def test_rejects_fenced_alignment_in_prompt_solution_and_answer(self):
         bad = r'|\begin{aligned}1&3\\2&-3\end{aligned}|'
         for key in (':question/problem', ':question/worked-solution'):

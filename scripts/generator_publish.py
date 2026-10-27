@@ -26,7 +26,7 @@ from capture.scripts.database.images import ImageLibrary
 from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_json
 from scripts.generator_packages import resolve_registered_script
 from scripts.question_markers import validate_prompt_markers
-from scripts.question_capture.math_format import normalize_math_boundaries, validate_math_boundaries, validate_matrix_layouts
+from scripts.question_capture.math_format import normalize_math_boundaries, validate_math_boundaries, validate_matrix_layouts, validate_math_structure
 from scripts.generator_source_policy import exclusion_query, question_entities, filter_material, reject_excluded_sources, source_references
 
 
@@ -199,6 +199,7 @@ def validate_question(q):
             raise ValueError('Generated question requires nonempty ' + key)
         validate_math_boundaries(q[key], strict=True)
         validate_matrix_layouts(q[key])
+        validate_math_structure(q[key])
     if ':question/math-academy-id' in q:
         raise ValueError('Generated content cannot claim a Math Academy source identity')
     if enum(q.get(':question/difficulty')) not in {':question.difficulty/' + x for x in ('easy', 'moderate', 'hard')}:
@@ -225,11 +226,14 @@ def validate_question(q):
             if atype == ':answer.type/text' and isinstance(value, str):
                 validate_math_boundaries(value, strict=True)
                 validate_matrix_layouts(value)
+                validate_math_structure(value)
             elif atype == ':answer.type/math' and isinstance(value, str):
                 validate_matrix_layouts(value, bare_math=True)
+                validate_math_structure(value, bare_math=True)
             if ':answer/feedback' in a:
                 validate_math_boundaries(a[':answer/feedback'], strict=True)
                 validate_matrix_layouts(a[':answer/feedback'])
+                validate_math_structure(a[':answer/feedback'])
             if not isinstance(value, str) or not value.strip() or atype not in {':answer.type/' + x for x in ('math', 'text', 'image')}:
                 raise ValueError('Generated answer is empty or has an unsupported type')
             if aid in ids or (atype, value) in typed_values:

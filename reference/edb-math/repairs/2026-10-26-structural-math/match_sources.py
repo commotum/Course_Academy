@@ -36,7 +36,6 @@ for p in sorted(Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.js
   if any(x==identity for x,a in wanted):use.append((i,identity))
  if not use:continue
  raw=p.with_suffix('.html').read_text();counts['source_html_files_read']+=1
- if '<mtable'not in raw:continue
  soup=BeautifulSoup(slim_dom(raw),'html.parser')
  for i,identity in use:
   root=soup.find(id=i.get('dom_id'))

@@ -14,6 +14,11 @@ class MathContentTests(unittest.TestCase):
         self.assertEqual(normalize_tex(r'a_{lim}+\text{lim}'), r'a_{lim}+\text{lim}')
         for source in (r'\text{lim}_{x\to 2}', r'\operatorname*{lim}_{x\to 2}', r'\mathbf {lim}_{x\to 2}'):
             self.assertEqual(normalize_tex(source), source)
+        self.assertEqual(normalize_tex(r'{lim}_{{x}\rightarrow2}f(x)'), r'\lim_{{x}\rightarrow2}f(x)')
+        self.assertEqual(normalize_tex(r'lim_{x\to2}f(x)'), r'\lim_{x\to2}f(x)')
+        self.assertEqual(normalize_tex(r'{lim}_{x\downarrow0}f(x)'), r'\lim_{x\downarrow0}f(x)')
+        self.assertEqual(normalize_tex('lim_((x,y)→(0,0))f(x,y)'), r'\lim_{(x,y)\to (0,0)}f(x,y)')
+        self.assertEqual(normalize_tex(r'\text{lim_{x\to2}}'), r'\text{lim_{x\to2}}')
 
     def test_wrapped_additive_scalar_is_not_a_matrix(self):
         source = r'e^t\left(\begin{aligned}&x\\&{}+(y)\end{aligned}\right)'
