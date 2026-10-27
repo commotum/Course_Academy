@@ -16,7 +16,7 @@ choose(17592186105571,'question/worked-solution','Sign chart: source grid restor
 choose(17592186068485,'question/worked-solution','Parallel equations: false matrix removed',r'\begin{bmatrix}')
 k=17592186052582,'answer/value';samples.append({'entity':k[0],'name':'Absolute values: false determinant removed','before':'$$'+first[k]+'$$','after':'$$'+final[k]['after']+'$$'})
 choose(17592186233511,'question/problem','Piecewise function: visible cases brace',r'f(x)={')
-f=next(f for f in json.loads((H/'batch-02/fields.json').read_text())if f['attribute']=='question/problem'and'{lim}'in f['before']and f['before'].count('$')==2)
+f=next(f for f in json.loads((H/'batch-02/fields.json').read_text())if f['attribute']=='question/problem'and'{lim}'in f['before']and'standalone-limit-display'in f['reasons']and f['before'].count('$')==2)
 samples.append({'entity':f['entity'],'name':'Limit operator and standalone display','before':f['before'],'after':f['after']})
 d=next(d for d in json.loads((H/'reviewed-edits.json').read_text())if d.get('zero_rule_stacks_recovered',0)>0);new=d['after'];m=next(ENV.finditer(new));span=environment(new,m.start());body=re.sub(r'^\{[^{}]*\}','',new[span[0]:span[1]]);g=cells(body);cell=next(c for row in g for c in row if r'\genfrac' in c);samples.append({'entity':d['e'],'name':'Zero-rule stack: source binomial notation','before':'$$'+cell.replace(r'\genfrac{}{}{0pt}{}',r'\frac')+'$$','after':'$$'+cell+'$$'})
 fixture=(R/'reference/mathacademy/repairs/2026-10-14-study-backlog/renderer-fixture.html').read_text();server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(R)));threading.Thread(target=server.serve_forever,daemon=True).start();origin=f'http://127.0.0.1:{server.server_port}';report=[]
