@@ -13,9 +13,12 @@ activity/step definitions and learner-task/item history. Their durable EDB
 integration is in `scripts/learning_api.rs`; the Study UI uses the same player.
 
 The profile's Focused mode switch controls focused study. When
-enabled, the app serves lessons, reviews, and assessments only from topics
+enabled, the Study feed offers lessons, reviews, and assessments only from topics
 directly in `learner/targets`, including every topic in a saved quiz or retake.
-Queue-only topics and prerequisites are excluded. Assessment age, XP, fresh
+Queue-only topics and prerequisites are excluded from the feed. Explicit Study
+now and Review Topic selections, including starting and resuming those activities,
+remain available for any topic under their normal content and lifecycle rules.
+Assessment age, XP, fresh
 question, and minimum-new-topic rules still apply. The targets graph initially
 fits the overview at prerequisite depth zero; disabling the switch restores
 the normal depth-two default. Changes apply immediately and are saved per

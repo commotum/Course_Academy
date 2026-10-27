@@ -239,13 +239,32 @@ impl Lifecycle {
         Ok(true)
     }
 }
-/// Apply the same gates to recommendations and API start/resume eligibility.
+/// Filter automatic recommendations, including their focused-mode scope.
 pub fn filter_candidates(
     s: &EntitySnapshot,
     l: u64,
     plan: Vec<learning::PlannedActivity>,
 ) -> Result<Vec<learning::PlannedActivity>> {
+    filter_candidates_with_lesson_order(s, l, filter_study_focus(s, l, plan)?, false)
+}
+
+/// An explicit topic choice keeps the ordinary supply and lifecycle checks,
+/// but focused mode only limits automatic recommendations.
+pub(crate) fn filter_selected_candidates(
+    s: &EntitySnapshot, l: u64, plan: Vec<learning::PlannedActivity>,
+) -> Result<Vec<learning::PlannedActivity>> {
     filter_candidates_with_lesson_order(s, l, plan, false)
+}
+
+fn filter_study_focus(s: &EntitySnapshot, l: u64, plan: Vec<learning::PlannedActivity>)
+    -> Result<Vec<learning::PlannedActivity>> {
+    let mut focused = Vec::new();
+    for candidate in plan {
+        if learning::activity_in_study_focus(s, l, candidate.activity)? {
+            focused.push(candidate);
+        }
+    }
+    Ok(focused)
 }
 
 /// Target/queue study uses a soft layer preference and lesson interleaving.
@@ -255,7 +274,7 @@ pub(crate) fn filter_self_directed_candidates(
     l: u64,
     plan: Vec<learning::PlannedActivity>,
 ) -> Result<Vec<learning::PlannedActivity>> {
-    filter_candidates_with_lesson_order(s, l, plan, true)
+    filter_candidates_with_lesson_order(s, l, filter_study_focus(s, l, plan)?, true)
 }
 
 fn filter_candidates_with_lesson_order(
@@ -277,13 +296,6 @@ fn filter_candidates_with_lesson_order(
         }
     }
     plan = unique;
-    let mut focused = Vec::new();
-    for candidate in plan {
-        if learning::activity_in_study_focus(s, l, candidate.activity)? {
-            focused.push(candidate);
-        }
-    }
-    plan = focused;
     let h = lifecycle(s, l)?;
     let seen = learning::unavailable_questions(s, l)?;
     plan.retain(|p| {

@@ -1026,7 +1026,7 @@ pub fn selected_topic_candidates(
             candidate.reason = "Selected for your queue".into();
         }
     }
-    crate::scheduling::filter_candidates(s, learner, plan)
+    crate::scheduling::filter_selected_candidates(s, learner, plan)
 }
 
 fn queue_candidates_in_scope(
@@ -3604,6 +3604,7 @@ pub(crate) mod tests {
         s.focused_mode = true;
         let before = s.entities.clone();
         assert_eq!(study_lesson_scope(&s, 1).unwrap(), BTreeSet::from([82]));
+        assert_eq!(selected_topic_candidates(&s, 1, 2, 85, Utc::now()).unwrap()[0].topic, 85);
         for directed in [true, false] {
             s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(directed));
             let plan = study_candidates(&s, 1, 2, Utc::now()).unwrap();

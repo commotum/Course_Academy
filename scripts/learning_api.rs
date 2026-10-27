@@ -633,9 +633,6 @@ fn check_lesson_retry(s: &EntitySnapshot, l: u64, activity: u64) -> Result<()> {
 // the resident immutable snapshot, including seen and reserved questions.
 fn check_activity_start(s: &EntitySnapshot, l: u64, activity: u64,
     selected_topic: Option<u64>, at: DateTime<Utc>) -> Result<()> {
-    if !learning::activity_in_study_focus(s, l, activity)? {
-        return Err("Focused mode only serves activities from your target topics".into());
-    }
     if retrieval::kind(s, activity)? == "lesson" {
         let topic = s.reference(activity, "activity/scope")?;
         let shortages = course_academy_engine::inventory::lesson_shortages(
@@ -670,9 +667,6 @@ enum TopicReviewPlan {
 }
 
 fn topic_review_plan(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) -> Result<TopicReviewPlan> {
-    if !learning::topic_in_study_focus(s, l, topic)? {
-        return Err("Focused mode only serves activities from your target topics".into());
-    }
     if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
     let mut existing = vec![];
     for task in s.refs(l, "learner/activity")? {
@@ -2267,9 +2261,6 @@ fn mutate_with_selection(
     }
     if action == "start" {
         let a = required(body, "activityId")?;
-        if !learning::activity_in_study_focus(s, l, a)? {
-            return Err("Focused mode only serves activities from your target topics".into());
-        }
         if retrieval::kind(s, a)? == "assessment"
             && !(number(s, a, "activity/time-limit-seconds").is_finite()
                 && number(s, a, "activity/time-limit-seconds") > 0.0)
@@ -2344,9 +2335,6 @@ fn mutate_with_selection(
     let t = required(body, "taskId")?;
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
-    if action == "resume" && !learning::activity_in_study_focus(s, l, a)? {
-        return Err("Focused mode only serves activities from your target topics".into());
-    }
     if status(s, a, "activity/type")? == "assignment" {
         return Err("Use the assignment question controls for this task".into());
     }
@@ -3510,18 +3498,25 @@ mod study_queue_tests {
     }
 
     #[test]
-    fn focused_api_rejects_non_target_starts_resumes_and_manual_reviews() {
+    fn focused_mode_keeps_topic_menu_checks_and_manual_lesson_resume_independent() {
         let mut s = usable_small_bank_fixture();
+        let at = Utc::now();
+        let normal = topic_study_availability(&s, 1, 6, at);
         s.focused_mode = true;
         s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([5]));
-        let at = Utc::now();
-        for (action, body) in [("start", json!({"activityId":51})),
-            ("resume", json!({"taskId":81})), ("review-topic", json!({"topicId":6}))] {
-            let error = mutate(&s, 1, action, &body, at).unwrap_err().to_string();
-            assert!(error.contains("Focused mode"), "{action}: {error}");
+        let focused = topic_study_availability(&s, 1, 6, at);
+        assert_eq!(focused, normal);
+        assert_eq!(focused["available"], true);
+        for (action, body) in [("study-topic", json!({"topicId":6})),
+            ("resume", json!({"taskId":81}))] {
+            assert!(mutate(&s, 1, action, &body, at).is_ok(), "{action}");
         }
-        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([6]));
-        assert!(mutate(&s, 1, "start", &json!({"activityId":51}), at).is_ok());
+        // Feed eligibility stays narrow, and manual content checks still apply.
+        assert!(!learning::study_candidates(&s, 1, 2, at).unwrap().iter().any(|p| p.topic == 6));
+        s.entities.get_mut(&72).unwrap().insert("knowledge-point/questions".into(),json!([71,74,75,76]));
+        let unavailable = topic_study_availability(&s, 1, 6, at);
+        assert_eq!(unavailable["available"], false);
+        assert!(unavailable["reason"].as_str().unwrap().contains("has 4 (needs 1 more)"));
     }
 
     #[test]

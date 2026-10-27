@@ -1175,6 +1175,42 @@ fn paused_assessment_expires_at_original_deadline_without_fabricating_unanswered
 }
 
 #[test]
+fn focused_manual_review_can_start_resume_and_answer_outside_targets() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let normal = f.snapshot()?;
+    let topic = normal.entities.with_attribute("topic/id").into_iter()
+        .find(|t| text(&normal, *t, "topic/title") == "Topic 0").unwrap();
+    assert!(!normal.refs(f.learner, "learner/targets")?.contains(&topic));
+    f.focused_mode = true;
+    let s = f.act("review-topic", json!({"topicId":topic}), f.now + 100)?;
+    let task = s.refs(f.learner, "learner/activity")?.into_iter().find(|task| {
+        s.optional_ref(*task, "learner-task/activity").ok().flatten().is_some_and(|activity|
+            retrieval::kind(&s, activity).ok().as_deref() == Some("review")
+            && s.optional_ref(activity, "activity/scope").ok().flatten() == Some(topic))
+        && status(&s, *task, "learner-task/status").ok().as_deref() == Some("started")
+    }).ok_or("Explicit non-target review was not started")?;
+    let first_item = items(&s, task)?[0];
+    let question = s.reference(first_item, "task-item/content")?;
+    let field = s.refs(question, "question/answer-fields")?[0];
+    f.act("pause", json!({"taskId":task}), f.now + 200)?;
+    let resumed = f.act("review-topic", json!({"topicId":topic}), f.now + 300)?;
+    assert_eq!(status(&resumed, task, "learner-task/status")?, "started");
+    assert_eq!(items(&resumed, task)?, [first_item]);
+    let answered = f.act("answer", json!({"taskId":task,"itemId":first_item,
+        "responses":[{"fieldId":field,"value":"2"}]}), f.now + 400)?;
+    assert_eq!(status(&answered, first_item, "task-item/status")?, "correct");
+    f.act("pause", json!({"taskId":task}), f.now + 500)?;
+    let resumed = f.act("resume", json!({"taskId":task}), f.now + 600)?;
+    assert_eq!(status(&resumed, task, "learner-task/status")?, "started");
+    let next = f.act("continue", json!({"taskId":task,"itemId":first_item}), f.now + 700)?;
+    assert_eq!(items(&next, task)?.len(), 2);
+    assert!(!learning::study_candidates(&next, f.learner, course(&next, f.learner)?,
+        DateTime::from_timestamp_millis(f.now + 700).unwrap())?.iter().any(|p| p.topic == topic));
+    assert_eq!(next.refs(f.learner, "learner/targets")?, normal.refs(f.learner, "learner/targets")?);
+    Ok(())
+}
+
+#[test]
 fn study_now_and_lesson_resume_bypass_required_queue_work_without_changing_it() -> Result<()> {
     for remediation in [false, true] {
         for self_directed in [false, true] {

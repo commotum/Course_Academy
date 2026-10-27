@@ -87,7 +87,7 @@ if (trigger) {
   fields.append(
     modeRow('Developer mode', 'Inspect lessons without recording answers, time, or progress.', developerModeControl),
     modeRow('Self-directed mode', 'Study topics from your selected queue.', directed),
-    modeRow('Focused mode', 'Study only your target topics. Open Targets without expanded prerequisites.', focused),
+    modeRow('Focused mode', 'Limit your study feed to target topics. Open Targets without expanded prerequisites.', focused),
   );
   const themeSwitch = node('button', 'profile-switch'); themeSwitch.type = 'button'; themeSwitch.id = 'lightModeToggle';
   themeSwitch.setAttribute('role', 'switch'); themeSwitch.setAttribute('aria-label', 'Light mode');
