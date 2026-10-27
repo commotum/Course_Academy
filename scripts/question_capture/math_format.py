@@ -800,7 +800,7 @@ def normalize_equality_chains(text):
                     after = rhs
                 elif rhs in ('.', ','):
                     expression += rhs
-                elif row is rows[-1] and re.fullmatch(r'(?:\\,|\s|[{}]|\\color\{[A-Za-z]+\})*(?:✓|\\checkmark|\\times)(?:\s|[{}])*', rhs):
+                elif row is rows[-1] and re.fullmatch(r'[.,]?(?:\\,|\\quad|\\qquad|\\hspace\{\d+(?:\.\d+)?(?:em|ex|pt|px)\}|\s|[{}]|\\color\{[A-Za-z]+\})*(?:✓|\\checkmark|\\times)(?:\s|[{}])*', rhs):
                     annotation = rhs
                 elif rhs:
                     break  # A complete equation or an annotation is not a chain.

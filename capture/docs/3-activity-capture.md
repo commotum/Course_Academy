@@ -18,6 +18,8 @@ Our schema separates the activity's structure from the content it presents:
 | Answer Field → Answer | The field's type and location, its answer choices, and a reference to its correct answer. |
 | Multistep | Shared context and its own ordered steps. |
 
+Capture complete formulas, preserving MathML table rows, column roles, grid rules, fences, zero-rule fraction stacks and operator limits. Never serialize a math table as pipe-and-semicolon text: `|=` is an alignment artifact, not an extra mathematical bar. The legacy JSON fallback must stop for structural conversion when it encounters a MathML table. Normalize and validate complete reconstructed formulas through `scripts/question_capture/math_format.py`, then compare actual renders against the source. Preserve intentional illustrations. Comparison-only aliases such as Unicode and ASCII derivative primes may help locate matching source grids; they must not silently change stored expressions.
+
 ### Activity and steps
 
 1. Open or resume the activity using its queue details. Save instructions, task ID, title, and topic/course references before starting when possible. Read instructions before starting a timed activity; use the queue's question count/time limit and monitor the live timer.

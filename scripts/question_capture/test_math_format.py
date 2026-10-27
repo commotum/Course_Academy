@@ -6,6 +6,17 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_source_equality_chain_keeps_spaced_correctness_annotation(self):
+        source = r'\begin{aligned}12x-28 &= \\ (4\cdot3x)-(4\cdot7) &= \\ 4(3x-7)&.\hspace{2em}{\color{green}{✓}}\end{aligned}'
+        result = normalize_tex(source)
+        validate_tex(result)
+        self.assertIn(r'12x-28 &= (4\cdot3x)-(4\cdot7)', result)
+        self.assertIn(r'&= 4(3x-7)', result)
+        self.assertIn(r'.\hspace{2em}{\color{green}{✓}}', result)
+        self.assertEqual(normalize_tex(result), result)
+        independent = r'\begin{aligned}x&=2\\y&=3\end{aligned}'
+        self.assertEqual(normalize_tex(independent), independent)
+
     def test_structural_check_includes_matrix_layout_after_source_recovery(self):
         from math_format import validate_math_structure
         with self.assertRaisesRegex(ValueError, 'matrix environment'):
