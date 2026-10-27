@@ -372,6 +372,7 @@ function stopClock() {
 
 // Cache only presentations already returned by the task API. Earlier steps are
 // review material, never an input to grading or to the current presentation.
+const stepIdentity = step => step?.itemId != null ? String(step.itemId) : step?.reviewKey;
 function rememberTaskStep(data) {
   const key = `course-academy.lesson-history.${data.learner?.id || 'learner'}.${data.taskId}`;
   let seen = seenTaskSteps.get(key);
@@ -380,7 +381,7 @@ function rememberTaskStep(data) {
     try {
       const saved = JSON.parse(sessionStorage.getItem(key));
       if (Array.isArray(saved)) for (const entry of saved) {
-        if (entry?.step?.itemId && Number.isInteger(entry.order) && entry.order > 0) seen.set(String(entry.step.itemId), entry);
+        if (stepIdentity(entry?.step) && Number.isInteger(entry.order) && entry.order > 0) seen.set(stepIdentity(entry.step), entry);
       }
     } catch { /* Review history can still be kept in memory. */ }
     seenTaskSteps.set(key, seen);
@@ -389,13 +390,14 @@ function rememberTaskStep(data) {
     // The saved presentation chain is authoritative across tabs and sessions.
     seen.clear();
     for (const entry of data.history) {
-      if (entry?.step?.itemId && Number.isInteger(entry.order) && entry.order > 0) seen.set(String(entry.step.itemId), entry);
+      if (stepIdentity(entry?.step) && Number.isInteger(entry.order) && entry.order > 0) seen.set(stepIdentity(entry.step), entry);
     }
   }
   if (data.step?.itemId) {
     const id = String(data.step.itemId);
-    const order = data.progress?.presented || seen.get(id)?.order || seen.size + 1;
-    for (const [item, entry] of seen) if (entry.order > order) seen.delete(item);
+    const finalAssessment = data.type === 'assessment' && terminal(short(data.status));
+    const order = (finalAssessment ? data.progress?.stepNumber : data.progress?.presented) || seen.get(id)?.order || seen.size + 1;
+    if (!finalAssessment) for (const [item, entry] of seen) if (entry.order > order) seen.delete(item);
     seen.set(id, {
       order, step: data.step,
       number: data.progress?.stepNumber ?? data.step.stepNumber,
@@ -964,7 +966,7 @@ function taskContent(data, step, number, total, archived = false) {
   const isAnswered = answered(short(step.status));
   const paused = ['paused', 'locked', 'unlocked'].includes(short(data.status));
   const resumeFromAnswer = paused && !archived && !isAnswered && !data.awaitingQuestions && ['lesson', 'review'].includes(data.type);
-  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || paused && !resumeFromAnswer;
+  const readOnly = archived || terminal(short(data.status)) || (data.type !== 'assessment' && isAnswered) || paused && !resumeFromAnswer;
   const fields = step.fields || [];
   let assessmentControls = null;
   if (kind === 'question' && fields.length) {
@@ -1044,6 +1046,7 @@ function taskContent(data, step, number, total, archived = false) {
   if (kind === 'question' && isAnswered && short(step.status) !== 'submitted') {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
     feedback.append(feedbackHeading(step.status));
+    if (step.unanswered) feedback.append(el('p', 'response-summary', 'Not answered.'));
     if (step.feedback) feedback.append(markdown(step.feedback));
     for (const field of fields) {
       if (field.response?.feedback) feedback.append(markdown(field.response.feedback));
@@ -1126,7 +1129,7 @@ async function renderTask(data) {
     const targetsLink = el('a', 'small-button', 'Back to targets →'); targetsLink.href = '/?view=targets';
     completionActions.append(actionButton('Back to study →', 'primary', leaveTask), targetsLink);
     done.append(el('p', '', `${duration(data.elapsedSeconds)} working time`), completionActions);
-    await showLessonStep(view, 'complete', seen.map(entry => ({ ...entry, id: String(entry.step.itemId) })), done, buildEarlier);
+    await showLessonStep(view, 'complete', seen.map(entry => ({ ...entry, id: stepIdentity(entry.step) })), done, buildEarlier);
     return;
   }
   const step = data.step;

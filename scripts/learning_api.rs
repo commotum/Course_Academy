@@ -1345,8 +1345,22 @@ fn task_step_json_with_elapsed(
     elapsed: Option<f64>,
 ) -> Result<Json> {
     let content = s.reference(i, "task-item/content")?;
-    let e = s.entity(content)?;
     let state = status(s, i, "task-item/status")?;
+    content_step_json(s, steps, content, Some(i), &state, elapsed)
+}
+
+/// Render a question independently of whether it has a saved presentation.
+/// Completed quizzes also review reserved questions the learner never opened.
+fn content_step_json(
+    s: &EntitySnapshot,
+    steps: &[learning::LessonStep],
+    content: u64,
+    item: Option<u64>,
+    state: &str,
+    elapsed: Option<f64>,
+) -> Result<Json> {
+    let e = s.entity(content)?;
+    let responses = item.map(|i| s.refs(i, "task-item/responses")).transpose()?.unwrap_or_default();
     let terminal = timing::terminal(&format!("task-item.status/{state}"));
     let tutorial = e.contains_key("tutorial/id");
     let example = s.is_example(content);
@@ -1379,8 +1393,8 @@ fn task_step_json_with_elapsed(
                     .transpose()?
             );
         }
-        if terminal || !s.refs(i, "task-item/responses")?.is_empty() {
-            let selected = s.refs(i, "task-item/responses")?.into_iter().find(|ch| {
+        if terminal || !responses.is_empty() {
+            let selected = responses.iter().copied().find(|ch| {
                 s.refs(f, "answer-field/choices")
                     .unwrap_or_default()
                     .contains(ch)
@@ -1394,13 +1408,13 @@ fn task_step_json_with_elapsed(
                 }
             }
         }
-        if matches!(state.as_str(), "correct" | "incorrect") {
+        if matches!(state, "correct" | "incorrect") {
             attach_field_grade(s, content, f, &mut field);
         }
         fields.push(field);
     }
     let markdown = if tutorial { text(s, content, "tutorial/content") } else { question_markdown(s, content)? };
-    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":markdown,"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":elapsed});
+    let mut step = json!({"itemId":item,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":markdown,"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":elapsed});
     step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
     step["mathAcademyId"] = json!(content_math_academy_id(e));
     if let Some((_, entry)) = authored {
@@ -1408,6 +1422,23 @@ fn task_step_json_with_elapsed(
     }
     if reveal {
         step["solution"] = json!(text(s, content, "question/worked-solution"));
+    }
+    Ok(step)
+}
+
+fn assessment_result_step(
+    s: &EntitySnapshot, steps: &[learning::LessonStep], content: u64,
+    item: Option<u64>, at: DateTime<Utc>,
+) -> Result<Json> {
+    let recorded = item.map(|i| status(s, i, "task-item/status")).transpose()?;
+    let unanswered = !matches!(recorded.as_deref(), Some("correct" | "incorrect"));
+    let elapsed = item.map(|i| timing::elapsed(s, i, at)).transpose()?;
+    // This is feedback for the finalized quiz, not a fabricated grading event.
+    let mut step = content_step_json(s, steps, content, item,
+        if unanswered { "incorrect" } else { recorded.as_deref().unwrap() }, elapsed)?;
+    step["unanswered"] = json!(unanswered);
+    if item.is_none() {
+        step["reviewKey"] = json!(format!("assessment-question-{content}"));
     }
     Ok(step)
 }
@@ -1476,10 +1507,26 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
         .unwrap_or(Json::Null);
     let assessment = retrieval::kind(s, a)? == "assessment";
     let hide_feedback = assessment && !matches!(task_state.as_str(), "completed" | "failed");
+    if assessment && !hide_feedback {
+        if let Some(item) = active {
+            step = assessment_result_step(s, &steps, s.reference(item, "task-item/content")?, Some(item), at)?;
+        }
+    }
     if hide_feedback && !step.is_null() {
         hide_assessment_feedback(&mut step);
     }
-    let history = if include_history {
+    let history = if include_history && assessment && !hide_feedback {
+        let presentations: BTreeMap<_, _> = chain.iter().map(|&i|
+            s.reference(i, "task-item/content").map(|content| (content, i))).collect::<std::result::Result<_, _>>()?;
+        let mut history = vec![];
+        for (index, entry) in steps.iter().enumerate() {
+            let item = presentations.get(&entry.content).copied();
+            if item.is_some() && item == active { continue; }
+            history.push(json!({"order":index + 1,"number":index + 1,"total":steps.len(),
+                "step":assessment_result_step(s, &steps, entry.content, item, at)?}));
+        }
+        history
+    } else if include_history {
         chain
             .iter()
             .filter(|i| Some(**i) != active)

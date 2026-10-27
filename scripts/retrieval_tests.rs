@@ -1047,6 +1047,57 @@ fn assessment_drafts_navigation_batch_submission_and_remediation_are_atomic() ->
     Ok(())
 }
 #[test]
+fn completed_assessment_reveals_feedback_for_empty_and_never_opened_questions() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (task, s) = f.start("assessment")?;
+    let activity = s.reference(task, "learner-task/activity")?;
+    let questions: Vec<_> = learning::lesson_steps(&s, activity)?.iter().map(|step| step.content).collect();
+    let first = s.refs(questions[0], "question/answer-fields")?[0];
+    f.act("draft", json!({"taskId":task,"responses":[{"fieldId":first,"value":"2"}]}), f.now + 200)?;
+    let s = f.act("navigate", json!({"taskId":task,"questionId":questions[1]}), f.now + 300)?;
+    let second = s.refs(questions[1], "question/answer-fields")?[0];
+    f.act("draft", json!({"taskId":task,"responses":[{"fieldId":second,"value":"3"}]}), f.now + 400)?;
+    let s = f.act("navigate", json!({"taskId":task,"questionId":questions[2]}), f.now + 500)?;
+    let active = task_json(&s, f.learner, task)?;
+    for step in active["history"].as_array().unwrap().iter().map(|entry| &entry["step"])
+        .chain(std::iter::once(&active["step"])) {
+        assert!(step.get("solution").is_none());
+        assert!(step["fields"].as_array().unwrap().iter().all(|field| field.get("correctAnswer").is_none()));
+    }
+    let finished = f.act("submit", json!({"taskId":task,"responses":[]}), f.now + 600)?;
+    let recorded = finished.entities.clone();
+    let view = task_json(&finished, f.learner, task)?;
+    let mut feedback: Vec<_> = view["history"].as_array().unwrap().iter()
+        .map(|entry| entry["step"].clone()).chain(std::iter::once(view["step"].clone())).collect();
+    feedback.sort_by_key(|step| questions.iter().position(|&q| step["contentId"] == q).unwrap());
+    assert_eq!(feedback.len(), questions.len());
+    assert_eq!(feedback[0]["status"], "correct");
+    assert_eq!(feedback[1]["status"], "incorrect");
+    assert_eq!(feedback[0]["fields"][0]["response"]["value"], "2");
+    assert_eq!(feedback[1]["fields"][0]["response"]["value"], "3");
+    for (index, step) in feedback.iter().enumerate() {
+        assert_eq!(step["contentId"], questions[index]);
+        assert_eq!(step["solution"], "One plus one is two.");
+        assert_eq!(step["fields"][0]["correctAnswer"]["value"], "2");
+        assert_eq!(step["unanswered"], index >= 2);
+        if index >= 2 { assert_eq!(step["status"], "incorrect"); }
+        if index >= 3 {
+            assert!(step["itemId"].is_null());
+            assert_eq!(step["reviewKey"], format!("assessment-question-{}", questions[index]));
+        }
+    }
+    assert_eq!(view["assessmentScore"], json!({"correct":1,"total":questions.len(),"unanswered":questions.len()-2}));
+    assert_eq!(items(&finished, task)?.len(), 3);
+    let last = *items(&finished, task)?.last().unwrap();
+    assert_eq!(status(&finished, last, "task-item/status")?, "paused");
+    assert_eq!(finished.entities, recorded, "reviewing must not fabricate presentation or grading facts");
+    if let Ok(path) = std::env::var("COURSE_ACADEMY_ASSESSMENT_FEEDBACK_FIXTURE") {
+        std::fs::write(path, serde_json::to_vec_pretty(&json!({"active":active,"completed":view}))?)?;
+    }
+    Ok(())
+}
+
+#[test]
 fn paused_assessment_expires_at_original_deadline_without_fabricating_unanswered_evidence()
 -> Result<()> {
     let mut f = Fixture::new(false)?;
@@ -1095,6 +1146,12 @@ fn paused_assessment_expires_at_original_deadline_without_fabricating_unanswered
     assert_eq!(status(&s, task, "learner-task/status")?, "completed");
     assert_eq!(status(&s, item, "task-item/status")?, "paused");
     assert_eq!(items(&s, task)?.len(), 1);
+    let expired_view = task_json(&s, f.learner, task)?;
+    let all_feedback: Vec<_> = expired_view["history"].as_array().unwrap().iter()
+        .map(|entry| &entry["step"]).chain(std::iter::once(&expired_view["step"])).collect();
+    assert_eq!(all_feedback.len(), learning::lesson_steps(&s, s.reference(task, "learner-task/activity")?)?.len());
+    assert!(all_feedback.iter().all(|step| step["status"] == "incorrect" && step["unanswered"] == true
+        && step["fields"][0].get("correctAnswer").is_some() && step.get("solution").is_some()));
     assert_eq!(number(&s, task, "learner-task/xp-earned"), -1.0);
     assert_eq!(
         before,
