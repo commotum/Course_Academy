@@ -707,6 +707,19 @@ def _matrix_layouts(text):
     raise ValueError('Excessive matrix nesting')
 
 
+def validate_matrix_layouts(value, *, bare_math=False):
+    """Reject fenced equation alignments that need actual matrix spacing.
+
+    Inspect only protected formulas (or an explicitly typed math answer).
+    Ordinary derivations and wrapped scalar continuations remain unchanged.
+    This guard does not rewrite authored content or answer identities.
+    """
+    spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
+    if any(_matrix_layouts(span) != span for span in spans):
+        raise ValueError('Fenced matrix needs a matrix environment; normalize its complete formula')
+    return value
+
+
 def _label_row_spacing(text):
     length = r'\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\]'
     def repair_spacing(value):

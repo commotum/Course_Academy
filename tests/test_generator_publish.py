@@ -35,6 +35,29 @@ def record(number=2):
             ':answer-field/choices': [{':answer/id': aid, ':answer/type': ':answer.type/math', ':answer/value': str(number+1)}]}]}}
 
 
+class MatrixLayoutPublicationTests(unittest.TestCase):
+    def test_rejects_fenced_alignment_in_prompt_solution_and_answer(self):
+        bad = r'|\begin{aligned}1&3\\2&-3\end{aligned}|'
+        for key in (':question/problem', ':question/worked-solution'):
+            q = record()['question']
+            q[key] = '$$' + r'\begin{aligned}D &=' + bad + r'\\ &=-9\end{aligned}' + '$$'
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'matrix environment'):
+                validate_question(q)
+        for atype, value in ((':answer.type/math', bad), (':answer.type/text', '$' + bad + '$')):
+            q = record()['question']
+            a = q[':question/answer-fields'][0][':answer-field/choices'][0]
+            a[':answer/type'], a[':answer/value'] = atype, value
+            with self.subTest(atype=atype), self.assertRaisesRegex(ValueError, 'matrix environment'):
+                validate_question(q)
+
+    def test_accepts_real_matrix_and_preserves_wrapped_scalar(self):
+        q = record()['question']
+        q[':question/worked-solution'] = '$$' + r'\begin{aligned}D &=\begin{vmatrix}1&3\\2&-3\end{vmatrix}\\&=-9\end{aligned}' + '$$'
+        validate_question(q)
+        q[':question/worked-solution'] = '$$' + r'e^t\left(\begin{aligned}&x\\&{}+(y)\end{aligned}\right)' + '$$'
+        validate_question(q)
+
+
 class FakeClient:
     """Tiny source-aware transaction model; real native predicates are tested separately."""
     def __init__(self):
