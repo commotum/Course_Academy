@@ -3,7 +3,9 @@ import collections,json,re,sys
 from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/structural-math-2026-10-26';OLD=R/'reference/edb-math/repairs/2026-10-24-mathml-tables';sys.path[:0]=[str(R/'scripts'),str(OLD)]
-from source_tables import LegacyRenderer,slim_dom
+from source_tables import LegacyRenderer
+def slim_dom(markup):
+ return re.sub(r'<svg\b[\s\S]*?</svg>',lambda m:'<svg>'+''.join(re.findall(r'<title\b[^>]*>[\s\S]*?</title>',m[0],re.I))+'</svg>',markup,flags=re.I)
 from layout import grid_key,expected_layout
 meta=json.loads((W/'metadata.json').read_text());parents=json.loads((W/'parents.json').read_text());candidates=json.loads((H/'table-candidates.json').read_text())
 def identities(e,attr):
