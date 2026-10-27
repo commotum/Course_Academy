@@ -6,6 +6,8 @@ struct Fixture {
     db: Database,
     learner: u64,
     now: i64,
+    // Existing fixtures exercise normal study; focused tests opt in explicitly.
+    focused_mode: bool,
 }
 impl Fixture {
     fn tx(&mut self, forms: Vec<Json>, at: i64) -> Result<()> {
@@ -25,7 +27,9 @@ impl Fixture {
         Ok(())
     }
     fn snapshot(&self) -> Result<EntitySnapshot> {
-        snapshot(&self.db.database_value())
+        let mut captured = snapshot(&self.db.database_value())?;
+        captured.focused_mode = self.focused_mode;
+        Ok(captured)
     }
     fn act(&mut self, action: &str, body: Json, at: i64) -> Result<EntitySnapshot> {
         let (forms, _) = mutate(
@@ -88,6 +92,7 @@ impl Fixture {
             db,
             learner: 0,
             now,
+            focused_mode: false,
         };
         let id = |n: u128| json!({"$uuid":uuid(n)});
         let defaults = serde_json::to_value(course_academy_engine::core::Policy::default())?;
@@ -2182,6 +2187,36 @@ fn failed_required_lesson_releases_global_gate_until_five_other_successes() -> R
     let view = home(&s, f.learner)?;
     assert!(view["activities"].as_array().unwrap().iter().all(|v|v["activityId"]==json!(lesson)&&v["priority"].as_f64().unwrap()>=12000.0));
     assert!(!view["activities"].as_array().unwrap().is_empty());
+    Ok(())
+}
+
+#[test]
+fn focused_regeneration_preserves_the_quiz_task_and_requires_five_target_topics() -> Result<()> {
+    let mut f = Fixture::with_admission(false, 3 * 86400000, false)?;
+    let old = f.available("assessment")?;
+    let before = f.snapshot()?;
+    let task = task_for(&before, f.learner, old)?.unwrap();
+    let at = DateTime::from_timestamp_millis(f.now + 100).unwrap();
+    let topics: Vec<_> = retrieval::assessment_pools(&before, f.learner, at)?.into_keys().collect();
+    assert_eq!(topics.len(), 5);
+    f.tx(vec![json!({"db/id":f.learner,"learner/targets":topics.clone()})], f.now + 1)?;
+    f.focused_mode = true;
+    let mut short = f.snapshot()?;
+    short.entities.get_mut(&f.learner).unwrap().insert("learner/targets".into(), json!(&topics[..4]));
+    assert!(mutate(&short, f.learner, "regenerate-assessment", &json!({"activityId":old}), at).is_err());
+    let focused = f.snapshot()?;
+    let (forms, result) = mutate(&focused, f.learner, "regenerate-assessment", &json!({"activityId":old}), at)?;
+    assert_eq!(result["taskId"], task);
+    f.tx(forms, f.now + 100)?;
+    let after = f.snapshot()?;
+    let new = after.reference(task, "learner-task/activity")?;
+    assert_ne!(old, new);
+    assert!(learning::activity_in_study_focus(&after, f.learner, new)?);
+    assert_eq!(after.entity(old)?, focused.entity(old)?);
+    assert_eq!(after.refs(f.learner, "learner/activity")?, focused.refs(f.learner, "learner/activity")?);
+    assert_eq!(status(&after, task, "learner-task/status")?, "unlocked");
+    assert!(items(&after, task)?.is_empty());
+    assert_eq!(serde_json::to_value(&after.status_history)?, serde_json::to_value(&focused.status_history)?);
     Ok(())
 }
 

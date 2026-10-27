@@ -12,6 +12,17 @@ lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
 activity/step definitions and learner-task/item history. Their durable EDB
 integration is in `scripts/learning_api.rs`; the Study UI uses the same player.
 
+`engine/rust/study_mode.rs` contains the code-only `FOCUSED_MODE` switch. When
+enabled, the app serves lessons, reviews, and assessments only from topics
+directly in `learner/targets`, including every topic in a saved quiz or retake.
+Queue-only topics and prerequisites are excluded. Assessment age, XP, fresh
+question, and minimum-new-topic rules still apply. The targets graph initially
+fits the overview at prerequisite depth zero; disabling the switch restores
+the normal depth-two default. Restart the study service after changing it.
+The app applies this policy to its immutable capture; it is never a database
+attribute, request setting, or UI control. Database-free engine fixtures can
+exercise either policy through the capture's transient `focused_mode` field.
+
 In engine mode, opening Study and finishing a task refresh the recommendations.
 Due reviews require explicitly learned FIRe state and five fresh gradable
 questions; the existing three-correct streak stops a review after at most five

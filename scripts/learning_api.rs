@@ -662,6 +662,9 @@ enum TopicReviewPlan {
 }
 
 fn topic_review_plan(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) -> Result<TopicReviewPlan> {
+    if !learning::topic_in_study_focus(s, l, topic)? {
+        return Err("Focused mode only serves activities from your target topics".into());
+    }
     if !s.entity(topic)?.contains_key("topic/id") { return Err("Review requires a topic entity ID".into()); }
     let mut existing = vec![];
     for task in s.refs(l, "learner/activity")? {
@@ -3448,6 +3451,21 @@ mod study_queue_tests {
         assert!(forms.contains(&cas(&s,81,"learner-task/status","learner-task.status/started").unwrap()));
         let (_,plan)=queue_preparation(&s,1,Utc::now()).unwrap();
         assert!(plan.iter().any(|p|p.activity==51));
+    }
+
+    #[test]
+    fn focused_api_rejects_non_target_starts_resumes_and_manual_reviews() {
+        let mut s = usable_small_bank_fixture();
+        s.focused_mode = true;
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([5]));
+        let at = Utc::now();
+        for (action, body) in [("start", json!({"activityId":51})),
+            ("resume", json!({"taskId":81})), ("review-topic", json!({"topicId":6}))] {
+            let error = mutate(&s, 1, action, &body, at).unwrap_err().to_string();
+            assert!(error.contains("Focused mode"), "{action}: {error}");
+        }
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([6]));
+        assert!(mutate(&s, 1, "start", &json!({"activityId":51}), at).is_ok());
     }
 
     #[test]
