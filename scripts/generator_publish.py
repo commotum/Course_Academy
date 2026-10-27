@@ -351,6 +351,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
     validate_financial_spacing(accepted, kp_id)
     from scripts.triangle_complement_batch_policy import validate_delivery_batch as validate_triangle_complement
     validate_triangle_complement(accepted, kp_id)
+    from generate.matrix_product_prompt_policy import validate_delivery_batch as validate_matrix_prompt
+    validate_matrix_prompt(accepted, kp_id)
     return accepted, duplicate_count
 
 
