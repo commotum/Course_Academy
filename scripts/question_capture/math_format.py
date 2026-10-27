@@ -1076,6 +1076,10 @@ def validate_math_structure(value, *, bare_math=False):
             size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
             span = span[size:-size]
         validate_tex(span)
+        if normalize_limit_operators(span) != span:
+            raise ValueError('Malformed limit operator; normalize the tendency condition')
+        if normalize_sized_bars(span) != span:
+            raise ValueError('Sized bar needs a delimiter glyph, not mid')
     return value
 
 

@@ -24,6 +24,9 @@ for proposal in json.loads((H/'source-formula-proposals.json').read_text()):
   if not isbroken and signature(old)==signature(new):skips.append({'e':key[0],'a':key[1],'span':[a,b],'reason':'Current matrix/grid structure agrees with source; formatting differences are not defects'});continue
   if old==new:continue
   edits[key].append((a,b,new,'source-formula-recovery'));review.append({**c,'e':key[0],'a':key[1],'source_path':proposal['source_path'],'source_identity':proposal['identity'],'reason':'Identity-bound original formula restores a malformed or incorrect layout role'});counts['source_formula_blocks']+=1
+for d in json.loads((H/'source-evaluation-bar-repairs.json').read_text()):
+ key=d['e'],d['a'];a,b=d['span'];assert values[key][a:b]==d['before'];assert not any(s<b and a<z for s,z,_,_ in edits[key])
+ edits[key].append((a,b,d['after'],'source-evaluation-bar-recovery'));review.append({**d,'reason':'Exact original source restores absolute/evaluation bar scopes'});counts['source_evaluation_bar_blocks']+=1
 for d in json.loads((H/'inverse-answer-repairs.json').read_text()):
  key=d['e'],d['a'];assert values[key]==d['before'];assert not edits[key]
  edits[key].append((0,len(d['before']),d['after'],'reversible-absolute-value-repair'));counts['reversible_answer_values']+=1
