@@ -53,7 +53,7 @@ def visible(tex):
 def numbers(tex):
  tex=visible(tex)
  tex=re.sub(r'\\(?:hspace|vspace|kern|mkern)\{[^{}]*\}','',tex)
- return re.findall(r'(?<![A-Za-z])\d+(?:\.\d+)?',tex)
+ return re.findall(r'\d+(?:\.\d+)?',tex)
 index=collections.defaultdict(list)
 for s in sourcefields:index[s['identity'],s['attribute']].append(s)
 proposals=[];unresolved=[]
