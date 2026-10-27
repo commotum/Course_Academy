@@ -15,6 +15,8 @@ def reconstruct(title):
  r=CompleteSourceRenderer(None);parts=[]
  for child in title.children:
   if isinstance(child,NavigableString):parts.append(str(child))
+  elif isinstance(child,Tag)and child.name=="span"and not child.find("math"):
+   parts.append(child.get_text("",strip=False))
   elif isinstance(child,Tag)and child.name=="mjx-container":
    roots=child.select("mjx-assistive-mml math")
    if len(roots)!=1:raise ValueError("Expected one complete MathML fragment")

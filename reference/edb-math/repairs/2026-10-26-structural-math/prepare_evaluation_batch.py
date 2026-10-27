@@ -15,10 +15,14 @@ for path in Path('/home/jake/Developer/MA/DATA/Lessons').glob('*/Source/*.json')
   if node:sources['e-'+str(item['content_id'])]=(node,path.with_suffix('.html'))
 fields=[];edits=[]
 for d in rows:
- identity=meta[str(d['e'])]['question/math-academy-id'];node,path=sources[identity];part=node.find(class_='exampleQuestion'if d['a']=='question/problem'else'exampleExplanation');src=formulas(str(part));ms=list(MATH.finditer(d['v']));assert len(src)==len(ms),(identity,len(src),len(ms));changes=[]
+ identity=meta[str(d['e'])]['question/math-academy-id'];node,path=sources[identity];part=node.find(class_='exampleQuestion'if d['a']=='question/problem'else'exampleExplanation');src=formulas(str(part))if part else[];ms=list(MATH.finditer(d['v']));assert not src or len(src)==len(ms),(identity,len(src),len(ms));changes=[]
  for i,m in enumerate(ms):
   if re.search(r'\\[Bb]ig(?:g)?[lrm]?\s*\\right',m[0])or re.search(r'\\(?:dfrac|frac)\s*\{[^{}]*\\mid[^{}]*\\right\s*\|\s*\^',m[0]):
-   tex=src[i];assert isinstance(tex,str),(identity,i,tex);changes.append((m.start(),m.end(),'$$\n'+tex+'\n$$'));edits.append({'entity':d['e'],'attribute':d['a'],'source_identity':identity,'source_path':str(path),'before':m[0],'after':tex,'span':[m.start(),m.end()]})
+   if src:
+    tex=src[i];assert isinstance(tex,str),(identity,i,tex);replacement='$$\n'+tex+'\n$$';basis='Exact archived source formula'
+   else:
+    replacement=re.sub(r'\\[Bb]ig(?:g)?[lrm]?\s*(\\right)',lambda m:m[1],m[0]);assert replacement!=m[0];tex=replacement;basis='Structural correction: remove the invalid sizing command before an existing right delimiter; retain all glyphs, operands and limits'
+   changes.append((m.start(),m.end(),replacement));edits.append({'entity':d['e'],'attribute':d['a'],'source_identity':identity,'source_path':str(path),'before':m[0],'after':tex,'span':[m.start(),m.end()],'basis':basis})
  assert changes
  after=d['v']
  for a,b,value in reversed(changes):after=after[:a]+value+after[b:]
