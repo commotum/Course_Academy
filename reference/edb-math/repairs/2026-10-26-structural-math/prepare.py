@@ -4,7 +4,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/structural-math-2026-10-26';sys.path[:0]=[str(R/'scripts'),str(R/'reference/edb-math/repairs/2026-10-24-mathml-tables')]
 from migrate_learner_history import dumps,kw
-from question_capture.math_format import MATH,ENV,environment,cells,normalize_limit_operators,mathml_ruled_table,mathml_unruled_table,validate_math_structure
+from question_capture.math_format import MATH,ENV,environment,cells,normalize_limit_operators,normalize_piecewise_cases,normalize_sized_bars,legacy_choice,validate_tex,mathml_ruled_table,mathml_unruled_table,validate_math_structure
 from layout import grid_key
 values={(d['e'],d['a']):d['v']for d in json.loads((W/'values.json').read_text())};meta=json.loads((W/'metadata.json').read_text());parents=json.loads((W/'parents.json').read_text());edits=collections.defaultdict(list);review=[];skips=[];counts=collections.Counter();malformed={(x['e'],x['a'],x['start'])for x in json.loads((H/'malformed-structure.json').read_text())}
 def signature(tex):
@@ -54,17 +54,36 @@ for key,before in values.items():
  after=before
  for s,z,new,reason in reversed(changes):after=after[:s]+new+after[z:]
  math_answer=a=='answer/value'and meta[str(e)].get('answer/type')==17592186045498
- nlim=[0]
- def limit(m):
-  result=normalize_limit_operators(m[0]);nlim[0]+=result!=m[0];return result
- if math_answer:
-  fixed=normalize_limit_operators(after);nlim[0]+=fixed!=after;after=fixed
- else:after=MATH.sub(limit,after)
- counts['limit_operator_math_blocks']+=nlim[0]
+ structural_counts=collections.Counter()
+ def structural(whole):
+  ismath=MATH.fullmatch(whole)
+  size=(2 if whole.startswith(('$$',r'\[',r'\('))else 1)if ismath else 0
+  body=whole[size:-size]if size else whole
+  for name,fn in [('limit-operator',normalize_limit_operators),('piecewise-brace',normalize_piecewise_cases),('sized-bar',normalize_sized_bars),('flattened-system',legacy_choice)]:
+   result=fn(body)
+   if result!=body:structural_counts[name]+=1
+   body=result
+  return whole[:size]+body+whole[-size:]if size else body
+ after=structural(after)if math_answer else MATH.sub(lambda m:structural(m[0]),after)
+ if re.search(r'(?m)^\$\$\s*\n\s*\$\$\s*\n\s*\$\$',after):
+  original=after;parts=re.split(r'(?m)^[ \t]*\$\$[ \t]*(?:\r?\n|$)',after);fixed=[];mathblocks=0
+  for part in parts:
+   core=part.strip()
+   if not core:continue
+   if re.match(r'^(?:[+\-\d.]*\s*)?(?:\\[A-Za-z]+|\{\\[A-Za-z]+|[^\W\d_][^\n$]*?=|◻=)',core):
+    validate_tex(core);fixed.append('$$\n'+core+'\n$$');mathblocks+=1
+   else:
+    assert r'\begin{'not in core,(key,'ambiguous duplicate boundary')
+    fixed.append(core)
+  assert mathblocks and re.sub(r'\s+|\$\$','',original)==re.sub(r'\s+|\$\$','','\n\n'.join(fixed)),(key,mathblocks)
+  after='\n\n'.join(fixed);structural_counts['duplicate-display-wrapper']+=1
+ counts['limit_operator_math_blocks']+=structural_counts['limit-operator']
+ for name,n in structural_counts.items():
+  if name!='limit-operator':counts[name+'_blocks']+=n
  if after==before:continue
  assert re.findall(r'\{\{[^{}]+\}\}',before)==re.findall(r'\{\{[^{}]+\}\}',after),(key,'field markers')
  assert re.findall(r'!\[[^\]]*\]\([^)]*\)|<img\b[^>]*>',before)==re.findall(r'!\[[^\]]*\]\([^)]*\)|<img\b[^>]*>',after),(key,'image references')
- reasons=sorted({r for _,_,_,r in changes}|({'limit-operator'}if nlim[0]else set()))
+ reasons=sorted({r for _,_,_,r in changes}|set(structural_counts))
  fs=sorted({p for p,attr in parents.get(str(e),[])if attr in ('answer-field/choices','answer-field/correct')})
  fields.append({'entity':e,'attribute':a,'before':before,'after':after,'before_sha256':hashlib.sha256(before.encode()).hexdigest(),'after_sha256':hashlib.sha256(after.encode()).hexdigest(),'math_answer':math_answer,'answer_fields':fs,'reasons':reasons})
  try:validate_math_structure(after,bare_math=math_answer)

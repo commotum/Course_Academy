@@ -6,6 +6,14 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_piecewise_brace_is_not_a_group_and_sized_bars_are_delimiters(self):
+        source = r'f(x)={\begin{aligned}x^2&x<0\\0&x=0\\x&x>0\end{aligned}'
+        self.assertEqual(normalize_tex(source), r'f(x)=\begin{cases}x^2&x<0\\0&x=0\\x&x>0\end{cases}')
+        grouped = r'{\begin{aligned}a&b\\c&d\end{aligned}}'
+        self.assertEqual(normalize_tex(grouped), grouped)
+        self.assertEqual(normalize_tex(r'\big\mid A\big\mid=P(A\mid B)'),
+                         r'\big\vert A\big\vert=P(A\mid B)')
+
     def test_limit_operator_keeps_its_tendency_condition(self):
         for source in (r'{lim}_{x\to 2}4^{x/2}', r'{\lim}_{x\to 2}4^{x/2}',
                        r'lim_{x\to 2}4^{x/2}', r'\lim_\limits{x\to 2}4^{x/2}'):

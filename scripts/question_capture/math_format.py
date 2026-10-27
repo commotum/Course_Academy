@@ -870,6 +870,27 @@ def scalable_fraction_parentheses(text):
     return text
 
 
+def normalize_sized_bars(text):
+    """A sizing command needs a delimiter glyph, not the relation macro mid."""
+    return re.sub(r'(\\(?:left|right|middle|[Bb]ig(?:g)?[lrm]?)\s*)\\mid(?![A-Za-z])',
+                  lambda m: m[1] + r'\vert', text)
+
+
+def normalize_piecewise_cases(text):
+    """Recover a literal, unmatched left brace on value/condition rows."""
+    changes = []
+    condition = re.compile(r'[<>=]|\\(?:leq?|geq?|in|notin|neq?)(?![A-Za-z])|\\text\{\s*(?:otherwise|else)\s*\}')
+    for match in re.finditer(r'(?<!\\)\{\s*(?=\\begin\{aligned\})', text):
+        span = environment(text, match.end())
+        if not span or text[span[2]:].lstrip().startswith('}'): continue
+        rows = cells(text[span[0]:span[1]])
+        if not rows or len(rows) < 2 or any(len(row) != 2 or not all(row) or
+                not condition.search(row[1]) or '=' in row[0] for row in rows): continue
+        changes.append((match.start(), span[2], r'\begin{cases}' + text[span[0]:span[1]] + r'\end{cases}'))
+    for start, end, value in reversed(changes): text = text[:start] + value + text[end:]
+    return text
+
+
 def normalize_limit_operators(text):
     """Recover a limit's role from a balanced, explicit tendency condition."""
     text = re.sub(r'\\lim_\\limits(?=\s*\{)', lambda _: r'\lim_', text)
@@ -915,7 +936,7 @@ def normalize_tex(value):
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
-    text = normalize_limit_operators(_label_row_spacing(text))
+    text = normalize_piecewise_cases(normalize_sized_bars(normalize_limit_operators(_label_row_spacing(text))))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
     text = re.sub(r'\\require\s*\{(?:cancel|enclose)\}\s*', '', text)
