@@ -27,6 +27,9 @@ class MathContentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Sizing command'):
             validate_tex(r'\left.x^2\Big\right|_0^1')
         validate_tex(r'\int\frac{\left|x\right|^3}{1+x}')
+        with self.assertRaisesRegex(ValueError, 'delimiter glyph'):
+            validate_tex(r'\left(\frac{7}{9}\right')
+        validate_tex(r'\left(\frac{7}{9}\right.')
 
     def test_piecewise_brace_is_not_a_group_and_sized_bars_are_delimiters(self):
         source = r'f(x)={\begin{aligned}x^2&x<0\\0&x=0\\x&x>0\end{aligned}'

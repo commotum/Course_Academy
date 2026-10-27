@@ -1025,6 +1025,8 @@ def normalize_prose(value):
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
     text = str(value); depth = 0; stack = []; fences = []
+    if re.search(r'\\(?:left|right|middle)(?![A-Za-z])\s*$', text):
+        raise ValueError('Missing left/right delimiter glyph')
     check_fences = not re.search(r'\\(?:newcommand|renewcommand|def)(?![A-Za-z])', text)
     if re.search(r'\\[Bb]ig(?:g)?[lrm]?\s*\\(?:left|right|middle)(?![A-Za-z])', text):
         raise ValueError('Sizing command cannot take a left/right command as its delimiter')

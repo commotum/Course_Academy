@@ -9,6 +9,7 @@ if final:
  fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-02/fields.json').read_text())})
  if(H/'batch-03/fields.json').exists():fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-03/fields.json').read_text())})
  if(H/'batch-04/fields.json').exists():fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-04/fields.json').read_text())})
+if final and(H/'batch-05/fields.json').exists():fields.update({(f['entity'],f['attribute']):f for f in json.loads((H/'batch-05/fields.json').read_text())})
 snapshot=W/('final.jsonl'if final else'after.jsonl')
 for line in snapshot.open():
  d=json.loads(line);e,a,v=d['e'],d['a'],d['v'];counts['facts']+=1

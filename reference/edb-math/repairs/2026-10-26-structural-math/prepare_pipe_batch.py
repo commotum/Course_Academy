@@ -65,6 +65,15 @@ assert len(seen)==len(props)
 fields=[];validation=[]
 for(e,a),d in sorted(proposed.items()):
  before,after=d['before'],d['after'];assert before!=after
+ if(e,a)==(17592186221065,'question/worked-solution'):
+  old=r'\left(\dfrac{7}{9}\right'+'\n$$';new=r'\left(\dfrac{7}{9}\right.'+'\n$$'
+  assert old in after;after=after.replace(old,new,1);reasons[e,a].add('source-null-delimiter')
+ if(e,a)==(17592186204245,'question/problem'):
+  # q-212891 source explicitly shows visible set delimiters, including across
+  # the same three response slots. Escape only those delimiters.
+  for old,new in [('$X = {1, 2, 3, 4}$',r'$X = \{1, 2, 3, 4\}$'),('$S∘R = {(1, 1), (1$',r'$S∘R = \{(1, 1), (1$'),('$, 2)}$',r'$, 2)\}$')]:
+   assert old in after;after=after.replace(old,new,1)
+  reasons[e,a].add('source-set-delimiters')
  bare=a=='answer/value'and meta.get(str(e),{}).get('answer/type')==17592186045498
  try:validate_math_structure(after,bare_math=bare)
  except ValueError as ex:
