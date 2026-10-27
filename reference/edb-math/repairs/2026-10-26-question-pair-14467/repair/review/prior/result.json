@@ -1,0 +1,180 @@
+{
+  "verdict": "accepted",
+  "summary": "All nine checks and all three final bands pass. No current defect required a package or shared-code change; imported records and level coverage remain unchanged. Final artifacts and native grading verified in this session; publication remains runner-controlled.",
+  "source_analysis": {
+    "skill": "Identify a distinct parallel line by isolating y in a given standard-form equation and matching slopes among complete line choices.",
+    "reasoning_steps": [
+      "Rearrange Ax+By=C to By=-Ax+C and y=(-A/B)x+C/B.",
+      "Read slope -A/B and compare candidate x coefficients, ignoring intercept except to exclude the same line.",
+      "Select the unique distinct line with equal slope."
+    ],
+    "invariants": [
+      "Nonzero y coefficient and exactly one parallel distinct candidate.",
+      "Radio selection of a complete line; no unknown-parameter task.",
+      "Worked solution shows rearrangement, division, and slope comparison."
+    ],
+    "permitted_variations": [
+      "Both signs of A and B, small integer or rational resulting slope, cancellable common factors.",
+      "Target constant and all candidate intercepts may vary independently, preserving distinctness.",
+      "Which candidate qualifies, its position, slope rank and sign may vary. Correct option must not have uniquely recognizable formatting.",
+      "Moderate and hard may increase sign/division decisions within the same algebra; source has only easy labels, so higher bands require explicitly authored calibration."
+    ],
+    "source_refs": [
+      "e-14367 / b2f31785-e173-518c-a1fd-b069e0834b2a: 12x-y=3, isolate y, match 12.",
+      "q-13400 / 18660893-6110-5df8-bfd8-f3d922709ebc: 8x-y=2, select y=8x-3.",
+      "q-28288 / 63caf14b-4a45-5fc8-9446-996c19cf7a2b: 4x-2y=6, select y=2x+6.",
+      "q-44380 / b444fd71-00fa-57c3-8df1-8666ae2725d8: 6x-2y=11, division and slope 3.",
+      "q-110094 and q-22574: incomplete banks show rational positive and negative slope identification; no missing imported fields will be changed.",
+      "Lesson tutorial 8902 / 2a7600a0-ce9a-5126-866d-bc3d1cf82b41: distinct parallel lines have equal slopes; examples y=2x+4 and y=2x-5.",
+      "Prerequisite e-13979 / 9b0cfd54-9310-59e6-91cb-5b18413ae7b3: isolate y in 4x-2y=1."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "Four complete imported source questions and three investigation exemplars reproduce normalized prompts, full banks and worked solutions. Canonical three-line example independently resolves to II. Two partial imported banks retain their instructional evidence; missing fields remain unchanged."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-checks.json",
+        "final-observations.json",
+        "review_checks.py"
+      ],
+      "details": "Displayed equations parsed with independent exact rational arithmetic: all 15 final questions, 72 fresh controls, nine counterfactuals, seven complete replays and three matched progression records have one distinct equal-slope answer. Every current authored solution isolation/candidate-normalization row was checked."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "control-observations.json",
+        "delivery-stages.json",
+        "learner-selection.json",
+        "delivery_probes.py"
+      ],
+      "details": "Bank-first sampling varies qualifying candidates, signs, rational slope, intercept and positive/negative equation scale. Exact final batches use all five stored key positions; bank cycles cover all five easy/moderate or four hard eligible roles. All tested records survive captured filtering. Learner selection is reproduced read-only with explicit ID/history limits."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "solution-paths.json",
+        "scope-negative-control.json",
+        "progression.json"
+      ],
+      "details": "Every served family uses the original isolation and slope criterion; moderate repeats normalization on candidates and hard adds intercept distinctness from tutorial 8902. Necessary displayed transitions and final keyed equation are recorded for final batches, sign/fraction boundaries and controls. An algebraically correct key with removed candidate conversions fails the retained negative control."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grading-final.json",
+        "grader-final-input.json",
+        "grading-final-command.json"
+      ],
+      "details": "Native learning::grade_field checks all choices on original, normalized delivered, source/control/counterfactual and matched records: 193 correct responses accepted and 772 alternatives rejected; no unresolved outcomes or database writes. Radio-only contract has no free-entry equivalence requirement."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-math-boundary.json",
+        "render-delivery-equivalence.json",
+        "visual-inspection.json",
+        "matched-render/rendering.json"
+      ],
+      "details": "Actual unmodified UI renders every final question in all three bands plus controls/replays. All 538 intended math containers and 171 multiline rows match actual MathML in the main 27 previews. Shared strict prose-boundary validation covers prompts, solutions, text choices and feedback. Representative screenshots inspected; no raw TeX, missing rows, stars or control-label artifacts. Three matched previews also pass."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "finalization-command.json",
+        "final-binding.json"
+      ],
+      "details": "Exact runtime dependency contract matches Python 3.13.5 and empty third-party packages. Declared package files relocate and CLI-replay all final batches deterministically; invalid band/count rejected; no assets or external outputs. Finalization regenerated all three bands in this session. Package and shared engine required no repair."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-tests.json",
+        "shortcut-probes.json",
+        "ui-shortcut-probes.json"
+      ],
+      "details": "Fixed-bank relevant changes force a new answer; irrelevant scaling preserves it through native grading and rendering. Bank-only positions, signs, ranks, lengths, coefficient modes/intersections and counterparts were tested by band and conditional slope family before/after delivery and after actual UI ordering. No tested universal predictor remains; finite-pool limits are explicit."
+    },
+    "progression": {
+      "status": "passed",
+      "evidence_paths": [
+        "progression.json",
+        "matched-progression-records.json",
+        "matched-render/rendering.json",
+        "final-observations.json"
+      ],
+      "details": "Easy matches an explicit candidate slope; moderate normalizes candidate equations; hard additionally excludes coincidence. Matched records hold the given line/arithmetic and radio response fixed, isolating those decisions. No pre-answer slope or working is supplied. Higher bands are justified authored calibration; only imported easy labels exist and level-coverage remains unchanged."
+    }
+  },
+  "findings": [],
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "c8eb0571301624801a012486b20bd5d343cbddd05afee549328126c7c39967d0",
+      "evidence_paths": [
+        "final-easy.json",
+        "final-delivery-easy/delivery.json",
+        "final-delivery-easy/accepted.json",
+        "final-observations.json",
+        "math-checks.json",
+        "grading-final.json",
+        "render/rendering.json",
+        "render-math-boundary.json",
+        "pedagogical-variation.json",
+        "ui-shortcut-probes.json",
+        "progression.json"
+      ],
+      "details": "Independently checked all five final easy records at seed 2616988508; all five survive captured-inventory filtering, all options grade correctly and UI records 1\u20135 render every formula/row. Band-specific bank/UI probes and progression pass. This is verification, not a publication receipt."
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "373842896df43d11d1e6c7cc1f8e1829eb4a6f93ecd1c7434db9fb13950c18ec",
+      "evidence_paths": [
+        "final-moderate.json",
+        "final-delivery-moderate/delivery.json",
+        "final-delivery-moderate/accepted.json",
+        "final-observations.json",
+        "math-checks.json",
+        "grading-final.json",
+        "render/rendering.json",
+        "render-math-boundary.json",
+        "pedagogical-variation.json",
+        "ui-shortcut-probes.json",
+        "progression.json"
+      ],
+      "details": "Independently checked all five final moderate records at seed 2616988510; all five survive captured-inventory filtering, all options grade correctly and UI records 6\u201310 render every formula/row. Band-specific bank/UI probes and progression pass. This is verification, not a publication receipt."
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "787697bc108b1d921ecf9465cb60ebbdb24ad6675799d91ee12ddfacce3001e4",
+      "evidence_paths": [
+        "final-hard.json",
+        "final-delivery-hard/delivery.json",
+        "final-delivery-hard/accepted.json",
+        "final-observations.json",
+        "math-checks.json",
+        "grading-final.json",
+        "render/rendering.json",
+        "render-math-boundary.json",
+        "pedagogical-variation.json",
+        "ui-shortcut-probes.json",
+        "progression.json"
+      ],
+      "details": "Independently checked all five final hard records at seed 2616988511; all five survive captured-inventory filtering, all options grade correctly and UI records 11\u201315 render every formula/row. Band-specific bank/UI probes and progression pass. This is verification, not a publication receipt."
+    }
+  }
+}

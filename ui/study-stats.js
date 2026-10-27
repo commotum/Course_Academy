@@ -49,18 +49,20 @@ export function createStudySidebar() {
   const todayCard = node('section', 'study-stat-card');
   const weekCard = node('section', 'study-stat-card');
   const activityCard = node('section', 'study-stat-card stat-activities');
+  const dailyActivityCard = node('section', 'study-stat-card stat-activities-today');
   todayCard.append(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', 'Loading your progress…'));
   weekCard.append(node('h2', 'stat-heading', 'This week'));
   const forecast = createForecastSidebar({ signal: events.signal });
-  sidebar.append(todayCard, weekCard, ...forecast.cards, activityCard);
-  function renderActivities(totals) {
-    renderSummary(activityCard, 'Activities', [
+  sidebar.append(todayCard, weekCard, ...forecast.cards, activityCard, dailyActivityCard);
+  function renderActivities(card, heading, totals, suffix = '') {
+    renderSummary(card, heading, [
       ['Lessons', totals?.lessons, 'completed lesson sessions'],
       ['KPs', totals?.knowledgePoints, 'distinct knowledge points in completed lessons'],
       ['Reviews', totals?.reviews, 'completed review sessions'],
-    ].map(([label, value, description]) => [label, value, value == null ? `${label}: unavailable` : `${number(value)} ${description}`]));
+    ].map(([label, value, description]) => [label, value, value == null ? `${label}: unavailable` : `${number(value)} ${description}${suffix}`]));
   }
-  renderActivities();
+  renderActivities(activityCard, 'Activities');
+  renderActivities(dailyActivityCard, 'Activities today');
   let generation = 0, midnightTimer, renderedDay;
   releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
   async function load({ refreshForecast = true } = {}) {
@@ -83,6 +85,7 @@ export function createStudySidebar() {
         sidebar.title = 'Showing saved statistics; refresh unavailable.';
         return;
       }
+      renderActivities(dailyActivityCard, 'Activities today');
       todayCard.replaceChildren(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', error.message));
       const retry = node('button', 'small-button', 'Try again'); retry.type = 'button'; retry.addEventListener('click', load); todayCard.append(retry);
     }
@@ -102,7 +105,8 @@ export function createStudySidebar() {
       .sort((a, b) => (new Date(a.start).getDay() + 6) % 7 - (new Date(b.start).getDay() + 6) % 7);
     renderSummary(todayCard, 'XP earned', [['Today', today.earnedXp, 0], ['This week', weekXp, 0], ['Total', data.totalEarnedXp, data.totalXpMissing || 0]].map(([label, value, missing]) => [label, value,
       value == null ? `${label}: XP unavailable` : `${label}: ${number(value)} XP${missing ? ` recorded; XP unavailable for ${number(missing)} past ${missing === 1 ? 'activity' : 'activities'}` : ''}`]));
-    renderActivities(data.activityTotals);
+    renderActivities(activityCard, 'Activities', data.activityTotals);
+    renderActivities(dailyActivityCard, 'Activities today', today.activityTotals, ' today');
     if (goal && today.earnedXp >= goal) todayCard.append(node('p', 'stat-note stat-goal-reached', '✓ Daily goal reached'));
     weekCard.replaceChildren(node('h2', 'stat-heading', 'This week'));
     const chartGoal = goal || 200;

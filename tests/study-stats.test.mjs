@@ -33,7 +33,8 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12), { storage = new Map
     readRequest: async path => {
       f.calls.push({ path });
       if (f.failRead) throw new Error('Offline');
-      const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0 }));
+      const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0,
+        activityTotals: { lessons: i === 6 ? 2 : 0, knowledgePoints: i === 6 ? 5 : 0, reviews: i === 6 ? 3 : 0 } }));
       f.data ||= { basis: 1, dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0,
         activityTotals: { lessons: 27, knowledgePoints: 54, reviews: 13 } };
       return { ok: true, json: async () => { if (pendingRead) await pendingRead; return structuredClone(f.data); } };
@@ -70,14 +71,17 @@ test('refresh shows saved XP immediately and replaces it with the fresh response
   assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '250');
   assert.equal(f.find('stat-week-chart').children.length, 7);
   assert.equal(f.find('stat-xp-summary', f.find('stat-activities')).children[1].children[1].textContent, '54');
+  assert.equal(f.find('stat-xp-summary', f.find('stat-activities-today')).children[1].children[1].textContent, '5');
   assert.match(f.sidebar.title, /Refreshing/);
   assert.equal(f.calls.length, 1);
   assert.equal(f.forecastRefreshes, 0);
   f.data.days[6].earnedXp = 300; f.data.totalEarnedXp = 12450; f.data.activityTotals.knowledgePoints = 55;
+  f.data.days[6].activityTotals.knowledgePoints = 6;
   f.releaseRead(); await flush();
   assert.equal(f.find('stat-xp-summary').children[0].children[1].textContent, '300');
   assert.equal(f.sidebar.title, '');
   assert.equal(f.find('stat-xp-summary', f.find('stat-activities')).children[1].children[1].textContent, '55');
+  assert.equal(f.find('stat-xp-summary', f.find('stat-activities-today')).children[1].children[1].textContent, '6');
   assert.equal(f.forecastRefreshes, 1);
   assert.equal(JSON.parse(storage.get('course-academy.study-stats.v1')).data.totalEarnedXp, 12450);
 });
@@ -155,6 +159,21 @@ test('the sidebar only displays statistics and has no goal editor or activity li
   assert.equal(f.calls.filter(call => call.body).length, 0);
 });
 
+test('Activities today uses local-day completion counts and the same layout as Activities', async () => {
+  const f = fixture();
+  f.data.days[5].activityTotals = { lessons: 9, knowledgePoints: 20, reviews: 10 };
+  await flush();
+  const card = f.find('stat-activities-today');
+  assert.equal(f.sidebar.children.indexOf(card), f.sidebar.children.indexOf(f.find('stat-activities')) + 1);
+  assert.equal(card.children[0].textContent, 'Activities today');
+  const metrics = f.find('stat-xp-summary', card).children;
+  assert.deepEqual(metrics.map(metric => metric.children[0].textContent), ['Lessons', 'KPs', 'Reviews']);
+  assert.deepEqual(metrics.map(metric => metric.children[1].textContent), ['2', '5', '3']);
+  metrics[1].children[1].children[0].dispatchEvent(new Event('click'));
+  assert.equal(f.find('stat-xp-details', card).textContent, '5 distinct knowledge points in completed lessons today');
+  assert.equal(f.calls.length, 1);
+});
+
 test('daily bars use the goal scale instead of the highest earning day', async () => {
   for (const goal of [null, 200, 100]) {
     const f = fixture(goal);
@@ -219,12 +238,14 @@ test('Sunday to Monday resets only Monday and refreshes an open sidebar at midni
   assert.equal(timer.delay, 60_050);
   f.setNow(new Date(2026, 9, 19, 0, 0, 1));
   f.data.days.forEach((day, i) => { day.earnedXp = i === 6 ? 0 : 120; });
+  f.data.days[6].activityTotals = { lessons: 0, knowledgePoints: 0, reviews: 0 };
   timer.callback(); await flush();
   const bars = f.find('stat-week-chart').children;
   assert.equal(bars[0].getAttribute('aria-current'), 'date');
   assert.match(bars[0].title, /Monday, Oct 19: 0 \/ 200 XP/);
   assert.match(bars[6].title, /Sunday, Oct 18: 120 \/ 200 XP/);
   assert.equal(f.find('stat-xp-summary').children[1].children[1].textContent, '0');
+  assert.deepEqual(f.find('stat-xp-summary', f.find('stat-activities-today')).children.map(metric => metric.children[1].textContent), ['0', '0', '0']);
   assert.equal(f.calls.length, 2);
   assert.equal(f.timers.size, 1);
   assert.equal(f.forecastRefreshes, 2);
@@ -240,6 +261,16 @@ test('saving the goal updates forecast dates immediately and sidebar replacement
   const previous = f.forecastSignal;
   f.api.createStudySidebar();
   assert.equal(previous.aborted, true);
+});
+
+test('a failed midnight refresh does not label yesterday’s activities as today’s', async () => {
+  const f = fixture(200, new Date(2026, 9, 18, 23, 59)); await flush();
+  f.setNow(new Date(2026, 9, 19, 0, 0, 1));
+  f.failRead = true;
+  [...f.timers.values()][0].callback(); await flush();
+  const values = name => f.find('stat-xp-summary', f.find(name)).children.map(metric => metric.children[1].textContent);
+  assert.deepEqual(values('stat-activities-today'), ['—', '—', '—']);
+  assert.deepEqual(values('stat-activities'), ['27', '54', '13']);
 });
 
 test('graph view toggles do not affect the independent forecast', async () => {

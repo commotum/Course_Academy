@@ -1,6 +1,36 @@
 //! Calendar summaries from owned task evidence; no question or curriculum scan.
 use super::*;
 
+#[derive(Default)]
+struct ActivityTotals {
+    lessons: usize,
+    reviews: usize,
+    knowledge_points: BTreeSet<u64>,
+}
+
+impl ActivityTotals {
+    fn record(&mut self, s: &EntitySnapshot, task: u64) -> Result<()> {
+        if status(s,task,"learner-task/status")? != "completed" { return Ok(()); }
+        if let Some(activity)=s.optional_ref(task,"learner-task/activity")? {
+            match status(s,activity,"activity/type")?.as_str() {
+                "lesson" => {
+                    self.lessons+=1;
+                    if let Some(topic)=s.optional_ref(activity,"activity/scope")? {
+                        self.knowledge_points.extend(page_reader::references(s.entity(topic)?,"topic/knowledge-points"));
+                    }
+                }
+                "review" => self.reviews+=1,
+                _ => {},
+            }
+        }
+        Ok(())
+    }
+
+    fn json(&self) -> Json {
+        json!({"lessons":self.lessons,"knowledgePoints":self.knowledge_points.len(),"reviews":self.reviews})
+    }
+}
+
 pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTime<Utc>) -> Result<Json> {
     // The browser supplies local midnights as instants, including DST changes.
     let starts = body["dayStarts"].as_array().ok_or("Local day boundaries are required")?
@@ -14,28 +44,12 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
     // dates are unknown. Count each owned finished attempt exactly once.
     let mut total_xp=0.;
     let mut missing_xp=0usize;
-    let mut lessons=0usize;
-    let mut reviews=0usize;
-    let mut knowledge_points=BTreeSet::new();
+    let mut activity_totals=ActivityTotals::default();
     for task in &tasks {
         if !matches!(status(s,*task,"learner-task/status")?.as_str(),"completed"|"failed") { continue; }
         if let Some(earned)=s.entity(*task)?.get("learner-task/xp-earned").and_then(Json::as_f64).filter(|v|v.is_finite()) { total_xp+=earned; }
         else { missing_xp+=1; }
-        if status(s,*task,"learner-task/status")? != "completed" { continue; }
-        if let Some(activity)=s.optional_ref(*task,"learner-task/activity")? {
-            match status(s,activity,"activity/type")?.as_str() {
-                "lesson" => {
-                    lessons+=1;
-                    if let Some(topic)=s.optional_ref(activity,"activity/scope")? {
-                        // These persisted ref IDs are enough for a distinct
-                        // count; the small stats projection needs no KP content.
-                        knowledge_points.extend(page_reader::references(s.entity(topic)?,"topic/knowledge-points"));
-                    }
-                }
-                "review" => reviews+=1,
-                _ => {},
-            }
-        }
+        activity_totals.record(s,*task)?;
     }
     let mut item_ids = BTreeSet::new();
     for task in &tasks { item_ids.extend(s.refs(*task, "learner-task/items")?); }
@@ -43,6 +57,7 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
     let mut xp = [0.;7];
     let mut seconds = [0.;7];
     let mut completed = [0u64;7];
+    let mut daily_activities: [ActivityTotals;7] = std::array::from_fn(|_| ActivityTotals::default());
     let mut task_starts = BTreeSet::new();
     let mut finished = BTreeMap::new();
     let mut running = BTreeMap::<u64,i64>::new();
@@ -74,11 +89,12 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
         if let Some(day) = starts.windows(2).position(|w| at >= w[0] && at < w[1]) {
             xp[day] += s.entity(task)?.get("learner-task/xp-earned").and_then(Json::as_f64).filter(|x| x.is_finite()).unwrap_or(0.);
             completed[day] += 1;
+            daily_activities[day].record(s,task)?;
         }
     }
-    let days: Vec<_> = (0..7).map(|i| json!({"start":starts[i],"earnedXp":xp[i],"workingSeconds":seconds[i],"completedActivities":completed[i]})).collect();
+    let days: Vec<_> = (0..7).map(|i| json!({"start":starts[i],"earnedXp":xp[i],"workingSeconds":seconds[i],"completedActivities":completed[i],"activityTotals":daily_activities[i].json()})).collect();
     Ok(json!({"basis":s.basis_t,"dailyXpGoal":s.entity(learner)?.get("learner/daily-xp-goal"),"days":days,"earnedXp":xp.iter().sum::<f64>(),"totalEarnedXp":total_xp,"totalXpMissing":missing_xp,"workingSeconds":seconds.iter().sum::<f64>(),
-        "activityTotals":{"lessons":lessons,"knowledgePoints":knowledge_points.len(),"reviews":reviews}}))
+        "activityTotals":activity_totals.json()}))
 }
 
 #[cfg(test)]
@@ -87,16 +103,20 @@ mod tests {
     #[test]
     fn activity_totals_use_completed_attempts_and_deduplicate_their_knowledge_points() -> Result<()> {
         let records=BTreeMap::from_iter([
-            (1,json!({"learner/id":"test","learner/activity":[2,3,4,5,6,7,2],"learner/knowledge-profile":[900]})),
+            (1,json!({"learner/id":"test","learner/activity":[2,3,4,5,6,7,8,9,2],"learner/knowledge-profile":[900]})),
             (2,json!({"learner-task/status":11,"learner-task/activity":100})),
             (3,json!({"learner-task/status":11,"learner-task/activity":100})),
             (4,json!({"learner-task/status":11,"learner-task/activity":101})),
             (5,json!({"learner-task/status":12,"learner-task/activity":101})),
             (6,json!({"learner-task/status":13,"learner-task/activity":102})),
             (7,json!({"learner-task/status":11,"learner-task/activity":103})),
+            (8,json!({"learner-task/status":11,"learner-task/activity":100})),
+            (9,json!({"learner-task/status":11,"learner-task/activity":101,"learner-task/finished-at":{"$instant":86_399_999}})),
+            (10,json!({"learner-task/status":11,"learner-task/activity":102})),
             (11,json!({"db/ident":kw("learner-task.status/completed")})),
             (12,json!({"db/ident":kw("learner-task.status/failed")})),
             (13,json!({"db/ident":kw("learner-task.status/paused")})),
+            (14,json!({"db/ident":kw("learner-task.status/started")})),
             (20,json!({"db/ident":kw("activity.type/lesson")})),
             (21,json!({"db/ident":kw("activity.type/review")})),
             (22,json!({"db/ident":kw("activity.type/assignment")})),
@@ -110,11 +130,25 @@ mod tests {
             (203,json!({"topic/knowledge-points":[304,305]})),
             (900,json!({"progress/topic":203,"progress/repetitions":6,"progress/learned":true})),
         ].into_iter().map(|(id,value)|(id,value.as_object().unwrap().clone())));
-        let s=EntitySnapshot::new(records,1)?;
+        let mut s=EntitySnapshot::new(records,1)?;
         let before=s.entities.clone();
         let day=86_400_000i64;
-        let result=summary(&s,1,&json!({"dayStarts":(0..8).map(|i|i*day).collect::<Vec<_>>()}),Utc::now())?;
-        assert_eq!(result["activityTotals"],json!({"lessons":2,"knowledgePoints":2,"reviews":1}));
+        // Imported task 2 has no original completion date. Task 3 crosses
+        // midnight; task 9 has a recovered date before its import was recorded.
+        for (task, at, state) in [(2,day,11),(3,day,11),(4,day-1,11),(5,day,12),
+            (6,day,11),(7,day,11),(8,day+1,11),(9,day,11),(10,day,11)] {
+            if task != 2 {
+                s.status_history.push(course_academy_engine::schema::StatusAssertion{
+                    t:s.status_history.len() as u64+1,entity:task,attribute:"learner-task/status".into(),value:json!(14),at:json!({"$instant":day-1000})});
+            }
+            s.status_history.push(course_academy_engine::schema::StatusAssertion{
+                t:s.status_history.len() as u64+1,entity:task,attribute:"learner-task/status".into(),value:json!(state),at:json!({"$instant":at})});
+        }
+        let result=summary(&s,1,&json!({"dayStarts":(0..8).map(|i|i*day).collect::<Vec<_>>()}),DateTime::from_timestamp_millis(day+1000).unwrap())?;
+        assert_eq!(result["activityTotals"],json!({"lessons":3,"knowledgePoints":2,"reviews":2}));
+        assert_eq!(result["days"][0]["activityTotals"],json!({"lessons":0,"knowledgePoints":0,"reviews":2}));
+        assert_eq!(result["days"][1]["activityTotals"],json!({"lessons":2,"knowledgePoints":2,"reviews":0}));
+        assert_eq!(result["days"][2]["activityTotals"],json!({"lessons":0,"knowledgePoints":0,"reviews":0}));
         assert_eq!(s.entities,before);
         Ok(())
     }
