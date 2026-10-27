@@ -13,7 +13,7 @@ from matplotlib.patches import Arc, Polygon
 from math_format import normalize_prose, normalize_tex, validate_generated_record
 ROOT=Path(__file__).resolve().parent
 DATA=json.loads((ROOT/'source_cases.json').read_text())
-KP=DATA['knowledge_point']; NS=uuid.UUID(KP['id']); VERSION='2.1.0'
+KP=DATA['knowledge_point']; NS=uuid.UUID(KP['id']); VERSION='3.0.0'
 LEVELS=('easy','moderate','hard')
 # Every combination is one complete authored four-error profile, chosen before values.
 ERRORS=('outer','given','add','omit_half','half_result','half_given','twice_given')
@@ -73,17 +73,17 @@ def diagram(p,level,output):
 
 def derivation(p,level):
  poly,outer,target,s1,s2,ang=names(p);Q=p['quadrilateral'];T=p['a']*p['b']*math.sin(math.radians(p['angle']))/2
- result=T-Q;key=rounded(result) if level=='hard' else result
- return dict(polygon=poly,outer_name=outer,target=target,sides=[s1,s2],angle_name=ang,outer=T,given=Q,unrounded=result,key=key)
+ result=T-Q
+ return dict(polygon=poly,outer_name=outer,target=target,sides=[s1,s2],angle_name=ang,outer=T,given=Q,unrounded=result,key=rounded(result))
 
 def error_values(p,d):
  T,Q=d['outer'],d['given'];r=T-Q
- return {'outer':T,'given':Q,'add':T+Q,'omit_half':2*T-Q,'half_result':r/2,'half_given':T-Q/2,'twice_given':abs(T-2*Q),'omit_sine':p['a']*p['b']/2-Q,'double_outer':2*T}
+ return {'outer':T,'given':Q,'add':T+Q,'omit_half':2*T-Q,'half_result':r/2,'half_given':T-Q/2,'twice_given':T-2*Q,'omit_sine':p['a']*p['b']/2-Q,'double_outer':2*T}
 
 def bank(p,d,level,profile):
- raw=error_values(p,d);values=[d['key']]+[rounded(raw[e]) if level=='hard' else raw[e] for e in profile]
+ raw=error_values(p,d);values=[d['key']]+[rounded(raw[e]) for e in profile]
  # Rounding is incidental: disallow adjacent integers and crowded rounded banks.
- spacing=2 if level=='hard' else .5
+ spacing=2
  if min(values)<=0 or min(abs(x-y) for i,x in enumerate(values) for y in values[i+1:])<spacing:raise ValueError('colliding or crowded error profile')
  return values
 
@@ -93,9 +93,9 @@ def solution(p,level,d):
  formula=r'\frac12\cdot '+s1+r'\cdot '+s2+('' if p['angle']==90 else r'\cdot\sin\angle '+d['angle_name'])
  final=('=' if p['angle']==90 else r'\approx')+(n(d['outer']) if p['angle']==90 else f'{d["outer"]:.6f}')+unit
  text=(f'First calculate the area of the enclosing triangle ${outer}$. '+('The given sides are perpendicular.' if p['angle']==90 else 'Use the two given sides and their included angle, with the calculator in degree mode.')+'\n\n$$\n'+r'\begin{aligned}'+f'A_{{{outer}}}&='+formula+r'\\'+'&='+r'\frac12\cdot '+n(a)+r'\cdot '+n(b)+factor+r'\\'+'&'+final+r'.\end{aligned}'+'\n$$\n\n'+f'The enclosing triangle consists of the quadrilateral ${poly}$ and the missing triangle ${target}$. ')
- expr=(n(d['outer']) if level!='hard' or p['angle']==90 else n(a*b/2)+r'\sin'+str(p['angle'])+r'^\circ')+'-'+n(Q)
- text+='Subtract the quadrilateral area:\n\n$$\n'+r'\begin{aligned}'+f'A_{{{target}}}&=A_{{{outer}}}-A_{{{poly}}}'+r'\\'+'&='+expr+r'\\'+('&='+n(d['key']) if level!='hard' else r'&\approx'+f'{d["unrounded"]:.6f}')+unit+r'.\end{aligned}'+'\n$$'
- if level=='hard':text+='\n\nKeep full precision until this subtraction is complete. Rounded to the nearest integer, the area is $'+n(d['key'])+unit+'$.'
+ expr=(n(d['outer']) if p['angle']==90 else n(a*b/2)+r'\sin'+str(p['angle'])+r'^\circ')+'-'+n(Q)
+ text+='Subtract the quadrilateral area:\n\n$$\n'+r'\begin{aligned}'+f'A_{{{target}}}&=A_{{{outer}}}-A_{{{poly}}}'+r'\\'+'&='+expr+r'\\'+r'&\approx'+f'{d["unrounded"]:.6f}'+unit+r'.\end{aligned}'+'\n$$'
+ text+='\n\nKeep full precision until this subtraction is complete. Rounded to the nearest integer, the area is $'+n(d['key'])+unit+'$.'
  return text
 
 def build(level,p,seed=0,kind=None,profile=None,output=None,source=None):
@@ -103,18 +103,18 @@ def build(level,p,seed=0,kind=None,profile=None,output=None,source=None):
  if not 0<p['angle']<180 or min(p['a'],p['b'])<=0:raise ValueError('invalid triangle')
  d=derivation(p,level)
  if not 0<d['given']<d['outer'] or d['key']<=0:raise ValueError('invalid area relationship')
- kind=kind or ('blank' if level=='hard' else 'radio');profile=tuple(profile or PROFILES[0]);rng=random.Random(seed)
+ kind=kind or 'radio';profile=tuple(profile or HARD_PROFILES[0]);rng=random.Random(seed)
  u=p['unit'];unit=r'\,\text{'+u+r'}^{2}';poly,outer,target=d['polygon'],d['outer_name'],d['target']
  output=output or os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR')
  if not output:raise ValueError('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR is required')
+ # Reject infeasible error banks before spending time rendering a diagram.
+ values=bank(p,d,level,profile) if kind=='radio' and source is None else [d['key']]
  image=diagram(p,level,output)
- prompt=f'![Concave quadrilateral {poly} with a dashed enclosing edge]({image})\n\nThe area of the quadrilateral ${poly}$ is ${n(d["given"])}{unit}$. '
+ prompt=f'![Concave quadrilateral {poly} with measurements]({image})\n\nThe area of the quadrilateral ${poly}$ is ${n(d["given"])}{unit}$. '
  s1,s2=d['sides'];prompt+=f'The sides ${s1}={n(p["a"])}\\,\\text{{{u}}}$ and ${s2}={n(p["b"])}\\,\\text{{{u}}}$ meet at '+('a right angle. ' if p['angle']==90 else f'${p["angle"]}^\\circ$. ')
- if level=='easy':prompt+=f'**Hint:** The dashed edge completes triangle ${outer}$. First use half the product of its perpendicular sides; then subtract the quadrilateral area. '
- if kind=='blank':prompt+=f'The area of $\\triangle {target}$'+(', rounded to the **nearest integer**,' if level=='hard' else '')+' is {{field-1}} $'+r'\text{'+u+r'}^{2}$.'
- else:prompt+=f'What is the area of $\\triangle {target}$'+(', rounded to the **nearest integer**?' if level=='hard' else '?')
- if level=='hard':prompt+='\n\nA scientific calculator is required.'
- values=bank(p,d,level,profile) if kind=='radio' else [d['key']]
+ if kind=='blank':prompt+=f'The area of $\\triangle {target}$, rounded to the **nearest integer**, is {{{{field-1}}}} $'+r'\text{'+u+r'}^{2}$.'
+ else:prompt+=f'What is the area of $\\triangle {target}$, rounded to the **nearest integer**?'
+ prompt+='\n\nYou may use a scientific calculator.'
  values=[normalize_tex(n(v)+(unit if kind=='radio' else '')) for v in values]
  sol=solution(p,level,d);key=values[0]
  if source is not None:
@@ -129,26 +129,30 @@ def build(level,p,seed=0,kind=None,profile=None,output=None,source=None):
  correct=next(x[':answer/id'] for x in answers if x[':answer/value']==key)
  if kind=='radio':rng.shuffle(answers)
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':fieldkey,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
- if level=='hard':q[':question/requires-calculator']=True
- record={'knowledge_point':KP,'question':q,'generation':{'version':VERSION,'seed':seed,'parameters':p,'template':level+'_'+kind,'bank_profile':list(profile) if kind=='radio' else [],'source_question_ids':[source['source'][':question/id']] if source else ['131b6086-c5f6-5a45-ba15-3a463928baae' if level=='easy' else '6c2c49f6-fe97-57c7-b103-30957bc434c9' if level=='moderate' else '4ac15706-aef3-5c80-b90d-2209100282bf'],'derivation':d,'semantic_instance':digest({'level':level,'a':p['a'],'b':p['b'],'angle':p['angle'],'given':d['given']})}}
+ q[':question/requires-calculator']=True
+ record={'knowledge_point':KP,'question':q,'generation':{'version':VERSION,'contract':'triangle-complement-full-calculation-v1','seed':seed,'parameters':p,'template':level+'_'+kind,'band_origin':'authored numerical progression; imported anchors are hard/unclassified','bank_profile':list(profile) if kind=='radio' else [],'source_question_ids':[source['source'][':question/id']] if source else [c['source'][':question/id'] for c in DATA['cases']],'derivation':d,'semantic_instance':digest({'a':p['a'],'b':p['b'],'angle':p['angle'],'given':d['given']})}}
  validate_generated_record(record);return record
 
-def sample(level,rng,output,seed):
+def sample(level,rng,output,seed,kind=None):
  # Answer-bearing case and complete bank profile precede numerical details.
  region=rng.choice(['small_notch','large_notch']);angle_case=rng.choice(['acute','obtuse'])
- kind=rng.choice(['radio','blank']) if level=='hard' else 'radio'
- profiles=HARD_PROFILES if level=='hard' else PROFILES
+ kind=kind or rng.choice(['radio','blank'])
+ profiles=HARD_PROFILES
  profile=rng.choice(profiles)
+ if 'twice_given' in profile:region='large_notch'
  for attempt in range(300):
-  side_values=range(4,11,2) if level=='easy' else range(4,19,2)
-  a,b=rng.choice(side_values),rng.choice(side_values)
-  if max(a,b)/min(a,b)>2.5:continue
-  angle=90 if level!='hard' else rng.choice(list(range(35,86)) if angle_case=='acute' else list(range(95,131)))
-  if level=='hard' and angle in (45,60,120):continue
+  # The geometry and two-step task stay fixed. Only the half-product becomes
+  # less automatic: a small integer, then a half-integer, then a quarter.
+  if level=='easy':a,b=rng.choice([2,4]),rng.randint(4,10)
+  elif level=='moderate':a,b=rng.choice([5,7,9,11]),rng.choice([5,7,9,11])
+  else:a,b=rng.choice([2.5,3.5,4.5,5.5,6.5]),rng.choice([5,7,9])
+  if rng.randrange(2):a,b=b,a
+  if max(a,b)/min(a,b)>3:continue
+  angle=rng.choice([35,42,45,46,52,55,56,63,66,70,75] if angle_case=='acute' else [105,110,115,117,120])
   T=a*b*math.sin(math.radians(angle))/2
   ratio=rng.uniform(.56,.78) if region=='small_notch' else rng.uniform(.23,.44)
   Q=rounded(T*ratio)
-  if not 0<Q<T:continue
+  if not 0<Q<T or T-Q<2 or abs((T-Q)%1-.5)<.08:continue
   p=dict(a=a,b=b,angle=angle,quadrilateral=Q,unit=rng.choice(['cm','in']),orientation=rng.choice([0,90,180,270]),label_shift=rng.randrange(4))
   try:r=build(level,p,seed,kind,profile,output)
   except ValueError as e:
@@ -159,9 +163,10 @@ def sample(level,rng,output,seed):
 
 def generate_batch(level,count,seed,output):
  rng=random.Random(seed);records=[];seen=set()
+ kinds=['radio' if i%2==0 else 'blank' for i in range(count)];rng.shuffle(kinds)
  for i in range(count):
   for attempt in range(100):
-   r=sample(level,rng,output,rng.getrandbits(64));sig=r['generation']['semantic_instance']
+   r=sample(level,rng,output,rng.getrandbits(64),kinds[i]);sig=r['generation']['semantic_instance']
    if sig not in seen:seen.add(sig);records.append(r);break
   else:raise RuntimeError('semantic batch exhausted')
  # A finite delivered bank must not accidentally make one numerical rank the
@@ -180,7 +185,7 @@ def generate_batch(level,count,seed,output):
   if len(indices)<2:continue
   if len({rank(records[i]) for i in indices})==1:
    oldrank=rank(records[indices[0]]);repaired=False
-   candidates=list(HARD_PROFILES if level=='hard' else PROFILES);rng.shuffle(candidates)
+   candidates=list(HARD_PROFILES);rng.shuffle(candidates)
    for i in reversed(indices):
     r=records[i];p=r['generation']['parameters'];d=derivation(p,level)
     for profile in candidates:
