@@ -14,6 +14,8 @@ use std::error::Error;
 use std::io::{BufRead, Write};
 
 mod topic_reader;
+#[path = "../engine/rust/study_mode.rs"]
+mod study_mode;
 
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 type Facts = BTreeMap<u64, BTreeMap<&'static str, Vec<Value>>>;
@@ -440,6 +442,7 @@ fn graph_from_facts(db: &DatabaseValue, learner_id: &str, facts:&Facts) -> Resul
     Ok(json!({
         "basis": db.basis_t(), "courses": courses, "nodes": nodes, "links": links,
         "targetSchedule": target_schedule,
+        "studyDefaults": {"targetPrerequisiteDepth": study_mode::TARGET_PREREQUISITE_DEPTH},
         "learner": learner_json(&facts, learner_eid, learner_id),
         "repetitions": repetitions, "learned": learned,
     }))

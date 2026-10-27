@@ -153,7 +153,7 @@ export function projectTargetScope(snapshot, options = {}, graph = indexTargetGr
   const calendar=buildTargetCalendar(snapshot.targetSchedule || []);
   const selectors=targetSelectors(snapshot,graph,options,calendar);
   const roots=selectors.roots(),distances=new Map(roots.map(id=>[id,0])),pending=[...roots];
-  const depth=options.prerequisiteDepth ?? 2;
+  const depth=options.prerequisiteDepth ?? snapshot.studyDefaults?.targetPrerequisiteDepth ?? 2;
   for(let i=0;i<pending.length;i++) {
     const id=pending[i],d=distances.get(id);
     if(d>=depth)continue;

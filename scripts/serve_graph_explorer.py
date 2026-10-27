@@ -293,7 +293,7 @@ def build_reader(edb_root: Path, *, test: bool = False) -> Path:
             break
     if serde is None:
         raise RuntimeError("Missing serde_json build artifact; run `cargo build --lib --offline` in this repository first.")
-    sources = (SOURCE, ROOT / "scripts/topic_reader.rs")
+    sources = (SOURCE, ROOT / "scripts/topic_reader.rs", ROOT / "engine/rust/study_mode.rs")
     inputs = (*sources, libraries[0], serde)
     fingerprint = hashlib.sha256(str(test).encode() + b"optimized-reader-v1" + b"".join(path.read_bytes() for path in sources) + repr([
         (str(path), path.stat().st_size, path.stat().st_mtime_ns) for path in inputs

@@ -277,6 +277,13 @@ fn filter_candidates_with_lesson_order(
         }
     }
     plan = unique;
+    let mut focused = Vec::new();
+    for candidate in plan {
+        if learning::activity_in_study_focus(s, l, candidate.activity)? {
+            focused.push(candidate);
+        }
+    }
+    plan = focused;
     let h = lifecycle(s, l)?;
     let seen = learning::unavailable_questions(s, l)?;
     plan.retain(|p| {

@@ -242,6 +242,9 @@ impl<'a> IntoIterator for &'a SnapshotRecords {
 
 #[derive(Clone, Debug)]
 pub struct EntitySnapshot {
+    /// Application policy, supplied by code rather than entity facts or JSON input.
+    /// Database-free callers default to ordinary study and can test either mode.
+    pub focused_mode: bool,
     pub entities: SnapshotRecords,
     pub basis_t: u64,
     pub status_history: Vec<StatusAssertion>,
@@ -280,6 +283,7 @@ impl EntitySnapshot {
         }
         let canonical_examples = Self::example_targets(&records);
         Ok(Self {
+            focused_mode: false,
             entities: records.into(),
             basis_t,
             status_history: vec![],

@@ -2234,7 +2234,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       // Browsing is URL state only. Never assign or change learner/course here.
       const initial=requested==='all'?null:requested||data.learner.courseId||null;
       const initialView=params.get('view')==='targets'?'targets':'course';
-      changeCourse(initial,false,initialView,initialView==='targets'?'2':null);
+      changeCourse(initial,false,initialView,initialView==='targets'?String(data.studyDefaults?.targetPrerequisiteDepth ?? 2):null);
       $('learnerName').textContent=data.learner.name||'Profile';
       const requestedTopic=Number(new URL(location.href).searchParams.get('topic'));
       if(nodeById.has(requestedTopic))exploreTopic(nodeById.get(requestedTopic));

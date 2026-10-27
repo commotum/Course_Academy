@@ -118,6 +118,7 @@ fn snapshot(db: &DatabaseValue) -> Result<EntitySnapshot> {
         }
     }
     let mut s = EntitySnapshot::new(entities, db.basis_t())?;
+    s.focused_mode = course_academy_engine::study_mode::FOCUSED_MODE;
     for name in ["task-item/status", "learner-task/status"] {
         let (ns, n) = name.split_once('/').unwrap();
         let a = db
@@ -624,6 +625,9 @@ fn check_lesson_retry(s: &EntitySnapshot, l: u64, activity: u64) -> Result<()> {
 // the resident immutable snapshot, including seen and reserved questions.
 fn check_activity_start(s: &EntitySnapshot, l: u64, activity: u64,
     selected_topic: Option<u64>, at: DateTime<Utc>) -> Result<()> {
+    if !learning::activity_in_study_focus(s, l, activity)? {
+        return Err("Focused mode only serves activities from your target topics".into());
+    }
     if retrieval::kind(s, activity)? == "lesson" {
         let topic = s.reference(activity, "activity/scope")?;
         let shortages = course_academy_engine::inventory::lesson_shortages(
@@ -864,6 +868,7 @@ fn home_with_candidates(
             continue;
         }
         let topic = s.reference(a, "activity/scope")?;
+        if !learning::topic_in_study_focus(s, l, topic)? { continue; }
         if layers.get(&topic).is_none_or(|&layer| layer + 1 < learning::MIN_STUDY_LAYER) {
             continue;
         }
@@ -2203,6 +2208,9 @@ fn mutate_with_selection(
     }
     if action == "start" {
         let a = required(body, "activityId")?;
+        if !learning::activity_in_study_focus(s, l, a)? {
+            return Err("Focused mode only serves activities from your target topics".into());
+        }
         if retrieval::kind(s, a)? == "assessment"
             && !(number(s, a, "activity/time-limit-seconds").is_finite()
                 && number(s, a, "activity/time-limit-seconds") > 0.0)
@@ -2277,6 +2285,9 @@ fn mutate_with_selection(
     let t = required(body, "taskId")?;
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
+    if action == "resume" && !learning::activity_in_study_focus(s, l, a)? {
+        return Err("Focused mode only serves activities from your target topics".into());
+    }
     if status(s, a, "activity/type")? == "assignment" {
         return Err("Use the assignment question controls for this task".into());
     }

@@ -14,6 +14,7 @@ pub mod replay;
 pub mod retrieval;
 pub mod runtime;
 pub mod scheduling;
+pub mod study_mode;
 pub mod assessment_sampling;
 pub mod inventory;
 pub mod schema;

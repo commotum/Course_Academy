@@ -918,6 +918,31 @@ pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
 
 pub const MIN_STUDY_LAYER: usize = 30;
 
+/// Focus membership is exact: queue entries and prerequisites are not targets.
+pub fn topic_in_study_focus(s: &EntitySnapshot, learner: u64, topic: u64) -> Result<bool> {
+    Ok(!s.focused_mode || s.refs(learner, "learner/targets")?.contains(&topic))
+}
+
+/// Check every assessment topic, rather than its representative first topic.
+/// Saved routes are kept intact and become eligible again outside focused mode.
+pub fn activity_in_study_focus(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<bool> {
+    if !s.focused_mode { return Ok(true); }
+    let targets: BTreeSet<_> = s.refs(learner, "learner/targets")?.into_iter().collect();
+    match crate::retrieval::kind(s, activity)?.as_str() {
+        "lesson" | "review" => Ok(s.optional_ref(activity, "activity/scope")?
+            .is_some_and(|topic| targets.contains(&topic))),
+        "assessment" => {
+            let steps = lesson_steps(s, activity)?;
+            if steps.is_empty() { return Ok(false); }
+            for step in steps {
+                if !targets.contains(&s.topic_for_question(step.content)?) { return Ok(false); }
+            }
+            Ok(true)
+        }
+        _ => Ok(false),
+    }
+}
+
 /// Ordinary practice recommendations use the graph's one-based L30 cutoff.
 /// Assessments use learned history at every layer, as does required follow-up
 /// practice for assessment misses. Direct topic study has its own path.
@@ -963,7 +988,7 @@ pub fn study_candidates(
     at: DateTime<Utc>,
 ) -> Result<Vec<PlannedActivity>> {
     let queued = s.entity(learner)?.get("learner/self-directed") == Some(&json!(true));
-    if queued {
+    if queued || s.focused_mode {
         queue_candidates(s, learner, course, at)
     } else {
         engine_candidates(s, learner, course, at)
@@ -1341,7 +1366,9 @@ fn bounded_lesson_support(
 ) -> Result<BTreeMap<u64, TargetSupport>> {
     let layers = topic_layers(s)?;
     let mut roots: BTreeMap<u64, Option<DateTime<Utc>>> = BTreeMap::new();
-    for attr in ["learner/targets", "learner/queue"] {
+    let attributes = if s.focused_mode { &["learner/targets"][..] }
+        else { &["learner/targets", "learner/queue"][..] };
+    for attr in attributes {
         for topic in s.refs(learner, attr)? {
             let layer = layers.get(&topic).ok_or("Study selections must reference topics")?;
             if layer + 1 >= MIN_STUDY_LAYER { roots.insert(topic, None); }
@@ -1365,7 +1392,7 @@ fn bounded_lesson_support(
         let mut pending = VecDeque::from([root]);
         while let Some(topic) = pending.pop_front() {
             let distance = distances[&topic];
-            if distance == STUDY_PREREQUISITE_DEPTH { continue; }
+            if distance == if s.focused_mode { 0 } else { STUDY_PREREQUISITE_DEPTH } { continue; }
             // Use topic/next only, matching the visible graph. KP prerequisites
             // neither enlarge the scope nor veto entry to a scoped lesson.
             for prerequisite in s.owners(topic, "topic/next")? {
@@ -1645,6 +1672,9 @@ fn plan_candidates_in_scope(
         let Some(topic) = s.optional_ref(activity, "activity/scope")? else {
             continue;
         };
+        if !selection.explicit() && !topic_in_study_focus(s, learner, topic)? {
+            continue;
+        }
         if lifecycle.lesson_blocked(s, topic)?
             || (!selection.explicit() && !lifecycle.retry_ready(topic))
         {
@@ -3557,6 +3587,34 @@ pub(crate) mod tests {
                 assert_eq!(s.entities, before);
             }
         }
+    }
+
+    #[test]
+    fn focused_study_serves_only_direct_targets_in_both_study_modes() {
+        let mut s = study_planning_fixture(&[82]);
+        planning_lesson(&mut s, 80, &[81]);
+        planning_lesson(&mut s, 81, &[82]);
+        planning_lesson(&mut s, 82, &[]);
+        planning_lesson(&mut s, 85, &[]);
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([85]));
+        put(&mut s.entities, 700, json!({"learner-task/activity":10085,
+            "learner-task/status":"learner-task.status/paused"}));
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!([700]));
+        assert!(study_lesson_scope(&s, 1).unwrap().contains(&80));
+        s.focused_mode = true;
+        let before = s.entities.clone();
+        assert_eq!(study_lesson_scope(&s, 1).unwrap(), BTreeSet::from([82]));
+        for directed in [true, false] {
+            s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(directed));
+            let plan = study_candidates(&s, 1, 2, Utc::now()).unwrap();
+            assert_eq!(plan.iter().map(|p| p.topic).collect::<Vec<_>>(), [82]);
+        }
+        s.entities.get_mut(&1).unwrap().insert("learner/self-directed".into(), json!(true));
+        assert_eq!(s.entities, before);
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([]));
+        assert!(study_candidates(&s, 1, 2, Utc::now()).unwrap().is_empty());
+        s.focused_mode = false;
+        assert!(study_candidates(&s, 1, 2, Utc::now()).unwrap().iter().any(|p| p.topic == 85));
     }
 
     fn planning_time() -> DateTime<Utc> {

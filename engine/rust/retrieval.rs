@@ -287,6 +287,7 @@ pub fn assessment_topics(
     let mut topics = BTreeSet::new();
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
+        if !learning::topic_in_study_focus(s, learner, topic)? { continue; }
         if s.entity(progress)?.get("progress/learned") == Some(&json!(true))
             && h.mastered.get(&topic).is_some_and(|learned| {
                 at - *learned >= chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS)
@@ -458,7 +459,8 @@ pub(crate) fn due_topics(
                 && elapsed >= 0.0
                 && memory * 2.0_f64.powf(-elapsed / interval) <= threshold + 1e-12
             {
-                result.insert(s.reference(progress, "progress/topic")?);
+                let topic = s.reference(progress, "progress/topic")?;
+                if learning::topic_in_study_focus(s, learner, topic)? { result.insert(topic); }
             }
         }
     }
@@ -479,6 +481,7 @@ pub fn candidates(
     for task in s.refs(learner, "learner/activity")? {
         let activity = s.reference(task, "learner-task/activity")?;
         let kind = kind(s, activity)?;
+        if !learning::activity_in_study_focus(s, learner, activity)? { continue; }
         let mut origins = s.refs(task, "learner-task/remediation-for")?;
         if !supported(s, activity)? && origins.is_empty() {
             continue;
@@ -702,6 +705,7 @@ pub fn schedule(
     let mut due = due_topics(s, learner, at)?;
     due.extend(h.repairs.keys().map(|(_, topic)| topic));
     for topic in due {
+        if !learning::topic_in_study_focus(s, learner, topic)? { continue; }
         let origins: Vec<_> = h
             .repairs
             .keys()
@@ -815,6 +819,8 @@ pub fn schedule(
         crate::question_selection::Phase::Remedial,
     )?;
     for &original in &h.retakes {
+        if !learning::activity_in_study_focus(s, learner,
+            s.reference(original, "learner-task/activity")?)? { continue; }
         if !h.retake_ready(s, original)? {
             continue;
         }
@@ -1311,6 +1317,69 @@ mod tests {
         assert_eq!(status["newEligibleTopics"], 5);
         assert_eq!(status["ready"], false);
         assert_eq!(status["required"], false);
+    }
+
+    #[test]
+    fn focused_assessments_sample_only_targets_and_do_not_fall_back_when_short() {
+        let (mut s, at) = assessment_fixture();
+        s.focused_mode = true;
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([2000,2001,2002,2003,2004]));
+        let definition = assessment_definition(&s, 1, at).unwrap().unwrap();
+        assert!(definition.questions.iter().all(|q|
+            learning::topic_in_study_focus(&s, 1, s.topic_for_question(*q).unwrap()).unwrap()));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([2000,2001,2002,2003]));
+        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 4);
+        assert!(assessment_definition(&s, 1, at).unwrap().is_none());
+        s.focused_mode = false;
+        assert_eq!(assessment_pools(&s, 1, at).unwrap().len(), 5);
+        assert!(assessment_definition(&s, 1, at).unwrap().is_some());
+    }
+
+    #[test]
+    fn focused_saved_quizzes_check_all_topics_even_when_started_or_required() {
+        let (mut s, at) = assessment_fixture();
+        let definition = assessment_definition(&s, 1, at).unwrap().unwrap();
+        let steps: Vec<_> = definition.questions.iter().enumerate().map(|(i, _)| 50000 + i as u64).collect();
+        for (i, &q) in definition.questions.iter().enumerate() {
+            put(&mut s, steps[i], json!({"step/id":format!("focus-step-{i}"),"step/content":q}));
+        }
+        put(&mut s, 51000, json!({"activity/id":"focus-quiz","activity/type":"activity.type/assessment",
+            "activity/time-limit-seconds":900,"activity/steps":steps,"activity/first-step":steps[0]}));
+        for i in 0..steps.len()-1 {
+            s.entities.get_mut(&steps[i]).unwrap().insert("step/next".into(), json!(steps[i+1]));
+        }
+        // The representative first topic is allowed, but another quiz topic is not.
+        let first = s.topic_for_question(definition.questions[0]).unwrap();
+        put(&mut s, 52000, json!({"learner-task/activity":51000,
+            "learner-task/status":"learner-task.status/paused","learner-task/priority":12000.0}));
+        let mut tasks = s.refs(1, "learner/activity").unwrap();
+        tasks.push(52000);
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!(tasks));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([first]));
+        s.focused_mode = true;
+        assert!(!learning::activity_in_study_focus(&s, 1, 51000).unwrap());
+        assert!(!candidates(&s, 1, 5, at, true).unwrap().iter().any(|p| p.activity == 51000));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([2000,2001,2002,2003,2004]));
+        assert!(learning::activity_in_study_focus(&s, 1, 51000).unwrap());
+        assert!(candidates(&s, 1, 5, at, true).unwrap().iter().any(|p| p.activity == 51000));
+        s.focused_mode = false;
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([]));
+        assert!(learning::activity_in_study_focus(&s, 1, 51000).unwrap());
+    }
+
+    #[test]
+    fn focused_reviews_are_created_only_for_target_topics() {
+        let mut s = fixture();
+        let at = Utc::now();
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!([]));
+        progress(&mut s, 21, 3, at, 0.1);
+        assert_eq!(due_topics(&s, 1, at).unwrap(), BTreeSet::from([3]));
+        s.focused_mode = true;
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([]));
+        assert!(due_topics(&s, 1, at).unwrap().is_empty());
+        assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([3]));
+        assert_eq!(schedule(&s, 1, 5, at).unwrap()[0].topic, Some(3));
     }
 
     #[test]
