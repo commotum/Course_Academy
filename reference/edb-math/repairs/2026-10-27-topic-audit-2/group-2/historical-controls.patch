@@ -1,0 +1,89 @@
+--- a/scripts/import_historical_question_content.py
++++ b/scripts/import_historical_question_content.py
+@@ -21,6 +21,7 @@
+ class Renderer:
+     def __init__(self,topic):
+         self.topic=topic;self.errors=[];self.assets=[];self.fields=[];self.formulas=[]
++        self.control_fields={};self.control_indices={};self.extracting_controls=False
+     @staticmethod
+     def brace_glyph(n,glyph):
+         return isinstance(n,Tag) and n.name=='mo' and n.get_text().strip()==glyph
+@@ -93,6 +94,18 @@
+         if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%#]',lambda m:'\\'+m[0],str(n))))
+         if not isinstance(n,Tag):return ''
+         t=n.name.lower()
++        if self.extracting_controls and t=='msub':
++            children=n.find_all(recursive=False)
++            marker=re.fullmatch(r'\(S(\d+)\)',children[1].get_text('',strip=True)) if len(children)==2 else None
++            if marker:
++                index=int(marker[1])
++                assert index in self.control_indices, 'Unmapped source control S'+str(index)
++                return '{{'+self.control_indices[index]+'}}'
++        if self.extracting_controls and t=='mrow':
++            children=n.find_all(recursive=False)
++            if len(children)==3 and self.brace_glyph(children[0],'{') and self.brace_glyph(children[2],'}') and children[1].name=='msub':
++                inner=children[1].find_all(recursive=False)
++                if len(inner)==2 and re.fullmatch(r'\(S\d+\)',inner[1].get_text('',strip=True)):return self.m(children[1])
+         if t=='mrow':
+             children=n.find_all(recursive=False)
+             if len(children) in (2,3) and children[0].name=='mo' and children[0].get_text()=='{' and children[1].name=='mtable' and (len(children)==2 or children[2].name=='mo' and not children[2].get_text().strip()):
+@@ -180,21 +193,36 @@
+             self.fields.append({'key':key,'type':'blank','choices':[{'type':kind,'value':value}] if value else [],'correct_value':value,'evidence':'Correct value displayed in historical free-response textbox'})
+             return '{{'+key+'}}'
+         if extract_fields and 'selectList' in classes:
+-            selected=n.find(class_='selectListFrame')
+-            assert selected is not None and 'correctSelection' in selected.get('class',[]), 'Unverified historical dropdown'
++            if id(n) in self.control_fields:return '{{'+self.control_fields[id(n)]+'}}'
++            selected=n.find(class_=lambda c: c and ('selectListFrame' in c))
++            assert selected is not None and any(c in ('correctSelection','correctSelectionMultipleAttempts') for c in selected.get('class',[])), 'Unverified historical dropdown'
+             value=self.text(selected)
+-            value=value[1:-1] if value.startswith('$') and value.endswith('$') else value
++            value=value[1:-1] if re.fullmatch(r'\$[^$]+\$',value,re.S) else value
+             choices=[]
+             for option in n.find_all(class_='selectListOption'):
+                 text=self.text(option)
+-                text=text[1:-1] if text.startswith('$') and text.endswith('$') else text
+-                if text not in [c['value'] for c in choices]:choices.append({'type':'math','value':text})
++                kind='math' if re.fullmatch(r'\$[^$]+\$',text,re.S) else 'text'
++                text=text[1:-1] if kind=='math' else text
++                if text not in [c['value'] for c in choices]:choices.append({'type':kind,'value':text})
+             key='field-'+str(len(self.fields)+1)
++            self.control_fields[id(n)]=key
++            marker=re.search(r'-(\d+)$',n.get('id',''))
++            assert marker, 'Source dropdown has no observed control index'
++            index=int(marker[1])
++            assert index not in self.control_indices, 'Duplicate source control index'
++            self.control_indices[index]=key
+             self.fields.append({'key':key,'type':'select','choices':choices,'correct_value':value,
+                 'evidence':'Original historical dropdown options and correctSelection value'})
+             return '{{'+key+'}}'
+         if t in ('mjx-container','math'):
+-            math=n if t=='math' else n.find('math')
++            if t=='math':math=n
++            else:
++                # Option CHTML can contain MathML before the enclosing formula.
++                # Select only MathML owned by this container, outside dropdowns.
++                roots=n.find_all('mjx-assistive-mml',recursive=False)
++                candidates=[m for root in roots for m in root.find_all('math') if m.find_parent(class_='selectList') is n.find_parent(class_='selectList')]
++                assert len(candidates)==1, 'Ambiguous or absent owned MathML'
++                math=candidates[0]
+             if math is None:self.errors.append('Formula without MathML');return ''
+             # A fenced MathML table is a matrix, while an unfenced table may
+             # align equations. Normalize the complete expression after its
+@@ -214,7 +242,15 @@
+         if t in ('i','em'):return markdown_emphasis(children,'*')
+         if t in ('p','div','ul','ol'):return '\n\n'+children+'\n\n'
+         return children
+-    def text(self,n,extract_fields=False):return normalize_math_boundaries(re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip())
++    def text(self,n,extract_fields=False):
++        previous=self.extracting_controls
++        if extract_fields:
++            # Register observed DOM indices before visiting outer assistive MML.
++            # render(select,True) requires historical correctSelection evidence.
++            for control in n.find_all(class_='selectList'):self.render(control,True)
++        self.extracting_controls=extract_fields
++        try:return normalize_math_boundaries(re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip())
++        finally:self.extracting_controls=previous
+ 
+ def prepare():
+     OUT.mkdir(parents=True,exist_ok=True)

@@ -978,7 +978,7 @@ def normalize_tex(value):
     text = normalize_piecewise_cases(normalize_sized_bars(normalize_limit_operators(_label_row_spacing(text))))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
-    text = re.sub(r'\\require\s*\{(?:cancel|enclose)\}\s*', '', text)
+    text = re.sub(r'\\require\s*\{(?:cancel|enclose|boldsymbol)\}\s*', '', text)
     text = text.replace(r'\lbrack', '[').replace(r'\rbrack', ']')
     text = text.replace(r'\lbrace', r'\{').replace(r'\rbrace', r'\}')
     text = scalable_fraction_parentheses(_matrix_layouts(_legacy_commands(text)))

@@ -410,6 +410,11 @@ class MathContentTests(unittest.TestCase):
         validate_tex(r'\left[x\right]')
         validate_prose(r'Value \(x\), display \[x=1\].')
 
+    def test_preloaded_boldsymbol_requires_no_runtime_extension(self):
+        value = normalize_tex(r'\require{boldsymbol}\boldsymbol{\alpha}')
+        self.assertEqual(value, r'\boldsymbol{\alpha}')
+        validate_tex(value)
+
     def test_generator_checks_duplicate_controls_and_checkbox_statement_math(self):
         record = {'question': {':question/problem': '$x$', ':question/worked-solution': '$x$',
                                ':question/answer-fields': [

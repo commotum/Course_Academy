@@ -9,10 +9,15 @@ SYMS={v.name:v for v in [x,y,z,t,h,C,A,D]}
 def clean(v):
  v=str(v).strip().strip('$');v=v.replace('∂',r'\partial ').replace('π',r'\pi ').replace('∞',r'\infty ').replace('−','-').replace('⁡','').replace('⁢','').replace('∈',r'\in ').replace('′',r'\prime ')
  v=re.sub(r'\\(?:text|textrm|mathrm|rm)\s*\{\s*d\s*\}', 'd',v);v=re.sub(r'\\(?:textrm|mathrm|rm)\s+d\b','d',v)
- v=re.sub(r'\\operatorname\s*\{(sin|cos|tan|sec|csc|cot|ln|log|exp|sinh|cosh)\}',lambda m:'\\'+m[1]+' ',v)
+ v=re.sub(r'\\operatorname\s*\{(sin|cos|tan|sec|csc|cot|ln|log|exp|sinh|cosh|arcsin|arccos|arctan)\}',lambda m:'\\'+m[1]+' ',v)
  v=re.sub(r'\\color\{[^{}]*\}|\\hspace\{[^{}]*\}|\\(?:displaystyle|textstyle|quad|qquad)\b','',v);v=re.sub(r'\\[,;!:]',' ',v)
  v=re.sub(r'\\int(?=[A-Za-z])',lambda m:m[0]+' ',v)
  v=re.sub(r'\{?([xy])\}?\s*\^\s*\{\s*\\prime\s*\}',r"\1'",v)
+ v=re.sub(r'\\(?:left|right|big|Big|bigg|Bigg)(?:[lrm])?\b','',v)
+ v=re.sub(r'\{\s*(\\(?:sin|cos|tan|sec|csc|cot|ln|log|exp))\s*\}',r'\1 ',v)
+ v=re.sub(r'\\frac\\pi\s*([0-9])',r'\\frac{\\pi}{\1}',v)
+ # x(y+h) is multiplication in multivariable formulas. ODE y(x) is handled before parsing.
+ v=re.sub(r'(?<![A-Za-z\\])([xyz])\s*\(',r'\1\\cdot(',v)
  return v.rstrip('.,?; ')
 @functools.lru_cache(maxsize=30000)
 def parse(v):
@@ -30,7 +35,7 @@ def simple(v):return S.simplify(S.trigsimp(v))
 def equivalent(a,b):return simple(a-b)==0
 
 def equation(v):
- e=parse(v)
+ e=parse(re.sub(r'y\s*\(\s*x\s*\)', 'y',v))
  if not isinstance(e,S.Equality):raise ValueError('No equality')
  f=e.lhs-e.rhs
  for deriv in list(f.atoms(S.Derivative)):
@@ -53,7 +58,7 @@ def ode(problem):
  raise ValueError('No parseable first-order ODE: '+str(failures)[:150])
 
 def explicit_solution(v):
- e=parse(v)
+ e=parse(re.sub(r'^y\s*\(\s*x\s*\)\s*=', 'y=',v))
  if isinstance(e,S.Equality):
   if e.lhs==y or getattr(e.lhs,'func',None).__name__=='y':return e.rhs
   raise ValueError('Solution is implicit')

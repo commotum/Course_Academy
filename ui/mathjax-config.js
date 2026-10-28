@@ -1,5 +1,5 @@
 window.MathJax = {
-  loader: { load: ['[tex]/color', '[tex]/bbox', '[tex]/enclose', '[tex]/cancel'] },
+  loader: { load: ['[tex]/color', '[tex]/bbox', '[tex]/enclose', '[tex]/cancel', '[tex]/boldsymbol'] },
   startup: {
     typeset: false,
     ready() {
@@ -31,7 +31,7 @@ window.MathJax = {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     displayMath: [['$$', '$$'], ['\\[', '\\]']],
     processEscapes: true,
-    packages: ['base', 'ams', 'newcommand', 'noundefined', 'configmacros', 'color', 'bbox', 'enclose', 'cancel'],
+    packages: ['base', 'ams', 'newcommand', 'noundefined', 'configmacros', 'color', 'bbox', 'enclose', 'cancel', 'boldsymbol'],
     maxBuffer: 50000,
   },
   svg: { fontCache: 'local' },

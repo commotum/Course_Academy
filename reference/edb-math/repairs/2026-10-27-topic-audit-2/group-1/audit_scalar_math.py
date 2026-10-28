@@ -2,8 +2,11 @@ import collections,json,re,sys
 from pathlib import Path
 import sympy as S
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import MATH,ENV,environment,cells
-from texmath import parse,integral
-D=json.loads((H/'current.json').read_text());topicbyq={q:t for t,k,q in D['links']};topics={t['entity']:t for t in D['topics']};reports=[]
+from texmath import parse,integral_detail
+D=json.loads((H/'current.json').read_text());context={p['entity']:p['after']for p in json.loads((H/'context-proposals.json').read_text())}
+for q in D['questions']:
+ if q[':db/id']in context:q[':question/problem']=context[q[':db/id']]
+topicbyq={q:t for t,k,q in D['links']};topics={t['entity']:t for t in D['topics']};reports=[]
 def maths(text):
  out=[]
  for m in MATH.finditer(text):
@@ -13,7 +16,7 @@ def equal(a,b):
  try:return S.simplify(S.trigsimp(a-b))==0
  except Exception:return False
 def expression(value):
- s=value.strip().strip('$');s=re.sub(r'^\\displaystyle\s*','',s)
+ s=value.strip().strip('$').rstrip('.,?');s=re.sub(r'^\\displaystyle\s*','',s)
  if '='in s:s=s.split('=')[-1]
  return parse(s)
 def correct(f):return f.get(':answer-field/correct',{}).get(':db/id')
@@ -38,37 +41,74 @@ def source_problem(q):
   a=f.get(':answer-field/correct')
   if a:p=p.replace('{{'+f[':answer-field/key']+'}}',a[':answer/value'])
  return p
+def resolve(value,problem):
+ definitions={}
+ for tex in maths(problem):
+  m=re.match(r'([fghuv])\(([xtyz])\)\s*=\s*(.*?)(?:[,;]|$)',tex)
+  if not m:continue
+  try:definitions[m[1]]=(S.Symbol(m[2],positive=True),parse(m[3]))
+  except Exception:pass
+ for atom in list(value.atoms(S.core.function.AppliedUndef)):
+  if atom.func.__name__ in definitions:
+   x,expr=definitions[atom.func.__name__];value=value.subs(atom,expr.subs(x,atom.args[0]))
+ if value.atoms(S.core.function.AppliedUndef):raise ValueError('Missing function givens or intentional graph-dependent function')
+ return value
+
+def filled_response(q,field,value):
+ p=q[':question/problem'];marker='{{'+field[':answer-field/key']+'}}'
+ if marker not in p:return value
+ filled=p
+ for f in q.get(':question/answer-fields',[]):
+  a=f.get(':answer-field/correct');v=value if f[':db/id']==field[':db/id']else a[':answer/value']if a else ''
+  filled=filled.replace('{{'+f[':answer-field/key']+'}}',v)
+ for m in MATH.finditer(p):
+  if marker in m[0]:
+   tex=m[0]
+   for f in q[':question/answer-fields']:
+    a=f.get(':answer-field/correct');v=value if f[':db/id']==field[':db/id']else a[':answer/value']if a else ''
+    tex=tex.replace('{{'+f[':answer-field/key']+'}}',v)
+   return maths(tex)[0].split('=')[-1]
+ at=p.index(marker);end=at+len(marker);before=[m for m in MATH.finditer(p)if m.end()<=at];after=[m for m in MATH.finditer(p)if m.start()>=end];left='';right=''
+ if before and not p[before[-1].end():at].strip():
+  tex=maths(before[-1][0])[0]
+  if '='in tex:left=tex.split('=')[-1]
+ if after and not p[end:after[0].start()].strip():right=maths(after[0][0])[0]
+ return left+value+right
+
 for q in D['questions']:
  topic=topics[topicbyq[q[':db/id']]]['ma_id'];p=q[':question/problem'];fs=q.get(':question/answer-fields',[]);rec={'question':q[':db/id'],'identity':q.get(':question/math-academy-id'),'topic':topic,'status':'not-covered','checks':[]}
  if topic not in[285,308,3769,1112,1109,152,375,430]:continue
  try:
-  ms=maths(p);expected=None;variable=None;kind=None;integrand=None
+  ms=maths(p);expected=None;variable=None;kind=None;integrand=None;bounds=None;function=None;point_value=None
   if topic in[285,308,3769,1112]:
    integral_parts=[m for m in ms if r'\int'in m]
    if integral_parts:
-    expr=next(m for m in integral_parts if r'\int'in m);integrand,variable=integral(expr.split('=')[0]);kind='antiderivative'
+    expr=next(m for m in integral_parts if r'\int'in m);integrand,variable,bounds=integral_detail(expr.split('=')[0]);integrand=resolve(integrand,p);kind='definite-integral'if bounds else'antiderivative'
    elif 'antiderivative'in p.lower()or"F^{′}"in p or "F'"in p:
     definition=next((m for m in ms if re.match(r'f\([xyzt]\)\s*=',m)),None)
-    expr=definition.split('=',1)[1]if definition else ms[0];integrand=parse(expr);variable=S.Symbol('x',positive=True);kind='antiderivative'
+    expr=definition.split('=',1)[1]if definition else ms[0];integrand=resolve(parse(expr),p);variable=S.Symbol('x',positive=True);kind='antiderivative'
    else:raise ValueError('Conceptual/graph or unrecognized integral response family')
-   expected=S.integrate(integrand,variable)
+   expected=S.integrate(integrand,(variable,*bounds))if bounds else S.integrate(integrand,variable)
   elif topic==1109:
-   definition=next((m for m in ms if re.match(r'(?:f|g|h|y)(?:\([xyzt]\))?\s*=',m)),None)
-   expr=definition.split('=',1)[1]if definition else ms[0];fexpr=parse(expr);names=fexpr.free_symbols;variable=next((x for x in names if str(x)in['x','t','z','y']),None)
+   definitions=[m for m in ms if re.match(r'(?:f|g|h|y)(?:\([xyzt]\))?\s*=',m)];definition=next((m for m in definitions if m.startswith('y=' )or m.startswith('y =')),definitions[0]if definitions else None)
+   expr=definition.split('=',1)[1]if definition else ms[0];fexpr=resolve(parse(expr),p);function=fexpr;names=fexpr.free_symbols;variable=next((x for x in names if str(x)in['x','t','z','y']),None)
    if variable is None:raise ValueError('No differentiation variable')
    expected=S.diff(fexpr,variable);kind='derivative'
    if 'slope'in p.lower():
     point=next((m for m in ms if re.match(str(variable)+r'\s*=',m)),None)
-    if point:expected=expected.subs(variable,parse(point.split('=',1)[1]));kind='evaluated-derivative'
+    if point:point_value=parse(point.split('=',1)[1]);expected=expected.subs(variable,point_value);kind='evaluated-derivative'
     else:raise ValueError('Point needs individual evaluation')
   elif topic==152:
    mat=matrix(p);expected=S.det(mat);kind='determinant'
-   if 'find'in p.lower()and expected.free_symbols:raise ValueError('Unknown-entry determinant equation needs individual solve')
+   
+   relation=next((re.search(r'(?:det|\\det|\\operatorname\{det\})\s*\(?[A-Z]\)?\s*=(.+)',m)for m in ms if re.search(r'(?:det|\\det|\\operatorname\{det\})\s*\(?[A-Z]\)?\s*=',m)),None)
+   if expected.free_symbols and relation:
+    variable=next(iter(expected.free_symbols));expected=S.solveset(expected-parse(relation[1]),variable,domain=S.Reals);kind='root-set'
   else:
    eq=next(m for m in ms if '='in m and not m.rstrip().endswith('='));left,right=eq.split('=',1);diff=parse(left)-parse(right);symbols=diff.free_symbols
    if len(symbols)!=1:raise ValueError('Not a single-variable algebraic equation')
    variable=next(iter(symbols));expected=S.solveset(diff,variable,domain=S.Reals);kind='root-set'
-  rec.update({'kind':kind,'expected':str(expected),'variable':str(variable),'assumptions':'Strict exact symbolic calculation. Scalar symbols positive for logarithm/radical simplification; algebraic roots solved over Reals. Negative odd-root branches require separate review.'})
+  rec.update({'kind':kind,'expected':str(expected),'variable':str(variable),'integrand':str(integrand),'function':str(function),'point':str(point_value),'assumptions':'Strict exact symbolic calculation. Scalar symbols positive for logarithm/radical simplification; algebraic roots solved over Reals. Negative odd-root branches require separate review.'})
   for f in fs:
    ftype=f[':answer-field/type'][':db/ident']
    if ftype not in[':answer-field.type/radio',':answer-field.type/blank']:raise ValueError('Multipart/checkbox/select response needs individual semantic check')
@@ -76,8 +116,8 @@ for q in D['questions']:
    for a in bank:
     if a[':answer/type'][':db/ident']!= ':answer.type/math':continue
     try:
-     val=roots(a[':answer/value'])if kind=='root-set'else expression(a[':answer/value']);ok=val==expected if kind=='root-set'else equal(S.diff(val,variable),integrand)if kind=='antiderivative'else equal(val,expected)
-     if ok and kind=='antiderivative'and r'\int'in p and not re.search(r'\bC\b',a[':answer/value']):ok=False
+     answer_tex=filled_response(q,f,a[':answer/value'])if ftype==':answer-field.type/blank'else a[':answer/value'];val=roots(answer_tex)if kind=='root-set'else expression(answer_tex);ok=val==expected if kind=='root-set'else equal(S.diff(val,variable),integrand)if kind=='antiderivative'else equal(val,expected)
+     if ok and kind=='antiderivative'and r'\int'in p and not re.search(r'\bC\b',answer_tex):ok=False
      if ok:match.append(a[':db/id'])
     except Exception as ex:unclear.append({'answer':a[':db/id'],'error':str(ex)})
    key=correct(f);rec['checks'].append({'field':f[':db/id'],'correct':key,'matching_answers':match,'unparsed_answers':unclear,'key_matches':key in match if key else None,'unique_match':len(match)==1})
