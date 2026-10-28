@@ -6156,5 +6156,1291 @@
         }
       }
     }
+  },
+  {
+    "kp": 17592186198399,
+    "level": "easy",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198399,
+        "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+        "title": "Computing the Volume of a Region Using a Change of Variables"
+      },
+      "question": {
+        ":question/id": "328fa9ea-6c68-57e4-9fb7-888cdb34292d",
+        ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, 0\\le 3 x\\le 5,\\quad 0\\le - x + y\\le 6,\\quad 0\\le 3 z\\le 4\\big\\}.\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={\u222d}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le 3 x\\le 5,\\quad 0\\le - x + y\\le 6,\\quad 0\\le 3 z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=3 x,\\quad v=- x + y,\\quad w=3 z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):0\\le u\\le 5,\\quad 0\\le v\\le 6,\\quad 0\\le w\\le 4\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}3 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ 0 & 0 & 3\\end{vmatrix} \\\\  & =\\left(3\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 3\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}-1 & 0 \\\\ 0 & 3\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-1 & 1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =9\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{9}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(\\frac{u}{3},\\frac{u}{3} + v,\\frac{w}{3}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |\\frac{1}{9}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{5}\\int_{0}^{6}\\int_{0}^{4}\\frac{1}{9}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\frac{1}{9}\\cdot \\int_{0}^{5}1\\,\\mathrm{d}u\\cdot \\int_{0}^{6}1\\,\\mathrm{d}v\\cdot \\int_{0}^{4}1\\,\\mathrm{d}w \\\\  & =\\frac{1}{9}\\cdot [u]_{0}^{5}\\cdot [v]_{0}^{6}\\cdot [w]_{0}^{4} \\\\  & =\\frac{1}{9}\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(0\\right)\\right)\\right)\\cdot \\left(\\left(\\left(4\\right)\\right)-\\left(\\left(0\\right)\\right)\\right) \\\\  & =\\frac{1}{9}\\cdot \\left(\\left(5\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(6\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(0\\right)\\right) \\\\  & =\\frac{40}{3}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "14a8c07d-b9ad-588c-8f17-10a0b4c69d98",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9f7df879-e91b-5b71-961d-49b071c661af",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120"
+              },
+              {
+                ":answer/id": "87ce1a3a-8ac9-549d-84ed-4f474897f99b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{40}{3}"
+              },
+              {
+                ":answer/id": "5e53e43c-b605-5f86-ab64-e75d132afd94",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1080"
+              },
+              {
+                ":answer/id": "57803117-5db9-5330-ad06-d915a63c459c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{20}{9}"
+              },
+              {
+                ":answer/id": "bbd6d972-f3b5-583c-8aa3-76664f5f78f7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "87ce1a3a-8ac9-549d-84ed-4f474897f99b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "volume-change-1-audit9837",
+        "seed": 983731,
+        "template": "affine",
+        "profile": "method_affine",
+        "parameters": {
+          "a": "3",
+          "b": "-1",
+          "c": "3",
+          "d": "1",
+          "lu": "0",
+          "hu": "5",
+          "lv": "0",
+          "hv": "6",
+          "lw": "0",
+          "hw": "4"
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_id": null,
+        "authored": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "math_fingerprint": "8747215f1d6a4bda46c83c43bce25fae8f22ece9244fc6688f2031db7d402983",
+        "content_fingerprint": "1aecf6dc4ddcfa553f8dbdaadacdc508acb4aff21b4eaa47152b4f9e56a70ffe",
+        "recipes": [
+          "correct",
+          "omit_J",
+          "use_forward_J",
+          "omit_u_width",
+          "omit_v_width"
+        ],
+        "python": "3.13.5",
+        "sympy": "1.14.0",
+        "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+        "plots": []
+      }
+    }
+  },
+  {
+    "kp": 17592186198374,
+    "level": "hard",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198374,
+        "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+        "title": "Cases When the Transformation Is Inferred From the Integrand"
+      },
+      "question": {
+        ":question/id": "3abc1151-1b20-5673-8dc9-b360fd5f5b55",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 2 \\left(\\frac{x}{2} + y\\right) e^{x + 4 y}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(7,- \\frac{3}{2})$, $(15,- \\frac{7}{2})$, $(14,-3)$ and $(6,-1)$.",
+        ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=2 \\left(\\frac{x}{2} + y\\right) e^{x + 4 y}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=\\frac{x}{2} + y,\\qquad v=x + 4 y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(7,- \\frac{3}{2})&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(7\\right)+\\left(1\\right)\\cdot \\left(- \\frac{3}{2}\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(7\\right)+\\left(4\\right)\\cdot \\left(- \\frac{3}{2}\\right)+\\left(0\\right)) \\\\ &=(2,1) \\\\ T^{-1}(15,- \\frac{7}{2})&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(15\\right)+\\left(1\\right)\\cdot \\left(- \\frac{7}{2}\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(15\\right)+\\left(4\\right)\\cdot \\left(- \\frac{7}{2}\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(14,-3)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(14\\right)+\\left(1\\right)\\cdot \\left(-3\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(14\\right)+\\left(4\\right)\\cdot \\left(-3\\right)+\\left(0\\right)) \\\\ &=(4,2) \\\\ T^{-1}(6,-1)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(-1\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(6\\right)+\\left(4\\right)\\cdot \\left(-1\\right)+\\left(0\\right)) \\\\ &=(2,2)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 1\\le v\\le 2\\}\n$$\n\n![](/tmp/ca9837-readonly-i061w60c/17592186198374/hard/a/generated-assets/68ee9133609bf9bc75a2.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}\\frac{1}{2}&1\\\\1&4\\end{vmatrix} \\\\ &=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=4 u - v,\\qquad y=- u + \\frac{v}{2}.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 2 \\left(\\frac{x}{2} + y\\right) e^{x + 4 y}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 2 u e^{v}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 2 u e^{v}\\,\\left|1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{2}\\int_{2}^{4}u e^{v}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{2}e^{v}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}u\\,\\mathrm{d}u \\\\ &=2\\cdot \\left[e^{v}\\right]_{1}^{2}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{2}^{4} \\\\ &=2\\cdot \\left(e^{2}-\\left(e^{1}\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(2\\right)^{2}/2\\right)\\right) \\\\ &=2\\cdot \\left(\\left(e^{2}\\right)-\\left(e\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right) \\\\ &=2\\cdot \\left(- e + e^{2}\\right)\\cdot \\left(6\\right) \\\\ &=12 e \\left(-1 + e\\right).\\end{aligned}\n$$\n\n",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "84f9ceb5-ca84-5bcb-9299-309a3704336e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "027a73f6-2ff0-5ad7-b3e3-d1484688272b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12 e \\left(-1 + e\\right)"
+              },
+              {
+                ":answer/id": "051a03f8-0aac-5605-9578-06d112ff9710",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12 e \\left(1 + e\\right)"
+              },
+              {
+                ":answer/id": "9c0fbf3d-0b30-5e80-83a0-2e61fa88db84",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24 e \\left(-1 + e\\right)"
+              },
+              {
+                ":answer/id": "9afc71b1-a813-5e42-9eb8-fbb2c14251f5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4 e \\left(-1 + e\\right)"
+              },
+              {
+                ":answer/id": "c4dd4c79-d736-5cb7-b7e4-d4347f663256",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12 e \\left(1 - e\\right)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "027a73f6-2ff0-5ad7-b3e3-d1484688272b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "integrand-transform-2-audit9837",
+        "template": "exponential",
+        "difficulty": "hard",
+        "profile": "method",
+        "parameters": {
+          "matrix": [
+            "1/2",
+            "1",
+            "1",
+            "4"
+          ],
+          "shift": [
+            "0",
+            "0"
+          ],
+          "bounds": [
+            "2",
+            "4",
+            "1",
+            "2"
+          ],
+          "scale": "2"
+        },
+        "mathematical_fingerprint": "ef177ac30cfcbf5813405442e42cb39650b402705daef5980308df1b327056d8",
+        "eligible_for_learning": true,
+        "evidence_only": false,
+        "authored_level": false,
+        "authored_bank": true,
+        "source_id": [
+          "q-160904"
+        ],
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "answer_exact": "12*E*(-1 + E)",
+        "choices_exact": [
+          "12*E*(-1 + E)",
+          "12*E*(1 - E)",
+          "24*E*(-1 + E)",
+          "4*E*(-1 + E)",
+          "12*E*(1 + E)"
+        ],
+        "recipes": [
+          "correct",
+          "reverse bounds",
+          "omit u primitive denominator2",
+          "replace u by1",
+          "add v endpoints"
+        ],
+        "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+        "plot": "/tmp/ca9837-readonly-i061w60c/17592186198374/hard/a/generated-assets/68ee9133609bf9bc75a2.png",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0",
+          "matplotlib": "3.11.2"
+        }
+      }
+    }
+  },
+  {
+    "kp": 17592186198398,
+    "level": "moderate",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198398,
+        "id": "832dc2b8-873f-56c6-bd87-5e886a586fb1",
+        "title": "Evaluating a Triple Integral Using a Change of Variables"
+      },
+      "question": {
+        ":question/id": "a0013392-1f6d-52f6-87d5-73e5b321e2b5",
+        ":question/problem": "Use the change of variables \n\n$$\nu=x - \\frac{y}{4},\\quad v=\\frac{y}{4},\\quad w=\\frac{z}{2}\n$$\n\nto evaluate the triple integral\n\n$$\n\\iiint_R \\left(x - \\frac{y}{4} + \\frac{z}{2}\\right)\\,\\mathrm{d}V,\n$$\n\n \nwhere the region $R$ is given by\n\n$$\nR=\\{(x,y,z):0\\le x - \\frac{y}{4}\\le 1,\\quad 0\\le \\frac{y}{4}\\le 2,\\quad 0\\le z\\le 3\\}.\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "203bd614-78fc-59dc-99d9-7f99937c8f8e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4500b9c5-c106-51ad-b8c4-de831a4b5809",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{4}"
+              },
+              {
+                ":answer/id": "0931d36e-390e-5e8e-b352-0e020a057d16",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30"
+              },
+              {
+                ":answer/id": "bdd446ba-d70a-561d-99c1-d32203657724",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{32}"
+              },
+              {
+                ":answer/id": "00cc51e9-12a8-505a-b659-1bbbc330c7b8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12"
+              },
+              {
+                ":answer/id": "e7cc68e6-13f8-5548-a3ed-5d2121e58dbd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0931d36e-390e-5e8e-b352-0e020a057d16"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x - \\frac{y}{4},\\quad v=\\frac{y}{4},\\quad w=\\frac{z}{2}\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\{(u,v,w):0\\le u\\le 1,\\quad 0\\le v\\le 2,\\quad 0\\le w\\le \\frac{3}{2}\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & - \\frac{1}{4} & 0 \\\\ 0 & \\frac{1}{4} & 0 \\\\ 0 & 0 & \\frac{1}{2}\\end{vmatrix} \\\\  & =\\left(\\frac{1}{2}\\right)(-1)^{3+3}\\begin{vmatrix}1 & - \\frac{1}{4} \\\\ 0 & \\frac{1}{4}\\end{vmatrix} \\\\  & =\\left(\\frac{1}{2}\\right)\\left(\\left(1\\right)\\cdot \\left(\\frac{1}{4}\\right)-\\left(- \\frac{1}{4}\\right)\\cdot \\left(0\\right)\\right) \\\\  & =\\frac{1}{8}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=8.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R \\left(x - \\frac{y}{4} + \\frac{z}{2}\\right)\\,\\mathrm{d}V & =\\iiint_\\Delta \\left(u + w\\right)\\cdot \\left|8\\right|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\iiint_\\Delta \\left(8 u + 8 w\\right)\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{1}\\int_{0}^{2}\\int_{0}^{\\frac{3}{2}}\\left(8 u + 8 w\\right)\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{2}\\left(\\left[8 u w + 4 w^{2}\\right]_{w=0}^{w=\\frac{3}{2}}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{2}\\left(\\left(4 \\left(\\frac{3}{2}\\right)^{2}\\right)-\\left(4 \\left(0\\right)^{2}\\right)+\\left(8 u \\left(\\frac{3}{2}\\right)\\right)-\\left(8 u \\left(0\\right)\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{2}\\left(\\left(9\\right)-\\left(0\\right)+\\left(12 u\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{2}\\left(12 u + 9\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left[v \\left(12 u + 9\\right)\\right]_{v=0}^{v=2}\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left(9 \\left(2\\right)\\right)-\\left(9 \\left(0\\right)\\right)+\\left(12 u \\left(2\\right)\\right)-\\left(12 u \\left(0\\right)\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left(18\\right)-\\left(0\\right)+\\left(24 u\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(24 u + 18\\right)\\,\\mathrm{d}u \\\\  & =\\left[12 u^{2} + 18 u\\right]_{u=0}^{u=1} \\\\  & =\\left(12 \\left(1\\right)^{2}\\right)-\\left(12 \\left(0\\right)^{2}\\right)+\\left(18 \\left(1\\right)\\right)-\\left(18 \\left(0\\right)\\right) \\\\  & =\\left(12\\right)-\\left(0\\right)+\\left(18\\right)-\\left(0\\right) \\\\  & =30\\end{aligned}\n$$"
+      },
+      "generation": {
+        "version": "triple-change-evaluation-1-audit9837",
+        "python_version": "3.13.5",
+        "sympy_version": "1.14.0",
+        "seed": 983731,
+        "template": "sum",
+        "parameters": {
+          "a": "3",
+          "b": "4",
+          "c": "1/2",
+          "d": "1",
+          "n": "2",
+          "lu": "0",
+          "hu": "1",
+          "lv": "0",
+          "hv": "2",
+          "lz": "0",
+          "hz": "3"
+        },
+        "bank_profile": "method",
+        "bank_origin": "authored_method",
+        "source_basis": 1356,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "source_ids": [
+          "17592186374097"
+        ],
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "authored_level": false,
+        "plot_rating": "none",
+        "parameter_fingerprint": "0d958b430479fa1c630537321f7f275d3fd50abc7ae02cf4a7b464218ec24b9a",
+        "content_fingerprint": "829031c19ee0e4b63a54100297849408dae31a74fd343ffaa55ec4dc69aea166",
+        "recipes": [
+          "correct",
+          "omit_inverse_jacobian",
+          "use_forward_jacobian",
+          "omit_u_summand",
+          "omit_w_summand"
+        ],
+        "domain": "Globally bijective polynomial/linear shear; constant nonzero determinant; ordered bounded box.",
+        "stages": [
+          {
+            "variable": "w",
+            "input": "8*u + 8*w",
+            "primitive": "8*u*w + 4*w**2",
+            "terms": [
+              "4*w**2",
+              "8*u*w"
+            ],
+            "components": [
+              [
+                "9",
+                "0"
+              ],
+              [
+                "12*u",
+                "0"
+              ]
+            ],
+            "result": "12*u + 9"
+          },
+          {
+            "variable": "v",
+            "input": "12*u + 9",
+            "primitive": "v*(12*u + 9)",
+            "terms": [
+              "9*v",
+              "12*u*v"
+            ],
+            "components": [
+              [
+                "18",
+                "0"
+              ],
+              [
+                "24*u",
+                "0"
+              ]
+            ],
+            "result": "24*u + 18"
+          },
+          {
+            "variable": "u",
+            "input": "24*u + 18",
+            "primitive": "12*u**2 + 18*u",
+            "terms": [
+              "12*u**2",
+              "18*u"
+            ],
+            "components": [
+              [
+                "12",
+                "0"
+              ],
+              [
+                "18",
+                "0"
+              ]
+            ],
+            "result": "30"
+          }
+        ],
+        "math": {
+          "trans": [
+            "x - y/4",
+            "y/4",
+            "z/2"
+          ],
+          "inverse": [
+            "u + v",
+            "4*v",
+            "2*w"
+          ],
+          "det": "1/8",
+          "j": "8",
+          "f": "u + w",
+          "density": "8*u + 8*w",
+          "bounds": [
+            [
+              "0",
+              "1"
+            ],
+            [
+              "0",
+              "2"
+            ],
+            [
+              "0",
+              "3/2"
+            ]
+          ],
+          "value": "30"
+        }
+      }
+    }
+  },
+  {
+    "kp": 17592186198399,
+    "level": "moderate",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198399,
+        "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+        "title": "Computing the Volume of a Region Using a Change of Variables"
+      },
+      "question": {
+        ":question/id": "d14bbf79-936b-58e8-86db-77c3eda555fa",
+        ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, -2\\le x\\le 3,\\quad -1\\le - 2 x + y\\le 5,\\quad 2\\le - x^{2} - 2 y^{2} + z\\le 6\\big\\}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={\u222d}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-2\\le x\\le 3,\\quad -1\\le - 2 x + y\\le 5,\\quad 2\\le - x^{2} - 2 y^{2} + z\\le 6,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\quad v=- 2 x + y,\\quad w=- x^{2} - 2 y^{2} + z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):-2\\le u\\le 3,\\quad -1\\le v\\le 5,\\quad 2\\le w\\le 6\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ -2 & 1 & 0 \\\\ - 2 x & - 4 y & 1\\end{vmatrix} \\\\  & =\\left(1\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ - 4 y & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+2}\\begin{vmatrix}-2 & 0 \\\\ - 2 x & 1\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-2 & 1 \\\\ - 2 x & - 4 y\\end{vmatrix} \\\\  & =1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(u,2 u + v,u^{2} + w + 2 \\left(2 u + v\\right)^{2}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |1|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{-2}^{3}\\int_{-1}^{5}\\int_{2}^{6}1\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{-2}^{3}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{5}1\\,\\mathrm{d}v\\cdot \\int_{2}^{6}1\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{-2}^{3}\\cdot [v]_{-1}^{5}\\cdot [w]_{2}^{6} \\\\  & =1\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(-2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\left(6\\right)\\right)-\\left(\\left(2\\right)\\right)\\right) \\\\  & =1\\cdot \\left(\\left(3\\right)-\\left(-2\\right)\\right)\\cdot \\left(\\left(5\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(6\\right)-\\left(2\\right)\\right) \\\\  & =120\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f7b9a47c-5fb4-5d15-b8d0-0f240f6ed84a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d5810fd6-08af-5d10-876e-25543b8f3233",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24"
+              },
+              {
+                ":answer/id": "f6455ba4-8739-5501-bf2d-9da6ba74734f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120"
+              },
+              {
+                ":answer/id": "b7eac077-2fe0-565f-8587-339d597d25b5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20"
+              },
+              {
+                ":answer/id": "1a7b8b1d-503b-5099-85a9-886ed22e1e2c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "72"
+              },
+              {
+                ":answer/id": "b43787d8-907e-547d-9d20-2163b3306ca2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f6455ba4-8739-5501-bf2d-9da6ba74734f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "volume-change-1-audit9837",
+        "seed": 983731,
+        "template": "shear",
+        "profile": "method_shear",
+        "parameters": {
+          "a": "-2",
+          "b": "-1",
+          "c": "-2",
+          "d": "1",
+          "lu": "-2",
+          "hu": "3",
+          "lv": "-1",
+          "hv": "5",
+          "lw": "2",
+          "hw": "6"
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_id": null,
+        "authored": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "math_fingerprint": "21b3cde28dc6fa74f1c49e38887536db0dd3a9d2befe87eb0329fe7a2f2eadb4",
+        "content_fingerprint": "5abe64c99e35895b0c023a64f4f32c03d7c14e99456c74797108ac6dc8b9be77",
+        "recipes": [
+          "correct",
+          "omit_u_width",
+          "omit_v_width",
+          "omit_w_width",
+          "use_upper_u_instead_of_difference"
+        ],
+        "python": "3.13.5",
+        "sympy": "1.14.0",
+        "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+        "plots": []
+      }
+    }
+  },
+  {
+    "kp": 17592186198399,
+    "level": "hard",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198399,
+        "id": "a8a79d4e-f9e0-583e-8e52-aa60c14fd4a3",
+        "title": "Computing the Volume of a Region Using a Change of Variables"
+      },
+      "question": {
+        ":question/id": "4a81a3a2-e964-5db7-b27d-c98f57bf70ae",
+        ":question/problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\big\\{(x,y,z)\\, :\\, -2\\le - 2 x - y\\le 3,\\quad -1\\le - 2 x + y\\le 5,\\quad 1\\le z^{3}\\le 8\\big\\}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={\u222d}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-2\\le - 2 x - y\\le 3,\\quad -1\\le - 2 x + y\\le 5,\\quad 1\\le z^{3}\\le 8,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=- 2 x - y,\\quad v=- 2 x + y,\\quad w=z^{3}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y,z)\\longmapsto(u(x,y,z),v(x,y,z),w(x,y,z)).\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$\n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\big\\{(u,v,w):-2\\le u\\le 3,\\quad -1\\le v\\le 5,\\quad 1\\le w\\le 8\\big\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-2 & -1 & 0 \\\\ -2 & 1 & 0 \\\\ 0 & 0 & 3 z^{2}\\end{vmatrix} \\\\  & =\\left(-2\\right)(-1)^{1+1}\\begin{vmatrix}1 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(-1\\right)(-1)^{1+2}\\begin{vmatrix}-2 & 0 \\\\ 0 & 3 z^{2}\\end{vmatrix}+\\left(0\\right)(-1)^{1+3}\\begin{vmatrix}-2 & 1 \\\\ 0 & 0\\end{vmatrix} \\\\  & =- 12 z^{2} \\\\  & =- 12 w^{\\frac{2}{3}}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=- \\frac{1}{12 w^{\\frac{2}{3}}}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nThe map to $R$ is\n\n$$\nT(u,v,w)=\\left(- \\frac{u}{4} - \\frac{v}{4},- \\frac{u}{2} + \\frac{v}{2},\\sqrt[3]{w}\\right).\n$$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R\\mathrm{d}V & =\\iiint_\\Delta 1\\cdot |- \\frac{1}{12 w^{\\frac{2}{3}}}|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{-2}^{3}\\int_{-1}^{5}\\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =1\\cdot \\int_{-2}^{3}1\\,\\mathrm{d}u\\cdot \\int_{-1}^{5}1\\,\\mathrm{d}v\\cdot \\int_{1}^{8}\\frac{1}{12 w^{\\frac{2}{3}}}\\,\\mathrm{d}w \\\\  & =1\\cdot [u]_{-2}^{3}\\cdot [v]_{-1}^{5}\\cdot [\\frac{\\sqrt[3]{w}}{4}]_{1}^{8} \\\\  & =1\\cdot \\left(\\left(\\left(3\\right)\\right)-\\left(\\left(-2\\right)\\right)\\right)\\cdot \\left(\\left(\\left(5\\right)\\right)-\\left(\\left(-1\\right)\\right)\\right)\\cdot \\left(\\left(\\frac{\\sqrt[3]{\\left(8\\right)}}{4}\\right)-\\left(\\frac{\\sqrt[3]{\\left(1\\right)}}{4}\\right)\\right) \\\\  & =1\\cdot \\left(\\left(3\\right)-\\left(-2\\right)\\right)\\cdot \\left(\\left(5\\right)-\\left(-1\\right)\\right)\\cdot \\left(\\left(\\frac{1}{2}\\right)-\\left(\\frac{1}{4}\\right)\\right) \\\\  & =\\frac{15}{2}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bae6f30b-6fb3-5ce5-a8e1-cf29b96f4cad",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ac1b1105-fc4f-5341-b85d-fc46efb4651c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "210"
+              },
+              {
+                ":answer/id": "0c87ff55-0ddb-52e6-8ff1-d2fb245dc409",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{2}"
+              },
+              {
+                ":answer/id": "bd134862-1aac-5c7d-971a-cd86ff0692ad",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{45}{2}"
+              },
+              {
+                ":answer/id": "47107db6-9da9-584b-853c-2455a05d6653",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{2}"
+              },
+              {
+                ":answer/id": "39f3c461-7690-5789-bf92-a92ff98adede",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0c87ff55-0ddb-52e6-8ff1-d2fb245dc409"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "volume-change-1-audit9837",
+        "seed": 983731,
+        "template": "cube",
+        "profile": "method_cube",
+        "parameters": {
+          "a": "-2",
+          "b": "-1",
+          "c": "-2",
+          "d": "1",
+          "lu": "-2",
+          "hu": "3",
+          "lv": "-1",
+          "hv": "5",
+          "lw": "1",
+          "hw": "8"
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_id": null,
+        "authored": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "math_fingerprint": "02879973547a70f80ba97fb0d0a8c99b96c6c040e2e84c2d02eea2a86e54f3da",
+        "content_fingerprint": "46829dc052e7860e8fd56e5f9ce6bc0c85a1fc3f8551aa8c85eb8e9280da0f88",
+        "recipes": [
+          "correct",
+          "omit_J",
+          "omit_chain_factor_three",
+          "omit_inverse_linear_determinant",
+          "omit_u_width"
+        ],
+        "python": "3.13.5",
+        "sympy": "1.14.0",
+        "domain": "Bijective branch; positive nonlinear coordinates; no critical points inside box",
+        "plots": []
+      }
+    }
+  },
+  {
+    "kp": 17592186059849,
+    "level": "easy",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059849,
+        "id": "ab642ad6-d9e0-5734-83b4-81627b9132eb",
+        "title": "Solving for an Unknown Given the Determinant"
+      },
+      "question": {
+        ":question/id": "afe8ca44-fa0e-5554-b280-8bb7e7c4a168",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Given that $A=\\begin{bmatrix}2 & 1 & 0 \\\\ 3 & x & -3 \\\\ 1 & 5 & 1\\end{bmatrix}$ and $det(A)=-11$, find the value of $x.$\n\n$x=$\n{{field-1}}",
+        ":question/worked-solution": "Expand along the first row, using the signs $+,-,+$. Compute the three signed contributions separately:\n\n$$\n\\begin{aligned}T_{1} & =(2)\\begin{vmatrix}x & -3 \\\\ 5 & 1\\end{vmatrix} \\\\  & =(2)((x)(1)-(-3)(5)) \\\\  & =(2)(x + 15) \\\\  & =2 x + 30\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{2} & =-(1)\\begin{vmatrix}3 & -3 \\\\ 1 & 1\\end{vmatrix} \\\\  & =-(1)((3)(1)-(-3)(1)) \\\\  & =-(1)(6) \\\\  & =-6\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{3} & =(0)\\begin{vmatrix}3 & x \\\\ 1 & 5\\end{vmatrix} \\\\  & =(0)((3)(5)-(x)(1)) \\\\  & =(0)(15 - x) \\\\  & =0\\end{aligned}\n$$\n\nAdd the signed contributions to obtain the determinant:\n\n$$\n\\begin{aligned}D & =T_1+T_2+T_3 \\\\  & =2 x + 24\\end{aligned}\n$$\n\nSet the determinant equal to the given value.\n\n$$\n\\begin{aligned}2 x + 24 & =-11 \\\\ 2 x & =-35 \\\\ x & =- \\frac{35}{2}\\end{aligned}\n$$\n\nTherefore, the solution is $x=- \\frac{35}{2}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "094f4f37-fe40-5b80-a803-32abaed17a6a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fbb20909-6066-5d66-8813-56b968134399",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{35}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fbb20909-6066-5d66-8813-56b968134399"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "determinant-unknown-package-6",
+        "sympy_version": "1.14.0",
+        "seed": 983731,
+        "template": "linear_named_determinant_blank",
+        "matrix_recipe": "q-280403",
+        "bank_profile": null,
+        "bank_origin": "observed",
+        "parameters": {
+          "constants": [
+            2,
+            1,
+            0,
+            3,
+            0,
+            -3,
+            1,
+            5,
+            1
+          ],
+          "linear": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "quadratic": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": -11
+        },
+        "parameter_fingerprint": "154ec8e5de3a225d4b38246dd311429202963a90d4f43ea8d821bc723656e2f4",
+        "content_fingerprint": "ce2fff3e906a3f3b6af4845b585c788ae66aaf7b6a0ced47d6a323e98f9bb5f6",
+        "source_analysis": {
+          "database": "math",
+          "basis": 7441,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "b8c1908a-4170-5ad4-8920-81bd7dfc6050"
+          ]
+        },
+        "authored_level_assignment": false,
+        "authored_extension": true,
+        "domain": "real variable; degree and distinct-root restrictions per source",
+        "matrix": [
+          [
+            "Integer(2)",
+            "Integer(1)",
+            "Integer(0)"
+          ],
+          [
+            "Integer(3)",
+            "Symbol('u', real=True)",
+            "Integer(-3)"
+          ],
+          [
+            "Integer(1)",
+            "Integer(5)",
+            "Integer(1)"
+          ]
+        ],
+        "determinant": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(24))",
+        "residual": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(35))",
+        "roots": [
+          "Rational(-35, 2)"
+        ],
+        "choice_math": [
+          {
+            "type": ":answer.type/math",
+            "value": "- \\frac{35}{2}",
+            "set": [
+              "Rational(-35, 2)"
+            ],
+            "recipe": [
+              "correct"
+            ]
+          }
+        ],
+        "option_math": [],
+        "solution_intermediates": [
+          {
+            "coefficient": "Integer(2)",
+            "minor": [
+              [
+                "Symbol('u', real=True)",
+                "Integer(-3)"
+              ],
+              [
+                "Integer(5)",
+                "Integer(1)"
+              ]
+            ],
+            "value": "Add(Symbol('u', real=True), Integer(15))",
+            "signed_product": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(30))"
+          },
+          {
+            "coefficient": "Integer(1)",
+            "minor": [
+              [
+                "Integer(3)",
+                "Integer(-3)"
+              ],
+              [
+                "Integer(1)",
+                "Integer(1)"
+              ]
+            ],
+            "value": "Integer(6)",
+            "signed_product": "Integer(-6)"
+          },
+          {
+            "coefficient": "Integer(0)",
+            "minor": [
+              [
+                "Integer(3)",
+                "Symbol('u', real=True)"
+              ],
+              [
+                "Integer(1)",
+                "Integer(5)"
+              ]
+            ],
+            "value": "Add(Integer(15), Mul(Integer(-1), Symbol('u', real=True)))",
+            "signed_product": "Integer(0)"
+          }
+        ],
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_repairs": [
+          "Corrected source det(F) label to det(A)"
+        ]
+      }
+    }
+  },
+  {
+    "kp": 17592186059849,
+    "level": "moderate",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059849,
+        "id": "ab642ad6-d9e0-5734-83b4-81627b9132eb",
+        "title": "Solving for an Unknown Given the Determinant"
+      },
+      "question": {
+        ":question/id": "76056b17-5148-5c5b-84cf-2fd54d6f20fc",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the possible values of the constant $k$ given that the matrix\n$\\begin{bmatrix}1 & -1 & k \\\\ 1 & k & - k \\\\ -3 & k & k\\end{bmatrix}$ is singular.\n\nSelect all that apply.",
+        ":question/worked-solution": "Expand along the first row, using the signs $+,-,+$. Compute the three signed contributions separately:\n\n$$\n\\begin{aligned}T_{1} & =(1)\\begin{vmatrix}k & - k \\\\ k & k\\end{vmatrix} \\\\  & =(1)((k)(k)-(- k)(k)) \\\\  & =(1)(2 k^{2}) \\\\  & =2 k^{2}\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{2} & =-(-1)\\begin{vmatrix}1 & - k \\\\ -3 & k\\end{vmatrix} \\\\  & =-(-1)((1)(k)-(- k)(-3)) \\\\  & =-(-1)(- 2 k) \\\\  & =- 2 k\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{3} & =(k)\\begin{vmatrix}1 & k \\\\ -3 & k\\end{vmatrix} \\\\  & =(k)((1)(k)-(k)(-3)) \\\\  & =(k)(4 k) \\\\  & =4 k^{2}\\end{aligned}\n$$\n\nAdd the signed contributions to obtain the determinant:\n\n$$\n\\begin{aligned}D & =T_1+T_2+T_3 \\\\  & =6 k^{2} - 2 k\\end{aligned}\n$$\n\nA singular matrix has determinant $0$.\n\n$$\n\\begin{aligned}6 k^{2} - 2 k & =0 \\\\ 2 k (3 k - 1) & =0 \\\\ k & =0,\\,\\frac{1}{3}\\end{aligned}\n$$\n\nTherefore, the solutions are $k=0$ and $k=\\frac{1}{3}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7a8d3c17-789a-522d-adab-df3f7d3c264c",
+            ":answer-field/key": "$k=0$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5dd245b6-4330-5325-9980-581007975b9a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "5c795d26-4d7b-52cf-931c-557187c07dfc",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c795d26-4d7b-52cf-931c-557187c07dfc"
+            ]
+          },
+          {
+            ":answer-field/id": "19bbe4dd-8cc3-5640-8c3f-60b1da54f5a3",
+            ":answer-field/key": "$k=\\frac{1}{2}$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e5cbbe9b-27a5-571b-930d-b9edadb5a8fc",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "7e212a90-eab8-53da-9f8c-18bac9b2b643",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e5cbbe9b-27a5-571b-930d-b9edadb5a8fc"
+            ]
+          },
+          {
+            ":answer-field/id": "769ddea0-1ea8-5f55-a072-45eec69d871c",
+            ":answer-field/key": "$k=\\frac{1}{3}$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "58901dca-3ad0-5453-b39d-d413fe84d77e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "56871b0b-f6d0-5050-a1d4-e97ec13cd918",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "56871b0b-f6d0-5050-a1d4-e97ec13cd918"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "determinant-unknown-package-6",
+        "sympy_version": "1.14.0",
+        "seed": 983731,
+        "template": "quadratic_singular_checkbox",
+        "matrix_recipe": "q-9911",
+        "bank_profile": "authored:q-9911",
+        "bank_origin": "authored operation-derived complete bank",
+        "parameters": {
+          "constants": [
+            1,
+            -1,
+            0,
+            1,
+            0,
+            0,
+            -3,
+            0,
+            0
+          ],
+          "linear": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            -1,
+            0,
+            1,
+            1
+          ],
+          "quadratic": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 0
+        },
+        "parameter_fingerprint": "4855ea4cb9561403413eabb369c54d3206c889045f5eaa478ab668b6c54f69e4",
+        "content_fingerprint": "8c2723167775e76358f47c8a6a797f64016fddfee407d7c70bf1021f60df74bf",
+        "source_analysis": {
+          "database": "math",
+          "basis": 7441,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "e554c090-e3bc-5a93-90b4-9f79a0997b62"
+          ]
+        },
+        "authored_level_assignment": false,
+        "authored_extension": true,
+        "domain": "real variable; degree and distinct-root restrictions per source",
+        "matrix": [
+          [
+            "Integer(1)",
+            "Integer(-1)",
+            "Symbol('u', real=True)"
+          ],
+          [
+            "Integer(1)",
+            "Symbol('u', real=True)",
+            "Mul(Integer(-1), Symbol('u', real=True))"
+          ],
+          [
+            "Integer(-3)",
+            "Symbol('u', real=True)",
+            "Symbol('u', real=True)"
+          ]
+        ],
+        "determinant": "Add(Mul(Integer(6), Pow(Symbol('u', real=True), Integer(2))), Mul(Integer(-1), Integer(2), Symbol('u', real=True)))",
+        "residual": "Add(Mul(Integer(6), Pow(Symbol('u', real=True), Integer(2))), Mul(Integer(-1), Integer(2), Symbol('u', real=True)))",
+        "roots": [
+          "Integer(0)",
+          "Rational(1, 3)"
+        ],
+        "choice_math": [
+          {
+            "type": ":answer.type/text",
+            "value": "true",
+            "set": [
+              "Integer(0)"
+            ],
+            "recipe": [
+              "solve"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "false",
+            "set": [
+              "Rational(1, 2)"
+            ],
+            "recipe": [
+              "add_minor_products_0"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "true",
+            "set": [
+              "Rational(1, 3)"
+            ],
+            "recipe": [
+              "solve"
+            ]
+          }
+        ],
+        "option_math": [
+          {
+            "label": "I",
+            "atom": "Integer(0)",
+            "recipe": "solve"
+          },
+          {
+            "label": "III",
+            "atom": "Rational(1, 2)",
+            "recipe": "add_minor_products_0"
+          },
+          {
+            "label": "II",
+            "atom": "Rational(1, 3)",
+            "recipe": "solve"
+          }
+        ],
+        "solution_intermediates": [
+          {
+            "coefficient": "Integer(1)",
+            "minor": [
+              [
+                "Symbol('u', real=True)",
+                "Mul(Integer(-1), Symbol('u', real=True))"
+              ],
+              [
+                "Symbol('u', real=True)",
+                "Symbol('u', real=True)"
+              ]
+            ],
+            "value": "Mul(Integer(2), Pow(Symbol('u', real=True), Integer(2)))",
+            "signed_product": "Mul(Integer(2), Pow(Symbol('u', real=True), Integer(2)))"
+          },
+          {
+            "coefficient": "Integer(-1)",
+            "minor": [
+              [
+                "Integer(1)",
+                "Mul(Integer(-1), Symbol('u', real=True))"
+              ],
+              [
+                "Integer(-3)",
+                "Symbol('u', real=True)"
+              ]
+            ],
+            "value": "Mul(Integer(-1), Integer(2), Symbol('u', real=True))",
+            "signed_product": "Mul(Integer(-1), Integer(2), Symbol('u', real=True))"
+          },
+          {
+            "coefficient": "Symbol('u', real=True)",
+            "minor": [
+              [
+                "Integer(1)",
+                "Symbol('u', real=True)"
+              ],
+              [
+                "Integer(-3)",
+                "Symbol('u', real=True)"
+              ]
+            ],
+            "value": "Mul(Integer(4), Symbol('u', real=True))",
+            "signed_product": "Mul(Integer(4), Pow(Symbol('u', real=True), Integer(2)))"
+          }
+        ],
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_repairs": []
+      }
+    }
+  },
+  {
+    "kp": 17592186059849,
+    "level": "hard",
+    "branch": "a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059849,
+        "id": "ab642ad6-d9e0-5734-83b4-81627b9132eb",
+        "title": "Solving for an Unknown Given the Determinant"
+      },
+      "question": {
+        ":question/id": "370b925b-e1f5-50b5-9143-e432c7595cbc",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Find all real values of $p$ for which the following matrix is singular.\n\n$$\n\\begin{bmatrix}2 p + 1 & 1 - 2 p & 3 p + 2 \\\\ 3 p + 4 & - 3 p - 6 & 4 p + 9 \\\\ -1 & 2 & -2\\end{bmatrix}\n$$",
+        ":question/worked-solution": "Expand along the first row, using the signs $+,-,+$. Compute the three signed contributions separately:\n\n$$\n\\begin{aligned}T_{1} & =(2 p + 1)\\begin{vmatrix}- 3 p - 6 & 4 p + 9 \\\\ 2 & -2\\end{vmatrix} \\\\  & =(2 p + 1)((- 3 p - 6)(-2)-(4 p + 9)(2)) \\\\  & =(2 p + 1)(- 2 p - 6) \\\\  & =- 4 p^{2} - 14 p - 6\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{2} & =-(1 - 2 p)\\begin{vmatrix}3 p + 4 & 4 p + 9 \\\\ -1 & -2\\end{vmatrix} \\\\  & =-(1 - 2 p)((3 p + 4)(-2)-(4 p + 9)(-1)) \\\\  & =-(1 - 2 p)(1 - 2 p) \\\\  & =- 4 p^{2} + 4 p - 1\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{3} & =(3 p + 2)\\begin{vmatrix}3 p + 4 & - 3 p - 6 \\\\ -1 & 2\\end{vmatrix} \\\\  & =(3 p + 2)((3 p + 4)(2)-(- 3 p - 6)(-1)) \\\\  & =(3 p + 2)(3 p + 2) \\\\  & =9 p^{2} + 12 p + 4\\end{aligned}\n$$\n\nAdd the signed contributions to obtain the determinant:\n\n$$\n\\begin{aligned}D & =T_1+T_2+T_3 \\\\  & =p^{2} + 2 p - 3\\end{aligned}\n$$\n\nA singular matrix has determinant $0$.\n\n$$\n\\begin{aligned}p^{2} + 2 p - 3 & =0 \\\\ (p - 1) (p + 3) & =0 \\\\ p & =-3,\\,1\\end{aligned}\n$$\n\nTherefore, the solutions are $p=-3$ and $p=1$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bd51d9c8-8348-503d-8fd2-16e49444cb7f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1737c149-83b0-5116-890c-20babc1dca08",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$3$ only"
+              },
+              {
+                ":answer/id": "1ea0977c-a0e1-5890-b34b-8686329f7ad6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "Any value of $p$"
+              },
+              {
+                ":answer/id": "005c2161-01c8-5737-8d81-e6725f3fd141",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$-1$ only"
+              },
+              {
+                ":answer/id": "ec124892-e38b-5cc7-b88d-36fa36670e50",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$-3$ and $1$ only"
+              },
+              {
+                ":answer/id": "5495ff44-dd05-5d49-b465-618b1fc49585",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$-1$ and $3$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ec124892-e38b-5cc7-b88d-36fa36670e50"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "determinant-unknown-package-6",
+        "sympy_version": "1.14.0",
+        "seed": 983731,
+        "template": "mixed_singular_radio",
+        "matrix_recipe": "authored:hard_mixed",
+        "bank_profile": "authored:hard_mixed",
+        "bank_origin": "authored common bank, selected before the solution outcome",
+        "parameters": {
+          "constants": [
+            1,
+            1,
+            2,
+            4,
+            -6,
+            9,
+            -1,
+            2,
+            -2
+          ],
+          "linear": [
+            2,
+            -2,
+            3,
+            3,
+            -3,
+            4,
+            0,
+            0,
+            0
+          ],
+          "quadratic": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": 0,
+          "option_roots": [
+            3,
+            -1
+          ]
+        },
+        "parameter_fingerprint": "6ebcf9b44e77f8b9c0583691d67bb347b560288fe1382cf0bc3306fe6eda8313",
+        "content_fingerprint": "bb53720c96bc4fbe324752616e50142bc22136c92b885b3e13864cc5c780d88c",
+        "source_analysis": {
+          "database": "math",
+          "basis": 7441,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [],
+          "reference_question_ids": [
+            "fee93468-4926-51f6-9486-b49c687c7f2f",
+            "4b64018e-8bf2-54ed-9b58-217e6e652f6c",
+            "1a6ffa24-d6e8-52ac-ac3d-5fab4f24df3d"
+          ]
+        },
+        "authored_level_assignment": true,
+        "authored_extension": true,
+        "domain": "real variable; identity, linear or two-distinct-root quadratic singularity equation",
+        "solution_class": "two_values",
+        "matrix": [
+          [
+            "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(1))",
+            "Add(Integer(1), Mul(Integer(-1), Integer(2), Symbol('u', real=True)))",
+            "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(2))"
+          ],
+          [
+            "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(4))",
+            "Add(Mul(Integer(-1), Integer(3), Symbol('u', real=True)), Integer(-6))",
+            "Add(Mul(Integer(4), Symbol('u', real=True)), Integer(9))"
+          ],
+          [
+            "Integer(-1)",
+            "Integer(2)",
+            "Integer(-2)"
+          ]
+        ],
+        "determinant": "Add(Pow(Symbol('u', real=True), Integer(2)), Mul(Integer(2), Symbol('u', real=True)), Integer(-3))",
+        "residual": "Add(Pow(Symbol('u', real=True), Integer(2)), Mul(Integer(2), Symbol('u', real=True)), Integer(-3))",
+        "roots": [
+          "Integer(-3)",
+          "Integer(1)"
+        ],
+        "choice_math": [
+          {
+            "type": ":answer.type/text",
+            "value": "Any value of $p$",
+            "set": null,
+            "recipe": [
+              "common_candidate_set"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "$3$ only",
+            "set": [
+              "Integer(3)"
+            ],
+            "recipe": [
+              "common_candidate_set"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "$-1$ only",
+            "set": [
+              "Integer(-1)"
+            ],
+            "recipe": [
+              "common_candidate_set"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "$-1$ and $3$ only",
+            "set": [
+              "Integer(-1)",
+              "Integer(3)"
+            ],
+            "recipe": [
+              "common_candidate_set"
+            ]
+          },
+          {
+            "type": ":answer.type/text",
+            "value": "$-3$ and $1$ only",
+            "set": [
+              "Integer(-3)",
+              "Integer(1)"
+            ],
+            "recipe": [
+              "common_candidate_set"
+            ]
+          }
+        ],
+        "option_math": [],
+        "solution_intermediates": [
+          {
+            "coefficient": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(1))",
+            "minor": [
+              [
+                "Add(Mul(Integer(-1), Integer(3), Symbol('u', real=True)), Integer(-6))",
+                "Add(Mul(Integer(4), Symbol('u', real=True)), Integer(9))"
+              ],
+              [
+                "Integer(2)",
+                "Integer(-2)"
+              ]
+            ],
+            "value": "Add(Mul(Integer(-1), Integer(2), Symbol('u', real=True)), Integer(-6))",
+            "signed_product": "Add(Mul(Integer(-1), Integer(4), Pow(Symbol('u', real=True), Integer(2))), Mul(Integer(-1), Integer(14), Symbol('u', real=True)), Integer(-6))"
+          },
+          {
+            "coefficient": "Add(Integer(1), Mul(Integer(-1), Integer(2), Symbol('u', real=True)))",
+            "minor": [
+              [
+                "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(4))",
+                "Add(Mul(Integer(4), Symbol('u', real=True)), Integer(9))"
+              ],
+              [
+                "Integer(-1)",
+                "Integer(-2)"
+              ]
+            ],
+            "value": "Add(Integer(1), Mul(Integer(-1), Integer(2), Symbol('u', real=True)))",
+            "signed_product": "Add(Mul(Integer(-1), Integer(4), Pow(Symbol('u', real=True), Integer(2))), Mul(Integer(4), Symbol('u', real=True)), Integer(-1))"
+          },
+          {
+            "coefficient": "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(2))",
+            "minor": [
+              [
+                "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(4))",
+                "Add(Mul(Integer(-1), Integer(3), Symbol('u', real=True)), Integer(-6))"
+              ],
+              [
+                "Integer(-1)",
+                "Integer(2)"
+              ]
+            ],
+            "value": "Add(Mul(Integer(3), Symbol('u', real=True)), Integer(2))",
+            "signed_product": "Add(Mul(Integer(9), Pow(Symbol('u', real=True), Integer(2))), Mul(Integer(12), Symbol('u', real=True)), Integer(4))"
+          }
+        ],
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_repairs": []
+      }
+    }
   }
 ]

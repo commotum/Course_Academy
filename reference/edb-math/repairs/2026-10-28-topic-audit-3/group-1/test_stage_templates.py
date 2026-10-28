@@ -43,6 +43,10 @@ def run(c):
   return {'kp':c['kp'],'returncode':r.returncode,'stderr':r.stderr,'cwd':str(outside),'result':json.loads(r.stdout)if r.returncode==0 else None}
  except Exception as ex:return {'kp':c['kp'],'error':str(ex),'result':None}
 results=[];records=[]
+if len(sys.argv)>1:
+ selected={int(v)for v in sys.argv[1:]};cfg=[c for c in cfg if c['kp']in selected]
+ results=[r for r in json.loads((H/'stage-template-tests.json').read_text())if r['kp']not in selected]
+ records=[r for r in json.loads((H/'stage-template-samples.json').read_text())if r['knowledge_point']['db_id']not in selected]
 with concurrent.futures.ThreadPoolExecutor(max_workers=3)as pool:
  for r in pool.map(run,cfg):
   if r.get('result'):records+=r['result'].pop('records')

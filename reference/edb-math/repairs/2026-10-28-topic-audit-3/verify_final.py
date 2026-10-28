@@ -105,6 +105,7 @@ for q in model:
   f[':answer-field/correct']=copy.deepcopy(bank[right]);kind=enum_name(f[':answer-field/type']);assert kind
   if kind==':answer-field.type/checkbox':render.append({'entity':f[':db/id'],'attribute':':answer-field/key','value':f[':answer-field/key']})
   for a in bank.values():
+   if a.get(':answer/feedback'):render.append({'entity':a[':db/id'],'attribute':':answer/feedback','value':a[':answer/feedback']})
    if kind!=':answer-field.type/blank'or a[':db/id']==right:render.append({'entity':a[':db/id'],'attribute':':answer/value','value':a[':answer/value'],'bare_math':enum_name(a[':answer/type'])==':answer.type/math'})
   i=len(graded);f=copy.deepcopy(f);f[':answer-field/correct']=[':answer/id',bank[right][':answer/id']];f[':answer-field/type']=kind
   for a in f[':answer-field/choices']:a[':answer/type']=enum_name(a[':answer/type']);assert a[':answer/type']

@@ -1,0 +1,266 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124574,
+      "id": "90458c6e-3d72-5235-a1c0-627fe4fd2855",
+      "title": "Reconstructing a Three-Variable Function From Its Gradient"
+    },
+    "question": {
+      ":question/id": "9f252204-297d-5d2f-aa28-6e3b0332c0a1",
+      ":question/problem": "Consider the function\n\n$$\n\\begin{aligned}\\mathbf{F}(x,y,z)&=\\left(6 \\cos{\\left(2 x \\right)}\\right)\\,\\mathbf{i} \\\\ &{}+\\left(12 y z\\right)\\,\\mathbf{j} \\\\ &{}+\\left(6 y^{2} + 4 z\\right)\\,\\mathbf{k}.\\end{aligned}\n$$\n\nFind $f(x,y,z)$ such that $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z).$",
+      ":question/worked-solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\\nabla f(x,y,z)=\\frac{\\partial f}{\\partial x}\\,\\mathbf{i}+\\frac{\\partial f}{\\partial y}\\,\\mathbf{j}+\\frac{\\partial f}{\\partial z}\\,\\mathbf{k}.\n$$\n\nSince $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\begin{aligned}\\frac{\\partial f}{\\partial x}&=6 \\cos{\\left(2 x \\right)} \\\\ \\frac{\\partial f}{\\partial y}&=12 y z \\\\ \\frac{\\partial f}{\\partial z}&=6 y^{2} + 4 z\\end{aligned}\n$$\n\nFirst, we integrate $\\frac{\\partial f}{\\partial x}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z:$\n\n$$\n\\begin{aligned}f(x,y,z)&=\\int \\frac{\\partial f}{\\partial x}\\,\\mathrm{d}x \\\\ &=\\int \\left(6 \\cos{\\left(2 x \\right)}\\right)\\,\\mathrm{d}x \\\\ &=3 \\sin{\\left(2 x \\right)}+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\frac{\\partial f}{\\partial y}=\\frac{\\partial g}{\\partial y}.\n$$\n\nTaking $\\frac{\\partial f}{\\partial y}=12 y z$ into account, we obtain\n\n$$\n\\begin{aligned}\\frac{\\partial g}{\\partial y}&=12 y z\\end{aligned}\n$$\n\nNow, we integrate $\\frac{\\partial g}{\\partial y}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z:$\n\n$$\n\\begin{aligned}g(y,z)&=\\int \\frac{\\partial g}{\\partial y}\\,\\mathrm{d}y \\\\ &=\\int \\left(12 y z\\right)\\,\\mathrm{d}y \\\\ &=6 y^{2} z+h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z)=6 y^{2} z+h(z)$ in the expression for $f(x,y,z),$ we get\n\n$$\nf(x,y,z)=6 y^{2} z + 3 \\sin{\\left(2 x \\right)}+h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\frac{\\partial f}{\\partial z}=6 y^{2}+h'(z).\n$$\n\nComparing this derivative with the third component and subtracting the known terms gives\n\n$$\n\\begin{aligned}h'(z)&=4 z \\\\ h(z)&=2 z^{2}+C\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z)=6 y^{2} z + 2 z^{2} + 3 \\sin{\\left(2 x \\right)}+C.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9594152f-00e9-5faa-a4de-7d9d930653b8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cc30f6f6-ba28-5991-b6e1-b85dc3562913",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 y^{2} z + 3 \\sin{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "83130e6c-3965-5527-aaa0-a5d647b51a92",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 6 y^{2} z - z^{2} + 3 \\sin{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "34eb0871-3d8a-5819-bb91-2cb715f3bd72",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 z^{2} + 3 \\sin{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "39247852-1019-553a-8140-d90dae0e3822",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=6 y^{2} z + 2 z^{2} + 3 \\sin{\\left(2 x \\right)}+C"
+            },
+            {
+              ":answer/id": "0c1c0e27-5948-57d1-92ad-49c9b51dd4d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=3 y^{2} z + z^{2} + 3 \\sin{\\left(2 x \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "39247852-1019-553a-8140-d90dae0e3822"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard"
+    },
+    "generation": {
+      "generator_version": "2.0.0",
+      "template": "hard:p6",
+      "profile": "hard:p6",
+      "source_question_id": "f96b761e-8386-56f5-990d-c8300f6fbe05",
+      "source_difficulty": ":question.difficulty/hard",
+      "source_basis": 7951,
+      "seed": 10028673,
+      "parameters": {
+        "a": 3,
+        "b": -3,
+        "n": 2,
+        "role": 0,
+        "position": 3,
+        "order_seed": 735219519
+      },
+      "domain": "R^3",
+      "choice_recipes": [
+        "C - 3*y**2*z + 3*sin(2*x)",
+        "C - 6*y**2*z - z**2 + 3*sin(2*x)",
+        "C - 2*z**2 + 3*sin(2*x)",
+        "C + 6*y**2*z + 2*z**2 + 3*sin(2*x)",
+        "C + 3*y**2*z + z**2 + 3*sin(2*x)"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "packages": {
+          "sympy": "1.14.0"
+        }
+      },
+      "math_format": "course-academy-tex-v1",
+      "residual_coefficients": [
+        -2,
+        2
+      ],
+      "source_notation_version": "source-vector-fonts-2026-10-28-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124574,
+      "id": "90458c6e-3d72-5235-a1c0-627fe4fd2855",
+      "title": "Reconstructing a Three-Variable Function From Its Gradient"
+    },
+    "question": {
+      ":question/id": "4cca82fc-7d38-51d8-9d9c-cb3c6f8cc9ee",
+      ":question/problem": "Find $f(x,y,z)$ such that $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ where\n\n$$\n\\begin{aligned}\\mathbf{F}(x,y,z)&=\\left(- 6 x - 3 y e^{z}\\right)\\,\\mathbf{i} \\\\ &{}+\\left(- 3 x e^{z} - 6\\right)\\,\\mathbf{j} \\\\ &{}+\\left(- 3 x y e^{z} - 6 z\\right)\\,\\mathbf{k}.\\end{aligned}\n$$",
+      ":question/worked-solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\\nabla f(x,y,z)=\\frac{\\partial f}{\\partial x}\\,\\mathbf{i}+\\frac{\\partial f}{\\partial y}\\,\\mathbf{j}+\\frac{\\partial f}{\\partial z}\\,\\mathbf{k}.\n$$\n\nSince $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\begin{aligned}\\frac{\\partial f}{\\partial x}&=- 6 x - 3 y e^{z} \\\\ \\frac{\\partial f}{\\partial y}&=- 3 x e^{z} - 6 \\\\ \\frac{\\partial f}{\\partial z}&=- 3 x y e^{z} - 6 z\\end{aligned}\n$$\n\nFirst, we integrate $\\frac{\\partial f}{\\partial x}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z:$\n\n$$\n\\begin{aligned}f(x,y,z)&=\\int \\frac{\\partial f}{\\partial x}\\,\\mathrm{d}x \\\\ &=\\int \\left(- 6 x - 3 y e^{z}\\right)\\,\\mathrm{d}x \\\\ &=- 3 x^{2} - 3 x y e^{z}+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\frac{\\partial f}{\\partial y}=- 3 x e^{z}+\\frac{\\partial g}{\\partial y}.\n$$\n\nTaking $\\frac{\\partial f}{\\partial y}=- 3 x e^{z} - 6$ into account, we obtain\n\n$$\n\\begin{aligned}- 3 x e^{z}+\\frac{\\partial g}{\\partial y}&=- 3 x e^{z} - 6 \\\\ \\frac{\\partial g}{\\partial y}&=-6\\end{aligned}\n$$\n\nNow, we integrate $\\frac{\\partial g}{\\partial y}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z:$\n\n$$\n\\begin{aligned}g(y,z)&=\\int \\frac{\\partial g}{\\partial y}\\,\\mathrm{d}y \\\\ &=\\int \\left(-6\\right)\\,\\mathrm{d}y \\\\ &=- 6 y+h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z)=- 6 y+h(z)$ in the expression for $f(x,y,z),$ we get\n\n$$\nf(x,y,z)=- 3 x^{2} - 3 x y e^{z} - 6 y+h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\frac{\\partial f}{\\partial z}=- 3 x y e^{z}+h'(z).\n$$\n\nComparing this derivative with the third component and subtracting the known terms gives\n\n$$\n\\begin{aligned}h'(z)&=- 6 z \\\\ h(z)&=- 3 z^{2}+C\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z)=- 3 x^{2} - 3 x y e^{z} - 6 y - 3 z^{2}+C.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6392f2d0-a8be-5dbc-9125-bf50eb8c0a1a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "395b8419-3123-59bf-be9b-fbd47420568e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 x^{2} - 3 x y e^{z} - 3 y+C"
+            },
+            {
+              ":answer/id": "2d9c425d-ed33-5a1a-a8ce-578cb702051a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 x^{2} - 3 x y e^{z} - 6 y - 3 z^{2}+C"
+            },
+            {
+              ":answer/id": "9a142c8a-b535-552a-9ea5-22363f19c5cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 x^{2} - 3 x y e^{z} + 3 y - 6 z^{2}+C"
+            },
+            {
+              ":answer/id": "dbb3527b-531c-5c27-971a-d1d2293f6aa8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 x^{2} - 3 x y e^{z} + 6 y + 3 z^{2}+C"
+            },
+            {
+              ":answer/id": "6da475c2-b453-59ca-b9a6-0e56be332fbb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 x^{2} - 3 x y e^{z} + 6 z^{2}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2d9c425d-ed33-5a1a-a8ce-578cb702051a"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard"
+    },
+    "generation": {
+      "generator_version": "2.0.0",
+      "template": "hard:p5",
+      "profile": "hard:p5",
+      "source_question_id": "6b7d90b3-0384-5231-a89f-b7683283ef28",
+      "source_difficulty": ":question.difficulty/hard",
+      "source_basis": 7951,
+      "seed": 10028673,
+      "parameters": {
+        "a": -3,
+        "b": -3,
+        "n": null,
+        "role": 4,
+        "position": 1,
+        "order_seed": 3093882541
+      },
+      "domain": "R^3",
+      "choice_recipes": [
+        "C - 3*x**2 - 3*x*y*exp(z) - 3*y",
+        "C - 3*x**2 - 3*x*y*exp(z) - 6*y - 3*z**2",
+        "C - 3*x**2 - 3*x*y*exp(z) + 3*y - 6*z**2",
+        "C - 3*x**2 - 3*x*y*exp(z) + 6*y + 3*z**2",
+        "C - 3*x**2 - 3*x*y*exp(z) + 6*z**2"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "packages": {
+          "sympy": "1.14.0"
+        }
+      },
+      "math_format": "course-academy-tex-v1",
+      "residual_coefficients": [
+        2,
+        -1
+      ],
+      "source_notation_version": "source-vector-fonts-2026-10-28-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124574,
+      "id": "90458c6e-3d72-5235-a1c0-627fe4fd2855",
+      "title": "Reconstructing a Three-Variable Function From Its Gradient"
+    },
+    "question": {
+      ":question/id": "5fa18897-207a-583f-ae2b-2d1e00b2e6f0",
+      ":question/problem": "Consider the function\n\n$$\n\\begin{aligned}\\mathbf{F}(x,y,z)&=\\left(- 3 y e^{x y}\\right)\\,\\mathbf{i} \\\\ &{}+\\left(- 3 x e^{x y}\\right)\\,\\mathbf{j} \\\\ &{}+\\left(12 \\cos{\\left(2 z \\right)}\\right)\\,\\mathbf{k}.\\end{aligned}\n$$\n\nFind $f(x,y,z)$ such that $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z).$",
+      ":question/worked-solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\\nabla f(x,y,z)=\\frac{\\partial f}{\\partial x}\\,\\mathbf{i}+\\frac{\\partial f}{\\partial y}\\,\\mathbf{j}+\\frac{\\partial f}{\\partial z}\\,\\mathbf{k}.\n$$\n\nSince $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\begin{aligned}\\frac{\\partial f}{\\partial x}&=- 3 y e^{x y} \\\\ \\frac{\\partial f}{\\partial y}&=- 3 x e^{x y} \\\\ \\frac{\\partial f}{\\partial z}&=12 \\cos{\\left(2 z \\right)}\\end{aligned}\n$$\n\nFirst, we integrate $\\frac{\\partial f}{\\partial x}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z:$\n\n$$\n\\begin{aligned}f(x,y,z)&=\\int \\frac{\\partial f}{\\partial x}\\,\\mathrm{d}x \\\\ &=\\int \\left(- 3 y e^{x y}\\right)\\,\\mathrm{d}x \\\\ &=- 3 e^{x y}+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\frac{\\partial f}{\\partial y}=- 3 x e^{x y}+\\frac{\\partial g}{\\partial y}.\n$$\n\nTaking $\\frac{\\partial f}{\\partial y}=- 3 x e^{x y}$ into account, we obtain\n\n$$\n\\begin{aligned}- 3 x e^{x y}+\\frac{\\partial g}{\\partial y}&=- 3 x e^{x y} \\\\ \\frac{\\partial g}{\\partial y}&=0\\end{aligned}\n$$\n\nNow, we integrate $\\frac{\\partial g}{\\partial y}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z:$\n\n$$\n\\begin{aligned}g(y,z)&=\\int \\frac{\\partial g}{\\partial y}\\,\\mathrm{d}y \\\\ &=\\int \\left(0\\right)\\,\\mathrm{d}y \\\\ &=h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z)=h(z)$ in the expression for $f(x,y,z),$ we get\n\n$$\nf(x,y,z)=- 3 e^{x y}+h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\frac{\\partial f}{\\partial z}=h'(z).\n$$\n\nComparing this derivative with the third component and subtracting the known terms gives\n\n$$\n\\begin{aligned}h'(z)&=12 \\cos{\\left(2 z \\right)} \\\\ h(z)&=6 \\sin{\\left(2 z \\right)}+C\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z)=- 3 e^{x y} + 6 \\sin{\\left(2 z \\right)}+C.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d2e25dd3-9d30-5417-824d-c108f4762e42",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6489395c-21e5-5e64-8360-cd3e50648c7e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=3 y z - 3 e^{x y} - 3 \\sin{\\left(2 z \\right)}+C"
+            },
+            {
+              ":answer/id": "e1a9bb62-6996-57e7-a6d5-dd2364d0fe4d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=6 y z - 3 e^{x y} - 6 \\sin{\\left(2 z \\right)}+C"
+            },
+            {
+              ":answer/id": "6abf2197-3106-5c4a-b34c-cdbe2ad189cc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 6 y z - 3 e^{x y} + 3 \\sin{\\left(2 z \\right)}+C"
+            },
+            {
+              ":answer/id": "c30a8dd8-0f6d-5bb2-aa98-7706339e6b93",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 y z - 3 e^{x y}+C"
+            },
+            {
+              ":answer/id": "b0503eac-30aa-51d4-8a65-8be746dee5d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 3 e^{x y} + 6 \\sin{\\left(2 z \\right)}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b0503eac-30aa-51d4-8a65-8be746dee5d0"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard"
+    },
+    "generation": {
+      "generator_version": "2.0.0",
+      "template": "hard:p8",
+      "profile": "hard:p8",
+      "source_question_id": "e91b9e21-1500-52f9-9378-332978dc9aa7",
+      "source_difficulty": ":question.difficulty/hard",
+      "source_basis": 7951,
+      "seed": 10028673,
+      "parameters": {
+        "a": -3,
+        "b": -3,
+        "n": 2,
+        "role": 2,
+        "position": 4,
+        "order_seed": 3299862902
+      },
+      "domain": "R^3",
+      "choice_recipes": [
+        "C + 3*y*z - 3*exp(x*y) - 3*sin(2*z)",
+        "C + 6*y*z - 3*exp(x*y) - 6*sin(2*z)",
+        "C - 6*y*z - 3*exp(x*y) + 3*sin(2*z)",
+        "C - 3*y*z - 3*exp(x*y)",
+        "C - 3*exp(x*y) + 6*sin(2*z)"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "packages": {
+          "sympy": "1.14.0"
+        }
+      },
+      "math_format": "course-academy-tex-v1",
+      "residual_coefficients": [
+        0,
+        -2
+      ],
+      "source_notation_version": "source-vector-fonts-2026-10-28-v1"
+    }
+  }
+]
