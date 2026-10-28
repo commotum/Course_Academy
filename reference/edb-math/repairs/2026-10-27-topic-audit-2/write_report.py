@@ -17,7 +17,7 @@ Completed the requested three-agent pass over all **44 topics**, **3,012 unique 
 - **{v['scalar_changes']} scalar changes**, including source formatting, reconstructed cloze formulas, worked solutions, canonical links and answer-type corrections.
 - **{v['created_owned_answers']} new field-owned canonical answers**. Thirteen complete previously empty blank banks; two deliberately authored alternatives correct invalid original-source banks. Existing values, entity IDs, UUIDs and learner responses are retained except for the individually reviewed scalar content changes.
 - **{v['membership_retractions']} membership retractions**: 20 obsolete duplicate fields and 10 obsolete/contaminating/duplicate choices. Every detached entity remains in the database; reviewed detached answers have no retained learner response references.
-- **22 immutable generator successors published and registered**, with their exact package digests and live registration readbacks verified. No learner activity, XP, responses or timing was fabricated for testing.
+- **22 generator registrations updated**, with exact package digests and live registration readbacks verified. There were 23 immutable package publications: the installed-entrypoint smoke test exposed one repository-ancestor helper lookup, which received a self-contained corrective successor. The final installed entrypoints all pass. No learner activity, XP, responses or timing was fabricated for testing.
 
 | Batch | Committed basis | Scalar changes | Membership retractions | New answers |
 | --- | ---: | ---: | ---: | ---: |

@@ -16,6 +16,10 @@ snapshots=[json.loads((H/g/n).read_text())for g,n in [('group-1','current.json')
 original={q[':db/id']:q for s in snapshots for q in s['questions']};assert len(original)==3012
 fields={f[':db/id']:f for q in original.values()for f in q.get(':question/answer-fields',[])}
 answers={a[':db/id']:a for f in fields.values()for a in f.get(':answer-field/choices',[])}
+enum_ids=sorted({obj[':db/id']for obj in [f[':answer-field/type']for f in fields.values()]+[a[':answer/type']for a in answers.values()]if ':db/id'in obj})
+enum_names=dict(query('[:find ?e ?name :in $ [?e ...] :where [?e :db/ident ?name]]',[enum_ids],'response-enum-names'))
+def enum_name(value):
+ return value.get(':db/ident',enum_names.get(value.get(':db/id')))if isinstance(value,dict)else value
 expected_fields={(q[':db/id'],f[':db/id'])for q in original.values()for f in q.get(':question/answer-fields',[])}
 expected_banks={(f,a[':db/id'])for f,obj in fields.items()for a in obj.get(':answer-field/choices',[])}
 expected_keys={f:obj[':answer-field/correct'][':db/id']for f,obj in fields.items()if ':answer-field/correct'in obj}
@@ -41,7 +45,23 @@ if created:
  new_rows=query('[:find ?e ?id ?value ?type :in $ [?e ...] :where [?e :answer/id ?id] [?e :answer/value ?value] [?e :answer/type ?kind] [?kind :db/ident ?type]]',[[p['entity']for p in created]],'new-owned-answers')
  assert {(e,str(i),v,str(k))for e,i,v,k in new_rows}=={(p['entity'],p['answer_uuid'],p['value'],p['type'])for p in created}
 assert set(map(tuple,batched('[:find ?q ?f :in $ [?q ...] :where [?q :question/answer-fields ?f]]',sorted(original),'question-fields')))==expected_fields
-assert set(map(tuple,batched('[:find ?f ?a :in $ [?f ...] :where [?f :answer-field/choices ?a]]',sorted(fields),'choice-memberships')))==expected_banks
+actual_banks=set(map(tuple,batched('[:find ?f ?a :in $ [?f ...] :where [?f :answer-field/choices ?a]]',sorted(fields),'choice-memberships')))
+assert expected_banks.issubset(actual_banks),'Unexpected bank membership removed'
+live_entries=actual_banks-expected_banks;live_answers={};live_by_field=collections.defaultdict(list)
+if live_entries:
+ # A live learner may have submitted new blank responses during this audit.
+ # Require real task response refs, sole field ownership, and retained entities;
+ # never mistake those user values for authored choices or remove them.
+ ids=sorted({a for f,a in live_entries})
+ response_refs=query('[:find ?a ?item :in $ [?a ...] :where [?item :task-item/responses ?a]]',[ids],'live-blank-response-refs')
+ assert {a for a,item in response_refs}==set(ids)
+ owners=query('[:find ?a ?f :in $ [?a ...] :where [?f :answer-field/choices ?a]]',[ids],'live-blank-answer-owners')
+ assert {(f,a)for a,f in owners}==live_entries
+ rows=query('[:find (pull ?a [* {:answer/type [:db/ident]}]) :in $ [?a ...] :where [?a :answer/id _]]',[ids],'live-blank-answer-records')
+ live_answers={r[0][':db/id']:r[0]for r in rows};assert set(live_answers)==set(ids)
+ for f,a in live_entries:
+  assert enum_name(fields[f][':answer-field/type'])==':answer-field.type/blank'
+  live_by_field[f].append(live_answers[a])
 assert dict(batched('[:find ?f ?a :in $ [?f ...] :where [?f :answer-field/correct ?a]]',sorted(fields),'correct-links'))==expected_keys
 inventory=json.loads((H/'inventory.json').read_text());links=query((H/'question-links-query.edn').read_text(),[[x['entity']for x in inventory['topics']]],'pool')
 assert set(map(tuple,inventory['links'])).issubset(set(map(tuple,links)))
@@ -67,6 +87,7 @@ def transform(v):
   v[a]=({':db/id':value}if a==':answer-field/correct'else {':db/id':value,':db/ident':names[value]}if a==':answer/type'else value)
  for (eid,a),removed in detaches.items():
   if eid==e and a in v:v[a]=[x for x in v[a]if x[':db/id']not in removed]
+ if e in live_by_field:v[':answer-field/choices']=v.get(':answer-field/choices',[])+copy.deepcopy(live_by_field[e])
  if e in new_by_field:
   p=new_by_field[e];a={':db/id':p['entity'],':answer/id':p['answer_uuid'],':answer/type':{':db/ident':p['type']},':answer/value':p['value']};v[':answer-field/choices']=v.get(':answer-field/choices',[])+[a];v[':answer-field/correct']={':db/id':p['entity']}
  return {k:transform(x)for k,x in v.items()}
@@ -80,12 +101,12 @@ for q in model:
   bank={a[':db/id']:a for a in f.get(':answer-field/choices',[])};right=f.get(':answer-field/correct',{}).get(':db/id')
   if right is None:missing.append({'question':q[':db/id'],'identity':q.get(':question/math-academy-id'),'field':f[':db/id']});continue
   assert right in bank
-  f[':answer-field/correct']=copy.deepcopy(bank[right]);kind=f[':answer-field/type'].get(':db/ident')
+  f[':answer-field/correct']=copy.deepcopy(bank[right]);kind=enum_name(f[':answer-field/type']);assert kind
   if kind==':answer-field.type/checkbox':render.append({'entity':f[':db/id'],'attribute':':answer-field/key','value':f[':answer-field/key']})
   for a in bank.values():
-   if kind!=':answer-field.type/blank'or a[':db/id']==right:render.append({'entity':a[':db/id'],'attribute':':answer/value','value':a[':answer/value'],'bare_math':a[':answer/type'].get(':db/ident')==':answer.type/math'})
+   if kind!=':answer-field.type/blank'or a[':db/id']==right:render.append({'entity':a[':db/id'],'attribute':':answer/value','value':a[':answer/value'],'bare_math':enum_name(a[':answer/type'])==':answer.type/math'})
   i=len(graded);f=copy.deepcopy(f);f[':answer-field/correct']=[':answer/id',bank[right][':answer/id']];f[':answer-field/type']=kind
-  for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'].get(':db/ident')
+  for a in f[':answer-field/choices']:a[':answer/type']=enum_name(a[':answer/type']);assert a[':answer/type']
   graded.append(f)
   if kind==':answer-field.type/blank':checks.extend([{'field_index':i,'submitted':bank[right][':answer/value'],'expected':'accepted','purpose':'Verified canonical blank accepted'},{'field_index':i,'submitted':'987654321','expected':'rejected','purpose':'Incorrect scalar rejected'}])
   else:checks.extend({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':db/id']==right else'rejected','purpose':'Owned bank identity dispatch'}for a in bank.values())
@@ -95,6 +116,9 @@ for q in model:
 content=transform(snapshots[0]['contents']+[x for act in snapshots[1]['activities']for x in act['contents']]+snapshots[2]['content'])
 tutorials={x[':db/id']:x for x in content if ':tutorial/content'in x}
 render.extend({'entity':e,'attribute':':tutorial/content','value':v[':tutorial/content']}for e,v in tutorials.items())
-(D/'model.json').write_text(json.dumps(model,indent=2)+'\n');(D/'grading-input.json').write_text(json.dumps(native,indent=2)+'\n');(D/'render-input.json').write_text(json.dumps(render,indent=2)+'\n')
+(D/'model.json').write_text(json.dumps(model,indent=2,default=str)+'\n');(D/'grading-input.json').write_text(json.dumps(native,indent=2,default=str)+'\n');(D/'render-input.json').write_text(json.dumps(render,indent=2,default=str)+'\n')
 report={'passed':True,'basis_t':t,'topics':44,'questions_examples':len(original),'tutorials':len(tutorials),'registered_verified_successors':len(publications),'question_field_answer_UUIDs_preserved':True,'original_pool_links_preserved':True,'exact_expected_field_and_choice_memberships':True,'retained_field_entities':len(fields),'active_fields':len(expected_fields),'created_owned_answers':len(created),'scalar_changes':sum(r['scalar_changes']for r in reports),'membership_retractions':sum(r['membership_retractions']for r in reports),'remaining_unkeyed_fields':missing}
+report['immutable_package_versions_published']=publication_count
+report['additional_live_learner_blank_answers']=[{'field':f,'answer':a}for f,a in sorted(live_entries)]
+report['additional_pool_links_since_snapshot']=len(set(map(tuple,links))-set(map(tuple,inventory['links'])))
 (H/'final-verification.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report),flush=True)
