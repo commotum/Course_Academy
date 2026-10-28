@@ -23,7 +23,7 @@ def vector(v):
   if left in v:
    a=v.index(left)+len(left);b=v.index(right,a);body=v[a:b].replace(r'\,',' ').replace(r'\;',' ');parts=body.split('\\\\')if'begin'in left else balanced_parts(body);return S.Matrix([scalar(p)for p in parts])
  try:
-  e=scalar(v);vv=S.Matrix([S.expand(e).coeff(i)for i in[I,J,K]])
+  e=scalar(v.replace('\\\\',''));vv=S.Matrix([S.expand(e).coeff(i)for i in[I,J,K]])
   if S.simplify(e-sum(vv[n]*i for n,i in enumerate([I,J,K])))==0:return vv[:2,0]if not vv[2]and'k'not in v else vv
  except Exception:pass
  raw=L.clean(v).replace('\\\\','').replace('{}','');tokens=list(re.finditer(r'\\[A-Za-z]+|[ijk]',raw));units=[m for m in tokens if m[0]in['i','j','k']]
@@ -66,6 +66,17 @@ def check(kp,record):
  q=record['question'];g=record.get('generation',{});p=g.get('parameters',{});ass=assignments(q[':question/problem']);cs=canonical(q)
  if len(cs)!=1 and kp!=17592186096700:raise ValueError('Multiple fields/fragment')
  v=cs[0][1][':answer/value']if cs else None
+ if kp==17592186059716:
+  vv=S.Matrix([expr(str(p['x'])),expr(str(p['y']))]);return compare(v,vv/S.sqrt(vv.dot(vv))),'Normalize the actual nonzero target vector by its positive Euclidean norm; unit norm and direction both checked.'
+ if kp==17592186175970:
+  expected=expr(str(p['a']))*S.cos(T)if p['target']=='cos'else expr(str(p['b']))*S.sin(T);return compare(v,expected),'Substitute missing positive-semiaxis sine/cosine component into normalized ellipse equation, retaining unrestricted free coordinate and full angular coverage.'
+ if kp==17592186175972:
+  expected=S.Rational(p['a'],p['b'])*LOC[p['base']]**2 if p['target']==p['dependent']else LOC[p['target']];return compare(v,expected),'Read actual base/dependent/free axes and coefficient ratio; substitute component into Cartesian parabolic-cylinder relation with free coordinate unchanged.'
+ if kp==17592186124458:
+  grad=ass.get('grad_f',{}).get('value')
+  if grad is None:
+   f=ass['f']['value'];grad=S.Matrix([S.diff(f,w)for w in[X,Y]])
+  grad=grad.subs({X:expr(str(p['x0'])),Y:expr(str(p['y0']))});direction=S.Matrix([expr(str(p['dx'])),expr(str(p['dy']))]);expected=grad.dot(direction/S.sqrt(direction.dot(direction)));return compare(v,expected),'Independently differentiate actual supplied scalar function (or use explicitly supplied gradient), substitute the stated point, and dot with the normalized actual direction.'
  if kp==17592186115392:
   a=g['solution_path'];u=LOC['u'];expected=S.Matrix([expr(z).subs(u,expr(a['inner']))for z in a['outer']]).diff(T)
   if a.get('point')is not None:expected=expected.subs(T,expr(str(a['point'])))

@@ -1,0 +1,193 @@
+{
+  "17592186198624": {
+    "family": "linear_yz",
+    "parameters": {
+      "a": "2",
+      "b": "1",
+      "c": "1",
+      "d": "-2",
+      "lu": "0",
+      "hu": "1",
+      "lv": "-1",
+      "hv": "1",
+      "lw": "1",
+      "hw": "4"
+    },
+    "slots": {
+      "lv": "-1*h",
+      "hv": "1*h",
+      "final": "6*h/5"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le 1,\\,@@lv@@\\le 2y+z\\le @@hv@@,\\,1\\le y-2z\\le 4}.\n$$",
+    "bank_expressions": [
+      [
+        "(6)/(5)",
+        "(8)/(5)",
+        "15",
+        "2",
+        "(2)/(5)"
+      ],
+      [
+        "15",
+        "(6)/(5)",
+        "(2)/(5)",
+        "2",
+        "(8)/(5)"
+      ]
+    ],
+    "solution_mask": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le x\\le 1,\\,@@lv@@\\le 2y+z\\le @@hv@@,\\,1\\le y-2z\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=2y+z,\\,w=y-2z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,0\\le u\\le 1,\\,@@lv@@\\le v\\le @@hv@@,\\,1\\le w\\le 4}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 0 & 2 & 1 \\\\ 0 & 1 & -2\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}2 & 1 \\\\ 1 & -2\\end{aligned}| \\\\  & =-5.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-\\frac{1}{5}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-\\frac{1}{5}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{0}^{1}{\\int }_{@@lv@@}^{@@hv@@}{\\int }_{1}^{4}\\frac{1}{5}\\,dw\\,dv\\,du \\\\  & =\\frac{1}{5}{\\int }_{0}^{1}du\\cdot {\\int }_{@@lv@@}^{@@hv@@}dv\\cdot {\\int }_{1}^{4}dw \\\\  & =\\frac{1}{5}[u]_{0}^{1}\\cdot [v]_{@@lv@@}^{@@hv@@}\\cdot [w]_{1}^{4} \\\\  & =\\frac{1}{5}\\cdot (1-0)\\cdot (@@hv@@-(@@lv@@))\\cdot (4-1) \\\\  & =@@final@@.\\end{aligned}\n$$"
+  },
+  "17592186198965": {
+    "family": "reciprocal",
+    "parameters": {
+      "a": "1",
+      "b": "1",
+      "c": "1",
+      "d": "1",
+      "lu": "1",
+      "hu": "2",
+      "lv": "1",
+      "hv": "2",
+      "lw": "1",
+      "hw": "5"
+    },
+    "slots": {
+      "lv": "1*h",
+      "hv": "2*h"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R$, given by\n$R = {(x, y, z): 1 \\le y \\le 2, @@lv@@ \\le \\sqrt{y} + x \\le @@hv@@, 1 \\le \\frac{1}{z + 1} \\le 5}$.",
+    "bank_expressions": [
+      [
+        "4",
+        "1",
+        "(4)/(5)",
+        "2",
+        "-(2)/(5)"
+      ]
+    ]
+  },
+  "17592186374152": {
+    "family": "log",
+    "parameters": {
+      "a": "1",
+      "b": "1",
+      "c": "1",
+      "d": "1",
+      "lu": "1/2",
+      "hu": "1",
+      "lv": "3",
+      "hv": "10",
+      "lw": "1",
+      "hw": "2"
+    },
+    "slots": {
+      "lv": "3*h",
+      "hv": "10*h",
+      "final": "7*h*log(2)"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,\\frac{1}{2}\\le x\\le 1,\\,@@lv@@\\le y+{x}^{2}\\le @@hv@@,\\,1\\le xz\\le 2}.\n$$",
+    "bank_expressions": [
+      [
+        "28",
+        "2*log(2)",
+        "7*log(2)",
+        "14",
+        "30"
+      ]
+    ],
+    "solution_mask": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n\\frac{1}{2}\\le x\\le 1,\\,@@lv@@\\le y+{x}^{2}\\le @@hv@@,\\,1\\le xz\\le 2,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=y+{x}^{2},\\,w=xz.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,\\frac{1}{2}\\le u\\le 1,\\,@@lv@@\\le v\\le @@hv@@,\\,1\\le w\\le 2}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 2x & 1 & 0 \\\\ z & 0 & x\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}1 & 0 \\\\ 0 & x\\end{aligned}| \\\\  & =x \\\\  & =u.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |\\frac{1}{u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1/2}^{1}{\\int }_{@@lv@@}^{@@hv@@}{\\int }_{1}^{2}\\frac{1}{u}\\,dw\\,dv\\,du \\\\  & ={\\int }_{1/2}^{1}\\frac{1}{u}du\\cdot {\\int }_{@@lv@@}^{@@hv@@}dv\\cdot {\\int }_{1}^{2}dw \\\\  & =[\\operatorname{ln}⁡u]_{u=1/2}^{u=1}\\cdot [v]_{v=@@lv@@}^{v=@@hv@@}\\cdot [w]_{w=1}^{w=2} \\\\  & =-\\operatorname{ln}⁡(\\frac{1}{2})\\cdot (@@hv@@-@@lv@@)\\cdot (2-1) \\\\  & =@@final@@.\\end{aligned}\n$$"
+  },
+  "17592186374159": {
+    "family": "shear",
+    "parameters": {
+      "a": "1",
+      "b": "1",
+      "c": "1",
+      "d": "1",
+      "lu": "0",
+      "hu": "1",
+      "lv": "0",
+      "hv": "1",
+      "lw": "-1",
+      "hw": "1"
+    },
+    "slots": {
+      "lv": "0*h",
+      "hv": "1*h",
+      "final": "2*h"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x\\le 1,\\,@@lv@@\\le x+y\\le @@hv@@,\\,-1\\le z+{x}^{2}+{y}^{2}\\le 1}.\n$$",
+    "bank_expressions": [
+      [
+        "3",
+        "(1)/(2)",
+        "2",
+        "1",
+        "4"
+      ]
+    ],
+    "solution_mask": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n0\\le x\\le 1,\\,@@lv@@\\le x+y\\le @@hv@@,\\,-1\\le z+{x}^{2}+{y}^{2}\\le 1,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v=x+y,\\,w=z+{x}^{2}+{y}^{2}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,0\\le u\\le 1,\\,@@lv@@\\le v\\le @@hv@@,\\,-1\\le w\\le 1}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ 2x & 2y & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{@@lv@@}^{@@hv@@}{\\int }_{@@lv@@}^{@@hv@@}{\\int }_{-1}^{1}dw\\,dv\\,du \\\\  & ={\\int }_{@@lv@@}^{@@hv@@}du\\cdot {\\int }_{@@lv@@}^{@@hv@@}dv\\cdot {\\int }_{-1}^{1}dw \\\\  & =[u]_{u=0}^{u=1}\\cdot [v]_{v=@@lv@@}^{v=@@hv@@}\\cdot [w]_{w=-1}^{w=1} \\\\  & =(@@hv@@-@@lv@@)\\cdot (@@hv@@-@@lv@@)\\cdot (1-(-1)) \\\\  & =@@final@@.\\end{aligned}\n$$"
+  },
+  "17592186374166": {
+    "family": "linear_xz",
+    "parameters": {
+      "a": "1",
+      "b": "1",
+      "c": "1",
+      "d": "-1",
+      "lu": "-5",
+      "hu": "5",
+      "lv": "0",
+      "hv": "10",
+      "lw": "0",
+      "hw": "6"
+    },
+    "slots": {
+      "lv": "0*h",
+      "hv": "10*h",
+      "final": "600*h"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-5\\le x+z\\le 5,\\,@@lv@@\\le y\\le @@hv@@,\\,0\\le y-z\\le 6}.\n$$",
+    "bank_expressions": [
+      [
+        "60",
+        "120",
+        "600",
+        "100",
+        "200"
+      ]
+    ],
+    "solution_mask": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-5\\le x+z\\le 5,,\\,@@lv@@\\le y\\le @@hv@@,\\,0\\le y-z\\le 6,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x+z,\\,v=y,\\,w=y-z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,-5\\le u\\le 5,\\,@@lv@@\\le v\\le @@hv@@,\\,0\\le w\\le 6}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 1 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{-5}^{5}{\\int }_{@@lv@@}^{@@hv@@}{\\int }_{0}^{6}dw\\,dv\\,du \\\\  & ={\\int }_{-5}^{5}du\\cdot {\\int }_{@@lv@@}^{@@hv@@}dv\\cdot {\\int }_{0}^{6}dw \\\\  & =[u]_{u=-5}^{u=5}\\cdot [v]_{v=@@lv@@}^{v=@@hv@@}\\cdot [w]_{w=0}^{w=6} \\\\  & =(5-(-5))\\cdot (@@hv@@-@@lv@@)\\cdot (6-0) \\\\  & =@@final@@.\\end{aligned}\n$$"
+  },
+  "17592186374173": {
+    "family": "sqrt",
+    "parameters": {
+      "a": "1",
+      "b": "1",
+      "c": "1",
+      "d": "1",
+      "lu": "-2",
+      "hu": "2",
+      "lv": "0",
+      "hv": "1",
+      "lw": "1",
+      "hw": "4"
+    },
+    "slots": {
+      "lv": "0*h",
+      "hv": "1*h",
+      "final": "60*h"
+    },
+    "prompt_mask": "Find the volume bounded by the region $R,$ given by\n\n$$\nR={(x,y,z)\\,:\\,-2\\le x\\le 2,\\,@@lv@@\\le {x}^{2}-y-z\\le @@hv@@,\\,1\\le \\sqrt{z}\\le 4}.\n$$",
+    "bank_expressions": [
+      [
+        "12",
+        "60",
+        "36",
+        "6",
+        "30"
+      ]
+    ],
+    "solution_mask": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n-2\\le x\\le 2,\\,@@lv@@\\le {x}^{2}-y-z\\le @@hv@@,\\,1\\le \\sqrt{z}\\le 4,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x,\\,v={x}^{2}-y-z,\\,w=\\sqrt{z}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & ={(u,v,w)\\,:\\,-2\\le u\\le 2,\\,@@lv@@\\le v\\le @@hv@@,\\,1\\le w\\le 4}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ 2x & -1 & -1 \\\\ 0 & 0 & \\frac{1}{2\\sqrt{z}}\\end{aligned}| \\\\  & =1(-1)^{1+1}|\\begin{aligned}-1 & -1 \\\\ 0 & \\frac{1}{2\\sqrt{z}}\\end{aligned}| \\\\  & =-\\frac{1}{2\\sqrt{z}} \\\\  & =-\\frac{1}{2w}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-2w.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-2w|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{-2}^{2}{\\int }_{@@lv@@}^{@@hv@@}{\\int }_{1}^{4}2w\\,dw\\,dv\\,du \\\\  & ={\\int }_{-2}^{2}du\\cdot {\\int }_{@@lv@@}^{@@hv@@}dv\\cdot {\\int }_{1}^{4}2w\\,dw \\\\  & =[u]_{u=-2}^{u=2}\\cdot [v]_{v=@@lv@@}^{v=@@hv@@}\\cdot [{w}^{2}]_{w=1}^{w=4} \\\\  & =(2-(-2))\\cdot (@@hv@@-@@lv@@)\\cdot (16-1) \\\\  & =@@final@@.\\end{aligned}\n$$"
+  }
+}

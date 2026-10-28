@@ -94,7 +94,7 @@ def wrap(function,is_main=False):
   outer=_depth==0;_depth+=1
   try:result=function(*args,**kwargs)
   finally:_depth-=1
-  return apply(result)if outer and not is_main else result
+  return apply(result)if outer and not is_main and not kwargs.get('replay') else result
  return checked
 def install(namespace):
  for key in ('generate','generate_records','generate_normal','make_record','generate_batch','sample','practice'):
