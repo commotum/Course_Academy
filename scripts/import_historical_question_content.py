@@ -68,6 +68,20 @@ class Renderer:
         # MathJax's hat disables stretching; widehat retains the default.
         return ('\\hat{' if stretchy=='false' else '\\widehat{')+body+'}'
     def m(self,n):
+        value=self.math_node(n)
+        if not isinstance(n,Tag) or not value:return value
+        for attribute in ('mathcolor','mathbackground'):
+            color=n.get(attribute)
+            if not color or color in ('transparent','inherit','none'):continue
+            if not re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',color):
+                self.errors.append('Unsupported MathML '+attribute+': '+color);continue
+            if attribute=='mathbackground':value='\\bbox['+color+', 2pt]{'+value+'}'
+            elif color.startswith('#'):
+                code=''.join(c*2 for c in color[1:]) if len(color)==4 else color[1:]
+                value='{\\color[HTML]{'+code+'}'+value+'}'
+            else:value='{\\color{'+color+'}'+value+'}'
+        return value
+    def math_node(self,n):
         if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%#]',lambda m:'\\'+m[0],str(n))))
         if not isinstance(n,Tag):return ''
         t=n.name.lower()

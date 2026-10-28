@@ -246,6 +246,28 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     return (stretchy === 'false' ? '\\hat{' : '\\widehat{') + body + '}';
   }
   function m(n, preservePhantom = false) {
+    const value = mathNode(n, preservePhantom);
+    if (n.nodeType !== 1 || !value || n.localName === 'mphantom' ||
+        n.closest('mphantom') || n.querySelector('mphantom')) return value;
+    let styled = value;
+    // Matrix row/column colors and highlighted result cells are teaching cues.
+    // Group each node so a color cannot leak into the following entry.
+    for (const attribute of ['mathcolor', 'mathbackground']) {
+      const color = n.getAttribute(attribute);
+      if (!color || ['transparent', 'inherit', 'none'].includes(color)) continue;
+      if (!/^(?:[a-zA-Z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?)$/.test(color)) {
+        fail('Unsupported MathML ' + attribute + ': ' + color);
+        continue;
+      }
+      if (attribute === 'mathbackground') styled = '\\bbox[' + color + ', 2pt]{' + styled + '}';
+      else if (color.startsWith('#')) {
+        const hex = color.length === 4 ? [...color.slice(1)].map(c => c + c).join('') : color.slice(1);
+        styled = '{\\color[HTML]{' + hex + '}' + styled + '}';
+      } else styled = '{\\color{' + color + '}' + styled + '}';
+    }
+    return styled;
+  }
+  function mathNode(n, preservePhantom = false) {
     if (n.nodeType === 3) return greek[n.textContent] || literalDollar(n.textContent);
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();

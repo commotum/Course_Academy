@@ -47,6 +47,16 @@ class MathMLBraceImportTests(unittest.TestCase):
         self.assertEqual(HISTORY.Renderer(None).text(BeautifulSoup(formula, 'html.parser').math),
                          '$$\n' + r'\lim_{x\to 2}f' + '\n$$')
 
+    def test_instructional_colors_remain_scoped_to_matrix_entries(self):
+        self.assert_formula('<mtable><mtr><mtd><mstyle mathcolor="blue"><mn>2</mn></mstyle></mtd>'
+                            '<mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn mathcolor="#4169E1">4</mn></mtd>'
+                            '<mtd><mn mathbackground="lightgray">5</mn></mtd></mtr></mtable>',
+                            r'\begin{aligned}{\color{blue}2} & 3 \\ {\color[HTML]{4169E1}4} & \bbox[lightgray, 2pt]{5}\end{aligned}')
+
+    def test_nested_source_color_and_background_keep_both_cues(self):
+        self.assert_formula('<mstyle mathbackground="#ffe"><mstyle mathcolor="red"><mn>7</mn></mstyle></mstyle><mn>8</mn>',
+                            r'\bbox[#ffe, 2pt]{{\color{red}7}}8')
+
     def test_literal_currency_and_percent_are_escaped_by_every_importer(self):
         self.assert_formula('<mtext>$</mtext><mn>12</mn><mo>%</mo>', r'\text{\$}12\%')
         self.assert_formula('<mtext>12% off</mtext>', r'\text{12\% off}')
