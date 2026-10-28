@@ -1,0 +1,84 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "45a6b4f8-5ddf-5834-a6aa-e84a0d1c7d88",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "A pork leg is taken out of the oven with a temperature of ${149}^{∘}C,$ and placed in a room that maintains a temperature of ${20}^{∘}C$, and its temperature begins to decrease. After $4$ minutes, the  temperature of the pork leg is ${132}^{∘}C.$ To the nearest minute, how long does it take for the pork leg to have a temperature of ${101}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the pork leg decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the pork leg was transferred into the ${20}^{∘}C$ room.*",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={20}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-20).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-20} & =-k\\,dt \\\\ \\int \\frac{dT}{T-20} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-20| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-20>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-20 & ={e}^{-kt+C} \\\\ T-20 & ={e}^{C}{e}^{-kt} \\\\ T-20 & =K{e}^{-kt} \\\\ T & =20+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the pork leg was ${149}^{∘}C.$ So, we apply the initial condition $T(0)=149,$ and solve for $K:$\n\n$$\n\\begin{aligned}149 & =20+K{e}^{0} \\\\ 149 & =20+K \\\\ K & =129\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=20+129{e}^{-kt}\n$$\n\nWe're also told that, after $4$ minutes, the temperature of the pork leg is ${132}^{∘}C.$ So, applying the condition $T(4)=132,$ we can solve for $k:$\n\n$$\n\\begin{aligned}132 & =20+129{e}^{-4k} \\\\ 112 & =129{e}^{-4k} \\\\ \\frac{112}{129} & ={e}^{-4k} \\\\ \\operatorname{ln}⁡\\left(\\frac{112}{129}\\right) & =-4k \\\\ k & =-\\frac{1}{4}\\operatorname{ln}⁡\\left(\\frac{112}{129}\\right)\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the pork leg has a temperature of ${101}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =101 \\\\ 20+129{e}^{-k{t}_{1}} & =101 \\\\ 129{e}^{-k{t}_{1}} & =81 \\\\ {e}^{-k{t}_{1}} & =\\frac{27}{43} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡\\left(\\frac{27}{43}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡\\left(\\frac{27}{43}\\right).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the pork leg will have a temperature of ${101}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡\\left(\\frac{27}{43}\\right)}{-\\frac{1}{4}\\operatorname{ln}⁡\\left(\\frac{112}{129}\\right)}≈13\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e59cb7e7-e7c1-5496-9468-52be1293ddcc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9f63330c-f32f-50b5-a046-0e6fbfb40bfb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17\\,\\text{min}"
+            },
+            {
+              ":answer/id": "2eda1768-1c74-5cb8-9675-ff5f1fdffcd6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "13\\,\\text{min}"
+            },
+            {
+              ":answer/id": "cf3815eb-2ffa-5944-b60c-1de4789d2b18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16\\,\\text{min}"
+            },
+            {
+              ":answer/id": "ce9e7f3d-dded-5596-b6d8-5897532e5653",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\text{min}"
+            },
+            {
+              ":answer/id": "6577d367-7d95-517e-8102-5830a72453c5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2eda1768-1c74-5cb8-9675-ff5f1fdffcd6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.1",
+      "seed": 27102791,
+      "template": "pork",
+      "parameters": {
+        "ambient": 20,
+        "initial": 149,
+        "observed": 132,
+        "target": 101,
+        "time": 4
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "observed_template",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "7dbbfe24a18c1e84897e5c81f6fa8f1aec891f1f4943744d71800b66aa760782",
+      "content_fingerprint": "68c5a6fc7a3f5e6502b2216858101a02e2313bda49fc287fd3445b18f8991f1f",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "4360bcb1-959b-53b1-855f-91f5d582be11"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2",
+        "rounded_correct_plus_3",
+        "rounded_correct_plus_4"
+      ]
+    }
+  }
+]

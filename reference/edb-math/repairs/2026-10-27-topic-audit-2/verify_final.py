@@ -47,7 +47,8 @@ inventory=json.loads((H/'inventory.json').read_text());links=query((H/'question-
 assert set(map(tuple,inventory['links'])).issubset(set(map(tuple,links)))
 publications=[]
 for g in range(1,4):publications+=json.loads((H/f'commit-group-{g}'/'generator-publications.json').read_text())
-assert len({p['kp']for p in publications})==len(publications)
+if(H/'corrective-generators/generator-publications.json').exists():publications+=json.loads((H/'corrective-generators/generator-publications.json').read_text())
+publication_count=len(publications);publications=list({p['kp']:p for p in publications}.values());assert len(publications)==22
 registered=dict(query('[:find ?kp ?path :in $ [?kp ...] :where [?kp :knowledge-point/question-generator ?g] [?g :question-generator/script ?path]]',[[p['kp']for p in publications]],'registered-generators'))
 assert registered=={p['kp']:p['new_reference']for p in publications}
 for p in publications:verify_package(Path('/media/jake/SSD/EDB/math')/Path(p['new_reference']).parent,p['digest'])
@@ -80,6 +81,7 @@ for q in model:
   if right is None:missing.append({'question':q[':db/id'],'identity':q.get(':question/math-academy-id'),'field':f[':db/id']});continue
   assert right in bank
   f[':answer-field/correct']=copy.deepcopy(bank[right]);kind=f[':answer-field/type'].get(':db/ident')
+  if kind==':answer-field.type/checkbox':render.append({'entity':f[':db/id'],'attribute':':answer-field/key','value':f[':answer-field/key']})
   for a in bank.values():
    if kind!=':answer-field.type/blank'or a[':db/id']==right:render.append({'entity':a[':db/id'],'attribute':':answer/value','value':a[':answer/value'],'bare_math':a[':answer/type'].get(':db/ident')==':answer.type/math'})
   i=len(graded);f=copy.deepcopy(f);f[':answer-field/correct']=[':answer/id',bank[right][':answer/id']];f[':answer-field/type']=kind

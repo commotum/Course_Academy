@@ -1,0 +1,85 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186229182,
+      "id": "2ab1d837-f782-5439-8e25-3c764f9cb5c5",
+      "title": "Constructing and Solving a Dilution Model"
+    },
+    "question": {
+      ":question/id": "143b582e-23c1-5390-9729-25b3a3d7594b",
+      ":question/problem": "A juice-processing tank initially holds $600\\,\\text{L}$ of liquid containing $11\\,\\text{kg}$ of dissolved sugar.\nA solution containing $0.05\\,\\text{kg/L}$ of dissolved sugar is pumped into the tank at a rate of $12\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $18\\,\\text{L/min}.$ If the amount of sugar $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{100})+\\beta {(1-\\frac{t}{100})}^{3}\n$$\n\nwhere $\\alpha$ and $\\beta$ are constants, what is the value of $\\alpha -\\beta ?$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8afbf1c0-1ac6-5657-bba1-8700b80ccfd6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "316525ae-9445-501c-a26b-6143eec5913b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "0830c2f7-a161-5589-9b6b-0937f0da950d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "49"
+            },
+            {
+              ":answer/id": "dfd3d77a-e52f-503e-88be-4719cdfd9c46",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "23"
+            },
+            {
+              ":answer/id": "5e0c9d16-7f69-5b2d-b355-adab229fb6b5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "37"
+            },
+            {
+              ":answer/id": "7268eff6-b61b-55d3-8f9c-c6ff1d01dccd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0830c2f7-a161-5589-9b6b-0937f0da950d"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Let $Q$ be the amount of dissolved substance in the tank at time $t,$ in minutes. The amount entering minus the amount leaving gives\n$$\n\\frac{dQ}{dt}=Q'_{\\text{in}}-Q'_{\\text{out}}.\n$$\nThe units of these rates are $\\text{kg/min}.$\n\n**Step 1**: Calculating the rate at which substance enters the tank.\n$$\n\\begin{aligned}Q'_{\\text{in}}&=(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot(12\\,\\frac{\\text{L}}{\\text{min}})\\\\\n&=(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\\\&=0.6\\,\\text{kg/min}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which substance exits the tank.\nThe volume is\n$$\nV(t)=600+12t-18t=(600-6t)\\,\\text{L}.\n$$\nThe concentration is $\\frac{Q}{600-6t}\\,\\text{kg/L}.$ Hence,\n$$\n\\begin{aligned}Q'_{\\text{out}}&=(18\\,\\frac{\\text{L}}{\\text{min}})\\cdot(\\frac{Q}{600-6t}\\,\\frac{\\text{kg}}{\\text{L}})\\\\\n&=(18\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot(\\frac{Q}{600-6t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\\\\n&=\\frac{18Q}{600-6t}\\,\\text{kg/min}=\\frac{3Q}{100-t}\\,\\text{kg/min}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n$$\n\\begin{aligned}\\frac{dQ}{dt}&=Q'_{\\text{in}}-Q'_{\\text{out}}\\\\&=0.6-\\frac{3Q}{100-t}.\\end{aligned}\n$$\nThus,\n$$\n\\frac{dQ}{dt}+\\frac{3}{100-t}Q=0.6.\n$$\n\n**Step 4**: Integrate the equation.\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n$$\n\\begin{aligned}I(t)&=e^{\\int 3/(100-t)\\,dt}\\\\&=e^{-3\\ln|100-t|}\\\\&=e^{\\ln (100-t)^{-3}}\\\\&=(100-t)^{-3}.\\end{aligned}\n$$\nMultiplying both sides by $I(t)=(100-t)^{-3}$ yields\n$$\n\\begin{aligned}(100-t)^{-3}\\cdot(\\frac{dQ}{dt}+\\frac{3}{100-t}Q)&=(100-t)^{-3}\\cdot 0.6\\\\\n(100-t)^{-3}\\frac{dQ}{dt}+3(100-t)^{-4}Q&=0.6(100-t)^{-3}\\\\\\frac{d}{dt}(Q(100-t)^{-3})&=0.6(100-t)^{-3}.\\end{aligned}\n$$\nNow, we integrate with respect to $t:$\n$$\n\\begin{aligned}\\int\\frac{d}{dt}(Q(100-t)^{-3})\\,dt&=\\int 0.6(100-t)^{-3}\\,dt\\\\Q(100-t)^{-3}&=0.6\\cdot\\frac{1}{2}(100-t)^{-2}+C\\\\Q(t)&=0.3(100-t)+C(100-t)^{3}.\\end{aligned}\n$$\nNote that $C$ is a constant of integration.\nThe initial condition is $Q(0)=11.$ Thus,\n$$\n\\begin{aligned}0.3(100-0)+C(100-0)^{3}&=11\\\\\n30+C(100)^{3}&=11\\\\C(100)^{3}&=-19\\\\C&=- \\frac{19}{1000000}.\\end{aligned}\n$$\nFinally, we obtain the following expression for $Q(t):$\n$$\nQ(t)=- \\frac{3 t}{10} - \\frac{19 \\left(100 - t\\right)^{3}}{1000000} + 30.\n$$\nWriting this in the supplied normalized form gives\n$$\nQ(t)=30(1-\\frac{t}{100})-19(1-\\frac{t}{100})^{3}.\n$$\nFinally, we have $\\alpha=30,\\beta=-19,$ and\n$$\n\\alpha-\\beta=30-(-19)=49.\n$$"
+    },
+    "generation": {
+      "version": "unequal-dilution-2-format-audit-9122-v1",
+      "template": "q-339394",
+      "profile": "authored-operations",
+      "seed": 27102791,
+      "parameters": {
+        "V": "600",
+        "q0": "11",
+        "c": "1/20",
+        "rin": "12",
+        "rout": "18"
+      },
+      "mathematical_fingerprint": "bfbe526ff4ff64ef6ab33f7de80c31cdeb8f02e6d7189b004cdbf049392a2169",
+      "content_fingerprint": "6f0a5110356012a219dbe935342b7d46d411e9a4849d341906eebc05ae80f665",
+      "origin": "authored numeric bank and worked solution",
+      "difficulty_origin": "observed",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "bank_interpretation": "rank-variable neighboring numeric alternatives",
+      "domain": "t >= 0; V(t)>0; t < 100 min",
+      "source_parameter_replay": false,
+      "source": {
+        "database": "math",
+        "basis": 5394,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plots": "none"
+    }
+  }
+]

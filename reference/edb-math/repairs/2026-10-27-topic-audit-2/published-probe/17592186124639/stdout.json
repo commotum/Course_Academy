@@ -1,0 +1,87 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124639,
+      "id": "53c5d5d7-40d4-5210-8794-428cffc1f3f9",
+      "title": "Finding Partial Derivatives of Two-Variable Functions"
+    },
+    "question": {
+      ":question/id": "1ae2a982-2549-5fc6-b0c2-1cfc386fb289",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find $f_{y}(x,y)$ for $f(x,y)=e^{3 x + 3 y}+x^{3} y^{4}$.",
+      ":question/worked-solution": "Differentiate with respect to $y$, treating $x$ as constant. First write $e^{3 x + 3 y}=e^{3 x}\\cdot e^{3 y}$ to expose the held exponential factor. Apply the sum and constant multiple rules term by term.\n\n$$\n\\begin{aligned}\\frac{∂}{∂y}(e^{3 x + 3 y}) &=e^{3 x}\\cdot \\frac{∂}{∂y}(e^{3 y}) \\\\\n&=e^{3 x}\\cdot \\left(3 e^{3 y}\\right) \\\\\n&=3 e^{3 x + 3 y}\\end{aligned}\n$$\n\n$$\n\\begin{aligned}\\frac{∂}{∂y}(x^{3} y^{4}) &=x^{3}\\cdot \\frac{∂}{∂y}(y^{4}) \\\\\n&=x^{3}\\cdot \\left(4 y^{3}\\right) \\\\\n&=4 x^{3} y^{3}\\end{aligned}\n$$\n\nTherefore $f_{y}(x,y)=4 x^{3} y^{3} + 3 e^{3 x + 3 y}$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7cab2332-a3c7-54c5-b6b3-44ce624cd822",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "05d513dc-54a0-59b8-a654-bd5f38a8e9e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 x^{2} y^{4} + 3 e^{3 x + 3 y}"
+            },
+            {
+              ":answer/id": "746ab1eb-e72b-562b-a6f2-4f5b6131d746",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 x^{3} y^{3} + 3 e^{3 x + 3 y}"
+            },
+            {
+              ":answer/id": "f0f3de3e-0048-523e-8b6a-a2274b1ec60b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 x^{3} y^{3} - 3 e^{3 x + 3 y}"
+            },
+            {
+              ":answer/id": "b222e318-d2b5-5b37-a527-a4d407ac0fb5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "x^{3} y^{4} + e^{3 x + 3 y}"
+            },
+            {
+              ":answer/id": "7dd111a7-4b6c-592d-8177-d06bb3c49f07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 x^{2} y^{4} - 3 e^{3 x + 3 y}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "746ab1eb-e72b-562b-a6f2-4f5b6131d746"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "partial-two-variable-package-v4-bounded-batch-retry",
+      "seed": 9011054173170710428,
+      "template": "exp_sum",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "m": 4,
+        "n": 3,
+        "target": "x"
+      },
+      "direction": "reverse",
+      "bank_profile": "wrong-variable",
+      "errors": {
+        "746ab1eb-e72b-562b-a6f2-4f5b6131d746": "correct",
+        "f0f3de3e-0048-523e-8b6a-a2274b1ec60b": "reversed signs in derivative",
+        "05d513dc-54a0-59b8-a654-bd5f38a8e9e5": "differentiates the other variable",
+        "7dd111a7-4b6c-592d-8177-d06bb3c49f07": "other variable and reversed signs",
+        "b222e318-d2b5-5b37-a527-a4d407ac0fb5": "leaves function unchanged"
+      },
+      "target_variable": "y",
+      "held_constant_variable": "x",
+      "source_id": "q-159623",
+      "source_basis": 7971,
+      "displayed_final": "4 x^{3} y^{3} + 3 e^{3 x + 3 y}",
+      "eligible_for_learning": true,
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "math_format": "course-academy-tex-v1",
+      "requested_batch_seed": 27102791,
+      "batch_retry": 0
+    }
+  }
+]

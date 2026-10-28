@@ -1,0 +1,16 @@
+--- /media/jake/SSD/EDB/math/generators/16/16d9bf0859532bdc42d1416549b7eaab4e739f0ac2a1a0599e07a3b1deadf642/17592186176047.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-policy-portable-17592186176047/17592186176047.py
+@@ -371,10 +371,9 @@
+  print(json.dumps(records,indent=2,ensure_ascii=False) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
+ 
+ # Every learner-facing checkbox question has a nonempty correct selection.
+-import sys as _policy_sys
+-from pathlib import Path as _PolicyPath
+-_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+-from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
++# The complete policy implementation is a declared package-local dependency.
++# This must work outside any repository, including disposable execution copies.
++from generator_policy import nonempty_checkbox as _nonempty_checkbox
+ for _policy_name in ['generate', 'generate_easy', 'generate_hard', 'generate_moderate']:
+     globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+ 
