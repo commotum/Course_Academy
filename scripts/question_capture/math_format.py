@@ -645,6 +645,39 @@ def matrix_answer(expression, rows):
             ) + '\n</tbody></table>\n</div>\n</div>')
 
 
+def normalize_matrix_answer_tables(value):
+    """Recover blank-only answer grids in an explicitly known matrix question."""
+    text = str(value)
+    if not re.search(r'\\begin\{(?:bmatrix|pmatrix|matrix)\}', text):
+        return text
+    def replace(match):
+        rows, labels = [], []
+        for line in match[0].splitlines():
+            entries = [cell.strip() for cell in line.strip().strip('|').split('|')]
+            if all(re.fullmatch(r':?-+:?', cell) for cell in entries):
+                continue
+            fields = []
+            for cell in entries:
+                if not cell:
+                    continue
+                if re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', cell):
+                    fields.append(cell)
+                    continue
+                label = re.fullmatch(r'\$([^$]+?)=\s*(?:\\,\s*)*\$', cell)
+                if not label:
+                    return match[0]
+                labels.append(label[1].strip())
+            if fields:
+                rows.append(fields)
+        if len(labels) != 1 or not rows or len({len(row) for row in rows}) != 1:
+            return match[0]
+        keys = [cell for row in rows for cell in row]
+        if len(keys) != len(set(keys)):
+            return match[0]
+        return matrix_answer(labels[0], rows)
+    return re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', replace, text)
+
+
 def system_tex(equations, *, annotations=None):
     r"""Canonical system rows, with optional equation labels or row operations.
 

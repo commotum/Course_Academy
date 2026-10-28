@@ -19,8 +19,8 @@ def scalar(s):
   s=s[:m.start()]+repl+s[end:]
  s=s.replace(r'\cdot','*').replace(r'\times','*').replace(r'\pi','pi').replace(r'\ln','log').replace('{','(').replace('}',')')
  assert re.fullmatch(r'[\w+*/().\s-]+',s),s
- names=set(re.findall(r'[A-Za-z_]\w*',s));assert all(n in {'pi','e','E','sqrt','log'}or re.fullmatch(r'a\d+',n)for n in names),s
- return parse_expr(s,local_dict={'pi':S.pi,'e':S.E,'E':S.E,'sqrt':S.sqrt,'log':S.log,**{n:S.Symbol(n)for n in names if n.startswith('a')}},transformations=standard_transformations+(implicit_multiplication_application,rationalize))
+ names=set(re.findall(r'[A-Za-z_]\w*',s));assert all(n in {'pi','e','E','sqrt','log','a','b','c','d'}or re.fullmatch(r'a\d+',n)for n in names),s
+ return parse_expr(s,local_dict={'pi':S.pi,'e':S.E,'E':S.E,'sqrt':S.sqrt,'log':S.log,**{n:S.Symbol(n)for n in names if n.startswith('a')or n in {'b','c','d'}}},transformations=standard_transformations+(implicit_multiplication_application,rationalize))
 def grids(t):
  out=[]
  for m in ENV.finditer(t):

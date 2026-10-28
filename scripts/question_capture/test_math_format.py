@@ -6,6 +6,19 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_legacy_matrix_controls_keep_rows_and_leave_data_tables_alone(self):
+        from math_format import normalize_matrix_answer_tables
+        given = r'$A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$'
+        source = given + '\n\n' + '\n'.join([
+            '| $AI_2=$ | | {{a}} | {{b}} | |', '| --- | --- | --- | --- | --- |',
+            '| | {{c}} | {{d}} | | |'])
+        result = normalize_matrix_answer_tables(source)
+        self.assertIn('<tr><td>{{a}}</td><td>{{b}}</td></tr>', result)
+        self.assertIn('<tr><td>{{c}}</td><td>{{d}}</td></tr>', result)
+        self.assertEqual(normalize_matrix_answer_tables(result), result)
+        table = given + '\n| Input | Output |\n| --- | --- |\n| $x$ | {{a}} |'
+        self.assertEqual(normalize_matrix_answer_tables(table), table)
+
     def test_quoted_display_math_keeps_markers_outside_tex_and_closes_in_quote(self):
         source = '> Rule\n>\n> $$\n> A\\cdot I_n=A\n> $$'
         self.assertEqual(normalize_prose(source), source)
