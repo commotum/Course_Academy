@@ -37,4 +37,6 @@ for t in json.loads((H/'inventory.json').read_text())['topics']:lines.append(f"|
 report='\n'.join(lines)+'\n'
 report=re.sub(r'(?<=[a-z])(?=\d)|(?<=\d)(?=[A-Za-z])', ' ', report)
 report=re.sub(r':(?=\d)', ': ', report)
+report=re.sub(r'(?<=[A-Za-z])([,.;])(?=\d)', r'\1 ', report)
+report=report.replace(chr(92)*2+'begin{aligned}', chr(92)+'begin{aligned}')
 (H/'README.md').write_text(report);print('Report written:',len(changes),'attribute changes;',len(publications),'generators.')

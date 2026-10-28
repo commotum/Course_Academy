@@ -31,3 +31,8 @@ All 16 active generator files were inspected read-only; `generator-inspection.js
 Limits are explicit in `summary.json`: 169 original questions lack direct retained-source prompts; 141 fields have changed math-fragment segmentation due checkbox migration or solution rewrites; native grading does not independently prove all existing keys; generator samples are not exhaustive domain testing. No source fidelity is claimed where direct evidence is absent.
 
 A targeted prevention follow-up found four active packages still dropping source vector/basis fonts. These have now been staged as notation-only replacements in `generator-candidates.json`, superseding the earlier empty-candidate conclusion. See `notation-generator-README.md`; the original numerical-recurrence checks remain valid. No live publication was performed by this agent.
+
+
+## Parent integration closure
+
+Parent committed the341CAS repairs at T9082 and detached the duplicate field membership separately at T9090, retaining every entity. The additional notation review found and fixed four recurring vector/basis font losses; those frozen packages are now published and registered. See `notation-generator-validation.json`, `notation-package-validation.json` and `generator-publications.json`. The consolidated parent `final-verification.json` verifies all21 replacements and unchanged learner-content identities at T9117.
