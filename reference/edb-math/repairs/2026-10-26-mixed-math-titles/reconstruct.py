@@ -39,16 +39,10 @@ class SourceRenderer(Renderer):
    if width:
     if not re.fullmatch(r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:em|ex|px|pt|pc|in|cm|mm)',width):raise ValueError('Unsupported MathML space width '+width)
     return '\\hspace{'+width+'}'
-  value=super().m(n)
-  if isinstance(n,Tag)and n.get('mathvariant'):
-   fonts={'normal':'mathrm','bold':'mathbf','italic':'mathit','bold-italic':'mathbfit','double-struck':'mathbb','script':'mathcal','monospace':'mathtt','sans-serif':'mathsf'}
-   font=fonts.get(n['mathvariant'])
-   if font is None:raise ValueError('Unsupported mathvariant '+n['mathvariant'])
-   value='\\'+font+'{'+value+'}'
-  if isinstance(n,Tag)and n.get('mathcolor'):
-   color=n['mathcolor'];assert re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{6}',color)
-   value='{\\color{'+color+'}{'+value+'}}'
-  return value
+  # The base renderer now preserves scoped fonts/colors; applying them here
+  # as well would double-wrap reconstructed source notation.
+  return super().m(n)
+
 
 def reconstruct(title):
  renderer=SourceRenderer(None);parts=[]

@@ -268,7 +268,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     const variant = n.getAttribute('mathvariant');
     if (variant) {
       const fonts = {normal:'\\mathrm',bold:'\\mathbf',italic:'\\mathit',
-        'bold-italic':'\\mathbfit','double-struck':'\\mathbb',script:'\\mathcal',fraktur:'\\mathfrak'};
+        'bold-italic':'\\mathbfit','double-struck':'\\mathbb',script:'\\mathcal',fraktur:'\\mathfrak',monospace:'\\mathtt','sans-serif':'\\mathsf'};
       if (!fonts[variant]) fail('Unsupported MathML mathvariant: ' + variant);
       else {
         // Named Greek macros reset their font; use the source glyph when

@@ -29,6 +29,9 @@ export function protectMath(source, replace) {
       const marker = new RegExp('^(?: {0,3}>[\\t ]?){' + depth + '}');
       tex = tex.replace(/\n([^\n]*)/g, (_, line) => '\n' + line.replace(marker, ''));
     }
+    // MathJax treats an initial [A|I] as aligned's optional placement and
+    // silently discards it. Only [t], [b], [c] are placement instructions.
+    tex = tex.replace(/(\\begin\{aligned\}\s*)\[(?![tbc]\s*\])/g, '$1{}[');
     result += source.slice(offset, match.index) + replace(tex);
     offset = end;
   }

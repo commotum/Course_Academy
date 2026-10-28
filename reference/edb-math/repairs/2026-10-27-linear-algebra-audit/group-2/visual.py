@@ -18,7 +18,7 @@ with sync_playwright()as p:
    actual={c['id']for row in result['rows']for c in row if c['id']};assert actual=={str(f['id'])for f in fields},(e,result,fields)
    for j in range(shape[1]):assert max(row[j]['x']for row in result['rows'])-min(row[j]['x']for row in result['rows'])<1
   if chosen or tutorial:page.locator('#content').screenshot(path=str(screens/f'{e}-{change["attribute"].replace("/","-")}-after.png'))
-  if chosen:
+  if chosen and change['before']:
    page.evaluate('''async value=>{MathJax.typesetClear([content]);content.replaceChildren(render(value,'prose',[]));await MathJax.typesetPromise([content]);}''',change['before']);page.locator('#content').screenshot(path=str(screens/f'{e}-{change["attribute"].replace("/","-")}-before.png'))
   checks.append({'entity':e,'attribute':change['attribute'],'interactive':grid,'result':result})
  b.close()

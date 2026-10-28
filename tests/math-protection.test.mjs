@@ -48,3 +48,14 @@ test('quote depth preserves real inequalities and unquoted greater-than symbols'
   protectMath('> > $$\n> > > x\n> > $$\n\n$$\n> y\n$$', s => { saved.push(s); return 'MATH'; });
   assert.deepEqual(saved, ['$$\n> x\n$$', '$$\n> y\n$$']);
 });
+
+
+test('visible initial matrix labels survive aligned optional-argument parsing', () => {
+  const saved = [];
+  protectMath(String.raw`$$\begin{aligned}[A\,|\,I]&=M\end{aligned}$$`, s => { saved.push(s); return ''; });
+  assert.deepEqual(saved, [String.raw`$$\begin{aligned}{}[A\,|\,I]&=M\end{aligned}$$`]);
+  for (const placement of ['t', 'b', 'c']) {
+    const tex = `$$\\begin{aligned}[${placement}]x&=1\\end{aligned}$$`;
+    protectMath(tex, s => { assert.equal(s, tex); return ''; });
+  }
+});

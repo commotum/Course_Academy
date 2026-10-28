@@ -16,7 +16,11 @@ for q0 in D['questions']:
   else:checks.extend({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==right[':answer/id']else'rejected','purpose':'All existing choices checked'}for a in f[':answer-field/choices'])
  if checks:out.append({'label':str(q[':db/id']),'record':{'question':q,'knowledge_point':{'title':'Linear algebra formatting audit'},'generation':{'template':'group-2-audit'}},'checks':checks})
 for record in json.loads((H/'generator-samples.json').read_text()):
- q=record['question'];checks=[]
+ record=copy.deepcopy(record);q=record['question'];checks=[]
+ for f in q.get(':question/answer-fields',[]):
+  if isinstance(f[':answer-field/type'],dict):f[':answer-field/type']=f[':answer-field/type'][':db/ident']
+  for a in f[':answer-field/choices']:
+   if isinstance(a[':answer/type'],dict):a[':answer/type']=a[':answer/type'][':db/ident']
  for i,f in enumerate(q.get(':question/answer-fields',[])):
   aid=f[':answer-field/correct'][1];a=next(a for a in f[':answer-field/choices']if a[':answer/id']==aid)
   if f[':answer-field/type']==':answer-field.type/blank':checks.extend([{'field_index':i,'submitted':a[':answer/value'],'expected':'accepted','purpose':'Staged generated canonical accepted'},{'field_index':i,'submitted':'987654321','expected':'rejected','purpose':'Staged generated incorrect rejected'}])

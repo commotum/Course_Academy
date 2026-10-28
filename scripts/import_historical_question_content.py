@@ -83,7 +83,7 @@ class Renderer:
         variant=n.get('mathvariant')
         if variant:
             fonts={'normal':'\\mathrm','bold':'\\mathbf','italic':'\\mathit','bold-italic':'\\mathbfit',
-                   'double-struck':'\\mathbb','script':'\\mathcal','fraktur':'\\mathfrak'}
+                   'double-struck':'\\mathbb','script':'\\mathcal','fraktur':'\\mathfrak','monospace':'\\mathtt','sans-serif':'\\mathsf'}
             if variant not in fonts:self.errors.append('Unsupported MathML mathvariant: '+variant)
             else:
                 if n.name=='mi' and n.get_text() in GREEK:value=value.replace(GREEK[n.get_text()],n.get_text(),1)

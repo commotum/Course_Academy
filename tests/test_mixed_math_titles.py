@@ -10,7 +10,10 @@ class MixedTitleTests(unittest.TestCase):
  def test_full_determinant_rule_and_colors_survive(self):
   table='<mtable><mtr><mtd><mstyle mathcolor="blue"><mi>a</mi></mstyle></mtd><mtd><mi>b</mi></mtd></mtr><mtr><mtd><mi>c</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable>'
   value=reconstruct(title(r'\det(A)=\left|',table,r'\right|=ad-bc'))
-  self.assertIn(r'\det(A)=\begin{vmatrix}',value);self.assertIn(r'{\color{blue}{a}}',value);self.assertTrue(value.endswith('=ad-bc'))
+  self.assertIn(r'\det(A)=\begin{vmatrix}',value);self.assertIn(r'{\color{blue}a}',value);self.assertTrue(value.endswith('=ad-bc'))
+ def test_source_fonts_are_applied_once(self):
+  value=reconstruct(title('', '<mi mathvariant="script">B</mi><mi mathvariant="bold" mathcolor="red">v</mi>',''))
+  self.assertEqual(value,r'\mathcal{B}\mathbf{{\color{red}v}}')
  def test_prefix_fraction_and_suffix_survive(self):
   value=reconstruct(title('x=', '<mfrac><mn>1</mn><mn>2</mn></mfrac>', '+C'))
   self.assertEqual(value,r'x=\frac{1}{2}+C')

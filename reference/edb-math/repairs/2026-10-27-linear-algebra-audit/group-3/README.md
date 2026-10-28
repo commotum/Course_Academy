@@ -1,0 +1,24 @@
+# Group 3 linear algebra audit
+
+Captured basis: **9047**. All work is staged; this folder performed no live transactions or production-file edits.
+
+Integration payloads:
+
+- `proposals.json`: 73 exact formatting replacements (9 tutorial fields, 34 problems, 30 worked solutions).
+- `completion-solutions.json`: 22 independently authored missing worked solutions.
+- `missing-key-completions.json`: 23 missing canonical links to existing answers owned by the same field. Existing solution q-20966 is preserved.
+- `generator-candidates.json`: staged KP 17592186100873 package descriptor. `generator-proposals.json` records before/after hashes. `generator-17592186100873/` preserves source data and adds source selection focus to fresh selected-entry solutions.
+
+The parent-owned flagged entities, existing KP 17592186100872 solutions, and q-318413 HTML answer table are excluded. The two baseline KP 17592186100872 missing solutions (q-1029 and q-1034) are included as independently authored completions.
+
+Read `validation-report.json` and `coverage.json` for counts and limits. `snapshot.json` retains every assigned question and explicit membership at the captured basis. `fields.json` contains all 5,416 unique content, solution, choice, and feedback fields. All passed structural validation and actual-renderer checks. The 95 proposed content fields also render; all 19 changed interactive matrix layouts preserve keys and control IDs and pass mobile overflow checks. Representative original SVG and proposed screenshots are in `source-screens/` and `proposed-screens/`.
+
+`source-comparisons.json` records 1,579 source formula comparisons. The original source survives for 380 questions and all 23 tutorials. `missing-sources.json` explicitly lists 201 source-identified questions without retained originals; 198 generated questions have no original-source identity. `source-bank-validation.json` checks 697 complete captured banks across 302 questions: 505 normalized exact matches, 22 equivalent matrix-divider/Unicode-domain forms, and 170 comparisons whose response representation had already changed (for example radio subsets migrated to checkbox fields).
+
+`intermediate-matrix-validation.json` independently verifies 425 numeric augmented matrices in 97 Gaussian elimination chains across the 188 questions in source topics 1733 and 1374. All are row equivalent; no numeric matrix was skipped. `product-math-validation.json` verifies all 46 selected-entry and outer-product questions, including canonical examples. These checks do not constitute an independent proof of every determinant/inverse intermediate in the full group.
+
+`grading.json` checks all current or completed owned canonical fields: 1,182 accepted and 2,819 rejected responses, no failures. `generator-validation.json` samples 144 records across supported difficulty bands of all 17 registered packages. Twelve fresh staged selected-entry records are additionally checked mathematically. `generator-grading.json` reports 268 accepted and 574 rejected responses without failures; `generator-render-validation.json` checks all 1,139 generated content/answer fields. `staged-generator-validation.json` verifies exact complete-source replay for all 10 source questions with a retained solution, plus unchanged source-data bytes. The two original selected-entry questions without solutions synthesize a newly focused solution.
+
+Source e-4722 contains two original MathML error nodes; its existing E2 E1 A solution is correct and renders, so those source errors are not propagated. KP 17592186100913 advertises moderate/hard CLI arguments although fresh generation supports only easy; unsupported bands are not counted as failures. KP 17592186184172 supports moderate/hard rather than easy. Initial sample invocations without `--format json` were corrected; the final sample report uses the actual supported JSON protocol.
+
+Some coefficient-matrix repairs change textual placeholder traversal order because coefficient and right-hand-side brackets are separate groups. Field entities, keys, answer banks, and original matrix-cell positions are preserved; compare placeholder multisets.
