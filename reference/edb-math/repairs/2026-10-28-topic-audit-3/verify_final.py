@@ -4,7 +4,7 @@ from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];sys.path[:0]=[str(R),str(R/'scripts')]
 from scripts.migrate_learner_history import connection,loads,kw
 from scripts.generator_packages import verify_package
-D=H/'final-check';D.mkdir(exist_ok=True);db=connection();inventory=json.loads((H/'inventory.json').read_text());commit_names=json.loads((H/'commits.json').read_text());publication_batches=json.loads((H/'publication-batches.json').read_text())
+D=H/(sys.argv[1]if len(sys.argv)>1 else'final-check');D.mkdir(exist_ok=True);db=connection();inventory=json.loads((H/'inventory.json').read_text());commit_names=json.loads((H/'commits.json').read_text());publication_batches=json.loads((H/'publication-batches.json').read_text())
 if not(D/'basis.json').exists():(D/'basis.json').write_text(json.dumps({'basis_t':db.basis()}))
 t=json.loads((D/'basis.json').read_text())['basis_t']
 def query(q,inputs,name):
@@ -33,10 +33,12 @@ for name in commit_names:
   (expected_fields if p['attribute']=='question/answer-fields'else expected_banks).remove((p['entity'],p['value']))
 for p in created:expected_banks.add((p['field'],p['entity']));expected_keys[p['field']]=p['entity']
 scalar_expect={(p['entity'],p['attribute']):p['after']for plan in plans for p in plan.get('cas',[])}
-scalar_pairs=sorted(scalar_expect);scalar_actual={}
-for i in range(0,len(scalar_pairs),30):
- rows=query('[:find ?e ?name ?v :in $ [[?e ?name]] :where [?a :db/ident ?name] [?e ?a ?v]]',[[[e,kw(a)]for e,a in scalar_pairs[i:i+30]]],'reviewed-scalars-'+str(i))
- scalar_actual.update({(e,str(a).lstrip(':')):v for e,a,v in rows})
+scalar_pairs=sorted(scalar_expect);scalar_actual={};by_attribute=collections.defaultdict(list)
+for e,a in scalar_pairs:by_attribute[a].append(e)
+for a,entities in sorted(by_attribute.items()):
+ for i in range(0,len(entities),80):
+  rows=query('[:find ?e ?v :in $ ?attribute [?e ...] :where [?e ?attribute ?v]]',[kw(a),entities[i:i+80]],'reviewed-scalars-'+a.replace('/','-')+'-'+str(i))
+  scalar_actual.update({(e,a):v for e,v in rows})
 assert scalar_actual==scalar_expect
 for kind,records,attr in [('question',original,'question/id'),('field',fields,'answer-field/id'),('answer',answers,'answer/id')]:
  rows=batched('[:find ?e ?id :in $ [?e ...] :where [?e :'+attr+' ?id]]',sorted(records),kind+'-ids')
@@ -120,4 +122,4 @@ report={'passed':True,'basis_t':t,'topics':len(inventory['topics']),'questions_e
 report['immutable_package_versions_published']=publication_count
 report['additional_live_learner_blank_answers']=[{'field':f,'answer':a}for f,a in sorted(live_entries)]
 report['additional_pool_links_since_snapshot']=len(set(map(tuple,links))-set(map(tuple,inventory['links'])))
-(H/'final-verification.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report),flush=True)
+(H/('final-verification.json'if D.name=='final-check'else D.name+'-verification.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report),flush=True)

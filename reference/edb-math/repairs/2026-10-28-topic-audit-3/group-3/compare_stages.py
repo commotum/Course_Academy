@@ -1,10 +1,16 @@
 import concurrent.futures,copy,hashlib,json,os,re,shutil,subprocess,sys,tempfile
 from pathlib import Path
+from PIL import Image
 sys.path.insert(0,'scripts');from question_capture.math_format import normalize_prose,normalize_tex
 H=Path(__file__).resolve().parent;A=json.loads((H/'generator-stage-plan.json').read_text());G={g['kp']:g for g in json.loads((H/'generator-audit.json').read_text())};V=json.loads((H/'generator-validation.json').read_text());work=Path(tempfile.mkdtemp(prefix='ca9837-before-after-'));reports=[];samples=[]
 IMAGE=re.compile(r'(?:/[A-Za-z0-9_.~+-]+)+\.(?:png|jpg|jpeg|svg|webp|gif)')
+def image_signature(path):
+ p=Path(path)
+ try:
+  with Image.open(p)as im:return 'asset-pixels-sha256:'+hashlib.sha256(str(im.size).encode()+im.convert('RGBA').tobytes()).hexdigest()
+ except Exception:return 'asset-sha256:'+hashlib.sha256(p.read_bytes()).hexdigest()
 def stable(v):
- if isinstance(v,str):return IMAGE.sub(lambda m:'asset-sha256:'+hashlib.sha256(Path(m[0]).read_bytes()).hexdigest()if Path(m[0]).is_file()else m[0],v)
+ if isinstance(v,str):return IMAGE.sub(lambda m:image_signature(m[0])if Path(m[0]).is_file()else m[0],v)
  if isinstance(v,list):return[stable(z)for z in v]
  if isinstance(v,dict):return{k:stable(z)for k,z in v.items()}
  return v
