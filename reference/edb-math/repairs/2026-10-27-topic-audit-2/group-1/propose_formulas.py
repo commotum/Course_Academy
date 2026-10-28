@@ -25,7 +25,7 @@ props=[];reject=[]
 for r in json.loads((H/'comparison.json').read_text()):
  obj=next(o for o in(D['contents']if r['identity'].startswith('tutorial:')else D['questions'])if o[':db/id']==r['entity']);a=r['attribute'];before=obj[':'+a];matches=list(MATH.finditer(before));opts=[]
  for s in idx[r['identity'],a]:
-  if len(matches)!=len(s['formulas']):continue
+  if len(matches)!=len(s['formulas'])or any(not isinstance(f,str)for f in s['formulas']):continue
   changes=[]
   for i,(old,new)in enumerate(zip(r['current'],s['formulas'])):
    if old.rstrip() and old.rstrip()[-1]not in'.,'and new.rstrip().endswith(('.',',')):new=new.rstrip().rstrip('.,')

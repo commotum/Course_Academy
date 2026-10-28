@@ -183,7 +183,11 @@ function resultLabel(item) {
 function renderItem(item, number) {
   const card = el('article', 'history-question');
   attachStepMenu(card, item.contentId, item.mathAcademyId, { kind: item.kind === 'tutorial' ? 'tutorial' : 'question' });
-  card.append(el('h3', 'history-question-title', item.kind === 'question' ? `Question ${number}` : item.title || 'Worked example'));
+  const heading = el('h3', 'history-question-title', item.kind === 'question' ? `Question ${number}` : item.title || 'Worked example');
+  if (item.kind === 'question' && item.topic?.title) {
+    heading.append(el('span', 'history-question-topic', `Topic: ${item.topic.title}`));
+  }
+  card.append(heading);
   const prompt = markdown(item.markdown, item.fields); card.append(prompt);
   if (item.fields?.length) {
     const answers = savedAnswers(item), controls = [...answers.children];

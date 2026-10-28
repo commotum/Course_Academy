@@ -138,6 +138,10 @@ pub(super) fn detail(s: &EntitySnapshot, learner: u64, task: u64) -> Result<Json
         // Reuse the player's immutable answer/solution projection, without
         // starting clocks or computing eligibility for this completed task.
         let mut entry = task_step_json_with_elapsed(s, &steps, item, elapsed)?;
+        if kind == "assessment" && s.entity(content)?.contains_key("question/id") {
+            let topic = s.topic_for_question(content)?;
+            entry["topic"] = json!({"id":topic,"title":text(s, topic, "topic/title")});
+        }
         // A finished/expired assessment may contain its last unanswered item.
         // Reveal authored explanations without manufacturing a response/grade.
         if s.entity(content)?.contains_key("question/id") {
@@ -287,6 +291,33 @@ mod tests {
         assert_eq!(view["items"][0]["elapsedSeconds"], 9.0);
         assert_eq!(view["items"][0]["solution"], "Add one and one.");
         assert!(view["activity"]["completedAt"].is_null());
+        Ok(())
+    }
+    #[test]
+    fn assessment_questions_show_their_own_topics_without_changing_history() -> Result<()> {
+        let mut s = fixture();
+        s.entities.insert(1200, json!({"db/ident":kw("activity.type/assessment")}).as_object().unwrap().clone());
+        s.entities.get_mut(&5).unwrap()["activity/type"] = json!("activity.type/assessment");
+        s.entities.get_mut(&5).unwrap().insert("activity/scope".into(), json!(40));
+        s.entities.get_mut(&5).unwrap()["activity/steps"] = json!([6,7]);
+        s.entities.get_mut(&6).unwrap().insert("step/next".into(), json!(7));
+        s.entities.insert(7, json!({"step/id":{"$uuid":uuid(7)},"step/content":25}).as_object().unwrap().clone());
+        let mut second = s.entities[&20].clone();
+        second.insert("question/id".into(), json!({"$uuid":uuid(25)}));
+        s.entities.insert(25, second);
+        s.entities.get_mut(&31).unwrap()["task-item/content"] = json!(25);
+        for (id, record) in [
+            (40, json!({"topic/id":{"$uuid":uuid(40)},"topic/title":"Linear equations","topic/knowledge-points":[41]})),
+            (41, json!({"knowledge-point/id":{"$uuid":uuid(41)},"knowledge-point/questions":[20]})),
+            (43, json!({"topic/id":{"$uuid":uuid(43)},"topic/title":"Fractions","topic/knowledge-points":[44]})),
+            (44, json!({"knowledge-point/id":{"$uuid":uuid(44)},"knowledge-point/questions":[25]})),
+        ] { s.entities.insert(id, record.as_object().unwrap().clone()); }
+        let s = EntitySnapshot::new(s.entities.into(), 42)?;
+        let before = s.entities.clone();
+        let view = detail(&s, 1, 10)?;
+        assert_eq!(view["items"][0]["topic"], json!({"id":40,"title":"Linear equations"}));
+        assert_eq!(view["items"][1]["topic"], json!({"id":43,"title":"Fractions"}));
+        assert_eq!(s.entities, before);
         Ok(())
     }
     #[test]

@@ -410,6 +410,19 @@ class MathContentTests(unittest.TestCase):
         validate_tex(r'\left[x\right]')
         validate_prose(r'Value \(x\), display \[x=1\].')
 
+    def test_generator_checks_duplicate_controls_and_checkbox_statement_math(self):
+        record = {'question': {':question/problem': '$x$', ':question/worked-solution': '$x$',
+                               ':question/answer-fields': [
+                                   {':answer-field/key': 'selection', ':answer-field/choices': []},
+                                   {':answer-field/key': 'selection', ':answer-field/choices': []}]}}
+        with self.assertRaisesRegex(ValueError, 'unique'): validate_generated_record(record)
+        field = {':answer-field/key': r'$lim_{x\to0}x=0$',
+                 ':answer-field/type': ':answer-field.type/checkbox', ':answer-field/choices': []}
+        record['question'][':question/answer-fields'] = [field]
+        with self.assertRaisesRegex(ValueError, 'Noncanonical|limit operator'): validate_generated_record(record)
+        field[':answer-field/key'] = normalize_prose(field[':answer-field/key'])
+        self.assertIs(validate_generated_record(record), record)
+
     def test_generator_contract_rejects_noncanonical_output(self):
         record = {'question': {':question/problem': '$x$', ':question/worked-solution': '$x$',
                                ':question/answer-fields': [{':answer-field/choices': [{':answer/type': ':answer.type/math', ':answer/value': '$x$'}]}]}}

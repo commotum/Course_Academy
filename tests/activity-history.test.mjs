@@ -78,6 +78,18 @@ test('history cards and group headings identify their displayed entities rather 
   assert.equal(row.dataset.stepDbId, 505);
 });
 
+test('quiz question headings show their own topic without changing question numbering', () => {
+  const f = fixture();
+  f.run("markdown = value => el('div', 'prose', value || '')");
+  const first = f.run('renderItem({contentId:303,kind:"question",fields:[],status:"correct",topic:{id:40,title:"Linear equations"}},1)');
+  const second = f.run('renderItem({contentId:304,kind:"question",fields:[],status:"incorrect",topic:{id:43,title:"Fractions"}},2)');
+  assert.match(first.children[0].textContent, /Question 1.*Topic: Linear equations/);
+  assert.match(second.children[0].textContent, /Question 2.*Topic: Fractions/);
+  assert.equal(first.children[0].children[0].className, 'history-question-topic');
+  const lesson = f.run('renderItem({contentId:305,kind:"question",fields:[],status:"correct"},3)');
+  assert.equal(lesson.children[0].textContent, 'Question 3');
+});
+
 test('activity date headings include Today, Yesterday, weekday and padded dates, with years when needed', () => {
   const f = fixture();
   assert.equal(f.run('activityDateGroup(new Date(2026,9,17,9),new Date(2026,9,17,18)).label'), 'Today · Saturday 10/17');

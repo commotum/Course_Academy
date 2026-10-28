@@ -1,0 +1,321 @@
+#!/usr/bin/env python3
+"""Seeded, relocatable partial quotient-rule practice. No I/O except JSON stdout."""
+import argparse
+import copy
+import hashlib
+import json
+import random
+from pathlib import Path
+from uuid import UUID, uuid5
+import sympy as s
+from math_format import normalize_prose, normalize_tex, validate_generated_record
+
+VERSION = '1.0.3'
+x, y = s.symbols('x y', real=True)
+NAMESPACE = UUID('742bf283-9480-47f5-b45a-cbb259d27b87')
+KP = {'db_id':17592186192794, 'id':'35c6e3db-073b-5867-8137-1d8660b20887', 'title':'Applying the Quotient Rule'}
+FAMILIES = {'easy':['linear','radical','exponential','trigonometric'],
+            'moderate':['polynomial','radical','exponential','trigonometric'],
+            'hard':['exponential']}
+SOURCES = {
+ 'linear':['1691ed28-0c5c-54a8-9012-9dfc00861f65'],
+ 'polynomial':['26e723d1-2e7d-5b20-b4fd-e3325c571238'],
+ 'radical':['c75dffc7-c60f-5338-92f4-7c0c6ff2bb72','f311e12c-1089-5d71-97f6-83e1fd9c3339'],
+ 'exponential':['27e4d0e6-6215-57d4-b123-69cd51f3932f','6f6e1b67-30d1-5d26-980f-cea342aa0dc8','9537a10a-ace7-5581-a0a1-2a2907755cd0'],
+ 'trigonometric':['d9fb48fb-ee18-53c2-9d40-be28dc7c4677','ba29a24e-25aa-5034-8849-e753260af75f']}
+
+def tex(a):
+    # Numeric reciprocal exponentials use the same fraction style as their
+    # coefficient-bearing alternatives. Variable-dependent inputs stay intact.
+    if getattr(a, 'func', None) == s.exp and a.args[0].is_number and a.args[0] < 0:
+        return r'\frac{1}{' + normalize_tex(s.latex(s.exp(-a.args[0]))) + '}'
+    return normalize_tex(s.latex(a, fold_short_frac=False))
+
+def frac(a,b): return r'\frac{' + a + '}{' + b + '}'
+def par(a): return r'\left(' + a + r'\right)'
+def display(a): return '\n\n$$\n' + a + '\n$$\n\n'
+def aligned(rows): return display(r'\begin{aligned}' + '\n' + (' \\\\\n'.join(rows)) + '\n' + r'\end{aligned}')
+def uid(a): return str(uuid5(NAMESPACE,a))
+def eq(a,b): return s.cancel(a-b)==0
+
+def instance(level, family, target, params):
+    """Construct the ordered component derivation before choices or prose."""
+    t = x if target=='x' else y
+    v = y if t==x else x
+    a,b,c,d,e,f = params
+    g = None
+    if family=='linear':
+        n=a*x+b*y+c; den=d*x+e*y+f
+    elif family=='polynomial':
+        n=a*x*y+b; den=d*x+e*y+f
+    elif family=='radical':
+        if level=='easy': n=a*t+b*v+c; g=t+d*v+e
+        else: n=a*t*t+b*v*v+c; g=t
+        den=s.sqrt(g)
+    elif family=='exponential':
+        if level=='moderate':
+            n=a*x*x+b*y*y+c; g=d*x+e*y; den=s.exp(g)
+        else:
+            # Same target-independent function: switching the target changes the dependency.
+            g=d*x*y if level=='easy' else d*x*y*y
+            n=s.exp(g); den=x*y+c if level=='easy' else x+e*y*y+c
+    elif family=='trigonometric':
+        n=s.sin(x)+a*s.cos(y); den=s.sin(x)+b*s.cos(y)+c
+    else: raise ValueError(family)
+    dn,dd=s.diff(n,t),s.diff(den,t)
+    if family=='radical':
+        # Multiply numerator/denominator by 2sqrt(g); g>0 throughout.
+        A=2*dn*g; B=n*s.diff(g,t); K=1/(2*g*s.sqrt(g))
+        h=s.expand(A-B)
+        factor_tex=lambda h:frac(tex(h), '2'+par(tex(g))+r'\sqrt{'+tex(g)+'}')
+        skeleton=frac('h(x,y)', '2'+par(tex(g))+r'\sqrt{'+tex(g)+'}')
+        domain=tex(g)+'>0'
+    elif family=='exponential' and level!='moderate':
+        A=s.diff(g,t)*den; B=s.diff(den,t); K=n/den**2; h=s.expand(A-B)
+        factor_tex=lambda h:frac('e^{'+tex(g)+'}'+par(tex(h)),par(tex(den))+'^2')
+        skeleton=frac('h(x,y)e^{'+tex(g)+'}',par(tex(den))+'^2')
+        domain=tex(den)+r'\ne0'
+    elif family=='exponential' and level=='moderate':
+        # Factor and cancel the SAME nonzero exponential; never expand its input.
+        A=dn; B=n*s.diff(g,t); K=1/den; h=s.expand(A-B)
+        factor_tex=lambda h:frac(tex(h),'e^{'+tex(g)+'}')
+        skeleton=frac('h(x,y)','e^{'+tex(g)+'}')
+        domain=tex(den)+r'\ne0'
+    else:
+        A=dn*den; B=n*dd; K=1/den**2
+        h=s.expand(A-B)
+        # Expand only algebra; don't trigsimp or reverse function arguments.
+        factor_tex=lambda h:frac(tex(h),par(tex(den))+'^2')
+        skeleton=frac('h(x,y)',par(tex(den))+'^2')
+        domain=tex(den)+r'\ne0'
+    return dict(level=level,family=family,target=target,params=list(params),t=t,v=v,
+                n=n,den=den,dn=dn,dd=dd,g=g,A=A,B=B,K=K,h=h,
+                full=K*h,render=factor_tex,skeleton=skeleton,domain=domain)
+
+
+def make_record(i, rng, point=None, profile=None, forbidden_value_rank=None):
+    level=i['level']; t=i['t']; n=i['n']; d=i['den']; dn=i['dn']; dd=i['dd']
+    A,B,K,h=i['A'],i['B'],i['K'],i['h']
+    if point is not None:
+        subs=dict(zip((x,y),point))
+        # Evaluate each rule component AFTER differentiating.
+        nv,dv,npv,dpv=[s.simplify(z.subs(subs)) for z in (n,d,dn,dd)]
+        if dv==0 or dv.has(s.I) or dv.is_real is False: raise ValueError('undefined point')
+        correct=s.simplify((npv*dv-nv*dpv)/dv**2)
+        base={
+          'plus':(npv*dv+nv*dpv)/dv**2,
+          'omit_denominator_term':npv/dv,
+          'omit_numerator_term':-nv*dpv/dv**2,
+          'reverse_subtraction':-correct,
+          'unsquared_denominator':(npv*dv-nv*dpv)/dv,
+          'square_numerator_too':(npv*dv-nv*dpv)**2/dv**2,
+          'differentiate_other_variable':s.diff(n/d,i['v']).subs(subs),
+          'denominator_power_three':(npv*dv-nv*dpv)/dv**3,
+          'divide_derivatives':npv/dpv if dpv!=0 else s.nan,
+          'omit_square_root_factor':2*correct if i['family']=='radical' else s.nan,
+          'differentiate_numerator_twice':(s.diff(n,t,2).subs(subs)*dv-nv*dpv)/dv**2,
+          'differentiate_denominator_twice':(npv*dv-nv*s.diff(d,t,2).subs(subs))/dv**2,
+        }
+        render=tex
+    else:
+        correct=h if level=='easy' else K*h
+        other=s.diff(n/d,i['v'])
+        base_h={
+          'plus':A+B,'omit_denominator_term':A,'omit_numerator_term':-B,
+          'reverse_subtraction':-h,
+          'differentiate_other_variable':s.cancel(other/K),
+          'differentiate_numerator_twice':s.cancel((s.diff(n,t,2)*d-n*dd)/d**2/K),
+          'differentiate_denominator_twice':s.cancel((dn*d-n*s.diff(d,t,2))/d**2/K),
+          'missing_inner_factor':d-B if i['family']=='exponential' else s.nan,
+          'double_denominator_derivative':A-2*B,
+          'double_numerator_derivative':2*A-B,
+          'unsquared_denominator':h*d,
+        }
+        # A linear quotient cancels t. Retain alternative cancellation outcomes,
+        # so the unique surviving variable cannot reveal the correct choice.
+        if i['family']=='linear':
+            a,b,c,dd0,e,f=i['params']
+            if t==x: P,Q,R,S=a*e,b*dd0,a*f,c*dd0; v=y
+            else: P,Q,R,S=b*dd0,a*e,b*f,c*e; v=x
+            base_h.update({
+              'drop_cross_product_1':-Q*v+(R-S),
+              'drop_cross_product_2':P*v+(R-S),
+              'add_cross_products':(P+Q)*v+(R-S),
+              'drop_numerator_constant':(P-Q)*v+R,
+              'drop_denominator_constant':(P-Q)*v-S,
+              'constant_subtraction_sign':(P-Q)*v+R+S})
+            base_h={k:v for k,v in base_h.items() if k in ('reverse_subtraction','drop_cross_product_1','drop_cross_product_2','add_cross_products','drop_numerator_constant','drop_denominator_constant','constant_subtraction_sign')}
+        if i['family']=='radical':
+            G=i['g'];gp=s.diff(G,t)
+            base_h={
+                'plus':A+B,
+                'omit_denominator_term':A,
+                'omit_numerator_term':-B,
+                'reverse_subtraction':-h,
+                'omit_square_root_two':dn*G-B,
+                'omit_inner_derivative':A-n,
+                'double_denominator_derivative':A-2*B,
+                'double_numerator_derivative':2*A-B,
+                'differentiate_other_variable':2*s.diff(n,i['v'])*G-n*s.diff(G,i['v'])}
+        if i['family']=='trigonometric':
+            a,b,c,_,_,_=i['params']
+            if t==x:
+                W=s.cos(x)*s.cos(y); C=c*s.cos(x)
+            else:
+                W=s.sin(x)*s.sin(y); C=-a*c*s.sin(y)
+            # Preserve complete cancellation outcomes in several alternatives.
+            # Otherwise the only short factored option exposes the key.
+            base_h={
+                'add_trig_coefficients':(b+a)*W+C,
+                'omit_numerator_trig_contribution':b*W+C,
+                'omit_denominator_trig_contribution':-a*W+C,
+                'reverse_subtraction':-h,
+                'drop_constant_contribution':(b-a)*W,
+                'constant_contribution_sign':(b-a)*W-C,
+                'double_denominator_trig_contribution':(2*b-a)*W+C,
+                'double_numerator_trig_contribution':(b-2*a)*W+C}
+        base={name:(z if level=='easy' else K*z) for name,z in base_h.items()}
+        render=tex if level=='easy' else lambda z:i['render'](s.cancel(z/K))
+    # Select a complete authored profile first, never silently fill it after a failure.
+    names=list(base)
+    if profile is None: profile=rng.sample(names,4)
+    values=[correct]+[s.simplify(base[name]) if point is not None else s.expand(base[name]) for name in profile]
+    for z in values:
+        if z.has(s.nan,s.zoo,s.oo,-s.oo) or z.is_real is False: raise ValueError('invalid bank expression')
+    if any(eq(a,b) for j,a in enumerate(values) for b in values[j+1:]): raise ValueError('coincident choices')
+    opposites=[(j,k) for j in range(5) for k in range(j+1,5) if eq(values[j],-values[k])]
+    if len(opposites)==1 and 0 in opposites[0]:
+        raise ValueError('unique opposite pair marks the correct expression')
+    # Reject a unique variable-support cue when the answer is symbolic.
+    if point is None and sum(z.free_symbols==correct.free_symbols for z in values)<2:
+        raise ValueError('unique variable support')
+    # A bank-only ranking at a fixed ordinary witness is not the target skill.
+    # Avoid repeating its answer-producing action in a recognizable batch group.
+    numeric_rank = None
+    bank_values = values if point is not None else [z.subs({x:5,y:1}) for z in values]
+    try:
+        numeric_values = [float(z.evalf()) for z in bank_values]
+        key_value = numeric_values[0]
+        if numeric_values.count(key_value) == 1:
+            numeric_rank = sorted(numeric_values).index(key_value)
+    except (TypeError, ValueError, OverflowError):
+        pass
+    forbidden = forbidden_value_rank or set()
+    if numeric_rank is not None and numeric_rank in forbidden:
+        raise ValueError('repeated bank-only answer rank within a recognizable batch group')
+    dt=frac(r'\partial f',r'\partial '+str(t))
+    fn=frac(tex(n),tex(d))
+    prompt='For the function'+display('f(x,y)='+fn+',')
+    if level=='easy':
+        prompt+='the partial derivative with respect to $'+str(t)+'$ is given by'+display(dt+'='+i['skeleton']+'.')
+        prompt+='Find $h(x,y)$, where $'+i['domain']+'$.'
+    elif point is not None:
+        prompt+='evaluate $'+dt+'$ at the point $('+tex(point[0])+','+tex(point[1])+')$.'
+    else:
+        prompt+='find $'+dt+'$, where $'+i['domain']+'$.'
+    solution='Hold $'+str(i['v'])+'$ constant and differentiate with respect to $'+str(t)+'$. '
+    solution+='Write $N='+tex(n)+'$ and $D='+tex(d)+'$. The component derivatives are'+aligned([
+        'N_{'+str(t)+'}&='+tex(dn)+',', 'D_{'+str(t)+'}&='+tex(dd)+'.'])
+    if i['family']=='exponential':
+        solution+='The chain rule differentiates the exponent first; its inner derivative is $'+tex(s.diff(i['g'],t))+'$.'
+    if i['family']=='radical':
+        solution+='For the square root use $D_{'+str(t)+'}='+frac(tex(s.diff(i['g'],t)),r'2\sqrt{'+tex(i['g'])+'}')+'$. '
+    solution+=' Apply the quotient rule, keeping its subtraction and squared denominator:'+aligned([
+        dt+'&='+frac('N_{'+str(t)+'}D-ND_{'+str(t)+'}','D^2'),
+        '&='+frac(par(tex(dn))+'D-N'+par(tex(dd)),'D^2'),
+        '&='+i['render'](h)+'.'])
+    if i['family']=='radical':
+        solution+='The last step multiplies the numerator and denominator by $2\\sqrt{'+tex(i['g'])+'}$ and collects the numerator terms. '
+    elif i['family']=='exponential':
+        solution+='The last step factors the common nonzero exponential $e^{'+tex(i['g'])+'}$ from the numerator. '
+        if level=='moderate':solution+='Cancel that factor with one copy in the squared denominator. '
+    else:
+        solution+='The last step distributes the subtraction and collects like terms. '
+    if level=='easy': solution+='Comparing with the supplied form gives $h(x,y)='+tex(h)+'$.'
+    elif point is not None:
+        solution+='Now substitute the point, after differentiating:'+aligned([
+            r'\left.'+dt+r'\right|_{('+tex(point[0])+','+tex(point[1])+')}&='+frac(par(tex(npv))+par(tex(dv))+'-'+par(tex(nv))+par(tex(dpv)),par(tex(dv))+'^2'),
+            '&='+tex(correct)+'.'])
+    solution+=' These expressions apply where $'+i['domain']+'$.'
+    values_rendered=[render(z) for z in values]
+    prompt,solution=normalize_prose(prompt),normalize_prose(solution)
+    identity=json.dumps([level,prompt,solution,sorted(values_rendered),render(correct)],sort_keys=True)
+    stem=hashlib.sha256(identity.encode()).hexdigest()
+    pairs=list(zip(['correct']+profile,values_rendered));rng.shuffle(pairs)
+    answers=[{':answer/id':uid(stem+':'+name),':answer/type':':answer.type/math',':answer/value':value} for name,value in pairs]
+    q={':question/id':uid(stem),':question/problem':prompt,':question/worked-solution':solution,
+       ':question/difficulty':':question.difficulty/'+level,
+       ':question/answer-fields':[{':answer-field/id':uid(stem+':field'),':answer-field/key':'selection',
+          ':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,
+          ':answer-field/correct':[':answer/id',uid(stem+':correct')]}]}
+    rec={'knowledge_point':KP.copy(),'question':q,'generation':{
+      'generator_version':VERSION,'family':i['family'],'target':str(t),'parameters':i['params'],
+      'point':[str(z) for z in point] if point is not None else None,
+      'numeric_rank':numeric_rank,
+      'profile':profile,'source_question_ids':SOURCES[i['family']],
+      'domain':i['domain'],'answer_form':'fragment' if level=='easy' else ('value' if point else 'whole derivative'),
+      'choice_errors':[name for name,val in pairs]}}
+    return validate_generated_record(rec)
+
+
+def sample(level,count,seed):
+    rng=random.Random(seed); records=[]; seen=set(); attempts=0
+    # Cycle every permitted family/target pair with a seeded starting schedule.
+    schedule=[(f,t) for f in FAMILIES[level] for t in ('x','y')];rng.shuffle(schedule)
+    position_cycles={}
+    previous_value_rank={}
+    family_counts={f:0 for f in FAMILIES[level]}
+    for family in FAMILIES[level]:
+        order=list(range(5)); random.Random(str(seed)+':positions:'+family).shuffle(order)
+        position_cycles[family]=order
+    for index in range(count):
+        family,target=schedule[index%len(schedule)]
+        for retry in range(250):
+            attempts+=1
+            signed=[-3,-2,-1,1,2,3]
+            params=[rng.choice(signed) for _ in range(6)]
+            params[2]=rng.choice([-2,-1,0,1,2]);params[5]=rng.choice([-1,0,1])
+            if family=='exponential': params[3]=rng.choice([-1,1]);params[4]=rng.choice([-1,1])
+            i=instance(level,family,target,params)
+            point=None
+            if level=='moderate':
+                point=[s.Integer(rng.choice([-1,0,1,2])) for _ in range(2)]
+                if family=='radical': point[0 if target=='x' else 1]=s.Integer(rng.choice([1,4]))
+                if family=='trigonometric': point=[rng.choice([0,s.pi/2,s.pi,-s.pi/2,-s.pi]) for _ in range(2)]
+                if family=='exponential' and abs(i['g'].subs(dict(zip((x,y),point))))>3:continue
+            try: rec=make_record(i,rng,point,forbidden_value_rank={previous_value_rank.get(family), previous_value_rank.get((family,target))})
+            except (ValueError,ZeroDivisionError):continue
+            signature=rec['question'][':question/problem']
+            if signature in seen:continue
+            # A finite family batch must not accidentally key every item at one position.
+            # This presentation cycle leaves all mathematical assignments and banks intact.
+            field=rec['question'][':question/answer-fields'][0]
+            old=next(j for j,a in enumerate(field[':answer-field/choices']) if a[':answer/id']==field[':answer-field/correct'][1])
+            desired=position_cycles[family][family_counts[family]%5]
+            field[':answer-field/choices'].insert(desired,field[':answer-field/choices'].pop(old))
+            errors=rec['generation']['choice_errors'];errors.insert(desired,errors.pop(old))
+            previous_value_rank[family]=rec['generation']['numeric_rank']
+            previous_value_rank[(family,target)]=rec['generation']['numeric_rank']
+            family_counts[family]+=1
+            seen.add(signature);rec['generation'].update(seed=seed,index=index,attempts=attempts)
+            records.append(rec);break
+        else: raise RuntimeError('No distinct plausible bank for '+family+'/'+target)
+    return records
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate')
+    p.add_argument('--count',type=int,default=5);p.add_argument('--seed',type=int,default=0)
+    p.add_argument('--format',choices=['json'],default='json')
+    p.add_argument('--replay',help='Original complete source question UUID, or all')
+    a=p.parse_args()
+    if a.count<0:p.error('--count must be nonnegative')
+    if a.replay:
+        replays=json.loads((Path(__file__).resolve().parent/'source-replay.json').read_text())
+        records=replays if a.replay=='all' else [r for r in replays if r['generation']['replay_source_id']==a.replay]
+        if not records:p.error('Unknown complete source ID')
+    else:records=sample('moderate' if a.difficulty=='unclassified' else a.difficulty,a.count,a.seed)
+    print(json.dumps(records,ensure_ascii=False,indent=2))
+
+if __name__=='__main__':main()

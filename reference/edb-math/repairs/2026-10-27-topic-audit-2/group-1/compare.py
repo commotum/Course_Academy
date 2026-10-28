@@ -16,7 +16,9 @@ for obj,ident,attrs in [(c,'tutorial:'+str(c[':tutorial/math-academy-id']),['tut
    k=2 if m[0].startswith(('$$',r'\[',r'\('))else 1;fs.append(m[0][k:-k])
   cfs=list(map(canon,fs));opts=[]
   for s in idx[ident,a]:
-   sfs=s['formulas'];cs=list(map(canon,sfs));score=difflib.SequenceMatcher(None,cfs,cs,autojunk=False).ratio();matches=sum(x==y for x,y in zip(cfs,cs))if len(cfs)==len(cs)else None
+   sfs=s['formulas'];
+   if any(not isinstance(f,str)for f in sfs):continue
+   cs=list(map(canon,sfs));score=difflib.SequenceMatcher(None,cfs,cs,autojunk=False).ratio();matches=sum(x==y for x,y in zip(cfs,cs))if len(cfs)==len(cs)else None
    opts.append({'path':s['path'],'formulas':sfs,'score':score,'equal_count':matches})
   best=max(opts,key=lambda x:x['score'])if opts else None
   records.append({'entity':obj[':db/id'],'identity':ident,'attribute':a,'current':fs,'best':best,'source_variants':len(opts)})

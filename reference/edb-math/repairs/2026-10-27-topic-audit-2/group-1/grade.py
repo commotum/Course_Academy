@@ -13,4 +13,4 @@ for q in D['questions']:
   elif f[':answer-field/type']in [':answer-field.type/radio',':answer-field.type/select',':answer-field.type/checkbox']:checks.extend({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==right[':answer/id']else'rejected','purpose':'Existing canonical key dispatch'}for a in f[':answer-field/choices'])
  q[':question/answer-fields']=fields
  if checks:out.append({'label':str(q[':db/id']),'record':{'question':q,'knowledge_point':{'title':'Linear algebra group 1 audit'},'generation':{'template':'group-1-audit'}},'checks':checks})
-(H/'grading-input.json').write_text(json.dumps(out,indent=2));(H/'grading-skipped.json').write_text(json.dumps(skip,indent=2));subprocess.run([str(R/'.local/edb/html-table-repair/check-engine'),str(H/'grading-input.json'),str(H/'grading.json')],check=True)
+(H/'grading-input.json').write_text(json.dumps(out,indent=2));(H/'grading-skipped.json').write_text(json.dumps(skip,indent=2));subprocess.run([str(H.parent/'check-engine'),str(H/'grading-input.json'),str(H/'grading.json')],check=True)

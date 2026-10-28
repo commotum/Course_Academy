@@ -1149,7 +1149,19 @@ def validate_generated_record(record):
         value = question[key]
         validate_prose(value)
         if normalize_prose(value) != value: raise ValueError('Noncanonical math content in ' + key)
+    field_keys = set()
     for field in question.get(':question/answer-fields', []):
+        key = field.get(':answer-field/key')
+        if key is not None:
+            if not isinstance(key, str) or not key or key in field_keys:
+                raise ValueError('Answer-field keys must be present and unique')
+            field_keys.add(key)
+        kind = field.get(':answer-field/type')
+        if isinstance(kind, dict): kind = kind.get(':db/ident')
+        if kind == ':answer-field.type/checkbox':
+            validate_prose(key)
+            if normalize_prose(key) != key:
+                raise ValueError('Noncanonical math content in checkbox statement')
         for answer in field.get(':answer-field/choices', []):
             value = answer[':answer/value']
             if answer[':answer/type'] == ':answer.type/math':
