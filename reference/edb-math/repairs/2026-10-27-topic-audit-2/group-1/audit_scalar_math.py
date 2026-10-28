@@ -72,6 +72,7 @@ def filled_response(q,field,value):
  if before and not p[before[-1].end():at].strip():
   tex=maths(before[-1][0])[0]
   if '='in tex:left=tex.split('=')[-1]
+  elif tex.rstrip().endswith(('+','-')):left=tex
  if after and not p[end:after[0].start()].strip():right=maths(after[0][0])[0]
  return left+value+right
 
@@ -101,7 +102,7 @@ for q in D['questions']:
   elif topic==152:
    mat=matrix(p);expected=S.det(mat);kind='determinant'
    
-   relation=next((re.search(r'(?:det|\\det|\\operatorname\{det\})\s*\(?[A-Z]\)?\s*=(.+)',m)for m in ms if re.search(r'(?:det|\\det|\\operatorname\{det\})\s*\(?[A-Z]\)?\s*=',m)),None)
+   relation=next((re.search(r'(?:det|\\det|\\operatorname\{det\}|\\text\{det\})\s*\(?[A-Z]\)?\s*=(.+)',m)for m in ms if re.search(r'(?:det|\\det|\\operatorname\{det\}|\\text\{det\})\s*\(?[A-Z]\)?\s*=',m)),None)
    if expected.free_symbols and relation:
     variable=next(iter(expected.free_symbols));expected=S.solveset(expected-parse(relation[1]),variable,domain=S.Reals);kind='root-set'
   else:
@@ -116,7 +117,11 @@ for q in D['questions']:
    for a in bank:
     if a[':answer/type'][':db/ident']!= ':answer.type/math':continue
     try:
-     answer_tex=filled_response(q,f,a[':answer/value'])if ftype==':answer-field.type/blank'else a[':answer/value'];val=roots(answer_tex)if kind=='root-set'else expression(answer_tex);ok=val==expected if kind=='root-set'else equal(S.diff(val,variable),integrand)if kind=='antiderivative'else equal(val,expected)
+     answer_tex=filled_response(q,f,a[':answer/value'])if ftype==':answer-field.type/blank'else a[':answer/value'];val=roots(answer_tex)if kind=='root-set'else expression(answer_tex);target_integrand=integrand
+     if f.get(':answer-field/key')=='derivative' and topic==308:
+      proposed=next((m.split('=',1)[1]for m in ms if m.startswith('G(x)=')),None)
+      if proposed:target_integrand=S.diff(expression(proposed),variable,2)
+     ok=val==expected if kind=='root-set'else equal(S.diff(val,variable),target_integrand)if kind=='antiderivative'else equal(val,expected)
      if ok and kind=='antiderivative'and r'\int'in p and not re.search(r'\bC\b',answer_tex):ok=False
      if ok:match.append(a[':db/id'])
     except Exception as ex:unclear.append({'answer':a[':db/id'],'error':str(ex)})

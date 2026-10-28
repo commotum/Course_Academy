@@ -59,6 +59,7 @@ def check(q,kp):
     if len(solutions)==1:expected=simple(solutions[0]);method='independent logarithmic equation solution';break
   if expected is None:raise ValueError('No unique exponential equation solution')
  else:
+  if topic in [6353,1181,906]or kp==17592186147453:raise ValueError('Requires role-specific coefficient, classification, verification-constant or exactness check')
   f,raw=ode(p);report['ode']=str(f);report['source_ode']=raw;method='independent ODE residual'
   if f.subs({y:0,D:0},simultaneous=True)==0:report['zero_equilibrium_admissible']=True
   coeff=simple(S.diff(f,D));P=simple(S.diff(f,y)/coeff)if not S.diff(f,y).has(y,D)and not coeff.has(y)else None
@@ -88,6 +89,12 @@ def check(q,kp):
  if expected is not None:
   report['expected']=str(expected);report['method']=method
   for field in fs:
+   if topic in [4096,1929]:
+    pos=p.find('{{'+field[':answer-field/key']+'}}')
+    if pos>=0:
+     ff,vv,target,pp=function_data(p[:pos]);expected=S.diff(ff,target)
+     if pp:expected=expected.subs(dict(zip(vv,pp)),simultaneous=True)
+     expected=simple(expected)
    results=[]
    for a in field.get(':answer-field/choices',[]):
     r={'answer':a.get(':db/id',a[':answer/id']),'value':a[':answer/value']}

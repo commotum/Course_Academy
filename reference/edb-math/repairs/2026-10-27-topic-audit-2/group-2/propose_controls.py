@@ -2,7 +2,7 @@ import json,re,collections
 from pathlib import Path
 H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());byid={q[':db/id']:q for q in D['questions']}
 def norm(v):
- v=re.sub(r'\\(?:operatorname|textrm|mathrm|text)\{([^{}]*)\}',r'\1',v);v=v.replace('∂',r'\partial').replace('π',r'\pi').replace('−','-');v=re.sub(r'\\(?:left|right|displaystyle)\b|\\hspace\{[^{}]+\}|\\[,;!:]','',v);v=re.sub(r'\\(exp|sin|cos|tan|ln)\b',r'\1',v);return re.sub(r'\s|[{}]','',v)
+ v=re.sub(r'\\(?:operatorname|textrm|mathrm|text)\{([^{}]*)\}',r'\1',v);v=v.replace('⁡','').replace('⁢','').replace('∂',r'\partial').replace('π',r'\pi').replace('−','-');v=re.sub(r'\\(?:left|right|displaystyle)\b|\\hspace\{[^{}]+\}|\\[,;!:]','',v);v=re.sub(r'\\(exp|sin|cos|tan|ln)\b',r'\1',v);return re.sub(r'\s|[{}]','',v)
 def bank(v):return{norm(x)for x in v}
 proposals=[];review=[]
 for item in json.loads((H/'source-control-reconstructions.json').read_text()):
@@ -15,7 +15,7 @@ for item in json.loads((H/'source-control-reconstructions.json').read_text()):
    sourcebank=bank(c['values']);matches=[]
    for f in fields:
     values=[a[':answer/value']for a in f.get(':answer-field/choices',[])];stored=bank(values)
-    if sourcebank==stored or sourcebank==stored-{'is'}:matches.append(f)
+    if sourcebank==stored or (sourcebank.issubset(stored) and f[':answer-field/key']==c['key']):matches.append(f)
    # Duplicate legacy fields may hold equivalent banks; preserve the newer keyed field.
    keyed=[f for f in matches if f.get(':answer-field/correct')]
    if len(keyed)==1:matches=keyed

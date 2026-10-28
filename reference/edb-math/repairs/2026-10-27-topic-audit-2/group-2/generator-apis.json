@@ -1,0 +1,1191 @@
+[
+  {
+    "kp": 17592186087877,
+    "functions": [
+      "def sample(t,r):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,bank_coefficients=None):"
+    ],
+    "constants": {
+      "VERSION": "integrating-factor-transform-v4",
+      "TEMPLATES": {
+        "constant_cos": [
+          "easy",
+          "q-17540"
+        ],
+        "constant_exp": [
+          "easy",
+          null
+        ],
+        "linear_exp": [
+          "moderate",
+          "q-8546"
+        ],
+        "scaled_constant_power": [
+          "easy",
+          "q-17533"
+        ],
+        "scaled_reciprocal_cos": [
+          "moderate",
+          "q-17539"
+        ],
+        "signed_constant_power": [
+          "easy",
+          "q-335278"
+        ],
+        "reciprocal_exp": [
+          "moderate",
+          "q-79818"
+        ],
+        "scaled_reciprocal_rhs": [
+          "moderate",
+          "q-79819"
+        ],
+        "linear_sin": [
+          "moderate",
+          "q-335274"
+        ],
+        "collected_mixed": [
+          "hard",
+          null
+        ]
+      }
+    },
+    "argparse": [
+      "a=argparse.ArgumentParser(description=__doc__);a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile',choices=['authored']);args=a.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186087878,
+    "functions": [
+      "def sample(spec,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,roles=None):"
+    ],
+    "constants": {
+      "VERSION": "2.1.2",
+      "TEMPLATES": {
+        "exp_forcing": {
+          "level": "easy",
+          "source": "q-335402",
+          "family": "exp",
+          "base": {
+            "a": 3,
+            "b": 6,
+            "r": 2
+          }
+        },
+        "exp_cancel": {
+          "level": "easy",
+          "source": "q-339138",
+          "family": "cancel",
+          "base": {
+            "a": 3,
+            "m": 1
+          }
+        },
+        "exp_cancel_legacy": {
+          "level": "easy",
+          "source": "q-335392",
+          "family": "cancel",
+          "base": {
+            "a": 2,
+            "m": 2
+          }
+        },
+        "power_constant": {
+          "level": "moderate",
+          "source": "q-339140",
+          "family": "power",
+          "base": {
+            "n": 5,
+            "b": 7
+          }
+        },
+        "power_constant_legacy": {
+          "level": "moderate",
+          "source": "q-334915",
+          "family": "powerlegacy",
+          "base": {
+            "n": 2,
+            "b": 3
+          }
+        },
+        "power_exp": {
+          "level": "moderate",
+          "source": "q-335412",
+          "family": "powerexp",
+          "base": {
+            "n": 3,
+            "r": 1
+          }
+        },
+        "power_sin": {
+          "level": "hard",
+          "source": "q-335409",
+          "family": "sin",
+          "base": {
+            "n": 2,
+            "r": 1
+          }
+        },
+        "power_cos": {
+          "level": "hard",
+          "source": null,
+          "family": "cos",
+          "base": {
+            "n": 3,
+            "r": 1
+          }
+        },
+        "normalize_linear": {
+          "level": "hard",
+          "source": "q-335069",
+          "family": "normalize",
+          "base": {
+            "k": 2,
+            "b": 3
+          }
+        }
+      },
+      "PROFILES": {}
+    },
+    "argparse": [
+      "parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='moderate');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=['markdown','json'],default='json');parser.add_argument('--template',choices=list(TEMPLATES));parser.add_argument('--profile',choices=list(PROFILES));a=parser.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186087879,
+    "functions": [
+      "def sample(f,level,r):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "ivp-integrating-factors-2",
+      "TEMPLATES": "{**{k:(v[0],v[1]) for k,v in OBS.items()},**AUTH}"
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186192784,
+    "functions": [
+      "def generate(difficulty,count,seed):"
+    ],
+    "constants": {},
+    "argparse": [
+      "p=argparse.ArgumentParser();p.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate');p.add_argument('--count',type=int,default=5);p.add_argument('--seed',type=int,default=0);p.add_argument('--format',choices=['json'],default='json');p.add_argument('--replay-source',action='store_true');args=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186192785,
+    "functions": [
+      "def generate(difficulty,count,seed):"
+    ],
+    "constants": {
+      "PROFILES": [
+        [
+          "double_left",
+          "double_right",
+          "keep_power",
+          "omit_right"
+        ],
+        [
+          "omit_left",
+          "omit_right",
+          "subtract_left",
+          "keep_power"
+        ],
+        [
+          "omit_left",
+          "subtract_left",
+          "multiply_derivatives",
+          "double_right"
+        ],
+        [
+          "omit_right",
+          "subtract_right",
+          "wrong_variable",
+          "double_left"
+        ],
+        [
+          "omit_left",
+          "omit_right",
+          "subtract_right",
+          "keep_power"
+        ],
+        [
+          "multiply_derivatives",
+          "wrong_variable",
+          "double_right",
+          "keep_power"
+        ],
+        [
+          "omit_left",
+          "double_right",
+          "power_multiplier",
+          "keep_power"
+        ],
+        [
+          "omit_right",
+          "subtract_left",
+          "double_left",
+          "keep_power"
+        ],
+        [
+          "wrong_variable",
+          "keep_function",
+          "negate_remainder",
+          "keep_remainder"
+        ],
+        [
+          "wrong_variable",
+          "keep_function",
+          "negate_remainder",
+          "chain_omit"
+        ],
+        [
+          "omit_remainder",
+          "negate_remainder",
+          "chain_omit",
+          "wrong_variable"
+        ],
+        [
+          "omit_left",
+          "omit_right",
+          "subtract_right",
+          "double_left"
+        ],
+        [
+          "multiply_derivatives",
+          "wrong_variable",
+          "double_right",
+          "subtract_left"
+        ],
+        [
+          "omit_left",
+          "double_right",
+          "power_multiplier",
+          "wrong_variable"
+        ],
+        [
+          "omit_right",
+          "subtract_left",
+          "double_left",
+          "multiply_derivatives"
+        ],
+        [
+          "omit_right",
+          "subtract_right",
+          "double_right",
+          "wrong_variable"
+        ]
+      ]
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate')",
+      "ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json'],default='json')"
+    ]
+  },
+  {
+    "kp": 17592186192790,
+    "functions": [
+      "def generate(difficulty,count,seed):"
+    ],
+    "constants": {
+      "FAMILIES": {
+        "easy": [
+          "log_poly",
+          "exp_log",
+          "cos_radical",
+          "power",
+          "tan_log",
+          "log_minus"
+        ],
+        "moderate": [
+          "exp_poly",
+          "poly_cos",
+          "cos_square",
+          "affine_power",
+          "arctan",
+          "sqrt_sum",
+          "norm"
+        ],
+        "hard": [
+          "log_exp_poly"
+        ]
+      },
+      "PROFILES": {
+        "chain": [
+          "omit_inner",
+          "other_inner",
+          "inner_not_differentiated",
+          "inner_sign",
+          "double_inner",
+          "half_inner",
+          "wrong_outer_1",
+          "wrong_outer_2",
+          "derivative_of_inner_only"
+        ],
+        "mixed": [
+          "omit_inner",
+          "other_partial",
+          "wrong_outer_1",
+          "wrong_outer_2",
+          "omit_other_term",
+          "other_term_sign",
+          "other_term_undifferentiated",
+          "omit_chain_term",
+          "double_inner",
+          "half_inner",
+          "premature_substitution"
+        ]
+      }
+    },
+    "argparse": [
+      "ap.add_argument('--difficulty',default='moderate',choices=['easy','moderate','hard','unclassified'])",
+      "ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0)",
+      "ap.add_argument('--format',choices=['json'],default='json')",
+      "ap.add_argument('--replay-source')"
+    ]
+  },
+  {
+    "kp": 17592186192794,
+    "functions": [
+      "def sample(level,count,seed):"
+    ],
+    "constants": {
+      "VERSION": "1.0.3",
+      "FAMILIES": {
+        "easy": [
+          "linear",
+          "radical",
+          "exponential",
+          "trigonometric"
+        ],
+        "moderate": [
+          "polynomial",
+          "radical",
+          "exponential",
+          "trigonometric"
+        ],
+        "hard": [
+          "exponential"
+        ]
+      }
+    },
+    "argparse": [
+      "p.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate')",
+      "p.add_argument('--count',type=int,default=5);p.add_argument('--seed',type=int,default=0)",
+      "p.add_argument('--format',choices=['json'],default='json')",
+      "p.add_argument('--replay',help='Original complete source question UUID, or all')"
+    ]
+  },
+  {
+    "kp": 17592186124639,
+    "functions": [
+      "def sample(name,rng):",
+      "def generate(level,seed=0,template=None,parameters=None,direction=None,profile=None,**unused):"
+    ],
+    "constants": {
+      "VERSION": "partial-two-variable-package-v3",
+      "SPECS": {
+        "cos_poly": [
+          "q-132241",
+          "easy",
+          {
+            "a": 1,
+            "b": 1,
+            "n": 2,
+            "m": 2,
+            "target": "y"
+          }
+        ],
+        "sin_poly": [
+          "q-35709",
+          "easy",
+          {
+            "a": 1,
+            "b": 1,
+            "n": 2,
+            "target": "x"
+          }
+        ],
+        "log": [
+          "q-159613",
+          "easy",
+          {
+            "a": 1,
+            "b": 1,
+            "n": 2,
+            "target": "y"
+          }
+        ],
+        "reciprocal": [
+          "q-159616",
+          "easy",
+          {
+            "a": 1,
+            "b": 1,
+            "n": 2,
+            "target": "x"
+          }
+        ],
+        "asin": [
+          "q-159619",
+          "moderate",
+          {
+            "a": 1,
+            "b": 8,
+            "target": "x"
+          }
+        ],
+        "exp_sum": [
+          "q-159623",
+          "moderate",
+          {
+            "a": 2,
+            "b": 3,
+            "m": 2,
+            "n": 3,
+            "target": "y"
+          }
+        ],
+        "tan_power": [
+          "q-159611",
+          "easy",
+          {
+            "a": 1,
+            "b": 1,
+            "n": 3,
+            "base": 3,
+            "target": "y"
+          }
+        ],
+        "constant_sin": [
+          "q-159614",
+          "easy",
+          {
+            "a": 5,
+            "b": 2,
+            "target": "x"
+          }
+        ],
+        "power_ratio": [
+          "q-159618",
+          "moderate",
+          {
+            "a": 1,
+            "b": 6,
+            "n": 3,
+            "m": 4,
+            "target": "x"
+          }
+        ],
+        "inverse_power": [
+          "q-159621",
+          "moderate",
+          {
+            "a": 8,
+            "b": 3,
+            "n": 4,
+            "m": 4,
+            "k": 2,
+            "target": "x"
+          }
+        ],
+        "cross_exp": [
+          "q-159624",
+          "moderate",
+          {
+            "a": 1,
+            "b": 1,
+            "target": "y"
+          }
+        ],
+        "atan": [
+          "q-159612",
+          "easy",
+          {
+            "a": 3,
+            "b": 1,
+            "n": 2,
+            "target": "y"
+          }
+        ],
+        "log_exp": [
+          null,
+          "moderate",
+          {
+            "a": 2,
+            "b": 3,
+            "m": 2,
+            "target": "y"
+          }
+        ],
+        "hard_log_exp": [
+          null,
+          "hard",
+          {
+            "a": 2,
+            "b": 3,
+            "c": 2,
+            "n": 3,
+            "m": 2,
+            "target": "y"
+          }
+        ],
+        "hard_trig_reciprocal": [
+          null,
+          "hard",
+          {
+            "a": 3,
+            "b": 2,
+            "c": 4,
+            "n": 3,
+            "m": 2,
+            "target": "x"
+          }
+        ]
+      },
+      "ERROR_PROFILES": [
+        "wrong-variable",
+        "held-factors"
+      ]
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified','all'],default='moderate');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json'],default='json');ap.add_argument('--template');a=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186124643,
+    "functions": [],
+    "constants": {
+      "VERSION": "partial-quotient-v6",
+      "FAMILIES": {
+        "easy": [
+          "monomial",
+          "exponential_linear",
+          "log_linear",
+          "variable_power",
+          "cosine",
+          "sine_product",
+          "log_factor",
+          "rational",
+          "root_product",
+          "structured_sum"
+        ],
+        "moderate": [
+          "rational",
+          "exponential_product",
+          "cube_root",
+          "log_product",
+          "root_product",
+          "structured_sum"
+        ],
+        "hard": [
+          "coordinated_rational"
+        ]
+      },
+      "ROLE_FAMILIES": [
+        "rational",
+        "root_product",
+        "structured_sum"
+      ]
+    },
+    "argparse": [
+      "parser.add_argument('--difficulty',choices=[*FAMILIES,'unclassified'],default='easy')",
+      "parser.add_argument('--count',type=int,default=1)",
+      "parser.add_argument('--seed',type=int,default=0)",
+      "parser.add_argument('--format',choices=['json'],default='json')"
+    ]
+  },
+  {
+    "kp": 17592186124644,
+    "functions": [
+      "def generate(level,seed=0,template=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "partial-point-package-v3",
+      "FAMILIES": "{\n 'tan-reciprocal':family('q-132257','x','hard',a*v**2,S.tan(u),b*v,u**-1,1,dict(a=1,b=1,n=2,m=2,U='pi',V=2),([S.pi,2*S.pi,-S.pi,-2*S.pi],[2,3,4]),eval_kind='terms',rewrite=True),\n 'base-exponential-tan':family('q-159604','x','hard',a*S.tan(v),2**u,b*v/S.pi,u**-n,1,dict(a=1,b=1,n=2,m=2,U=1,V='pi/4'),([1,2,3],[S.pi/4,3*S.pi/4]),ns=(2,3),eval_kind='terms',rewrite=True),\n 'sin-cos-linear':family('q-",
+      "SOURCE_FAMILY": "{f['source']:k for k,f in FAMILIES.items() if f['source']}"
+    },
+    "argparse": [
+      "ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='moderate')",
+      "ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0)",
+      "ap.add_argument('--format',choices=['json'],default='json')"
+    ]
+  },
+  {
+    "kp": 17592186147454,
+    "functions": [
+      "def generate(difficulty,seed=0,template=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "bernoulli-guided-three-bands-3",
+      "FAMILIES": "{\n 'q-106073':(sp.Rational(2),'exp'),\n 'q-109026':(sp.Rational(2),'linear'),\n 'q-109027':(sp.Rational(-4),'quadratic'),\n 'q-109028':(sp.Rational(3),'constant-linear'),\n 'q-109029':(sp.Rational(1,2),'autonomous'),\n 'q-109154':(sp.Rational(2),'power'),\n 'q-109170':(sp.Rational(3,4),'power'),\n 'q-109172':(sp.Rational(2),'power'),\n 'q-109177':(sp.Rational(-1,2),'power'),\n 'q-109158':(sp.Rational(2),'p"
+    },
+    "argparse": [
+      "p=argparse.ArgumentParser();p.add_argument('--difficulty',required=True);p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=('json','markdown'),default='json');a=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186147456,
+    "functions": [
+      "def generate(level,seed=0,template=None,parameters=None,profile=None,replay=False):"
+    ],
+    "constants": {
+      "VERSION": "bernoulli-recognition-v2"
+    },
+    "argparse": [
+      "parser=argparse.ArgumentParser();parser.add_argument('--difficulty',choices=('easy','moderate'),required=True);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--template',choices=tuple(CASES));parser.add_argument('--output',type=Path);parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=('json',),default='json')"
+    ]
+  },
+  {
+    "kp": 17592186110593,
+    "functions": [
+      "def generate(difficulty='easy', count=5, seed=0):"
+    ],
+    "constants": {
+      "VERSION": "3.1.0"
+    },
+    "argparse": [
+      "parser.add_argument('--difficulty',default='easy',choices=('easy','moderate','hard'))",
+      "parser.add_argument('--count',type=int,default=5);parser.add_argument('--seed',type=int,default=0)",
+      "parser.add_argument('--format',choices=('json',),default='json');parser.add_argument('--replay-source',choices=SOURCE_IDS)"
+    ]
+  },
+  {
+    "kp": 17592186110594,
+    "functions": [],
+    "constants": {
+      "VERSION": "1.3.0"
+    },
+    "argparse": [
+      "parser.add_argument('--difficulty',required=True,choices=('easy','moderate','hard'))",
+      "parser.add_argument('--count',required=True,type=int)",
+      "parser.add_argument('--seed',required=True,type=int)",
+      "parser.add_argument('--format',required=True,choices=('json',))"
+    ]
+  },
+  {
+    "kp": 17592186110595,
+    "functions": [
+      "def generate(difficulty,count,seed,stats=None):"
+    ],
+    "constants": {
+      "VERSION": "1.2.0",
+      "SPECS": "{\n 'q-1117':dict(template='scaled',b=10,A='1',m=2,n=0,S=3,R=65,v='x',profile='source1117'),\n 'q-66830':dict(template='exact',b=3,A='4',m=1,n=0,S=6,R=30,v='y',profile='source66830'),\n 'q-66832':dict(template='exact',b=4,A='3',m=1,n=0,S=-14,R=19,v='y',profile='source66832'),\n 'q-31891':dict(template='shifted',b=5,A='1',m=2,n=3,S=-13,R=25,v='a',profile='source31891'),\n 'q-974':dict(template='rounded'"
+    },
+    "argparse": [
+      "parser.add_argument('--difficulty',choices=['easy','moderate','hard'],default='easy')",
+      "parser.add_argument('--count',type=int,default=5);parser.add_argument('--seed',type=int,default=0)",
+      "parser.add_argument('--format',choices=['json'],default='json')"
+    ]
+  },
+  {
+    "kp": 17592186229162,
+    "functions": [
+      "def sample(level,t,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "nonresonant-exponential-2",
+      "TEMPLATES": {
+        "single": "easy",
+        "two_and": "moderate",
+        "two_comma": "moderate",
+        "two_doublecomma": "moderate",
+        "two_hard": "hard",
+        "three": "hard"
+      },
+      "PROFILES": "{q:{'template':t,'parameters':p,'raw':True} for q,t,p in CASES}"
+    },
+    "argparse": [
+      "p=argparse.ArgumentParser(description=__doc__);p.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--template',choices=list(TEMPLATES));p.add_argument('--profile',choices=list(PROFILES));p.add_argument('--format',choices=['markdown','json'],default='markdown');args=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186229163,
+    "functions": [],
+    "constants": {
+      "VERSION": "resonant-first-order-2.2"
+    },
+    "argparse": [
+      "ap.add_argument('--difficulty', choices=['easy','moderate','hard','unclassified','all'], default=DEFAULT)",
+      "ap.add_argument('--count',type=int,default=1)",
+      "ap.add_argument('--seed',type=int,default=0)",
+      "ap.add_argument('--format',choices=['json'],default='json')"
+    ]
+  },
+  {
+    "kp": 17592186229164,
+    "functions": [
+      "def sample(level,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "exponential-general-2",
+      "TEMPLATES": {
+        "nonresonant": "easy",
+        "resonant": "moderate",
+        "mixed": "hard"
+      }
+    },
+    "argparse": [
+      "ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified','all'],default='easy')",
+      "ap.add_argument('--seed',type=int,default=0)",
+      "ap.add_argument('--count',type=int,default=1)",
+      "ap.add_argument('--format',choices=['markdown','json'],default='json')",
+      "ap.add_argument('--profile')"
+    ]
+  },
+  {
+    "kp": 17592186229165,
+    "functions": [
+      "def sample(level,t,r):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "exponential-ivp-1.0-frozen",
+      "TEMPLATES": {
+        "nonresonant": "easy",
+        "resonant": "moderate",
+        "two_nonresonant": "hard",
+        "mixed": "hard"
+      },
+      "PROFILES": "{\n 'q-332426':dict(template='nonresonant',plain=True,missing=True),\n 'q-332797':dict(template='resonant',plain=True,missing=True),\n 'q-332903':dict(template='nonresonant',compact=False,dot=True),\n 'q-332905':dict(template='nonresonant',compact=False,dot=True),\n 'q-332906':dict(template='nonresonant',compact=True,dot=False),\n 'q-332908':dict(template='nonresonant',compact=True,dot=False,answer='for"
+    },
+    "argparse": [
+      "a=argparse.ArgumentParser(description=__doc__);a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--template',choices=TEMPLATES);a.add_argument('--profile');a.add_argument('--format',choices=['markdown','json'],default='markdown');z=a.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186217247,
+    "functions": [
+      "def sample_params(rng,case,sign_pattern=None):",
+      "def generate(count,seed,difficulty='easy'):"
+    ],
+    "constants": {},
+    "argparse": [
+      "p=argparse.ArgumentParser(description=__doc__); p.add_argument('--difficulty',default='easy'); p.add_argument('--count',type=int,default=5); p.add_argument('--seed',type=int,required=True); p.add_argument('--format',choices=['json'],default='json'); a=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186217248,
+    "functions": [
+      "def generate(family, params, rng=None, profile=None, difficulty=None):",
+      "def sample_params(family,rng):"
+    ],
+    "constants": {},
+    "argparse": [
+      "p.add_argument('--difficulty',required=True,choices=['unclassified','easy','moderate','hard'])",
+      "p.add_argument('--count',required=True,type=int);p.add_argument('--seed',required=True,type=int)",
+      "p.add_argument('--format',choices=['json'],default='json');a=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186217249,
+    "functions": [
+      "def generate(difficulty,count,seed):"
+    ],
+    "constants": {},
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',default='easy');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json'],default='json');args=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186100888,
+    "functions": [
+      "def sample(template, rng, decision_case=None):",
+      "def generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None, decision_case=None):"
+    ],
+    "constants": {
+      "VERSION": "2.2.0",
+      "CURRENT_VERSION": "2.2.0"
+    },
+    "argparse": [
+      "parser.add_argument('--difficulty', choices=(*SUPPORTED_LEVELS, 'all'), default='all')",
+      "parser.add_argument('--count', type=int, default=1)",
+      "parser.add_argument('--seed', type=int, default=0)",
+      "parser.add_argument('--format', choices=('json', 'markdown'), default='json')",
+      "parser.add_argument('--template')",
+      "parser.add_argument('--profile')"
+    ]
+  },
+  {
+    "kp": 17592186100951,
+    "functions": [
+      "def generate(level,seed=0,**kwargs):"
+    ],
+    "constants": {
+      "VERSION": "ivp-constant-5",
+      "BANDS": [
+        "easy",
+        "moderate",
+        "hard"
+      ],
+      "EASY_TEMPLATES": "tuple(k for k,v in easy.TEMPLATES.items() if v['level']=='easy' and k not in ('q-141055','q-141117'))",
+      "FAMILIES": {
+        "easy": [
+          "power",
+          "exp",
+          "sin"
+        ],
+        "moderate": [
+          "power",
+          "invpower",
+          "exp",
+          "sin",
+          "cos"
+        ],
+        "hard": [
+          "recip",
+          "log"
+        ]
+      }
+    },
+    "argparse": [
+      "p=argparse.ArgumentParser();p.add_argument('--difficulty',choices=(*BANDS,'unclassified'),default='easy');p.add_argument('--count',type=int,default=1);p.add_argument('--seed',type=int,default=0);p.add_argument('--format',choices=['json'],default='json');a=p.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186100959,
+    "functions": [
+      "def generate(level,seed=0,family=None,mask=None,parameters_override=None):"
+    ],
+    "constants": {
+      "VERSION": "2.0.0",
+      "FAMILIES": {
+        "easy": [
+          "exp"
+        ],
+        "moderate": [
+          "exp",
+          "power",
+          "sin",
+          "cos",
+          "affine",
+          "log"
+        ],
+        "hard": [
+          "log"
+        ]
+      }
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','unclassified'],default='moderate');ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json'],default='json');args=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186087866,
+    "functions": [
+      "def sample(t,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,decision=None):"
+    ],
+    "constants": {
+      "VERSION": "standard-form-2.2.0",
+      "FAMILIES": {
+        "easy": [
+          "q-16400",
+          "q-8359",
+          "q-103349",
+          "q-103354",
+          "q-16396",
+          "q-79697",
+          "q-79699",
+          "q-8360"
+        ],
+        "moderate": [
+          "rational-collect"
+        ],
+        "hard": [
+          "q-16401"
+        ]
+      }
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--template');ap.add_argument('--parameters');ap.add_argument('--profile');ap.add_argument('--decision',help='Explicit signed coefficient roles as JSON');a=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186087867,
+    "functions": [
+      "def generate(level,seed,case_index=None):"
+    ],
+    "constants": {
+      "VERSION": "ode-classification-2"
+    },
+    "argparse": [
+      "p.add_argument('--difficulty',choices=('easy','moderate','hard','all'),default='moderate')",
+      "p.add_argument('--count',type=int,default=1);p.add_argument('--seed',type=int,default=0)",
+      "p.add_argument('--format',choices=('json',),default='json');p.add_argument('--replay',choices=tuple(TEMPLATES))"
+    ]
+  },
+  {
+    "kp": 17592186087868,
+    "functions": [
+      "def sample(template,rng,profile):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "homogeneous-checkbox-recognition-4",
+      "PROFILES": "{prefix+key:{'template':key,'bank':r['bank'],'origin':'observed','evidence_only':prefix=='raw_'} for key,r in RECIPES.items() for prefix in ('raw_','observed_')}",
+      "TEMPLATES": "{key:{'level':r['level'],'field_type':'radio','origin':'observed'} for key,r in RECIPES.items()}"
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard'],default='easy');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186064245,
+    "functions": [
+      "def sample(name,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "exponential-parts-2",
+      "TEMPLATES": {
+        "e_positive": [
+          "easy",
+          "e",
+          "equals",
+          "split",
+          false,
+          false
+        ],
+        "e_negative_distributed": [
+          "moderate",
+          "e",
+          "calculate",
+          "split",
+          true,
+          false
+        ],
+        "e_negative_integral": [
+          "moderate",
+          "e",
+          "integral",
+          "split",
+          false,
+          false
+        ],
+        "e_shift": [
+          "moderate",
+          "e",
+          "equals",
+          "split",
+          false,
+          false
+        ],
+        "base_calculate": [
+          "moderate",
+          "base",
+          "calculate",
+          "base",
+          false,
+          false
+        ],
+        "base_equals": [
+          "moderate",
+          "base",
+          "equals",
+          "base",
+          false,
+          false
+        ],
+        "hard_shift_unit": [
+          "hard",
+          "e",
+          "integral",
+          "factor",
+          false,
+          false
+        ],
+        "hard_negative_factor": [
+          "hard",
+          "e",
+          "calculate",
+          "factor",
+          false,
+          true
+        ],
+        "hard_negative_split": [
+          "hard",
+          "e",
+          "calculate",
+          "split",
+          false,
+          false
+        ],
+        "hard_shift_split": [
+          "hard",
+          "e",
+          "integral",
+          "split",
+          false,
+          false
+        ],
+        "hard_positive_factor": [
+          "hard",
+          "e",
+          "integral",
+          "factor",
+          false,
+          false
+        ]
+      },
+      "PROFILE_TEMPLATES": "{sid:name for sid,name,_ in SOURCE_CASES}",
+      "AUTHORED_PROFILES": {
+        "differential": [
+          "residual_sign",
+          "both_omitted",
+          "second_omitted",
+          "differentiate_u"
+        ],
+        "rate": [
+          "residual_omitted",
+          "both_omitted",
+          "reciprocal_rate",
+          "differentiate_u"
+        ],
+        "signs": [
+          "residual_sign",
+          "signed_omission",
+          "second_omitted",
+          "derivative_squared"
+        ],
+        "unit": [
+          "residual_sign",
+          "residual_omitted",
+          "uv_sign",
+          "differentiate_u"
+        ],
+        "affine_unit": [
+          "residual_sign",
+          "residual_omitted",
+          "uv_sign",
+          "offset_derivative"
+        ],
+        "unit_double": [
+          "residual_sign",
+          "double_residual",
+          "uv_sign",
+          "differentiate_u"
+        ]
+      }
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='moderate');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--template');ap.add_argument('--profile');ap.add_argument('--format',choices=['markdown','json'],default='json');ns=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186064246,
+    "functions": [
+      "def sample(name,rng):",
+      "def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):"
+    ],
+    "constants": {
+      "VERSION": "trig-parts-2",
+      "TEMPLATES": {
+        "sin_unit": [
+          "easy",
+          "sin",
+          "q-14437",
+          false
+        ],
+        "cos_frequency": [
+          "easy",
+          "cos",
+          "q-114297",
+          false
+        ],
+        "cos_frequency_expanded": [
+          "easy",
+          "cos",
+          "q-114299",
+          true
+        ],
+        "cos_unit_expanded": [
+          "easy",
+          "cos",
+          "q-14453",
+          true
+        ],
+        "cos_unit": [
+          "easy",
+          "cos",
+          "q-74090",
+          false
+        ],
+        "sin_frequency": [
+          "easy",
+          "sin",
+          "q-14451",
+          false
+        ],
+        "affine_cos": [
+          "moderate",
+          "cos",
+          "q-12564",
+          false
+        ],
+        "affine_sin": [
+          "moderate",
+          "sin",
+          "q-114309",
+          false
+        ],
+        "affine_sin_unit": [
+          "moderate",
+          "sin",
+          "q-114311",
+          false
+        ],
+        "phase_cos": [
+          "moderate",
+          "cos",
+          "q-74087",
+          false
+        ],
+        "affine_cos_unit": [
+          "moderate",
+          "cos",
+          "q-74088",
+          false
+        ],
+        "phase_sin": [
+          "moderate",
+          "sin",
+          "q-12565",
+          false
+        ],
+        "csc_log": [
+          "hard",
+          "csc",
+          "q-114314",
+          false
+        ],
+        "sec_log": [
+          "hard",
+          "sec",
+          "q-2426",
+          false
+        ]
+      }
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all','unclassified'],default='easy');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='json');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()"
+    ]
+  },
+  {
+    "kp": 17592186064274,
+    "functions": [],
+    "constants": {
+      "VERSION": "definite-ibp-3",
+      "PROFILES": "json.loads((Path(__file__).parent / 'profiles.json').read_text())"
+    },
+    "argparse": [
+      "ap=argparse.ArgumentParser();ap.add_argument('--difficulty',default='moderate',choices=['easy','moderate','hard','unclassified']);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',default='json',choices=['json']);ap.add_argument('--source-id',choices=sorted(PROFILES))"
+    ]
+  }
+]
