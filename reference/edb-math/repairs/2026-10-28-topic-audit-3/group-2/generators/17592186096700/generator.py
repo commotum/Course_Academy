@@ -222,11 +222,15 @@ def main():
     try:
         records=[replay_source(args.replay_source)] if args.replay_source else generate_records(args.difficulty,args.count,args.seed,os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR'),args.profile)
     except ValueError as exc:ap.error(str(exc))
-    print(json.dumps(records,indent=2))
+    print(json.dumps(_apply_source_notation(records),indent=2))
 
 # Every learner-facing checkbox question has a nonempty correct selection.
 from generator_policy import nonempty_checkbox as _nonempty_checkbox
 for _policy_name in ['generate_records']:
     globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
+
+from source_notation import install as _install_source_notation, apply as _apply_source_notation
+_install_source_notation(globals())
 
 if __name__=='__main__':main()

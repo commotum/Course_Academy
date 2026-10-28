@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+"""Reconstruct content-only question records from saved MA history evidence."""
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup, NavigableString, Tag
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from question_capture.html_tables import source_table_html
+from question_capture.math_format import normalize_math_boundaries, normalize_source_tex, markdown_emphasis, mathml_ruled_table, mathml_unruled_table
+
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/'reference/mathacademy/history-question-import-2026-10-04'
+HISTORY=ROOT/'reference/mathacademy/progress-history-2026-10-04/observations.json'
+AUDIT=ROOT/'.local/edb/missing-question-kp-audit-2026-10-04/audit.json'
+GREEK=dict(zip('αβγδθλμπρσφω∞',['\\alpha ','\\beta ','\\gamma ','\\delta ','\\theta ','\\lambda ','\\mu ','\\pi ','\\rho ','\\sigma ','\\phi ','\\omega ','\\infty ']))
+OPS={'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-','±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap ','≈':'\\approx ','∅':'\\emptyset ','↔':'\\leftrightarrow ','⇒':'\\Rightarrow ','∴':'\\therefore ','′':"'",'″':"''",'⁡':'','⁢':''}
+
+class Renderer:
+    def __init__(self,topic):
+        self.topic=topic;self.errors=[];self.assets=[];self.fields=[];self.formulas=[]
+        self.control_fields={};self.control_indices={};self.extracting_controls=False
+    @staticmethod
+    def brace_glyph(n,glyph):
+        return isinstance(n,Tag) and n.name=='mo' and n.get_text().strip()==glyph
+    @classmethod
+    def brace_base(cls,n,direction,glyph):
+        if not isinstance(n,Tag):return 0
+        children=[c for c in n.children if isinstance(c,Tag) and c.name not in ('annotation','annotation-xml')]
+        if n.name in ('mrow','mstyle','mpadded','semantics'):
+            return cls.brace_base(children[0],direction,glyph) if len(children)==1 else 0
+        if n.name!=direction or len(children)!=2:return 0
+        if cls.brace_glyph(children[1],glyph):return 1
+        return 2 if cls.brace_base(children[0],direction,glyph) else 0
+    def brace_label(self,n,cs,direction,glyph,command,script,stack):
+        base=self.brace_base(n.find(recursive=False),direction,glyph)
+        if not base:return None
+        # Preserve the operator's limits; grouping it would move the label right.
+        return cs[0]+script+'{'+cs[1]+'}' if base==1 and cs[0].startswith(command+'{') else stack+'{'+cs[1]+'}{'+cs[0]+'}'
+    def hat_accent(self,n,cs):
+        accent=n.find_all(recursive=False)[1]
+        if accent.name!='mo' or accent.get_text().strip()!='^':return None
+        unsupported=[a for a in ('mathcolor','mathbackground','mathvariant','style','minsize','maxsize','lspace','rspace')
+                     if accent.has_attr(a) and accent.get(a) not in ('','inherit','none','transparent')]
+        if n.get('accent')=='false':unsupported.append('accent=false')
+        stretchy=accent.get('stretchy')
+        if stretchy is not None and stretchy not in ('true','false'):unsupported.append('stretchy='+stretchy)
+        base=n.find(recursive=False);variants=[node for node in [base,*base.find_all(attrs={'mathvariant':True})] if node.has_attr('mathvariant')]
+        full_base=[];node=base
+        while node is not None:
+            full_base.append(node)
+            children=node.find_all(recursive=False)
+            node=children[0] if node.name in ('mrow','mstyle','mpadded','semantics') and len(children)==1 else None
+        variant_commands={'bold-italic':'\\mathbfit','bold':'\\mathbf','normal':'\\mathrm','italic':'\\mathit'}
+        body=cs[0]
+        if variants:
+            variant=variants[0].get('mathvariant')
+            if len(variants)!=1 or not any(variants[0] is node for node in full_base) or variant not in variant_commands:unsupported.append('base mathvariant')
+            else:
+                # MathJax's Greek macros override font commands; a literal
+                # source glyph retains its explicit bold/italic variant.
+                glyph=variants[0].get_text();macro=GREEK.get(glyph)
+                body=cs[0] # The scoped node renderer already applied this font.
+        if unsupported:
+            self.errors.append('Unsupported MathML hat: '+', '.join(unsupported))
+            return '\\overset{'+cs[1]+'}{'+cs[0]+'}'
+        # MathJax's hat disables stretching; widehat retains the default.
+        return ('\\hat{' if stretchy=='false' else '\\widehat{')+body+'}'
+    @staticmethod
+    def function_application(node):
+        current=node
+        while isinstance(current,Tag):
+            nxt=current.find_next_sibling()
+            if nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':
+                return current is node or len(node.get_text())>1
+            parent=current.parent
+            if not isinstance(parent,Tag):return False
+            children=[n for n in parent.find_all(recursive=False) if n.name not in ('annotation','annotation-xml')]
+            wrapper=parent.name in ('mrow','mstyle','mpadded','semantics') and len(children)==1
+            powered=parent.name in ('msup','msub','msubsup') and children and children[0] is current
+            if not wrapper and not powered:return False
+            current=parent
+        return False
+    def decorated_phantom(self,n):
+        if n.name!='mstyle' or not n.find('mphantom') or not any(n.has_attr(a) for a in ('style','mathbackground')):return None
+        def reject(reason):
+            self.errors.append('Unsupported decorated MathML phantom: '+reason);return ''
+        if any(a not in ('style','mathbackground') and not a.startswith('data-mjx-') for a in n.attrs):return reject('container attributes')
+        background=n.get('mathbackground');style=n.get('style');options=[]
+        if background is not None and not re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',background):return reject('background')
+        children=n.find_all(recursive=False)
+        if len(children)!=1:return reject('padding container')
+        padded=children[0]
+        if background is not None and style is None and padded.name=='mrow' and all(a.startswith('data-mjx-') for a in padded.attrs):return '\\bbox['+background+']{'+''.join(self.m(c) for c in padded.children)+'}'
+        if padded.name!='mpadded' or any(a not in ('height','depth','lspace','width') and not a.startswith('data-mjx-') for a in padded.attrs):return reject('padding container')
+        pad=re.fullmatch(r'(\d+)(pt|px|em|ex|in|cm|mm)',padded.get('lspace',''))
+        if not pad or int(pad[1])<=0 or padded.get('height')!='+'+pad[0] or padded.get('depth')!='+'+pad[0] or padded.get('width')!='+'+str(2*int(pad[1]))+pad[2]:return reject('asymmetric or unsupported padding')
+        options.append(pad[0])
+        if background is not None:options.append(background)
+        if style is not None:
+            match=re.fullmatch(r'\s*border:\s*([^:;]+);?\s*',style);tokens=match[1].split() if match else []
+            widths=[x for x in tokens if re.fullmatch(r'\d+(?:pt|px|em|ex|in|cm|mm)',x)]
+            colors=[x for x in tokens if x!='solid' and re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',x)]
+            if len(tokens) not in (2,3) or len(widths)!=1 or len(colors)!=len(tokens)-2 or tokens.count('solid')!=1:return reject('border style')
+            options.append('border:'+widths[0]+' solid'+(' '+colors[0] if colors else ''))
+        return '\\bbox['+','.join(options)+']{'+''.join(self.m(c) for c in padded.children)+'}'
+    @staticmethod
+    def visible_phantom_owner(n):
+        for p in n.parents:
+            if not isinstance(p,Tag) or p.name=='math':return False
+            if p.name=='menclose' and p.get('notation') in (None,'box','longdiv'):return True
+            if p.name=='mstyle' and any(p.has_attr(a) for a in ('style','mathbackground')):return True
+        return False
+    def m(self,n):
+        value=self.math_node(n)
+        if not isinstance(n,Tag) or not value or (n.name=='mstyle' and n.find('mphantom') and any(n.has_attr(a) for a in ('style','mathbackground'))):return value
+        for attribute in ('mathcolor','mathbackground'):
+            color=n.get(attribute)
+            if not color or color in ('transparent','inherit','none'):continue
+            if not re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',color):
+                self.errors.append('Unsupported MathML '+attribute+': '+color);continue
+            if attribute=='mathbackground':value='\\bbox['+color+', 2pt]{'+value+'}'
+            elif color.startswith('#'):
+                code=''.join(c*2 for c in color[1:]) if len(color)==4 else color[1:]
+                value='{\\color[HTML]{'+code+'}'+value+'}'
+            else:value='{\\color{'+color+'}'+value+'}'
+        variant=n.get('mathvariant')
+        if variant:
+            fonts={'normal':'\\mathrm','bold':'\\mathbf','italic':'\\mathit','bold-italic':'\\mathbfit',
+                   'double-struck':'\\mathbb','script':'\\mathcal','fraktur':'\\mathfrak','monospace':'\\mathtt','sans-serif':'\\mathsf'}
+            if variant not in fonts:self.errors.append('Unsupported MathML mathvariant: '+variant)
+            else:
+                if n.name=='mi' and n.get_text() in GREEK:value=value.replace(GREEK[n.get_text()],n.get_text(),1)
+                value=fonts[variant]+'{'+value+'}'
+        return value
+    def math_node(self,n):
+        if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%#]',lambda m:'\\'+m[0],str(n))))
+        if not isinstance(n,Tag):return ''
+        t=n.name.lower()
+        if self.extracting_controls and t=='msub':
+            children=n.find_all(recursive=False)
+            marker=re.fullmatch(r'\(S(\d+)\)',children[1].get_text('',strip=True)) if len(children)==2 else None
+            if marker:
+                index=int(marker[1])
+                assert index in self.control_indices, 'Unmapped source control S'+str(index)
+                return '{{'+self.control_indices[index]+'}}'
+        if self.extracting_controls and t=='mrow':
+            children=n.find_all(recursive=False)
+            if len(children)==3 and self.brace_glyph(children[0],'{') and self.brace_glyph(children[2],'}') and children[1].name=='msub':
+                inner=children[1].find_all(recursive=False)
+                if len(inner)==2 and re.fullmatch(r'\(S\d+\)',inner[1].get_text('',strip=True)):return self.m(children[1])
+        if t=='mrow':
+            children=n.find_all(recursive=False)
+            if len(children) in (2,3) and children[0].name=='mo' and children[0].get_text()=='{' and children[1].name=='mtable' and (len(children)==2 or children[2].name=='mo' and not children[2].get_text().strip()):
+                rows=[' & '.join(self.m(c) for c in row.find_all('mtd',recursive=False)) for row in children[1].find_all('mtr',recursive=False)]
+                return '\\begin{cases}'+' \\\\ '.join(rows)+'\\end{cases}'
+        decorated=self.decorated_phantom(n)
+        if decorated is not None:return decorated
+        if t=='mphantom':return '\\phantom{'+''.join(self.m(c) for c in n.children)+'}' if self.visible_phantom_owner(n) else ''
+        if t in ('annotation','annotation-xml'):return ''
+        cs=[self.m(c) for c in n.children];base=cs[0] if cs and cs[0] in (')',']','}') else '{'+(cs[0] if cs else '')+'}'
+        if t=='mfrac':
+            if re.fullmatch(r'0(?:\.0+)?(?:[A-Za-z%]+)?',n.get('linethickness','')):
+                return '\\genfrac{}{}{0pt}{}{'+cs[0]+'}{'+cs[1]+'}'
+            return '\\frac{'+cs[0]+'}{'+cs[1]+'}'
+        if t=='msup':return base+'^{'+cs[1]+'}'
+        if t=='msub':return base+'_{'+cs[1]+'}'
+        if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
+        if t in ('munder','mover'):
+            accent=n.find_all(recursive=False)[1]
+            if self.brace_glyph(accent,'⏟' if t=='munder' else '⏞'):
+                styling=[a for a in ('mathcolor','mathbackground') if accent.get(a) not in (None,'','transparent','inherit','none')]
+                if styling:
+                    self.errors.append('Unsupported styled MathML brace: '+', '.join(styling))
+                    return '{'+cs[0]+'}_{'+cs[1]+'}' if t=='munder' else '\\overset{'+cs[1]+'}{'+cs[0]+'}'
+        if t=='munder':
+            if cs[0]=='lim':return '\\lim_{'+cs[1]+'}'
+            if self.brace_glyph(n.find_all(recursive=False)[1],'⏟'):return '\\underbrace{'+cs[0]+'}'
+            return self.brace_label(n,cs,'munder','⏟','\\underbrace','_','\\underset') or base+'_{'+cs[1]+'}'
+        if t=='mover':
+            if self.brace_glyph(n.find_all(recursive=False)[1],'⏞'):return '\\overbrace{'+cs[0]+'}'
+            return self.brace_label(n,cs,'mover','⏞','\\overbrace','^','\\overset') or self.hat_accent(n,cs) or '\\overset{'+cs[1]+'}{'+cs[0]+'}'
+        if t=='munderover':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
+        if t=='msqrt':return '\\sqrt{'+''.join(cs)+'}'
+        if t=='mroot':return '\\sqrt['+cs[1]+']{'+cs[0]+'}'
+        if t=='mspace':return '\\,'
+        if t=='mtext':return '\\text{'+re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text())+'}'
+        if t=='mo':return OPS.get(n.get_text(),GREEK.get(n.get_text(),re.sub(r'[$%#{}]',lambda m:'\\'+m[0],n.get_text())))
+        if t=='mi':
+            if re.fullmatch('[A-Za-z]+',n.get_text()) and self.function_application(n):return '\\lim' if n.get_text()=='lim' else '\\operatorname{'+n.get_text()+'}'
+            return GREEK.get(n.get_text(),re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text()))
+        if t=='mtable':
+            rows=[[self.m(cell) for cell in row.find_all('mtd',recursive=False)] for row in n.find_all('mtr',recursive=False)]
+            try:
+                ruled=mathml_ruled_table(rows,n.attrs)
+            except ValueError as error:
+                self.errors.append(str(error));ruled=None
+            # A surrounding matrix fence supplies the role after the whole
+            # formula is available. Unfenced data tables retain their explicit
+            # column alignment instead of inheriting equation-pair spacing.
+            child=n;fenced=False
+            for _ in range(8):
+                parent=child.parent
+                if not isinstance(parent,Tag):break
+                if parent.name=='mfenced':fenced=True;break
+                siblings=parent.find_all(recursive=False)
+                index=next((i for i,x in enumerate(siblings) if x is child),-1)
+                if 0<index<len(siblings)-1 and siblings[index-1].name=='mo' and siblings[index+1].name=='mo' and siblings[index-1].get_text()+siblings[index+1].get_text() in ('[]','()','||','‖‖','{}'):
+                    fenced=True;break
+                if len(siblings)!=1:break
+                child=parent
+            unruled=mathml_unruled_table(rows,n.attrs) if not ruled and not fenced else None
+            return ruled or unruled or '\\begin{aligned}'+' \\\\ '.join(cs)+'\\end{aligned}'
+        if t in ('mtr','mlabeledtr'):return ' & '.join(cs)
+        if t=='menclose':
+            if 'strike' in n.get('notation',''):return '\\cancel{'+''.join(cs)+'}'
+            if 'box' in n.get('notation',''):return '\\boxed{'+''.join(cs)+'}'
+            self.errors.append('Unsupported enclosure: '+str(n));return ''.join(cs)
+        if t=='mfenced':return n.get('open','(')+n.get('separators',',').join(cs)+n.get('close',')')
+        if t=='semantics':return cs[0] if cs else ''
+        if t in ('math','mrow','mn','mtd','mstyle','mpadded','none'):return ''.join(cs)
+        self.errors.append('Unsupported MathML: '+t);return ''.join(cs)
+    def asset(self,src):
+        full=urljoin('https://mathacademy.com',src)
+        local=Path('/home/jake/Developer/MA/DATA/Lessons')/str(self.topic)/'Source/Images'/(Path(src).name+'.png')
+        if local.exists():full=str(local)
+        self.assets.append({'source_url':urljoin('https://mathacademy.com',src),'stored_path':full})
+        return full
+    def render(self,n,extract_fields=False):
+        if isinstance(n,NavigableString):return str(n)
+        if not isinstance(n,Tag):return ''
+        t=n.name.lower();classes=n.get('class',[])
+        if t in ('style','script','mjx-math','mjx-assistive-mml') or any(c in classes for c in ('studentAnswer','studentAnswerHeader','answerDetails','questionHeader')):return ''
+        if extract_fields and 'freeResponseTextbox' in classes:
+            key='field-'+str(len(self.fields)+1);value=self.text(n,False)
+            maths=n.find_all('math');kind='math' if len(maths)==1 and value.startswith('$') and value.endswith('$') else 'text'
+            if kind=='math':value=value[1:-1]
+            self.fields.append({'key':key,'type':'blank','choices':[{'type':kind,'value':value}] if value else [],'correct_value':value,'evidence':'Correct value displayed in historical free-response textbox'})
+            return '{{'+key+'}}'
+        if extract_fields and 'selectList' in classes:
+            if id(n) in self.control_fields:return '{{'+self.control_fields[id(n)]+'}}'
+            selected=n.find(class_=lambda c: c and ('selectListFrame' in c))
+            assert selected is not None and any(c in ('correctSelection','correctSelectionMultipleAttempts') for c in selected.get('class',[])), 'Unverified historical dropdown'
+            value=self.text(selected)
+            value=value[1:-1] if re.fullmatch(r'\$[^$]+\$',value,re.S) else value
+            choices=[]
+            for option in n.find_all(class_='selectListOption'):
+                text=self.text(option)
+                kind='math' if re.fullmatch(r'\$[^$]+\$',text,re.S) else 'text'
+                text=text[1:-1] if kind=='math' else text
+                if text not in [c['value'] for c in choices]:choices.append({'type':kind,'value':text})
+            key='field-'+str(len(self.fields)+1)
+            self.control_fields[id(n)]=key
+            marker=re.search(r'-(\d+)$',n.get('id',''))
+            assert marker, 'Source dropdown has no observed control index'
+            index=int(marker[1])
+            assert index not in self.control_indices, 'Duplicate source control index'
+            self.control_indices[index]=key
+            self.fields.append({'key':key,'type':'select','choices':choices,'correct_value':value,
+                'evidence':'Original historical dropdown options and correctSelection value'})
+            return '{{'+key+'}}'
+        if t in ('mjx-container','math'):
+            if t=='math':math=n
+            else:
+                # Option CHTML can contain MathML before the enclosing formula.
+                # Select only MathML owned by this container, outside dropdowns.
+                roots=n.find_all('mjx-assistive-mml',recursive=False)
+                candidates=[m for root in roots for m in root.find_all('math') if m.find_parent(class_='selectList') is n.find_parent(class_='selectList')]
+                assert len(candidates)==1, 'Ambiguous or absent owned MathML'
+                math=candidates[0]
+            if math is None:self.errors.append('Formula without MathML');return ''
+            # A fenced MathML table is a matrix, while an unfenced table may
+            # align equations. Normalize the complete expression after its
+            # fences are available so adjacent matrix entries stay distinct.
+            tex=normalize_source_tex(self.m(math));self.formulas.append(tex)
+            return '\n\n$$\n'+tex+'\n$$\n\n' if n.get('display') in ('true','block') else '$'+tex+'$'
+        if t=='img':return '![]('+self.asset(n.get('src',''))+')'
+        if t=='svg':self.errors.append('Inline SVG needs saved asset');return ''
+        if t=='br':return '\n'
+        if t in ('ul','ol') and 'questionStatements' in classes:
+            roman=['I','II','III','IV','V','VI']
+            return '\n\n'+'\n'.join(roman[i]+'. '+self.text(c,extract_fields) for i,c in enumerate(n.find_all('li',recursive=False)))+'\n\n'
+        if t=='table':return source_table_html(n,lambda node:self.render(node,extract_fields))
+        children=''.join(self.render(c,extract_fields) for c in n.children)
+        if t=='li':return '- '+children.strip()+'\n'
+        if t in ('b','strong'):return markdown_emphasis(children,'**')
+        if t in ('i','em'):return markdown_emphasis(children,'*')
+        if t in ('p','div','ul','ol'):return '\n\n'+children+'\n\n'
+        return children
+    def text(self,n,extract_fields=False):
+        previous=self.extracting_controls
+        if extract_fields:
+            # Register observed DOM indices before visiting outer assistive MML.
+            # render(select,True) requires historical correctSelection evidence.
+            for control in n.find_all(class_='selectList'):self.render(control,True)
+        self.extracting_controls=extract_fields
+        try:return normalize_math_boundaries(re.sub('\n{3,}','\n\n',self.render(n,extract_fields)).strip())
+        finally:self.extracting_controls=previous
+
+def prepare():
+    OUT.mkdir(parents=True,exist_ok=True)
+    audit=json.loads(AUDIT.read_text());matches={q['question_id']:q['associations'] for q in audit['questions']}
+    history=json.loads(HISTORY.read_text());records={};raw_cache={}
+    for task in history['tasks']:
+        for q in task['questions']:
+            mid=q['id'].replace('question-','q-')
+            if mid not in matches or mid in records:continue
+            r=Renderer(q['topic_id']);p=BeautifulSoup(q['problem_html'],'html.parser');s=BeautifulSoup(q['worked_solution_html'],'html.parser')
+            problem=r.text(p,True);prompt_formulas=r.formulas[:];r.formulas=[]
+            solution=r.text(s);solution_formulas=r.formulas[:]
+            paragraphs=[r.text(n) for n in s.find_all(['p','li'],recursive=True) if not n.find_parent(class_='studentAnswer')]
+            paragraphs=[x for x in paragraphs if x and x!='Your Answer:']
+            # The historical graphic frame sits outside questionText.
+            source_file=ROOT/task['source_file']
+            if source_file not in raw_cache:
+                raw=json.loads(source_file.read_text());raw_cache[source_file]={x['id']:x for x in raw['questions']}
+            raw=raw_cache[source_file][q['id']]
+            graphic=BeautifulSoup(raw.get('raw_html',''),'html.parser').find(class_='questionGraphicFrame')
+            if graphic:problem=r.text(graphic)+'\n\n'+problem
+            body=BeautifulSoup(raw.get('raw_html',''),'html.parser').find(class_='questionBody')
+            if body:problem+='\n\n'+r.text(body,True)
+            assoc=matches[mid]
+            assert len({a['database_kp_uuid'] for a in assoc})==1,(mid,assoc)
+            records[mid]={'math_academy_id':mid,'topic_id':q['topic_id'],'knowledge_point_id':assoc[0]['database_kp_uuid'],
+                'knowledge_point':assoc[0]['database_kp_title'],'problem':problem,'worked_solution':solution,
+                'difficulty':{'E':'easy','M':'moderate','H':'hard'}[q['difficulty']],
+                'answer_fields':r.fields,'extraction_errors':sorted(set(r.errors)),
+                'solution_formulas':solution_formulas,'prompt_formulas':prompt_formulas,'solution_paragraphs':paragraphs,
+                'assets':r.assets,'provenance':{'source_file':str(source_file.relative_to(ROOT)),'original_question_id':q['id'],
+                    'source_kind':'completed historical activity',
+                    'task_type':task['activity-type'].lower(), 'task_id':task['task-id'],
+                    'answer_derivation':'Displayed correct response or reconstructed from worked solution; no learner answer used'}}
+        print('Prepared',len(records),'questions',flush=True) if len(records)%100<8 else None
+    content=json.loads((ROOT/'reference/mathacademy/question-capture/13942892/content.json').read_text())
+    for q in content['questions']:
+        if q['math_academy_id'] in matches and q['math_academy_id'] not in records:records[q['math_academy_id']]={**q,'topic_id':3710,'extraction_errors':[],'source_kind':'automated lesson capture'}
+    assert set(records)==set(matches)
+    (OUT/'prepared.json').write_text(json.dumps({'questions':list(records.values())},indent=2)+'\n')
+    print('Saved',len(records),'questions to',OUT/'prepared.json')
+if __name__=='__main__':prepare()
