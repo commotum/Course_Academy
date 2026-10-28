@@ -1,7 +1,7 @@
 import collections,json,re,sys
 from pathlib import Path
-H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from migrate_learner_history import connection
-D=H/'reference-history';D.mkdir(exist_ok=True);db=connection();basis=db.basis();C=json.loads((H/'current.json').read_text());groups=[];answers=[];fields=[];questions=[]
+H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from migrate_learner_history import connection,loads
+D=H/'reference-history';D.mkdir(exist_ok=True);db=connection();basis=9912;C=json.loads((H/'current.json').read_text());groups=[];answers=[];fields=[];questions=[]
 ns={"__file__":str(H/"propose_format.py")};exec((H/'propose_format.py').read_text().split('P=[]')[0],ns);neutral=ns['neutral']
 for q in C['questions']:
  dup=collections.defaultdict(list)
@@ -24,13 +24,16 @@ queries={
  'historical-question-task-items':('[:find ?q ?item ?tx ?source ?added :in $ [?q ...] :where [?item :task-item/content ?q ?tx ?source ?added]]',[questions],True)}
 results={}
 for name,(query,inputs,history)in queries.items():
- if name in ('current-answer-ownership','historical-answer-ownership'):
+ if name not in ('current-responses','historical-responses'):
   # Scalar reverse-reference probes avoid a collection join's overly broad scan.
   results[name]=[]
-  for answer in answers:
-   scalar=query.replace('[:find ?answer ?field','[:find ?field').replace(':in $ [?answer ...]',':in $ ?answer')
-   for row in db.query(scalar,[answer],D,name+'-'+str(answer),basis,history=history):results[name].append([answer,*row])
- else:results[name]=db.query(query,inputs,D,name,basis,history=history)
+  variable='answer'if 'answer-ownership'in name else'field'if 'field-ownership'in name else'q'
+  entities=answers if variable=='answer'else fields if variable=='field'else questions
+  for entity in entities:
+   scalar=query.replace('[:find ?'+variable+' ','[:find ',1).replace(':in $ [?'+variable+' ...]',':in $ ?'+variable)
+   dest=D/(name+'-'+str(entity)+'.edn');rows=loads(dest.read_text())if dest.exists()else db.query(scalar,[entity],D,name+'-'+str(entity),basis,history=history)
+   for row in rows:results[name].append([entity,*row])
+ else:results[name]=loads((D/(name+'.edn')).read_text())if(D/(name+'.edn')).exists()else db.query(query,inputs,D,name,basis,history=history)
  print(name,len(results[name]),flush=True)
 for g in groups:
  ids=set(g['old_answers']);g['current_response_refs']=[r for r in results['current-responses']if r[0]in ids];g['retained_history_response_refs']=[r for r in results['historical-responses']if r[0]in ids];g['hold_detach']=bool(g['current_response_refs']or g['retained_history_response_refs']or not g['neutral_bank_equivalent']);g['response_evidence']='reference-history/report.json'

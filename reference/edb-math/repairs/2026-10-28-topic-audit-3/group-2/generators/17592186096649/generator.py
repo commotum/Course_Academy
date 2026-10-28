@@ -157,6 +157,10 @@ def batch(difficulty,count,seed):
  if count<0:raise ValueError('count must be nonnegative')
  return [generate(difficulty,seed+i) for i in range(count)]
 
+
+from source_notation import install as _install_source_notation, apply as _apply_source_notation
+_install_source_notation(globals())
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser(description=__doc__)
  ap.add_argument('--difficulty',choices=['easy','moderate','hard'],default='moderate')
@@ -165,4 +169,4 @@ if __name__=='__main__':
  args=ap.parse_args()
  try: records=batch(args.difficulty,args.count,args.seed)
  except ValueError as e:ap.error(str(e))
- print(json.dumps(records,indent=2))
+ print(json.dumps(_apply_source_notation(records),indent=2))
