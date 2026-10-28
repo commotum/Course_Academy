@@ -2566,10 +2566,11 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
         .collect::<Vec<_>>()
         .join(" ")
         .to_lowercase();
-    // Rendered e^... denotes Euler's constant. In this setting 6e-6 is an
+    // Rendered e^... and constant exponents such as x^{e} denote Euler's
+    // constant. In this setting 6e-6 is an
     // implicit product followed by subtraction, not a decimal exponent.
     static NATURAL_EXPONENTIAL: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
-        regex::Regex::new(r"(?:^|[^a-z\\])e(?:\s*\})?\s*\^").expect("valid natural exponential expression")
+        regex::Regex::new(r"(?:^|[^a-z\\])e(?:\s*\})?\s*\^|\^\s*\{?\s*e(?:$|[^a-z])").expect("valid natural exponential expression")
     });
     // Read only explicit declarations in prompt prose, never a comparison to
     // be decided, a worked solution, or the owning KP's title. Restrict each
@@ -4917,6 +4918,30 @@ pub(crate) mod tests {
         let context = comparison_context(prompt, &[]);
         assert!(!context.natural_exponential);
         assert_eq!(compare_math_in_context("1e-3", "0.001", prompt, context), Ok(true));
+    }
+
+    #[test]
+    fn euler_constant_exponents_disambiguate_exact_rate_answers() {
+        let mut s = fixture();
+        for prompt in [
+            r"Given $y=3{x}^{e}+\ln x$, find the instantaneous rate at $x=1$. Do not round the answer.",
+            r"Given $y=3x^e+\ln x$, find the instantaneous rate at $x=1$.",
+            r"Differentiate $3x^{ e }+\ln x$ and evaluate at $x=1$.",
+        ] {
+            let context = comparison_context(prompt, &[]);
+            assert!(context.natural_exponential, "{prompt}");
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+            s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("3e+1"));
+            for accepted in ["1+3e", "3*e+1", "3e+1", r"\frac{6e+2}{2}"] {
+                assert_eq!(grade_field(&s,100,200,accepted), Ok(true), "{prompt}: {accepted}");
+            }
+            for rejected in ["30", "3E+1", "3e", "3e-1", "1+3e^x"] {
+                assert_eq!(grade_field(&s,100,200,rejected), Ok(false), "{prompt}: {rejected}");
+            }
+        }
+        for prompt in ["Write 30 in scientific notation.", r"Given $x^{energy}$, simplify."] {
+            assert!(!comparison_context(prompt, &[]).natural_exponential);
+        }
     }
 
     #[test]

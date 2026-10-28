@@ -1502,6 +1502,30 @@ impl Algebra {
                 if let Some(angle) = pi_multiple(x) {
                     return self.special_trig(name, angle);
                 }
+                // Exact quarter-turn translations. Removing a pure pi/2
+                // summand terminates before recursing on the residual argument;
+                // this accepts equivalent reciprocal spellings such as
+                // cos(x-pi/2)/cos(x)^2 = sec(x)*tan(x). Domain guards from
+                // evaluating the original argument and denominator stay intact.
+                let pi_mono = BTreeMap::from([(Atom::Pi, 1)]);
+                if x.den == Poly::integer(1) && x.num.0.len() > 1
+                    && let Some(angle) = x.num.0.get(&pi_mono)
+                    && (angle * Q::from_integer(2.into())).is_integer()
+                {
+                    let mut residual = x.num.clone();
+                    residual.0.remove(&pi_mono);
+                    let residual = self.value(residual, Poly::integer(1))?;
+                    let sin = self.function("sin", &residual)?;
+                    let cos = self.function("cos", &residual)?;
+                    let shift_sin = self.special_trig("sin", angle.clone())?;
+                    let shift_cos = self.special_trig("cos", angle.clone())?;
+                    let (first, second) = if name == "sin" {
+                        (self.mul(&sin, &shift_cos)?, self.mul(&cos, &shift_sin)?)
+                    } else {
+                        (self.mul(&cos, &shift_cos)?, self.mul(&sin, &shift_sin)?.neg())
+                    };
+                    return self.add(&first, &second);
+                }
                 // Exact double-angle normalization for bounded even integer
                 // polynomial coefficients. Halving the whole argument preserves
                 // shifts and nonlinear terms; never halve only its leading term.
@@ -2653,6 +2677,33 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn quarter_turn_trig_translations_preserve_signs_and_domains() {
+        use super::{compare, Context};
+        let c = Context::default();
+        for (a, b) in [
+            ("cos(x-pi/2)", "sin(x)"),
+            ("sin(x+pi/2)", "cos(x)"),
+            ("sin(x-pi/2)", "-cos(x)"),
+            ("cos(x+pi)", "-cos(x)"),
+            ("cos(sin(x)-pi/2)", "sin(sin(x))"),
+            ("-2*cos(x-pi/2)/cos(x)^2", "-2*sec(x)*tan(x)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, c), Ok(true), "{b} vs {a}");
+        }
+        for (a, b) in [
+            ("cos(x-pi/2)", "-sin(x)"),
+            ("sin(x+pi/2)", "-cos(x)"),
+            ("cos(x+pi)", "cos(x)"),
+            ("-2*cos(x-pi/2)/cos(x)^2", "2*sec(x)*tan(x)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}");
+        }
+        assert_ne!(compare("cos(x-pi/2)/sin(x)", "1", c), Ok(true));
+        // A pi coefficient depending on x is not a constant translation.
+        assert_ne!(compare("cos(x-pi*x/2)", "sin(x)", c), Ok(true));
+    }
     #[test]
     fn even_trig_arguments_use_exact_double_angle_identities() {
         use super::{compare, Context};
