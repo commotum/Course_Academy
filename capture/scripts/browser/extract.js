@@ -381,13 +381,13 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
       case 'mspace': return '\\,';
       case 'mtext': return '\\text{' + literalDollar(n.textContent) + '}';
-      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalFence(literalDollar(n.textContent));
+      case 'mo': return n.textContent === '\u2061' ? '' : ops[n.textContent] || greek[n.textContent] || literalFence(literalDollar(n.textContent));
       case 'mi':
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
         if (/^[A-Za-z]+$/.test(n.textContent) &&
             functionApplication(n)) {
-          return '\\operatorname{' + n.textContent + '}';
+          return n.textContent === 'lim' ? '\\lim' : '\\operatorname{' + n.textContent + '}';
         }
         return greek[n.textContent] || literalDollar(n.textContent);
       case 'mtable': {

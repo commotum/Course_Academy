@@ -4,7 +4,7 @@ H=Path(__file__).resolve().parent
 # Preserve the original 57 source-format proposals separately before consolidation.
 if not(H/'format-proposals.json').exists():(H/'format-proposals.json').write_text((H/'proposals.json').read_text())
 p={}
-for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json','operator-proposals.json']:
+for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json','integral-display-proposals.json','operator-proposals.json']:
  for x in json.loads((H/filename).read_text()):
   k=x['entity'],x['attribute']
   if k in p and filename=='operator-proposals.json':
@@ -29,6 +29,7 @@ for q in questions:
   for a in f.get(':answer-field/choices',[]):entities[a[':db/id']]=a
 for x in p.values():
  if x['entity']in entities:entities[x['entity']][':'+x['attribute']]=x['after']
+for x in json.loads((H/'type-proposals.json').read_text()):entities[x['entity']][':answer/type']={':db/ident':':'+x['after']}
 keys=json.loads((H/'key-proposals.json').read_text())
 for x in keys:entities[x['entity']][':answer-field/correct']=copy.deepcopy(entities[x['after']])
 for x in json.loads((H/'new-blank-answer-proposals.json').read_text()):

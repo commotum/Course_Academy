@@ -1,0 +1,96 @@
+"""Publication checks for the three repaired sum-rule generators.
+
+This contract concerns the actual surviving batch, including after deduplication.
+It complements source review and independent algebra/grader verification.
+"""
+from fractions import Fraction as F
+from collections import Counter
+
+KPS={17592186184153,17592186184154,17592186184155}
+CONTRACT='integration-forward-v2'
+FAMILIES={
+ (17592186184153,'moderate'):{'constant-polynomial','constant-reciprocal','derivative-blank'},
+ (17592186184153,'hard'):{'quarter-power-blank'},
+ (17592186184154,'easy'):{'polynomial-pair'},
+ (17592186184154,'moderate'):{'radical-product','power-quotient','direct-quotient-blank'},
+ (17592186184155,'easy'):{'easy-power-three'},
+ (17592186184155,'moderate'):{'polynomial-three','expanded-square','square-root-three','root-cube-three'},
+ (17592186184155,'hard'):{'positive-fractional-three','negative-fractional-three'},
+}
+def clone_key(record):
+ m=record['generation'];return m['family'],tuple(sorted((str(abs(F(c))),str(F(p)))for c,p in m['input_terms']))
+def validate_delivery_batch(records,kp_id):
+ if int(kp_id)not in KPS or not records:return
+ groups={}
+ for r in records:
+  q=r['question'];m=r.get('generation',{})
+  if m.get('batch_contract')!=CONTRACT:raise ValueError('Integration generator requires the reviewed forward-generation batch contract')
+  difficulty=str(q[':question/difficulty']).rsplit('/',1)[-1];allowed=FAMILIES.get((int(kp_id),difficulty),set())
+  if m['family']not in allowed:raise ValueError('Unsupported integration family or difficulty')
+  terms=[(F(c),F(p))for c,p in m['input_terms']]
+  if len(terms)!=(3 if int(kp_id)==17592186184155 else 2)or any(not c or p==-1 for c,p in terms):raise ValueError('Integration scope requires nonzero elementary power terms')
+  powers=sorted(p for c,p in terms)
+  if int(kp_id)==17592186184153:
+   if difficulty=='hard':valid=powers[0]==F(1,4)and powers[1]in range(2,7)and all(abs(c)==1 for c,p in terms)
+   else:valid=sum(p==0 for c,p in terms)==1 and all((abs(c)<=6 if p==0 else abs(c)==1 and p in (*range(2,7),F(-3,2),F(-5)))for c,p in terms)
+  elif int(kp_id)==17592186184154:
+   if difficulty=='easy':valid=len(set(powers))==2 and all(p in (1,2,3)and 2<=abs(c)<=6 for c,p in terms)
+   elif m['family']=='radical-product':valid=powers==[F(1,2),F(3,2)]and all(abs(c)<=4 for c,p in terms)
+   elif m['family']=='power-quotient':valid=powers[0]in(-3,-2)and powers[1]in(2,3,4)and all(abs(c)<=6 for c,p in terms)
+   else:valid=powers==[-2,0]and all(abs(c)<=6 for c,p in terms)
+  elif difficulty=='easy':
+   valid=powers==[0,1,2] and all(c.denominator==1 and abs(c)<=3 for c,p in terms)
+  elif difficulty=='moderate':
+   profiles={'expanded-square':[0,2,4],'polynomial-three':[0,1,2],
+             'square-root-three':[0,F(1,2),2],'root-cube-three':[0,F(3,2),2]}
+   valid=powers==profiles[m['family']]
+   if m['family'] in ('square-root-three','root-cube-three'):
+    valid=valid and all(c.denominator==1 and abs(c)<=6 for c,p in terms)
+  else:
+   fractional=[p for c,p in terms if p.denominator>1];valid=len(fractional)==1 and fractional[0].denominator in(3,5,7)and (0<fractional[0]<1 if m['family']=='positive-fractional-three'else fractional[0]==F(-(fractional[0].denominator+1),fractional[0].denominator))and sum(p.denominator==1 and 1<=p<=5 for c,p in terms)==1 and sum(p in(-4,-3,-2)for c,p in terms)==1 and all(abs(c)<=6 for c,p in terms)
+  if not valid:raise ValueError('Integration question crosses its source-bounded KP or difficulty')
+  field=q[':question/answer-fields'][0];kind=str(field[':answer-field/type']).rsplit('/',1)[-1]
+  if kind=='radio':
+   expected=sorted(p+1 for c,p in terms);banks=m['bank_terms']
+   if len(banks)!=5 or any(sorted(F(p)for c,p in row)!=expected for row in banks):raise ValueError('All integration options must carry the same power pattern')
+   expected_signs=[1 if c/(p+1)>0 else -1 for c,p in terms]
+   if any([1 if F(c)>0 else -1 for c,p in row]!=expected_signs for row in banks):raise ValueError('All integration options must share the correct sign pattern')
+   for j,(c,p)in enumerate(terms):
+    if p==0 and any(F(row[j][0])!=c for row in banks):raise ValueError('Copied constants must not identify a unique answer')
+   correct=field[':answer-field/correct'];aid=str(correct.get(':answer/id'))if isinstance(correct,dict)else str(correct[1]);values=field[':answer-field/choices']
+   if len(values)!=5 or aid not in {str(a[':answer/id'])for a in values}:raise ValueError('Invalid integration answer bank')
+   if '{{'in q[':question/problem']:raise ValueError('Radio integration prompts must not contain blank markers')
+  groups.setdefault(difficulty,[]).append(r)
+ for difficulty,rows in groups.items():
+  for end in range(len(rows)):
+   recent=rows[max(0,end-4):end+1]
+   if len({clone_key(r)for r in recent})!=len(recent):raise ValueError('Repeated integration structure or sign-only clone in the delivered batch')
+  need=min(len(FAMILIES[(int(kp_id),difficulty)]),len(rows))
+  if len({r['generation']['family']for r in rows})<need:raise ValueError('Delivered integration batch lost required family coverage')
+  # Same powers deliberately tie every min/max-degree strategy in every radio.
+  # Coverage is required in the real saved batch, not merely a large test sample.
+
+def bank_cues(r):
+ """Bank-only actions selecting the key uniquely; no target inspection.
+
+ Used across repeated visible families, never as a single-item quota.
+ """
+ q=r['question'];m=r['generation'];cs=q[':question/answer-fields'][0][':answer-field/choices'];aid=q[':question/answer-fields'][0][':answer-field/correct'][1]
+ key=next(i for i,a in enumerate(cs)if a[':answer/id']==aid)
+ banks=[[(F(c),F(p))for c,p in row]for row in m['bank_terms']]
+ powers=sorted(p for c,p in banks[0]);co=[[dict((p,c)for c,p in row)[p]for p in powers]for row in banks]
+ modes=[]
+ for j in range(len(powers)):
+  counts=Counter(row[j]for row in co);n=max(counts.values());modes.append({c for c,count in counts.items()if count==n})
+ features={'length':[len(a[':answer/value'])for a in cs], 'fractions':[a[':answer/value'].count('\\frac')for a in cs], 'negative_terms':[a[':answer/value'].count('-')for a in cs], 'value_at_one':[sum(c for c,p in row)for row in banks], 'modal_score':[sum(c in modes[j]for j,c in enumerate(row))for row in co]}
+ features.update({f'coefficient_{j}':[row[j]for row in co]for j in range(len(powers))})
+ actions={f'position:{key}'}
+ for name,values in features.items():
+  ranks=sorted(set(values))
+  for rank,value in enumerate(ranks):
+   if [i for i,z in enumerate(values)if z==value]==[key]:actions.add(f'{name}:rank{rank}')
+ return actions
+def repeated_bank_shortcuts(rows):
+ groups={}
+ for r in rows:groups.setdefault(r['generation']['family'],[]).append(r)
+ return {f:set.intersection(*(bank_cues(r)for r in rs)) for f,rs in groups.items() if len(rs)>=2 and set.intersection(*(bank_cues(r)for r in rs))}
