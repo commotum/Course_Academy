@@ -20,7 +20,7 @@ expected_fields={(q[':db/id'],f[':db/id'])for q in original.values()for f in q.g
 expected_banks={(f,a[':db/id'])for f,obj in fields.items()for a in obj.get(':answer-field/choices',[])}
 expected_keys={f:obj[':answer-field/correct'][':db/id']for f,obj in fields.items()if ':answer-field/correct'in obj}
 plans=[];created=[];reports=[]
-for name in ['q334121','commit-group-1','commit-group-2','commit-group-3']:
+for name in ['q334121','commit-group-1','commit-group-2','commit-group-3','supplemental-memberships','supplemental-banks']:
  d=H/name;report=json.loads((d/'verification.json').read_text());assert report['committed'];reports.append(report)
  plan=json.loads((d/'plan.json').read_text());plans.append(plan);created.extend(report.get('new_answers',[]))
  for p in plan.get('cas',[]):
@@ -67,7 +67,7 @@ def transform(v):
  for (eid,a),removed in detaches.items():
   if eid==e and a in v:v[a]=[x for x in v[a]if x[':db/id']not in removed]
  if e in new_by_field:
-  p=new_by_field[e];a={':db/id':p['entity'],':answer/id':p['answer_uuid'],':answer/type':{':db/ident':p['type']},':answer/value':p['value']};v[':answer-field/choices']=[a];v[':answer-field/correct']={':db/id':p['entity']}
+  p=new_by_field[e];a={':db/id':p['entity'],':answer/id':p['answer_uuid'],':answer/type':{':db/ident':p['type']},':answer/value':p['value']};v[':answer-field/choices']=v.get(':answer-field/choices',[])+[a];v[':answer-field/correct']={':db/id':p['entity']}
  return {k:transform(x)for k,x in v.items()}
 model=transform(list(original.values()));missing=[];native=[];render=[]
 for q in model:

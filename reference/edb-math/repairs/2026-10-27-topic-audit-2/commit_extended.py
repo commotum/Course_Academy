@@ -34,11 +34,11 @@ for attempt in range(4):
   for p in detach:
    actual=values[p['entity'],p['attribute']];assert p['value']in actual,p
    if 'expected_before'in p:assert set(actual)==set(p['expected_before']),p
-  blank_type=db.query('[:find ?e :where [?e :db/ident :answer-field.type/blank]]',[],D,'blank-type-'+str(basis),basis)[0][0] if new else None
+  field_types={str(ident):eid for eid,ident in db.query('[:find ?e ?name :in $ [?name ...] :where [?e :db/ident ?name]]',[[kw(p.get('field_type',':answer-field.type/blank'))for p in new]],D,'new-answer-field-types-'+str(basis),basis)}if new else{}
   for p in new:
-   assert not values[p['field'],'answer-field/choices']and not values[p['field'],'answer-field/correct'],p
+   assert set(values[p['field'],'answer-field/choices'])==set(p.get('expected_choices',[]))and not values[p['field'],'answer-field/correct'],p
    assert str(values[p['field'],'answer-field/id'][0])==p['field_uuid'],p
-   assert values[p['field'],'answer-field/type']==[blank_type],p
+   assert values[p['field'],'answer-field/type']==[field_types[p.get('field_type',':answer-field.type/blank')]],p
    duplicates=db.query('[:find ?a :in $ ?id :where [?a :answer/id ?id]]',[uuid.UUID(p['answer_uuid'])],D,'uuid-absence-'+str(p['field'])+'-'+str(basis),basis);assert not duplicates,p
   binary=preview_executable(Config(),threading.Event());pv=subprocess.run([str(binary),'with','--database','math','--file',str(file),'--source',':agent/codex'],env=db.env,capture_output=True,text=True);(D/'preview.edn').write_text(pv.stdout);(D/'preview.stderr').write_text(pv.stderr);pv.check_returncode();pr=loads(pv.stdout);assert pr.get(':edb/speculative')is True
   if pr[':edb/db-before-t']!=basis:continue
@@ -65,7 +65,8 @@ for p in detach:
 for p in new:
  eid=resolved[p['tempid']];p['entity']=eid
  for a,v in [('answer/id',uuid.UUID(p['answer_uuid'])),('answer/type',ids[p['type'].lstrip(':')]),('answer/value',p['value'])]:expected[eid,ids[a],v,True]+=1;want[eid,a]={v}
- for a in ['answer-field/choices','answer-field/correct']:expected[p['field'],ids[a],eid,True]+=1;want[p['field'],a]={eid}
+ for a in ['answer-field/choices','answer-field/correct']:
+  expected[p['field'],ids[a],eid,True]+=1;want[p['field'],a]=old[p['field'],a]|{eid}
 actual=collections.Counter((d[0],d[1],d[2],d[5])for d in r[':edb/tx-data']if d[1]!=ids['db/txInstant']);assert actual==expected,(actual-expected,expected-actual);assert all(d[4]==17592186576411 for d in r[':edb/tx-data'])
 after=rows_at(sorted(want),t,'after');got=collections.defaultdict(set)
 for e,a,v in after:got[e,str(a).lstrip(':')].add(v)
