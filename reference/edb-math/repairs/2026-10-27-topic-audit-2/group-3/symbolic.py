@@ -3,8 +3,8 @@ import re,sys
 import sympy as sp
 sys.path.insert(0,'scripts')
 from question_capture.math_notation import Parser,tokens
-FN={'sin':sp.sin,'cos':sp.cos,'tan':sp.tan,'sec':sp.sec,'csc':sp.csc,'cot':sp.cot,'sinh':sp.sinh,'cosh':sp.cosh,'tanh':sp.tanh,'ln':sp.log,'log':sp.log,'exp':sp.exp,'arcsin':sp.asin,'arccos':sp.acos,'arctan':sp.atan,'arcsec':sp.asec,'arccsc':sp.acsc}
-SYMS={c:sp.Symbol(c,real=True)for c in 'xytuvzabcdekmnPQTVWYZS'};SYMS.update({'C':sp.Symbol('C',real=True),'e':sp.E,'pi':sp.pi})
+FN={'sin':sp.sin,'cos':sp.cos,'tan':sp.tan,'sec':sp.sec,'csc':sp.csc,'cot':sp.cot,'sinh':sp.sinh,'cosh':sp.cosh,'tanh':sp.tanh,'ln':sp.log,'log':sp.log,'exp':sp.exp,'arcsin':sp.asin,'arccos':sp.acos,'arctan':sp.atan,'arcsec':sp.asec,'arccsc':sp.acsc,'arccot':sp.acot}
+SYMS={c:sp.Symbol(c,real=True)for c in 'xytuvzabcdekmnPQTVWYZS'};SYMS.update({c:sp.Symbol(c,real=True)for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'if c not in SYMS});SYMS.update({'C':sp.Symbol('C',real=True),'e':sp.E,'pi':sp.pi})
 class Unsupported(ValueError):pass
 class Evaluate:
  def __init__(self,nodes):self.ns=list(nodes);self.i=0
@@ -51,6 +51,13 @@ class Evaluate:
   if c=='|':return self.absolute()
   n=self.consume()
   if n is None:raise Unsupported('missing operand')
+  if n[0]=='operatorname':
+   name=''.join(c[1]for c in n[1]if c[0]=='char')
+   if name in FN:return self.function(name)
+   raise Unsupported('operatorname '+name)
+  if n[0]=='styled':
+   name=''.join(c[1]for c in n[2]if c[0]=='char')
+   if name in FN:return self.function(name)
   if n[0]=='operator':
    if n[1]not in FN:raise Unsupported('operator '+n[1])
    return self.function(n[1])
@@ -93,6 +100,7 @@ def parse(tex):
  tex=tex.strip().strip('$').strip().rstrip('.,');tex=re.sub(r'\\(?:color)\{[^{}]+\}','',tex);tex=tex.replace('⁡','').replace('−','-')
  tex=re.sub(r'\\operatorname\{(arcsec|arccsc|arcsin|arccos|arctan|sin|cos|tan|ln|log|exp)\}',lambda m:'\\'+m[1],tex)
  tex=re.sub(r'\\mathrm\{e\}', 'e',tex)
+ tex=re.sub(r'(?<![A-Za-z\\])(arcsec|arccsc|arccot|arcsin|arccos|arctan)(?=[A-Za-z(])',lambda m:r'\operatorname{'+m[1]+'}',tex)
  return evaluate(Parser(tokens(tex)).sequence())
 if __name__=='__main__':
  tests={r'2xe^{x^2}':2*SYMS['x']*sp.exp(SYMS['x']**2),r'\frac{1}{x^2+1}':1/(SYMS['x']**2+1),r'\ln|x|':sp.log(sp.Abs(SYMS['x'])),r'{\sin}^{2}(x)':sp.sin(SYMS['x'])**2,r'\arctan(x/2)':sp.atan(SYMS['x']/2),r'Ce^{-2t}':SYMS['C']*sp.exp(-2*SYMS['t']),r'5^{x^2}':5**SYMS['x']**2}
