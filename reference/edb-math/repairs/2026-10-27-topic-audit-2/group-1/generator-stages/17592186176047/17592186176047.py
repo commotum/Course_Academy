@@ -31,7 +31,7 @@ if __name__ == "__main__" and not _ca_os.environ.get("_CA_SOURCE_POLICY_CHILD"):
     _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186176047-source-policy.json'))
     raise SystemExit(0)
 
-import argparse, hashlib, itertools, json, random, re, uuid
+import argparse, hashlib, itertools, json, random, re, uuid, os, shutil
 from pathlib import Path
 import sympy as sp
 from math_format import normalize_prose,normalize_tex
@@ -39,13 +39,24 @@ from math_format import normalize_prose,normalize_tex
 KP_ID=17592186176047
 KP_UUID='542df339-5020-5680-a39c-a1ae161083e7'
 TITLE='Describing Properties of the Cosine Function'
-VERSION='cosine-properties-checkbox-finite-2-format-audit-9122-v1'
+VERSION='cosine-properties-checkbox-finite-2-format-assets-9122-v2'
 HERE=Path(__file__).resolve().with_suffix('')
 RECIPES=json.loads((HERE/'recipes.json').read_text())
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 COS='images/88/88378ece5b1721cdc533d07d69c004901539c7f8fda9a5a3e5c5648ed32905c5.png'
 SIN='images/96/96bd60d23237f836b77a26c5c0461a5c2a474554f0a14266b53fc5e7d999f1b7.png'
-PLOT=str(HERE/'assets/cosine.png')
+def plot_asset(name):
+ source=HERE/'assets'/name;output=os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR')
+ if not output:return str(source)
+ target=Path(output)/(hashlib.sha256(source.read_bytes()).hexdigest()+source.suffix);target.parent.mkdir(parents=True,exist_ok=True)
+ if not target.exists():shutil.copyfile(source,target)
+ return str(target)
+PLOT=plot_asset('cosine.png')
+EXTREMA_PLOT=plot_asset('cosine-extrema.png')
+def asset_identity(text):
+ if text is None:return None
+ for name,path in [('cosine.png',PLOT),('cosine-extrema.png',EXTREMA_PLOT)]:text=text.replace(path,'asset:'+hashlib.sha256((HERE/'assets'/name).read_bytes()).hexdigest())
+ return text
 ROMAN=('I','II','III')
 TEMPLATES={**{k:{'level':'moderate','kind':'blank' if k=='q-167631' else 'radio','origin':'observed'} for k in RECIPES},
  'local_facts':{'level':'easy','kind':'radio','origin':'authored'},
@@ -260,7 +271,7 @@ def _generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,
  bits=tuple(map(truth,claims))
  if solution is None:
   solution="Let's plot the graph of $y=\\cos x$.\n\n![]("+PLOT+")\n\nLet's go through each statement.\n\n"+'\n\n'.join('- Statement '+r+' is '+('true' if t else 'false')+'. '+explanation(c) for r,t,c in zip(ROMAN,bits,claims))
- if not raw:solution=solution.replace(COS,PLOT).replace('images/9c/9c77bec4ebb04668fbff5176418ed9c09143a8660879fdf523a158c5f109006c.png',str(HERE/'assets/cosine-extrema.png'))
+ if not raw:solution=solution.replace(COS,PLOT).replace('images/9c/9c77bec4ebb04668fbff5176418ed9c09143a8660879fdf523a158c5f109006c.png',EXTREMA_PLOT)
  fields=[]
  if kind=='blank':
   # Preserve observed answer whitespace in the explicit replay profile.
@@ -277,7 +288,7 @@ def _generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,
   if len(bank)!=5 or len(set(bank))!=5 or bank.count(correct)!=1:raise ValueError('Reject whole instance: incomplete/ambiguous bank')
   fields=[('selection','text',bank,correct)]
  fingerprint=digest({'function':p.get('function','cos') if raw else 'cos','claims':sorted([semantics(c) for c in claims],key=digest),'facts':('domain','range','period') if kind=='blank' else None})
- content=digest({'version':VERSION,'prompt':prompt,'solution':solution,'fields':[(key,typ,sorted(vals),cor) for key,typ,vals,cor in fields]})
+ content=digest({'version':VERSION,'prompt':asset_identity(prompt),'solution':asset_identity(solution),'fields':[(key,typ,sorted(vals),cor) for key,typ,vals,cor in fields]})
  qid=str(uuid.uuid5(uuid.UUID(KP_UUID),content)); out=[]
  for key,typ,values,correct in fields:
   fid=str(uuid.uuid5(uuid.UUID(qid),key));answers=[];cid=None
@@ -326,7 +337,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   typ='blank'
  q[':question/problem']=normalize_prose(q[':question/problem']);q[':question/worked-solution']=normalize_prose(q[':question/worked-solution'])
  fields=[(key,atype,[normalize_tex(v)for v in bank]if atype=='math'else bank,normalize_tex(correct)if atype=='math'else correct)for key,atype,bank,correct in fields]
- content=digest({'version':VERSION,'prompt':q[':question/problem'],'solution':q[':question/worked-solution'],'fields':fields})
+ content=digest({'version':VERSION,'prompt':asset_identity(q[':question/problem']),'solution':asset_identity(q[':question/worked-solution']),'fields':fields})
  qid=str(uuid.uuid5(uuid.UUID(KP_UUID),content));q[':question/id']=qid;out=[]
  for key,atype,bank,correct in fields:
   fid=str(uuid.uuid5(uuid.UUID(qid),key))

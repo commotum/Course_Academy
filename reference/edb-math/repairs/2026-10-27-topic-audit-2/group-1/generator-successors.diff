@@ -1,0 +1,362 @@
+--- /media/jake/SSD/EDB/math/generators/13/135e110745a88e6eaa04d4ac3b142360862edbb14b74574c8e3d2b833f383386/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186059748/generator.py
+@@ -18,7 +18,7 @@
+ KP_ID = 17592186059748
+ KP_UUID = '2129aee3-923d-57de-8bdc-983ffdf787f1'
+ TITLE = 'Calculating the Determinant of a 2x2 Matrix With Integer Entries'
+-VERSION = 'integer-determinant-v5'
++VERSION='integer-determinant-v5-format-audit-9122-v1'
+ PROVENANCE = {'database': 'math', 'basis': 4643, 'lineage': '01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+ TEMPLATES = {
+     'named_dot': {'levels': ['easy','moderate'], 'field_type': 'radio', 'sources': ['q-1079']},
+--- /media/jake/SSD/EDB/math/generators/f5/f5ae4d79012345368a566251fb86b8e17a5191b6c19ef3c5711f0010e3366664/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186059750/generator.py
+@@ -15,7 +15,7 @@
+ KP_ID=17592186059750
+ KP_UUID='4ccdde46-a4ab-517e-910b-571a3a166b6a'
+ TITLE='Solving for an Unknown in an Expression Involving the Determinant of a 2x2 Matrix'
+-VERSION='determinant-unknown-v2'
++VERSION='determinant-unknown-v2-format-audit-9122-v1'
+ DIR=Path(__file__).resolve().parent
+ SOURCE=json.loads((DIR/'source-data.json').read_text())
+ QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['material']['kp'][':knowledge-point/questions']}
+--- /media/jake/SSD/EDB/math/generators/ff/ff861c628fcfd0c901b4749dbd2cb2b07e8fcc9941853a3147857a457eaaef00/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186064167/generator.py
+@@ -14,7 +14,7 @@
+ KP_ID=17592186064167
+ KP_UUID='f2a4550c-7ed7-58aa-8928-23dd1cfd0cd7'
+ TITLE='Finding the Antiderivative of a Monomial'
+-VERSION='monomial-power-rule-portable-v5'
++VERSION='monomial-power-rule-portable-v5-format-audit-9122-v1'
+ ROOT=Path(__file__).resolve().parent
+ SOURCE=json.loads((ROOT/'source-cases.json').read_text())
+ X,C=sp.symbols('x C',real=True)
+@@ -152,6 +152,7 @@
+ 
+ 
+ # Public portable production interface. No incomplete raw record can enter a batch.
++from integral_display import display_integral
+ from math_format import normalize_prose, normalize_tex, validate_generated_record
+ SUPPORTED_LEVELS=('easy','moderate','hard')
+ CASES=('lower_lower','lower_upper','upper_lower','upper_upper')
+@@ -213,7 +214,7 @@
+     if any(family_equivalent(a,b) for i,(_,a,_) in enumerate(vals) for _,b,_ in vals[:i]):
+         raise ValueError('Ambiguous complete bank')
+     problem=prompt(n,template) if n else prompt(0,'constant') if template=='integral_thin' else prompt(0,'function').replace(power(0),'1')
+-    p=normalize_prose(problem);sol=normalize_prose(production_solution(n,template))
++    p=display_integral(normalize_prose(problem));sol=normalize_prose(production_solution(n,template))
+     vals=[(normalize_tex(t),a,r) for t,a,r in vals]
+     cid=digest({'version':VERSION,'problem':p,'solution':sol,'bank':sorted(t for t,_,_ in vals)})
+     fid=uid(cid+'/field')
+@@ -280,7 +281,7 @@
+         problem="Given $f(x)="+power(n,False)+"$ and $F'(x)=f(x)$, a student proposes\n\n$$\nG(x)="+proposed_tex+"+C.\n$$\n\nDifferentiate the proposed expression, then give the correct general antiderivative of $f$. Use $C$ for the arbitrary constant.\n\n1. $G'(x)=$ {{derivative}}.\n2. $F(x)=$ {{antiderivative}}."
+         sol="Differentiate the proposed expression:\n\n"+aligned([r"G'(x)&=\frac{\mathrm{d}}{\mathrm{d}x}\left("+proposed_tex+r"+C\right)",r"&="+sp.latex(coefficient)+r"\cdot "+str(exponent)+power(exponent-1,False)+r"+0",r"&="+derivative_tex+"."])+"\n\n"+explanation+"\n\n"+sol
+         fields=[('derivative',derivative_tex),('antiderivative',key)]
+-    problem=normalize_prose(problem);sol=normalize_prose(sol)
++    problem=display_integral(normalize_prose(problem));sol=normalize_prose(sol)
+     fields=[(k,normalize_tex(t)) for k,t in fields]
+     cid=digest({'version':VERSION,'level':level,'problem':problem,'solution':sol,'fields':fields})
+     answer_fields=[]
+--- /media/jake/SSD/EDB/math/generators/cc/ccabf527a47dc87f57f0b07b7998169ba95fb26558321e0cc7b4ea6087a35849/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186064168/generator.py
+@@ -18,12 +18,13 @@
+ import argparse, copy, hashlib, json, math, random, re, uuid
+ from pathlib import Path
+ import sympy as sp
++from integral_display import display_integral
+ from math_format import normalize_prose, normalize_tex, checked_math_content
+ 
+ KP_ID=17592186064168
+ KP_UUID='85af4ca3-5e66-522a-9e5a-6efb1c7114ba'
+ TITLE='Finding the Antiderivative of a Radical Function'
+-VERSION='radical-antiderivative-v3'
++VERSION='radical-antiderivative-v3-format-audit-9122-v1'
+ ROOT=Path(__file__).resolve().parent
+ SNAPSHOT=json.loads((ROOT/'source-data.json').read_text())
+ SOURCES={q[':question/math-academy-id']:q for q in SNAPSHOT['material']['kp'][':knowledge-point/questions']}
+@@ -359,7 +360,7 @@
+     # Integral prompt index must agree with its exponent when d is not two.
+     if template=='integral_radio' and d!=2:
+         text=rf'$\int {r}\,\text{{d}}x=$'+'\n\nWork on $x>0$.'
+-    q={':question/problem':normalize_prose(text),
++    q={':question/problem':display_integral(normalize_prose(text)),
+        ':question/worked-solution':normalize_prose(solution(p,d,kind,r)),
+        ':question/difficulty':':question.difficulty/'+level}
+     values=[(recipe,normalize_tex(value)) for recipe,value in values]
+--- /media/jake/SSD/EDB/math/generators/75/7535bd03f0d85c513d785275ce623837c352b83de814e8e1744b3c82b4a7279b/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186064169/generator.py
+@@ -7,6 +7,7 @@
+ """
+ from __future__ import annotations
+ import argparse, copy, hashlib, json, math, random, uuid
++from integral_display import display_integral
+ from math_format import checked_math_content, normalize_prose, normalize_tex
+ from pathlib import Path
+ import sympy as sp
+@@ -14,7 +15,7 @@
+ KP_ID=17592186064169
+ KP_UUID='3174cae9-484e-5ca3-8e5c-3c9cddc86145'
+ TITLE='Finding the Antiderivative of a Reciprocal Function'
+-VERSION='reciprocal-power-v2'
++VERSION='reciprocal-power-v2-format-audit-9122-v1'
+ X=sp.Symbol('x', positive=True)
+ C=sp.Symbol('C', real=True)
+ PROVENANCE={'database':'math','basis':4609,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+@@ -174,6 +175,7 @@
+  def render(b,e):
+   return normalize_tex(reciprocal(b,e,True) if use_reciprocal and e<0 else term(b,e,True))
+  rendered=[render(b,e) for b,e in pairs]
++ text=display_integral(text)
+  identity=slug({'version':VERSION,'prompt':text,'solution':worked,'bank':sorted(rendered),'difficulty':level})
+  fid=ident(identity+'/selection')
+  answers=[{':answer/id':ident(fid+'/'+v),':answer/type':':answer.type/math',':answer/value':v} for v in rendered]
+--- /media/jake/SSD/EDB/math/generators/b7/b7d421723f03b6274183d19c876f284452599df4bdd2b1c8e835514999ea32cc/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186096617/generator.py
+@@ -19,7 +19,7 @@
+ KP_ID=17592186096617
+ KP_UUID='b194bf2f-feaa-5656-a3ee-0ff466a39e77'
+ TITLE='Differentiating a Product Containing a Trigonometric Function'
+-VERSION='product-trig-package-v4'
++VERSION='product-trig-package-v4-format-audit-9122-v1'
+ CAPTURE=json.loads(Path(__file__).with_name('source-data.json').read_text())
+ QUESTIONS={q[':question/math-academy-id']:q for q in CAPTURE['record'][':knowledge-point/questions']}
+ SOURCES=tuple(QUESTIONS)
+--- /media/jake/SSD/EDB/math/generators/ad/ad85641fc8ae4d1d3139254582d530b0f3b00cfecf8dc8e844284e477c8f2207/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186096618/generator.py
+@@ -14,7 +14,7 @@
+ KP_ID=17592186096618
+ KP_UUID='f15a60dd-f6a7-577d-bdbc-148032de94c8'
+ TITLE='Differentiating a Product Containing an Exponential or Logarithmic Function'
+-VERSION='product-exp-log-3'
++VERSION='product-exp-log-3-format-audit-9122-v1'
+ SOURCE={'database':'math','basis':3950,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+ # Shared helpers and immutable observed template specifications.
+ TEMPLATES={
+--- /media/jake/SSD/EDB/math/generators/13/13c54807bf3dfb75d45e31646d9dc7edce2d6438af2e14d9bbf1d6786be63913/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186096619/generator.py
+@@ -19,7 +19,7 @@
+ HERE=Path(__file__).resolve().parent
+ RAW=json.loads((HERE/'source.json').read_text())
+ KP=RAW['material']['kp']; QUESTIONS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+-VERSION='product-slope-3'
++VERSION='product-slope-3-format-audit-9122-v1'
+ ID=17592186096619
+ TEMPLATES={
+  'q-48391':('moderate','exp_linear','radio',dict(a=2,b=1,t='0')),
+--- /home/jake/Developer/Course_Academy/generate/scratch/17592186176047.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186176047/17592186176047.py
+@@ -31,20 +31,32 @@
+     _ca_source_cli(__file__,_ca_Path(__file__).with_name('17592186176047-source-policy.json'))
+     raise SystemExit(0)
+ 
+-import argparse, hashlib, itertools, json, random, re, uuid
++import argparse, hashlib, itertools, json, random, re, uuid, os, shutil
+ from pathlib import Path
+ import sympy as sp
++from math_format import normalize_prose,normalize_tex
+ 
+ KP_ID=17592186176047
+ KP_UUID='542df339-5020-5680-a39c-a1ae161083e7'
+ TITLE='Describing Properties of the Cosine Function'
+-VERSION='cosine-properties-checkbox-finite-2'
++VERSION='cosine-properties-checkbox-finite-2-format-assets-9122-v2'
+ HERE=Path(__file__).resolve().with_suffix('')
+ RECIPES=json.loads((HERE/'recipes.json').read_text())
+ SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+ COS='images/88/88378ece5b1721cdc533d07d69c004901539c7f8fda9a5a3e5c5648ed32905c5.png'
+ SIN='images/96/96bd60d23237f836b77a26c5c0461a5c2a474554f0a14266b53fc5e7d999f1b7.png'
+-PLOT=str(HERE/'assets/cosine.png')
++def plot_asset(name):
++ source=HERE/'assets'/name;output=os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR')
++ if not output:return str(source)
++ target=Path(output)/(hashlib.sha256(source.read_bytes()).hexdigest()+source.suffix);target.parent.mkdir(parents=True,exist_ok=True)
++ if not target.exists():shutil.copyfile(source,target)
++ return str(target)
++PLOT=plot_asset('cosine.png')
++EXTREMA_PLOT=plot_asset('cosine-extrema.png')
++def asset_identity(text):
++ if text is None:return None
++ for name,path in [('cosine.png',PLOT),('cosine-extrema.png',EXTREMA_PLOT)]:text=text.replace(path,'asset:'+hashlib.sha256((HERE/'assets'/name).read_bytes()).hexdigest())
++ return text
+ ROMAN=('I','II','III')
+ TEMPLATES={**{k:{'level':'moderate','kind':'blank' if k=='q-167631' else 'radio','origin':'observed'} for k in RECIPES},
+  'local_facts':{'level':'easy','kind':'radio','origin':'authored'},
+@@ -259,7 +271,7 @@
+  bits=tuple(map(truth,claims))
+  if solution is None:
+   solution="Let's plot the graph of $y=\\cos x$.\n\n![]("+PLOT+")\n\nLet's go through each statement.\n\n"+'\n\n'.join('- Statement '+r+' is '+('true' if t else 'false')+'. '+explanation(c) for r,t,c in zip(ROMAN,bits,claims))
+- if not raw:solution=solution.replace(COS,PLOT).replace('images/9c/9c77bec4ebb04668fbff5176418ed9c09143a8660879fdf523a158c5f109006c.png',str(HERE/'assets/cosine-extrema.png'))
++ if not raw:solution=solution.replace(COS,PLOT).replace('images/9c/9c77bec4ebb04668fbff5176418ed9c09143a8660879fdf523a158c5f109006c.png',EXTREMA_PLOT)
+  fields=[]
+  if kind=='blank':
+   # Preserve observed answer whitespace in the explicit replay profile.
+@@ -276,7 +288,7 @@
+   if len(bank)!=5 or len(set(bank))!=5 or bank.count(correct)!=1:raise ValueError('Reject whole instance: incomplete/ambiguous bank')
+   fields=[('selection','text',bank,correct)]
+  fingerprint=digest({'function':p.get('function','cos') if raw else 'cos','claims':sorted([semantics(c) for c in claims],key=digest),'facts':('domain','range','period') if kind=='blank' else None})
+- content=digest({'version':VERSION,'prompt':prompt,'solution':solution,'fields':[(key,typ,sorted(vals),cor) for key,typ,vals,cor in fields]})
++ content=digest({'version':VERSION,'prompt':asset_identity(prompt),'solution':asset_identity(solution),'fields':[(key,typ,sorted(vals),cor) for key,typ,vals,cor in fields]})
+  qid=str(uuid.uuid5(uuid.UUID(KP_UUID),content)); out=[]
+  for key,typ,values,correct in fields:
+   fid=str(uuid.uuid5(uuid.UUID(qid),key));answers=[];cid=None
+@@ -323,7 +335,9 @@
+  else:
+   fields=[(f[':answer-field/key'],'math',[a[':answer/value'] for a in f[':answer-field/choices']],next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])) for f in q[':question/answer-fields']]
+   typ='blank'
+- content=digest({'version':VERSION,'prompt':q[':question/problem'],'solution':q[':question/worked-solution'],'fields':fields})
++ q[':question/problem']=normalize_prose(q[':question/problem']);q[':question/worked-solution']=normalize_prose(q[':question/worked-solution'])
++ fields=[(key,atype,[normalize_tex(v)for v in bank]if atype=='math'else bank,normalize_tex(correct)if atype=='math'else correct)for key,atype,bank,correct in fields]
++ content=digest({'version':VERSION,'prompt':asset_identity(q[':question/problem']),'solution':asset_identity(q[':question/worked-solution']),'fields':fields})
+  qid=str(uuid.uuid5(uuid.UUID(KP_UUID),content));q[':question/id']=qid;out=[]
+  for key,atype,bank,correct in fields:
+   fid=str(uuid.uuid5(uuid.UUID(qid),key))
+--- /home/jake/Developer/Course_Academy/generate/scratch/17592186176048.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186176048/17592186176048.py
+@@ -16,11 +16,12 @@
+ import random
+ import uuid
+ import sympy as sp
++from math_format import normalize_prose,normalize_tex
+ 
+ KP_ID=17592186176048
+ KP_UUID='1c25c3a0-083a-55d5-b688-7347bfafaa9e'
+ TITLE='Utilizing the Periodicity Property of the Cosine Function'
+-VERSION='cosine-periodicity-1'
++VERSION='cosine-periodicity-1-format-audit-9122-v1'
+ ROOT=Path(__file__).with_suffix('')
+ SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+ TEMPLATES={
+@@ -153,6 +154,7 @@
+   if not profile.startswith('observed_'): prompt=prompt.replace('cos⁡',r'\cos '); solution=solution.replace('cos⁡',r'\cos ')
+   values=[tex(v) for v in vals]
+   if profile=='observed_raw_q103242': values[3]=r'2\pi '+signed(c)
++  if profile!='observed_raw_q103242':prompt=normalize_prose(prompt);solution=normalize_prose(solution);values=[normalize_tex(v)for v in values]
+   content=hash_data([VERSION,prompt,solution,sorted(values)])
+   # Equivalent full-period angles are one mathematical task. Shift count,
+   # value aliases, template/profile/variable spelling do not inflate diversity.
+--- /media/jake/SSD/EDB/math/generators/4c/4c1e4aafc5fc7c15e62ef81f16f126e28e43d867f12035fefb4f882c88e8f1a6/forward.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186184155/forward.py
+@@ -1,10 +1,11 @@
+ """Forward, source-bounded elementary integration questions for this lesson."""
+ import argparse,json,random,uuid,itertools
+ from fractions import Fraction as F
++from integral_display import display_integral
+ from math_format import normalize_prose,normalize_tex,checked_math_content
+ from integration_batch_policy import validate_delivery_batch,clone_key,CONTRACT,FAMILIES,repeated_bank_shortcuts
+ 
+-VERSION='2.2.0-three-band-power-rule-errors'
++VERSION='2.2.0-three-band-power-rule-errors-format-audit-9122-v1'
+ D=tuple(range(-6,0))+tuple(range(1,7))
+ IDS={17592186184153:'0db9b1c3-1e31-53f6-9fc2-1c611e2f9398',17592186184154:'a58c0a18-4221-50f1-b31c-ae58d099d79d',17592186184155:'007f3355-427a-5da4-8af7-22581f1cb1de'}
+ SOURCE_REFS={
+@@ -129,7 +130,8 @@
+  banks=[answer]if kind=='blank'else coefficient_bank(ts,domains,family,rng);rng.shuffle(banks)
+  values=[tex([row[j]for j in order],v)+(''if kind=='blank'else'+C')for row in banks];correct=tex([answer[j]for j in order],v)+(''if kind=='blank'else'+C');key=values.index(correct)
+  prompt,worked=map(normalize_prose,(prompt,worked));values=list(map(normalize_tex,values))
+- qid=uuid.uuid5(uuid.UUID(IDS[kp]),json.dumps([prompt,sorted(values),values[key]],ensure_ascii=False));fieldkey='field-1'if kind=='blank'else'selection';fid=uuid.uuid5(qid,fieldkey)
++ prompt=display_integral(prompt)
++ qid=uuid.uuid5(uuid.UUID(IDS[kp]),json.dumps([VERSION,prompt,sorted(values),values[key]],ensure_ascii=False));fieldkey='field-1'if kind=='blank'else'selection';fid=uuid.uuid5(qid,fieldkey)
+  choices=[{':answer/id':str(uuid.uuid5(fid,val)),':answer/type':':answer.type/math',':answer/value':val}for val in values]
+  band=next(b for (k,b),fs in FAMILIES.items()if k==kp and family in fs)
+  return {'knowledge_point':{'db_id':kp,'id':IDS[kp]},'question':{':question/id':str(qid),':question/difficulty':':question.difficulty/'+band,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':fieldkey,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[key][':answer/id']]}]},'generation':{'version':VERSION,'batch_contract':CONTRACT,'family':family,'input_terms':serial(ts),'variable':v,'order':order,'extra':extra,'bank_terms':[serial(row)for row in banks],'seed':seed,'source_refs':([dict(zip(('math_academy_id','question_id','db_id'),SOURCE_REFS[family]))]if family in SOURCE_REFS else[]),'authored_answer_bank':'Power-rule errors for this KP: copied coefficient, multiplied rather than divided by new exponent, divided twice, used old exponent or incremented twice, or dropped input coefficient. Terms without a two-sided error pool are shared. Legacy sibling families: same powers and signs, with copied constants shared. Unit-power questions vary the true coefficient rank among same-sign alternatives; other coefficient assignments come from the eligible input domain. Captured source banks replay separately.'}}
+--- /media/jake/SSD/EDB/math/generators/4c/4c1e4aafc5fc7c15e62ef81f16f126e28e43d867f12035fefb4f882c88e8f1a6/legacy.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186184155/legacy.py
+@@ -13,7 +13,7 @@
+ 
+ KP = {'db_id':17592186184155,'id':'007f3355-427a-5da4-8af7-22581f1cb1de',
+       'title':'Integrating Sums of Power Functions'}
+-VERSION = '1.0.0'
++VERSION='1.0.0-format-audit-9122-v1'
+ ROLES = ('fractional','integer','reciprocal')
+ 
+ 
+--- /media/jake/SSD/EDB/math/generators/69/693c8cfb9fad7a2f463430dcdb63d06593ec1b5b90cfb1410378472b5cb0c1c3/17592186229181.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186229181/17592186229181.py
+@@ -14,10 +14,11 @@
+ import argparse,hashlib,json,random,re,sys,uuid
+ from pathlib import Path
+ import sympy as sp
++from math_format import normalize_prose,normalize_tex
+ KP_ID=17592186229181
+ KP_UUID='1403309b-bb10-5ce3-bd8f-97915bb837ca'
+ TITLE='Constructing and Solving a Dilution Model: Inflow Equals Outflow'
+-VERSION='equal-flow-dilution-2'
++VERSION='equal-flow-dilution-2-format-audit-9122-v1'
+ DIR=Path(__file__).with_suffix('')
+ MASKS=json.loads((DIR/'masks.json').read_text())
+ CURRENT=json.loads((DIR/'current-source.json').read_text())
+@@ -58,6 +59,7 @@
+  exponent=('-' if k>0 else '')+str(t)+'/'+num(1/abs(k))
+  return num(E)+('+' if A>0 else '-')+coefficient+e+'^{'+exponent+'}'
+ def full(record,level,template,profile,p,values,correct,solution,prompt,raw=False,presence=None,recipes=None):
++ if not raw:prompt=normalize_prose(prompt);solution=normalize_prose(solution)if solution is not None else None;values=[normalize_tex(v)for v in values]
+  q={':question/problem':prompt}
+  if solution is not None:q[':question/worked-solution']=solution
+  if presence is None or presence['difficulty_present']:q[':question/difficulty']=':question.difficulty/'+level
+--- /media/jake/SSD/EDB/math/generators/93/933a4c5b77f0df65680e8f6f53ef87afe3699ad4546a8e42bf853e236d82144b/17592186229182.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186229182/17592186229182.py
+@@ -16,12 +16,13 @@
+ from pathlib import Path
+ from decimal import Decimal,ROUND_HALF_UP
+ import sympy as sp
++from math_format import normalize_prose,normalize_tex
+ KP_ID=17592186229182
+ D=Path(__file__).with_suffix('')
+ RAW=json.loads((D/'source-current.json').read_text());SRC=RAW['record']
+ SOURCES={q[':question/math-academy-id']:q for q in SRC[':knowledge-point/questions']}
+ M={x['source_id']:x for x in json.loads((D/'masks.json').read_text())}
+-VERSION='unequal-dilution-2'
++VERSION='unequal-dilution-2-format-audit-9122-v1'
+ t=sp.Symbol('t',real=True)
+ NAMESPACE=uuid.UUID('2ab1d837-f782-5439-8e25-3c764f9cb5c5')
+ class IneligibleInstance(ValueError):pass
+@@ -204,6 +205,7 @@
+   solution=SOURCES[template].get(':question/worked-solution')
+  elif meta['kind']=='sum':solution=rf'''At $t=0,$ the supplied model gives $Q(0)=\alpha(1-0/{num(d['B'])})+\beta(1-0/{num(d['B'])})^{{{num(d['m'])}}}=\alpha+\beta.$ The initial amount is ${num(d['q0'])}\,\text{{kg}},$ so $\alpha+\beta={num(d['q0'])}.$'''
+  else:solution=model_solution(d,meta['kind'])
++ if not raw:prompt=normalize_prose(prompt);solution=normalize_prose(solution)if solution is not None else None;vals=[normalize_tex(v)for v in vals]
+  identity=fingerprint(dict(version=VERSION,level=level if not raw or ':question/difficulty' in meta['raw_keys'] else None,prompt=prompt,solution=solution,bank=sorted(vals),correct=None if correct is None else vals[correct]))
+  qid=uid(identity);fid=uid(qid+':selection');choices=[{':answer/id':uid(fid+v),':answer/type':':answer.type/math',':answer/value':v} for v in vals]
+  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices}
+--- /media/jake/SSD/EDB/math/generators/53/53cdb589176f14a98569cb4661490146fb98b61307e3030e17f0a4144436638e/17592186172038.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-topic-audit-2/group-1/generator-stages/17592186172038/17592186172038.py
+@@ -13,10 +13,11 @@
+ import argparse,hashlib,json,random,re,subprocess,tempfile,uuid,math,os,sys
+ from pathlib import Path
+ import sympy as sp
++from math_format import validate_generated_record,normalize_prose
+ KP_ID=17592186172038
+ KP_UUID='b0e7e0a0-9388-5346-ab96-f2dec237c9f5'
+ TITLE='Sketching the Slope Field of a Differential Equation at Some Isolated Points'
+-VERSION='isolated-slopes-v5-exchangeable-bank'
++VERSION='isolated-slopes-v6-distinguishable-hard-rational-bank'
+ HERE=Path(__file__).resolve().with_suffix('')
+ SOURCE=json.loads((HERE/'source.json').read_text())
+ QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
+@@ -77,7 +78,8 @@
+  # Build the bank before assigning correctness. No row has a special error role.
+  leading=[1,2,3,-1,-2]
+  if level=='moderate':leading=['1/2','-3/2','5/2','-7/2','3/2']
+- if level=='hard':leading=['1/2','-3/2','3/4','-5/4','5/4']
++ if level=='hard':leading=['1/2','-3/2','3/4','-1/2','5/4']
++ # The old−3/2,−5/4 pair can never separate by8degrees for a common multiplier.
+  leading=list(dict.fromkeys(map(str,leading+[p['a']])))
+  secondary=list(dict.fromkeys(map(str,[1,2,3,-1,-2]+([p['b']] if 'b' in p else []))))
+  candidates=[{**p,'a':a,**({'b':b} if t!='rational_square' else {})}
+@@ -204,12 +206,15 @@
+  canonical={k:([list(pt) for pt in v] if k=='points' else str(sp.Rational(v))) for k,v in p.items()}
+  ci=bank.index(s);assets=render_plots({'points':p['points'],'bank':bank,'correct_index':ci})
+  problem,solution,rows=presentation(t,p,profile,s,assets,level)
++ problem,solution=normalize_prose(problem),normalize_prose(solution)
+  task=digest({'equation':str(eq(t,p)),'points':sorted(p['points'])})
+  # Output paths locate bytes, but do not define mathematical/content identity.
+  identity=digest({'version':VERSION,'level':level,'problem':problem,'solution':solution.replace(assets['solution'],Path(assets['solution']).name),'bank':sorted(Path(v).name for v in assets['choices'])})
+  fid=uid(identity+'field');answers=[{':answer/id':uid(fid+'answer:'+Path(v).name),':answer/type':':answer.type/image',':answer/value':v} for v in assets['choices']]
+  correct=answers[ci][':answer/id'];r.shuffle(answers)
+- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':uid(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':t,'bank_profile':profile,'bank_parameters':alternatives,'sampling_attempts':attempt+1,'seed':seed,'parameters':canonical,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[profile] if profile!='authored' else [],'authored':profile=='authored' or level!='easy','mathematical_fingerprint':task,'content_fingerprint':identity,'exact_slopes':list(map(str,s)),'choice_geometry':{path:list(map(str,row)) for path,row in zip(assets['choices'],bank)},'worked_rows':rows,'domain':{'point_count':3,'equation':str(eq(t,p)),'x_nonzero':t=='rational_square'}}}
++ record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':uid(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':t,'bank_profile':profile,'bank_parameters':alternatives,'sampling_attempts':attempt+1,'seed':seed,'parameters':canonical,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[profile] if profile!='authored' else [],'authored':profile=='authored' or level!='easy','mathematical_fingerprint':task,'content_fingerprint':identity,'exact_slopes':list(map(str,s)),'choice_geometry':{path:list(map(str,row)) for path,row in zip(assets['choices'],bank)},'worked_rows':rows,'domain':{'point_count':3,'equation':str(eq(t,p)),'x_nonzero':t=='rational_square'}}}
++ validate_generated_record(record)
++ return record
+ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
+ def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
+ def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)

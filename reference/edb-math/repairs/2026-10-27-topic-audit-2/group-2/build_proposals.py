@@ -30,7 +30,7 @@ for q in questions:
   for a in f.get(':answer-field/choices',[]):entities[a[':db/id']]=a
 for x in p.values():
  if x['entity']in entities:entities[x['entity']][':'+x['attribute']]=x['after']
-for x in json.loads((H/'type-proposals.json').read_text()):entities[x['entity']][':answer/type']={':db/ident':':'+x['after']}
+for x in json.loads((H/'type-proposals.json').read_text()):entities[x['entity']][':answer/type']={':db/id':x['after'],':db/ident':':answer.type/text'if x['after']==17592186045499 else':answer.type/math'}
 keys=json.loads((H/'key-proposals.json').read_text())
 for x in keys:entities[x['entity']][':answer-field/correct']=copy.deepcopy(entities[x['after']])
 for x in json.loads((H/'new-blank-answer-proposals.json').read_text()):
