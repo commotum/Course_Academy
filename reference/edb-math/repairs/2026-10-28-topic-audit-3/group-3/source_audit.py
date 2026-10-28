@@ -26,7 +26,7 @@ for ident,p in rawpaths:
  try:data=json.loads(p.read_text());html=data.get('html')or data.get('raw_html')
  except Exception:continue
  if html:
-  soup=BeautifulSoup(html,'html.parser');number=ident.split('-',1)[1];ids=[str(n.get(a))for n in soup.find_all(True)for a in ['questionid','exampleid','id']if n.get(a)is not None];declared=' '.join(str(data.get(k,''))for k in ['dom_id','question_id','questionId','source_id']);identity_ok=any(v==number or re.search(r'(?:q|example|e)[-]?'+re.escape(number)+r'(?:$|[^0-9])',v)for v in ids+[declared]);identity_checks.append({'path':str(p),'expected':ident,'declared_dom_id':declared,'actual_ids':ids[:12],'accepted':identity_ok})
+  soup=BeautifulSoup(html,'html.parser');number=ident.split('-',1)[1];ids=[str(n.get(a))for n in soup.find_all(True)for a in ['questionid','exampleid','id']if n.get(a)is not None];declared=' '.join(str(data.get(k,''))for k in ['dom_id','question_id','questionId','source_id']);identity_ok=any(v==number or re.search(r'(?:q|question|questionExplanation|questionText|questionWidget|example|e)[-]?'+re.escape(number)+r'(?:$|[^0-9])',v)for v in ids+[declared]);identity_checks.append({'path':str(p),'expected':ident,'declared_dom_id':declared,'actual_ids':ids[:12],'accepted':identity_ok})
   if identity_ok:sources[ident].append((str(p),html))
 reports=[];candidates=[];direct=[];source_records=[]
 def plain(v):

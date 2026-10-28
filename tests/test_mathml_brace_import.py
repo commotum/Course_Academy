@@ -41,6 +41,12 @@ class MathMLBraceImportTests(unittest.TestCase):
                 self.assertIn('6a+6b=0',compact)
                 self.assertNotIn('-6a',compact)
 
+    def test_vector_product_operators_keep_their_ordered_operand_roles(self):
+        self.assert_formula('<mi mathvariant="bold">a</mi><mo>⋅</mo><mo>(</mo>'
+                            '<mi mathvariant="bold">b</mi><mo>×</mo><mi mathvariant="bold">c</mi><mo>)</mo>',
+                            r'\mathbf{a}\cdot (\mathbf{b}\times \mathbf{c})')
+        self.assert_formula('<mo>∇</mo><mo>×</mo><mi mathvariant="bold">F</mi>',r'∇\times \mathbf{F}')
+
     def test_zero_rule_fraction_keeps_stack_instead_of_division(self):
         self.assert_formula('<mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac>',
                             r'\genfrac{}{}{0pt}{}{n}{k}')
