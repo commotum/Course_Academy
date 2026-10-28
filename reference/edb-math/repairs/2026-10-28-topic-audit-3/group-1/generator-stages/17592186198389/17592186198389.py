@@ -6,7 +6,7 @@ normal banks use four complete cross/dot operations, never random perturbations.
 See adjacent extraction, source anomalies, scope bounds and independent validator.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse, hashlib, json, random, re, uuid
 from pathlib import Path
 import sympy as sp
@@ -24,7 +24,7 @@ def parse(t):
  return parse_expr(t,local_dict=LOC,transformations=standard_transformations+(implicit_multiplication_application,))
 def tex(e): return sp.latex(e).replace('u v','uv').replace('x y','xy')
 def vec(es): return '⟨'+r',\,'.join(tex(e) for e in es)+'⟩'
-def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+def digest(obj): return hashlib.sha256(json.dumps(_ca_material(obj),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(s): return str(uuid.uuid5(uuid.UUID(KP_UUID),s))
 def eq(a,b): return sp.expand(a-b)==0
 

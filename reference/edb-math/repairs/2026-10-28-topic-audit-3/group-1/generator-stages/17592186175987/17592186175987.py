@@ -13,7 +13,7 @@ No evaluation is requested. This script creates previews only; the package
 replenisher handles additive registration and commits after validation.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 
 # Standalone source eligibility: immutable policy ledger, seeded CLI guard.
 import sys as _ca_sys, os as _ca_os
@@ -69,7 +69,7 @@ BANKS={
 }
 QS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 
-def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+def digest(x):return hashlib.sha256(json.dumps(_ca_material(x),sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
 def uid(x):return str(uuid.uuid5(uuid.NAMESPACE_URL,'greens-polar:'+x))
 def latex(x):return sp.latex(sp.sympify(x)).replace(r'\theta',r'\theta')
 def scaled(text,s):return text if s==1 else str(s)+r'\left('+text+r'\right)'
@@ -109,7 +109,7 @@ def render_sector(radius,a,b,filled=False):
  import matplotlib.pyplot as plt
  import numpy as np
  key=digest([radius,str(a),str(b),filled,'sector-v2'])[:20]
- out=BASE/'plots'/f'{key}.png';side=out.with_suffix('.json');out.parent.mkdir(exist_ok=True)
+ out=_ca_asset_output(BASE/'plots'/f'{key}.png');side=out.with_suffix('.json');out.parent.mkdir(exist_ok=True)
  if out.exists() and side.exists():return str(out.resolve())
  aa,bb=float(a),float(b); th=np.linspace(aa,bb,301)
  xx=radius*np.cos(th);yy=radius*np.sin(th)

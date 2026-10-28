@@ -7,7 +7,7 @@ Normal defaults use every family with supported complete banks. Hard is an autho
 two-period version of the shifted trig family: four familiar roots, not new algebra.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as s

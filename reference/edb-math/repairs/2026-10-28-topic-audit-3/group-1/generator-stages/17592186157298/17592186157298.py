@@ -1,4 +1,4 @@
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 #!/usr/bin/env python3
 """Moderate polar-coordinate circular-cap templates. Easy/hard unsupported.
 Positive homothety preserves curve/line roles, angular sector and workload.
@@ -108,7 +108,7 @@ def render_plots(sid,scale):
  import numpy as np
  C,R,N,d,ab,f,lo,hi=model(sid,scale); key=digest([VERSION,sid,scale])[:24];assets={}
  for role in ('prompt','solution'):
-  path=HERE/'assets'/f'{key}-{role}.png';path.parent.mkdir(exist_ok=True)
+  path=_ca_asset_output(HERE/'assets'/f'{key}-{role}.png');path.parent.mkdir(exist_ok=True)
   if not path.exists():
    a,b=map(float,ab);angles=np.linspace(a,b,260)
    lv=np.asarray(sp.lambdify(t,lo,'numpy')(angles))+np.zeros_like(angles);hv=np.asarray(sp.lambdify(t,hi,'numpy')(angles))+np.zeros_like(angles)
@@ -133,8 +133,6 @@ def generate(difficulty='moderate',seed=0,template=None,scale=None,plots=True):
  if not 1<=scale<=12:raise ValueError('Validated scale domain is integers 1..12')
  C,R,N,d,ab,f,lo,hi=model(sid,scale);options=bank(sid,scale);ci=CORRECT[sid]
  assets=render_plots(sid,scale)if plots else {};curve=tex((x-C[0])**2+(y-C[1])**2)+'='+tex(R**2);line=tex(N[0]*x+N[1]*y)+'='+tex(d)
- qid=uid('question:'+VERSION+':'+sid+':'+str(scale));fid=uid(qid+':selection')
- choices=[{':answer/id':uid(fid+':recipe:'+str(i)),':answer/type':':answer.type/math',':answer/value':_ca_values([integral(row)])[0]}for i,row in enumerate(options)]
  # Seed only selects mathematical data. It never changes a question's identity.
  prompt=('![]('+assets['prompt']+')\n\n'if plots else '')+'The region $D$ is enclosed between the curve $'+curve+'$ and the line $'+line+'$, as shown above. What is\n$$\\iint_D '+tex(f)+r'\,\mathrm{d}A$$'+'\nexpressed in polar coordinates?'
  transformed=sp.trigsimp(f.subs({x:r*sp.cos(t),y:r*sp.sin(t)},simultaneous=True)*r)
@@ -151,7 +149,10 @@ def generate(difficulty='moderate',seed=0,template=None,scale=None,plots=True):
  stages+=['Now, let\'s find the limits for the parameter $\\theta$. The endpoints of the selected arc are '+ ' and '.join('$('+tex(a)+','+tex(b)+')$'for a,b in endpoints)+'. So the shaded region lies between the polar lines $\\theta='+tex(ab[0])+'$ and $\\theta='+tex(ab[1])+'$.']
  if plots:stages+=['![]('+assets['solution']+')']
  stages+=['As a result, the region can be expressed in polar coordinates as',r'$$\Delta=\{(r,\theta):'+tex(lo)+r'\leq r\leq '+tex(hi)+r',\ '+tex(ab[0])+r'\leq\theta\leq '+tex(ab[1])+r'\}.$$','Therefore, using the change of variables formula, we obtain',r'$$\iint_D '+tex(f)+r'\,\mathrm{d}A=\iint_\Delta '+tex(transformed)+r'\,\mathrm{d}r\,\mathrm{d}\theta='+integral(options[ci])+'.$$']
- return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':_ca_problem(prompt),':question/worked-solution':_ca_prose('\n\n'.join(stages)),':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[ci][':answer/id']]}]},'generation':{'version':VERSION,'template':sid,'profile':sid+':complete-bank','seed':seed,'parameters':{'scale':scale},'domain':'r >= 0; integer homothety 1..12; fixed depicted sector','source_basis':SNAP['basis'],'source_question_id':ORIGINALS[sid][':question/id'],'assets':assets,'eligible_for_learning':True,'evidence_only':False,'identity_excludes':['seed','choice order']}}
+ prompt=_ca_problem(prompt);solution=_ca_prose('\n\n'.join(stages));rendered=_ca_values([integral(row)for row in options])
+ qid=uid('question:'+digest([VERSION,sid,scale,prompt,solution,rendered]));fid=uid(qid+':selection')
+ choices=[{':answer/id':uid(fid+':recipe:'+str(i)),':answer/type':':answer.type/math',':answer/value':value}for i,value in enumerate(rendered)]
+ return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[ci][':answer/id']]}]},'generation':{'version':VERSION,'template':sid,'profile':sid+':complete-bank','seed':seed,'parameters':{'scale':scale},'domain':'r >= 0; integer homothety 1..12; fixed depicted sector','source_basis':SNAP['basis'],'source_question_id':ORIGINALS[sid][':question/id'],'assets':assets,'eligible_for_learning':True,'evidence_only':False,'identity_excludes':['seed','choice order']}}
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--difficulty',default='moderate');p.add_argument('--count',type=int,default=1);p.add_argument('--seed',type=int,default=0);p.add_argument('--format',choices=['json','markdown'],default='json');p.add_argument('--template',choices=list(DATA));p.add_argument('--scale',type=int);args=p.parse_args()

@@ -1,0 +1,548 @@
+{
+  "source": "/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-3/generator-17592186198398/17592186198398.py",
+  "pools": [],
+  "results": [
+    {
+      "band": "easy",
+      "template": null,
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": null,
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": null,
+      "passed": true,
+      "records": 1
+    }
+  ],
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198398,
+          "id": "832dc2b8-873f-56c6-bd87-5e886a586fb1",
+          "title": "Evaluating a Triple Integral Using a Change of Variables"
+        },
+        "question": {
+          ":question/id": "0d80e810-15f5-58b5-8c03-d0581df0706a",
+          ":question/problem": "Use the change of variables \n\n$$\nu=2 x + 2 y,\\quad v=y - 2 z,\\quad w=4 z\n$$\n\nto evaluate the triple integral\n\n$$\n\\iiint_R \\left(\\left(2 x + 2 y\\right) \\left(y - 2 z\\right)\\right)\\,\\mathrm{d}V,\n$$\n\n \nwhere the region $R$ is given by\n\n$$\nR=\\{(x,y,z):0\\le 2 x + 2 y\\le 3,\\quad 0\\le y - 2 z\\le 2,\\quad 0\\le z\\le 3\\}.\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "73cec800-b5c1-5562-81e5-3eb10088ad62",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "908cdff4-cb35-54d1-87e6-d072807fb23c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "864"
+                },
+                {
+                  ":answer/id": "b6dd1adb-aa08-5080-bc6b-3467c444a241",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{27}{2}"
+                },
+                {
+                  ":answer/id": "07315664-e7bd-56a1-ad6d-4bfaf2e51492",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "27"
+                },
+                {
+                  ":answer/id": "8e52638d-f5e5-5673-b347-d03fbbe1d2df",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "108"
+                },
+                {
+                  ":answer/id": "9cc2859b-5bd3-5a73-bccc-805b768d7f5f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{27}{8}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "b6dd1adb-aa08-5080-bc6b-3467c444a241"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2 x + 2 y,\\quad v=y - 2 z,\\quad w=4 z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\{(u,v,w):0\\le u\\le 3,\\quad 0\\le v\\le 2,\\quad 0\\le w\\le 12\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 2 & 0 \\\\ 0 & 1 & -2 \\\\ 0 & 0 & 4\\end{vmatrix} \\\\  & =\\left(4\\right)(-1)^{3+3}\\begin{vmatrix}2 & 2 \\\\ 0 & 1\\end{vmatrix} \\\\  & =\\left(4\\right)\\left(\\left(2\\right)\\cdot \\left(1\\right)-\\left(2\\right)\\cdot \\left(0\\right)\\right) \\\\  & =8.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{8}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R \\left(\\left(2 x + 2 y\\right) \\left(y - 2 z\\right)\\right)\\,\\mathrm{d}V & =\\iiint_\\Delta \\left(u v\\right)\\cdot \\left|\\frac{1}{8}\\right|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\iiint_\\Delta \\left(\\frac{u v}{8}\\right)\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\int_{0}^{12}\\left(\\frac{u v}{8}\\right)\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\left(\\left[\\frac{u v w}{8}\\right]_{w=0}^{w=12}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\left(\\left(\\frac{u v \\left(12\\right)}{8}\\right)-\\left(\\frac{u v \\left(0\\right)}{8}\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\left(\\left(\\frac{3 u v}{2}\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{2}\\left(\\frac{3 u v}{2}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left[\\frac{3 u v^{2}}{4}\\right]_{v=0}^{v=2}\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left(\\frac{3 u \\left(2\\right)^{2}}{4}\\right)-\\left(\\frac{3 u \\left(0\\right)^{2}}{4}\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left(3 u\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(3 u\\right)\\,\\mathrm{d}u \\\\  & =\\left[\\frac{3 u^{2}}{2}\\right]_{u=0}^{u=3} \\\\  & =\\left(\\frac{3 \\left(3\\right)^{2}}{2}\\right)-\\left(\\frac{3 \\left(0\\right)^{2}}{2}\\right) \\\\  & =\\left(\\frac{27}{2}\\right)-\\left(0\\right) \\\\  & =\\frac{27}{2}\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "triple-change-evaluation-1-audit9837",
+          "python_version": "3.13.5",
+          "sympy_version": "1.14.0",
+          "seed": 983755,
+          "template": "power",
+          "parameters": {
+            "a": "2",
+            "b": "2",
+            "c": "4",
+            "d": "-2",
+            "n": "1",
+            "lu": "0",
+            "hu": "3",
+            "lv": "0",
+            "hv": "2",
+            "lz": "0",
+            "hz": "3"
+          },
+          "bank_profile": "method",
+          "bank_origin": "authored_method",
+          "source_basis": 1356,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_ids": [
+            "17592186198623"
+          ],
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "authored_level": true,
+          "plot_rating": "none",
+          "parameter_fingerprint": "a475ee5aa4d3fa61b0af30ad72b88a747539bbf23fe885055eac62c50250fbbe",
+          "content_fingerprint": "0b61073279756e23504685987f789a79acdca9f5fc1573630c6d85f3f7125c15",
+          "recipes": [
+            "correct",
+            "omit_inverse_jacobian",
+            "use_forward_jacobian",
+            "omit_power_primitive_denominator",
+            "omit_w_bound_scale"
+          ],
+          "domain": "Globally bijective polynomial/linear shear; constant nonzero determinant; ordered bounded box.",
+          "stages": [
+            {
+              "variable": "w",
+              "input": "u*v/8",
+              "primitive": "u*v*w/8",
+              "terms": [
+                "u*v*w/8"
+              ],
+              "components": [
+                [
+                  "3*u*v/2",
+                  "0"
+                ]
+              ],
+              "result": "3*u*v/2"
+            },
+            {
+              "variable": "v",
+              "input": "3*u*v/2",
+              "primitive": "3*u*v**2/4",
+              "terms": [
+                "3*u*v**2/4"
+              ],
+              "components": [
+                [
+                  "3*u",
+                  "0"
+                ]
+              ],
+              "result": "3*u"
+            },
+            {
+              "variable": "u",
+              "input": "3*u",
+              "primitive": "3*u**2/2",
+              "terms": [
+                "3*u**2/2"
+              ],
+              "components": [
+                [
+                  "27/2",
+                  "0"
+                ]
+              ],
+              "result": "27/2"
+            }
+          ],
+          "math": {
+            "trans": [
+              "2*x + 2*y",
+              "y - 2*z",
+              "4*z"
+            ],
+            "inverse": [
+              "u/2 - v - w/2",
+              "v + w/2",
+              "w/4"
+            ],
+            "det": "8",
+            "j": "1/8",
+            "f": "u*v",
+            "density": "u*v/8",
+            "bounds": [
+              [
+                "0",
+                "3"
+              ],
+              [
+                "0",
+                "2"
+              ],
+              [
+                "0",
+                "12"
+              ]
+            ],
+            "value": "27/2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198398,
+          "id": "832dc2b8-873f-56c6-bd87-5e886a586fb1",
+          "title": "Evaluating a Triple Integral Using a Change of Variables"
+        },
+        "question": {
+          ":question/id": "c6ce157d-cfbc-571a-add2-520db8aa6b79",
+          ":question/problem": "Use the change of variables \n\n$$\nu=x + y^{2},\\quad v=y + z,\\quad w=4 z\n$$\n\nto evaluate the triple integral\n\n$$\n\\iiint_R \\left(\\left(y + z\\right) e^{x + y^{2}}\\right)\\,\\mathrm{d}V,\n$$\n\n \nwhere the region $R$ is given by\n\n$$\nR=\\{(x,y,z):1\\le x + y^{2}\\le 3,\\quad 1\\le y + z\\le 3,\\quad 1\\le z\\le 3\\}.\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "e0bb5819-86c1-5232-9379-3db51eeea6c7",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a481d569-3f22-5423-8c01-e38b030c45dc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 128 e \\left(- e^{2} + 1\\right)"
+                },
+                {
+                  ":answer/id": "b46a1c20-96a2-5276-85e1-41f991aadeb9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 8 e \\left(- e^{2} + 1\\right)"
+                },
+                {
+                  ":answer/id": "ca59dd1b-d774-5c50-b0a3-4d2559e9d111",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "8 e^{3}"
+                },
+                {
+                  ":answer/id": "106b7329-d562-55ab-885c-d0b950c3362f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 32 e \\left(- e^{2} + 1\\right)"
+                },
+                {
+                  ":answer/id": "3806aa92-4d0f-5085-950f-87a618dd1439",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 16 e \\left(- e^{2} + 1\\right)"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "b46a1c20-96a2-5276-85e1-41f991aadeb9"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x + y^{2},\\quad v=y + z,\\quad w=4 z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\{(u,v,w):1\\le u\\le 3,\\quad 1\\le v\\le 3,\\quad 4\\le w\\le 12\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 2 y & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 0 & 4\\end{vmatrix} \\\\  & =\\left(4\\right)(-1)^{3+3}\\begin{vmatrix}1 & 2 y \\\\ 0 & 1\\end{vmatrix} \\\\  & =\\left(4\\right)\\left(\\left(1\\right)\\cdot \\left(1\\right)-\\left(2 y\\right)\\cdot \\left(0\\right)\\right) \\\\  & =4.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{4}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R \\left(\\left(y + z\\right) e^{x + y^{2}}\\right)\\,\\mathrm{d}V & =\\iiint_\\Delta \\left(v e^{u}\\right)\\cdot \\left|\\frac{1}{4}\\right|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\iiint_\\Delta \\left(\\frac{v e^{u}}{4}\\right)\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{1}^{3}\\int_{1}^{3}\\int_{4}^{12}\\left(\\frac{v e^{u}}{4}\\right)\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\int_{1}^{3}\\left(\\left[\\frac{v w e^{u}}{4}\\right]_{w=4}^{w=12}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\int_{1}^{3}\\left(\\left(\\frac{v \\left(12\\right) e^{u}}{4}\\right)-\\left(\\frac{v \\left(4\\right) e^{u}}{4}\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\int_{1}^{3}\\left(\\left(3 v e^{u}\\right)-\\left(v e^{u}\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\int_{1}^{3}\\left(2 v e^{u}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\left(\\left[v^{2} e^{u}\\right]_{v=1}^{v=3}\\right)\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\left(\\left(\\left(3\\right)^{2} e^{u}\\right)-\\left(\\left(1\\right)^{2} e^{u}\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\left(\\left(9 e^{u}\\right)-\\left(e^{u}\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{1}^{3}\\left(8 e^{u}\\right)\\,\\mathrm{d}u \\\\  & =\\left[8 e^{u}\\right]_{u=1}^{u=3} \\\\  & =\\left(8 e^{\\left(3\\right)}\\right)-\\left(8 e^{\\left(1\\right)}\\right) \\\\  & =\\left(8 e^{3}\\right)-\\left(8 e\\right) \\\\  & =- 8 e \\left(- e^{2} + 1\\right)\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "triple-change-evaluation-1-audit9837",
+          "python_version": "3.13.5",
+          "sympy_version": "1.14.0",
+          "seed": 983755,
+          "template": "exp",
+          "parameters": {
+            "a": "3",
+            "b": "4",
+            "c": "4",
+            "d": "1",
+            "n": "2",
+            "lu": "1",
+            "hu": "3",
+            "lv": "1",
+            "hv": "3",
+            "lz": "1",
+            "hz": "3"
+          },
+          "bank_profile": "method",
+          "bank_origin": "authored_method",
+          "source_basis": 1356,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_ids": [
+            "17592186374125"
+          ],
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "authored_level": true,
+          "plot_rating": "none",
+          "parameter_fingerprint": "c06a169df978b9a59ef6d255176aabb2db2c49089a14f1c7409f5bb8d7247268",
+          "content_fingerprint": "9d125dbeed006f220c1608cca4e3ebe8c6c81d4b20b85f72764b5690d9fcd9a6",
+          "recipes": [
+            "correct",
+            "omit_inverse_jacobian",
+            "use_forward_jacobian",
+            "omit_lower_exponential_endpoint",
+            "omit_v_primitive_denominator"
+          ],
+          "domain": "Globally bijective polynomial/linear shear; constant nonzero determinant; ordered bounded box.",
+          "stages": [
+            {
+              "variable": "w",
+              "input": "v*exp(u)/4",
+              "primitive": "v*w*exp(u)/4",
+              "terms": [
+                "v*w*exp(u)/4"
+              ],
+              "components": [
+                [
+                  "3*v*exp(u)",
+                  "v*exp(u)"
+                ]
+              ],
+              "result": "2*v*exp(u)"
+            },
+            {
+              "variable": "v",
+              "input": "2*v*exp(u)",
+              "primitive": "v**2*exp(u)",
+              "terms": [
+                "v**2*exp(u)"
+              ],
+              "components": [
+                [
+                  "9*exp(u)",
+                  "exp(u)"
+                ]
+              ],
+              "result": "8*exp(u)"
+            },
+            {
+              "variable": "u",
+              "input": "8*exp(u)",
+              "primitive": "8*exp(u)",
+              "terms": [
+                "8*exp(u)"
+              ],
+              "components": [
+                [
+                  "8*exp(3)",
+                  "8*E"
+                ]
+              ],
+              "result": "-8*E*(1 - exp(2))"
+            }
+          ],
+          "math": {
+            "trans": [
+              "x + y**2",
+              "y + z",
+              "4*z"
+            ],
+            "inverse": [
+              "u - (v - w/4)**2",
+              "v - w/4",
+              "w/4"
+            ],
+            "det": "4",
+            "j": "1/4",
+            "f": "v*exp(u)",
+            "density": "v*exp(u)/4",
+            "bounds": [
+              [
+                "1",
+                "3"
+              ],
+              [
+                "1",
+                "3"
+              ],
+              [
+                "4",
+                "12"
+              ]
+            ],
+            "value": "-8*E*(1 - exp(2))"
+          }
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198398,
+          "id": "832dc2b8-873f-56c6-bd87-5e886a586fb1",
+          "title": "Evaluating a Triple Integral Using a Change of Variables"
+        },
+        "question": {
+          ":question/id": "59d533e6-9b50-5712-9878-99f6bf37a164",
+          ":question/problem": "Use the change of variables \n\n$$\nu=x + y^{2},\\quad v=y + 2 z,\\quad w=3 z\n$$\n\nto evaluate the triple integral\n\n$$\n\\iiint_R \\left(\\left(y + 2 z\\right) e^{x + y^{2}}\\right)\\,\\mathrm{d}V,\n$$\n\n \nwhere the region $R$ is given by\n\n$$\nR=\\{(x,y,z):0\\le x + y^{2}\\le 3,\\quad 0\\le y + 2 z\\le 3,\\quad 0\\le z\\le 2\\}.\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "ca846404-695e-5a20-8fd0-7e898e808c94",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a1a851e3-8444-510f-8591-952df0d53ca3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-81 + 81 e^{3}"
+                },
+                {
+                  ":answer/id": "799d210a-37e3-5998-a1a4-6ca2430ba808",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-9 + 9 e^{3}"
+                },
+                {
+                  ":answer/id": "bb5e5a5b-403d-5af8-91fb-9e406a88c176",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "9 e^{3}"
+                },
+                {
+                  ":answer/id": "5b832960-da90-5c4f-b433-b1025e63120e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-27 + 27 e^{3}"
+                },
+                {
+                  ":answer/id": "d48a48ad-cc4c-5678-a632-9f30397ed85e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-18 + 18 e^{3}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "799d210a-37e3-5998-a1a4-6ca2430ba808"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x + y^{2},\\quad v=y + 2 z,\\quad w=3 z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\{(u,v,w):0\\le u\\le 3,\\quad 0\\le v\\le 3,\\quad 0\\le w\\le 6\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 2 y & 0 \\\\ 0 & 1 & 2 \\\\ 0 & 0 & 3\\end{vmatrix} \\\\  & =\\left(3\\right)(-1)^{3+3}\\begin{vmatrix}1 & 2 y \\\\ 0 & 1\\end{vmatrix} \\\\  & =\\left(3\\right)\\left(\\left(1\\right)\\cdot \\left(1\\right)-\\left(2 y\\right)\\cdot \\left(0\\right)\\right) \\\\  & =3.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{3}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R \\left(\\left(y + 2 z\\right) e^{x + y^{2}}\\right)\\,\\mathrm{d}V & =\\iiint_\\Delta \\left(v e^{u}\\right)\\cdot \\left|\\frac{1}{3}\\right|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\iiint_\\Delta \\left(\\frac{v e^{u}}{3}\\right)\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{3}\\int_{0}^{3}\\int_{0}^{6}\\left(\\frac{v e^{u}}{3}\\right)\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{3}\\left(\\left[\\frac{v w e^{u}}{3}\\right]_{w=0}^{w=6}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{3}\\left(\\left(\\frac{v \\left(6\\right) e^{u}}{3}\\right)-\\left(\\frac{v \\left(0\\right) e^{u}}{3}\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{3}\\left(\\left(2 v e^{u}\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\int_{0}^{3}\\left(2 v e^{u}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left[v^{2} e^{u}\\right]_{v=0}^{v=3}\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left(\\left(3\\right)^{2} e^{u}\\right)-\\left(\\left(0\\right)^{2} e^{u}\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(\\left(9 e^{u}\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{3}\\left(9 e^{u}\\right)\\,\\mathrm{d}u \\\\  & =\\left[9 e^{u}\\right]_{u=0}^{u=3} \\\\  & =\\left(9 e^{\\left(3\\right)}\\right)-\\left(9 e^{\\left(0\\right)}\\right) \\\\  & =\\left(9 e^{3}\\right)-\\left(9\\right) \\\\  & =-9 + 9 e^{3}\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "triple-change-evaluation-1-audit9837",
+          "python_version": "3.13.5",
+          "sympy_version": "1.14.0",
+          "seed": 983755,
+          "template": "exp",
+          "parameters": {
+            "a": "2",
+            "b": "4",
+            "c": "3",
+            "d": "2",
+            "n": "2",
+            "lu": "0",
+            "hu": "3",
+            "lv": "0",
+            "hv": "3",
+            "lz": "0",
+            "hz": "2"
+          },
+          "bank_profile": "method",
+          "bank_origin": "authored_method",
+          "source_basis": 1356,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_ids": [
+            "17592186374125"
+          ],
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "authored_level": false,
+          "plot_rating": "none",
+          "parameter_fingerprint": "4efce260071a5943f2dc7dab114adb29abc4b0d120f4924a6e173e2fd3e19587",
+          "content_fingerprint": "54ac120fa76e38dc5c4950f7eefdaf398f58ec5650ee8371860bac46f39da88c",
+          "recipes": [
+            "correct",
+            "omit_inverse_jacobian",
+            "use_forward_jacobian",
+            "omit_lower_exponential_endpoint",
+            "omit_v_primitive_denominator"
+          ],
+          "domain": "Globally bijective polynomial/linear shear; constant nonzero determinant; ordered bounded box.",
+          "stages": [
+            {
+              "variable": "w",
+              "input": "v*exp(u)/3",
+              "primitive": "v*w*exp(u)/3",
+              "terms": [
+                "v*w*exp(u)/3"
+              ],
+              "components": [
+                [
+                  "2*v*exp(u)",
+                  "0"
+                ]
+              ],
+              "result": "2*v*exp(u)"
+            },
+            {
+              "variable": "v",
+              "input": "2*v*exp(u)",
+              "primitive": "v**2*exp(u)",
+              "terms": [
+                "v**2*exp(u)"
+              ],
+              "components": [
+                [
+                  "9*exp(u)",
+                  "0"
+                ]
+              ],
+              "result": "9*exp(u)"
+            },
+            {
+              "variable": "u",
+              "input": "9*exp(u)",
+              "primitive": "9*exp(u)",
+              "terms": [
+                "9*exp(u)"
+              ],
+              "components": [
+                [
+                  "9*exp(3)",
+                  "9"
+                ]
+              ],
+              "result": "-9 + 9*exp(3)"
+            }
+          ],
+          "math": {
+            "trans": [
+              "x + y**2",
+              "y + 2*z",
+              "3*z"
+            ],
+            "inverse": [
+              "u - (v - 2*w/3)**2",
+              "v - 2*w/3",
+              "w/3"
+            ],
+            "det": "3",
+            "j": "1/3",
+            "f": "v*exp(u)",
+            "density": "v*exp(u)/3",
+            "bounds": [
+              [
+                "0",
+                "3"
+              ],
+              [
+                "0",
+                "3"
+              ],
+              [
+                "0",
+                "6"
+              ]
+            ],
+            "value": "-9 + 9*exp(3)"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -8,7 +8,7 @@ the requested pointwise integrand criterion explicit. Hard is an authored unequa
 cubic extension of the observed moderate cubic family. All arithmetic uses SymPy.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse,hashlib,json,random,re,sys,uuid,os,tempfile
 from pathlib import Path
 import sympy as sp
@@ -147,7 +147,7 @@ def bank(name,p,profile):
 def render_plots(radius,output_dir=ROOT/'plots'):
  """Atomic deterministic PNG and sidecar; parameter generation never resamples."""
  import matplotlib;matplotlib.use('Agg');import matplotlib.pyplot as plt;import numpy as np
- output_dir=Path(output_dir);output_dir.mkdir(exist_ok=True,parents=True);key=f'circle-{radius}';path=output_dir/(key+'.png');meta=output_dir/(key+'.json')
+ output_dir=_ca_asset_output(Path(output_dir)/'plot').parent;output_dir.mkdir(exist_ok=True,parents=True);key=f'circle-{radius}';path=output_dir/(key+'.png');meta=output_dir/(key+'.json')
  if path.exists()and meta.exists():return str(path.resolve())
  fig,ax=plt.subplots(figsize=(4,3.5),dpi=160);t=np.linspace(0,2*np.pi,500)
  ax.fill(radius*np.cos(t),radius*np.sin(t),color='#d5e8f6');ax.plot(radius*np.cos(t),radius*np.sin(t),color='orange',lw=1.5)

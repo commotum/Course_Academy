@@ -15,7 +15,7 @@ radial evaluation, angular primitive and endpoint arithmetic, with documented
 source repairs and explicit endpoint-detail additions. No DB writes.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse, hashlib, json, os, random, re, sys, tempfile, uuid
 from pathlib import Path
 import sympy as sp
@@ -122,7 +122,7 @@ def render_plots(p,shaded):
  global _PLOT_LOCK
  if _PLOT_LOCK is None:_PLOT_LOCK=threading.RLock()
  data={k:str(p[k])for k in ['s','inner','lo','hi']};data['shaded']=shaded;data['renderer_revision']=3
- key=digest(data); d=BASE/'plots';d.mkdir(exist_ok=True); dst=d/(key+'.png'); side=dst.with_suffix('.json')
+ key=digest(data); d=_ca_asset_output(BASE/'plots'/'plot').parent;d.mkdir(exist_ok=True); dst=d/(key+'.png'); side=dst.with_suffix('.json')
  with _PLOT_LOCK:
   if dst.exists() and side.exists():return str(dst.resolve())
   ro=float(sp.sqrt(p['s']));ri=float(p['inner']);a=float(sp.pi*p['lo']);b=float(sp.pi*p['hi']);ts=np.linspace(a,b,300)

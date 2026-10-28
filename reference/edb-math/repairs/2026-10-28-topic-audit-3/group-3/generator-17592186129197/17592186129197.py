@@ -28,7 +28,7 @@ FAMILIES={'simple':('q-38374','easy'), 'mixed':(None,'moderate'),'quartic':('q-8
 ANCHORS={'q-38374':{'a':1,'h':1,'k':0},'q-82874':{'a':1,'h':1,'k':0},'q-160885':{'a':2,'h':4,'k':1},'q-82878':{'a':1,'h':2,'k':1},'q-83943':{'a':2,'h':1,'k':2},'q-83947':{'a':3,'h':4,'k':-3},'q-160710':{'a':1,'h':2,'k':1}}
 def tex(z):
  return sp.latex(z).replace(r'\log',r'\ln')
-def digest(z):return hashlib.sha256(json.dumps(z,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+def digest(z):return hashlib.sha256(json.dumps(asset_payload(z),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(s):return str(uuid.uuid5(uuid.NAMESPACE_URL,f'{KP}/{s}'))
 def eq(a,b):return sp.simplify(a-b)==0
 def parse(z):

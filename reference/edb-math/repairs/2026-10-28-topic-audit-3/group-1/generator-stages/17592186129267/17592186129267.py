@@ -11,7 +11,7 @@ source Jacobian and bound operations.
 Each section below documents its equal-workload domains. No EDB writes.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid
 from importlib.metadata import version as package_version
 from pathlib import Path
@@ -161,13 +161,13 @@ def substitute(s,t,p):
  return s
 
 def projection(t,p):
- os.environ.setdefault('MPLCONFIGDIR',str(EVIDENCE/'matplotlib-cache'))
+ os.environ.setdefault('MPLCONFIGDIR',str(_ca_asset_output(Path('matplotlib-cache')).parent/'matplotlib-cache'))
  import matplotlib;matplotlib.use('Agg')
  import matplotlib.pyplot as plt
  import numpy as np
  R=float(sp.sqrt(p['S']));a,b,*_=model(t,p)
  key=digest({'renderer':matplotlib.__version__,'renderer_revision':2,'S':p['S'],'a':str(a),'b':str(b)})
- dest=EVIDENCE/'images'/('projection-'+key+'.png');side=dest.with_suffix('.json')
+ dest=_ca_asset_output(EVIDENCE/'images'/('projection-'+key+'.png'));side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest)
  ts=np.linspace(float(a),float(b),400)
  fig,ax=plt.subplots(figsize=(4.5,3.8));ax.set_aspect('equal');ax.set_xlim(-1.8*R,1.8*R);ax.set_ylim(-1.5*R,1.6*R)

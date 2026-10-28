@@ -31,5 +31,14 @@ def identity_material(value):
     def replace(m):
         p=Path(m[1])
         if not p.is_file():return m[0]
-        return '![](sha256:'+hashlib.sha256(p.read_bytes()).hexdigest()+')'
+        return m[0][:m[0].rfind('](')+2]+'sha256:'+hashlib.sha256(p.read_bytes()).hexdigest()+')'
     return re.sub(r'!\[[^\]]*\]\(([^)]+)\)',replace,value)
+
+
+def asset_output(path):
+    # Immutable packages never write generated plots or caches into themselves.
+    import os,tempfile
+    base=Path(os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR',str(Path(tempfile.gettempdir())/'course-academy-generator-assets')))
+    result=base / '17592186129200' / Path(path).name
+    result.parent.mkdir(parents=True,exist_ok=True)
+    return result

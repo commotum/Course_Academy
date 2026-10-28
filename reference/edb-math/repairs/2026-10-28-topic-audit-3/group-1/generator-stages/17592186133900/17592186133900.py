@@ -11,7 +11,7 @@ Normal defaults choose a complete operation bank BEFORE sampling, reject the who
 instance on scalar equivalence, and serve every supported source-shaped family.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 
 # Standalone source eligibility: immutable policy ledger, seeded CLI guard.
 import sys as _ca_sys, os as _ca_os
@@ -92,7 +92,7 @@ RENDER_LOCK=threading.RLock()
 def render_plot(f,p):
  with RENDER_LOCK:return _render_plot(f,p)
 def _render_plot(f,p):
- data={'family':f,'parameters':p,'renderer':'matplotlib','version':matplotlib.__version__,'plot_version':2};key=digest(data);dest=ROOT/'plots';dest.mkdir(exist_ok=True);png=dest/(key+'.png');side=dest/(key+'.json')
+ data={'family':f,'parameters':p,'renderer':'matplotlib','version':matplotlib.__version__,'plot_version':2};key=digest(data);dest=_ca_asset_output(ROOT/'plots'/'plot').parent;dest.mkdir(exist_ok=True);png=dest/(key+'.png');side=dest/(key+'.json')
  if png.exists() and side.exists():return str(png)
  fig,ax=plt.subplots(figsize=(4.0,3.6),dpi=140);ax.set_aspect('equal');edge='#ed9e00';fill='#d6e8f5'
  if f.startswith('annulus'):
@@ -225,9 +225,8 @@ def sample(f,rng):
 def record(level,f,p,profile,prompt,solution,fields,seed,mathkey,extra=None):
  if not str(profile).startswith('observed:'):
   prompt=_ca_problem(prompt);solution=_ca_prose(solution)
-  for f in fields:
-   old=f.get(':answer-field/correct',[None,None])[1];correct_value=next((a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==old),None)
-   for a in f[':answer-field/choices']:a[':answer/value']=_ca_values([a[':answer/value']])[0]
+  for field in fields:
+   for a in field[':answer-field/choices']:a[':answer/value']=_ca_values([a[':answer/value']])[0]
  bank=sorted([{'key':v[':answer-field/key'],'type':v[':answer-field/type'],'values':sorted(a[':answer/value'] for a in v[':answer-field/choices']),'correct':next((a[':answer/value'] for a in v[':answer-field/choices'] if v.get(':answer-field/correct',[None,None])[1]==a[':answer/id']),None)} for v in fields],key=lambda z:z['key']);h=digest([VERSION,level,prompt,solution,bank]);qid=uid(h);out=[]
  for i,v in enumerate(fields):
   correct=v.get(':answer-field/correct');oldcorrect=correct[1] if correct else None;v=dict(v);v[':answer-field/id']=uid(qid+':field:'+str(i));answers=[];newcorrect=None

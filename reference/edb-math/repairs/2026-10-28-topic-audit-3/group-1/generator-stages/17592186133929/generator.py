@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Seeded, database-free divergence-theorem setup generator. See instructional-account.md."""
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse, hashlib, json, random, re, sys, uuid
 from functools import lru_cache
 from pathlib import Path
@@ -30,7 +30,7 @@ CONFIG.update({
  'typeIIlinear':dict(index=10,level='moderate',components=(sp.Integer(1),x*z**3,x*z),outer=((y,-1,1),(z,0,2)),inner=(x,y-z,1+y**2),bank=((3*x*z**2+z,y-z,1+y**2),(x,-1,2),(3*x*z**2+z,-1,2),(x,y-z,1+y**2),(x**2,y-z,1+y**2))),
 })
 from math_format import normalize_prose, normalize_tex, checked_math_content
-def digest(obj):return hashlib.sha256(json.dumps(obj,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+def digest(obj):return hashlib.sha256(json.dumps(_ca_material(obj),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(text):return str(uuid.uuid5(uuid.NAMESPACE_URL,'flux-setup:'+text))
 def tex(e):return sp.latex(sp.sympify(e)).replace(' ', '').replace(r'\log', r'\ln')
 def source_q(t):return SOURCE[CONFIG[t]['index']]

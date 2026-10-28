@@ -12,7 +12,7 @@ import random
 import uuid
 from math_format import checked_math_content, normalize_prose
 
-VERSION = 'vector-fields-5-three-bands'
+VERSION = 'vector-fields-5-three-bands-format-audit-9837-v1'
 ROMANS = ('I', 'II', 'III')
 MASKS = (1, 2, 3, 4, 5, 6)
 BANDS = ('easy', 'moderate', 'hard')

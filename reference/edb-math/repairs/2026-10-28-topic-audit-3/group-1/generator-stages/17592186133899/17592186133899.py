@@ -10,7 +10,7 @@ Three opaque historical values support only common-scaling evidence replay.
 Normal defaults use complete sign-error or omission banks and source masks.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse
 import hashlib
 import json
@@ -133,11 +133,11 @@ def legacy_solution_asset():
     circular holes radius27 centered NE/SW. New arrows are outer CCW/inner CW;
     boundaries stay orange because all stated traversals are positive.
     """
-    target=HERE/'plots'/'legacy-positive.png'
+    target=_ca_asset_output(HERE/'plots'/'legacy-positive.png')
     side=target.with_suffix('.json')
     if target.is_file() and side.is_file(): return str(target)
     import os
-    cache=HERE/'plots'/'matplotlib-cache';cache.mkdir(parents=True,exist_ok=True)
+    cache=_ca_asset_output(HERE/'plots'/'matplotlib-cache');cache.mkdir(parents=True,exist_ok=True)
     os.environ.setdefault('MPLCONFIGDIR',str(cache))
     import matplotlib
     matplotlib.use('Agg')

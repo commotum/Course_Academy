@@ -9,7 +9,7 @@ X=[SYMS[c]for c in'xyz'];B=[SYMS[c]for c in'ijk']
 def maths(text):
  return[m[0][2:-2]if m[0].startswith(('$$',r'\[',r'\('))else m[0][1:-1]for m in MATH.finditer(text)]
 def scalar(tex):
- tex=normalize_source_tex(tex).strip().strip('$').strip().rstrip('.,?');tex=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log)\}',lambda m:'\\'+m[1]+' ',tex);tex=tex.replace('π',r'\pi ').replace('θ',' T').replace(r'\theta',' T').replace('∗',r'\cdot ').replace('⋅',r'\cdot ')
+ tex=normalize_source_tex(tex).replace(r'\,',' ').replace(r'\;',' ').replace(r'\:',' ').strip().strip('$').strip().rstrip('.,?');tex=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log)\}',lambda m:'\\'+m[1]+' ',tex);tex=tex.replace('π',r'\pi ').replace('θ',' T').replace(r'\theta',' T').replace('∗',r'\cdot ').replace('⋅',r'\cdot ')
  # Mathematical font roles do not alter scalar coefficients in this independent algebraic check.
  for _ in range(4):tex=re.sub(r'\\(?:mathbf|boldsymbol|mathit|mathrm)\s*\{([^{}]*)\}',r'{\1}',tex)
  tex=re.sub(r'\\(?:mathbf|boldsymbol|mathit)\s+([A-Za-z])',r'\1',tex)

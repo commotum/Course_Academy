@@ -6,7 +6,7 @@ recipes and source solution stages. See instructional-account.md for repairs.
 No writes, generated images, network calls, or repository runtime imports.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
 sys.dont_write_bytecode = True
@@ -43,7 +43,7 @@ DIMENSIONS={
 }
 LABELS={1:'I only',2:'II only',3:'I and II only',4:'III only',5:'I and III only',6:'II and III only',7:'I, II, and III'}
 def signed(n): return ('+' if n>=0 else '')+str(n)
-def digest(x): return hashlib.sha256(json.dumps(x,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
+def digest(x): return hashlib.sha256(json.dumps(_ca_material(x),sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
 def uid(s):return str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy/'+s))
 def subset(ds):return sum(1<<i for i,(inp,out,_) in enumerate(ds) if inp==out==2)
 def normal_repairs(s,text):

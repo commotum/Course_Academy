@@ -10,7 +10,7 @@ expanded squares, Pythagorean grouping, reduction, factorization, radial/angular
 bounds, full integrand substitution, grouping (radial functions), final integral.
 """
 from __future__ import annotations
-from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material, asset_output as _ca_asset_output
 import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid,threading
 from pathlib import Path
 from functools import lru_cache
@@ -143,13 +143,13 @@ PLOT_LOCK=threading.RLock()
 def projection(t,p):
  with PLOT_LOCK:return _projection(t,p)
 def _projection(t,p):
- os.environ.setdefault('MPLCONFIGDIR',str(EVIDENCE/'matplotlib-cache'))
+ os.environ.setdefault('MPLCONFIGDIR',str(_ca_asset_output(Path('matplotlib-cache')).parent/'matplotlib-cache'))
  import matplotlib;matplotlib.use('Agg')
  from matplotlib.figure import Figure
  from matplotlib.backends.backend_agg import FigureCanvasAgg
  a,b,R,*rest=model(t,p);cx,cy=model(t,p)[9:11]
  key=digest({'a':p['a'],'center':[cx,cy],'angles':[str(a),str(b)],'matplotlib':matplotlib.__version__,'style':2})
- dest=EVIDENCE/'images'/('projection-'+key+'.png');side=dest.with_suffix('.json')
+ dest=_ca_asset_output(EVIDENCE/'images'/('projection-'+key+'.png'));side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest)
  dest.parent.mkdir(parents=True,exist_ok=True)
  ts=np.linspace(float(a),float(b),600);rv=sp.lambdify(theta,R,'numpy')(ts);xx=rv*np.cos(ts);yy=rv*np.sin(ts)
