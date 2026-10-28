@@ -103,7 +103,7 @@ class Parser:
   return a
 
 def parse(s,positive=True):
- s=str(s).strip().rstrip('.,');s=re.sub(r'\\(?:left|right)(?=[()|\[\]])','',s)
+ s=re.sub(r'(?<!\\)[.,]+$', '',str(s).strip());s=re.sub(r'\\(?:left|right)(?=[()|\[\]])','',s)
  return Parser(s,positive).parse()
 def integral_detail(s):
  s=s.strip().strip('$').strip().rstrip('.,?=\\ ');s=re.sub(r'^\\displaystyle\s*','',s)

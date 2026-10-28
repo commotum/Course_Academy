@@ -129,7 +129,7 @@ def one(q,kp):
     isy='h(y)'in value;expected=(r'\exp(-\int h(y)\text{d}y)'if isy else r'\exp(\int g(x)\text{d}x)');got=clean(value);status='symbolically-proved'if('(-\\int'in got)==isy else'candidate';res='derived by product rule exactness criterion';method='integrating-factor theorem argument and sign'
    elif 'partial'in value or'∂'in value:
     # First theorem slot denominator and subtractive sign are checked explicitly.
-    raw=clean(value);isy='h(y)'in pre[-60:];den='P'if isy else'Q';status='symbolically-proved'if r'\frac{1}{'+den+'}'in raw and'-'in raw and'+'not in raw else'candidate';res='I P_y+I_y P=I Q_x for I(y), or I P_y=I_x Q+I Q_x for I(x)';method='exactness theorem'
+    raw=clean(value);isy='h(y)'in p and'g(x)'not in p;den='P'if isy else'Q';status='symbolically-proved'if r'\frac{1}{'+den+'}'in raw and'-'in raw and'+'not in raw else'candidate';res='I P_y+I_y P=I Q_x for I(y), or I P_y=I_x Q+I Q_x for I(x)';method='exactness theorem'
    elif value in ['is',"isn't",'is not']:
     raise ValueError('exactness word requires given-factor context')
    else:

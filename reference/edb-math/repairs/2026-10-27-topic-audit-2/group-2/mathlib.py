@@ -12,6 +12,7 @@ def clean(v):
  v=re.sub(r'\\operatorname\s*\{(sin|cos|tan|sec|csc|cot|ln|log|exp|sinh|cosh|arcsin|arccos|arctan)\}',lambda m:'\\'+m[1]+' ',v)
  v=re.sub(r'\\color\{[^{}]*\}|\\hspace\{[^{}]*\}|\\(?:displaystyle|textstyle|quad|qquad)\b','',v);v=re.sub(r'\\[,;!:]',' ',v)
  v=re.sub(r'(\\(?:ln|log)\s*\{\([^{}]*\)\})\s*\^\s*\{([0-9]+)\}',r'(\1)^{\2}',v)
+ v=re.sub(r'([xy])\\prime\s*',lambda m:m[1]+"'",v)
  v=re.sub(r'\\int(?=[A-Za-z])',lambda m:m[0]+' ',v)
  v=re.sub(r'\{?([xy])\}?\s*\^\s*\{\s*\\prime\s*\}',r"\1'",v)
  v=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log|exp)\}(?=\s*\^)',lambda m:'\\'+m[1]+' ',v)
@@ -54,8 +55,8 @@ def equation(v):
 def ode(problem):
  failures=[]
  for _,v in maths(problem):
-  if not re.search(r'(?:dy|d\s*\}\s*y|prime|′|y\s*\x27)',v):continue
   vv=clean(v)
+  if not re.search(r"dy|y\s*'",vv):continue
   # Initial values and explicit domain clauses follow the ODE in the same display.
   vv=vv.split(',',1)[0]
   vv=re.split(r',\s*(?:y\s*\(|[xy]\s*\\(?:gt|ge|ne)|[xy]\s*[><])',vv)[0]
