@@ -1,0 +1,15 @@
+import json
+from pathlib import Path
+H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());dup=json.loads((H/'duplicate-keys.json').read_text());ev=json.loads((H/'incoming-history-proof.json').read_text());inc={(r['target'],r['history']):r for r in ev['results']};keys={p['entity']:p for p in json.loads((H/'missing-key-proposals.json').read_text())};out=[]
+for row in dup:
+ q=next(q for q in D['questions']if q[':db/id']==row['question']);old=[f for f in row['fields']if ':answer-field/correct'not in f];new=[f for f in row['fields']if ':answer-field/correct'in f];assert len(old)==len(new)==1;old,new=old[0],new[0];ids=[old[':db/id']]+[a[':db/id']for a in old[':answer-field/choices']];refs=[]
+ for target in ids:
+  for history in[False,True]:
+   r=inc[target,history];assert not r['error'];expected_owner=q[':db/id']if target==old[':db/id']else old[':db/id'];expected_attr=1068 if target==old[':db/id']else 1075
+   assert all(x[0]==expected_owner and x[1]==expected_attr for x in r['rows']),(target,r)
+   refs.append({'target':target,'history':history,'rows':r['rows']})
+ before=sorted(f[':db/id']for f in q[':question/answer-fields']);after=[f for f in before if f!=old[':db/id']];assert new[':db/id']in after
+ out.append({'entity':q[':db/id'],'attribute':'question/answer-fields','before':before,'after':after,'operation':'retract-member','retract_value':old[':db/id'],'reason':'Detach an unused stale duplicate-key field from this question. Retain the newer complete field and all old entities, choices and history; independently complete the archived old key separately.','evidence':{'basis_t':9837,'identity':row['identity'],'old_field':old,'retained_field':new,'full_current_field_ids':before,'archived_key_completion':keys[old[':db/id']],'all_current_and_retained_history_incoming_refs':refs,'attributes':{'1068':'question/answer-fields','1075':'answer-field/choices','1078':'answer-field/correct','1146':'task-item/responses'},'current_or_historical_response_refs':0,'other_owners':[],'retention_limit':'Every retained incoming history datom visible at T9837; no claim about data purged before this database history. All inspected field/answer facts have only their expected owner assertion.','proof':'Original old bank is independently solved from full problem; replacement field is already complete. No response is repointed and no learner-entered value is changed.'},'confidence':'high'})
+(H/'membership-proposals.json').write_text(json.dumps(out,indent=2)+'\n');print('membership-only detaches',len(out))
+# The only current strict MathJax error is a preserved historical learner keystroke.
+r=inc[17592186577462,True];assert any(x[1]==1146 for x in r['rows']);(H/'learner-placeholder-preservation.json').write_text(json.dumps({'basis_t':9837,'answer':17592186577462,'question':17592186297398,'identity':'q-314194','value':r'-\left(2x+7\right)^{-\frac{3}{\placeholder{}}}','history':r['rows'],'decision':'Preserve verbatim learner-entered incomplete response and all history. Native UI hides blank answer bank; no authored-choice display repair proposed.'},indent=2)+'\n')

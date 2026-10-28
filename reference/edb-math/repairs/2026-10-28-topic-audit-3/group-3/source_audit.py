@@ -18,13 +18,16 @@ for topic in topics.values():
    ident='e-'+str(item['content_id'])
    if ident in allq:sources[ident].append((str(raw),str(node)))
 for line in (H/'retained-source-paths.txt').read_text().splitlines():
- p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
+ p=Path(line);m=re.search(r'(q-\d+)-(?=[^/]*(?:before|after))[^.]+\.json(?:\.previous)?$|history-(q-\d+)(?:-[^.]+)?\.json(?:\.previous)?$|example-(\d+)(?:-[^.]+)?\.json(?:\.previous)?$',p.name)
  if m and(m[1]or m[2]or'e-'+m[3])in allq:rawpaths.append((m[1]or m[2]or'e-'+m[3],p if p.is_absolute()else R/p))
+identity_checks=[]
 for ident,p in rawpaths:
  if not p.exists():continue
  try:data=json.loads(p.read_text());html=data.get('html')or data.get('raw_html')
  except Exception:continue
- if html:sources[ident].append((str(p),html))
+ if html:
+  soup=BeautifulSoup(html,'html.parser');number=ident.split('-',1)[1];ids=[str(n.get(a))for n in soup.find_all(True)for a in ['questionid','exampleid','id']if n.get(a)is not None];declared=' '.join(str(data.get(k,''))for k in ['dom_id','question_id','questionId','source_id']);identity_ok=any(v==number or re.search(r'(?:q|example|e)[-]?'+re.escape(number)+r'(?:$|[^0-9])',v)for v in ids+[declared]);identity_checks.append({'path':str(p),'expected':ident,'declared_dom_id':declared,'actual_ids':ids[:12],'accepted':identity_ok})
+  if identity_ok:sources[ident].append((str(p),html))
 reports=[];candidates=[];direct=[];source_records=[]
 def plain(v):
  return re.sub(r'\s+|[{}]','',re.sub(r'\\color\{[^{}]+\}','',normalize_source_tex(v))).replace('⁡','').replace(r'\cdot',r'\times')
@@ -59,4 +62,4 @@ for ident,q in allq.items():
    key=(a,str(node))
    if key in hashes:continue
    hashes.add(key);check(q[':db/id'],a,q[':'+a],str(node),path,ident)
-(H/'source-comparisons.json').write_text(json.dumps(reports,indent=2));(H/'source-highlight-candidates.json').write_text(json.dumps(candidates,indent=2));(H/'source-records.json').write_text(json.dumps(source_records,indent=2));(H/'source-manifest.json').write_text(json.dumps({i:[x[0]for x in ss]for i,ss in sources.items()},indent=2));print('source questions',len(sources),'tutorials',len(tutorial_source),'comparisons',len(reports),'exact',sum(bool(r.get('exact_formula_sequence'))for r in reports),'candidates',len(candidates));print('missing',sum(bool(r.get('missing_source'))for r in reports))
+(H/'source-identity-evidence.json').write_text(json.dumps(identity_checks,indent=2));(H/'source-comparisons.json').write_text(json.dumps(reports,indent=2));(H/'source-highlight-candidates.json').write_text(json.dumps(candidates,indent=2));(H/'source-records.json').write_text(json.dumps(source_records,indent=2));(H/'source-manifest.json').write_text(json.dumps({i:[x[0]for x in ss]for i,ss in sources.items()},indent=2));print('source questions',len(sources),'tutorials',len(tutorial_source),'comparisons',len(reports),'exact',sum(bool(r.get('exact_formula_sequence'))for r in reports),'candidates',len(candidates));print('missing',sum(bool(r.get('missing_source'))for r in reports))
