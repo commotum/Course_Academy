@@ -5,21 +5,298 @@
     {
       "band": "easy",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'out'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'out'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'out'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133892,
+          "id": "b0712bb6-c0f8-5551-8362-ae23629aa618",
+          "title": "Constructing Line Integrals With Respect to Y"
+        },
+        "question": {
+          ":question/id": "78ea61cb-50dc-5911-a3f9-af923c025e11",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "![Directed path C](f00ec157211576e0c3bc299d.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C\\left(2 x - 2 y + 1\\right)\\,\\mathrm{d}y\n$$\n\nwhere $C$ is three quarters of the ellipse $\\frac{x^2}{9}+\\frac{y^2}{1}=1$, directed counterclockwise from $A=(0,-1)$ to $B=(-3,0)$, as shown above? Do not evaluate the integral.\n\n*Hint: Use the parametrization $\\mathbf r(t)=\\langle 3 \\cos{t},\\,\\sin{t}\\rangle$.*",
+          ":question/worked-solution": "For a parametrization following the directed path,\n\n$$\n\\int_C f(x,y)\\,\\mathrm{d}y=\\int_a^b f(x(t),y(t))\\,y\\prime(t)\\,\\mathrm{d}t.\n$$\n\nChoose\n\n$$\n\\mathbf r(t)=\\langle 3 \\cos{t},\\,\\sin{t}\\rangle,\\qquad \\frac{3 \\pi}{2}\\le t\\le 3 \\pi.\n$$\n\nThe squared coordinate ratios sum to $\\sin^2 t+\\cos^2 t=1$, so this parametrization lies on the curve. It travels counterclockwise. The endpoints occur at $t=\\frac{3 \\pi}{2}$ and $t=3 \\pi$; the interval covers the specified portion once.\n\nThe signed differential factor is\n\n$$\ny\\prime(t)=\\frac{\\mathrm{d}}{\\mathrm{d}t}\\left(\\sin{t}\\right)=\\cos{t}.\n$$\n\nSubstituting both coordinates into the given function gives\n\n$$\n\\begin{aligned}f(x(t),y(t))&=\\left.\\left(2 x - 2 y + 1\\right)\\right|_{x=3 \\cos{t},\\,y=\\sin{t}}\\\\&=- 2 \\sin{t} + 6 \\cos{t} + 1.\\end{aligned}\n$$\n\nTherefore, retaining the signed derivative,\n\n$$\n\\begin{aligned}&\\int_C f(x,y)\\,\\mathrm{d}y\\\\&\\quad=\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(- 2 \\sin{t} + 6 \\cos{t} + 1\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "bc190879-bfaa-5075-8c9d-4af4e9b87e3b",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "5fe1d564-52f3-5a7b-8952-6da7c6e133ab",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{\\frac{9 \\pi}{4}}\\left(- 2 \\sin{t} + 6 \\cos{t} + 1\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The upper limit stops before the required traversal is complete."
+                },
+                {
+                  ":answer/id": "173553f8-b8f8-55c8-b8f5-250bc6ce9808",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(- 2 \\sin{t} + 6 \\cos{t} + 1\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This expression uses the specified path, substituted function, and signed $y$ derivative."
+                },
+                {
+                  ":answer/id": "62d4ad9e-dac7-5923-9746-8f8bc2ca6c61",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-3\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(- 2 \\sin{t} + 6 \\cos{t} + 1\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This uses $x\\prime(t)$ in place of $y\\prime(t)$."
+                },
+                {
+                  ":answer/id": "67c26e5d-342e-5eeb-ac24-a304e4db7dea",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(- 2 \\sin{t} + 6 \\cos{t} + 1\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The factor $y\\prime(t)$ is missing."
+                },
+                {
+                  ":answer/id": "9cbe55cc-9d04-5030-87f1-4d558826e7fa",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(2 \\sin{t} - 6 \\cos{t} + 1\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The coordinates have been interchanged in the substitution into $f$."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "173553f8-b8f8-55c8-b8f5-250bc6ce9808"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "2.0.3",
+          "seed": 983755,
+          "parameters": {
+            "kind": "ellipse",
+            "family": "linear",
+            "a": 3,
+            "b": 1,
+            "m": 2,
+            "n": -2,
+            "d": 1,
+            "q": 3,
+            "length": 3,
+            "cw": false
+          },
+          "bank_profile": "mixed",
+          "errors": [
+            "half-traversal",
+            "right",
+            "dx",
+            "missing-dy",
+            "swap"
+          ],
+          "resampling_attempts": 0,
+          "source_support": [
+            "tutorial-17592186135123",
+            "q-124266 / q-124279; published hard exemplar"
+          ],
+          "authored_extension": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133892,
+          "id": "b0712bb6-c0f8-5551-8362-ae23629aa618",
+          "title": "Constructing Line Integrals With Respect to Y"
+        },
+        "question": {
+          ":question/id": "dad5e3f2-933b-5c2c-9860-81c7a17b2fae",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "![Directed path C](415c30a8753eb94905d3df63.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C\\left(x^{2} y\\right)\\,\\mathrm{d}y\n$$\n\nwhere $C$ is three quarters of the circle $\\frac{x^2}{1}+\\frac{y^2}{1}=1$, directed clockwise from $A=(-1,0)$ to $B=(0,-1)$, as shown above? Do not evaluate the integral.",
+          ":question/worked-solution": "For a parametrization following the directed path,\n\n$$\n\\int_C f(x,y)\\,\\mathrm{d}y=\\int_a^b f(x(t),y(t))\\,y\\prime(t)\\,\\mathrm{d}t.\n$$\n\nChoose\n\n$$\n\\mathbf r(t)=\\langle \\sin{t},\\,\\cos{t}\\rangle,\\qquad \\frac{3 \\pi}{2}\\le t\\le 3 \\pi.\n$$\n\nThe squared coordinate ratios sum to $\\sin^2 t+\\cos^2 t=1$, so this parametrization lies on the curve. It travels clockwise. The endpoints occur at $t=\\frac{3 \\pi}{2}$ and $t=3 \\pi$; the interval covers the specified portion once.\n\nThe signed differential factor is\n\n$$\ny\\prime(t)=\\frac{\\mathrm{d}}{\\mathrm{d}t}\\left(\\cos{t}\\right)=- \\sin{t}.\n$$\n\nSubstituting both coordinates into the given function gives\n\n$$\n\\begin{aligned}f(x(t),y(t))&=\\left.\\left(x^{2} y\\right)\\right|_{x=\\sin{t},\\,y=\\cos{t}}\\\\&=\\sin^{2}{t} \\cos{t}.\\end{aligned}\n$$\n\nTherefore, retaining the signed derivative,\n\n$$\n\\begin{aligned}&\\int_C f(x,y)\\,\\mathrm{d}y\\\\&\\quad=-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin^{2}{t} \\cos{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "fef3eefa-360d-5c47-9d1d-a8850a921be4",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d0c85f8f-dad3-5e68-90b6-999427c7beb4",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{\\frac{9 \\pi}{4}}\\left(\\sin^{2}{t} \\cos{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The upper limit stops before the required traversal is complete."
+                },
+                {
+                  ":answer/id": "e8ab3be2-0c36-51f2-ada8-ff72f46465ce",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The squared coordinate was used to the first power."
+                },
+                {
+                  ":answer/id": "907e3da2-7b3c-5e2e-bee5-c1714be9229b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos^{2}{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The coordinates have been interchanged in the substitution into $f$."
+                },
+                {
+                  ":answer/id": "b3f72dc5-4445-5020-bd8e-712015d66c70",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(- \\sin^{2}{t} \\cos{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The sign of the $y$ coordinate was changed in the substitution."
+                },
+                {
+                  ":answer/id": "4c8f40eb-138e-5513-b4f6-ecdac963ca79",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin^{2}{t} \\cos{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This expression uses the specified path, substituted function, and signed $y$ derivative."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "4c8f40eb-138e-5513-b4f6-ecdac963ca79"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "2.0.3",
+          "seed": 983755,
+          "parameters": {
+            "kind": "circle",
+            "family": "xxy",
+            "a": 1,
+            "b": 1,
+            "m": 2,
+            "n": -2,
+            "d": 1,
+            "q": 3,
+            "length": 3,
+            "cw": true
+          },
+          "bank_profile": "mixed",
+          "errors": [
+            "half-traversal",
+            "squared-coordinate",
+            "swap",
+            "wrong-y-sign",
+            "right"
+          ],
+          "resampling_attempts": 0,
+          "source_support": [
+            "tutorial-17592186135123",
+            "q-124277"
+          ],
+          "authored_extension": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133892,
+          "id": "b0712bb6-c0f8-5551-8362-ae23629aa618",
+          "title": "Constructing Line Integrals With Respect to Y"
+        },
+        "question": {
+          ":question/id": "73cc2cbb-91c1-5403-896d-091e30782d7e",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "![Directed path C](c399e386e509ee215bedda53.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C\\left(x^{2} y\\right)\\,\\mathrm{d}y\n$$\n\nwhere $C$ is three quarters of the circle $\\frac{x^2}{1}+\\frac{y^2}{1}=1$, directed counterclockwise from $A=(0,-1)$ to $B=(-1,0)$, as shown above? Do not evaluate the integral.",
+          ":question/worked-solution": "For a parametrization following the directed path,\n\n$$\n\\int_C f(x,y)\\,\\mathrm{d}y=\\int_a^b f(x(t),y(t))\\,y\\prime(t)\\,\\mathrm{d}t.\n$$\n\nChoose\n\n$$\n\\mathbf r(t)=\\langle \\cos{t},\\,\\sin{t}\\rangle,\\qquad \\frac{3 \\pi}{2}\\le t\\le 3 \\pi.\n$$\n\nThe squared coordinate ratios sum to $\\sin^2 t+\\cos^2 t=1$, so this parametrization lies on the curve. It travels counterclockwise. The endpoints occur at $t=\\frac{3 \\pi}{2}$ and $t=3 \\pi$; the interval covers the specified portion once.\n\nThe signed differential factor is\n\n$$\ny\\prime(t)=\\frac{\\mathrm{d}}{\\mathrm{d}t}\\left(\\sin{t}\\right)=\\cos{t}.\n$$\n\nSubstituting both coordinates into the given function gives\n\n$$\n\\begin{aligned}f(x(t),y(t))&=\\left.\\left(x^{2} y\\right)\\right|_{x=\\cos{t},\\,y=\\sin{t}}\\\\&=\\sin{t} \\cos^{2}{t}.\\end{aligned}\n$$\n\nTherefore, retaining the signed derivative,\n\n$$\n\\begin{aligned}&\\int_C f(x,y)\\,\\mathrm{d}y\\\\&\\quad=\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos^{2}{t}\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "b1735c94-c46c-587e-a27f-8f643272a98a",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "42982556-0cab-5c45-b9f0-30e1bd6bdd10",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{\\frac{9 \\pi}{4}}\\left(\\sin{t} \\cos^{2}{t}\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The upper limit stops before the required traversal is complete."
+                },
+                {
+                  ":answer/id": "24b370ce-0a7c-5808-9f62-8e00788e5661",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos^{2}{t}\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This expression uses the specified path, substituted function, and signed $y$ derivative."
+                },
+                {
+                  ":answer/id": "daf09023-f601-5c42-b87d-c241c1540e79",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos^{2}{t}\\right)\\left(\\sin{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This uses $x\\prime(t)$ in place of $y\\prime(t)$."
+                },
+                {
+                  ":answer/id": "270c9c05-7e3e-59c6-a4ec-5f01e1e06ccf",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin{t} \\cos^{2}{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The factor $y\\prime(t)$ is missing."
+                },
+                {
+                  ":answer/id": "9bf388d0-21a2-50c6-bdee-59e4b5e97648",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{3 \\pi}{2}}^{3 \\pi}\\left(\\sin^{2}{t} \\cos{t}\\right)\\left(\\cos{t}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "The coordinates have been interchanged in the substitution into $f$."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "24b370ce-0a7c-5808-9f62-8e00788e5661"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "2.0.3",
+          "seed": 983755,
+          "parameters": {
+            "kind": "circle",
+            "family": "xxy",
+            "a": 1,
+            "b": 1,
+            "m": 2,
+            "n": -2,
+            "d": 1,
+            "q": 3,
+            "length": 3,
+            "cw": false
+          },
+          "bank_profile": "mixed",
+          "errors": [
+            "half-traversal",
+            "right",
+            "dx",
+            "missing-dy",
+            "swap"
+          ],
+          "resampling_attempts": 0,
+          "source_support": [
+            "tutorial-17592186135123",
+            "q-124277"
+          ],
+          "authored_extension": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ]
 }

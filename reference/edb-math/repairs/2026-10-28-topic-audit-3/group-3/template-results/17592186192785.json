@@ -5,21 +5,316 @@
     {
       "band": "easy",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192785,
+          "id": "e960f6d1-5006-5ddc-ada2-59b46924bf73",
+          "title": "Applying the Product Rule"
+        },
+        "question": {
+          ":question/id": "a2460ddb-9851-5db5-a9f1-896353da46a8",
+          ":question/problem": "Find $\\dfrac{\\partial f}{\\partial y}$ for $f(x,y)=x^{2} + x y^{2} \\sin{\\left(y \\right)}$.",
+          ":question/worked-solution": "Differentiate with respect to $y$, treating $x$ as constant. Write $f=Cuv+r$, where\n\n$$\n\\begin{aligned}\nC&=x,\\quad r=x^{2}\\\\\nu&=y^{2},\\quad v=\\sin{\\left(y \\right)}\n\\end{aligned}\n$$\n\nUsing the power, sum, and chain rules on the active factors gives\n\n$$\n\\begin{aligned}\nu_y&=2 y\\\\\nv_y&=\\cos{\\left(y \\right)}\\\\\nr_y&=0\n\\end{aligned}\n$$\n\nApply both terms of the product rule:\n\n$$\n\\begin{aligned}\nf_y&=C(u_yv+uv_y)+r_y\\\\\n&=x\\left[\\left(2 y\\right)\\left(\\sin{\\left(y \\right)}\\right)+\\left(y^{2}\\right)\\left(\\cos{\\left(y \\right)}\\right)\\right]+\\left(0\\right)\\\\\n&=x \\left(y^{2} \\cos{\\left(y \\right)} + 2 y \\sin{\\left(y \\right)}\\right)\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "7a889c07-0c79-5a48-a738-e72350c934fe",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "2bb57580-9bee-517c-ba7e-d5fd2207aa40",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x \\left(2 y^{2} \\sin{\\left(y \\right)} + y^{2} \\cos{\\left(y \\right)}\\right)"
+                },
+                {
+                  ":answer/id": "848fb8c5-5d16-5c96-b8c2-0a9c2325ba31",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x y^{2} \\cos{\\left(y \\right)} - 2 x y \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "91a97a2b-5c8f-5c9a-a07c-6de23c5b9b54",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2 x y \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "111c471b-c993-551c-a72e-adac58f37268",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x \\left(y^{2} \\cos{\\left(y \\right)} + 2 y \\sin{\\left(y \\right)}\\right)"
+                },
+                {
+                  ":answer/id": "5745fa1e-b164-5369-9899-2ce8290050c4",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x y^{2} \\cos{\\left(y \\right)}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "111c471b-c993-551c-a72e-adac58f37268"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": 1,
+          "family": "sin_constant",
+          "target": "y",
+          "source_question_ids": [
+            "33a806e4-8348-5f3d-a738-c2a4c7316b98"
+          ],
+          "authored_bank_profile": [
+            "omit_left",
+            "omit_right",
+            "subtract_left",
+            "keep_power"
+          ],
+          "parameters": {
+            "n": "2",
+            "m": "2",
+            "k": "2",
+            "sign": "1"
+          },
+          "domain": "",
+          "point": null,
+          "derivation": {
+            "constant": "x",
+            "left": "y**2",
+            "right": "sin(y)",
+            "remainder": "x**2",
+            "left_derivative": "2*y",
+            "right_derivative": "cos(y)",
+            "final": "x \\left(y^{2} \\cos{\\left(y \\right)} + 2 y \\sin{\\left(y \\right)}\\right)"
+          },
+          "choice_errors": {
+            "2bb57580-9bee-517c-ba7e-d5fd2207aa40": "keep_power",
+            "848fb8c5-5d16-5c96-b8c2-0a9c2325ba31": "subtract_left",
+            "91a97a2b-5c8f-5c9a-a07c-6de23c5b9b54": "omit_right",
+            "111c471b-c993-551c-a72e-adac58f37268": "correct",
+            "5745fa1e-b164-5369-9899-2ce8290050c4": "omit_left"
+          },
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192785,
+          "id": "e960f6d1-5006-5ddc-ada2-59b46924bf73",
+          "title": "Applying the Product Rule"
+        },
+        "question": {
+          ":question/id": "8f28400f-7b5b-564e-9b31-ac5b73b6b9da",
+          ":question/problem": "For $f(x,y)=\\left(x + y^{2}\\right) \\left(- y + \\sqrt{x^{2} + y^{2}}\\right)$, evaluate $f_y(4,3)$. Assume $(x,y)\\ne(0,0)$.",
+          ":question/worked-solution": "Differentiate with respect to $y$, treating $x$ as constant. Write $f=Cuv+r$, where\n\n$$\n\\begin{aligned}\nC&=1,\\quad r=0\\\\\nu&=x + y^{2},\\quad v=- y + \\sqrt{x^{2} + y^{2}}\n\\end{aligned}\n$$\n\nUsing the power, sum, and chain rules on the active factors gives\n\n$$\n\\begin{aligned}\nu_y&=2 y\\\\\nv_y&=\\frac{y}{\\sqrt{x^{2} + y^{2}}} - 1\\\\\nr_y&=0\n\\end{aligned}\n$$\n\nApply both terms of the product rule:\n\n$$\n\\begin{aligned}\nf_y&=C(u_yv+uv_y)+r_y\\\\\n&=2 y \\left(- y + \\sqrt{x^{2} + y^{2}}\\right)\\\\\n&\\quad +\\left(\\left(x + y^{2}\\right) \\left(\\frac{y}{\\sqrt{x^{2} + y^{2}}} - 1\\right)\\right)\n\\end{aligned}\n$$\n\nNow substitute $x=4$ and $y=3$ and combine the exact values:\n\n$$\n\\begin{aligned}\nf_y(4,3)&=\\left(6\\right)\\left(2\\right)+\\left(13\\right)\\left(- \\frac{2}{5}\\right)\\\\\n&=\\frac{34}{5}\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "8d317c16-404a-5c09-893c-5ed7305baafd",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "12f0266d-d7d1-53e7-972e-ae80a2327f1b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{94}{5}"
+                },
+                {
+                  ":answer/id": "e4cc8a46-c24d-5d2e-b67e-8e082a936568",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{34}{5}"
+                },
+                {
+                  ":answer/id": "04c24226-7b1a-50cd-a1c1-0d252c912edb",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{154}{5}"
+                },
+                {
+                  ":answer/id": "a8cfbadd-57ac-5d17-acca-62bc96105dfb",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "12"
+                },
+                {
+                  ":answer/id": "584a5dd2-8330-53e7-b8c0-7d1b2af59887",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{8}{5}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "e4cc8a46-c24d-5d2e-b67e-8e082a936568"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": 1,
+          "family": "group_radical",
+          "target": "y",
+          "source_question_ids": [
+            "477db031-06da-516b-adcf-00a254df15d0"
+          ],
+          "authored_bank_profile": [
+            "double_left",
+            "double_right",
+            "keep_power",
+            "omit_right"
+          ],
+          "parameters": {
+            "n": "3",
+            "m": "2",
+            "k": "3",
+            "sign": "-1"
+          },
+          "domain": "Assume $(x,y)\\ne(0,0)$.",
+          "point": {
+            "y": "3",
+            "x": "4"
+          },
+          "derivation": {
+            "constant": "1",
+            "left": "x + y**2",
+            "right": "-y + sqrt(x**2 + y**2)",
+            "remainder": "0",
+            "left_derivative": "2*y",
+            "right_derivative": "y/sqrt(x**2 + y**2) - 1",
+            "final": "\\frac{34}{5}"
+          },
+          "choice_errors": {
+            "12f0266d-d7d1-53e7-972e-ae80a2327f1b": "double_left",
+            "e4cc8a46-c24d-5d2e-b67e-8e082a936568": "correct",
+            "04c24226-7b1a-50cd-a1c1-0d252c912edb": "keep_power",
+            "a8cfbadd-57ac-5d17-acca-62bc96105dfb": "omit_right",
+            "584a5dd2-8330-53e7-b8c0-7d1b2af59887": "double_right"
+          },
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192785,
+          "id": "e960f6d1-5006-5ddc-ada2-59b46924bf73",
+          "title": "Applying the Product Rule"
+        },
+        "question": {
+          ":question/id": "ac518042-adf6-5a97-a21c-329240f11e21",
+          ":question/problem": "For $f(x,y)=x y \\cos{\\left(y \\right)} - \\sin{\\left(y \\right)}$, evaluate $f_y(2,\\pi)$.",
+          ":question/worked-solution": "Differentiate with respect to $y$, treating $x$ as constant. Write $f=Cuv+r$, where\n\n$$\n\\begin{aligned}\nC&=x,\\quad r=- \\sin{\\left(y \\right)}\\\\\nu&=y,\\quad v=\\cos{\\left(y \\right)}\n\\end{aligned}\n$$\n\nUsing the power, sum, and chain rules on the active factors gives\n\n$$\n\\begin{aligned}\nu_y&=1\\\\\nv_y&=- \\sin{\\left(y \\right)}\\\\\nr_y&=- \\cos{\\left(y \\right)}\n\\end{aligned}\n$$\n\nApply both terms of the product rule:\n\n$$\n\\begin{aligned}\nf_y&=C(u_yv+uv_y)+r_y\\\\\n&=x\\left[\\left(1\\right)\\left(\\cos{\\left(y \\right)}\\right)+\\left(y\\right)\\left(- \\sin{\\left(y \\right)}\\right)\\right]+\\left(- \\cos{\\left(y \\right)}\\right)\\\\\n&=x \\left(- y \\sin{\\left(y \\right)} + \\cos{\\left(y \\right)}\\right) - \\cos{\\left(y \\right)}\n\\end{aligned}\n$$\n\nNow substitute $x=2$ and $y=\\pi$ and combine the exact values:\n\n$$\n\\begin{aligned}\nf_y(2,\\pi)&=2\\left[\\left(1\\right)\\left(-1\\right)+\\left(\\pi\\right)\\left(0\\right)\\right]+\\left(1\\right)\\\\\n&=-1\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "0d1a827e-c5ba-5562-8c8e-4dcebd2d4e82",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "61a8e163-081a-571d-a720-cb41184a9787",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-2"
+                },
+                {
+                  ":answer/id": "e020d4db-525a-5908-bfee-69dfefcbeda5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-3"
+                },
+                {
+                  ":answer/id": "791740ea-3e43-53f9-aa04-97f7e96008b3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 2 \\pi"
+                },
+                {
+                  ":answer/id": "8d169f37-5cd0-54d1-9c6f-d07eaec7040b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-1"
+                },
+                {
+                  ":answer/id": "b5a0b370-9448-591f-8bb2-a074711fb82b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\pi"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "8d169f37-5cd0-54d1-9c6f-d07eaec7040b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": 1,
+          "family": "trig_eval",
+          "target": "y",
+          "source_question_ids": [
+            "e7a86e6a-207f-552d-b9da-b1e5c673da4e"
+          ],
+          "authored_bank_profile": [
+            "wrong_variable",
+            "keep_function",
+            "negate_remainder",
+            "keep_remainder"
+          ],
+          "parameters": {
+            "n": "3",
+            "m": "2",
+            "k": "4",
+            "sign": "-1"
+          },
+          "domain": "",
+          "point": {
+            "y": "pi",
+            "x": "2"
+          },
+          "derivation": {
+            "constant": "x",
+            "left": "y",
+            "right": "cos(y)",
+            "remainder": "-sin(y)",
+            "left_derivative": "1",
+            "right_derivative": "-sin(y)",
+            "final": "-1"
+          },
+          "choice_errors": {
+            "61a8e163-081a-571d-a720-cb41184a9787": "keep_remainder",
+            "e020d4db-525a-5908-bfee-69dfefcbeda5": "negate_remainder",
+            "791740ea-3e43-53f9-aa04-97f7e96008b3": "keep_function",
+            "8d169f37-5cd0-54d1-9c6f-d07eaec7040b": "correct",
+            "b5a0b370-9448-591f-8bb2-a074711fb82b": "wrong_variable"
+          },
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755
+        }
+      }
+    }
+  ]
 }

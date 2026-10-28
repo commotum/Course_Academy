@@ -1,0 +1,90 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124574,
+      "id": "90458c6e-3d72-5235-a1c0-627fe4fd2855",
+      "title": "Reconstructing a Three-Variable Function From Its Gradient"
+    },
+    "question": {
+      ":question/id": "524c64b6-5625-5230-815e-77f2ef142d39",
+      ":question/problem": "Find $f(x,y,z)$ such that $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ where\n\n$$\n\\begin{aligned}\\mathbf{F}(x,y,z)&=\\left(- 2 y\\right)\\,\\mathbf{i} \\\\ &{}+\\left(- 2 x + z\\right)\\,\\mathbf{j} \\\\ &{}+\\left(y - 1\\right)\\,\\mathbf{k}.\\end{aligned}\n$$",
+      ":question/worked-solution": "The gradient of the function $f(x,y,z)$ is defined as\n\n$$\n\\nabla f(x,y,z)=\\frac{\\partial f}{\\partial x}\\,\\mathbf{i}+\\frac{\\partial f}{\\partial y}\\,\\mathbf{j}+\\frac{\\partial f}{\\partial z}\\,\\mathbf{k}.\n$$\n\nSince $\\nabla f(x,y,z)=\\mathbf{F}(x,y,z),$ the function $f(x,y,z)$ must satisfy the following system:\n\n$$\n\\begin{aligned}\\frac{\\partial f}{\\partial x}&=- 2 y \\\\ \\frac{\\partial f}{\\partial y}&=- 2 x + z \\\\ \\frac{\\partial f}{\\partial z}&=y - 1\\end{aligned}\n$$\n\nFirst, we integrate $\\frac{\\partial f}{\\partial x}$ with respect to $x.$ Note that the solution should contain an arbitrary function of $y$ and $z:$\n\n$$\n\\begin{aligned}f(x,y,z)&=\\int \\frac{\\partial f}{\\partial x}\\,\\mathrm{d}x \\\\ &=\\int \\left(- 2 y\\right)\\,\\mathrm{d}x \\\\ &=- 2 x y+g(y,z)\\end{aligned}\n$$\n\nNow, differentiating the above expression with respect to $y,$ we obtain\n\n$$\n\\frac{\\partial f}{\\partial y}=- 2 x+\\frac{\\partial g}{\\partial y}.\n$$\n\nTaking $\\frac{\\partial f}{\\partial y}=- 2 x + z$ into account, we obtain\n\n$$\n\\begin{aligned}- 2 x+\\frac{\\partial g}{\\partial y}&=- 2 x + z \\\\ \\frac{\\partial g}{\\partial y}&=z\\end{aligned}\n$$\n\nNow, we integrate $\\frac{\\partial g}{\\partial y}$ with respect to $y.$ Note that the solution should contain an arbitrary function of $z:$\n\n$$\n\\begin{aligned}g(y,z)&=\\int \\frac{\\partial g}{\\partial y}\\,\\mathrm{d}y \\\\ &=\\int \\left(z\\right)\\,\\mathrm{d}y \\\\ &=y z+h(z)\\end{aligned}\n$$\n\nSubstituting $g(y,z)=y z+h(z)$ in the expression for $f(x,y,z),$ we get\n\n$$\nf(x,y,z)=- 2 x y + y z+h(z).\n$$\n\nTo determine the function $h(z),$ we differentiate $f(x,y,z)$ with respect to $z.$ This gives\n\n$$\n\\frac{\\partial f}{\\partial z}=y+h'(z).\n$$\n\nComparing this derivative with the third component and subtracting the known terms gives\n\n$$\n\\begin{aligned}h'(z)&=-1 \\\\ h(z)&=- z+C\\end{aligned}\n$$\n\nwhere $C$ is a constant.\n\nConsequently,\n\n$$\nf(x,y,z)=- 2 x y + y z - z+C.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5152ebfb-857c-561c-80fa-b4eec0ea37c0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6cd441f0-33e0-539d-be7b-09e1b8751717",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 x y + z+C"
+            },
+            {
+              ":answer/id": "24c2d77f-2a3b-5e3b-8f9a-4fd15938f719",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 x y + 2 y z - 2 z+C"
+            },
+            {
+              ":answer/id": "ab0c4d30-eb63-556e-bb09-e780b3295f85",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 x y - y z+C"
+            },
+            {
+              ":answer/id": "26c3716d-d608-5bec-8509-3643a27c5395",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 x y + y z - z+C"
+            },
+            {
+              ":answer/id": "01f90fbd-c8a0-5681-9f84-f4741e605795",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "f(x,y,z)=- 2 x y - 2 y z + 2 z+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "26c3716d-d608-5bec-8509-3643a27c5395"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy"
+    },
+    "generation": {
+      "generator_version": "2.0.0",
+      "template": "easy:p0",
+      "profile": "easy:p0",
+      "source_question_id": "b00bfeb0-ca4e-5b6e-8b0c-afb0a62e4170",
+      "source_difficulty": null,
+      "source_basis": 7951,
+      "seed": 27102891,
+      "parameters": {
+        "a": -2,
+        "b": -1,
+        "n": null,
+        "role": 3,
+        "position": 3,
+        "order_seed": 3709223943
+      },
+      "domain": "R^3",
+      "choice_recipes": [
+        "C - 2*x*y + z",
+        "C - 2*x*y + 2*y*z - 2*z",
+        "C - 2*x*y - y*z",
+        "C - 2*x*y + y*z - z",
+        "C - 2*x*y - 2*y*z + 2*z"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "packages": {
+          "sympy": "1.14.0"
+        }
+      },
+      "math_format": "course-academy-tex-v1",
+      "residual_coefficients": [
+        1,
+        -1
+      ],
+      "source_notation_version": "source-vector-fonts-2026-10-28-v1"
+    }
+  }
+]

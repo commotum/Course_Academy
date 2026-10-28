@@ -1,0 +1,368 @@
+{
+  "source": "/tmp/ca-9837-g3-i5vwsbsy/17592186179724/a/package/generator.py",
+  "pools": [],
+  "results": [
+    {
+      "band": "easy",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    }
+  ],
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179724,
+          "id": "189f51d6-494f-515a-bf77-59496421b093",
+          "title": "Constructing a Line Integral Along a Segment in the Cartesian Plane"
+        },
+        "question": {
+          ":question/id": "78119916-85ee-569a-8774-5fcca61d54dc",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Let $C$ be the straight segment from $A=(2,3)$ to $B=(2,2)$. Let $f(x,y)=e^{x+y}$. Which definite integral is equivalent to $\\int_C f(x,y)\\,\\mathrm{d}s$? Do not evaluate the integral.",
+          ":question/worked-solution": "The endpoint position vectors give\n\n$$\n\\begin{aligned}\n\\mathbf r(t)&=\\mathbf a+t(\\mathbf b-\\mathbf a)\\\\\n&=\\langle 2,- t + 3\\rangle,\\qquad 0\\le t\\le1.\n\\end{aligned}\n$$\n\nAt $t=0$ and $t=1$ this gives $A=(2,3)$ and $B=(2,2)$, respectively.\n\nDifferentiate, compute the speed, and substitute both coordinates:\n\n$$\n\\begin{aligned}\n\\mathbf r'(t)&=\\langle 0,-1\\rangle,\\\\\n\\|\\mathbf r'(t)\\|&=\\sqrt{(0)^2+(-1)^2}=1,\\\\\nf(\\mathbf r(t))&=e^{(2)+(- t + 3)}\\\\\n&=e^{- t + 5}.\n\\end{aligned}\n$$\n\nUsing the scalar arc-length formula,\n\n$$\n\\begin{aligned}\n\\int_C f(x,y)\\,\\mathrm{d}s&=\\int_{0}^{1}f(\\mathbf r(t))\\,\\|\\mathbf r'(t)\\|\\,\\mathrm{d}t,\\\\\n&=\\int_{0}^{1}\\left(e^{- t + 5}\\right)\\,\\mathrm{d}t.\n\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "e9666430-37fb-5b30-92e0-f2856748c4de",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "84ccc981-d1ec-5a14-b3c4-0b59d73e794f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2 \\sqrt{2}\\int_{0}^{1}\\left(e^{2 t + 5}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; endpoint-y-rate."
+                },
+                {
+                  ":answer/id": "9c0f9ff4-39d5-569c-9662-29d6d7937189",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1}\\left(e^{- t + 5}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "Use both coordinate substitutions, the positive speed, and the parameter interval."
+                },
+                {
+                  ":answer/id": "84d02f2a-6126-5424-8890-ab4d1ceb746b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1}\\left(e^{t + 5}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses endpoint-x-rate."
+                },
+                {
+                  ":answer/id": "2ac0a4c6-df9d-5f69-bba6-8d9610c4d8c3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2 \\sqrt{2}\\int_{0}^{1}\\left(e^{t + 5}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; endpoint-x-rate."
+                },
+                {
+                  ":answer/id": "08030b19-6d3a-5de4-8afd-0b755e2e88fa",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2 \\sqrt{2}\\int_{0}^{1}\\left(e^{- t + 5}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; correct coordinate substitution."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "9c0f9ff4-39d5-569c-9662-29d6d7937189"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segment-construction-4",
+          "seed": 7379954926128181334,
+          "template": "exp",
+          "bank_profile": "misleading-factor",
+          "correct_speed_occurrences": 2,
+          "correct_interval_occurrences": 5,
+          "correct_numerical_rank": 0,
+          "parameters": {
+            "a": [
+              2,
+              3
+            ],
+            "b": [
+              2,
+              2
+            ],
+            "lo": 0,
+            "hi": 1,
+            "reverse": false,
+            "errors": [
+              "endpoint-x-rate",
+              "endpoint-y-rate"
+            ],
+            "wrong_factor": "endpoint"
+          },
+          "source_question_ids": [
+            "q-123283"
+          ],
+          "source_basis": 7781,
+          "authored_extension": true,
+          "mathematical_task_fingerprint": "2a158b545a2bfe31035f335804b002d4231cb06ce24d2cdf9b2eaa82c44dd9aa",
+          "plot_rating": "none",
+          "domain": "Entire straight segment; every logarithm argument is positive",
+          "derivation": {
+            "x": "2",
+            "y": "- t + 3",
+            "speed": "1",
+            "substitution": "e^{(2)+(- t + 3)}",
+            "pullback": "e^{- t + 5}",
+            "final": "\\int_{0}^{1}\\left(e^{- t + 5}\\right)\\,\\mathrm{d}t",
+            "conversions": [
+              "coordinate substitution",
+              "polynomial expansion / affine argument collection"
+            ],
+            "support": [
+              "tutorial 5786",
+              "e-12445",
+              "q-123283"
+            ]
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179724,
+          "id": "189f51d6-494f-515a-bf77-59496421b093",
+          "title": "Constructing a Line Integral Along a Segment in the Cartesian Plane"
+        },
+        "question": {
+          ":question/id": "186de298-0dab-5c10-83c8-242fd0c308ab",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "![Segment C from A(3,1) to B(5,-1).](segment-v2-dfa2bcd331bca4361529.png)\n\nThe figure gives the endpoints of the straight segment $C$, traversed from $A$ to $B$. Let $f(x,y)=e^{x+y}$. Use the parameterization\n\n$$\n\\mathbf r(u)=\\langle - u + 6,u - 2\\rangle.\n$$\n\nDetermine its parameter interval from the endpoints. Which definite integral, with increasing limits and parameter $u$, is equivalent to $\\int_C f(x,y)\\,\\mathrm{d}s$? Do not evaluate the integral.",
+          ":question/worked-solution": "The endpoints are $A=(3,1)$ and $B=(5,-1)$.\n\n$$\n\\begin{aligned}\n\\mathbf r(1)&=\\langle 5,-1\\rangle,\\\\\n\\mathbf r(3)&=\\langle 3,1\\rangle.\n\\end{aligned}\n$$\n\nThus $1\\le u\\le 3$ covers the segment from $B$ to $A$. Reversing traversal does not negate a scalar arc-length integral; its speed is positive.\n\nDifferentiate, compute the speed, and substitute both coordinates:\n\n$$\n\\begin{aligned}\n\\mathbf r'(u)&=\\langle -1,1\\rangle,\\\\\n\\|\\mathbf r'(u)\\|&=\\sqrt{(-1)^2+(1)^2}=\\sqrt{2},\\\\\nf(\\mathbf r(u))&=e^{(- u + 6)+(u - 2)}\\\\\n&=e^{4}.\n\\end{aligned}\n$$\n\nUsing the scalar arc-length formula,\n\n$$\n\\begin{aligned}\n\\int_C f(x,y)\\,\\mathrm{d}s&=\\int_{1}^{3}f(\\mathbf r(u))\\,\\|\\mathbf r'(u)\\|\\,\\mathrm{d}u,\\\\\n&=\\sqrt{2}\\int_{1}^{3}\\left(e^{4}\\right)\\,\\mathrm{d}u.\n\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "af2e8ca7-884b-5039-a38b-8d4e55f2b5b5",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a490afb6-b100-54d3-b1bd-77bb5b7af03b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{2}\\int_{0}^{1}\\left(e^{- u + 5}\\right)\\,\\mathrm{d}u",
+                  ":answer/feedback": "This alternative uses freeze-y; default interval rather than endpoint interval."
+                },
+                {
+                  ":answer/id": "88436fb7-d7f3-580e-924e-c116c153bad5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{2}\\int_{1}^{3}\\left(e^{4}\\right)\\,\\mathrm{d}u",
+                  ":answer/feedback": "Use both coordinate substitutions, the positive speed, and the parameter interval."
+                },
+                {
+                  ":answer/id": "a3c11eac-703b-50e9-8631-c00402ef1622",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{2}\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}u",
+                  ":answer/feedback": "This alternative uses default interval rather than endpoint interval."
+                },
+                {
+                  ":answer/id": "ba84d3fc-0fb7-5365-87c6-52a84b0d3aad",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{26}\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}u",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; default interval rather than endpoint interval."
+                },
+                {
+                  ":answer/id": "0a431ffd-c78c-5147-8ef2-e9beb3442a84",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{26}\\int_{1}^{3}\\left(e^{- u + 5}\\right)\\,\\mathrm{d}u",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; freeze-y."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "88436fb7-d7f3-580e-924e-c116c153bad5"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segment-construction-4",
+          "seed": 7379954926128181334,
+          "template": "exp",
+          "bank_profile": "misleading-factor",
+          "correct_speed_occurrences": 3,
+          "correct_interval_occurrences": 2,
+          "correct_numerical_rank": 2,
+          "parameters": {
+            "a": [
+              3,
+              1
+            ],
+            "b": [
+              5,
+              -1
+            ],
+            "lo": 1,
+            "hi": 3,
+            "reverse": true,
+            "errors": [
+              "reverse-x-rate",
+              "freeze-y"
+            ],
+            "wrong_factor": "endpoint"
+          },
+          "source_question_ids": [
+            "q-123283"
+          ],
+          "source_basis": 7781,
+          "authored_extension": true,
+          "mathematical_task_fingerprint": "ee504c69e7d75a149493182eafa10ea3b63d6ed6924ceb077c5cef3e0bc60c6c",
+          "plot_rating": "light",
+          "domain": "Entire straight segment; every logarithm argument is positive",
+          "derivation": {
+            "x": "- u + 6",
+            "y": "u - 2",
+            "speed": "\\sqrt{2}",
+            "substitution": "e^{(- u + 6)+(u - 2)}",
+            "pullback": "e^{4}",
+            "final": "\\sqrt{2}\\int_{1}^{3}\\left(e^{4}\\right)\\,\\mathrm{d}u",
+            "conversions": [
+              "coordinate substitution",
+              "polynomial expansion / affine argument collection"
+            ],
+            "support": [
+              "tutorial 5786",
+              "e-12445",
+              "q-123283"
+            ]
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179724,
+          "id": "189f51d6-494f-515a-bf77-59496421b093",
+          "title": "Constructing a Line Integral Along a Segment in the Cartesian Plane"
+        },
+        "question": {
+          ":question/id": "c2ce44f1-2b0c-5dca-986b-7f5183f022e3",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "![Segment C from A(3,1) to B(4,0).](segment-v2-167bfde2b752eb3122e5.png)\n\nThe figure gives the endpoints of the straight segment $C$, traversed from $A$ to $B$. Let $f(x,y)=e^{x+y}$. Which definite integral is equivalent to $\\int_C f(x,y)\\,\\mathrm{d}s$? Do not evaluate the integral.",
+          ":question/worked-solution": "The endpoint position vectors give\n\n$$\n\\begin{aligned}\n\\mathbf r(t)&=\\mathbf a+t(\\mathbf b-\\mathbf a)\\\\\n&=\\langle t + 3,- t + 1\\rangle,\\qquad 0\\le t\\le1.\n\\end{aligned}\n$$\n\nAt $t=0$ and $t=1$ this gives $A=(3,1)$ and $B=(4,0)$, respectively.\n\nDifferentiate, compute the speed, and substitute both coordinates:\n\n$$\n\\begin{aligned}\n\\mathbf r'(t)&=\\langle 1,-1\\rangle,\\\\\n\\|\\mathbf r'(t)\\|&=\\sqrt{(1)^2+(-1)^2}=\\sqrt{2},\\\\\nf(\\mathbf r(t))&=e^{(t + 3)+(- t + 1)}\\\\\n&=e^{4}.\n\\end{aligned}\n$$\n\nUsing the scalar arc-length formula,\n\n$$\n\\begin{aligned}\n\\int_C f(x,y)\\,\\mathrm{d}s&=\\int_{0}^{1}f(\\mathbf r(t))\\,\\|\\mathbf r'(t)\\|\\,\\mathrm{d}t,\\\\\n&=\\sqrt{2}\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}t.\n\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "605ca259-d83f-5997-ac9d-9a1b97c7bb30",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d22f2ed3-94e1-537c-ae45-50f37daab420",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4\\int_{0}^{1}\\left(e^{t + 4}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; freeze-y."
+                },
+                {
+                  ":answer/id": "aabbb8cf-b6c1-5ba1-83a1-bf0313026602",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{2}\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "Use both coordinate substitutions, the positive speed, and the parameter interval."
+                },
+                {
+                  ":answer/id": "31e49644-7022-55e3-a4a2-7a08707b10b8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{2}\\int_{0}^{1}\\left(e^{- 2 t + 4}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses reverse-x-rate."
+                },
+                {
+                  ":answer/id": "e11c6091-d5d3-5c57-96ea-a75b99dded84",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4\\int_{0}^{1}\\left(e^{- 2 t + 4}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; reverse-x-rate."
+                },
+                {
+                  ":answer/id": "b8b52c43-d5d6-5a55-aee2-d73cdeb67c14",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}t",
+                  ":answer/feedback": "This alternative uses wrong speed: endpoint; correct coordinate substitution."
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "aabbb8cf-b6c1-5ba1-83a1-bf0313026602"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segment-construction-4",
+          "seed": 7379954926128181334,
+          "template": "exp",
+          "bank_profile": "misleading-factor",
+          "correct_speed_occurrences": 2,
+          "correct_interval_occurrences": 5,
+          "correct_numerical_rank": 1,
+          "parameters": {
+            "a": [
+              3,
+              1
+            ],
+            "b": [
+              4,
+              0
+            ],
+            "lo": 0,
+            "hi": 1,
+            "reverse": false,
+            "errors": [
+              "reverse-x-rate",
+              "freeze-y"
+            ],
+            "wrong_factor": "endpoint"
+          },
+          "source_question_ids": [
+            "q-123283"
+          ],
+          "source_basis": 7781,
+          "authored_extension": true,
+          "mathematical_task_fingerprint": "753589de41c054127f2a9540c9c5392f50f037830a2e9995728c9a43da718c01",
+          "plot_rating": "light",
+          "domain": "Entire straight segment; every logarithm argument is positive",
+          "derivation": {
+            "x": "t + 3",
+            "y": "- t + 1",
+            "speed": "\\sqrt{2}",
+            "substitution": "e^{(t + 3)+(- t + 1)}",
+            "pullback": "e^{4}",
+            "final": "\\sqrt{2}\\int_{0}^{1}\\left(e^{4}\\right)\\,\\mathrm{d}t",
+            "conversions": [
+              "coordinate substitution",
+              "polynomial expansion / affine argument collection"
+            ],
+            "support": [
+              "tutorial 5786",
+              "e-12445",
+              "q-123283"
+            ]
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ]
+}

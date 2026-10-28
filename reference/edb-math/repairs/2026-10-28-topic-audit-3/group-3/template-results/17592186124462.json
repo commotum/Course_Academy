@@ -1,0 +1,326 @@
+{
+  "source": "/tmp/ca-9837-g3-i5vwsbsy/17592186124462/a/package/generator.py",
+  "pools": [
+    {
+      "pool": "DATA",
+      "keys": [
+        "q-36339",
+        "q-65173",
+        "q-130718",
+        "q-130723",
+        "q-130724",
+        "q-36347",
+        "q-71385",
+        "q-71388",
+        "q-71390",
+        "q-71393",
+        "q-71394",
+        "q-71386",
+        "q-71389",
+        "q-130719",
+        "q-130721",
+        "q-130720",
+        "q-130722"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "band": "easy",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    }
+  ],
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186124462,
+          "id": "3b2f7fab-cebe-519a-83e3-a0831cac289d",
+          "title": "Finding the Equation of the Normal Line to a Plane Curve Using the Gradient"
+        },
+        "question": {
+          ":question/id": "9e0c6876-b1a4-5102-a706-2d6c5f85581d",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the plane curve $2 x^{2} + 3 y^{2}=5.$ Find an equation of the normal line to the curve at $(1,-1).$\n\nUse $f(x,y)=2 x^{2} + 3 y^{2}.$ The nonzero gradient gives the direction of the normal line. A line through $(x_0,y_0)$ parallel to $\\left\\langle a,b\\right\\rangle$ satisfies $b(x-x_0)=a(y-y_0).$",
+          ":question/worked-solution": "Set\n\n$$\n\\begin{aligned}\nf(x,y)&=2 x^{2} + 3 y^{2}\n\\end{aligned}\n$$\n\nRearranging the curve gives the level set $f(x,y)=5.$ Compute the partial derivatives, holding the other coordinate fixed:\n\n$$\n\\begin{aligned}\nf_x(x,y)&=4 x \\\\\nf_y(x,y)&=6 y \\\\\n\\nabla f(1,-1)&=\\left\\langle 4,-6\\right\\rangle\n\\end{aligned}\n$$\n\nThe gradient is nonzero, so it gives a direction for the normal line. A line through the given point parallel to $\\left\\langle 4,-6\\right\\rangle$ satisfies\n\n$$\n\\begin{aligned}\nb(x-x_0)&=a(y-y_0) \\\\\n\\left(-6\\right)\\left(x - 1\\right)&=\\left(4\\right)\\left(y + 1\\right) \\\\\n- 6 x - 4 y + 2&=0 \\\\\n3 x + 2 y - 1&=0\n\\end{aligned}\n$$\n\nSimplifying the whole equation gives the normal line $3 x + 2 y - 1=0.$ Its direction is parallel to the gradient; using the gradient as the coefficient vector would give the tangent line instead.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "1f0d3e52-7f0e-50f0-85a0-dd2289d35234",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d3f4a7b3-d82a-59ba-b235-8bbde63e8061",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3 x - 2 y - 5=0"
+                },
+                {
+                  ":answer/id": "6c41ef72-b685-559e-a135-c562c8725fc3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2 x - 3 y - 5=0"
+                },
+                {
+                  ":answer/id": "a039ef8c-c36f-58c4-b657-7f161693d0bb",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "6 x + y - 5=0"
+                },
+                {
+                  ":answer/id": "e0674521-6a67-553d-8ee7-2813f8576668",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3 x + 2 y - 1=0"
+                },
+                {
+                  ":answer/id": "d2c06247-f9ff-5f5d-beab-11a92dd6ee03",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3 x + y - 2=0"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "e0674521-6a67-553d-8ee7-2813f8576668"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "normal-line-3",
+          "template": "easy-quadratic",
+          "profile": "direction-under",
+          "parameters": {
+            "a": 2,
+            "b": 3,
+            "p": 1,
+            "q": -1
+          },
+          "choice_recipes": {
+            "e0674521-6a67-553d-8ee7-2813f8576668": "normal",
+            "6c41ef72-b685-559e-a135-c562c8725fc3": "tangent",
+            "d3f4a7b3-d82a-59ba-b235-8bbde63e8061": "negate first partial",
+            "d2c06247-f9ff-5f5d-beab-11a92dd6ee03": "double one partial",
+            "a039ef8c-c36f-58c4-b657-7f161693d0bb": "apply differential factor two twice"
+          },
+          "point": [
+            "1",
+            "-1"
+          ],
+          "function": "2*x**2 + 3*y**2",
+          "level": "5",
+          "gradient": [
+            "4",
+            "-6"
+          ],
+          "final": "3 x + 2 y - 1=0",
+          "math_format": "course-academy-tex-v1",
+          "source_basis": 7598,
+          "seed": 983755,
+          "batch_index": 0
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186124462,
+          "id": "3b2f7fab-cebe-519a-83e3-a0831cac289d",
+          "title": "Finding the Equation of the Normal Line to a Plane Curve Using the Gradient"
+        },
+        "question": {
+          ":question/id": "d7c5eacf-d850-58ea-879b-3e91e7d62722",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Consider the plane curve $2 x + y - 1=2 x + y + \\sqrt{- y^{2} + \\left(x - 2\\right)^{2}} - 4.$ Find an equation of the normal line to the curve at $(-1,0).$",
+          ":question/worked-solution": "Set\n\n$$\n\\begin{aligned}\nf(x,y)&=\\sqrt{- y^{2} + \\left(x - 2\\right)^{2}}\n\\end{aligned}\n$$\n\nRearranging the curve gives the level set $f(x,y)=3.$ Compute the partial derivatives, holding the other coordinate fixed:\n\n$$\n\\begin{aligned}\nf_x(x,y)&=\\frac{x - 2}{\\sqrt{- y^{2} + \\left(x - 2\\right)^{2}}} \\\\\nf_y(x,y)&=- \\frac{y}{\\sqrt{- y^{2} + \\left(x - 2\\right)^{2}}} \\\\\n\\nabla f(-1,0)&=\\left\\langle -1,0\\right\\rangle\n\\end{aligned}\n$$\n\nThe gradient is nonzero, so it gives a direction for the normal line. A line through the given point parallel to $\\left\\langle -1,0\\right\\rangle$ satisfies\n\n$$\n\\begin{aligned}\nb(x-x_0)&=a(y-y_0) \\\\\n\\left(0\\right)\\left(x + 1\\right)&=\\left(-1\\right)\\left(y\\right) \\\\\ny&=0\n\\end{aligned}\n$$\n\nSimplifying the whole equation gives the normal line $y=0.$ This is a horizontal line. The direction relation avoids division by a zero gradient component.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "0fef134b-90cc-570d-a860-3a1167acc22f",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "e73639b9-6695-5712-9cbb-c77e2e4e633d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "y + 1=0"
+                },
+                {
+                  ":answer/id": "56789147-b410-5588-972a-3e4b82bf8bf1",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x + 1=0"
+                },
+                {
+                  ":answer/id": "d97ac949-07d0-52b8-861b-07698cd837ac",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x - y + 1=0"
+                },
+                {
+                  ":answer/id": "66501ab5-24de-50b4-a619-114de2c2a061",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "y=0"
+                },
+                {
+                  ":answer/id": "f5a38c02-04a5-59fc-8335-ee6807462ec1",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "x=0"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "66501ab5-24de-50b4-a619-114de2c2a061"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "normal-line-3",
+          "template": "q-71388",
+          "profile": "axis-coordinate",
+          "parameters": {
+            "h": 2,
+            "k": 0,
+            "swap": 0,
+            "base_point": [
+              -3,
+              0
+            ],
+            "alpha": 2,
+            "beta": 1
+          },
+          "choice_recipes": {
+            "66501ab5-24de-50b4-a619-114de2c2a061": "normal",
+            "56789147-b410-5588-972a-3e4b82bf8bf1": "tangent",
+            "e73639b9-6695-5712-9cbb-c77e2e4e633d": "exchange point coordinates",
+            "f5a38c02-04a5-59fc-8335-ee6807462ec1": "exchange tangent coordinate",
+            "d97ac949-07d0-52b8-861b-07698cd837ac": "use diagonal direction"
+          },
+          "point": [
+            "-1",
+            "0"
+          ],
+          "function": "sqrt(-y**2 + (x - 2)**2)",
+          "level": "3",
+          "gradient": [
+            "-1",
+            "0"
+          ],
+          "final": "y=0",
+          "math_format": "course-academy-tex-v1",
+          "source_basis": 7598,
+          "seed": 983755,
+          "batch_index": 0
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186124462,
+          "id": "3b2f7fab-cebe-519a-83e3-a0831cac289d",
+          "title": "Finding the Equation of the Normal Line to a Plane Curve Using the Gradient"
+        },
+        "question": {
+          ":question/id": "dd8a0e4d-1a92-5fef-937f-29743f579178",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "Consider the plane curve $y^{2} + y + 3 \\left(x - 2\\right)^{2}=4 y \\left(x - 2\\right) + 34.$ Find an equation of the normal line to the curve at $(0,2).$",
+          ":question/worked-solution": "Set\n\n$$\n\\begin{aligned}\nf(x,y)&=y+y^{2}+3 \\left(x - 2\\right)^{2} \\\\\n&{}- 4 y \\left(x - 2\\right)\n\\end{aligned}\n$$\n\nRearranging the curve gives the level set $f(x,y)=34.$ Compute the partial derivatives, holding the other coordinate fixed:\n\n$$\n\\begin{aligned}\nf_x(x,y)&=6 x - 4 y - 12 \\\\\nf_y(x,y)&=- 4 x + 2 y + 9 \\\\\n\\nabla f(0,2)&=\\left\\langle -20,13\\right\\rangle\n\\end{aligned}\n$$\n\nThe gradient is nonzero, so it gives a direction for the normal line. A line through the given point parallel to $\\left\\langle -20,13\\right\\rangle$ satisfies\n\n$$\n\\begin{aligned}\nb(x-x_0)&=a(y-y_0) \\\\\n\\left(13\\right)\\left(x\\right)&=\\left(-20\\right)\\left(y - 2\\right) \\\\\n13 x + 20 y - 40&=0\n\\end{aligned}\n$$\n\nSimplifying the whole equation gives the normal line $13 x + 20 y - 40=0.$ Its direction is parallel to the gradient; using the gradient as the coefficient vector would give the tangent line instead.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "3dcf991f-7eba-5926-8e6e-fe7ed7f16aee",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "afe5a3e1-b5b4-593c-82af-5c597ec76409",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "13 x + 20 y - 40=0"
+                },
+                {
+                  ":answer/id": "d7703fd1-3c64-5777-8140-b315117e2288",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "20 x - 13 y + 26=0"
+                },
+                {
+                  ":answer/id": "155f0bf2-35bd-5bf5-9b09-b555bd7803a9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "20 x - 13 y=0"
+                },
+                {
+                  ":answer/id": "5e266901-a9b9-5d0e-a9a6-404d80f645fe",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "13 x - 20 y + 40=0"
+                },
+                {
+                  ":answer/id": "5f3454ea-6085-58f7-a6b2-eead2ed93384",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "13 x + 20 y=0"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "afe5a3e1-b5b4-593c-82af-5c597ec76409"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "normal-line-3",
+          "template": "q-71390",
+          "profile": "translation",
+          "parameters": {
+            "h": 2,
+            "k": 0,
+            "swap": 0,
+            "base_point": [
+              -2,
+              2
+            ],
+            "alpha": 0,
+            "beta": 1
+          },
+          "choice_recipes": {
+            "afe5a3e1-b5b4-593c-82af-5c597ec76409": "normal",
+            "d7703fd1-3c64-5777-8140-b315117e2288": "tangent",
+            "5f3454ea-6085-58f7-a6b2-eead2ed93384": "omit point",
+            "155f0bf2-35bd-5bf5-9b09-b555bd7803a9": "omit tangent point",
+            "5e266901-a9b9-5d0e-a9a6-404d80f645fe": "negate first partial"
+          },
+          "point": [
+            "0",
+            "2"
+          ],
+          "function": "y**2 - 4*y*(x - 2) + y + 3*(x - 2)**2",
+          "level": "34",
+          "gradient": [
+            "-20",
+            "13"
+          ],
+          "final": "13 x + 20 y - 40=0",
+          "math_format": "course-academy-tex-v1",
+          "source_basis": 7598,
+          "seed": 983755,
+          "batch_index": 0
+        }
+      }
+    }
+  ]
+}

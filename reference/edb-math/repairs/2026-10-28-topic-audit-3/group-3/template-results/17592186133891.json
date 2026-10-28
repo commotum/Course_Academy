@@ -1,0 +1,286 @@
+{
+  "source": "/tmp/ca-9837-g3-i5vwsbsy/17592186133891/a/package/generator.py",
+  "pools": [],
+  "results": [
+    {
+      "band": "easy",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    }
+  ],
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133891,
+          "id": "c243e957-272a-5bde-8878-7264a94e447e",
+          "title": "Constructing Line Integrals With Respect to X"
+        },
+        "question": {
+          ":question/id": "49e21809-873d-5c10-97d9-b3165614e6f3",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "![Oriented path](/tmp/ca9837-templates-z7ii9jxi/17592186133891/path-6732a9233b2a88097084e1af.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C x y^{2}\\,\\mathrm{d}x\n$$\n\nwhere $C$ is the line segment traversed from $(1,3)$ to $(-3,5)$, as shown? Do not evaluate the integral.\n\n*Hint: Use $\\mathbf r(t)=\\langle 1 - 4 t,2 t + 3\\rangle$.*",
+          ":question/worked-solution": "Interpolate from the initial point to the terminal point. The parameter starts at $0$ and ends at $1$, giving the required endpoints.\n\n$$\n\\mathbf r(t)=\\langle 1 - 4 t,2 t + 3\\rangle,\\qquad 0\\le t\\le 1\n$$\n\nSubstitute both coordinates, then differentiate the first coordinate:\n\n$$\n\\begin{aligned} f(\\mathbf r(t))&=(1 - 4 t)(2 t + 3)^{2}\\\\&=- 16 t^{3} - 44 t^{2} - 24 t + 9,\\\\ x\\prime(t)&=-4.\\end{aligned}\n$$\n\nMultiply the two factors, keeping the signed derivative:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))x\\prime(t)&=(- 16 t^{3} - 44 t^{2} - 24 t + 9)(-4)\\\\&=64 t^{3} + 176 t^{2} + 96 t - 36.\\end{aligned}\n$$\n\nUse this density with the oriented parameter limits:\n\n$$\n\\begin{aligned}\\int_C x y^{2}\\,\\mathrm{d}x&=\\int_{0}^{1} f(\\mathbf r(t))x\\prime(t)\\,\\mathrm{d}t\\\\&=\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "592979b5-f790-51a5-8177-d36ac6264679",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "f3a4660f-8e03-593b-b65f-cdeeffb02ad2",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "3a339f27-79d5-57b4-8c27-8bec4266a02f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} 256 t^{3} - 448 t^{2} + 240 t - 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "1e84ac8e-4c5b-5442-9f76-e2d235f6f104",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} - 256 t^{3} + 448 t^{2} - 240 t + 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "b0772c6b-4f3f-5951-b8f4-4426e27f5e58",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} - 64 t^{3} - 176 t^{2} - 96 t + 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "bbe5fabc-068b-5698-9218-677bd3cf07f7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{2} - 32 t^{3} - 88 t^{2} - 48 t + 18\\,\\mathrm{d}t"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "f3a4660f-8e03-593b-b65f-cdeeffb02ad2"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "dx-construction-v2",
+          "seed": 983755,
+          "parameters": {
+            "geometry": "segment",
+            "function": "xy2",
+            "c": 1,
+            "P": [
+              1,
+              3
+            ],
+            "Q": [
+              -3,
+              5
+            ]
+          },
+          "bank_profile": 4,
+          "source_questions": [
+            "a31726b8-8b33-50ff-9a55-ad044b065273",
+            "ca5fbd9d-06c2-5516-a2aa-caaa1b2a1fc6"
+          ],
+          "semantic_instance": "6732a9233b2a88097084e1af1305f34d0d69dacd6d7f0840c0535ce283da3e58",
+          "solution_final": "\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t",
+          "derivation_conversions": [
+            "substitute coordinates",
+            "differentiate x coordinate",
+            "distribute products and collect like factors"
+          ],
+          "eligible_for_learning": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133891,
+          "id": "c243e957-272a-5bde-8878-7264a94e447e",
+          "title": "Constructing Line Integrals With Respect to X"
+        },
+        "question": {
+          ":question/id": "da258af0-0654-5f0b-847d-7eefd9c61204",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "![Oriented path](/tmp/ca9837-templates-z7ii9jxi/17592186133891/path-4bbb2298ca48f7c33bf715f9.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C x y^{2}\\,\\mathrm{d}x\n$$\n\nwhere $C$ is the arc of $16 x^{2} + y^{2}=16$, traversed counterclockwise through three quarters of the ellipse from $(\\frac{1}{2},2 \\sqrt{3})$ to $(\\frac{\\sqrt{3}}{2},-2)$, as shown? Do not evaluate the integral.",
+          ":question/worked-solution": "The coordinate scales follow from $\\frac{x^2}{1}+\\frac{y^2}{16}=1$. Choose the parametrization below. Increasing the parameter follows the stated counterclockwise direction. At the initial endpoint, $\\cos t=\\frac{x}{1}=\\frac{1}{2}$ and $\\sin t=\\frac{y}{4}=\\frac{\\sqrt{3}}{2}$. Thus the initial parameter in $[0,2\\pi)$ is $\\frac{\\pi}{3}$. Continue the parameter through $\\frac{3 \\pi}{2}$ to follow the stated arc. The parameter starts at $\\frac{\\pi}{3}$ and ends at $\\frac{11 \\pi}{6}$, giving the required endpoints.\n\n$$\n\\mathbf r(t)=\\langle \\cos{\\left(t \\right)},4 \\sin{\\left(t \\right)}\\rangle,\\qquad \\frac{\\pi}{3}\\le t\\le \\frac{11 \\pi}{6}\n$$\n\nSubstitute both coordinates, then differentiate the first coordinate:\n\n$$\n\\begin{aligned} f(\\mathbf r(t))&=(\\cos{\\left(t \\right)})(4 \\sin{\\left(t \\right)})^{2}\\\\&=16 \\sin^{2}{\\left(t \\right)} \\cos{\\left(t \\right)},\\\\ x\\prime(t)&=- \\sin{\\left(t \\right)}.\\end{aligned}\n$$\n\nMultiply the two factors, keeping the signed derivative:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))x\\prime(t)&=(16 \\sin^{2}{\\left(t \\right)} \\cos{\\left(t \\right)})(- \\sin{\\left(t \\right)})\\\\&=- 16 \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}.\\end{aligned}\n$$\n\nUse this density with the oriented parameter limits:\n\n$$\n\\begin{aligned}\\int_C x y^{2}\\,\\mathrm{d}x&=\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} f(\\mathbf r(t))x\\prime(t)\\,\\mathrm{d}t\\\\&=\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} - 16 \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "587691fe-5693-5044-8a8c-ea47db05c246",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "8317d505-e539-5f5f-bc20-6dba57ab5a27",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "1e2c4b4f-2738-5b29-b4cb-ca5790f5514b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} - 16 \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "9ee3153e-6554-5d5b-942e-d90a21c4e9b3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{\\pi}{3}}^{\\frac{13 \\pi}{12}} 64 \\sin^{2}{\\left(t \\right)} \\cos^{2}{\\left(t \\right)}\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "6b352fa1-a806-5cf9-806f-0496b11f08ff",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} - \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "1d3549da-3c87-5ac0-9556-479ddb584d9b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} 16 \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "1e2c4b4f-2738-5b29-b4cb-ca5790f5514b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "dx-construction-v2",
+          "seed": 983755,
+          "parameters": {
+            "geometry": "ellipse",
+            "function": "xy2",
+            "c": 1,
+            "A": 1,
+            "B": 4,
+            "start": 0,
+            "span": 3,
+            "direction": 1,
+            "phase_sixths": 2
+          },
+          "bank_profile": 4,
+          "source_questions": [
+            "f523c211-f380-5764-9fbd-9f50f1b0e80c",
+            "591574ce-dde0-5375-8d9f-24f9b5f86769",
+            "55218946-84ed-5872-a1c7-f6fd7a57a20f"
+          ],
+          "semantic_instance": "4bbb2298ca48f7c33bf715f992c3ea1c7f1dd7df107723ed710b8bbc34f3eb1f",
+          "solution_final": "\\int_{\\frac{\\pi}{3}}^{\\frac{11 \\pi}{6}} - 16 \\sin^{3}{\\left(t \\right)} \\cos{\\left(t \\right)}\\,\\mathrm{d}t",
+          "derivation_conversions": [
+            "substitute coordinates",
+            "differentiate x coordinate",
+            "distribute products and collect like factors"
+          ],
+          "eligible_for_learning": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186133891,
+          "id": "c243e957-272a-5bde-8878-7264a94e447e",
+          "title": "Constructing Line Integrals With Respect to X"
+        },
+        "question": {
+          ":question/id": "5850f855-b86b-52c8-aad8-003f005278a7",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "![Oriented path](/tmp/ca9837-templates-z7ii9jxi/17592186133891/path-6732a9233b2a88097084e1af.png)\n\nWhich definite integral is equivalent to\n\n$$\n\\int_C x y^{2}\\,\\mathrm{d}x\n$$\n\nwhere $C$ is the line segment traversed from $(1,3)$ to $(-3,5)$, as shown? Do not evaluate the integral.",
+          ":question/worked-solution": "Interpolate from the initial point to the terminal point. The parameter starts at $0$ and ends at $1$, giving the required endpoints.\n\n$$\n\\mathbf r(t)=\\langle 1 - 4 t,2 t + 3\\rangle,\\qquad 0\\le t\\le 1\n$$\n\nSubstitute both coordinates, then differentiate the first coordinate:\n\n$$\n\\begin{aligned} f(\\mathbf r(t))&=(1 - 4 t)(2 t + 3)^{2}\\\\&=- 16 t^{3} - 44 t^{2} - 24 t + 9,\\\\ x\\prime(t)&=-4.\\end{aligned}\n$$\n\nMultiply the two factors, keeping the signed derivative:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))x\\prime(t)&=(- 16 t^{3} - 44 t^{2} - 24 t + 9)(-4)\\\\&=64 t^{3} + 176 t^{2} + 96 t - 36.\\end{aligned}\n$$\n\nUse this density with the oriented parameter limits:\n\n$$\n\\begin{aligned}\\int_C x y^{2}\\,\\mathrm{d}x&=\\int_{0}^{1} f(\\mathbf r(t))x\\prime(t)\\,\\mathrm{d}t\\\\&=\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "4cd694a8-4399-538f-8232-b44e8d697074",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "b8c8c68f-b52c-50ca-9714-4a7b1e7d3e51",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "37301420-3fd5-5b6e-827b-269da018cb58",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{2} - 32 t^{3} - 88 t^{2} - 48 t + 18\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "b6bc017f-9f4b-5a91-abfc-ca365c019da4",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} - 64 t^{3} - 176 t^{2} - 96 t + 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "3633a56f-f714-53ee-bbdb-19aa8b4c221b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} 256 t^{3} - 448 t^{2} + 240 t - 36\\,\\mathrm{d}t"
+                },
+                {
+                  ":answer/id": "da91064b-db4c-5379-afaa-56bf3047bf96",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\int_{0}^{1} - 256 t^{3} + 448 t^{2} - 240 t + 36\\,\\mathrm{d}t"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "b8c8c68f-b52c-50ca-9714-4a7b1e7d3e51"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "dx-construction-v2",
+          "seed": 983755,
+          "parameters": {
+            "geometry": "segment",
+            "function": "xy2",
+            "c": 1,
+            "P": [
+              1,
+              3
+            ],
+            "Q": [
+              -3,
+              5
+            ]
+          },
+          "bank_profile": 4,
+          "source_questions": [
+            "a31726b8-8b33-50ff-9a55-ad044b065273",
+            "ca5fbd9d-06c2-5516-a2aa-caaa1b2a1fc6"
+          ],
+          "semantic_instance": "6732a9233b2a88097084e1af1305f34d0d69dacd6d7f0840c0535ce283da3e58",
+          "solution_final": "\\int_{0}^{1} 64 t^{3} + 176 t^{2} + 96 t - 36\\,\\mathrm{d}t",
+          "derivation_conversions": [
+            "substitute coordinates",
+            "differentiate x coordinate",
+            "distribute products and collect like factors"
+          ],
+          "eligible_for_learning": true,
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ]
+}

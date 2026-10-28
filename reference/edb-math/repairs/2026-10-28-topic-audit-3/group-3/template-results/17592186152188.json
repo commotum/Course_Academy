@@ -1,0 +1,389 @@
+{
+  "source": "/tmp/ca-9837-g3-i5vwsbsy/17592186152188/a/package/generate.py",
+  "pools": [
+    {
+      "pool": "FAMILIES",
+      "keys": [
+        "easy",
+        "moderate",
+        "hard"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "band": "easy",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": null,
+      "api": "generate_batch",
+      "passed": true,
+      "records": 1
+    }
+  ],
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186152188,
+          "id": "6e75170b-1e28-52c1-b0ab-f50ffde6c262",
+          "title": "The Cartesian Equation of an Ellipse"
+        },
+        "question": {
+          ":question/id": "41cad213-eb13-55e2-87e6-f9a2adaf2d2e",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Find the Cartesian equation of the ellipse defined by\n\n$$\nx=5\\cos\\theta,\\quad y=2\\sin\\theta,\\quad 0\\leq\\theta<2\\pi.\n$$\n\nThe trigonometric terms have been isolated for you:\n\n$$\n\\frac{x}{5}=\\cos\\theta,\\qquad \\frac{y}{2}=\\sin\\theta.\n$$\n\nSquare both equations and use $\\cos^2\\theta+\\sin^2\\theta=1$. Choose the resulting Cartesian equation.",
+          ":question/worked-solution": "Square the isolated $x$ equation.\n\n$$\n\\begin{aligned}\n\\left(\\frac{x}{5}\\right)^2&=\\cos^2\\theta\\\\\\frac{x^2}{25}&=\\cos^2\\theta\n\\end{aligned}\n$$\n\nSquare the isolated $y$ equation.\n\n$$\n\\begin{aligned}\n\\left(\\frac{y}{2}\\right)^2&=\\sin^2\\theta\\\\\\frac{y^2}{4}&=\\sin^2\\theta\n\\end{aligned}\n$$\n\nAdd the squared equations and use $\\cos^2\\theta+\\sin^2\\theta=1$:\n\n$$\n\\frac{x^2}{25}+\\frac{y^2}{4}=\\cos^2\\theta+\\sin^2\\theta=1.\n$$\n\nThus the Cartesian equation is\n\n$$\n\\frac{x^2}{25}+\\frac{y^2}{4}=1.\n$$\n\nThe full parameter interval traces the entire ellipse.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "32edbe0f-3142-5a53-a1d0-aff03856aca1",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "44538c4d-f19f-5cb4-8bf7-ad2c0240ebef",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{4}+\\frac{y^2}{25}=1"
+                },
+                {
+                  ":answer/id": "e9336329-002e-58ea-8a97-87fb844499c2",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{4}+\\frac{y^2}{4}=1"
+                },
+                {
+                  ":answer/id": "a8f9ad7e-59ab-5e21-b015-7619ade3f3bc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{25}+\\frac{y^2}{25}=1"
+                },
+                {
+                  ":answer/id": "9c76fe92-c9b7-5d27-abdb-8fc848d1422b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{25}+\\frac{y^2}{4}=1"
+                },
+                {
+                  ":answer/id": "b84c0e2f-68c2-5109-aa25-ee18b746882a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{10}+\\frac{y^2}{10}=1"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "9c76fe92-c9b7-5d27-abdb-8fc848d1422b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "ellipse-cartesian-2.2",
+          "family": "integer",
+          "profile": "axis-grid",
+          "seed": 16212102282113277382,
+          "parameters": {
+            "a": "5",
+            "b": "2",
+            "h": "0",
+            "k": "0"
+          },
+          "solution_path": {
+            "axes": [
+              {
+                "coordinate": "x",
+                "input": "x=5\\cos\\theta",
+                "isolated": "\\frac{x}{5}=\\cos\\theta",
+                "squared": "\\frac{x^2}{25}=\\cos^2\\theta",
+                "rows": [
+                  "\\left(\\frac{x}{5}\\right)^2&=\\cos^2\\theta",
+                  "\\frac{x^2}{25}&=\\cos^2\\theta"
+                ]
+              },
+              {
+                "coordinate": "y",
+                "input": "y=2\\sin\\theta",
+                "isolated": "\\frac{y}{2}=\\sin\\theta",
+                "squared": "\\frac{y^2}{4}=\\sin^2\\theta",
+                "rows": [
+                  "\\left(\\frac{y}{2}\\right)^2&=\\sin^2\\theta",
+                  "\\frac{y^2}{4}&=\\sin^2\\theta"
+                ]
+              }
+            ],
+            "final": "\\frac{x^2}{25}+\\frac{y^2}{4}",
+            "conversions": [
+              "square the entire isolated expression",
+              "evaluate each radius square",
+              "Pythagorean identity"
+            ],
+            "support": [
+              "e-6815",
+              "lesson 17592186152363",
+              "q-106406",
+              "q-327798"
+            ]
+          },
+          "source_ids": [
+            "exemplar:17592186716468"
+          ],
+          "source_basis": 8102,
+          "authored_bank": true,
+          "semantic_identity": "21e9b52361732ca73f231e1dfa9a847e108aed048a6991ecc7d08d305aa2f04e",
+          "plot": {
+            "rating": "none",
+            "assets": []
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186152188,
+          "id": "6e75170b-1e28-52c1-b0ab-f50ffde6c262",
+          "title": "The Cartesian Equation of an Ellipse"
+        },
+        "question": {
+          ":question/id": "03079f99-0aaf-539e-a9de-56fac5bcf2c6",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Find the Cartesian equation of the ellipse defined by\n\n$$\nx=5\\cos\\theta+1,\\quad y=7\\sin\\theta,\\quad 0\\leq\\theta<2\\pi.\n$$",
+          ":question/worked-solution": "Isolate the trigonometric term in the $x$ equation, then square.\n\n$$\n\\begin{aligned}\nx&=5\\cos\\theta+1\\\\x-1&=5\\cos\\theta\\\\\\frac{x-1}{5}&=\\cos\\theta\\\\\\left(\\frac{x-1}{5}\\right)^2&=\\cos^2\\theta\\\\\\frac{(x-1)^2}{25}&=\\cos^2\\theta\n\\end{aligned}\n$$\n\nIsolate the trigonometric term in the $y$ equation, then square.\n\n$$\n\\begin{aligned}\ny&=7\\sin\\theta\\\\\\frac{y}{7}&=\\sin\\theta\\\\\\left(\\frac{y}{7}\\right)^2&=\\sin^2\\theta\\\\\\frac{y^2}{49}&=\\sin^2\\theta\n\\end{aligned}\n$$\n\nAdd the squared equations and use $\\cos^2\\theta+\\sin^2\\theta=1$:\n\n$$\n\\frac{(x-1)^2}{25}+\\frac{y^2}{49}=\\cos^2\\theta+\\sin^2\\theta=1.\n$$\n\nThus the Cartesian equation is\n\n$$\n\\frac{(x-1)^2}{25}+\\frac{y^2}{49}=1.\n$$\n\nThe full parameter interval traces the entire ellipse.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "f5fa9773-6070-538f-912d-bd689fb73e99",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "97b02703-a83c-5450-b467-3f920322ca60",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{(x-1)^2}{25}+\\frac{y^2}{49}=1"
+                },
+                {
+                  ":answer/id": "ae74175b-7410-5499-9ff1-ca2784d69b49",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{25}+\\frac{(y-1)^2}{49}=1"
+                },
+                {
+                  ":answer/id": "3f1e1d72-97c0-52c8-9513-bb32fa05b211",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{(x+1)^2}{25}+\\frac{y^2}{49}=1"
+                },
+                {
+                  ":answer/id": "273251b5-8480-5d58-a76c-01901b95065a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{25}+\\frac{y^2}{49}=1"
+                },
+                {
+                  ":answer/id": "4e44d3bc-4677-51d2-ad64-504ea59d0d47",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{x^2}{25}+\\frac{(y+1)^2}{49}=1"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "97b02703-a83c-5450-b467-3f920322ca60"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "ellipse-cartesian-2.2",
+          "family": "integer",
+          "profile": "single-translation-grid",
+          "seed": 7805107893334333968,
+          "parameters": {
+            "a": "5",
+            "b": "7",
+            "h": "1",
+            "k": "0"
+          },
+          "solution_path": {
+            "axes": [
+              {
+                "coordinate": "x",
+                "input": "x=5\\cos\\theta+1",
+                "isolated": "\\frac{x-1}{5}=\\cos\\theta",
+                "squared": "\\frac{(x-1)^2}{25}=\\cos^2\\theta",
+                "rows": [
+                  "x&=5\\cos\\theta+1",
+                  "x-1&=5\\cos\\theta",
+                  "\\frac{x-1}{5}&=\\cos\\theta",
+                  "\\left(\\frac{x-1}{5}\\right)^2&=\\cos^2\\theta",
+                  "\\frac{(x-1)^2}{25}&=\\cos^2\\theta"
+                ]
+              },
+              {
+                "coordinate": "y",
+                "input": "y=7\\sin\\theta",
+                "isolated": "\\frac{y}{7}=\\sin\\theta",
+                "squared": "\\frac{y^2}{49}=\\sin^2\\theta",
+                "rows": [
+                  "y&=7\\sin\\theta",
+                  "\\frac{y}{7}&=\\sin\\theta",
+                  "\\left(\\frac{y}{7}\\right)^2&=\\sin^2\\theta",
+                  "\\frac{y^2}{49}&=\\sin^2\\theta"
+                ]
+              }
+            ],
+            "final": "\\frac{(x-1)^2}{25}+\\frac{y^2}{49}",
+            "conversions": [
+              "square the entire isolated expression",
+              "evaluate each radius square",
+              "Pythagorean identity"
+            ],
+            "support": [
+              "e-6815",
+              "lesson 17592186152363",
+              "q-106406",
+              "q-327798"
+            ]
+          },
+          "source_ids": [
+            "q-79377"
+          ],
+          "source_basis": 8102,
+          "authored_bank": true,
+          "semantic_identity": "df76e614f79465528ffa6bc7331a3507053434102d3f3ebafb3691dd66b3049a",
+          "plot": {
+            "rating": "none",
+            "assets": []
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186152188,
+          "id": "6e75170b-1e28-52c1-b0ab-f50ffde6c262",
+          "title": "The Cartesian Equation of an Ellipse"
+        },
+        "question": {
+          ":question/id": "0206d34d-9063-53df-9153-1a1a1cd6a010",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "Find the Cartesian equation of the ellipse defined by\n\n$$\nx=\\frac{4}{5}\\cos\\theta,\\quad y=\\frac{4}{3}\\sin\\theta,\\quad 0\\leq\\theta<2\\pi.\n$$",
+          ":question/worked-solution": "Isolate the trigonometric term in the $x$ equation, then square.\n\n$$\n\\begin{aligned}\nx&=\\frac{4}{5}\\cos\\theta\\\\\\frac{5}{4}x&=\\cos\\theta\\\\\\left(\\frac{5}{4}x\\right)^2&=\\cos^2\\theta\\\\\\frac{25}{16}x^2&=\\cos^2\\theta\n\\end{aligned}\n$$\n\nIsolate the trigonometric term in the $y$ equation, then square.\n\n$$\n\\begin{aligned}\ny&=\\frac{4}{3}\\sin\\theta\\\\\\frac{y}{\\frac{4}{3}}&=\\sin\\theta\\\\\\left(\\frac{y}{\\frac{4}{3}}\\right)^2&=\\sin^2\\theta\\\\\\frac{9}{16}y^2&=\\sin^2\\theta\n\\end{aligned}\n$$\n\nAdd the squared equations and use $\\cos^2\\theta+\\sin^2\\theta=1$:\n\n$$\n\\frac{25}{16}x^2+\\frac{9}{16}y^2=\\cos^2\\theta+\\sin^2\\theta=1.\n$$\n\nThus the Cartesian equation is\n\n$$\n\\frac{25}{16}x^2+\\frac{9}{16}y^2=1.\n$$\n\nThe full parameter interval traces the entire ellipse.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "e2655c49-eb02-54dd-b3f0-022727cf0451",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "fdc3bf87-7570-53b3-92e7-df2425c1f365",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{9}{16}x^2+\\frac{9}{16}y^2=1"
+                },
+                {
+                  ":answer/id": "b336eeef-f5c4-5948-ab67-af45d8999ad5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{25}{16}x^2+\\frac{25}{16}y^2=1"
+                },
+                {
+                  ":answer/id": "91153a7d-cbde-5953-9248-269e8b566429",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{25}{16}x^2+\\frac{9}{16}y^2=1"
+                },
+                {
+                  ":answer/id": "84c65383-744c-5fa4-b28f-9eec77b92f07",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{15}{16}x^2+\\frac{15}{16}y^2=1"
+                },
+                {
+                  ":answer/id": "093fbdc1-6fd3-5e28-8f36-5e4ba4f34a7f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{9}{16}x^2+\\frac{25}{16}y^2=1"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "91153a7d-cbde-5953-9248-269e8b566429"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "ellipse-cartesian-2.2",
+          "family": "rational",
+          "profile": "axis-grid",
+          "seed": 11696167006738173113,
+          "parameters": {
+            "a": "4/5",
+            "b": "4/3",
+            "h": "0",
+            "k": "0"
+          },
+          "solution_path": {
+            "axes": [
+              {
+                "coordinate": "x",
+                "input": "x=\\frac{4}{5}\\cos\\theta",
+                "isolated": "\\frac{5}{4}x=\\cos\\theta",
+                "squared": "\\frac{25}{16}x^2=\\cos^2\\theta",
+                "rows": [
+                  "x&=\\frac{4}{5}\\cos\\theta",
+                  "\\frac{5}{4}x&=\\cos\\theta",
+                  "\\left(\\frac{5}{4}x\\right)^2&=\\cos^2\\theta",
+                  "\\frac{25}{16}x^2&=\\cos^2\\theta"
+                ]
+              },
+              {
+                "coordinate": "y",
+                "input": "y=\\frac{4}{3}\\sin\\theta",
+                "isolated": "\\frac{y}{\\frac{4}{3}}=\\sin\\theta",
+                "squared": "\\frac{9}{16}y^2=\\sin^2\\theta",
+                "rows": [
+                  "y&=\\frac{4}{3}\\sin\\theta",
+                  "\\frac{y}{\\frac{4}{3}}&=\\sin\\theta",
+                  "\\left(\\frac{y}{\\frac{4}{3}}\\right)^2&=\\sin^2\\theta",
+                  "\\frac{9}{16}y^2&=\\sin^2\\theta"
+                ]
+              }
+            ],
+            "final": "\\frac{25}{16}x^2+\\frac{9}{16}y^2",
+            "conversions": [
+              "square the entire isolated expression",
+              "evaluate each radius square",
+              "Pythagorean identity"
+            ],
+            "support": [
+              "e-6815",
+              "lesson 17592186152363",
+              "q-106406",
+              "q-327798"
+            ]
+          },
+          "source_ids": [
+            "q-106407"
+          ],
+          "source_basis": 8102,
+          "authored_bank": true,
+          "semantic_identity": "0a20b237bc8262ac3b6908461d5dfc68de06a92605028becd267cc2a79c31eb3",
+          "plot": {
+            "rating": "none",
+            "assets": []
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ]
+}

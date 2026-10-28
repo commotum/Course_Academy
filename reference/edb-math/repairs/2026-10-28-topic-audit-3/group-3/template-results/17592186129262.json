@@ -5,21 +5,312 @@
     {
       "band": "easy",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 2 required positional arguments: 'count' and 'output'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 2 required positional arguments: 'count' and 'output'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 2 required positional arguments: 'count' and 'output'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129262,
+          "id": "c444d700-8c19-5712-8cf5-99555938b0c5",
+          "title": "Mapping an Area to a Rectangular Region: Transformations Not Given"
+        },
+        "question": {
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Use a change of variables to calculate the area of the finite region $D$ bounded by the following lines.\n\n$$\n\\begin{aligned}2 x - y&=-3,\\qquad 2 x - y=2, \\\\ x - 2 y&=-3,\\qquad x - 2 y=1.\\end{aligned}\n$$",
+          ":question/worked-solution": "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}2 x - y&=-3,\\qquad 2 x - y=2, \\\\ x - 2 y&=-3,\\qquad x - 2 y=1.\\end{aligned}\n$$\n\nChoose $u=2 x - y$ and $v=x - 2 y$.\n\n**Step 2: Map the boundaries.** The four boundaries become $u=-3$, $u=2$, $v=-3$, and $v=1$. Therefore\n\n$$\n\\Delta=\\{(u,v):-3\\leq u\\leq 2,\\ -3\\leq v\\leq 1\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-4c1e7a294f06da50.png)\n\n**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}2&-1 \\\\ 1&-2\\end{vmatrix} \\\\ &=-3\\end{aligned}\n$$\n\n**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=\\frac{2 u}{3} - \\frac{v}{3}, \\\\ y&=\\frac{u}{3} - \\frac{2 v}{3}.\\end{aligned}\n$$\n\nThe determinant is nonzero, so this linear inverse is defined everywhere. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{-3}\\right|=\\frac{1}{3}.\n$$\n\n**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{3}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{3}\\int_{-3}^{1}\\int_{-3}^{2}1\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{3}\\cdot\\left(2-(-3)\\right)\\cdot\\left(1-(-3)\\right) \\\\ &=\\frac{20}{3}.\\end{aligned}\n$$",
+          ":question/id": "22dc92eb-be49-50e1-a812-f48882ee81e6",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "c9d95b61-bbe2-50f4-ae5c-4c0f8a736228",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/correct": [
+                ":answer/id",
+                "d45fc44f-b4d7-5355-8ced-29450b8c6255"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{20}{3}",
+                  ":answer/id": "d45fc44f-b4d7-5355-8ced-29450b8c6255"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4",
+                  ":answer/id": "cc03bd23-3091-5c99-a6a1-ddbfd9968771"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{4}{3}",
+                  ":answer/id": "805c5ea3-268a-5310-8932-d2c344646367"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "5",
+                  ":answer/id": "9600b44e-f218-56b2-8df7-b311a93574e2"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{3}{20}",
+                  ":answer/id": "31774d2a-ffd7-53f8-b6b3-2acb30339ad1"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "rectangular-area-v3",
+          "seed": 983755,
+          "family": "linear",
+          "profile": "sums",
+          "bounds": [
+            -3,
+            2,
+            -3,
+            1
+          ],
+          "matrix": [
+            2,
+            -1,
+            1,
+            -2
+          ],
+          "m": 3,
+          "source_ids": [
+            "148dd598-80e8-5dbb-9901-ed29d38f654f",
+            "f47b138c-1424-4ccc-a037-be488494f562"
+          ],
+          "authored_extension": true,
+          "final_expression": "\\frac{20}{3}",
+          "necessary_conversions": [],
+          "recipes": {
+            "\\frac{20}{3}": "correct",
+            "\\frac{4}{3}": "add u endpoints",
+            "4": "use lower u alone",
+            "5": "use lower v alone",
+            "\\frac{3}{20}": "invert final area"
+          },
+          "steps": [
+            "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}2 x - y&=-3,\\qquad 2 x - y=2, \\\\ x - 2 y&=-3,\\qquad x - 2 y=1.\\end{aligned}\n$$\n\nChoose $u=2 x - y$ and $v=x - 2 y$.",
+            "**Step 2: Map the boundaries.** The four boundaries become $u=-3$, $u=2$, $v=-3$, and $v=1$. Therefore\n\n$$\n\\Delta=\\{(u,v):-3\\leq u\\leq 2,\\ -3\\leq v\\leq 1\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-4c1e7a294f06da50.png)",
+            "**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}2&-1 \\\\ 1&-2\\end{vmatrix} \\\\ &=-3\\end{aligned}\n$$",
+            "**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=\\frac{2 u}{3} - \\frac{v}{3}, \\\\ y&=\\frac{u}{3} - \\frac{2 v}{3}.\\end{aligned}\n$$\n\nThe determinant is nonzero, so this linear inverse is defined everywhere. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{-3}\\right|=\\frac{1}{3}.\n$$",
+            "**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{3}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{3}\\int_{-3}^{1}\\int_{-3}^{2}1\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{3}\\cdot\\left(2-(-3)\\right)\\cdot\\left(1-(-3)\\right) \\\\ &=\\frac{20}{3}.\\end{aligned}\n$$"
+          ],
+          "essential_calculation": "[\"linear\", [2, -1, 1, -2], 5, 4]",
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129262,
+          "id": "c444d700-8c19-5712-8cf5-99555938b0c5",
+          "title": "Mapping an Area to a Rectangular Region: Transformations Not Given"
+        },
+        "question": {
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to calculate the area of the finite region $D$ in the first quadrant bounded by the following curves and lines.\n\n$$\n\\begin{aligned}y&=\\frac{5}{x},\\qquad y=\\frac{7}{x}, \\\\ x&=3 y^{2},\\qquad x=4 y^{2}.\\end{aligned}\n$$",
+          ":question/worked-solution": "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}x y&=5,\\qquad x y=7, \\\\ \\frac{x}{y^{2}}&=3,\\qquad \\frac{x}{y^{2}}=4.\\end{aligned}\n$$\n\nChoose $u=x y$ and $v=\\frac{x}{y^{2}}$.\n\n**Step 2: Map the boundaries.** The four boundaries become $u=5$, $u=7$, $v=3$, and $v=4$. Therefore\n\n$$\n\\Delta=\\{(u,v):5\\leq u\\leq 7,\\ 3\\leq v\\leq 4\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-eeb362a486097e36.png)\n\n**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}y&x \\\\ \\frac{1}{y^{2}}&- \\frac{2 x}{y^{3}}\\end{vmatrix} \\\\ &=- \\frac{3 x}{y^{2}} \\\\ &=- 3 v.\\end{aligned}\n$$\n\n**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=u^{\\frac{2}{3}} \\sqrt[3]{v}, \\\\ y&=\\frac{\\sqrt[3]{u}}{\\sqrt[3]{v}}.\\end{aligned}\n$$\n\nThese formulas give the unique positive inverse on the whole rectangle. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{- 3 v}\\right|=\\frac{1}{3 v}.\n$$\n\n**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{3 v}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\int_{3}^{4}\\int_{5}^{7}\\frac{1}{3 v}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{2}{3}\\left(\\ln(4)-\\ln(3)\\right) \\\\ &=\\frac{2}{3}\\ln\\left(\\frac{4}{3}\\right).\\end{aligned}\n$$\n\nThe last step uses the logarithm quotient rule: $\\ln(4)-\\ln(3)=\\ln\\left(\\frac{4}{3}\\right)$.",
+          ":question/id": "e5d9152c-6a2e-5b9a-97a9-5622a2b5da28",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "f932804d-49e8-5ed4-abeb-f3c0be4cac2c",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/correct": [
+                ":answer/id",
+                "34941c1d-13c2-5853-8061-e76b68fe2c25"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2\\ln\\left(\\frac{4}{3}\\right)",
+                  ":answer/id": "f8ce479a-36ae-5276-af03-3ddc81979eca"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{2}{3}\\ln\\left(\\frac{4}{3}\\right)",
+                  ":answer/id": "34941c1d-13c2-5853-8061-e76b68fe2c25"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2",
+                  ":answer/id": "641c30a9-30b4-524a-9c40-c1b905b5bf93"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{1}{3}\\ln\\left(\\frac{4}{3}\\right)",
+                  ":answer/id": "090e5883-2891-5703-9239-89c9518c960a"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{5}{3}\\ln\\left(\\frac{4}{3}\\right)",
+                  ":answer/id": "e5abb03d-16e1-5bf4-8163-cd4bc38ed69c"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "rectangular-area-v3",
+          "seed": 983755,
+          "family": "square_ratio",
+          "profile": "scale",
+          "bounds": [
+            5,
+            7,
+            3,
+            4
+          ],
+          "matrix": null,
+          "m": 3,
+          "source_ids": [
+            "f2acf3d8-4862-5fab-a9f5-360ef711c3dc",
+            "af302994-8f59-5ef6-a68b-2b3888da4fed"
+          ],
+          "authored_extension": true,
+          "final_expression": "\\frac{2}{3}\\ln\\left(\\frac{4}{3}\\right)",
+          "necessary_conversions": [
+            "\\ln(4)-\\ln(3)=\\ln\\left(\\frac{4}{3}\\right)"
+          ],
+          "recipes": {
+            "\\frac{2}{3}\\ln\\left(\\frac{4}{3}\\right)": "correct",
+            "2\\ln\\left(\\frac{4}{3}\\right)": "omit constant Jacobian divisor",
+            "\\frac{5}{3}\\ln\\left(\\frac{4}{3}\\right)": "use lower bound alone",
+            "\\frac{1}{3}\\ln\\left(\\frac{4}{3}\\right)": "omit constant-coordinate width",
+            "2": "omit Jacobian and use rectangle area"
+          },
+          "steps": [
+            "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}x y&=5,\\qquad x y=7, \\\\ \\frac{x}{y^{2}}&=3,\\qquad \\frac{x}{y^{2}}=4.\\end{aligned}\n$$\n\nChoose $u=x y$ and $v=\\frac{x}{y^{2}}$.",
+            "**Step 2: Map the boundaries.** The four boundaries become $u=5$, $u=7$, $v=3$, and $v=4$. Therefore\n\n$$\n\\Delta=\\{(u,v):5\\leq u\\leq 7,\\ 3\\leq v\\leq 4\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-eeb362a486097e36.png)",
+            "**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}y&x \\\\ \\frac{1}{y^{2}}&- \\frac{2 x}{y^{3}}\\end{vmatrix} \\\\ &=- \\frac{3 x}{y^{2}} \\\\ &=- 3 v.\\end{aligned}\n$$",
+            "**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=u^{\\frac{2}{3}} \\sqrt[3]{v}, \\\\ y&=\\frac{\\sqrt[3]{u}}{\\sqrt[3]{v}}.\\end{aligned}\n$$\n\nThese formulas give the unique positive inverse on the whole rectangle. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{- 3 v}\\right|=\\frac{1}{3 v}.\n$$",
+            "**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{3 v}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\int_{3}^{4}\\int_{5}^{7}\\frac{1}{3 v}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{2}{3}\\left(\\ln(4)-\\ln(3)\\right) \\\\ &=\\frac{2}{3}\\ln\\left(\\frac{4}{3}\\right).\\end{aligned}\n$$\n\nThe last step uses the logarithm quotient rule: $\\ln(4)-\\ln(3)=\\ln\\left(\\frac{4}{3}\\right)$."
+          ],
+          "essential_calculation": "[\"square_ratio\", \"2/3\", \"4/3\"]",
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129262,
+          "id": "c444d700-8c19-5712-8cf5-99555938b0c5",
+          "title": "Mapping an Area to a Rectangular Region: Transformations Not Given"
+        },
+        "question": {
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "Use a change of variables to calculate the area of the finite region $D$ bounded by the following lines.\n\n$$\n\\begin{aligned}2 y&=3 x - 3,\\qquad 2 y=3 x - 8, \\\\ 2 x&=3 y + 2,\\qquad 2 x=3 y + 6.\\end{aligned}\n$$",
+          ":question/worked-solution": "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}3 x - 2 y&=3,\\qquad 3 x - 2 y=8, \\\\ 2 x - 3 y&=2,\\qquad 2 x - 3 y=6.\\end{aligned}\n$$\n\nChoose $u=3 x - 2 y$ and $v=2 x - 3 y$.\n\n**Step 2: Map the boundaries.** The four boundaries become $u=3$, $u=8$, $v=2$, and $v=6$. Therefore\n\n$$\n\\Delta=\\{(u,v):3\\leq u\\leq 8,\\ 2\\leq v\\leq 6\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-b48a1d910cbfd221.png)\n\n**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}3&-2 \\\\ 2&-3\\end{vmatrix} \\\\ &=-5\\end{aligned}\n$$\n\n**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=\\frac{3 u}{5} - \\frac{2 v}{5}, \\\\ y&=\\frac{2 u}{5} - \\frac{3 v}{5}.\\end{aligned}\n$$\n\nThe determinant is nonzero, so this linear inverse is defined everywhere. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{-5}\\right|=\\frac{1}{5}.\n$$\n\n**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{5}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{5}\\int_{2}^{6}\\int_{3}^{8}1\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{5}\\cdot\\left(8-(3)\\right)\\cdot\\left(6-(2)\\right) \\\\ &=4.\\end{aligned}\n$$",
+          ":question/id": "20488160-bccb-5b3a-ae2c-ff1b4888855d",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "59a083b5-2d9b-5922-bf9e-7f34248eaa9c",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/correct": [
+                ":answer/id",
+                "557085e2-7da1-5256-ab5c-294b010f83f7"
+              ],
+              ":answer-field/choices": [
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "100",
+                  ":answer/id": "9bfcc282-5be4-5471-b7ed-5c928cbacfd2"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2",
+                  ":answer/id": "bb39f8a9-aaae-58a9-a63c-7fcaaf304f9f"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4",
+                  ":answer/id": "557085e2-7da1-5256-ab5c-294b010f83f7"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{12}{5}",
+                  ":answer/id": "37420998-4b07-56dc-8f65-9f8fab1b82b3"
+                },
+                {
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{1}{4}",
+                  ":answer/id": "c2841082-27ff-5fd3-8c9a-3d63a362b696"
+                }
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "rectangular-area-v3",
+          "seed": 983755,
+          "family": "linear",
+          "profile": "scale",
+          "bounds": [
+            3,
+            8,
+            2,
+            6
+          ],
+          "matrix": [
+            3,
+            -2,
+            2,
+            -3
+          ],
+          "m": 3,
+          "source_ids": [
+            "19c4c415-ad3c-5e8f-ba67-3b530b8c6971"
+          ],
+          "authored_extension": true,
+          "final_expression": "4",
+          "necessary_conversions": [],
+          "recipes": {
+            "4": "correct",
+            "100": "use forward Jacobian",
+            "\\frac{12}{5}": "use lower u alone",
+            "2": "use lower v alone",
+            "\\frac{1}{4}": "invert final area"
+          },
+          "steps": [
+            "**Step 1: Choose coordinates.** Rewrite each boundary using its shared expression.\n\n$$\n\\begin{aligned}3 x - 2 y&=3,\\qquad 3 x - 2 y=8, \\\\ 2 x - 3 y&=2,\\qquad 2 x - 3 y=6.\\end{aligned}\n$$\n\nChoose $u=3 x - 2 y$ and $v=2 x - 3 y$.",
+            "**Step 2: Map the boundaries.** The four boundaries become $u=3$, $u=8$, $v=2$, and $v=6$. Therefore\n\n$$\n\\Delta=\\{(u,v):3\\leq u\\leq 8,\\ 2\\leq v\\leq 6\\}.\n$$\n\n![The transformed rectangle.](/tmp/ca9837-templates-z7ii9jxi/17592186129262/rectangle-b48a1d910cbfd221.png)",
+            "**Step 3: Compute the forward Jacobian.**\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}3&-2 \\\\ 2&-3\\end{vmatrix} \\\\ &=-5\\end{aligned}\n$$",
+            "**Step 4: Take the reciprocal and its magnitude.** The inverse is\n\n$$\n\\begin{aligned}x&=\\frac{3 u}{5} - \\frac{2 v}{5}, \\\\ y&=\\frac{2 u}{5} - \\frac{3 v}{5}.\\end{aligned}\n$$\n\nThe determinant is nonzero, so this linear inverse is defined everywhere. Area uses the absolute value of the reciprocal determinant:\n\n$$\n\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|=\\left|\\frac{1}{-5}\\right|=\\frac{1}{5}.\n$$",
+            "**Step 5: Integrate over the rectangle.**\n\n$$\n\\begin{aligned}\\operatorname{Area}(D)&=\\iint_{\\Delta}\\frac{1}{5}\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{5}\\int_{2}^{6}\\int_{3}^{8}1\\,\\mathrm du\\,\\mathrm dv \\\\ &=\\frac{1}{5}\\cdot\\left(8-(3)\\right)\\cdot\\left(6-(2)\\right) \\\\ &=4.\\end{aligned}\n$$"
+          ],
+          "essential_calculation": "[\"linear\", [3, -2, 2, -3], 5, 4]",
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ]
 }

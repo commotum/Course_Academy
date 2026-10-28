@@ -5,21 +5,334 @@
     {
       "band": "easy",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
       "template": null,
-      "rejected_selector": true,
-      "error": "generate() missing 1 required positional argument: 'count'"
+      "api": "generate",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": 17592186192784,
+        "question": {
+          ":question/id": "91c73f36-d2f7-5af5-b098-02f8eb370695",
+          ":question/problem": "Find $\\frac{\\partial f}{\\partial z}$ for $f(x,y,z)=- 2 x^{3} - 2 y z^{3}$. Treat $x, y$ as constants.",
+          ":question/worked-solution": "Differentiate with respect to $z$, holding $x$ and $y$ fixed. The term involving only $x$ differentiates to zero. Use the constant multiple and power rules.\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial z}&=- 2 y\\cdot 3 z^{2}+0\\\\&=- 6 y z^{2}\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "b93e32d1-06b2-59f9-bd66-fa156fcc182b",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "e3efd0f7-91e9-5d86-90ff-457cadbb2231",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 6 y z^{2}"
+                },
+                {
+                  ":answer/id": "35815f0a-8e02-5fc2-a0f8-c19d5a001acd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 2 y z^{2}"
+                },
+                {
+                  ":answer/id": "08664dfe-5070-5ba0-ae26-73ad09d4d60e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 2 x^{3} - 6 y z^{2}"
+                },
+                {
+                  ":answer/id": "ab3bf1c6-69d0-5203-a075-5e1424583ded",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 6 x^{2}"
+                },
+                {
+                  ":answer/id": "f2fb0b29-d97b-5a25-97de-42b64740fe54",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 2 z^{3}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "e3efd0f7-91e9-5d86-90ff-457cadbb2231"
+              ]
+            }
+          ]
+        },
+        "assets": {},
+        "generation": {
+          "bank_expressions": [
+            "-6*y*z**2",
+            "-2*y*z**2",
+            "-2*x**3 - 6*y*z**2",
+            "-6*x**2",
+            "-2*z**3"
+          ],
+          "version": 2,
+          "template": "power",
+          "source_question_ids": [
+            "c701d949-2d48-5058-b224-6149f2ad0e9c"
+          ],
+          "target": "z",
+          "roles": [
+            "z",
+            "y",
+            "x"
+          ],
+          "role": 0,
+          "error_profile": [
+            "omit power factor",
+            "retain inactive term",
+            "differentiate x",
+            "differentiate y"
+          ],
+          "expression": "-2*x**3 - 2*y*z**3",
+          "derivative": "-6*y*z**2",
+          "answer_expression": "-6*y*z**2",
+          "substitution": {},
+          "domain": "All real coordinates.",
+          "parameters": {
+            "a": -2,
+            "b": -2,
+            "n": 3
+          },
+          "displayed_final": "- 6 y z^{2}",
+          "steps": [
+            "\\frac{\\partial f}{\\partial z}&=- 2 y\\cdot 3 z^{2}+0",
+            "&=- 6 y z^{2}"
+          ],
+          "conversions": [],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempt": 0,
+          "requested_seed": 983755,
+          "batch_attempt": 0
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": 17592186192784,
+        "question": {
+          ":question/id": "a52f31b5-9c7b-5f23-806d-bf23db014932",
+          ":question/problem": "For $f(x,y,z)=x \\sqrt{4 y^{2} + 4 z^{2}}$, evaluate $\\frac{\\partial f}{\\partial z}$ at the point $(-1,2,- \\frac{3}{2})$.",
+          ":question/worked-solution": "Differentiate with respect to $z$, holding $x$ and $y$ fixed. Use the constant multiple and chain rules, then substitute the coordinates. At this point the radicand is $25>0$.\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial z}&=x\\cdot\\frac{1}{2\\sqrt{4 y^{2} + 4 z^{2}}}\\cdot 8 z\\\\&=\\frac{4 x z}{\\sqrt{4 y^{2} + 4 z^{2}}}\\\\\\frac{\\partial f}{\\partial z}\\big|_{(-1,2,- \\frac{3}{2})}&=\\frac{4\\left(- \\frac{3}{2}\\right)(-1)}{\\sqrt{25}}\\\\&=\\frac{6}{5}\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "af4a01de-cb32-561a-b30b-b7c9c8528877",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "b45abb1c-70d8-5f1b-8857-616d2a23bfcb",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{6}{5}"
+                },
+                {
+                  ":answer/id": "6aa907ba-c87d-599a-bc5f-961e635fa811",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{6}{25}"
+                },
+                {
+                  ":answer/id": "d5754a6f-e922-5cd9-af42-529f9413e3cd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{12}{5}"
+                },
+                {
+                  ":answer/id": "26f5c9ee-8048-517b-ae28-4e1a58ae4435",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{3}{10}"
+                },
+                {
+                  ":answer/id": "3dfcd86b-7b82-5cd7-81c1-64632155b375",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{8}{5}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "b45abb1c-70d8-5f1b-8857-616d2a23bfcb"
+              ]
+            }
+          ]
+        },
+        "assets": {},
+        "generation": {
+          "bank_expressions": [
+            "6/5",
+            "6/25",
+            "12/5",
+            "3/10",
+            "-8/5"
+          ],
+          "version": 2,
+          "template": "radical_at_point",
+          "source_question_ids": [
+            "a87ec839-cad9-515d-b29b-91381158b553"
+          ],
+          "target": "z",
+          "roles": [
+            "z",
+            "y",
+            "x"
+          ],
+          "role": 0,
+          "error_profile": [
+            "use radicand denominator",
+            "double cancellation",
+            "omit inner coefficient",
+            "differentiate other coordinate"
+          ],
+          "expression": "x*sqrt(4*y**2 + 4*z**2)",
+          "derivative": "4*x*z/sqrt(4*y**2 + 4*z**2)",
+          "answer_expression": "6/5",
+          "substitution": {
+            "z": "-3/2",
+            "y": "2",
+            "x": "-1"
+          },
+          "domain": "Radicand strictly positive at the evaluation point; square root is the nonnegative real root.",
+          "parameters": {
+            "a": -2,
+            "b": -2,
+            "n": 3
+          },
+          "displayed_final": "\\frac{6}{5}",
+          "steps": [
+            "\\frac{\\partial f}{\\partial z}&=x\\cdot\\frac{1}{2\\sqrt{4 y^{2} + 4 z^{2}}}\\cdot 8 z",
+            "&=\\frac{4 x z}{\\sqrt{4 y^{2} + 4 z^{2}}}",
+            "\\frac{\\partial f}{\\partial z}\\big|_{(-1,2,- \\frac{3}{2})}&=\\frac{4(- \\frac{3}{2})(-1)}{\\sqrt{25}}",
+            "&=\\frac{6}{5}"
+          ],
+          "conversions": [],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempt": 0,
+          "requested_seed": 983755,
+          "batch_attempt": 0
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": 17592186192784,
+        "question": {
+          ":question/id": "81dae55b-b1e5-5e59-9222-353b5d5757d4",
+          ":question/problem": "Find $\\frac{\\partial f}{\\partial z}$ for $f(x,y,z)=\\left(- 2 x - 2 y\\right) \\sin{\\left(z \\right)} + \\left(- 2 x - 2 z\\right) \\cos{\\left(y \\right)}$.",
+          ":question/worked-solution": "Differentiate with respect to $z$, holding $x$ and $y$ fixed. Apply the sum rule. In each term, differentiate only the factors that depend on $z$; all remaining factors stay fixed.\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial z}&=\\left(- 2 x - 2 y\\right)\\cos z+- 2 \\cos{\\left(y \\right)}\\cdot 1\\\\&=\\left(- 2 x - 2 y\\right) \\cos{\\left(z \\right)} - 2 \\cos{\\left(y \\right)}\n\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "32be3ecc-0b4a-5b2e-979a-dce9488602f7",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "570239d1-888a-55bb-a511-759389051248",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\left(- 2 x - 2 y\\right) \\cos{\\left(z \\right)} - 2 \\cos{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "fbd8b766-27b4-5cf1-b538-e1dd20417937",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\left(- 2 x - 2 y\\right) \\sin{\\left(z \\right)} + \\left(- 2 x - 2 z\\right) \\cos{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "91217b00-e090-50c5-8584-4b5023345e04",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 4 \\cos{\\left(y \\right)} - 2 \\cos{\\left(z \\right)}"
+                },
+                {
+                  ":answer/id": "a5b6795d-695d-526b-8ecb-1b08c7504961",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\left(- 2 x - 2 y\\right) \\cos{\\left(z \\right)} - 2 \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "8133d965-25bb-598e-82d1-96c09778acc5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\left(x + y\\right) \\cos{\\left(z \\right)} - 2 \\cos{\\left(y \\right)}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "570239d1-888a-55bb-a511-759389051248"
+              ]
+            }
+          ]
+        },
+        "assets": {},
+        "generation": {
+          "bank_expressions": [
+            "(-2*x - 2*y)*cos(z) - 2*cos(y)",
+            "(-2*x - 2*y)*sin(z) + (-2*x - 2*z)*cos(y)",
+            "-4*cos(y) - 2*cos(z)",
+            "(-2*x - 2*y)*cos(z) - 2*sin(y)",
+            "(x + y)*cos(z) - 2*cos(y)"
+          ],
+          "version": 2,
+          "template": "trig_sum",
+          "source_question_ids": [
+            "4f001fc3-1ece-55d3-b468-098ed948154d"
+          ],
+          "target": "z",
+          "roles": [
+            "z",
+            "y",
+            "x"
+          ],
+          "role": 0,
+          "error_profile": [
+            "factor-rule errors 1/4",
+            "factor-rule errors 4/2",
+            "factor-rule errors 0/3",
+            "factor-rule errors 3/0"
+          ],
+          "expression": "(-2*x - 2*y)*sin(z) + (-2*x - 2*z)*cos(y)",
+          "derivative": "(-2*x - 2*y)*cos(z) - 2*cos(y)",
+          "answer_expression": "(-2*x - 2*y)*cos(z) - 2*cos(y)",
+          "substitution": {},
+          "domain": "All real coordinates.",
+          "parameters": {
+            "a": -2,
+            "b": -2,
+            "n": 3
+          },
+          "displayed_final": "\\left(- 2 x - 2 y\\right) \\cos{\\left(z \\right)} - 2 \\cos{\\left(y \\right)}",
+          "steps": [
+            "\\frac{\\partial f}{\\partial z}&=\\left(- 2 x - 2 y\\right)\\cos z+- 2 \\cos{\\left(y \\right)}\\cdot 1",
+            "&=\\left(- 2 x - 2 y\\right) \\cos{\\left(z \\right)} - 2 \\cos{\\left(y \\right)}"
+          ],
+          "conversions": [],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempt": 0,
+          "requested_seed": 983755,
+          "batch_attempt": 0
+        }
+      }
+    }
+  ]
 }
