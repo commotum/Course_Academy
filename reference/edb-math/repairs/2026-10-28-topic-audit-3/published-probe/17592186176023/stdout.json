@@ -1,0 +1,92 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186176023,
+      "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+      "title": "Evaluating a Line Integral Using Green's Theorem"
+    },
+    "question": {
+      ":question/id": "eebb0dde-bcf9-5e98-87e1-2cd684883ca9",
+      ":question/problem": "Use Green's theorem to evaluate \n\n$$\n\\oint_C(e^{-x^2}-4x^2y)\\,dx+(y+4xy^2)\\,dy,\n$$\n\n where $C$ is the counterclockwise boundary of the disk with polar description $0\\le r\\le 4,\\ 0\\le\\theta\\le2\\pi$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "37712d06-995c-562c-9cda-ae62fc95f80d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "824bf221-9b97-51a7-b04c-90d986f5cd52",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2048 \\pi"
+            },
+            {
+              ":answer/id": "7bf6b77a-56d7-590e-a2a7-883b34afecce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{512 \\pi}{3}"
+            },
+            {
+              ":answer/id": "a6f9b62c-2f19-554f-b85e-825bc1d92148",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 512 \\pi"
+            },
+            {
+              ":answer/id": "d0b4103d-4a27-5842-b7c0-44475255b8ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "512 \\pi"
+            },
+            {
+              ":answer/id": "2038336b-ec99-5fdc-b5b7-8be285bbeb71",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "256 \\pi"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d0b4103d-4a27-5842-b7c0-44475255b8ea"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Green's theorem states that\n\n$$\n\\oint_C P\\,dx+Q\\,dy=\\iint_D\\left(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\right)\\,dA.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/published-probe/17592186176023/17592186176023/234b97c200f4a3aaa70f0269c8b1ca61475f636a6578a279856ae1af38e66c16.png)\n\nNow, since\n\n$$\nP(x,y)=e^{-x^2}-4x^2y,\\quad Q(x,y)=y+4xy^2,\n$$\n\nwe have that\n\n$$\n\\begin{aligned}\\frac{\\partial P}{\\partial y} &=- 4 x^{2},\\quad \\frac{\\partial Q}{\\partial x}=4 y^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}\\oint_C(e^{-x^2}-4x^2y)\\,dx+(y+4xy^2)\\,dy&=\\iint_D\\left(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\right)\\,dA \\\\ &=\\iint_D\\left(4 y^{2}-(- 4 x^{2})\\right)\\,dA \\\\ &=\\iint_D 4(x^2+y^2)\\,dA.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\\Delta=\\{(r,\\theta):0\\le r\\le 4,0\\le\\theta\\le 2 \\pi\\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n\\iint_D f(x,y)\\,dA=\\iint_\\Delta f(r\\cos\\theta,r\\sin\\theta)\\,r\\,dr\\,d\\theta.\n$$\n\nFinally, we can calculate our double integral, as follows:\n\n$$\n\\begin{aligned}\\iint_D 4(x^2+y^2)\\,dA&=\\iint_\\Delta 4(r^2(\\cos^2\\theta+\\sin^2\\theta))\\,r\\,dr\\,d\\theta \\\\ &=4\\int_{0}^{2 \\pi}\\int_{0}^{4}r^3(\\cos^2\\theta+\\sin^2\\theta)\\,dr\\,d\\theta \\\\ &=4\\int_{0}^{2 \\pi}\\int_{0}^{4}r^3\\,dr\\,d\\theta \\\\ &=4\\int_{0}^{2 \\pi}\\left[\\frac{r^4}{4}\\right]_{0}^{4}\\,d\\theta \\\\ &=4\\int_{0}^{2 \\pi}\\left(64-0\\right)\\,d\\theta \\\\ &=4\\int_{0}^{2 \\pi}64\\,d\\theta \\\\ &=256[\\theta]_{0}^{2 \\pi} \\\\ &=256\\left(2 \\pi-0\\right) \\\\ &=512 \\pi.\\end{aligned}\n$$\n\n"
+    },
+    "generation": {
+      "version": "green-polar-evaluation-v3-format-audit-9837-v1",
+      "template": "supported_disk",
+      "profile": "authored-method",
+      "seed": 27102891,
+      "parameters": {
+        "c": "4",
+        "s": "16",
+        "inner": "0",
+        "lo": "0",
+        "hi": "2"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "a1f7d82e831c31849d6add2a5d1e118b5edd37194139774a84a690de497617e3",
+      "answer": "512*pi",
+      "bank_values": [
+        "512*pi",
+        "-512*pi",
+        "512*pi/3",
+        "2048*pi",
+        "256*pi"
+      ],
+      "bank_recipes": [
+        "correct",
+        "reverse_curl",
+        "omit_polar_jacobian",
+        "omit_radial_primitive_denominator",
+        "omit_one_cross_partial"
+      ],
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "matplotlib": "3.11.2"
+    }
+  }
+]

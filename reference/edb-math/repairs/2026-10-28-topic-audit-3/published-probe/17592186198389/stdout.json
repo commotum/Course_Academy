@@ -1,0 +1,91 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "1112cd1e-7bd9-5bdc-93f4-82a565d1b1e0",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $F(x,y,z)=⟨- x^{2} + y^{2},\\,- y^{2} + z^{2},\\,- z^{2}⟩$ and the surface $S$ defined by $z=- 3 x + 4 y$ for $-3\\le x\\le 5$ and $0\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{5}{\\int }_{0}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=⟨u,\\,v,\\,- 3 u + 4 v⟩\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 5,\\,0\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{′} & =⟨\\frac{∂x}{∂u},\\,\\frac{∂y}{∂u},\\,\\frac{∂z}{∂u}⟩ \\\\  & =⟨\\frac{∂}{∂u}(u),\\,\\frac{∂}{∂u}(v),\\,\\frac{∂}{∂u}(- 3 u + 4 v)⟩ \\\\  & =⟨1,\\,0,\\,-3⟩ \\\\ {r}_{v}^{′} & =⟨\\frac{∂x}{∂v},\\,\\frac{∂y}{∂v},\\,\\frac{∂z}{∂v}⟩ \\\\  & =⟨\\frac{∂}{∂v}(u),\\,\\frac{∂}{∂v}(v),\\,\\frac{∂}{∂v}(- 3 u + 4 v)⟩ \\\\  & =⟨0,\\,1,\\,4⟩\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{′}\\times {r}_{v}^{′} & =\\begin{vmatrix}i & j & k \\\\ 1 & 0 & -3 \\\\ 0 & 1 & 4\\end{vmatrix} \\\\  & =⟨\\begin{vmatrix}0 & -3 \\\\ 1 & 4\\end{vmatrix},\\,-\\begin{vmatrix}1 & -3 \\\\ 0 & 4\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix}⟩ \\\\  & =⟨3,\\,-4,\\,1⟩.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =⟨- x^{2} + y^{2},\\,- y^{2} + z^{2},\\,- z^{2}⟩{|}_{x=u,\\,\\,y=v,\\,\\,z=- 3 u + 4 v} \\\\  & =⟨- u^{2} + v^{2},\\,- v^{2} + (- 3 u + 4 v)^{2},\\,- (- 3 u + 4 v)^{2}⟩\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨- u^{2} + v^{2},\\,- v^{2} + (- 3 u + 4 v)^{2},\\,- (- 3 u + 4 v)^{2}⟩\\cdot ⟨3,\\,-4,\\,1⟩ \\\\  & =(- u^{2} + v^{2})\\cdot (3)+(- v^{2} + (- 3 u + 4 v)^{2})\\cdot (-4)+(- (- 3 u + 4 v)^{2})\\cdot (1) \\\\  & =- 3 u^{2} + 3 v^{2}+4 v^{2} - 4 \\left(- 3 u + 4 v\\right)^{2}- \\left(- 3 u + 4 v\\right)^{2} \\\\  & =- 48 u^{2} + 120 uv - 73 v^{2}.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{∬}_{S}⟨- x^{2} + y^{2},\\,- y^{2} + z^{2},\\,- z^{2}⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A. \\\\  & ={∬}_{D}(- 48 u^{2} + 120 uv - 73 v^{2})\\,\\text{d}A \\\\  & ={\\int }_{-3}^{5}{\\int }_{0}^{3}(- 48 u^{2} + 120 uv - 73 v^{2})\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "62f241a0-9825-5a29-9d9f-017a4c0350ec",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5982dbe2-94ed-5b67-956e-27142cf30a1e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 48 u^{2} + 120 uv - 73 v^{2}"
+            },
+            {
+              ":answer/id": "d07f8c4d-fcee-51ba-a1ad-29daf86278f7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 39 u^{2} + 96 uv - 57 v^{2}"
+            },
+            {
+              ":answer/id": "76a70a11-0da5-577c-a7a3-3ebcb2c8906c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 u^{2} - 72 uv + 47 v^{2}"
+            },
+            {
+              ":answer/id": "cdcd5457-a151-582d-ba0f-67fe255e1936",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 42 u^{2} + 120 uv - 79 v^{2}"
+            },
+            {
+              ":answer/id": "199ecaa3-9380-53cf-be51-9a1438ef7aba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48 u^{2} - 120 uv + 73 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5982dbe2-94ed-5b67-956e-27142cf30a1e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1-format-audit-9837-v1",
+      "seed": 27102891,
+      "template": "q-161377",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -3,
+        "b": 4,
+        "s": -1,
+        "bounds": [
+          -3,
+          5,
+          0,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "6239a34bee2adb96dfe1fcf9fc61f161d5dca5a227cc26757160f4fe0502e17f",
+      "presentation_fingerprint": "2982723706795b627a94cb2641d0d805c19ed0698664e30edba80216553cd1ce",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "observed",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  }
+]
