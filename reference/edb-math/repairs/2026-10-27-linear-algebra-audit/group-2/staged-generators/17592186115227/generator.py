@@ -50,14 +50,14 @@ def make_record(band,p,side,profile,seed=0,source=None,radio_bank=None,source_co
     prompt=normalize_prose(prompt);solution=normalize_prose(solution)
     # Content identity includes the response contract and complete bank, after normalization.
     bank=[normalize_tex(v) for v in radio_bank] if radio_bank else [str(v) for row in result for v in row]
-    qid=uid(KP['id'],digest({'prompt':prompt,'bank':bank}))
+    qid=uid(KP['id'],digest({'prompt':prompt,'solution':solution,'bank':bank}))
     fields=[]
     for i,values in enumerate([bank] if radio_bank is not None else [[v] for v in bank]):
         key='selection' if radio_bank is not None else 'field-'+str(i+1);fid=uid(qid,key)
         choices=[{':answer/id':uid(fid,str(j)+':'+v),':answer/type':':answer.type/math',':answer/value':v} for j,v in enumerate(values)]
         correct=source_correct if radio_bank is not None else 0
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+('radio' if radio_bank is not None else 'blank'),':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[correct][':answer/id']]})
-    r={'knowledge_point':KP.copy(),'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':fields},'generation':{'version':'associative-matrices-2.0.0','seed':seed,'profile':profile,'grouping':side,'parameters':p,'source_question':source or SOURCES[profile.split('-')[0]],'source_basis':8210,'assets':{},'semantic_fingerprint':digest(p)}}
+    r={'knowledge_point':KP.copy(),'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+band,':question/answer-fields':fields},'generation':{'version':'associative-matrices-2.0.1-content-identity','seed':seed,'profile':profile,'grouping':side,'parameters':p,'source_question':source or SOURCES[profile.split('-')[0]],'source_basis':8210,'assets':{},'semantic_fingerprint':digest(p)}}
     return validate_generated_record(r)
 
 def sample(rng,profile):

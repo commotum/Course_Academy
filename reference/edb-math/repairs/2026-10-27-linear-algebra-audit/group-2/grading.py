@@ -10,7 +10,10 @@ for q0 in D['questions']:
  for i,f in enumerate(q.get(':question/answer-fields',[])):
   if f[':db/id']in km:f[':answer-field/correct']=next(a for a in f[':answer-field/choices']if a[':db/id']==km[f[':db/id']])
   if (f[':db/id'],':answer-field/key')in pm:f[':answer-field/key']=pm[f[':db/id'],':answer-field/key']
-  right=f[':answer-field/correct'];f[':answer-field/correct']=[':answer/id',right[':answer/id']];f[':answer-field/type']=f[':answer-field/type'][':db/ident']
+  
+  for a in f[':answer-field/choices']:
+   if (a[':db/id'],':answer/value')in pm:a[':answer/value']=pm[a[':db/id'],':answer/value']
+  right=next(a for a in f[':answer-field/choices']if a[':db/id']==f[':answer-field/correct'][':db/id']);f[':answer-field/correct']=[':answer/id',right[':answer/id']];f[':answer-field/type']=f[':answer-field/type'][':db/ident']
   for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']
   if f[':answer-field/type']==':answer-field.type/blank':checks.extend([{'field_index':i,'submitted':right[':answer/value'],'expected':'accepted','purpose':'Unchanged canonical value accepted'},{'field_index':i,'submitted':'987654321','expected':'rejected','purpose':'Incorrect entry rejected'}])
   else:checks.extend({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==right[':answer/id']else'rejected','purpose':'All existing choices checked'}for a in f[':answer-field/choices'])

@@ -9,7 +9,7 @@ from pathlib import Path
 from math_format import checked_math_content, normalize_prose, normalize_tex
 
 KP = 17592186124630
-VERSION = '2.0.0'
+VERSION = '2.0.1-content-identity'
 SOURCE = json.loads(Path(__file__).with_name('source-data.json').read_text())
 KP_UUID = SOURCE[':knowledge-point/id']
 SOURCES = {q[':question/math-academy-id']: q for q in SOURCE[':knowledge-point/questions']}
@@ -51,7 +51,8 @@ def uid(value):
 def replay(source_id):
     """Exact source replay, with independent field-owned draft identities."""
     q = SOURCES[source_id]
-    fid = uid('field:' + source_id)
+    served = digest([q[':question/problem'], q[':question/worked-solution'], q[':question/answer-fields']])
+    fid = uid('field:' + source_id + ':' + served)
     fields = []
     for f in q[':question/answer-fields']:
         choices = [{':answer/id': str(uuid.uuid5(uuid.UUID(fid), a[':answer/value'])),
@@ -62,7 +63,7 @@ def replay(source_id):
                        ':answer-field/type': str(f[':answer-field/type'][':db/ident']),
                        ':answer-field/choices': choices,
                        ':answer-field/correct': [':answer/id', next(a[':answer/id'] for a in choices if a[':answer/value'] == correct)]})
-    question = {':question/id': uid('question:' + source_id),
+    question = {':question/id': uid('question:' + source_id + ':' + served),
                 ':question/problem': q[':question/problem'],
                 ':question/worked-solution': q[':question/worked-solution'],
                 ':question/difficulty': ':question.difficulty/easy',
@@ -137,7 +138,7 @@ def make_record(target, bank_profile, seed=0):
     else:
         values = [(TERMS[t], ':answer.type/math') for t in BANKS[bank_profile]] + [('n+1', ':answer.type/math')]
     values = [(normalize_tex(v) if typ == ':answer.type/math' else v, typ) for v, typ in values]
-    identity = digest([problem, sorted(values)])
+    identity = digest([problem, solution, sorted(values)])
     fid = uid('field:v2:' + identity)
     choices = [{':answer/id': str(uuid.uuid5(uuid.UUID(fid), typ + ':' + v)),
                 ':answer/type': typ, ':answer/value': v} for v, typ in values]

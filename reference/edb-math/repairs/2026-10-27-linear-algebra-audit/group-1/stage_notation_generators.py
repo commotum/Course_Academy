@@ -38,7 +38,12 @@ for kp in wanted:
  if kp!=17592186119857:
   s=s.replace('import sympy as sp','import sympy as sp\nfrom vector_notation import vector_prose, plain_vector_prose',1);(dest/'vector_notation.py').write_text(helper);files.append('vector_notation.py')
  if kp==17592186119805:
-  oldreturn='    return problem,sol,correct,bank';assert oldreturn in s;s=s.replace(oldreturn,"    return vector_prose(problem),vector_prose(sol),correct,bank",1)
+  oldreturn='    return problem,sol,correct,bank';assert oldreturn in s;s=s.replace(oldreturn,oldreturn,1)
+  start=s.index('def render(sid,p):');end=s.index('def fingerprint(',start);chunk=s[start:end]
+  chunk=chunk.replace('{a}_{1}',r'{\mathbf{a}}_{1}').replace('{a}_{2}',r'{\mathbf{a}}_{2}')
+  chunk=chunk.replace("('0' if moderate","(r'\\mathbf{0}' if moderate")
+  chunk=chunk.replace('=b',r'=\mathbf{b}').replace("else 'b'", "else r'\\mathbf{b}'").replace(r'\,b=',r'\,\mathbf{b}=')
+  s=s[:start]+chunk+s[end:]
   s=s.replace("text=q[':question/problem'];a,u,*bs=vectors(text)","text=plain_vector_prose(q[':question/problem']);a,u,*bs=vectors(text)")
   oldid='json.dumps([sid,p,bank],sort_keys=True)';assert oldid in s;s=s.replace(oldid,'json.dumps([VERSION,sid,p,bank],sort_keys=True)',1)
  elif kp==17592186119806:

@@ -13,12 +13,19 @@
  SOURCE=json.loads(Path(__file__).with_name('source-data.json').read_text())
  PROFILES={q[':question/math-academy-id']:q for q in SOURCE['questions'] if q.get(':question/difficulty')}
  LEVELS={level:tuple(sid for sid,q in PROFILES.items() if q[':question/difficulty'][':db/ident'].endswith('/'+level)) for level in ('easy','moderate')}
-@@ -85,10 +86,10 @@
-     else:
-         sol+='From the final equation above, we can tell that $'+letter+'='+correct+'.$'
-         if moderate or sid.startswith('hard:'):sol+=' This value satisfies every component.'
--    return problem,sol,correct,bank
-+    return vector_prose(problem),vector_prose(sol),correct,bank
+@@ -73,8 +74,8 @@
+ def render(sid,p):
+     a,u,b,r,t,correct,bank=data(sid,p);c=p['c'];letter=p['letter'];minus=p.get('minus',sid=='q-34241');moderate=sid in LEVELS['moderate']
+     av,uv,bv,rv=map(lambda m:vec(list(m)),(a,u,b,r))
+-    eq=((str(c) if c!=1 else '')+r'{a}_{1}-'+letter+r'{a}_{2}=b') if minus else str(c)+r'{a}_{1}+'+letter+r'{a}_{2}='+('0' if moderate else 'b')
+-    problem=f'Find ${letter}$, if ${eq}$ and\n\n$$\n'+r'{a}_{1}='+av+r',\,{a}_{2}='+uv+('' if moderate else r',\,b='+bv)+'.\n$$'
++    eq=((str(c) if c!=1 else '')+r'{\mathbf{a}}_{1}-'+letter+r'{\mathbf{a}}_{2}=\mathbf{b}') if minus else str(c)+r'{\mathbf{a}}_{1}+'+letter+r'{\mathbf{a}}_{2}='+(r'\mathbf{0}' if moderate else r'\mathbf{b}')
++    problem=f'Find ${letter}$, if ${eq}$ and\n\n$$\n'+r'{\mathbf{a}}_{1}='+av+r',\,{\mathbf{a}}_{2}='+uv+('' if moderate else r',\,\mathbf{b}='+bv)+'.\n$$'
+     first=((str(c) if c!=1 else '')+av+'-'+letter+uv) if minus else str(c)+av+'+'+letter+uv
+     difference=((str(c) if c!=1 else '')+av+'-'+bv) if minus else bv+'-'+str(c)+av
+     sol=f'Using the properties of addition/subtraction and scalar multiplication of vectors to isolate the ${letter}$ term, we get\n\n$$\n'+r'\begin{aligned}'+eq.replace('=',' & =')+r' \\ '+first+' & ='+bv+r' \\ '+letter+uv+' & ='+difference+r' \\ '+letter+uv+' & ='+rv+r'.\end{aligned}'+'\n$$\n\n'
+@@ -88,7 +89,7 @@
+     return problem,sol,correct,bank
  
  def fingerprint(q):
 -    text=q[':question/problem'];a,u,*bs=vectors(text)

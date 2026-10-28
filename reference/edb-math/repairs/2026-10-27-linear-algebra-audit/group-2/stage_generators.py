@@ -46,6 +46,9 @@ for g in json.loads((H/'generators.json').read_text()):
  if g['kp']==17592186119808:
   import importlib.util
   spec=importlib.util.spec_from_file_location('span_patch',H/'patch_span_generator.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);mod.patch(dest/Path(g['path']).name)
+
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('identity_patch',H/'patch_identity.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);mod.patch(g['kp'],dest/Path(g['path']).name)
  manifest=json.loads((dest/'generator-package.json').read_text());manifest['files']={str(p.relative_to(dest)):{'bytes':p.stat().st_size,'executable':bool(p.stat().st_mode&0o111),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in dest.rglob('*')if p.is_file()and p.name!='generator-package.json'and '__pycache__'not in str(p)};(dest/'generator-package.json').write_text(json.dumps(manifest,indent=2)+'\n')
  staged.append({**g,'staged':str(dest.resolve()),'helper_updated':helper_changed,'source_field_edits':edits,'source_mismatches_retained':unmatched,'publication':'not published or registered'})
 (H/'staged-generators.json').write_text(json.dumps(staged,indent=2)+'\n');print('staged',len(staged),'source field edits',sum(len(s['source_field_edits'])for s in staged))

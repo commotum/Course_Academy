@@ -14,7 +14,7 @@ SOURCE = json.loads((HERE / 'source-current.json').read_text())
 KP_ID = 17592186124629
 KP_UUID = 'bb90e5b9-03fe-51cf-bc16-a293befacebc'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
-VERSION = '2.0.1'
+VERSION = '2.0.2-content-identity'
 SUPPORTED_LEVELS = ('moderate',)
 CASES = {q[':question/math-academy-id']: q for q in SOURCE[':knowledge-point/questions']
          if q.get(':question/difficulty') and q.get(':question/worked-solution')}
@@ -90,7 +90,7 @@ def theorem(n):
 def assemble(sid, prompt, solution, specs, parameters, seed):
     q = {':question/problem': normalize_prose(prompt), ':question/worked-solution': normalize_prose(solution),
          ':question/difficulty': ':question.difficulty/moderate'}
-    content = [q[':question/problem'], [(key, kind, sorted(values), correct) for key, kind, values, correct in specs]]
+    content = [q[':question/problem'], q[':question/worked-solution'], [(key, kind, sorted(values), correct) for key, kind, values, correct in specs]]
     fp = hashlib.sha256(json.dumps(content, ensure_ascii=False).encode()).hexdigest()
     qid = uuid.uuid5(uuid.UUID(GENERATOR_UUID), fp)
     q[':question/id'] = str(qid)
