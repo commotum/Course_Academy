@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import urlsplit,parse_qs
 from playwright.sync_api import sync_playwright
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from serve_graph_explorer import image_path,DEFAULT_MATH_ROOT,IMAGE_TYPES
-D=json.loads((H/'staged-current.json').read_text());qs=D['questions'];chosen={17592186698391,17592186408112,17592186233804,17592186134135};chosen.update(q[':db/id']for q in qs if q.get(':question/math-academy-id')in['q-59676','q-6827','q-18040','q-125716'])
+D=json.loads((H/'staged-current.json').read_text());qs=D['questions'];chosen={17592186698391,17592186408112,17592186233804,17592186134135,17592186573312};chosen.update(q[':db/id']for q in qs if q.get(':question/math-academy-id')in['q-59676','q-6827','q-18040','q-125716'])
 for predicate in [lambda q:any(f[':answer-field/type'][':db/ident'].endswith('/checkbox')for f in q.get(':question/answer-fields',[])),lambda q:'{{'in q[':question/problem']and'<table'in q[':question/problem'],lambda q:'{{'in q[':question/problem']and r'\begin{bmatrix}'in q[':question/problem'],lambda q:'{{'in q[':question/problem']and r'\begin{vmatrix}'in q[':question/problem']]:
  found=next((q for q in qs if predicate(q)),None)
  if found:chosen.add(found[':db/id'])

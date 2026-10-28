@@ -15,6 +15,16 @@ def integral(s):
  while s and s[0]in'_^':
   role=s[0];v,s=atom(s[1:]);bounds[role]=scalar(v);s=s.lstrip()
  s=re.sub(r'\\(?:textrm|text|mathrm)\s*\{\s*d\s*\}|\\(?:textrm|text|mathrm)\s+d', 'd',s);m=re.search(r'd\s*x\s*[.=,]?\s*$',s);assert m,s;f=scalar(s[:m.start()]);return f,bounds
+def derivative_on_domain(v):
+ # On each real interval where the integrand is defined, d(log|g|)=g'/g.
+ v=v.replace(lambda z:z.func==sp.log and len(z.args)==1 and z.args[0].func==sp.Abs,lambda z:sp.log(z.args[0].args[0]))
+ return sp.diff(v,x)
+def evaluated_rewrite(value):
+ m=re.match(r'\\left\[([\s\S]+?)\\right\]([\s\S]+)',value);assert m,value
+ primitive=scalar(m[1]);tail=m[2].lstrip();bounds={}
+ while tail and tail[0]in'_^':
+  k=tail[0];v,tail=atom(tail[1:]);bounds[k]=scalar(v);tail=tail.lstrip()
+ pos=tail.index(r'\int');co=scalar(tail[:pos]);g,b=integral(tail[pos:]);return primitive.subs(x,bounds['^'])-primitive.subs(x,bounds['_'])+co*sp.integrate(g,(x,b['_'],b['^']))
 signal.signal(signal.SIGALRM,lambda*a:(_ for _ in()).throw(TimeoutError('bounded IBP')))
 for q in D['questions']:
  if q[':db/id']not in ids:continue
@@ -24,12 +34,12 @@ for q in D['questions']:
    assert len(fields)==1;field=fields[0];cid=field[':answer-field/correct'][':db/id']
    for a in field[':answer-field/choices']:
     try:
-     value=a[':answer/value'];v=scalar(value);passed=equal(v,expected)if definite else equal(sp.diff(v,x),f);rows.append({'answer':a[':db/id'],'matches_integral':bool(passed),'value':value,'includes_constant':bool(v.has(SYMS['C']))})
+     value=a[':answer/value'];v=evaluated_rewrite(value)if'Leave the remaining integral unevaluated'in prompt else scalar(value);passed=equal(v,expected)if definite else equal(derivative_on_domain(v),f);rows.append({'answer':a[':db/id'],'matches_integral':bool(passed),'value':value,'includes_constant':bool(v.has(SYMS['C']))})
     except Exception as ex:rows.append({'answer':a[':db/id'],'matches_integral':False,'interpretation':str(ex)})
    good=[r['answer']for r in rows if r['matches_integral']];ok=cid in good and(field[':answer-field/type'][':db/id']==17592186045492 or good==[cid]);proof={'canonical':cid,'matching_answers':good,'choices':rows}
    if not definite:ok=ok and any(r['answer']==cid and r['includes_constant']for r in rows)
   else:
-   sol=q[':question/worked-solution'];last=maths(sol)[-1];last=re.sub(r'\\(?:begin|end)\{aligned\}','',last).replace('&','');value=last.split('=')[-1].strip().rstrip('.');v=scalar(value);ok=equal(v,expected)if definite else equal(sp.diff(v,x),f)and v.has(SYMS['C']);proof={'worked_final':value,'derivative':str(sp.diff(v,x))if not definite else None}
+   sol=q[':question/worked-solution'];last=maths(sol)[-1];last=re.sub(r'\\(?:begin|end)\{aligned\}','',last).replace('&','');value=last.split('=')[-1].strip().rstrip('.');v=scalar(value);ok=equal(v,expected)if definite else equal(derivative_on_domain(v),f)and v.has(SYMS['C']);proof={'worked_final':value,'derivative':str(sp.diff(v,x))if not definite else None}
   checks.append({'entity':q[':db/id'],'source':q.get(':question/math-academy-id'),'integrand':str(f),'bounds':{k:str(v)for k,v in b.items()},'expected_definite':str(expected),'passed':bool(ok),**proof})
  except Exception as ex:unresolved.append({'entity':q[':db/id'],'source':q.get(':question/math-academy-id'),'reason':str(ex)})
  finally:signal.alarm(0)
