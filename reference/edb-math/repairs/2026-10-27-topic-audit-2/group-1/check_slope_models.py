@@ -11,7 +11,7 @@ for file in['generator-samples.json','staged-samples.json','template-samples.jso
   if kp not in[17592186172038,17592186172039,17592186172040,17592186172041]:continue
   q=record['question'];g=record['generation'];r={'file':file,'kp':kp,'identity':q[':question/id'],'template':g.get('template'),'checks':[]}
   try:
-   formula=next((m for m in maths(q[':question/problem'])if '='in m and('frac'in m or"y'"in m)),None);expr=parse(formula.split('=',1)[1].rstrip('?.'))if formula else None
+   formula=next((m for m in maths(q[':question/problem'])if '='in m and('frac'in m or"y'"in m)),None);expr=parse(formula.split('=',1)[1].rstrip('?.'))if formula and'f(x,y)'not in formula else None
    if kp==17592186172038:
     expected=[S.simplify(expr.subs({X:S.Rational(a),Y:S.Rational(b)}))for a,b in g['parameters']['points']];f=q[':question/answer-fields'][0];a=next(a for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1]);geometry=g['choice_geometry'];actual=list(map(S.sympify,geometry[a[':answer/value']]));r['checks'].append({'equation_from_prompt':str(expr),'exact_expected_slopes':list(map(str,expected)),'chosen_image_slopes':list(map(str,actual)),'pass':expected==actual});paths=list(geometry)
     # Read actual renderer sidecar, independently of metadata's point list.

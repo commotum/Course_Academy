@@ -63,6 +63,8 @@ Every topic's retained lesson HTML/JSON archive was read. Retained capture index
 
 The normal worker refill target is five. Both same-seed count5 probes already passed; the larger CLI counts are legitimate and now pass as well. Other count12 failures in KP217248/easy and KP217249/hard are explicit finite catalog limits of eight, not repaired by fabricating new variants. Current common `math_format.py` is included in each successor. Their existing full normalized content hashes already derive immutable question identity; versions are also advanced where applicable. Retained source JSON remains evidence, distinguished from fresh eligible content.
 
+All 31 scalar generators also pass `generator-relocation-verification.json`: the same seed/count produces identical complete question content and question/field/answer UUIDs from the registered/staged location and a copied execution directory with different `COURSE_ACADEMY_GENERATOR_OUTPUT_DIR` values. All 31 complete outputs are identical, asset payloads are empty, and neither output directory receives an artifact. Topic3241 has no active phase/graph generator, so retained phase graphics are not confused with freshly generated assets. Temporary relocation copies were removed after saving the proof.
+
 ## Remaining issues and proof limits
 
 `unresolved.json` contains exact evidence for:

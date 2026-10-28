@@ -20,7 +20,10 @@ if file.exists():assert file.read_text()==payload
 else:file.write_text(payload)
 sha=hashlib.sha256(payload.encode()).hexdigest();intentpath=D/'commit-intent.json';receipt=D/'receipt.edn'
 def rows_at(pairs,basis,name):
- return db.query('[:find ?e ?name ?v :in $ [[?e ?name]] :where [?a :db/ident ?name] [?e ?a ?v]]',[[[e,kw(a)]for e,a in pairs]],D,name,basis)
+ rows=[]
+ for offset in range(0,len(pairs),25):
+  rows.extend(db.query('[:find ?e ?name ?v :in $ [[?e ?name]] :where [?a :db/ident ?name] [?e ?a ?v]]',[[[e,kw(a)]for e,a in pairs[offset:offset+25]]],D,name+'-'+str(offset//25),basis))
+ return rows
 # Unknown outcomes retain the exact original request. Only a confirmed stale
 # precondition may produce a newly captured basis and a new request identity.
 for attempt in range(4):
