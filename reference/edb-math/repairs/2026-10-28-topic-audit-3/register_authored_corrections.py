@@ -8,7 +8,7 @@ from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];sys.path.insert(0,str(R/'scripts/question_capture'))
 from provenance import mathematical_correction_records
 read=lambda p:json.loads(Path(p).read_text())
-model={q[':db/id']:q for q in read(H/'final-check/model.json')};names=dict(read(H/'idents.json'));out=[]
+model={q[':db/id']:q for q in read(H/(sys.argv[1]if len(sys.argv)>1 else'final-check')/'model.json')};names=dict(read(H/'idents.json'));out=[]
 def enum(v):return str(v.get(':db/ident',names.get(v.get(':db/id'))))if isinstance(v,dict)else str(v)
 for item in read(H/'authoring-manifest.json'):
  q=model[item['question']];mid=q.get(':question/math-academy-id')
