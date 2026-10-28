@@ -28,7 +28,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
   function walk(node){
     if(node.nodeType===3)return safeText(renderLeaf(node));if(node.nodeType!==1)return '';
     const tag=node.localName;if(node.matches('script,style,mjx-assistive-mml,.studentAnswer,.studentAnswerHeader,.stepHeader,.helpButton,[id^="continueButton-"],[id^="submitButton-"]'))return '';
-    if(node.matches('math,mjx-container,svg,input,select,img,.freeResponseTextbox,.selectList,.mjpage,.MathJax')){
+    if(node.matches('math,mjx-container,svg,input,textarea,select,img,[contenteditable="true"],.matheditor-wrapper-answer,.freeResponseTextbox,.selectList,.mjpage,.MathJax')){
       const value=renderLeaf(node),image=/^!\[([^\]]*)\]\(([^)]+)\)$/.exec(value.trim());return image?'<img src="'+esc(image[2])+'" alt="'+esc(image[1])+'">':safeText(value);
     }
     const content=()=>[...node.childNodes].map(walk).join('');

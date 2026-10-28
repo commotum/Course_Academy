@@ -44,4 +44,19 @@ class SourceTableTests(unittest.TestCase):
  def test_browser_helpers_are_identical(self):
   source=(R/'scripts/question_capture/table_html.js').read_text();function=source[source.index('function sourceHTMLTable'):].strip()
   for path in ['scripts/question_capture/dom.js','capture/scripts/browser/extract.js']:self.assertIn(function,(R/path).read_text())
+ def test_live_matrix_editor_fields_keep_rowspan_positions(self):
+  saved=R/'reference/mathacademy/question-capture-workers/linear/14043295/q-275522-before.json'
+  import json
+  source=json.loads(saved.read_text())['html']
+  self.page.set_content('<div id="fixture">'+source+'</div>')
+  for path in ['scripts/question_capture/dom.js','capture/scripts/browser/extract.js']:
+   with self.subTest(extractor=path):
+    result=self.page.locator('#fixture').evaluate((R/path).read_text())
+    self.assertEqual(result['errors'],[])
+    self.assertEqual([f['key']for f in result['fields']],['field-1','field-2','field-3','field-4'])
+    table=BeautifulSoup(result['problem'],'html.parser').find('table')
+    rows=table.find_all('tr');self.assertEqual(rows[0].find('td')['rowspan'],'2')
+    self.assertEqual([td.get_text(strip=True)for td in rows[0].find_all('td',recursive=False)][2:4],['{{field-1}}','{{field-2}}'])
+    self.assertEqual([td.get_text(strip=True)for td in rows[1].find_all('td',recursive=False)][1:3],['{{field-3}}','{{field-4}}'])
+    for key in ['field-1','field-2','field-3','field-4']:self.assertEqual(result['problem'].count('{{'+key+'}}'),1)
 if __name__=='__main__':unittest.main()
