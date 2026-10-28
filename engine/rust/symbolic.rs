@@ -1211,6 +1211,23 @@ impl Algebra {
                 }
             }
             "exp" => {
+                // exp(n*ln(u)) = u^n for bounded integer n. Evaluating ln(u)
+                // already required u > 0; retain that guard when cancelling
+                // the inverse functions, even if the resulting power has a
+                // larger real domain. Sums of rational logarithms are handled
+                // by the existing exponential sum decomposition below.
+                if x.den == Poly::integer(1) && x.num.0.len() == 1 {
+                    let (m, c) = x.num.0.first_key_value().unwrap();
+                    if m.len() == 1
+                        && let Some((Atom::Function(name, argument), 1)) = m.first_key_value()
+                        && name == "ln"
+                        && c.is_integer()
+                        && let Some(n) = c.to_integer().to_i32().filter(|n| n.unsigned_abs() <= 64)
+                    {
+                        self.sign_condition(argument, true)?;
+                        return self.integer_power(argument, n);
+                    }
+                }
                 // A linear fractional argument has a unique constant part:
                 // (a*x+b)/(c*x+d) = a/c + remainder/(c*x+d).
                 // Extract it before splitting numerator terms, so translated
@@ -2443,6 +2460,45 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn exponential_logarithm_integer_multiples_cancel_exactly() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("exp(ln(2))", "2"),
+            ("-6e^(-ln(2))", "-3"),
+            ("exp(2ln(3))", "9"),
+            ("exp(-2ln(3))", "1/9"),
+            ("exp(ln(2/3))", "2/3"),
+            ("exp(ln(2)+ln(3))", "6"),
+            ("exp(ln(x))", "x+0*ln(x)"),
+            ("exp(ln(x^2+1))", "x^2+1"),
+        ] {
+            let context = Context { natural_exponential: true, ..Context::default() };
+            assert_eq!(compare(a, b, context), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, context), Ok(true), "{b} vs {a}");
+        }
+    }
+    #[test]
+    fn exponential_logarithm_cancellation_keeps_domain_guards() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("exp(ln(x))", "x"),
+            ("exp(2ln(x))", "x^2"),
+            ("exp(ln(x^2))", "x^2"),
+            ("exp(ln(-2))", "-2"),
+            ("exp(ln(0))", "0"),
+        ] {
+            assert!(compare(a, b, Context::default()).is_err(), "{a} vs {b}");
+        }
+        for (a, b) in [
+            ("-6exp(-ln(2))", "-12"),
+            ("exp(2ln(3))", "6"),
+            ("exp(ln(2/3))", "3/2"),
+            ("exp((ln(2))^2)", "4"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+        }
+    }
     #[test]
     fn multivariate_logarithm_witnesses_do_not_freeze_differences() {
         use super::{compare, Context};

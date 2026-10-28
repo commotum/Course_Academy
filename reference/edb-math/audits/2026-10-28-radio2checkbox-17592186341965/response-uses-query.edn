@@ -1,0 +1,2 @@
+[:find ?field ?answer (pull ?item [* {:task-item/status [:db/ident]} {[:task-item/responses :limit nil] [*]}])
+ :in $ ?q :where [?q :question/answer-fields ?field] [?field :answer-field/choices ?answer] [?item :task-item/responses ?answer]]
