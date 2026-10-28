@@ -278,8 +278,15 @@ impl Poly {
                         let (l, h) = base.interval_at(sample)?;
                         let (a, b) = exponent.interval_at(sample)?;
                         if a != b || !a.is_integer() {
-                            return None;
-                        }
+                            // A positive real base permits arbitrary real powers:
+                            // base^exponent = exp(exponent * ln(base)). Bound
+                            // both inputs outwards; this is an inequality witness,
+                            // never an equality rewrite or a dropped domain guard.
+                            if !l.is_positive() { return None; }
+                            let logs = (log_bounds(&l)?.0, log_bounds(&h)?.1);
+                            let exponent_range = interval_mul(&logs, &(a, b));
+                            function_interval("exp", &exponent_range.0, &exponent_range.1)?
+                        } else {
                         let n = a.to_integer().to_i32()?;
                         if n.unsigned_abs() > 64 || (n <= 0 && l <= Q::zero() && h >= Q::zero()) {
                             return None;
@@ -289,6 +296,7 @@ impl Poly {
                             powers.push(Q::zero());
                         }
                         (powers.iter().min()?.clone(), powers.iter().max()?.clone())
+                        }
                     }
                     Atom::Root(n, p) => {
                         let (l, h) = p.interval_at(sample)?;
@@ -420,8 +428,18 @@ fn reduced_log_bounds(x: &Q) -> (Q, Q) {
     (&sum - &remainder, sum + remainder)
 }
 fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
-    if x.abs() > Q::from_integer(16.into()) || x.numer().bits().max(x.denom().bits()) > 128 {
+    if x.abs() > Q::from_integer(16.into()) {
         return None;
+    }
+    if x.numer().bits().max(x.denom().bits()) > 128 {
+        // Nested exponential/root intervals can have large rational endpoints.
+        // Round the argument OUTWARDS, then use the unit Lipschitz bound for
+        // real sine/cosine. Never treat the rounded argument as an exact value.
+        let (lower, upper) = bounded_endpoints(x)?;
+        let mid = (&lower + &upper) / Q::from_integer(2.into());
+        let radius = (&upper - &lower) / Q::from_integer(2.into());
+        let (lo, hi) = trig_bounds(name, &mid)?;
+        return Some((lo - &radius, hi + radius));
     }
     let cosine = name == "cos";
     let mut term = if cosine { Q::one() } else { x.clone() };
@@ -2146,6 +2164,9 @@ fn plus_minus(source: &str) -> Option<&str> {
 
 /// Whether a canonical answer has a bounded, supported representation.
 pub fn supports(source: &str, context: Context) -> bool {
+    if let Some(result) = equation_answers::compare(source, source, context) {
+        return matches!(result, Ok(true));
+    }
     match matrix_cells(source) {
         Ok(Some(rows)) => rows.iter().flatten().all(|cell| parse(cell, context).is_ok()),
         Ok(None) => parse(plus_minus(source).unwrap_or(source), context).is_ok(),
@@ -2471,6 +2492,29 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn nested_transcendental_intervals_reject_wrong_signs() {
+        use super::{compare, Context};
+        let c = Context { natural_exponential: true, ..Context::default() };
+        for (a, b) in [(-1, -1), (1, 1), (-2, 1), (2, -1)] {
+            let arg = format!("e^({a}*x+({b}))");
+            let f = format!("{arg}*tan({arg})");
+            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("{arg}*sin({arg})/cos({arg})"), c), Ok(true));
+        }
+        // Positive-base real powers are bounded without changing their form.
+        for base in [2, 3, 5] {
+            let f = format!("{base}^(ln(cos(x+1)))*ln({base})*tan(x+1)");
+            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("{base}^(ln(cos(x+1)))*ln({base})*sin(x+1)/cos(x+1)"), c), Ok(true));
+        }
+        // Guarded cancellation remains guarded. No witness establishes equality.
+        assert_ne!(compare("cos(exp(x))/cos(exp(x))", "1", c), Ok(true));
+        assert_ne!(compare("sqrt(x)^2", "x", c), Ok(true));
+        assert_ne!(compare("(-2)^x", "2^x", c), Ok(true));
+    }
     #[test]
     fn constant_trig_reciprocals_discharge_proven_nonzero_guards() {
         use super::{compare, Context};

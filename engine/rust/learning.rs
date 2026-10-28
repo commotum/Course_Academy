@@ -2992,6 +2992,21 @@ pub(crate) mod tests {
     use super::*;
     use crate::core::Policy;
 
+    #[test]
+    fn whole_circle_equations_are_admitted_and_graded_without_response_writes() {
+        let mut s = fixture();
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!("Find the Cartesian equation of the circle."));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("(x-3)^{2}+{y}^{2}=9"));
+        validate_question(&s, 100).unwrap();
+        for value in ["(x-3)^2+y^2=9", "x^2-6x+y^2=0", "9=y^2+(x-3)^2"] {
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, value.to_owned())])), Ok(true));
+        }
+        for value in ["(x-4)^2+y^2=9", "(x-3)^2+y^2=10", "987654321"] {
+            assert_eq!(grade(&s, 100, &BTreeMap::from([(200, value.to_owned())])), Ok(false));
+        }
+        assert!(s.refs(1, "learner/activity").unwrap().is_empty());
+    }
+
 
     #[test]
     fn ordered_pair_blanks_preserve_coordinate_order_and_equivalence() {

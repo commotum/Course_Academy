@@ -3,13 +3,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'))
 p=R/'reference/edb-math/repairs/2026-10-26-structural-math/recover_formulas.py';ns={'__file__':str(p)};exec(compile(p.read_text().split('index=collections.defaultdict(list)')[0],str(p),'exec'),ns)
-D=json.loads((H/'current.json').read_text());targets={q[':question/math-academy-id']:q for q in D['questions']if ':question/math-academy-id'in q};tu={str(c[':tutorial/math-academy-id']):c for c in D['contents']if ':tutorial/content'in c};sources=[];seen=set()
+D=json.loads((H/'current.json').read_text());targets={q[':question/math-academy-id']:q for q in D['questions']if ':question/math-academy-id'in q};tu={str(c[':tutorial/math-academy-id']):c for c in D['contents']if ':tutorial/content'in c};sources=json.loads((H/'sources.json').read_text())if(H/'sources.json').exists()else[];seen={(s['identity'],s['attribute'],s['html'])for s in sources};prior=bool(sources)
 def add(ident,attr,part,path):
  if part is None:return
  html=str(part);key=(ident,attr,html)
  if key in seen:return
  seen.add(key);fs=ns['formulas'](html);sources.append({'identity':ident,'attribute':attr,'path':str(path),'formulas':fs,'html':html})
-for t in D['topics']:
+for t in ([]if prior else D['topics']):
  p=Path('/home/jake/Developer/MA/DATA/Lessons')/str(t['ma_id'])/'Source'/f"{t['ma_id']}.html"
  if not p.exists():continue
  s=BeautifulSoup(p.read_text(),'html.parser');m=json.loads(p.with_suffix('.json').read_text())
@@ -21,7 +21,7 @@ for t in D['topics']:
   if ident not in targets:continue
   add(ident,'question/problem',node.find(class_='exampleQuestion')if ident.startswith('e-')else node.find(class_='questionText')or node.find(class_='questionWidget-text'),p)
   add(ident,'question/worked-solution',node.find(class_='exampleSolution')or node.find(class_='questionExplanation')or node.find(class_='questionWidget-explanation'),p)
-for line in(H/'source-paths-fresh.txt').read_text().splitlines():
+for line in((H/'source-paths-added.txt')if prior else(H/'source-paths-fresh.txt')).read_text().splitlines():
  p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
  if not m:continue
  ident=m[1]or m[2]or'e-'+m[3]
