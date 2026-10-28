@@ -9,8 +9,9 @@ for t in D['topics']:
  p=Path('/home/jake/Developer/MA/DATA/Lessons')/str(t['ma_id'])/'Source'/f"{t['ma_id']}.html"
  if not p.exists():continue
  soup=BeautifulSoup(p.read_text(),'html.parser')
- for ident in wanted:
-  if not ident or not ident.startswith('q-'):continue
+ for widget in soup.select('[id^="question-"]'):
+  ident='q-'+widget.get('id','')[len('question-'):]
+  if ident not in wanted:continue
   widget=soup.find(id='question-'+ident[2:])
   if widget is None:continue
   opts=widget.select('.questionWidget-choiceText')

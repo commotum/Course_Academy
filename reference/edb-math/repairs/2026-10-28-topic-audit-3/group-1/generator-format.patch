@@ -1,0 +1,458 @@
+--- generate/scratch/17592186083245.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186083245/17592186083245.py
+@@ -9,6 +9,7 @@
+ use the assessed slope/point operations. No engine or database mutations.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, copy, hashlib, json, random, re, sys, uuid
+ from pathlib import Path
+ import sympy as sp
+@@ -16,7 +17,7 @@
+ HERE=Path(__file__).with_suffix('')
+ CAP=json.loads((HERE/'source.json').read_text())
+ SOURCE=CAP['record']; QUESTIONS=SOURCE[':knowledge-point/questions']
+-VERSION='normal-parametric-1'
++VERSION='normal-parametric-1-format-audit-9837-v1'
+ t,x,y=sp.symbols('t x y', real=True)
+ # Each source family remains separate: its fixed workload and solution mask are
+ # taken from that source, rather than replaced by a generic CAS stage sequence.
+@@ -144,8 +145,9 @@
+  return banks
+ 
+ def make_record(level,family,p,profile,problem,solution,banks,correct,keys,kind,rawq=None,extra=None):
++ if rawq is None:problem=_ca_problem(problem);solution=_ca_prose(solution);banks=[_ca_values(b)for b in banks]
+  material={'version':VERSION,'level':level if rawq is None or ':question/difficulty' in rawq else None,'problem':problem,'solution':solution,'bank':[(key,sorted(bank)) for key,bank in zip(keys,banks)],'correct':correct}
+- digest=hashlib.sha256(json.dumps(material,sort_keys=True).encode()).hexdigest();qid=str(uuid.uuid5(NAMESPACE,digest))
++ digest=hashlib.sha256(json.dumps(_ca_material(material),sort_keys=True).encode()).hexdigest();qid=str(uuid.uuid5(NAMESPACE,digest))
+  fields=[]
+  for key,bank,corr in zip(keys,banks,correct):
+   fid=str(uuid.uuid5(uuid.UUID(qid),key)); choices=[]
+--- generate/scratch/17592186083280.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186083280/17592186083280.py
+@@ -7,13 +7,14 @@
+ two-period version of the shifted trig family: four familiar roots, not new algebra.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, hashlib, json, random, re, sys, uuid
+ from pathlib import Path
+ import sympy as s
+ ROOT=Path(__file__).with_suffix('')
+ SOURCE=json.loads((ROOT/'source.json').read_text())
+ KP=SOURCE['record']; Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+-T=s.Symbol('t',real=True); VERSION='normal-orientation-2'
++T=s.Symbol('t',real=True); VERSION='normal-orientation-2-format-audit-9837-v1'
+ HARD_PHASES=tuple(s.Rational(n,d)for n,d in ((1,6),(1,4),(1,3),(2,3),(3,4),(5,6)))
+ HARD_PHASE_INPUTS=HARD_PHASES+tuple(v+1 for v in HARD_PHASES)
+ HARD_INTERVAL_SHIFTS=tuple(range(6))
+@@ -26,7 +27,7 @@
+ def exp(k,arg='t'): return '{e}^{'+str(k)+arg+'}'
+ def lin(a,b): return f'{a}t'+('+'+str(b) if b>=0 else str(b))
+ def uid(v): return str(uuid.uuid5(NS,v))
+-def digest(v): return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
++def digest(v): return hashlib.sha256(json.dumps(_ca_material(v),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+ def mask(text,old,new):
+     assert len(old)==len(new)
+     # Replacements are complete mathematical components, never numeric substrings.
+@@ -250,6 +251,7 @@
+     from mathcheck_17592186083280 import value_set,prompt_curve
+     bank_keys=[[value_set(v) for v in bank]for bank in banks]
+     if any(len(b)!=len(set(b))for b in bank_keys):raise ValueError('Whole bank rejected: duplicate options')
++    if not raw:prompt=_ca_problem(prompt);solution=_ca_prose(solution);banks=[_ca_values(b)for b in banks]if atype=='math'else banks
+     content={'level':None if raw and ':question/difficulty' not in src else level,'prompt':prompt,'solution':solution,'banks':banks,'types':atype}
+     display_x,display_y,domain=prompt_curve({'question':{':question/problem':prompt}})
+     target=s.diff(display_x if orientation=='horizontal'else display_y,T)
+@@ -302,8 +304,8 @@
+ # Every learner-facing checkbox question has a nonempty correct selection.
+ import sys as _policy_sys
+ from pathlib import Path as _PolicyPath
+-_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+-from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
++_policy_sys.path.insert(0, str(_PolicyPath(__file__).resolve().parent))
++from generator_policy import nonempty_checkbox as _nonempty_checkbox
+ for _policy_name in ['generate', 'generate_easy', 'generate_hard', 'generate_moderate']:
+     globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+ 
+--- generate/scratch/17592186129267.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186129267/17592186129267.py
+@@ -11,6 +11,7 @@
+ Each section below documents its equal-workload domains. No EDB writes.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid
+ from importlib.metadata import version as package_version
+ from pathlib import Path
+@@ -22,7 +23,7 @@
+ EVIDENCE=ROOT/str(KP_ID)
+ CAPTURE=json.loads((EVIDENCE/'source.json').read_text())
+ SOURCE=CAPTURE['record']; QS={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
+-VERSION='cylindrical-solid-2'
++VERSION='cylindrical-solid-2-format-audit-9837-v1'
+ x,y,z=sp.symbols('x y z',real=True);r=sp.Symbol('r',nonnegative=True);theta=sp.Symbol('theta',real=True)
+ TEMPLATES={
+  'half_xz':('moderate','q-161520',{'S':25,'H':6}),
+@@ -37,7 +38,7 @@
+ }
+ def tex(a):return sp.latex(sp.sympify(a)).replace(r'\log',r'\ln')
+ def uid(a):return str(uuid.uuid5(uuid.NAMESPACE_URL,a))
+-def digest(a):return hashlib.sha256(json.dumps(a,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
++def digest(a):return hashlib.sha256(json.dumps(_ca_material(a),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+ def atomic(path,text):
+  path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+  fd,tmp=tempfile.mkstemp(prefix='.write-',dir=path.parent)
+@@ -283,6 +284,7 @@
+   if t=='full_z2radial' and profile.startswith('source:'):
+    for i in (0,1):rendered[i]=rendered[i].replace(r'{\int }_{0}^'+group(tex(2*sp.sqrt(p['S']))),r'{\int }_'+group(tex(sp.sqrt(p['S'])))+'^'+group(tex(2*sp.sqrt(p['S']))))
+   raw_banks=[(rendered,ci,'selection')]
++ if not raw:_ca_question(q);raw_banks=[(_ca_values(vals),ci,key)for vals,ci,key in raw_banks]
+  # Content identity includes actual difficulty, prompt/solution/key presence/banks.
+  identity=digest({'version':VERSION,'question':q,'banks':[sorted(b[0]) for b in raw_banks]})
+  q[':question/id']=uid(identity);fields=[]
+--- generate/scratch/17592186129268.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186129268/17592186129268.py
+@@ -10,6 +10,7 @@
+ bounds, full integrand substitution, grouping (radial functions), final integral.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid,threading
+ from pathlib import Path
+ from functools import lru_cache
+@@ -19,7 +20,7 @@
+ ROOT=Path(__file__).resolve().parent; EVIDENCE=ROOT/str(KP_ID)
+ CAPTURE=json.loads((EVIDENCE/'source.json').read_text()); SOURCE=CAPTURE['record']
+ QS={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
+-VERSION='shifted-cylinder-2'
++VERSION='shifted-cylinder-2-format-audit-9837-v1'
+ x,y,z=sp.symbols('x y z',real=True);r=sp.Symbol('r',nonnegative=True);theta=sp.Symbol('theta',real=True)
+ TEMPLATES={
+  'lower_xy':('moderate','q-161521',{'a':3,'H':2}),
+@@ -31,7 +32,7 @@
+ }
+ def tex(v):return sp.latex(sp.sympify(v)).replace(r'\log',r'\ln')
+ def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,v))
+-def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
++def digest(v):return hashlib.sha256(json.dumps(_ca_material(v),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+ def atomic(path,s):
+  path=Path(path);path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix='.write-',dir=path.parent)
+  with os.fdopen(fd,'w') as f:f.write(s)
+@@ -272,6 +273,7 @@
+  else:raise ValueError('no eligible instance')
+  if not raw:
+   q=normal_question(t,p,opts);values=[integral(o) for o in opts]
++  _ca_question(q);values=_ca_values(values)
+   identity=digest({'version':VERSION,'level':level,'prompt':q[':question/problem'],'solution':q[':question/worked-solution'],'bank':sorted(values)})
+   fid=uid(identity+'/selection');answers=[{':answer/id':uid(fid+'/'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
+   corr=answers[correct][':answer/id'];rng.shuffle(answers)
+--- generate/scratch/17592186133899.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186133899/17592186133899.py
+@@ -10,6 +10,7 @@
+ Normal defaults use complete sign-error or omission banks and source masks.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse
+ import hashlib
+ import json
+@@ -23,7 +24,7 @@
+ KP_ID = 17592186133899
+ KP_UUID = '56caab23-f54d-58ee-99db-99c651f78e5c'
+ TITLE = 'Calculating the Circulation of a Vector Field Over a Region Containing Holes'
+-VERSION = 'circulation-holes-1.1'
++VERSION='circulation-holes-1.1-format-audit-9837-v1'
+ HERE = Path(__file__).resolve().parent / str(KP_ID)
+ WRAPPER = json.loads((HERE / 'source.json').read_text())
+ SOURCE = WRAPPER['record']
+@@ -68,7 +69,7 @@
+     """The complete selected bank or declared workload is ineligible."""
+ 
+ def digest(data):
+-    return hashlib.sha256(json.dumps(data,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
++    return hashlib.sha256(json.dumps(_ca_material(data),sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
+ 
+ def number(value):
+     return sp.latex(sp.Rational(value))
+@@ -262,6 +263,7 @@
+             prompt=prompt.replace('∮_(∂D)',r'{∮}_{∂D}').replace(' dr =',r' \text{d}r =')
+         prompt=replace_assets(prompt)
+         if solution is not None:solution=replace_assets(solution)
++    if not raw:prompt=_ca_problem(prompt);solution=_ca_prose(solution);tex=_ca_values(tex)
+     difficulty=q.get(':question/difficulty',{}).get(':db/ident') if raw else ':question.difficulty/'+level
+     # Content identity uses actual presentation; option shuffle/profile alias do
+     # not change identity. Mathematical identity excludes diagram and bank.
+--- generate/scratch/17592186133900.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186133900/17592186133900.py
+@@ -11,6 +11,7 @@
+ instance on scalar equivalence, and serve every supported source-shaped family.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ 
+ # Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+ import sys as _ca_sys, os as _ca_os
+@@ -30,7 +31,7 @@
+ import matplotlib.pyplot as plt
+ from matplotlib.patches import Circle, Rectangle
+ ROOT=Path(__file__).with_suffix(''); SOURCE=json.loads((ROOT/'source.json').read_text()); REC=SOURCE['record']
+-KP_ID=17592186133900; VERSION='advanced-green-2'; x,y,r,t=S.symbols('x y r theta',real=True)
++KP_ID=17592186133900; VERSION='advanced-green-2-format-audit-9837-v1'; x,y,r,t=S.symbols('x y r theta',real=True)
+ QUESTIONS={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
+ FAMILIES={
+ 'annulus_quadratic':('moderate','q-126566',-x*x*y,x*y*y,1,2),
+@@ -52,7 +53,7 @@
+ def par(e): return r'\left('+tex(e)+r'\right)'
+ def scaled(c,v): return v if c==1 else tex(c)+r'\left('+v+r'\right)'
+ def uid(s): return str(uuid.uuid5(uuid.NAMESPACE_URL,'advanced-green:'+s))
+-def digest(v): return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest()
++def digest(v): return hashlib.sha256(json.dumps(_ca_material(v),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ def scalar(v):
+  v=v.strip().replace('\\pi','pi'); v=re.sub(r'\\frac\{([^{}]*)\}\{([^{}]*)\}',r'(\1)/(\2)',v);return S.sympify(re.sub(r'(?<=\d)\s*pi', '*pi',v),locals={'pi':S.pi})
+ def raw_scaled(c,v):
+@@ -106,7 +107,7 @@
+  fd,tmp=tempfile.mkstemp(dir=dest,suffix='.png');os.close(fd)
+  try:fig.savefig(tmp);os.replace(tmp,png)
+  finally:plt.close(fig);Path(tmp).unlink(missing_ok=True)
+- fd,tmp=tempfile.mkstemp(dir=dest,suffix='.json');os.close(fd);Path(tmp).write_text(json.dumps(data,indent=2));os.replace(tmp,side)
++ fd,tmp=tempfile.mkstemp(dir=dest,suffix='.json');os.close(fd);Path(tmp).write_text(json.dumps(_ca_material(data),indent=2));os.replace(tmp,side)
+  return str(png)
+ def aligned(rows):return '$$\n'+r'\begin{aligned}'+rows[0]+''.join(r'\\ & ='+z for z in rows[1:])+r'.\end{aligned}'+'\n$$'
+ def integ(lo,hi,z,var):return r'\int_{'+tex(lo)+'}^{'+tex(hi)+'}'+z+r'\,\mathrm d '+var
+@@ -222,6 +223,11 @@
+  if f.startswith('annulus'):a=rng.randint(1,3);return {'c':c,'inner':a,'outer':rng.randint(a+1,5)}
+  A=d[4][:];B=d[5][:];sx=rng.choice([-1,0,1]);sy=rng.choice([-1,0,1]);A=[A[0]+sx,A[1]+sx,A[2]+sy,A[3]+sy];B=[B[0]+sx,B[1]+sx,B[2]+sy,B[3]+sy];return {'c':c,'outer':A,'hole':B}
+ def record(level,f,p,profile,prompt,solution,fields,seed,mathkey,extra=None):
++ if not str(profile).startswith('observed:'):
++  prompt=_ca_problem(prompt);solution=_ca_prose(solution)
++  for f in fields:
++   old=f.get(':answer-field/correct',[None,None])[1];correct_value=next((a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==old),None)
++   for a in f[':answer-field/choices']:a[':answer/value']=_ca_values([a[':answer/value']])[0]
+  bank=sorted([{'key':v[':answer-field/key'],'type':v[':answer-field/type'],'values':sorted(a[':answer/value'] for a in v[':answer-field/choices']),'correct':next((a[':answer/value'] for a in v[':answer-field/choices'] if v.get(':answer-field/correct',[None,None])[1]==a[':answer/id']),None)} for v in fields],key=lambda z:z['key']);h=digest([VERSION,level,prompt,solution,bank]);qid=uid(h);out=[]
+  for i,v in enumerate(fields):
+   correct=v.get(':answer-field/correct');oldcorrect=correct[1] if correct else None;v=dict(v);v[':answer-field/id']=uid(qid+':field:'+str(i));answers=[];newcorrect=None
+--- generators/8b/8b3d50fd74740fd9511d524927da8e00d87a88a6f40ab53e2271818eac7cdc38/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186133929/generator.py
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python3
+ """Seeded, database-free divergence-theorem setup generator. See instructional-account.md."""
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, hashlib, json, random, re, sys, uuid
+ from functools import lru_cache
+ from pathlib import Path
+@@ -8,7 +9,7 @@
+ BASE=Path(__file__).resolve().parent
+ SNAPSHOT=json.loads((BASE/'source-data.json').read_text())
+ KP=SNAPSHOT['record']; KP_ID=17592186133929
+-VERSION='flux-setup-v3'
++VERSION='flux-setup-v3-format-audit-9837-v1'
+ x,y,z=sp.symbols('x y z',real=True); VARS=(x,y,z)
+ SOURCE=KP[':knowledge-point/questions']
+ # Each family retains its source field layout and solution route. The raw banks
+@@ -185,6 +186,7 @@
+     prompt=normalize_prose(normal_prompt(cs,outer,inner,level=='easy'))
+     solution=normalize_prose(normal_solution(cs,outer,inner,level=='easy'))
+     values=[normalize_tex(tex(e) if level=='easy' else integral(e[0],outer,(inner[0],e[1],e[2]))) for e in bank]
++    prompt=_ca_problem(prompt);solution=_ca_prose(solution)
+     identity=digest({'version':VERSION,'prompt':prompt,'solution':solution,'bank':sorted(values),'difficulty':level})
+     field_id=uid(identity+':selection')
+     answers=[{':answer/id':uid(field_id+':'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
+--- generate/scratch/17592186157298.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186157298/17592186157298.py
+@@ -1,3 +1,4 @@
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ #!/usr/bin/env python3
+ """Moderate polar-coordinate circular-cap templates. Easy/hard unsupported.
+ Positive homothety preserves curve/line roles, angular sector and workload.
+@@ -18,13 +19,13 @@
+ HERE=Path(__file__).with_suffix(''); ROOT=HERE.parents[2]
+ SNAP=json.loads((HERE/'reference/initial/source.json').read_text())
+ KP=17592186157298; KP_UUID=SNAP['record'][':knowledge-point/id']; TITLE=SNAP['record'][':knowledge-point/title']
+-NAMESPACE=uuid.UUID('c1d9eb4a-d5cd-49f3-9e87-15a08a27207d'); VERSION='polar-caps-1'
++NAMESPACE=uuid.UUID('c1d9eb4a-d5cd-49f3-9e87-15a08a27207d'); VERSION='polar-caps-1-format-audit-9837-v1'
+ t,r,x,y=sp.symbols('t r x y',real=True); s=sp.Symbol('s',positive=True)
+ LOC={'t':t,'r':r,'x':x,'y':y,'s':s,'pi':sp.pi,'sqrt':sp.sqrt,'sin':sp.sin,'cos':sp.cos,'tan':sp.tan,'sec':sp.sec,'csc':sp.csc}
+ def E(z):return sp.sympify(z,locals=LOC)
+ def tex(z):return sp.latex(sp.simplify(z),symbol_names={t:r'\theta'})
+ def uid(z):return str(uuid.uuid5(NAMESPACE,z))
+-def digest(z):return hashlib.sha256(json.dumps(z,sort_keys=True,separators=(',',':')).encode()).hexdigest()
++def digest(z):return hashlib.sha256(json.dumps(_ca_material(z),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ def eq(a,b):return sp.trigsimp(sp.simplify(a-b))==0
+ # Center, radius, line normal and offset, angular interval, Cartesian integrand.
+ # Offsets are positive; normal points into the shaded cap. Fixed angular roles
+@@ -123,7 +124,7 @@
+      av=float(angle);hval=float(hi.subs(t,angle));ax.plot([0,hval*np.cos(av)],[0,hval*np.sin(av)],'--',color='#d77e39',lw=.9)
+     ax.text(.02,.02,'$'+tex(ab[0])+r'\leq\theta\leq '+tex(ab[1])+'$',transform=ax.transAxes,fontsize=10,bbox={'facecolor':'white','alpha':.85,'edgecolor':'none'})
+    ax.spines[['top','right']].set_visible(False);fig.tight_layout();fig.savefig(path,metadata={'Software':VERSION});plt.close(fig)
+-  assets[role]=str(path.relative_to(ROOT))
++  assets[role]=str(path.resolve())
+  return assets
+ 
+ def generate(difficulty='moderate',seed=0,template=None,scale=None,plots=True):
+@@ -132,8 +133,8 @@
+  if not 1<=scale<=12:raise ValueError('Validated scale domain is integers 1..12')
+  C,R,N,d,ab,f,lo,hi=model(sid,scale);options=bank(sid,scale);ci=CORRECT[sid]
+  assets=render_plots(sid,scale)if plots else {};curve=tex((x-C[0])**2+(y-C[1])**2)+'='+tex(R**2);line=tex(N[0]*x+N[1]*y)+'='+tex(d)
+- qid=uid('question:'+sid+':'+str(scale));fid=uid(qid+':selection')
+- choices=[{':answer/id':uid(fid+':recipe:'+str(i)),':answer/type':':answer.type/math',':answer/value':integral(row)}for i,row in enumerate(options)]
++ qid=uid('question:'+VERSION+':'+sid+':'+str(scale));fid=uid(qid+':selection')
++ choices=[{':answer/id':uid(fid+':recipe:'+str(i)),':answer/type':':answer.type/math',':answer/value':_ca_values([integral(row)])[0]}for i,row in enumerate(options)]
+  # Seed only selects mathematical data. It never changes a question's identity.
+  prompt=('![]('+assets['prompt']+')\n\n'if plots else '')+'The region $D$ is enclosed between the curve $'+curve+'$ and the line $'+line+'$, as shown above. What is\n$$\\iint_D '+tex(f)+r'\,\mathrm{d}A$$'+'\nexpressed in polar coordinates?'
+  transformed=sp.trigsimp(f.subs({x:r*sp.cos(t),y:r*sp.sin(t)},simultaneous=True)*r)
+@@ -150,7 +151,7 @@
+  stages+=['Now, let\'s find the limits for the parameter $\\theta$. The endpoints of the selected arc are '+ ' and '.join('$('+tex(a)+','+tex(b)+')$'for a,b in endpoints)+'. So the shaded region lies between the polar lines $\\theta='+tex(ab[0])+'$ and $\\theta='+tex(ab[1])+'$.']
+  if plots:stages+=['![]('+assets['solution']+')']
+  stages+=['As a result, the region can be expressed in polar coordinates as',r'$$\Delta=\{(r,\theta):'+tex(lo)+r'\leq r\leq '+tex(hi)+r',\ '+tex(ab[0])+r'\leq\theta\leq '+tex(ab[1])+r'\}.$$','Therefore, using the change of variables formula, we obtain',r'$$\iint_D '+tex(f)+r'\,\mathrm{d}A=\iint_\Delta '+tex(transformed)+r'\,\mathrm{d}r\,\mathrm{d}\theta='+integral(options[ci])+'.$$']
+- return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':'\n\n'.join(stages),':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[ci][':answer/id']]}]},'generation':{'version':VERSION,'template':sid,'profile':sid+':complete-bank','seed':seed,'parameters':{'scale':scale},'domain':'r >= 0; integer homothety 1..12; fixed depicted sector','source_basis':SNAP['basis'],'source_question_id':ORIGINALS[sid][':question/id'],'assets':assets,'eligible_for_learning':True,'evidence_only':False,'identity_excludes':['seed','choice order']}}
++ return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':_ca_problem(prompt),':question/worked-solution':_ca_prose('\n\n'.join(stages)),':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[ci][':answer/id']]}]},'generation':{'version':VERSION,'template':sid,'profile':sid+':complete-bank','seed':seed,'parameters':{'scale':scale},'domain':'r >= 0; integer homothety 1..12; fixed depicted sector','source_basis':SNAP['basis'],'source_question_id':ORIGINALS[sid][':question/id'],'assets':assets,'eligible_for_learning':True,'evidence_only':False,'identity_excludes':['seed','choice order']}}
+ 
+ def main():
+  p=argparse.ArgumentParser();p.add_argument('--difficulty',default='moderate');p.add_argument('--count',type=int,default=1);p.add_argument('--seed',type=int,default=0);p.add_argument('--format',choices=['json','markdown'],default='json');p.add_argument('--template',choices=list(DATA));p.add_argument('--scale',type=int);args=p.parse_args()
+--- generators/be/be1d19612951ca8c0d5b4c23651bdfcc4826596538f4fb7f3c3645a9fd64fda8/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186172085/generator.py
+@@ -6,6 +6,7 @@
+ No writes, generated images, network calls, or repository runtime imports.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
+ from pathlib import Path
+ sys.dont_write_bytecode = True
+@@ -14,7 +15,7 @@
+ KP_ID = 17592186172085
+ KP_UUID = '019e5a17-1aab-565b-8881-447c86a9a7ec'
+ TITLE = 'Identifying Vector Fields on Two-Dimensions'
+-VERSION = 'vector-identification-3-checkbox'
++VERSION='vector-identification-3-checkbox-format-audit-9837-v1'
+ CAPTURE = json.loads(Path(__file__).with_name('source-data.json').read_text())
+ SOURCES = {q[':question/math-academy-id']:q for q in CAPTURE['kp'][':knowledge-point/questions']}
+ # Complete expression/domain slots; no replacement of isolated variable letters.
+--- generate/scratch/17592186175987.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186175987/17592186175987.py
+@@ -13,6 +13,7 @@
+ replenisher handles additive registration and commits after validation.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ 
+ # Standalone source eligibility: immutable policy ledger, seeded CLI guard.
+ import sys as _ca_sys, os as _ca_os
+@@ -30,7 +31,7 @@
+ from functools import lru_cache
+ BASE=Path(__file__).with_suffix('')
+ KP_ID=17592186175987
+-VERSION='greens-polar-path-4'
++VERSION='greens-polar-path-4-format-audit-9837-v1'
+ SOURCE=json.loads((BASE/'source-current.json').read_text())
+ KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']
+ X,Y,R,T=sp.symbols('x y r theta', real=True)
+@@ -203,6 +204,9 @@
+  return theorem+"\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![]("+plot+")\n\nSince $P(x,y)="+latex(P)+"$ and $Q(x,y)="+latex(Q)+",$ we obtain\n\n$$\n\\frac{\\partial P}{\\partial y}="+latex(py)+r',\qquad\frac{\partial Q}{\partial x}='+latex(qx)+".\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}\\oint_C("+latex(P)+r')\,dx+('+latex(Q)+r')\,dy&=\iint_D(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y})\,dA\\&=\iint_D\left('+latex(qx)+r'-\left('+latex(py)+r'\right)\right)\,dA\\&=\iint_D\left('+latex(curl)+r'\right)\,dA.\end{aligned}'+"\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\\Delta=\\{(r,\\theta):0\\le r\\le "+str(radius)+r',\ '+latex(a)+r'\le\theta\le '+latex(b)+r'\}.'+"\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n\\iint_D f(x,y)\\,dA=\\iint_\\Delta f(r\\cos\\theta,r\\sin\\theta)\\,r\\,dr\\,d\\theta.\n$$\n\nTherefore, we can write our double integral as\n\n$$\n\\begin{aligned}\\iint_D\\left("+latex(curl)+r'\right)\,dA&=\iint_\Delta\left('+latex(pol)+r'\right)r\,dr\,d\theta\\&='+integral(g,a,b,radius)+r'.\end{aligned}'+'\n$$'
+ 
+ def record(level,template,profile,params,prompt,solution,fields,math_key,raw=False,source_id=None):
++ if not raw:
++  prompt=_ca_problem(prompt);solution=_ca_prose(solution)
++  for f in fields:f['values']=_ca_values(f['values']);f['correct']=_ca_values([f['correct']])[0]
+  content=[VERSION,level,prompt,solution,[(f['key'],f['type'],sorted(f['values']),f['correct']) for f in fields]]
+  ident=digest(content);question={':question/id':uid(ident),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[]}
+  for f in fields:
+--- generate/scratch/17592186176023.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186176023/17592186176023.py
+@@ -15,6 +15,7 @@
+ source repairs and explicit endpoint-detail additions. No DB writes.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, hashlib, json, os, random, re, sys, tempfile, uuid
+ from pathlib import Path
+ import sympy as sp
+@@ -26,7 +27,7 @@
+ BASE=Path(__file__).with_suffix('')
+ SOURCE=json.loads((BASE/'source.json').read_text())
+ KP=SOURCE['record']; KP_ID=17592186176023
+-VERSION='green-polar-evaluation-v3'
++VERSION='green-polar-evaluation-v3-format-audit-9837-v1'
+ X,Y,R,T=sp.symbols('x y r theta',real=True)
+ Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+ # Observed family anchors: c is the common derivative magnitude; s is R^2.
+@@ -63,8 +64,8 @@
+  c=sp.sympify(c)
+  return ('-' if c==-1 else '' if c==1 else tex(c))+v
+ 
+-def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+json.dumps(v,sort_keys=True,ensure_ascii=False)))
+-def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
++def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+json.dumps(_ca_material(v),sort_keys=True,ensure_ascii=False)))
++def digest(v):return hashlib.sha256(json.dumps(_ca_material(v),sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+ def anchor(name):return {k:str(v)for k,v in FAMILIES[name].items() if k in ['c','s','inner','lo','hi']}
+ def exact(p):return {k:sp.sympify(v) for k,v in p.items()}
+ def answer_value(f,p):
+@@ -226,6 +227,7 @@
+  return assemble(f['level'],name,{'noise':str(n)},'observed:'+name,prompt,sol,[a[':answer/value']for a in q[':question/answer-fields'][0][':answer-field/choices']],vals,ans,seed,raw=q)
+ 
+ def assemble(level,name,p,profile,prompt,sol,strings,vals,answer,seed,raw=None,ops=None):
++ if raw is None:prompt=_ca_problem(prompt);sol=_ca_prose(sol);strings=_ca_values(strings)
+  content={'difficulty': None if raw is not None and ':question/difficulty'not in raw else level,'prompt':prompt,'solution':sol,'bank':sorted(strings)}
+  key=uid(content);fid=uid([key,'selection']);choices=[{':answer/id':uid([fid,v]),':answer/type':':answer.type/math',':answer/value':v}for v in strings]
+  # Use positional identities for legacy equal-spelling raw options, without treating
+--- generate/scratch/17592186176024.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186176024/17592186176024.py
+@@ -8,12 +8,13 @@
+ cubic extension of the observed moderate cubic family. All arithmetic uses SymPy.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse,hashlib,json,random,re,sys,uuid,os,tempfile
+ from pathlib import Path
+ import sympy as sp
+ from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
+ os.environ.setdefault('MPLCONFIGDIR','/tmp/green-17592186176024-mpl'); ROOT=Path(__file__).with_suffix(''); SNAPSHOT=json.loads((ROOT/'source.json').read_text()); KP=SNAPSHOT['record']
+-VERSION='green-circular-v2'; X,Y,R,T=sp.symbols('x y r theta',real=True)
++VERSION='green-circular-v2-format-audit-9837-v1'; X,Y,R,T=sp.symbols('x y r theta',real=True)
+ C=sp.cos(T); S=sp.sin(T)
+ SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+ CONFIG={
+@@ -161,7 +162,7 @@
+  try:fig.savefig(tmp,bbox_inches='tight',facecolor='white');os.replace(tmp,path)
+  finally:plt.close(fig);Path(tmp).unlink(missing_ok=True)
+  data={'radius':radius,'orientation':'counterclockwise','renderer':'Matplotlib','matplotlib':matplotlib.__version__,'python':sys.version.split()[0],'equal_aspect':True,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+- fd,tmp=tempfile.mkstemp(suffix='.json',dir=output_dir);os.close(fd);Path(tmp).write_text(json.dumps(data,indent=2));os.replace(tmp,meta);return str(path.resolve())
++ fd,tmp=tempfile.mkstemp(suffix='.json',dir=output_dir);os.close(fd);Path(tmp).write_text(json.dumps(_ca_material(data),indent=2));os.replace(tmp,meta);return str(path.resolve())
+ 
+ def authored_solution(name,p):
+  # Hard preserves the cubic formal -> substituted -> expansion -> distribution
+@@ -262,6 +263,7 @@
+   solution=re.sub(r'!\[\]\([^)]*\)',lambda m:'![]('+render_plots(p['radius'])+')',solution)
+  # Source answer values are normalized notation but mathematically recipe-derived.
+  values_tex=[tex(v)for v in values]
++ if not raw:problem=_ca_problem(problem);solution=_ca_prose(solution);values_tex=_ca_values(values_tex)
+  identity={'version':VERSION,'level':None if raw and ':question/difficulty'not in src else level,'prompt':problem,'solution':None if raw and ':question/worked-solution'not in src else solution,'bank':sorted(values_tex),'correct':values_tex[ci]if not(raw and ':answer-field/correct'not in src[':question/answer-fields'][0])else None}
+  digest=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();qid=str(uuid.uuid5(uuid.NAMESPACE_URL,digest));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),v)),':answer/type':':answer.type/math',':answer/value':v}for v in values_tex]
+--- generate/scratch/17592186198389.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/group-1/generator-stages/17592186198389/17592186198389.py
+@@ -6,13 +6,14 @@
+ See adjacent extraction, source anomalies, scope bounds and independent validator.
+ """
+ from __future__ import annotations
++from audit_presentation import prose as _ca_prose, problem as _ca_problem, values as _ca_values, question as _ca_question, identity_material as _ca_material
+ import argparse, hashlib, json, random, re, uuid
+ from pathlib import Path
+ import sympy as sp
+ from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
+ KP_ID=17592186198389
+ KP_UUID='a3486150-b3c2-5faf-99d5-b42ced350996'
+-VERSION='cartesian-flux-setup-1'
++VERSION='cartesian-flux-setup-1-format-audit-9837-v1'
+ ROOT=Path(__file__).with_suffix('')
+ RAW=json.loads((ROOT/'source.json').read_text())
+ SOURCES={q[':question/math-academy-id']:q for q in RAW['record'][':knowledge-point/questions']}
+@@ -221,6 +222,7 @@
+   break
+  else: raise ValueError('No eligible complete bank')
+  prompt,solution=render(level,template,p,m)
++ prompt=_ca_problem(prompt);solution=_ca_prose(solution)
+  # Presentation hash excludes seed and order; mathematical fingerprint excludes
+  # template spelling, profile and scale parameter spelling.
+  mathfingerprint=digest({'F':[sp.srepr(sp.expand(e)) for e in m['F']],'g':sp.srepr(sp.expand(m['g'])),'orientation':'upward'})

@@ -243,9 +243,60 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       current = parent;
     }
   }
+  const mathColor = value => /^(?:[a-z]+|#[0-9a-f]{3}|#[0-9a-f]{6})$/i.test(value || '') &&
+    !/^(?:inherit|initial|unset|revert|revertlayer|currentcolor)$/i.test(value) && CSS.supports('color', value);
+  const metadataAttribute = name => name.startsWith('data-mjx-');
+  function decoratedPhantom(n) {
+    // Only explicit source decoration makes an otherwise invisible phantom
+    // relevant. Do not turn unstyled spacing samples into visible answers.
+    if (!n.querySelector('mphantom') || !['mstyle','mpadded'].includes(n.localName)) return null;
+    const background = n.getAttribute('mathbackground');
+    const style = n.getAttribute('style');
+    if (background === null && style === null) return null;
+    const reject = reason => { errors.push('Unsupported decorated MathML phantom: ' + reason); return ''; };
+    if (n.localName !== 'mstyle' || [...n.attributes].some(a => !['mathbackground','style'].includes(a.name) && !metadataAttribute(a.name)))
+      return reject('container attributes');
+    let border = style?.trim().replace(/;$/, '').trim();
+    if (background !== null && !mathColor(background)) return reject('background');
+    if (style !== null) {
+      // MathJax emits both "1pt solid black" and "solid black 1pt".
+      // CSS shorthand order changes no geometry; reject any extra declaration.
+      const match = /^border:\s*([^:;]+)$/i.exec(border);
+      const tokens = match?.[1].trim().split(/\s+/) || [];
+      const widths = tokens.filter(t => /^\d+(?:pt|px|em|ex|in|cm|mm)$/i.test(t));
+      const colors = tokens.filter(t => mathColor(t));
+      if (![2,3].includes(tokens.length) || widths.length !== 1 || colors.length !== tokens.length-2 ||
+          tokens.filter(t => t.toLowerCase()==='solid').length !== 1) return reject('border style');
+      border = 'border:' + widths[0] + ' solid' + (colors.length ? ' ' + colors[0] : '');
+    }
+    const padded = n.children.length === 1 && n.children[0];
+    // A bbox with only a background has no padding node. Preserve its exact
+    // hidden width rather than requiring the separate padded-bbox form.
+    if (background !== null && style === null && padded?.localName === 'mrow' &&
+        [...padded.attributes].every(a => metadataAttribute(a.name)))
+      return '\\bbox[' + background + ']{' + [...padded.childNodes].map(child => m(child)).join('') + '}';
+    if (!padded || padded.localName !== 'mpadded' || [...padded.attributes].some(a => !['height','depth','lspace','width'].includes(a.name) && !metadataAttribute(a.name)))
+      return reject('padding container');
+    // MathJax 3.2.2 bbox doubles padding with parseInt. Decimal padding would
+    // silently alter the source width, so only exact integer dimensions bind.
+    const pad = /^(\d+)(pt|px|em|ex|in|cm|mm)$/.exec(padded.getAttribute('lspace') || '');
+    if (!pad || Number(pad[1]) <= 0 || padded.getAttribute('height') !== '+' + pad[0] || padded.getAttribute('depth') !== '+' + pad[0] ||
+        padded.getAttribute('width') !== '+' + (2 * Number(pad[1])) + pad[2]) return reject('asymmetric or unsupported padding');
+    const options = [pad[0]];
+    if (background !== null) options.push(background);
+    if (style !== null) options.push(border);
+    return '\\bbox[' + options.join(',') + ']{' + [...padded.childNodes].map(child => m(child)).join('') + '}';
+  }
+  function visiblePhantomOwner(n) {
+    for (let p = n.parentElement; p && p.localName !== 'math'; p = p.parentElement) {
+      if (p.localName === 'menclose' && ['box','longdiv',null].includes(p.getAttribute('notation'))) return true;
+      if (p.localName === 'mstyle' && (p.hasAttribute('mathbackground') || p.hasAttribute('style'))) return true;
+    }
+    return false;
+  }
   function m(n, environment=null) {
     let value = mathNode(n, environment);
-    if (n.nodeType !== 1 || !value) return value;
+    if (n.nodeType !== 1 || !value || (n.localName === 'mstyle' && n.querySelector('mphantom') && (n.hasAttribute('mathbackground') || n.hasAttribute('style')))) return value;
     // These attributes carry instructional cues, including highlighted entries.
     // Scope colors to their own node so later cells do not inherit them.
     for (const attribute of ['mathcolor', 'mathbackground']) {
@@ -298,8 +349,10 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       n.children[0].textContent === '{' && n.children[2].textContent === '}' &&
       n.children[1].localName === 'msub' && n.children[1].children[1]?.textContent.match(/^\(S(\d+)\)$/);
     if (marker && formulaFields.has(marker[1])) return '{{' + formulaFields.get(marker[1]) + '}}';
-    // Phantom content only reserves space; none of its descendants are visible.
-    if (t === 'mphantom') return '';
+    const decorated = decoratedPhantom(n);
+    if (decorated !== null) return decorated;
+    // Bare phantoms remain invisible; an explicit box depends on their width.
+    if (t === 'mphantom') return visiblePhantomOwner(n) ? '\\phantom{' + [...n.childNodes].map(child => m(child)).join('') + '}' : '';
     const nodes = [...n.childNodes].filter(child => child.nodeType !== 3 || child.textContent.trim());
     const cs = [];
     for (let i = 0; i < nodes.length; i++) {

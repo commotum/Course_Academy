@@ -2,7 +2,7 @@ import collections,json,re,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from migrate_learner_history import connection,loads
 D=H/'reference-history';D.mkdir(exist_ok=True);db=connection();basis=9912;C=json.loads((H/'current.json').read_text());groups=[];answers=[];fields=[];questions=[]
-ns={"__file__":str(H/"propose_format.py")};exec((H/'propose_format.py').read_text().split('P=[]')[0],ns);neutral=ns['neutral']
+ns={"__file__":str(H/"propose_format.py")};exec((H/'propose_format.py').read_text().split('P=[]')[0],ns);neutral=lambda value:ns['neutral'](value.replace('θ',r'\theta'))
 for q in C['questions']:
  dup=collections.defaultdict(list)
  for f in q.get(':question/answer-fields',[]):dup[f[':answer-field/key']].append(f)

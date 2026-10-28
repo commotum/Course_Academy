@@ -35,6 +35,7 @@ for c in C:
    if replacement!=old:flags=['source-vector-or-segment-adornment']
    else:replacement=None
   if replacement is not None and replacement!=old:
+   replacement=replacement.strip().rstrip('.,?')+(old.strip()[-1]if old.strip().endswith(('.',',','?'))else'')
    m=matches[d['i']];n=2 if m[0].startswith('$$')else 1;after=after[:m.start()]+m[0][:n]+replacement+m[0][-n:]+after[m.end():];details.append({'math_index':d['i'],'source_path':c['path'],'before_math':old,'after_math':replacement,'features':flags});decisions.append({'index':d['i'],'decision':'repair','features':flags})
   else:decisions.append({'index':d['i'],'decision':'retain','reason':'Valid alternate grouping/alignment/operator spelling, source position or raw inherited source; no independently proved remaining semantic change from this pair.'})
  if after!=before:

@@ -83,9 +83,39 @@ class Renderer:
             if not wrapper and not powered:return False
             current=parent
         return False
+    def decorated_phantom(self,n):
+        if n.name!='mstyle' or not n.find('mphantom') or not any(n.has_attr(a) for a in ('style','mathbackground')):return None
+        def reject(reason):
+            self.errors.append('Unsupported decorated MathML phantom: '+reason);return ''
+        if any(a not in ('style','mathbackground') and not a.startswith('data-mjx-') for a in n.attrs):return reject('container attributes')
+        background=n.get('mathbackground');style=n.get('style');options=[]
+        if background is not None and not re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',background):return reject('background')
+        children=n.find_all(recursive=False)
+        if len(children)!=1:return reject('padding container')
+        padded=children[0]
+        if background is not None and style is None and padded.name=='mrow' and all(a.startswith('data-mjx-') for a in padded.attrs):return '\\bbox['+background+']{'+''.join(self.m(c) for c in padded.children)+'}'
+        if padded.name!='mpadded' or any(a not in ('height','depth','lspace','width') and not a.startswith('data-mjx-') for a in padded.attrs):return reject('padding container')
+        pad=re.fullmatch(r'(\d+)(pt|px|em|ex|in|cm|mm)',padded.get('lspace',''))
+        if not pad or int(pad[1])<=0 or padded.get('height')!='+'+pad[0] or padded.get('depth')!='+'+pad[0] or padded.get('width')!='+'+str(2*int(pad[1]))+pad[2]:return reject('asymmetric or unsupported padding')
+        options.append(pad[0])
+        if background is not None:options.append(background)
+        if style is not None:
+            match=re.fullmatch(r'\s*border:\s*([^:;]+);?\s*',style);tokens=match[1].split() if match else []
+            widths=[x for x in tokens if re.fullmatch(r'\d+(?:pt|px|em|ex|in|cm|mm)',x)]
+            colors=[x for x in tokens if x!='solid' and re.fullmatch(r'[A-Za-z]+|#[\da-fA-F]{3}(?:[\da-fA-F]{3})?',x)]
+            if len(tokens) not in (2,3) or len(widths)!=1 or len(colors)!=len(tokens)-2 or tokens.count('solid')!=1:return reject('border style')
+            options.append('border:'+widths[0]+' solid'+(' '+colors[0] if colors else ''))
+        return '\\bbox['+','.join(options)+']{'+''.join(self.m(c) for c in padded.children)+'}'
+    @staticmethod
+    def visible_phantom_owner(n):
+        for p in n.parents:
+            if not isinstance(p,Tag) or p.name=='math':return False
+            if p.name=='menclose' and p.get('notation') in (None,'box','longdiv'):return True
+            if p.name=='mstyle' and any(p.has_attr(a) for a in ('style','mathbackground')):return True
+        return False
     def m(self,n):
         value=self.math_node(n)
-        if not isinstance(n,Tag) or not value:return value
+        if not isinstance(n,Tag) or not value or (n.name=='mstyle' and n.find('mphantom') and any(n.has_attr(a) for a in ('style','mathbackground'))):return value
         for attribute in ('mathcolor','mathbackground'):
             color=n.get(attribute)
             if not color or color in ('transparent','inherit','none'):continue
@@ -126,7 +156,10 @@ class Renderer:
             if len(children) in (2,3) and children[0].name=='mo' and children[0].get_text()=='{' and children[1].name=='mtable' and (len(children)==2 or children[2].name=='mo' and not children[2].get_text().strip()):
                 rows=[' & '.join(self.m(c) for c in row.find_all('mtd',recursive=False)) for row in children[1].find_all('mtr',recursive=False)]
                 return '\\begin{cases}'+' \\\\ '.join(rows)+'\\end{cases}'
-        if t in ('mphantom','annotation','annotation-xml'):return ''
+        decorated=self.decorated_phantom(n)
+        if decorated is not None:return decorated
+        if t=='mphantom':return '\\phantom{'+''.join(self.m(c) for c in n.children)+'}' if self.visible_phantom_owner(n) else ''
+        if t in ('annotation','annotation-xml'):return ''
         cs=[self.m(c) for c in n.children];base=cs[0] if cs and cs[0] in (')',']','}') else '{'+(cs[0] if cs else '')+'}'
         if t=='mfrac':
             if re.fullmatch(r'0(?:\.0+)?(?:[A-Za-z%]+)?',n.get('linethickness','')):

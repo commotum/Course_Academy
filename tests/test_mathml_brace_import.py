@@ -25,6 +25,22 @@ SPEC.loader.exec_module(HISTORY)
 
 
 class MathMLBraceImportTests(unittest.TestCase):
+    def test_authentic_boxed_phantom_preserves_hidden_width_and_radio_role(self):
+        formula=(ROOT/'tests/fixtures/mathml-phantoms/q-162407-boxed-placeholder.html').read_text()
+        for name,value in self.extract_all(formula).items():
+            with self.subTest(importer=name):
+                self.assertIn(r'\bbox[2pt,border:1pt solid black]{\phantom{AAAAA}}',value)
+                self.assertNotIn('AAAAA',value.replace(r'\phantom{AAAAA}',''))
+
+    def test_authentic_alignment_phantom_does_not_change_equation_sign(self):
+        formula=(ROOT/'tests/fixtures/mathml-phantoms/q-12457-alignment-minus.html').read_text()
+        for name,value in self.extract_all(formula).items():
+            with self.subTest(importer=name):
+                compact=value.replace(' ','').replace('&','')
+                self.assertIn('-7a+2b=18',compact)
+                self.assertIn('6a+6b=0',compact)
+                self.assertNotIn('-6a',compact)
+
     def test_zero_rule_fraction_keeps_stack_instead_of_division(self):
         self.assert_formula('<mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac>',
                             r'\genfrac{}{}{0pt}{}{n}{k}')
