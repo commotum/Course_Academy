@@ -34,7 +34,7 @@ for q in Q:
  if len(ms)>1:
   count=2 if 'student claims'in p else len(ms)
   for m in ms[1:count]:expected=expected*m
- fs=q.get(':question/answer-fields',[]);entry={'entity':q[':db/id'],'source':q.get(':question/math-academy-id'),'expected':str(expected),'fields':len(fs),'issues':[]}
+ fs=q.get(':question/answer-fields',[]);entry={'entity':q[':db/id'],'source':q.get(':question/math-academy-id'),'expected':str(expected),'shape':list(expected.shape),'fields':len(fs),'issues':[]}
  if fs and fs[0][':answer-field/type'][':db/ident']==':answer-field.type/blank':
   keys=re.findall(r'\{\{([^{}]+)\}\}',p);bykey={f[':answer-field/key']:f for f in fs};assert len(keys)==len(fs)==expected.rows*expected.cols
   for key,v in zip(keys,list(expected)):assert S.simplify(scalar(bykey[key][':answer-field/correct'][':answer/value'])-v)==0,(q[':db/id'],key)
