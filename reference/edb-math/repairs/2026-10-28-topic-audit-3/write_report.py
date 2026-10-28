@@ -25,7 +25,7 @@ for c in commits:
 lines += ['',
 'The substantive defects included lost cross-product/curl operators, a hidden alignment minus imported as a coefficient, a visible boxed placeholder discarded as spacing, matrix response frames flattened from source HTML tables, an answered historical capture leaking into the problem, missing canonical links/solutions, and stale generated notation. Source font roles, set braces, highlighting, and formula fences were restored where the original capture established them. Intentional source illustrations and valid authored notation variants were retained.',
 '',
-'Independent mathematical corrections were kept separate from source restorations. Examples include a contradictory parameter bound, an arccos domain intermediate that incorrectly excluded endpoints, a function label missing its third argument, and an ambiguous free-coordinate question clarified without changing its bank or answer key. Full start-point, interval, orientation, and component constraints were checked before judging alternative parameterizations valid; no radio-to-checkbox migration was warranted.',
+'Independent mathematical corrections were kept separate from source restorations. Examples include a contradictory parameter bound, an arccos domain intermediate that incorrectly excluded endpoints, a function label missing its third argument, and an ambiguous free-coordinate question clarified without changing its bank or answer key, and a square-root kernel nonreal on an open subset of its stated solid. The latter was amended consistently across its prompt, solution, and all five choices, with a separate algebraic typo corrected. Full start-point, interval, orientation, and component constraints were checked before judging alternative parameterizations valid; no radio-to-checkbox migration was warranted.',
 '',
 '## Preventing recurrence',
 '',
@@ -50,6 +50,7 @@ f"- Strict actual-player rendering: **{r['fields']:,} fields, zero unresolved Te
 '- [Exact final readback](final-verification.json), [native grading](final-check/grading.json), [strict rendering](final-check/rendering.json), [installed generator probes](published-probe/verification.json).',
 '- [Group 1 content handoff](group-1/content-handoff.json), [group 2 content handoff](group-2/content-freeze-1/handoff.json), [group 3 content handoff](group-3/content-handoff.json). Later group 2 source supplements and clarification are included in the transaction table.',
 '- [Per-topic inventory](inventory.json), [complete KP topology](complete-kp-topology.json), [source eligibility](source-eligibility.json), [mathematical correction reconciliation](authored-reconciliation-verification.json).',
+'- [Complete presentation-value attestation](group-2/final-presentation-readback/verification.json) and [post-attestation change guard](presentation-delta-verification.json).',
 '- [Engine regressions](engine-regressions.json), [importer regressions](importer-regressions.json), [live HTTP grader verification](live-http-grader-verification.json), [application activation](app-activation.json).',
 '']
 if f.get('additional_pool_links_since_snapshot'):lines += [f"Additional pool links observed after the baseline: {f['additional_pool_links_since_snapshot']}. See the supplemental audit before treating these newer records as covered.",'']

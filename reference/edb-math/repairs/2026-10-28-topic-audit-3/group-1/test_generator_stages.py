@@ -4,6 +4,11 @@ H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'script
 from question_capture.math_format import validate_generated_record
 from generator_source_policy import reject_excluded_sources
 cfg=json.loads((H/'generator-stage-config.json').read_text());original=json.loads((H/'generator-sample-report.json').read_text());bands={s['kp']:[r['difficulty']for r in original if r['kp']==s['kp']and r.get('returncode')==0]for s in cfg};ledger=json.loads((H.parent/'source-eligibility.json').read_text())['excluded_questions'];outside=Path(tempfile.mkdtemp(prefix='ca-topic3-g1-portable-'));env=dict(os.environ);env.pop('PYTHONPATH',None);env.pop('_CA_SOURCE_POLICY_CHILD',None);env['PYTHONDONTWRITEBYTECODE']='1';reports=[];records=[]
+if len(sys.argv)>1:
+ selected={int(v)for v in sys.argv[1:]}
+ cfg=[c for c in cfg if c['kp']in selected]
+ reports=[r for r in json.loads((H/'generator-stage-test.json').read_text())if r['kp']not in selected]
+ records=[r for r in json.loads((H/'generator-stage-samples.json').read_text())if r['knowledge_point']['db_id']not in selected]
 def test(spec):
  work=outside/str(spec['kp']);work.mkdir();src=Path(spec['directory'])
  for f in spec['files']:target=work/f;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src/f,target)

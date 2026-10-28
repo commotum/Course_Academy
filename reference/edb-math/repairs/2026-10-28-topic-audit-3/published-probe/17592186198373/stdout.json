@@ -1,0 +1,92 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "eedfa45d-8e5b-5b98-a16b-4451df43bdd2",
+      ":question/problem": "Use a change of variables to evaluate the double integral\n\n$$\n\\iint_D x + y\\,\\mathrm{d}x\\,\\mathrm{d}y\n$$\n\nwhere $D=\\{(x,y):0\\le x\\le 8,\\quad 0\\le x + y\\le 5\\}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}⟶\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n0\\le x\\le 8,\\quad 0\\le x + y\\le 5,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=x\\,\\text{and}\\,v=x + y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nOur domain in the $uv$-plane is\n\n$$\n\\Delta=\\{(u,v):0\\le u\\le 8,\\,0\\le v\\le 5\\}.\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x}&\\frac{\\partial u}{\\partial y}\\\\\\frac{\\partial v}{\\partial x}&\\frac{\\partial v}{\\partial y}\\end{vmatrix}\\\\&=\\left|\\begin{bmatrix}1 & 0\\\\1 & 1\\end{bmatrix}\\right|\\\\&=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1=1.\n$$\n\nNote that $\\frac{\\partial(x,y)}{\\partial(u,v)}\\ne0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nSolving the transformation equations gives $x=u,\\ y=- u + v$, so the transformation is one-to-one on this domain.\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D x + y\\,\\mathrm{d}x\\,\\mathrm{d}y & =\\iint_\\Delta v\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ & =\\iint_\\Delta \\left(v\\right)\\cdot \\left(1\\right)\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ & =1\\int_{0}^{5} [\\int_{0}^{8} v\\,\\mathrm{d}u]\\,\\mathrm{d}v \\\\ & =1\\int_{0}^{5} v[\\int_{0}^{8} 1\\,\\mathrm{d}u]\\,\\mathrm{d}v \\\\ & =1\\int_{0}^{5} v\\left[u\\right]_{0}^{8}\\,\\mathrm{d}v \\\\ & =1\\int_{0}^{5} v\\left(\\left(8\\right)-(\\left(0\\right))\\right)\\,\\mathrm{d}v \\\\ & =\\left(1\\right)\\cdot \\left(8\\right)\\int_{0}^{5} v\\,\\mathrm{d}v \\\\ & =\\left(1\\right)\\cdot \\left(8\\right)\\left[\\frac{v^{2}}{2}\\right]_{0}^{5} \\\\ & =\\left(1\\right)\\cdot \\left(8\\right)\\left(\\left(\\frac{25}{2}\\right)-(\\left(0\\right))\\right) \\\\ & =\\left(1\\right)\\cdot \\left(8\\right)\\cdot \\left(\\frac{25}{2}\\right) \\\\ & =100\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ff4137f6-0abc-5431-bb26-280581acb904",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f9fc4a86-ace0-5081-970f-0f5dc013dff5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20"
+            },
+            {
+              ":answer/id": "76905a0f-02e8-5659-80bb-b35a3611f16a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-100"
+            },
+            {
+              ":answer/id": "17eec5da-9b86-5d84-b6f4-9f1574c9fee3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{25}{2}"
+            },
+            {
+              ":answer/id": "36c7bd44-9620-5083-b20a-15f6dea090e6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "100"
+            },
+            {
+              ":answer/id": "6116a154-9e2c-506e-92a2-db930612b5e4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "200"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "36c7bd44-9620-5083-b20a-15f6dea090e6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1-audit9837",
+      "template": "linear",
+      "profile": "method",
+      "seed": 27102891,
+      "parameters": {
+        "a": 0,
+        "b": 8,
+        "c": 0,
+        "d": 5,
+        "m": 1,
+        "k": 1,
+        "h": 0,
+        "q": 1,
+        "R": 9
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [],
+      "mathematical_fingerprint": "b21a0dcfdab88362bcf29aef6301509bc4f77c9193ad6e49169eaa3acd620467",
+      "content_fingerprint": "2c7e53b3447a253be5320a1f78c17c75839b25361101bd4fb1ded007c93edd27",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_level": true,
+      "recipes": [
+        "correct",
+        "omit_u_width",
+        "reverse_orientation",
+        "wrong_primitive_input",
+        "upper_rectangle"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  }
+]

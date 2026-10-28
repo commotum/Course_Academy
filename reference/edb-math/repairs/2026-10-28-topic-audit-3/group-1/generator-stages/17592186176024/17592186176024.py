@@ -265,7 +265,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  values_tex=[tex(v)for v in values]
  if not raw:problem=_ca_problem(problem);solution=_ca_prose(solution);values_tex=_ca_values(values_tex)
  identity={'version':VERSION,'level':None if raw and ':question/difficulty'not in src else level,'prompt':problem,'solution':None if raw and ':question/worked-solution'not in src else solution,'bank':sorted(values_tex),'correct':values_tex[ci]if not(raw and ':answer-field/correct'not in src[':question/answer-fields'][0])else None}
- digest=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();qid=str(uuid.uuid5(uuid.NAMESPACE_URL,digest));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+ digest=hashlib.sha256(json.dumps(_ca_material(identity),sort_keys=True).encode()).hexdigest();qid=str(uuid.uuid5(uuid.NAMESPACE_URL,digest));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),v)),':answer/type':':answer.type/math',':answer/value':v}for v in values_tex]
  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers.copy()}
  if not(raw and ':answer-field/correct'not in src[':question/answer-fields'][0]):field[':answer-field/correct']=[':answer/id',answers[ci][':answer/id']]

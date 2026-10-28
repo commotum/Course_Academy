@@ -1,0 +1,96 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "30a2fd41-133b-5478-b3f9-b1388f678e32",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}⟶\\begin{bmatrix}- 3 u + 3 \\cos{\\left(w \\right)} \\\\ 3 v \\\\ - 3 w - \\cos{\\left(u \\right)}\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & =\\begin{vmatrix}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} & \\frac{∂x}{∂w} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v} & \\frac{∂y}{∂w} \\\\ \\frac{∂z}{∂u} & \\frac{∂z}{∂v} & \\frac{∂z}{∂w}\\end{vmatrix}.\\end{aligned}\n$$\n\nHere, we have \n\n$$\nx(u,v,w)=- 3 u + 3 \\cos{\\left(w \\right)}\\, y(u,v,w)=3 v\\, z(u,v,w)=- 3 w - \\cos{\\left(u \\right)}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂x}{∂u} & =-3 & \\frac{∂x}{∂v} & =0 & \\frac{∂x}{∂w} & =- 3 \\sin{\\left(w \\right)} \\\\ \\frac{∂y}{∂u} & =0 & \\frac{∂y}{∂v} & =3 & \\frac{∂y}{∂w} & =0 \\\\ \\frac{∂z}{∂u} & =\\sin{\\left(u \\right)} & \\frac{∂z}{∂v} & =0, & \\frac{∂z}{∂w} & =-3\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & =\\begin{vmatrix}-3 & 0 & - 3 \\sin{\\left(w \\right)} \\\\ 0 & 3 & 0 \\\\ \\sin{\\left(u \\right)} & 0 & -3\\end{vmatrix} \\\\  & =\\left(3\\right)(-1)^{2+2}\\begin{vmatrix}-3 & - 3 \\sin{\\left(w \\right)} \\\\ \\sin{\\left(u \\right)} & -3\\end{vmatrix} \\\\  & =9 \\sin{\\left(u \\right)} \\sin{\\left(w \\right)} + 27.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5d46a41d-734c-547a-8a31-e718ef7fb627",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f6630d34-3359-57c7-afcb-5b4f20cdfb37",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 \\sin{\\left(u \\right)} \\sin{\\left(w \\right)}"
+            },
+            {
+              ":answer/id": "47ed082b-c800-5bbe-87a1-8246c6577e57",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "27"
+            },
+            {
+              ":answer/id": "da4b9e91-efd7-51de-97d6-d76eee7804f1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 \\sin{\\left(u \\right)} \\sin{\\left(w \\right)} - 27"
+            },
+            {
+              ":answer/id": "aaf5ec40-1792-530f-8472-65cb13891010",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9 \\sin{\\left(u \\right)} \\sin{\\left(w \\right)} + 27"
+            },
+            {
+              ":answer/id": "61b92297-c4fe-5064-9ea8-6fb58652f9c6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 \\sin{\\left(u \\right)} \\sin{\\left(w \\right)} + 27"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "aaf5ec40-1792-530f-8472-65cb13891010"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0-audit9837",
+      "seed": 27102891,
+      "template": "sparse_cos",
+      "parameters": {
+        "a": -3,
+        "b": 3,
+        "c": 3,
+        "d": -1,
+        "e": -3
+      },
+      "bank_profile": "sparse_cos-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": false,
+      "parameter_fingerprint": "220b383d90eb59ad396b8ee002d430ef509fafee0fd2278c8ab00364b1d6029d",
+      "content_fingerprint": "04fddd17fc8c84d1a512b9ec9028b3bbb4448abe6e20d882a7d22fb0eb4c599e",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [
+          "q-161795"
+        ],
+        "method_reference": "q-161795"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-offdiagonal-product",
+        "omit-diagonal-product",
+        "add-minor-products"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence"
+    }
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129269,
+      "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+      "title": "Finding the Jacobian of an Inverse Transformation"
+    },
+    "question": {
+      ":question/id": "ae11d1e0-db5b-5a81-8c27-3efc68df50b9",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=9 x\\qquad v=y\\qquad w=z.\n$$",
+      ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=9 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}9 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=9\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=9\\left(1\\cdot 1-0\\right) \\\\ &=9\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=\\frac{1}{9}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fe59fe0a-7032-5287-9c89-618dfea54733",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0f0c1036-1393-5739-8a3b-e00c6c0f9db8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{9}"
+            },
+            {
+              ":answer/id": "212b9d63-ab3f-5ef5-b590-36367ee0cfc4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{81}"
+            },
+            {
+              ":answer/id": "66d14a64-15fb-579e-9c55-fe1d101264cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9"
+            },
+            {
+              ":answer/id": "e45ba6e5-67b7-5232-b8aa-f83700707242",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "0361a437-5b72-5deb-bcb9-4bceab1e6536",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{9}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0361a437-5b72-5deb-bcb9-4bceab1e6536"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "inverse-jacobian-v3-audit9837",
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 27102891,
+      "template": "easy_diagonal",
+      "profile": "method",
+      "parameters": {
+        "a": 9
+      },
+      "domain": "x,y,z real; nonzero constant inverse determinant",
+      "mathematical_fingerprint": "52425821e0c70941e6f892fffe69ff4ee921e38653c2ff2d69b6c9cf68f0add5",
+      "content_hash": "2a397a24512de1a677c69fc2ae9f4b3a05d4fe0570eb300573ca0adc577af466",
+      "recipes": [
+        "correct",
+        "no_reciprocal",
+        "reverse_sign",
+        "omit_nonunit_derivative",
+        "apply_coefficient_twice"
+      ],
+      "source_id": null,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "solution_repairs": [],
+      "dependencies": {
+        "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

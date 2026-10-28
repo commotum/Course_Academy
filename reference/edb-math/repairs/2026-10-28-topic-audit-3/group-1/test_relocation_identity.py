@@ -1,4 +1,4 @@
-import concurrent.futures,hashlib,json,os,re,shutil,subprocess,tempfile
+import concurrent.futures,hashlib,json,os,re,shutil,subprocess,sys,tempfile
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[4];cfg=json.loads((H/'generator-stage-config.json').read_text());before=json.loads((H/'generator-stage-samples.json').read_text());reports=json.loads((H/'generator-stage-test.json').read_text());outside=Path(tempfile.mkdtemp(prefix='ca-topic3-g1-identity-'));env=dict(os.environ);env.pop('PYTHONPATH',None);env.pop('_CA_SOURCE_POLICY_CHILD',None);env['PYTHONDONTWRITEBYTECODE']='1'
 def canonical(value):
@@ -23,5 +23,8 @@ def run(c):
  final={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for p in root.rglob('*')if p.is_file()};unchanged=initial==final
  return {'kp':c['kp'],'package_files_unchanged':unchanged,'unexpected_files':sorted(set(final)-set(initial)),'changed_declared_files':[p for p in initial if initial[p]!=final.get(p)],'bands':out}
 results=[]
+if len(sys.argv)>1:
+ selected={int(v)for v in sys.argv[1:]};cfg=[c for c in cfg if c['kp']in selected]
+ results=[r for r in json.loads((H/'generator-relocation-proof.json').read_text())if r['kp']not in selected]
 with concurrent.futures.ThreadPoolExecutor(max_workers=3)as pool:
  for result in pool.map(run,cfg):results.append(result);(H/'generator-relocation-proof.json').write_text(json.dumps(results,indent=2)+'\n');print(result['kp'],result['package_files_unchanged'],[(r['band'],r['passed'])for r in result['bands']],result['unexpected_files'],flush=True)

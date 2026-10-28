@@ -1,0 +1,104 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124461,
+      "id": "d5baf28d-c2c0-57bd-9433-c47043009f0d",
+      "title": "Finding a Normal Vector to a Level Curve"
+    },
+    "question": {
+      ":question/id": "f49671c0-4b12-5a03-bb8e-4b5c752fccfa",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Find a unit normal vector to the level curve of the function $f(x,y)=- x^{2} + x - 2 y^{2} - 1$ that passes through the point $(x,y)=(1,1)$.",
+      ":question/worked-solution": "The gradient at the specified point is normal to the level curve. Differentiate before substituting the coordinates.\n\n$$\n\\begin{aligned}\nf_x(x,y)&=1 - 2 x \\\\ f_y(x,y)&=- 4 y \\\\ \\nabla f(1,1)&=\\left(-1\\right)\\,i+\\left(-4\\right)\\,j \\\\ \\|\\nabla f(1,1)\\|&=\\sqrt{\\left(-1\\right)^2+\\left(-4\\right)^2} \\\\ &=\\sqrt{17}\n\\end{aligned}\n$$\n\nThis gradient is nonzero. Divide it by its magnitude:\n\n$$\n\\begin{aligned}\\mathbf n&=\\frac{\\nabla f(1,1)}{\\|\\nabla f(1,1)\\|} \\\\ &=\\frac{\\left(-1\\right)\\,i+\\left(-4\\right)\\,j}{\\sqrt{17}} \\\\ &=\\left(- \\frac{\\sqrt{17}}{17}\\right)\\,i+\\left(- \\frac{4 \\sqrt{17}}{17}\\right)\\,j\n\\end{aligned}\n$$\n\nIts negative is also a unit normal. Exactly one displayed choice is a unit vector parallel to the gradient.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3a45c8c8-7c29-566d-968d-7c1e983fffe6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "82111f42-f456-5edf-a219-fec70a06c39a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- \\frac{\\sqrt{2}}{2}\\right)\\,i+\\left(- \\frac{\\sqrt{2}}{2}\\right)\\,j"
+            },
+            {
+              ":answer/id": "68711527-5db3-5103-b75f-7904f699012f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- \\frac{\\sqrt{17}}{17}\\right)\\,i+\\left(- \\frac{4 \\sqrt{17}}{17}\\right)\\,j"
+            },
+            {
+              ":answer/id": "59da79d6-5afa-5ea6-8bc8-ddca2f031b12",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- \\frac{\\sqrt{5}}{5}\\right)\\,i+\\left(\\frac{2 \\sqrt{5}}{5}\\right)\\,j"
+            },
+            {
+              ":answer/id": "fcf4e016-869b-5b2f-9a01-6b3c4c53612c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(\\frac{3}{5}\\right)\\,i+\\left(- \\frac{4}{5}\\right)\\,j"
+            },
+            {
+              ":answer/id": "382508f7-bb04-5671-b52e-506e85fc0b99",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- \\frac{3 \\sqrt{13}}{13}\\right)\\,i+\\left(- \\frac{2 \\sqrt{13}}{13}\\right)\\,j"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "68711527-5db3-5103-b75f-7904f699012f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "unit-normal-verified-4-audit9837",
+      "seed": 27102891,
+      "difficulty": "easy",
+      "template": "quadratic",
+      "parameters": {
+        "A": -1,
+        "B": -2,
+        "C": 1,
+        "D": 0,
+        "K": -1,
+        "p": 1,
+        "q": 1
+      },
+      "source_ids": [
+        "e-3432",
+        "q-36311"
+      ],
+      "authored_level": true,
+      "attempts": 1,
+      "recipes": [
+        "x: exchange partials",
+        "normal",
+        "both: omit derivative summand / reverse derivative summand sign",
+        "x: reverse derivative summand sign",
+        "both: reverse derivative summand sign / omit power multiplier"
+      ],
+      "bank_components": [
+        [
+          "-sqrt(2)/2",
+          "-sqrt(2)/2"
+        ],
+        [
+          "-sqrt(17)/17",
+          "-4*sqrt(17)/17"
+        ],
+        [
+          "-sqrt(5)/5",
+          "2*sqrt(5)/5"
+        ],
+        [
+          "3/5",
+          "-4/5"
+        ],
+        [
+          "-3*sqrt(13)/13",
+          "-2*sqrt(13)/13"
+        ]
+      ],
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

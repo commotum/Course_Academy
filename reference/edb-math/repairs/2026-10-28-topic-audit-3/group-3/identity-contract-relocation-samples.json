@@ -1,0 +1,183 @@
+[
+  {
+    "kp": 17592186059849,
+    "level": "easy",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186059849,
+        "id": "ab642ad6-d9e0-5734-83b4-81627b9132eb",
+        "title": "Solving for an Unknown Given the Determinant"
+      },
+      "question": {
+        ":question/id": "afe8ca44-fa0e-5554-b280-8bb7e7c4a168",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Given that $A=\\begin{bmatrix}2 & 1 & 0 \\\\ 3 & x & -3 \\\\ 1 & 5 & 1\\end{bmatrix}$ and $det(A)=-11$, find the value of $x.$\n\n$x=$\n{{field-1}}",
+        ":question/worked-solution": "Expand along the first row, using the signs $+,-,+$. Compute the three signed contributions separately:\n\n$$\n\\begin{aligned}T_{1} & =(2)\\begin{vmatrix}x & -3 \\\\ 5 & 1\\end{vmatrix} \\\\  & =(2)((x)(1)-(-3)(5)) \\\\  & =(2)(x + 15) \\\\  & =2 x + 30\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{2} & =-(1)\\begin{vmatrix}3 & -3 \\\\ 1 & 1\\end{vmatrix} \\\\  & =-(1)((3)(1)-(-3)(1)) \\\\  & =-(1)(6) \\\\  & =-6\\end{aligned}\n$$\n\n$$\n\\begin{aligned}T_{3} & =(0)\\begin{vmatrix}3 & x \\\\ 1 & 5\\end{vmatrix} \\\\  & =(0)((3)(5)-(x)(1)) \\\\  & =(0)(15 - x) \\\\  & =0\\end{aligned}\n$$\n\nAdd the signed contributions to obtain the determinant:\n\n$$\n\\begin{aligned}D & =T_1+T_2+T_3 \\\\  & =2 x + 24\\end{aligned}\n$$\n\nSet the determinant equal to the given value.\n\n$$\n\\begin{aligned}2 x + 24 & =-11 \\\\ 2 x & =-35 \\\\ x & =- \\frac{35}{2}\\end{aligned}\n$$\n\nTherefore, the solution is $x=- \\frac{35}{2}$.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "094f4f37-fe40-5b80-a803-32abaed17a6a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fbb20909-6066-5d66-8813-56b968134399",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{35}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fbb20909-6066-5d66-8813-56b968134399"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "determinant-unknown-package-6",
+        "sympy_version": "1.14.0",
+        "seed": 983731,
+        "template": "linear_named_determinant_blank",
+        "matrix_recipe": "q-280403",
+        "bank_profile": null,
+        "bank_origin": "observed",
+        "parameters": {
+          "constants": [
+            2,
+            1,
+            0,
+            3,
+            0,
+            -3,
+            1,
+            5,
+            1
+          ],
+          "linear": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "quadratic": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "target": -11
+        },
+        "parameter_fingerprint": "154ec8e5de3a225d4b38246dd311429202963a90d4f43ea8d821bc723656e2f4",
+        "content_fingerprint": "ce2fff3e906a3f3b6af4845b585c788ae66aaf7b6a0ced47d6a323e98f9bb5f6",
+        "source_analysis": {
+          "database": "math",
+          "basis": 7441,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "b8c1908a-4170-5ad4-8920-81bd7dfc6050"
+          ]
+        },
+        "authored_level_assignment": false,
+        "authored_extension": true,
+        "domain": "real variable; degree and distinct-root restrictions per source",
+        "matrix": [
+          [
+            "Integer(2)",
+            "Integer(1)",
+            "Integer(0)"
+          ],
+          [
+            "Integer(3)",
+            "Symbol('u', real=True)",
+            "Integer(-3)"
+          ],
+          [
+            "Integer(1)",
+            "Integer(5)",
+            "Integer(1)"
+          ]
+        ],
+        "determinant": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(24))",
+        "residual": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(35))",
+        "roots": [
+          "Rational(-35, 2)"
+        ],
+        "choice_math": [
+          {
+            "type": ":answer.type/math",
+            "value": "- \\frac{35}{2}",
+            "set": [
+              "Rational(-35, 2)"
+            ],
+            "recipe": [
+              "correct"
+            ]
+          }
+        ],
+        "option_math": [],
+        "solution_intermediates": [
+          {
+            "coefficient": "Integer(2)",
+            "minor": [
+              [
+                "Symbol('u', real=True)",
+                "Integer(-3)"
+              ],
+              [
+                "Integer(5)",
+                "Integer(1)"
+              ]
+            ],
+            "value": "Add(Symbol('u', real=True), Integer(15))",
+            "signed_product": "Add(Mul(Integer(2), Symbol('u', real=True)), Integer(30))"
+          },
+          {
+            "coefficient": "Integer(1)",
+            "minor": [
+              [
+                "Integer(3)",
+                "Integer(-3)"
+              ],
+              [
+                "Integer(1)",
+                "Integer(1)"
+              ]
+            ],
+            "value": "Integer(6)",
+            "signed_product": "Integer(-6)"
+          },
+          {
+            "coefficient": "Integer(0)",
+            "minor": [
+              [
+                "Integer(3)",
+                "Symbol('u', real=True)"
+              ],
+              [
+                "Integer(1)",
+                "Integer(5)"
+              ]
+            ],
+            "value": "Add(Integer(15), Mul(Integer(-1), Symbol('u', real=True)))",
+            "signed_product": "Integer(0)"
+          }
+        ],
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_repairs": [
+          "Corrected source det(F) label to det(A)"
+        ]
+      }
+    },
+    "kind": "outside-repo-relocation"
+  }
+]

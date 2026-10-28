@@ -1,0 +1,172 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198398,
+      "id": "832dc2b8-873f-56c6-bd87-5e886a586fb1",
+      "title": "Evaluating a Triple Integral Using a Change of Variables"
+    },
+    "question": {
+      ":question/id": "7408b781-65fc-5c1b-9843-c22fc208fba3",
+      ":question/problem": "Use the change of variables \n\n$$\nu=2 x - y,\\quad v=y - z,\\quad w=4 z\n$$\n\nto evaluate the triple integral\n\n$$\n\\iiint_R \\left(\\left(2 x - y\\right) \\left(y - z\\right)\\right)\\,\\mathrm{d}V,\n$$\n\n \nwhere the region $R$ is given by\n\n$$\nR=\\{(x,y,z):0\\le 2 x - y\\le 1,\\quad 0\\le y - z\\le 3,\\quad 0\\le z\\le 2\\}.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d399059f-2391-57f8-aea5-6b17e8257b04",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3a4eee83-4923-558c-832b-3a467891b492",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{2}"
+            },
+            {
+              ":answer/id": "edcc3871-3e13-5ba5-a1a8-9499bd523593",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144"
+            },
+            {
+              ":answer/id": "553e92fd-de98-5cf6-bd59-544a72e4dc3c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            },
+            {
+              ":answer/id": "0f5e1169-c02e-55eb-b654-34db23f0da1c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{4}"
+            },
+            {
+              ":answer/id": "9078f866-b42c-55f7-bec2-6e6fe05077c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9}{16}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0f5e1169-c02e-55eb-b654-34db23f0da1c"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}⟶\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2 x - y,\\quad v=y - z,\\quad w=4 z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\Delta=\\{(u,v,w):0\\le u\\le 1,\\quad 0\\le v\\le 3,\\quad 0\\le w\\le 8\\}.\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)} & =\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & -1 & 0 \\\\ 0 & 1 & -1 \\\\ 0 & 0 & 4\\end{vmatrix} \\\\  & =\\left(4\\right)(-1)^{3+3}\\begin{vmatrix}2 & -1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =\\left(4\\right)\\left(\\left(2\\right)\\cdot \\left(1\\right)-\\left(-1\\right)\\cdot \\left(0\\right)\\right) \\\\  & =8.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}=\\frac{1}{8}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}\\iiint_R \\left(\\left(2 x - y\\right) \\left(y - z\\right)\\right)\\,\\mathrm{d}V & =\\iiint_\\Delta \\left(u v\\right)\\cdot \\left|\\frac{1}{8}\\right|\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\iiint_\\Delta \\left(\\frac{u v}{8}\\right)\\,\\mathrm{d}u\\mathrm{d}v\\mathrm{d}w \\\\  & =\\int_{0}^{1}\\int_{0}^{3}\\int_{0}^{8}\\left(\\frac{u v}{8}\\right)\\,\\mathrm{d}w\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{3}\\left(\\left[\\frac{u v w}{8}\\right]_{w=0}^{w=8}\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{3}\\left(\\left(\\frac{u v \\left(8\\right)}{8}\\right)-\\left(\\frac{u v \\left(0\\right)}{8}\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{3}\\left(\\left(u v\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\int_{0}^{3}\\left(u v\\right)\\,\\mathrm{d}v\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left[\\frac{u v^{2}}{2}\\right]_{v=0}^{v=3}\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left(\\frac{u \\left(3\\right)^{2}}{2}\\right)-\\left(\\frac{u \\left(0\\right)^{2}}{2}\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\left(\\frac{9 u}{2}\\right)-\\left(0\\right)\\right)\\,\\mathrm{d}u \\\\  & =\\int_{0}^{1}\\left(\\frac{9 u}{2}\\right)\\,\\mathrm{d}u \\\\  & =\\left[\\frac{9 u^{2}}{4}\\right]_{u=0}^{u=1} \\\\  & =\\left(\\frac{9 \\left(1\\right)^{2}}{4}\\right)-\\left(\\frac{9 \\left(0\\right)^{2}}{4}\\right) \\\\  & =\\left(\\frac{9}{4}\\right)-\\left(0\\right) \\\\  & =\\frac{9}{4}\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "triple-change-evaluation-1-audit9837",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 27102891,
+      "template": "power",
+      "parameters": {
+        "a": "2",
+        "b": "-1",
+        "c": "4",
+        "d": "-1",
+        "n": "1",
+        "lu": "0",
+        "hu": "1",
+        "lv": "0",
+        "hv": "3",
+        "lz": "0",
+        "hz": "2"
+      },
+      "bank_profile": "method",
+      "bank_origin": "authored_method",
+      "source_basis": 1356,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_ids": [
+        "17592186198623"
+      ],
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_level": true,
+      "plot_rating": "none",
+      "parameter_fingerprint": "5e327d97745422d34f9e2c95c28ebb9af69673bae67a08af35abc86b6e55f86f",
+      "content_fingerprint": "b974af042d1d526616786338d4d2435d7b68b7baf209c68fd076f2360b4510a6",
+      "recipes": [
+        "correct",
+        "omit_inverse_jacobian",
+        "use_forward_jacobian",
+        "omit_power_primitive_denominator",
+        "omit_w_bound_scale"
+      ],
+      "domain": "Globally bijective polynomial/linear shear; constant nonzero determinant; ordered bounded box.",
+      "stages": [
+        {
+          "variable": "w",
+          "input": "u*v/8",
+          "primitive": "u*v*w/8",
+          "terms": [
+            "u*v*w/8"
+          ],
+          "components": [
+            [
+              "u*v",
+              "0"
+            ]
+          ],
+          "result": "u*v"
+        },
+        {
+          "variable": "v",
+          "input": "u*v",
+          "primitive": "u*v**2/2",
+          "terms": [
+            "u*v**2/2"
+          ],
+          "components": [
+            [
+              "9*u/2",
+              "0"
+            ]
+          ],
+          "result": "9*u/2"
+        },
+        {
+          "variable": "u",
+          "input": "9*u/2",
+          "primitive": "9*u**2/4",
+          "terms": [
+            "9*u**2/4"
+          ],
+          "components": [
+            [
+              "9/4",
+              "0"
+            ]
+          ],
+          "result": "9/4"
+        }
+      ],
+      "math": {
+        "trans": [
+          "2*x - y",
+          "y - z",
+          "4*z"
+        ],
+        "inverse": [
+          "u/2 + v/2 + w/8",
+          "v + w/4",
+          "w/4"
+        ],
+        "det": "8",
+        "j": "1/8",
+        "f": "u*v",
+        "density": "u*v/8",
+        "bounds": [
+          [
+            "0",
+            "1"
+          ],
+          [
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "8"
+          ]
+        ],
+        "value": "9/4"
+      }
+    }
+  }
+]

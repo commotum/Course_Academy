@@ -1,0 +1,99 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129282,
+      "id": "6d82be73-0720-5267-8698-427641b0e66e",
+      "title": "Identifying the Local Area Scale Factor of a Transformation"
+    },
+    "question": {
+      ":question/id": "5ac35659-978c-592e-84f9-974bb356b588",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}u + v^{2}\\\\\\sin{\\left(u + v \\right)}\\end{bmatrix}?\n$$",
+      ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\& =\\begin{vmatrix}1&2 v\\\\\\cos{\\left(u + v \\right)}&\\cos{\\left(u + v \\right)}\\end{vmatrix}\\\\& =(1)\\cdot (\\cos{\\left(u + v \\right)})-(2 v)\\cdot (\\cos{\\left(u + v \\right)})\\\\& =(1-2v)\\cos(u+v)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,3)} & =\\left(- \\left(2 v - 1\\right) \\cos{\\left(u + v \\right)}\\right)\\big|_{u=-3,v=3}\\\\& =- \\left(2 (3) - 1\\right) \\cos{\\left((-3) + (3) \\right)}\\\\& =-5\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|-5|\\cdot\\delta A\\\\ & =5\\,\\delta A.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "145530a9-7960-52f6-af58-56f466da94ac",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1e786f83-9e18-5dfe-9f7c-453118ffbd52",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{5}\\,\\delta A"
+            },
+            {
+              ":answer/id": "123e2f99-a630-5890-83c5-aacdc0111589",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{5}{2}\\,\\delta A"
+            },
+            {
+              ":answer/id": "c4bd4bab-2e73-5689-a032-d3f5a6d43953",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5\\,\\delta A"
+            },
+            {
+              ":answer/id": "d201c507-5451-598f-aa11-9542c2e234e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "25\\,\\delta A"
+            },
+            {
+              ":answer/id": "e95a611c-cb6c-5c2c-863d-f100e97d21fe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10\\,\\delta A"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c4bd4bab-2e73-5689-a032-d3f5a6d43953"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "local-area-1-audit9837",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "seed": 27102891,
+      "difficulty": "easy",
+      "template": "sin_sum",
+      "parameters": {
+        "u0": -3,
+        "v0": 3
+      },
+      "bank_profile": "authored_area_sin_sum",
+      "bank_origin": "authored complete area operation bank",
+      "recipes": [
+        "absolute evaluated determinant",
+        "square area scale",
+        "reciprocal area scale",
+        "double area scale",
+        "halve area scale"
+      ],
+      "source_refs": [
+        "q-161878"
+      ],
+      "authored_level": false,
+      "domain": "R²",
+      "plot": "none",
+      "parameter_fingerprint": "6ec475902eb9427fed88c1c5c6cf76df364a0e6c2dd7936cc9529501a10c13db",
+      "exact": {
+        "x": "u + v**2",
+        "y": "sin(u + v)",
+        "partials": [
+          "1",
+          "2*v",
+          "cos(u + v)",
+          "cos(u + v)"
+        ],
+        "ad": "cos(u + v)",
+        "bc": "2*v*cos(u + v)",
+        "jacobian": "-(2*v - 1)*cos(u + v)",
+        "jacobian_at_point": "-5",
+        "area_scale": "5"
+      }
+    }
+  }
+]

@@ -1,0 +1,111 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198374,
+      "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+      "title": "Cases When the Transformation Is Inferred From the Integrand"
+    },
+    "question": {
+      ":question/id": "26347643-36ce-5348-b192-de46bbcf954e",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 2 y^{2} \\left(x - 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(6,1)$, $(9,1)$, $(13,3)$ and $(10,3)$.",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}⟶\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=2 y^{2} \\left(x - 2 y\\right)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x - 2 y,\\qquad v=y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(6,1)&=(\\left(1\\right)\\cdot \\left(6\\right)+\\left(-2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(9,1)&=(\\left(1\\right)\\cdot \\left(9\\right)+\\left(-2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(9\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(7,1) \\\\ T^{-1}(13,3)&=(\\left(1\\right)\\cdot \\left(13\\right)+\\left(-2\\right)\\cdot \\left(3\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(13\\right)+\\left(1\\right)\\cdot \\left(3\\right)+\\left(0\\right)) \\\\ &=(7,3) \\\\ T^{-1}(10,3)&=(\\left(1\\right)\\cdot \\left(10\\right)+\\left(-2\\right)\\cdot \\left(3\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(10\\right)+\\left(1\\right)\\cdot \\left(3\\right)+\\left(0\\right)) \\\\ &=(4,3)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):4\\le u\\le 7,\\ 1\\le v\\le 3\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/published-probe/17592186198374/defa0cdd798e6a9dc166.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-2\\\\0&1\\end{vmatrix} \\\\ &=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\nSolving these affine equations also gives\n\n$$\nx=u + 2 v,\\qquad y=v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 2 y^{2} \\left(x - 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 2 u v^{2}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 2 u v^{2}\\,\\left|1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{3}\\int_{4}^{7}u v^{2}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{3}v^{2}\\,\\mathrm{d}v\\cdot \\int_{4}^{7}u\\,\\mathrm{d}u \\\\ &=2\\cdot \\left[\\frac{v^{3}}{3}\\right]_{1}^{3}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{4}^{7} \\\\ &=2\\cdot \\left(\\left(3\\right)^{3}/3-\\left(\\left(1\\right)^{3}/3\\right)\\right)\\cdot \\left(\\left(7\\right)^{2}/2-\\left(\\left(4\\right)^{2}/2\\right)\\right) \\\\ &=2\\cdot \\left(\\left(9\\right)-\\left(\\frac{1}{3}\\right)\\right)\\cdot \\left(\\left(\\frac{49}{2}\\right)-\\left(8\\right)\\right) \\\\ &=2\\cdot \\left(\\frac{26}{3}\\right)\\cdot \\left(\\frac{33}{2}\\right) \\\\ &=286.\\end{aligned}\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f2c3d8ba-298c-5fe7-8b69-e1eb05d6667b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c6e17abe-f14f-53dd-9eda-45bbcb4224d7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "286"
+            },
+            {
+              ":answer/id": "28fed054-753e-5f74-a251-34fff8256384",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "52"
+            },
+            {
+              ":answer/id": "0e519fb2-95d1-5f4d-af78-3af1fc385b68",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "858"
+            },
+            {
+              ":answer/id": "2130d79a-f931-5d30-82d2-a7a727f29c35",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "572"
+            },
+            {
+              ":answer/id": "bf3707b6-6ff5-5de0-a0b1-5fa7f3e0d281",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-286"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c6e17abe-f14f-53dd-9eda-45bbcb4224d7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "integrand-transform-2-audit9837",
+      "template": "polynomial",
+      "difficulty": "easy",
+      "profile": "method",
+      "parameters": {
+        "matrix": [
+          "1",
+          "-2",
+          "0",
+          "1"
+        ],
+        "shift": [
+          "0",
+          "0"
+        ],
+        "bounds": [
+          "4",
+          "7",
+          "1",
+          "3"
+        ],
+        "scale": "2"
+      },
+      "mathematical_fingerprint": "9ecf09ae9fdbc4069a8dfa0fa7e03f9a6cc8594f93090fae191e3ba2ce905112",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "authored_level": true,
+      "authored_bank": true,
+      "source_id": [],
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "answer_exact": "286",
+      "choices_exact": [
+        "286",
+        "-286",
+        "572",
+        "858",
+        "52"
+      ],
+      "recipes": [
+        "correct",
+        "reverse u bounds",
+        "omit u primitive denominator2",
+        "omit v primitive denominator3",
+        "replace u by1"
+      ],
+      "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+      "plot": "/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-28-topic-audit-3/published-probe/17592186198374/defa0cdd798e6a9dc166.png",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0",
+        "matplotlib": "3.11.2"
+      }
+    }
+  }
+]
