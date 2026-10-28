@@ -2566,6 +2566,33 @@ fn disjoint_strict_radical_domains(a: &Value, ca: &BTreeSet<Condition>,
             conditions.iter().all(|c| condition_at(c, &sample))))
 }
 
+// A nonzero guard has the same domain as its square, including when exact
+// trig relations reduce that square to a different-looking polynomial. Power
+// provenance is local to each parse, so compare these guards algebraically.
+// Every guard must match in both directions: extra holes remain obligations.
+fn equivalent_domain_conditions(a: &BTreeSet<Condition>, b: &BTreeSet<Condition>,
+                                algebra: &mut Algebra) -> Result<bool> {
+    if a == b { return Ok(true); }
+    for (left, right) in [(a, b), (b, a)] {
+        for condition in left {
+            if right.contains(condition) { continue; }
+            let mut matched = false;
+            if let Condition::Nonzero(p) = condition {
+                for other in right {
+                    let Condition::Nonzero(q) = other else { continue; };
+                    if algebra.pmul(p, p)?.monic() == q.monic()
+                        || algebra.pmul(q, q)?.monic() == p.monic() {
+                        matched = true;
+                        break;
+                    }
+                }
+            }
+            if !matched { return Ok(false); }
+        }
+    }
+    Ok(true)
+}
+
 fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
     let a = parse(a, context)?;
     let b = parse(b, context)?;
@@ -2584,15 +2611,16 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
             let l = algebra.pmul(&a.num, &b.den)?;
             let r = algebra.pmul(&b.num, &a.den)?;
             let diff = algebra.padd(&l, &r.scale(&Q::from_integer((-1).into())))?;
+            let same_domain = equivalent_domain_conditions(&ca, &cb, &mut algebra)?;
             if diff.is_zero() {
-                if ca != cb {
+                if !same_domain {
                     return Err("answer comparison has unresolved domain differences".into());
                 }
                 return Ok(true);
             }
             // A counterexample valid in BOTH domains proves inequality even
             // when their restrictions differ. Never cancel away domain guards.
-            if ca != cb {
+            if !same_domain {
                 if disjoint_strict_radical_domains(&a, &ca, &b, &cb) {
                     return Ok(false);
                 }
@@ -2725,6 +2753,32 @@ mod tests {
         // A pi coefficient depending on x is not a constant translation.
         assert_ne!(compare("cos(x-pi*x/2)", "sin(x)", c), Ok(true));
     }
+    #[test]
+    fn squared_nonzero_guards_match_exact_trig_expansions() {
+        use super::{compare, Context};
+        let c = Context::default();
+        for (a, b) in [
+            ("2/(cos(t)-sin(t))^2", "2/(1-sin(2*t))"),
+            ("3/(cos(t)+sin(t))^2", "3/(1+sin(2*t))"),
+            ("1/(cos(t)-sin(t))^2", "1/(1-2*sin(t)*cos(t))"),
+            ("2/(cos(t)-sin(t))^2+1/(1-sin(2*t))", "3/(1-sin(2*t))"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, c), Ok(true), "{b} vs {a}");
+        }
+        for a in ["-2/(1-sin(2*t))", "1/(1-sin(2*t))", "2/(1+sin(2*t))"] {
+            assert_eq!(compare(a, "2/(cos(t)-sin(t))^2", c), Ok(false), "{a}");
+        }
+        // Equivalent values must not discard additional original holes.
+        for a in [
+            "2/(1-sin(2*t))*(cos(t)+sin(t))/(cos(t)+sin(t))",
+            "2/(1-sin(2*t))*t/t",
+        ] {
+            assert_ne!(compare(a, "2/(cos(t)-sin(t))^2", c), Ok(true), "{a}");
+        }
+        assert_ne!(compare("(1-sin(2*t))/(cos(t)-sin(t))^2", "1", c), Ok(true));
+    }
+
     #[test]
     fn even_trig_arguments_use_exact_double_angle_identities() {
         use super::{compare, Context};
