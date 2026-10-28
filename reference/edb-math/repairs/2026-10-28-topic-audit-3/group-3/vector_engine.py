@@ -9,10 +9,11 @@ X=[SYMS[c]for c in'xyz'];B=[SYMS[c]for c in'ijk']
 def maths(text):
  return[m[0][2:-2]if m[0].startswith(('$$',r'\[',r'\('))else m[0][1:-1]for m in MATH.finditer(text)]
 def scalar(tex):
- tex=normalize_source_tex(tex).strip().strip('$').strip().rstrip('.,?');tex=re.sub(r'\{(sin|cos|tan|sec|csc|cot|ln|log)\}',lambda m:'\\'+m[1]+' ',tex);tex=tex.replace('π',r'\pi ').replace('θ','T').replace(r'\theta','T').replace('∗',r'\cdot ').replace('⋅',r'\cdot ')
+ tex=normalize_source_tex(tex).strip().strip('$').strip().rstrip('.,?');tex=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log)\}',lambda m:'\\'+m[1]+' ',tex);tex=tex.replace('π',r'\pi ').replace('θ','T').replace(r'\theta','T').replace('∗',r'\cdot ').replace('⋅',r'\cdot ')
  # Mathematical font roles do not alter scalar coefficients in this independent algebraic check.
  for _ in range(4):tex=re.sub(r'\\(?:mathbf|boldsymbol|mathit|mathrm)\s*\{([^{}]*)\}',r'{\1}',tex)
  tex=re.sub(r'\\(?:mathbf|boldsymbol|mathit)\s+([A-Za-z])',r'\1',tex)
+ tex=re.sub(r'\\(?:text|textrm)\{[\s\u00a0]*\}','',tex)
  tex=re.sub(r'\\displaystyle|\\limits|\\hspace\{[^{}]*\}','',tex).replace(r'\,',' ').replace(r'\;',' ').replace(r'\:',' ')
  return scalar_parse(tex)
 def matrices(tex):
@@ -56,12 +57,14 @@ def vector(tex):
 def definitions(problem):
  out={}
  for tex in maths(problem):
-  tex=re.sub(r'^\\displaystyle\s*','',tex);m=re.search(r'(?<![A-Za-z])([fghFGH])\s*\(\s*([xyzuvwt](?:\s*,\s*[xyzuvwt]){0,2})\s*\)\s*=\s*([\s\S]+)',tex)
-  if not m or tex[:m.start()].rstrip().endswith(('∇',r'\nabla')):continue
-  rhs=m[3].strip().rstrip('.,');# Separate explicitly adjacent named definitions.
-  rhs=re.split(r',\s*\\[,\s]*[fghFGH]\s*\(',rhs)[0]
-  try:out[m[1]]={'variables':[SYMS[c]for c in m[2].replace(' ','').split(',')],'expression':scalar(rhs),'tex':rhs}
-  except Exception:pass
+  tex=re.sub(r'\\(?:begin|end)\{aligned\}','',tex).replace('&','').replace(r'\\',';')
+  hits=list(re.finditer(r'(?<![A-Za-z])([fghFGHψφ]|\\psi|\\phi)\s*\(\s*([xyzuvwt](?:\s*,\s*[xyzuvwt]){0,2})\s*\)\s*=\s*',tex))
+  for i,m in enumerate(hits):
+   if tex[:m.start()].rstrip().endswith(('∇',r'\nabla')):continue
+   rhs=tex[m.end():hits[i+1].start()if i+1<len(hits)else len(tex)]
+   rhs=split_top(rhs)[0].split(';')[0].strip().rstrip('.,?');rhs=re.split(r'\\(?:quad|qquad)',rhs)[0]
+   try:out[m[1]]={'variables':[SYMS[c]for c in m[2].replace(' ','').split(',')],'expression':scalar(rhs),'tex':rhs}
+   except Exception:pass
  return out
 
 def tuples(tex):

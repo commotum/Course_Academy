@@ -12,7 +12,7 @@ for p in new:
  ensures|={(p['field'],'answer-field/validate'),(p['tempid'],'answer/validate'),(p['question'],'question/validate')}
 for p in cas:
  assert p['before']!=p['after'];forms.append([kw('db/cas'),p['entity'],kw(p['attribute']),p['before'],p['after']]);kind=p['attribute'].split('/')[0]
- ensures.add((p['entity'],{'answer':'answer/validate','answer-field':'answer-field/validate','question':'question/validate','tutorial':'tutorial/validate'}[kind]))
+ ensures.add((p['entity'],{'answer':'answer/validate','answer-field':'answer-field/validate','question':'question/validate','tutorial':'tutorial/validate','multistep':'multistep/validate','assigned-problem':'assigned-problem/validate'}[kind]))
 for p in detach:
  assert p['attribute']in ['question/answer-fields','answer-field/choices'];forms.append([kw('db/retract'),p['entity'],kw(p['attribute']),p['value']]);ensures.add((p['entity'],'question/validate'if p['attribute'].startswith('question/')else'answer-field/validate'))
 forms +=[[kw('db/ensure'),e,kw(spec)]for e,spec in sorted(ensures,key=str)];payload=dumps(forms)+'\n';file=D/'transaction.edn'
@@ -20,9 +20,12 @@ if file.exists():assert file.read_text()==payload
 else:file.write_text(payload)
 sha=hashlib.sha256(payload.encode()).hexdigest();intentpath=D/'commit-intent.json';receipt=D/'receipt.edn'
 def rows_at(pairs,basis,name):
- rows=[]
- for offset in range(0,len(pairs),25):
-  rows.extend(db.query('[:find ?e ?name ?v :in $ [[?e ?name]] :where [?a :db/ident ?name] [?e ?a ?v]]',[[[e,kw(a)]for e,a in pairs[offset:offset+25]]],D,name+'-'+str(offset//25),basis))
+ rows=[];by_attribute=collections.defaultdict(list)
+ for e,a in pairs:by_attribute[a].append(e)
+ for a,entities in sorted(by_attribute.items()):
+  for offset in range(0,len(entities),80):
+   values=db.query('[:find ?e ?v :in $ ?attribute [?e ...] :where [?e ?attribute ?v]]',[kw(a),entities[offset:offset+80]],D,name+'-'+a.replace('/','-')+'-'+str(offset),basis)
+   rows.extend((e,kw(a),v)for e,v in values)
  return rows
 # Unknown outcomes retain the exact original request. Only a confirmed stale
 # precondition may produce a newly captured basis and a new request identity.
@@ -34,6 +37,17 @@ for attempt in range(4):
   for p in detach:
    actual=values[p['entity'],p['attribute']];assert p['value']in actual,p
    if 'expected_before'in p:assert set(actual)==set(p['expected_before']),p
+  # Repeat the no-learner-history proof at this write's guarded basis; the
+  # earlier source audit alone cannot authorize dropping a newly used member.
+  guarded_answers={p['value']for p in detach if p['attribute']=='answer-field/choices'}
+  old_fields=sorted({p['value']for p in detach if p['attribute']=='question/answer-fields'})
+  if old_fields:
+   owned=db.query('[:find ?f ?a :in $ [?f ...] :where [?f :answer-field/choices ?a]]',[old_fields],D,'detach-owned-answers-'+str(basis),basis);guarded_answers.update(a for f,a in owned)
+  if guarded_answers:
+   ids_to_guard=sorted(guarded_answers)
+   for offset in range(0,len(ids_to_guard),150):
+    uses=db.query('[:find ?answer ?item ?tx ?source ?added :in $ [?answer ...] :where [?item :task-item/responses ?answer ?tx ?source ?added]]',[ids_to_guard[offset:offset+150]],D,'detach-response-history-'+str(basis)+'-'+str(offset),basis,history=True)
+    assert not uses,('Detached member acquired response history; repair requires review',uses)
   field_types={str(ident):eid for eid,ident in db.query('[:find ?e ?name :in $ [?name ...] :where [?e :db/ident ?name]]',[[kw(p.get('field_type',':answer-field.type/blank'))for p in new]],D,'new-answer-field-types-'+str(basis),basis)}if new else{}
   for p in new:
    assert set(values[p['field'],'answer-field/choices'])==set(p.get('expected_choices',[]))and not values[p['field'],'answer-field/correct'],p

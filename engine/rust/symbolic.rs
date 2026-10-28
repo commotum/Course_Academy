@@ -497,7 +497,20 @@ fn reduced_log_bounds(x: &Q) -> (Q, Q) {
 }
 fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
     if x.abs() > Q::from_integer(16.into()) {
-        return None;
+        if x.numer().bits().max(x.denom().bits()) > MAX_BITS { return None; }
+        // Period reduction is an enclosure, not an approximate trig identity.
+        // For integer n, f(x)=f(x-2*n*pi). Archimedes' rigorous pi bounds
+        // enclose that reduced argument; the unit Lipschitz bound carries
+        // their uncertainty through the existing rational Taylor enclosure.
+        let pi_lo = Q::new(223.into(), 71.into());
+        let pi_hi = Q::new(22.into(), 7.into());
+        let periods = (x / (&pi_lo + &pi_hi)).floor().to_integer();
+        if periods.bits() > 32 { return None; }
+        let scale = Q::from_integer(periods * BigInt::from(2));
+        let mid = x - &scale * (&pi_lo + &pi_hi) / Q::from_integer(2.into());
+        let radius = scale.abs() * (&pi_hi - &pi_lo) / Q::from_integer(2.into());
+        let (lo, hi) = trig_bounds(name, &mid)?;
+        return Some((lo - &radius, hi + radius));
     }
     if x.numer().bits().max(x.denom().bits()) > 128 {
         // Nested exponential/root intervals can have large rational endpoints.
@@ -2586,6 +2599,22 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn translated_squared_trig_arguments_use_period_enclosures() {
+        use super::{compare, Context};
+        let c = Context::default();
+        let left = "-2*(x+6)*csc((x+6)^2)^2";
+        let right = "2*(-x+6)*csc((-x+6)^2)^2";
+        assert_eq!(compare(left, right, c), Ok(false));
+        assert_eq!(compare(right, left, c), Ok(false));
+        assert_eq!(compare(left, "-2*(x+6)/sin((x+6)^2)^2", c), Ok(true));
+        for argument in ["36", "-36", "100", "-100"] {
+            assert_eq!(compare(&format!("sin({argument})"), &format!("-sin({argument})"), c), Ok(false));
+            assert_eq!(compare(&format!("tan({argument})"), &format!("sin({argument})/cos({argument})"), c), Ok(true));
+        }
+        assert_ne!(compare("1/sin(0)", "0", c), Ok(true));
+        assert_ne!(compare("sin(x)/sin(x)", "1", c), Ok(true));
+    }
     #[test]
     fn nested_transcendental_intervals_reject_wrong_signs() {
         use super::{compare, Context};

@@ -105,6 +105,23 @@
       }
     },
     {
+      "entity": 17592186124954,
+      "source": "q-36144",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323370,
+      "canonical_answer": 17592186321442,
+      "value": "(24{x}^{3}{y}^{2}-16x{y}^{3})\\text{\u00a0}i+(12{x}^{4}y-24{x}^{2}{y}^{2})\\text{\u00a0}j",
+      "expected": "Matrix([[12*x**3*y**2 + 4*x*y**2*(3*x**2 - 4*y)], [-8*x**2*y**2 + 4*x**2*y*(3*x**2 - 4*y)]])",
+      "got": "Matrix([[24*x**3*y**2 - 16*x*y**3], [12*x**4*y - 24*x**2*y**2]])",
+      "passed": true,
+      "proof": {
+        "function": "2*x**2*y**2*(3*x**2 - 4*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186124970,
       "source": "q-36332",
       "topic": 1940,
@@ -152,6 +169,40 @@
         "reference_vector": "Matrix([[0], [1]])"
       },
       "passed": true
+    },
+    {
+      "entity": 17592186125020,
+      "source": "q-36918",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323514,
+      "canonical_answer": 17592186322622,
+      "value": "\\frac{\\sqrt{xyz}}{2}(\\frac{1}{x}\\text{\u00a0}i+\\frac{1}{y}\\text{\u00a0}j+\\frac{1}{z}\\text{\u00a0}k)",
+      "expected": "Matrix([[sqrt(x*y*z)/(2*x)], [sqrt(x*y*z)/(2*y)], [sqrt(x*y*z)/(2*z)]])",
+      "got": "Matrix([[sqrt(x*y*z)/(2*x)], [sqrt(x*y*z)/(2*y)], [sqrt(x*y*z)/(2*z)]])",
+      "passed": true,
+      "proof": {
+        "function": "sqrt(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186125022,
+      "source": "q-36968",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323310,
+      "canonical_answer": 17592186321197,
+      "value": "\\frac{1}{2\\sqrt{x+2}}i+\\frac{1}{2y}\\text{\u00a0}j+\\frac{1}{2z}\\text{\u00a0}k",
+      "expected": "Matrix([[1/(2*sqrt(x + 2))], [1/(2*y)], [1/(2*z)]])",
+      "got": "Matrix([[1/(2*sqrt(x + 2))], [1/(2*y)], [1/(2*z)]])",
+      "passed": true,
+      "proof": {
+        "function": "sqrt(x + 2) + log(sqrt(y*z))",
+        "points": [],
+        "stream_convention": null
+      }
     },
     {
       "entity": 17592186125023,
@@ -261,39 +312,21 @@
       "passed": true
     },
     {
-      "entity": 17592186129507,
-      "source": "q-160380",
-      "topic": 1999,
+      "entity": 17592186129727,
+      "source": "q-39299",
+      "topic": 2058,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186277874,
-      "canonical_answer": 17592186277280,
-      "value": "6",
+      "field": 17592186326385,
+      "canonical_answer": 17592186325376,
+      "value": "1",
       "expected": "1",
-      "got": "6",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186129508,
-      "source": "q-160394",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277839,
-      "canonical_answer": 17592186276664,
-      "value": "-2",
-      "expected": "-2",
-      "got": "-2",
+      "got": "1",
       "passed": true,
       "proof": {
-        "transformation": "Matrix([[exp(u + v)], [exp(u - v)]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[exp(u + v), exp(u + v)], [exp(u - v), -exp(u - v)]])",
-        "determinant_before_point": "-2*exp(u - v)*exp(u + v)"
+        "transformation": "Matrix([[u*cos(T) + v*sin(T)], [-u*sin(T) + v*cos(T)], [w]])",
+        "variables": "Matrix([[u], [v], [w]])",
+        "Jacobian": "Matrix([[cos(T), sin(T), 0], [-sin(T), cos(T), 0], [0, 0, 1]])",
+        "determinant_before_point": "sin(T)**2 + cos(T)**2"
       }
     },
     {
@@ -311,6 +344,40 @@
         "function": "x**2 - x*y + 3*y**2 - 4*y",
         "points": [],
         "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186179965,
+      "source": "q-122404",
+      "topic": 3692,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186256046,
+      "canonical_answer": 17592186253761,
+      "value": "\\operatorname{ln}\u2061(z-2y)\\,i+\\frac{2x}{2y-z}\\,j+\\frac{x}{z-2y}\\,k",
+      "expected": "Matrix([[log(-2*y + z)], [-2*x/(-2*y + z)], [x/(-2*y + z)]])",
+      "got": "Matrix([[log(-2*y + z)], [2*x/(2*y - z)], [x/(-2*y + z)]])",
+      "passed": true,
+      "proof": {
+        "function": "x*log(-2*y + z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186180083,
+      "source": "q-161434",
+      "topic": 3717,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186178167,
+      "canonical_answer": 17592186178169,
+      "value": "F(x, y) = (2x\\cos y - e^{y})i - 2\\sin yj",
+      "expected": "Matrix([[2*x*cos(y) - exp(y)], [-2*sin(y)]])",
+      "got": "Matrix([[2*x*cos(y) - exp(y)], [-2*sin(y)]])",
+      "passed": true,
+      "proof": {
+        "function": "2*x*sin(y) - exp(y)",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
       }
     },
     {
@@ -343,6 +410,23 @@
       ],
       "proof": {},
       "passed": true
+    },
+    {
+      "entity": 17592186180092,
+      "source": "q-162514",
+      "topic": 3717,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186178221,
+      "canonical_answer": 17592186489579,
+      "value": "F(x,y)=y{e}^{xy}(2+yx)\\,i-({y}^{3}{e}^{xy}+2x)\\,j",
+      "expected": "Matrix([[x*y**2*exp(x*y) + 2*y*exp(x*y)], [-2*x - y**3*exp(x*y)]])",
+      "got": "Matrix([[x*y**2*exp(x*y) + 2*y*exp(x*y)], [-2*x - y**3*exp(x*y)]])",
+      "passed": true,
+      "proof": {
+        "function": "x**2 + y**2*exp(x*y)",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
+      }
     },
     {
       "entity": 17592186193321,
@@ -464,6 +548,81 @@
       "passed": true
     },
     {
+      "entity": 17592186262919,
+      "source": "q-128517",
+      "topic": 1934,
+      "kind": "checkbox truth mathematics",
+      "fields": [
+        {
+          "field": 17592186440105,
+          "label": "$(-1,0)$",
+          "expected": false,
+          "canonical": false,
+          "passed": true
+        },
+        {
+          "field": 17592186440106,
+          "label": "$(0,\\frac{\\pi}{2})$",
+          "expected": true,
+          "canonical": true,
+          "passed": true
+        },
+        {
+          "field": 17592186440107,
+          "label": "$(1,0)$",
+          "expected": true,
+          "canonical": true,
+          "passed": true
+        },
+        {
+          "field": 17592186440108,
+          "label": "$(1,\\frac{\\pi}{2})$",
+          "expected": false,
+          "canonical": false,
+          "passed": true
+        }
+      ],
+      "proof": {
+        "function": "x**2 - 2*x*cos(y)",
+        "gradient": "Matrix([[2*x - 2*cos(y)], [2*x*sin(y)]])"
+      },
+      "passed": true
+    },
+    {
+      "entity": 17592186262920,
+      "source": "q-128521",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186262323,
+      "canonical_answer": 17592186260280,
+      "value": "{e}^{-({x}^{2}+{y}^{2})}({y}^{2}(1-2{x}^{2})\\text{\u00a0}i+2xy(1-{y}^{2})\\text{\u00a0}j)",
+      "expected": "Matrix([[-2*x**2*y**2*exp(-x**2 - y**2) + y**2*exp(-x**2 - y**2)], [-2*x*y**3*exp(-x**2 - y**2) + 2*x*y*exp(-x**2 - y**2)]])",
+      "got": "Matrix([[-2*x**2*y**2*exp(-x**2)*exp(-y**2) + y**2*exp(-x**2)*exp(-y**2)], [-2*x*y**3*exp(-x**2)*exp(-y**2) + 2*x*y*exp(-x**2)*exp(-y**2)]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y**2*exp(-x**2 - y**2)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186262921,
+      "source": "q-128529",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186262526,
+      "canonical_answer": 17592186261530,
+      "value": "{z}^{2}\\,j+2yz\\,k",
+      "expected": "Matrix([[0], [z**2], [2*y*z]])",
+      "got": "Matrix([[0], [z**2], [2*y*z]])",
+      "passed": true,
+      "proof": {
+        "function": "y*z**2",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186265937,
       "source": "q-130580",
       "topic": 153,
@@ -532,6 +691,59 @@
       "passed": true
     },
     {
+      "entity": 17592186278243,
+      "source": "q-159656",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186277969,
+      "canonical_answer": 17592186276653,
+      "value": "2xy{e}^{{x}^{2}y}-\\frac{y}{x}",
+      "expected": "2*x*y*exp(x**2*y) - y/x",
+      "got": "2*x*y*exp(x**2*y) - y/x",
+      "passed": true,
+      "proof": {
+        "function": "-y*log(x) + exp(x**2*y)",
+        "partial": "x",
+        "points": []
+      }
+    },
+    {
+      "entity": 17592186278244,
+      "source": "q-159658",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186277737,
+      "canonical_answer": 17592186276071,
+      "value": "-\\frac{x\\operatorname{sin}\u2061(\\sqrt{2xy-1})}{\\sqrt{2xy-1}}",
+      "expected": "-x*sin(sqrt(2*x*y - 1))/sqrt(2*x*y - 1)",
+      "got": "-x*sin(sqrt(2*x*y - 1))/sqrt(2*x*y - 1)",
+      "passed": true,
+      "proof": {
+        "function": "cos(sqrt(2*x*y - 1))",
+        "partial": "y",
+        "points": []
+      }
+    },
+    {
+      "entity": 17592186278245,
+      "source": "q-159660",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186278116,
+      "canonical_answer": 17592186277439,
+      "value": "2\\pi +2",
+      "expected": "2 + 2*pi",
+      "got": "2 + 2*pi",
+      "passed": true,
+      "proof": {
+        "function": "x**2*y**2 - cos(x*y)",
+        "partial": "x",
+        "points": [
+          "(pi/4, 2)"
+        ]
+      }
+    },
+    {
       "entity": 17592186278259,
       "source": "q-159766",
       "topic": 4096,
@@ -551,132 +763,6 @@
       }
     },
     {
-      "entity": 17592186278287,
-      "source": "q-160381",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277951,
-      "canonical_answer": 17592186277334,
-      "value": "7",
-      "expected": "7",
-      "got": "7",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[3*u + 2*v], [u + 3*v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[3, 2], [1, 3]])",
-        "determinant_before_point": "7"
-      }
-    },
-    {
-      "entity": 17592186278288,
-      "source": "q-160383",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277821,
-      "canonical_answer": 17592186276799,
-      "value": "-3",
-      "expected": "-3",
-      "got": "-3",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u*v], [v/u]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[v, u], [-v/u**2, 1/u]])",
-        "determinant_before_point": "2*v/u"
-      }
-    },
-    {
-      "entity": 17592186278291,
-      "source": "q-160402",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277938,
-      "canonical_answer": 17592186275729,
-      "value": "2",
-      "expected": "1",
-      "got": "2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186278296,
-      "source": "q-160427",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186278025,
-      "canonical_answer": 17592186275988,
-      "value": "16",
-      "expected": "16",
-      "got": "16",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u**2 + v**2], [u**2 - v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[2*u, 2*v], [2*u, -2*v]])",
-        "determinant_before_point": "-8*u*v"
-      }
-    },
-    {
-      "entity": 17592186278297,
-      "source": "q-160428",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186278084,
-      "canonical_answer": 17592186276521,
-      "value": "5",
-      "expected": "5",
-      "got": "5",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u**2/2 - v**2/2], [u*v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[u, -v], [v, u]])",
-        "determinant_before_point": "u**2 + v**2"
-      }
-    },
-    {
-      "entity": 17592186278298,
-      "source": "q-160431",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277988,
-      "canonical_answer": 17592186277517,
-      "value": "2",
-      "expected": "2",
-      "got": "2",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u*v + v**2], [-u + v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[v, u + 2*v], [-1, 1]])",
-        "determinant_before_point": "u + 3*v"
-      }
-    },
-    {
-      "entity": 17592186278300,
-      "source": "q-160440",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186278140,
-      "canonical_answer": 17592186277048,
-      "value": "-\\frac{1}{2}",
-      "expected": "1",
-      "got": "-1/2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
       "entity": 17592186281325,
       "source": "q-161792",
       "topic": 2058,
@@ -692,42 +778,6 @@
         "variables": "Matrix([[u], [v], [w]])",
         "Jacobian": "Matrix([[v**2, 2*u*v, 1], [3*u**2, 1, 0], [v, u, 0]])",
         "determinant_before_point": "3*u**3 - v"
-      }
-    },
-    {
-      "entity": 17592186281326,
-      "source": "q-161793",
-      "topic": 2058,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186281204,
-      "canonical_answer": 17592186279630,
-      "value": "3{e}^{w}(1+u)",
-      "expected": "3*(u + 1)*exp(w)",
-      "got": "3*(u + 1)*exp(w)",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u*exp(w)], [-u + w], [-3*v + w*exp(u)]])",
-        "variables": "Matrix([[u], [v], [w]])",
-        "Jacobian": "Matrix([[exp(w), 0, u*exp(w)], [-1, 0, 1], [w*exp(u), -3, exp(u)]])",
-        "determinant_before_point": "3*u*exp(w) + 3*exp(w)"
-      }
-    },
-    {
-      "entity": 17592186281327,
-      "source": "q-161794",
-      "topic": 2058,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186281250,
-      "canonical_answer": 17592186279382,
-      "value": "6u",
-      "expected": "6*u",
-      "got": "6*u",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[u**2 + v**2], [u + 3*w], [-v]])",
-        "variables": "Matrix([[u], [v], [w]])",
-        "Jacobian": "Matrix([[2*u, 2*v, 0], [1, 0, 3], [0, -1, 0]])",
-        "determinant_before_point": "6*u"
       }
     },
     {
@@ -821,6 +871,59 @@
       }
     },
     {
+      "entity": 17592186323712,
+      "source": "q-35721",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323448,
+      "canonical_answer": 17592186322526,
+      "value": "(x+y)\\operatorname{cos}\u2061z+\\operatorname{cos}\u2061x",
+      "expected": "(x + y)*cos(z) + cos(x)",
+      "got": "(x + y)*cos(z) + cos(x)",
+      "passed": true,
+      "proof": {
+        "function": "(x + y)*sin(z) + (y + z)*cos(x)",
+        "partial": "z",
+        "points": []
+      }
+    },
+    {
+      "entity": 17592186323861,
+      "source": "q-36910",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323561,
+      "canonical_answer": 17592186321551,
+      "value": "\\frac{1}{x}\\text{\u00a0}i+(\\frac{1}{y}-2y\\operatorname{sin}\u2061({y}^{2}))\\text{\u00a0}j",
+      "expected": "Matrix([[1/x], [-2*y*sin(y**2) + 1/y]])",
+      "got": "Matrix([[1/x], [-2*y*sin(y**2) + 1/y]])",
+      "passed": true,
+      "proof": {
+        "function": "log(x*y) + cos(y**2)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186323868,
+      "source": "q-36969",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186323562,
+      "canonical_answer": 17592186321589,
+      "value": "\\frac{1}{4}\\text{\u00a0}i+\\frac{1}{6}\\text{\u00a0}j+\\frac{1}{2}\\text{\u00a0}k",
+      "expected": "Matrix([[1/4], [1/6], [1/2]])",
+      "got": "Matrix([[1/4], [1/6], [1/2]])",
+      "passed": true,
+      "proof": {
+        "function": "log(sqrt(x*y*z))",
+        "points": [
+          "(2, 3, 1)"
+        ],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186326671,
       "source": "q-38179",
       "topic": 153,
@@ -887,6 +990,23 @@
       "passed": true
     },
     {
+      "entity": 17592186335800,
+      "source": "q-65131",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186335609,
+      "canonical_answer": 17592186333290,
+      "value": "y(\\operatorname{ln}\u2061(xy)+1)\\text{\u00a0}i+x(\\operatorname{ln}\u2061(xy)+1)\\text{\u00a0}j",
+      "expected": "Matrix([[y*log(x*y) + y], [x*log(x*y) + x]])",
+      "got": "Matrix([[y*log(x*y) + y], [x*log(x*y) + x]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y*log(x*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186336011,
       "source": "q-69834",
       "topic": 153,
@@ -918,6 +1038,57 @@
         "matrix": "Matrix([[1, -2, 1], [1, 2, 3], [-2, 4, -2]])"
       },
       "passed": true
+    },
+    {
+      "entity": 17592186338941,
+      "source": "q-71422",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186338705,
+      "canonical_answer": 17592186338130,
+      "value": "y\\operatorname{ln}\u2061(z)\\text{\u00a0}i+x\\operatorname{ln}\u2061(z)\\text{\u00a0}j+\\frac{xy}{z}\\text{\u00a0}k",
+      "expected": "Matrix([[y*log(z)], [x*log(z)], [x*y/z]])",
+      "got": "Matrix([[y*log(z)], [x*log(z)], [x*y/z]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y*log(z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186338942,
+      "source": "q-71425",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186338670,
+      "canonical_answer": 17592186337116,
+      "value": "(2x{y}^{2}{z}^{2}+yz{e}^{xyz})\\text{\u00a0}i+(2{x}^{2}y{z}^{2}+xz{e}^{xyz})\\text{\u00a0}j+(2{x}^{2}{y}^{2}z+xy{e}^{xyz})\\text{\u00a0}k",
+      "expected": "Matrix([[2*x*y**2*z**2 + y*z*exp(x*y*z)], [2*x**2*y*z**2 + x*z*exp(x*y*z)], [2*x**2*y**2*z + x*y*exp(x*y*z)]])",
+      "got": "Matrix([[2*x*y**2*z**2 + y*z*exp(x*y*z)], [2*x**2*y*z**2 + x*z*exp(x*y*z)], [2*x**2*y**2*z + x*y*exp(x*y*z)]])",
+      "passed": true,
+      "proof": {
+        "function": "x**2*y**2*z**2 + exp(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186338952,
+      "source": "q-71476",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186338305,
+      "canonical_answer": 17592186337118,
+      "value": "\\text{\u00a0}i+\\text{\u00a0}j",
+      "expected": "Matrix([[(2*x*y + y**2)/(x*y) - (x**2*y + x*y**2)/(x**2*y)], [(x**2 + 2*x*y)/(x*y) - (x**2*y + x*y**2)/(x*y**2)]])",
+      "got": "Matrix([[1], [1]])",
+      "passed": true,
+      "proof": {
+        "function": "(x**2*y + x*y**2)/(x*y)",
+        "points": [],
+        "stream_convention": null
+      }
     },
     {
       "entity": 17592186339110,
@@ -1171,21 +1342,54 @@
       "passed": true
     },
     {
-      "entity": 17592186369873,
-      "source": "q-160445",
-      "topic": 1999,
+      "entity": 17592186372034,
+      "source": "q-162492",
+      "topic": 3717,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186369874,
-      "canonical_answer": 17592186369875,
-      "value": "3",
-      "expected": "1",
-      "got": "3",
-      "passed": false,
+      "field": 17592186372035,
+      "canonical_answer": 17592186372040,
+      "value": "F(x,y)=-6xy\\,i-(3{x}^{2}-3{y}^{2})\\,j",
+      "expected": "Matrix([[-6*x*y], [-3*x**2 + 3*y**2]])",
+      "got": "Matrix([[-6*x*y], [-3*x**2 + 3*y**2]])",
+      "passed": true,
       "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
+        "function": "x**3 - 3*x*y**2",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
+      }
+    },
+    {
+      "entity": 17592186372041,
+      "source": "q-162493",
+      "topic": 3717,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186372042,
+      "canonical_answer": 17592186372047,
+      "value": "F(x,y)=2y\\,i+(2x-1)\\,j",
+      "expected": "Matrix([[2*y], [2*x - 1]])",
+      "got": "Matrix([[2*y], [2*x - 1]])",
+      "passed": true,
+      "proof": {
+        "function": "-x**2 + x + y**2",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
+      }
+    },
+    {
+      "entity": 17592186372048,
+      "source": "q-162494",
+      "topic": 3717,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186372049,
+      "canonical_answer": 17592186372051,
+      "value": "F(x,y)=-{e}^{x}\\operatorname{sin}\u2061y\\,i+(-{e}^{x}\\operatorname{cos}\u2061y+1)\\,j",
+      "expected": "Matrix([[-exp(x)*sin(y)], [-exp(x)*cos(y) + 1]])",
+      "got": "Matrix([[-exp(x)*sin(y)], [-exp(x)*cos(y) + 1]])",
+      "passed": true,
+      "proof": {
+        "function": "-x + exp(x)*cos(y)",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
       }
     },
     {
@@ -1220,6 +1424,37 @@
       "passed": true
     },
     {
+      "entity": 17592186372160,
+      "source": "q-162611",
+      "topic": 3717,
+      "kind": "checkbox truth mathematics",
+      "fields": [
+        {
+          "field": 17592186472077,
+          "label": "$F(x,y)=4{y}^{2}x\\,i-x{y}^{2}\\,j$",
+          "expected": false,
+          "canonical": false,
+          "passed": true
+        },
+        {
+          "field": 17592186472078,
+          "label": "$F(x,y)={e}^{x}\\operatorname{sin}\u2061y\\,i+{e}^{x}\\operatorname{cos}\u2061y\\,j$",
+          "expected": true,
+          "canonical": true,
+          "passed": true
+        },
+        {
+          "field": 17592186472079,
+          "label": "$F(x,y)=2yx\\,i-{y}^{2}\\,j$",
+          "expected": true,
+          "canonical": true,
+          "passed": true
+        }
+      ],
+      "proof": {},
+      "passed": true
+    },
+    {
       "entity": 17592186372167,
       "source": "q-162613",
       "topic": 3717,
@@ -1242,6 +1477,37 @@
         {
           "field": 17592186472082,
           "label": "$F(x,y)={x}^{2}{y}^{3}\\,i+4y\\,j$",
+          "expected": false,
+          "canonical": false,
+          "passed": true
+        }
+      ],
+      "proof": {},
+      "passed": true
+    },
+    {
+      "entity": 17592186372174,
+      "source": "q-162616",
+      "topic": 3717,
+      "kind": "checkbox truth mathematics",
+      "fields": [
+        {
+          "field": 17592186472083,
+          "label": "$F(x,y)=y{e}^{x}\\,i+x{e}^{y}\\,j$",
+          "expected": false,
+          "canonical": false,
+          "passed": true
+        },
+        {
+          "field": 17592186472084,
+          "label": "$F(x,y)$ $=\\operatorname{cos}\u2061x\\operatorname{sin}\u2061y\\,i$ $-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061y\\,j$",
+          "expected": true,
+          "canonical": true,
+          "passed": true
+        },
+        {
+          "field": 17592186472085,
+          "label": "$F(x,y)={x}^{2}y\\,i-2y\\,j$",
           "expected": false,
           "canonical": false,
           "passed": true
@@ -1293,6 +1559,61 @@
       "passed": true
     },
     {
+      "entity": 17592186381251,
+      "source": "q-159659",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186381252,
+      "canonical_answer": 17592186381255,
+      "value": "\\frac{1+3{x}^{2}y}{x+{x}^{3}y}",
+      "expected": "(3*x**2*y + 1)/(x**3*y + x)",
+      "got": "(3*x**2*y + 1)/(x**3*y + x)",
+      "passed": true,
+      "proof": {
+        "function": "log(x**3*y + x)",
+        "partial": "x",
+        "points": []
+      }
+    },
+    {
+      "entity": 17592186381286,
+      "source": "q-159753",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186381287,
+      "canonical_answer": 17592186381289,
+      "value": "\\frac{{\\pi }^{2}+4\\pi }{8}",
+      "expected": "pi**2/8 + pi/2",
+      "got": "pi**2/8 + pi/2",
+      "passed": true,
+      "proof": {
+        "function": "x**2*tan(x*y**2)",
+        "partial": "x",
+        "points": [
+          "(pi/4, 1)"
+        ]
+      }
+    },
+    {
+      "entity": 17592186381293,
+      "source": "q-159774",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186381294,
+      "canonical_answer": 17592186381295,
+      "value": "8{e}^{2}",
+      "expected": "8*exp(2)",
+      "got": "8*exp(2)",
+      "passed": true,
+      "proof": {
+        "function": "y**2*exp(y)*cos(x)",
+        "partial": "y",
+        "points": [
+          "(0, 2)"
+        ]
+      }
+    },
+    {
       "entity": 17592186381917,
       "source": "q-35715",
       "topic": 4096,
@@ -1324,6 +1645,40 @@
         "function": "4*x**3*y**2 - z**4*exp(2*y)",
         "partial": "y",
         "points": []
+      }
+    },
+    {
+      "entity": 17592186382978,
+      "source": "q-122599",
+      "topic": 3692,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186382979,
+      "canonical_answer": 17592186382980,
+      "value": "\\frac{1}{x+2y}\\,i+\\frac{2}{x+2y}\\,j",
+      "expected": "Matrix([[2/(2*x + 4*y)], [4/(2*x + 4*y)]])",
+      "got": "Matrix([[1/(x + 2*y)], [2/(x + 2*y)]])",
+      "passed": true,
+      "proof": {
+        "function": "log(2*x + 4*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186382985,
+      "source": "q-122600",
+      "topic": 3692,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186382986,
+      "canonical_answer": 17592186382988,
+      "value": "z\\operatorname{cos}\u2061(xz+2y)\\,i+2\\operatorname{cos}\u2061(xz+2y)\\,j+x\\operatorname{cos}\u2061(xz+2y)\\,k",
+      "expected": "Matrix([[z*cos(x*z + 2*y)], [2*cos(x*z + 2*y)], [x*cos(x*z + 2*y)]])",
+      "got": "Matrix([[z*cos(x*z + 2*y)], [2*cos(x*z + 2*y)], [x*cos(x*z + 2*y)]])",
+      "passed": true,
+      "proof": {
+        "function": "sin(x*z + 2*y)",
+        "points": [],
+        "stream_convention": null
       }
     },
     {
@@ -1378,57 +1733,194 @@
       }
     },
     {
-      "entity": 17592186383508,
-      "source": "q-160406",
-      "topic": 1999,
+      "entity": 17592186383090,
+      "source": "q-127945",
+      "topic": 1934,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186383509,
-      "canonical_answer": 17592186383513,
-      "value": "2{e}^{u+v}(v-u)",
-      "expected": "2*(-u + v)*exp(u + v)",
-      "got": "2*(-u + v)*exp(u + v)",
+      "field": 17592186383091,
+      "canonical_answer": 17592186383092,
+      "value": "y{x}^{y-1}\\,i+({x}^{y}\\operatorname{ln}\u2061x+z{y}^{z-1})j+{y}^{z}\\operatorname{ln}\u2061y\\,k",
+      "expected": "Matrix([[x**y*y/x], [x**y*log(x) + y**z*z/y], [y**z*log(y)]])",
+      "got": "Matrix([[x**(y - 1)*y], [x**y*log(x) + y**(z - 1)*z], [y**z*log(y)]])",
       "passed": true,
       "proof": {
-        "transformation": "Matrix([[exp(u + v)], [u**2 + v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[exp(u + v), exp(u + v)], [2*u, 2*v]])",
-        "determinant_before_point": "-2*u*exp(u + v) + 2*v*exp(u + v)"
+        "function": "x**y + y**z",
+        "points": [],
+        "stream_convention": null
       }
     },
     {
-      "entity": 17592186383515,
-      "source": "q-160434",
-      "topic": 1999,
+      "entity": 17592186383097,
+      "source": "q-127947",
+      "topic": 1934,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186383516,
-      "canonical_answer": 17592186383517,
-      "value": "2",
-      "expected": "1",
-      "got": "2",
+      "field": 17592186383098,
+      "canonical_answer": 17592186383103,
+      "value": "-\\sqrt{e}(i+\\frac{1}{2}\\,j)",
+      "expected": "Matrix([[-exp(1/2)], [-exp(1/2)/2], [0]])",
+      "got": "Matrix([[-exp(1/2)], [-exp(1/2)/2], [0]])",
+      "passed": true,
+      "proof": {
+        "function": "exp(x*y)*cos(y*z)",
+        "points": [
+          "(1/2, 1, pi)"
+        ],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186383104,
+      "source": "q-128532",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186383105,
+      "canonical_answer": 17592186383106,
+      "value": "{e}^{x-y}(({x}^{2}-3xy+2x-3y)\\,i-({x}^{2}-3xy+3x)\\,j)",
+      "expected": "Matrix([[(2*x - 3*y)*exp(x - y) + (x**2 - 3*x*y)*exp(x - y)], [-3*x*exp(x - y) - (x**2 - 3*x*y)*exp(x - y)]])",
+      "got": "Matrix([[x**2*exp(x)*exp(-y) - 3*x*y*exp(x)*exp(-y) + 2*x*exp(x)*exp(-y) - 3*y*exp(x)*exp(-y)], [-x**2*exp(x)*exp(-y) + 3*x*y*exp(x)*exp(-y) - 3*x*exp(x)*exp(-y)]])",
+      "passed": true,
+      "proof": {
+        "function": "(x**2 - 3*x*y)*exp(x - y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186385331,
+      "source": "q-35989",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186385332,
+      "canonical_answer": 17592186385333,
+      "value": "2{e}^{2xz}\\text{\u00a0}(z\\operatorname{sin}\u2061({y}^{2}-1)i+y\\operatorname{cos}\u2061({y}^{2}-1)\\text{\u00a0}j+x\\operatorname{sin}\u2061({y}^{2}-1)\\text{\u00a0}k)",
+      "expected": "Matrix([[2*z*exp(2*x*z)*sin(y**2 - 1)], [2*y*exp(2*x*z)*cos(y**2 - 1)], [2*x*exp(2*x*z)*sin(y**2 - 1)]])",
+      "got": "Matrix([[2*z*exp(2*x*z)*sin(y**2 - 1)], [2*y*exp(2*x*z)*cos(y**2 - 1)], [2*x*exp(2*x*z)*sin(y**2 - 1)]])",
+      "passed": true,
+      "proof": {
+        "function": "exp(2*x*z)*sin(y**2 - 1)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186385344,
+      "source": "q-36012",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186385345,
+      "canonical_answer": 17592186385347,
+      "value": "(\\operatorname{ln}\u2061(xyz)+1)(yz\\text{\u00a0}i+xz\\text{\u00a0}j+xy\\text{\u00a0}k)",
+      "expected": "Matrix([[y*z*log(x*y*z) + y*z], [x*z*log(x*y*z) + x*z], [x*y*log(x*y*z) + x*y]])",
+      "got": "Matrix([[y*z*log(x*y*z) + y*z], [x*z*log(x*y*z) + x*z], [x*y*log(x*y*z) + x*y]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y*z*log(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186385501,
+      "source": "q-71350",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186385502,
+      "canonical_answer": 17592186385507,
+      "value": "(y\\operatorname{cos}\u2061(xy)+2x\\operatorname{ln}\u2061y)\\text{\u00a0}i+(x\\operatorname{cos}\u2061(xy)+\\frac{{x}^{2}}{y})\\text{\u00a0}j",
+      "expected": "Matrix([[2*x*log(y) + y*cos(x*y)], [x**2/y + x*cos(x*y)]])",
+      "got": "Matrix([[2*x*log(y) + y*cos(x*y)], [x**2/y + x*cos(x*y)]])",
+      "passed": true,
+      "proof": {
+        "function": "x**2*log(y) + sin(x*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186385529,
+      "source": "q-71426",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186385530,
+      "canonical_answer": 17592186385531,
+      "value": "\\pi \\text{\u00a0}i-\\pi \\text{\u00a0}j+\\text{\u00a0}k",
+      "expected": "Matrix([[pi], [-pi], [1]])",
+      "got": "Matrix([[pi], [-pi], [1]])",
+      "passed": true,
+      "proof": {
+        "function": "sin(x*y*z)",
+        "points": [
+          "(1, -1, pi)"
+        ],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186385550,
+      "source": "q-71484",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186385551,
+      "canonical_answer": 17592186385554,
+      "value": "({x}^{2}y+{y}^{3}+2x){e}^{xy}\\text{\u00a0}i+({x}^{3}+x{y}^{2}+2y){e}^{xy}\\text{\u00a0}j",
+      "expected": "Matrix([[2*x*exp(x*y) + y*(x**2 + y**2)*exp(x*y)], [x*(x**2 + y**2)*exp(x*y) + 2*y*exp(x*y)]])",
+      "got": "Matrix([[x**2*y*exp(x*y) + 2*x*exp(x*y) + y**3*exp(x*y)], [x**3*exp(x*y) + x*y**2*exp(x*y) + 2*y*exp(x*y)]])",
+      "passed": true,
+      "proof": {
+        "function": "(x**2 + y**2)*exp(x*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186387256,
+      "source": "q-122608",
+      "topic": 3692,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186387257,
+      "canonical_answer": 17592186387262,
+      "value": "{sec}^{2}\u2061(x-2y)\\,i-2{sec}^{2}\u2061(x-2y)\\,j",
+      "expected": "Matrix([[tan(x - 2*y)**2 + 1], [-2*tan(x - 2*y)**2 - 2]])",
+      "got": "Matrix([[sec(x - 2*y)**2], [-2*sec(x - 2*y)**2]])",
       "passed": false,
       "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
+        "function": "tan(x - 2*y)",
+        "points": [],
+        "stream_convention": null
       }
     },
     {
-      "entity": 17592186385755,
-      "source": "q-81264",
-      "topic": 1999,
+      "entity": 17592186389319,
+      "source": "q-162504",
+      "topic": 3717,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186385756,
-      "canonical_answer": 17592186385759,
-      "value": "8uv",
-      "expected": "8*u*v",
-      "got": "8*u*v",
+      "field": 17592186389320,
+      "canonical_answer": 17592186389325,
+      "value": "F(x,y)=-2y\\,i-(2x-2)\\,j",
+      "expected": "Matrix([[-2*y], [2 - 2*x]])",
+      "got": "Matrix([[-2*y], [2 - 2*x]])",
       "passed": true,
       "proof": {
-        "transformation": "Matrix([[u**2 - v**2], [u**2 + v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[2*u, -2*v], [2*u, 2*v]])",
-        "determinant_before_point": "8*u*v"
+        "function": "x**2 - 2*x - y**2 + 1",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
+      }
+    },
+    {
+      "entity": 17592186389326,
+      "source": "q-162512",
+      "topic": 3717,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186389327,
+      "canonical_answer": 17592186389329,
+      "value": "F(x,y)=(15x{y}^{2}-x)\\,i-(5{y}^{3}-3{x}^{2}-y)\\,j",
+      "expected": "Matrix([[15*x*y**2 - x], [3*x**2 - 5*y**3 + y]])",
+      "got": "Matrix([[15*x*y**2 - x], [3*x**2 - 5*y**3 + y]])",
+      "passed": true,
+      "proof": {
+        "function": "-x**3 + 5*x*y**3 - x*y",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
       }
     },
     {
@@ -1720,24 +2212,6 @@
       }
     },
     {
-      "entity": 17592186417356,
-      "source": "q-160387",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186417355,
-      "canonical_answer": 17592186417353,
-      "value": "22",
-      "expected": "22",
-      "got": "22",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[3*u**2 + 2*v], [u + 2*v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[6*u, 2], [1, 4*v]])",
-        "determinant_before_point": "24*u*v - 2"
-      }
-    },
-    {
       "entity": 17592186424178,
       "source": "q-39294",
       "topic": 2058,
@@ -1791,6 +2265,40 @@
       }
     },
     {
+      "entity": 17592186436610,
+      "source": "q-132251",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186436594,
+      "canonical_answer": 17592186436538,
+      "value": "-6\\operatorname{sin}\u2061(3x-{y}^{2})\\operatorname{cos}\u2061(3x-{y}^{2})",
+      "expected": "-6*sin(3*x - y**2)*cos(3*x - y**2)",
+      "got": "-6*sin(3*x - y**2)*cos(3*x - y**2)",
+      "passed": true,
+      "proof": {
+        "function": "cos(3*x - y**2)**2",
+        "partial": "x",
+        "points": []
+      }
+    },
+    {
+      "entity": 17592186436611,
+      "source": "q-159691",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186436592,
+      "canonical_answer": 17592186436581,
+      "value": "{x}^{2}(\\operatorname{ln}\u2061({y}^{4})+4)",
+      "expected": "x**2*log(y**4) + 4*x**2",
+      "got": "x**2*(log(y**4) + 4)",
+      "passed": true,
+      "proof": {
+        "function": "x**2*y*log(y**4)",
+        "partial": "y",
+        "points": []
+      }
+    },
+    {
       "entity": 17592186437016,
       "source": "q-127946",
       "topic": 1934,
@@ -1825,6 +2333,23 @@
         "points": [
           "(E, 1)"
         ],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186437018,
+      "source": "q-71515",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186437012,
+      "canonical_answer": 17592186437005,
+      "value": "(x+1)y{e}^{x+y}\\text{\u00a0}i+x(1+y){e}^{x+y}\\text{\u00a0}j",
+      "expected": "Matrix([[x*y*exp(x)*exp(y) + y*exp(x)*exp(y)], [x*y*exp(x)*exp(y) + x*exp(x)*exp(y)]])",
+      "got": "Matrix([[x*y*exp(x)*exp(y) + y*exp(x)*exp(y)], [x*y*exp(x)*exp(y) + x*exp(x)*exp(y)]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y*exp(x)*exp(y)",
+        "points": [],
         "stream_convention": null
       }
     },
@@ -1870,21 +2395,20 @@
       "passed": true
     },
     {
-      "entity": 17592186490290,
-      "source": "q-160382",
-      "topic": 1999,
+      "entity": 17592186490304,
+      "source": "q-162510",
+      "topic": 3717,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186490127,
-      "canonical_answer": 17592186489651,
-      "value": "-2",
-      "expected": "1",
-      "got": "-2",
-      "passed": false,
+      "field": 17592186490167,
+      "canonical_answer": 17592186489817,
+      "value": "F(x,y)=-{x}^{2}{e}^{1-y}\\,i-2x{e}^{1-y}\\,j",
+      "expected": "Matrix([[-x**2*exp(1 - y)], [-2*x*exp(1 - y)]])",
+      "got": "Matrix([[-E*x**2*exp(-y)], [-2*E*x*exp(-y)]])",
+      "passed": true,
       "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
+        "function": "x**2*exp(1 - y)",
+        "points": [],
+        "stream_convention": "(psi_y,\u2212psi_x)"
       }
     },
     {
@@ -2219,6 +2743,40 @@
       }
     },
     {
+      "entity": 17592186524155,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186524185,
+      "canonical_answer": 17592186524175,
+      "value": "(32 x + 4 y)\\,i+(4 x - 12 y)\\,j",
+      "expected": "Matrix([[32*x + 4*y], [4*x - 12*y]])",
+      "got": "Matrix([[32*x + 4*y], [4*x - 12*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(4*x - 2*y)*(4*x + 3*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186524157,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186524152,
+      "canonical_answer": 17592186524192,
+      "value": "(- 12 x + 4 y)\\,i+(4 x + 4 y)\\,j",
+      "expected": "Matrix([[-12*x + 4*y], [4*x + 4*y]])",
+      "got": "Matrix([[-12*x + 4*y], [4*x + 4*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(-3*x - y)*(2*x - 2*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186524174,
       "source": null,
       "topic": 1934,
@@ -2248,6 +2806,57 @@
       "passed": true,
       "proof": {
         "function": "(x**2*y**3*z - x*y*z**3)/(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186524179,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186524151,
+      "canonical_answer": 17592186524172,
+      "value": "(4 x)\\,i+(- 4 y)\\,j",
+      "expected": "Matrix([[4*x], [-4*y]])",
+      "got": "Matrix([[4*x], [-4*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(-2*x + 2*y)*(-x - y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186524183,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186524142,
+      "canonical_answer": 17592186524164,
+      "value": "(- 6 x + 7 y)\\,i+(7 x - 8 y)\\,j",
+      "expected": "Matrix([[-6*x + 7*y], [7*x - 8*y]])",
+      "got": "Matrix([[-6*x + 7*y], [7*x - 8*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(-x + y)*(3*x - 4*y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186524187,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186524153,
+      "canonical_answer": 17592186524169,
+      "value": "(- 24 x - 6 y)\\,i+(- 6 x + 12 y)\\,j",
+      "expected": "Matrix([[-24*x - 6*y], [-6*x + 12*y]])",
+      "got": "Matrix([[-24*x - 6*y], [-6*x + 12*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(-3*x - 3*y)*(4*x - 2*y)",
         "points": [],
         "stream_convention": null
       }
@@ -2842,6 +3451,23 @@
       }
     },
     {
+      "entity": 17592186567047,
+      "source": "q-159710",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186566937,
+      "canonical_answer": 17592186566497,
+      "value": "x\\operatorname{tan}\u2061({y}^{2})+2x{y}^{2}\\operatorname{sec}^{2}\u2061({y}^{2})",
+      "expected": "2*x*y**2*(tan(y**2)**2 + 1) + x*tan(y**2)",
+      "got": "2*x*y**2*sec(y**2)**2 + x*tan(y**2)",
+      "passed": true,
+      "proof": {
+        "function": "x*y*tan(y**2)",
+        "partial": "y",
+        "points": []
+      }
+    },
+    {
       "entity": 17592186567052,
       "source": "q-159661",
       "topic": 4096,
@@ -2861,6 +3487,23 @@
       }
     },
     {
+      "entity": 17592186567081,
+      "source": "q-159698",
+      "topic": 4096,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186566932,
+      "canonical_answer": 17592186566798,
+      "value": "3{x}^{2}\\operatorname{cos}\u2061(xy)-{x}^{3}y\\operatorname{sin}\u2061(xy)",
+      "expected": "-x**3*y*sin(x*y) + 3*x**2*cos(x*y)",
+      "got": "-x**3*y*sin(x*y) + 3*x**2*cos(x*y)",
+      "passed": true,
+      "proof": {
+        "function": "x**3*cos(x*y)",
+        "partial": "x",
+        "points": []
+      }
+    },
+    {
       "entity": 17592186567093,
       "source": "q-159662",
       "topic": 4096,
@@ -2877,96 +3520,6 @@
         "points": [
           "(1, sqrt(3))"
         ]
-      }
-    },
-    {
-      "entity": 17592186567537,
-      "source": null,
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186567541,
-      "canonical_answer": 17592186567570,
-      "value": "8 u",
-      "expected": "8*u",
-      "got": "8*u",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[4*u*cos(v)], [2*u*sin(v)]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[4*cos(v), -4*u*sin(v)], [2*sin(v), 2*u*cos(v)]])",
-        "determinant_before_point": "8*u*sin(v)**2 + 8*u*cos(v)**2"
-      }
-    },
-    {
-      "entity": 17592186567540,
-      "source": null,
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186567543,
-      "canonical_answer": 17592186567550,
-      "value": "32 u v",
-      "expected": "32*u*v",
-      "got": "32*u*v",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[2*u**2 - 2*v**2], [2*u**2 + 2*v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[4*u, -4*v], [4*u, 4*v]])",
-        "determinant_before_point": "32*u*v"
-      }
-    },
-    {
-      "entity": 17592186567551,
-      "source": null,
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186567564,
-      "canonical_answer": 17592186567548,
-      "value": "3",
-      "expected": "3",
-      "got": "3",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[4*u + 5*v], [u + 2*v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[4, 5], [1, 2]])",
-        "determinant_before_point": "3"
-      }
-    },
-    {
-      "entity": 17592186567558,
-      "source": null,
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186567559,
-      "canonical_answer": 17592186567556,
-      "value": "\\frac{\\cos^{2}{\\left(v \\right)}}{\\cos{\\left(u \\right)} + 1}",
-      "expected": "cos(v)**2/(2*cos(u/2)**2)",
-      "got": "cos(v)**2/(cos(u) + 1)",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[cos(v)*tan(u/2)], [sin(v)]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[(tan(u/2)**2/2 + 1/2)*cos(v), -sin(v)*tan(u/2)], [0, cos(v)]])",
-        "determinant_before_point": "cos(v)**2*tan(u/2)**2/2 + cos(v)**2/2"
-      }
-    },
-    {
-      "entity": 17592186567561,
-      "source": null,
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186567539,
-      "canonical_answer": 17592186567557,
-      "value": "\\frac{9}{u + v}",
-      "expected": "9/(u + v)",
-      "got": "9/(u + v)",
-      "passed": true,
-      "proof": {
-        "transformation": "Matrix([[3*u - 6*v], [log(u + v)]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[3, -6], [1/(u + v), 1/(u + v)]])",
-        "determinant_before_point": "9/(u + v)"
       }
     },
     {
@@ -3004,21 +3557,71 @@
       }
     },
     {
-      "entity": 17592186594684,
-      "source": "q-38236",
-      "topic": 1999,
+      "entity": 17592186573901,
+      "source": "q-128524",
+      "topic": 1934,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186594646,
-      "canonical_answer": 17592186594578,
-      "value": "{e}^{v}(2v-u)",
-      "expected": "(-u + 2*v)*exp(v)",
-      "got": "(-u + 2*v)*exp(v)",
+      "field": 17592186573786,
+      "canonical_answer": 17592186573563,
+      "value": "(1+\\operatorname{ln}\u2061(xyz))(yz\\text{\u00a0}i+xz\\text{\u00a0}j+xy\\text{\u00a0}k)",
+      "expected": "Matrix([[y*z*log(x*y*z) + y*z], [x*z*log(x*y*z) + x*z], [x*y*log(x*y*z) + x*y]])",
+      "got": "Matrix([[y*z*log(x*y*z) + y*z], [x*z*log(x*y*z) + x*z], [x*y*log(x*y*z) + x*y]])",
       "passed": true,
       "proof": {
-        "transformation": "Matrix([[u*exp(v)], [u + v**2]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[exp(v), u*exp(v)], [1, 2*v]])",
-        "determinant_before_point": "-u*exp(v) + 2*v*exp(v)"
+        "function": "x*y*z*log(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186573903,
+      "source": "q-65135",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186573833,
+      "canonical_answer": 17592186573718,
+      "value": "({x}^{2}+2x+{y}^{2}){e}^{x+y}\\text{\u00a0}i+({x}^{2}+2y+{y}^{2}){e}^{x+y}\\text{\u00a0}j",
+      "expected": "Matrix([[2*x*exp(x + y) + (x**2 + y**2)*exp(x + y)], [2*y*exp(x + y) + (x**2 + y**2)*exp(x + y)]])",
+      "got": "Matrix([[x**2*exp(x)*exp(y) + 2*x*exp(x)*exp(y) + y**2*exp(x)*exp(y)], [x**2*exp(x)*exp(y) + y**2*exp(x)*exp(y) + 2*y*exp(x)*exp(y)]])",
+      "passed": true,
+      "proof": {
+        "function": "(x**2 + y**2)*exp(x + y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186573928,
+      "source": "q-128528",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186573819,
+      "canonical_answer": 17592186573554,
+      "value": "\\frac{1}{\\sqrt{{x}^{2}+{y}^{2}}}((y+x\\operatorname{arctan}\u2061\\left(\\frac{x}{y}\\right))i+(y\\operatorname{arctan}\u2061\\left(\\frac{x}{y}\\right)-x)j)",
+      "expected": "Matrix([[x*atan(x/y)/sqrt(x**2 + y**2) + sqrt(x**2 + y**2)/(y*(x**2/y**2 + 1))], [-x*sqrt(x**2 + y**2)/(y**2*(x**2/y**2 + 1)) + y*atan(x/y)/sqrt(x**2 + y**2)]])",
+      "got": "Matrix([[x*atan(x/y)/sqrt(x**2 + y**2) + y/sqrt(x**2 + y**2)], [-x/sqrt(x**2 + y**2) + y*atan(x/y)/sqrt(x**2 + y**2)]])",
+      "passed": true,
+      "proof": {
+        "function": "sqrt(x**2 + y**2)*atan(x/y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186573946,
+      "source": "q-71477",
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186573776,
+      "canonical_answer": 17592186573630,
+      "value": "(\\operatorname{ln}\u2061(x+y)+1)\\text{\u00a0}i+(\\operatorname{ln}\u2061(x+y)+1)\\text{\u00a0}j",
+      "expected": "Matrix([[log(x + y) + 1], [log(x + y) + 1]])",
+      "got": "Matrix([[log(x + y) + 1], [log(x + y) + 1]])",
+      "passed": true,
+      "proof": {
+        "function": "(x + y)*log(x + y)",
+        "points": [],
+        "stream_convention": null
       }
     },
     {
@@ -3119,9 +3722,9 @@
       "field": 17592186699136,
       "canonical_answer": 17592186699124,
       "value": "\\frac{14}{3}",
-      "expected": "nan",
+      "expected": "14/3",
       "got": "14/3",
-      "passed": false,
+      "passed": true,
       "proof": {
         "function": "y*sqrt(x**2 + y**2)",
         "partial": "y",
@@ -3729,6 +4332,57 @@
       "passed": true
     },
     {
+      "entity": 17592186702353,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186702359,
+      "canonical_answer": 17592186702357,
+      "value": "(x-2y)(\\mathbf i+\\mathbf j)+(x+y)(\\mathbf i-2\\mathbf j)",
+      "expected": "Matrix([[2*x - y], [-x - 4*y]])",
+      "got": "Matrix([[2*x - y], [-x - 4*y]])",
+      "passed": true,
+      "proof": {
+        "function": "(x - 2*y)*(x + y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186702366,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186702369,
+      "canonical_answer": 17592186702371,
+      "value": "(3x^2y-y^2)\\mathbf i+(x^3-2xy)\\mathbf j",
+      "expected": "Matrix([[2*x**2*y + y*(x**2 - y)], [-x*y + x*(x**2 - y)]])",
+      "got": "Matrix([[3*x**2*y - y**2], [x**3 - 2*x*y]])",
+      "passed": true,
+      "proof": {
+        "function": "x*y*(x**2 - y)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186702372,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186702361,
+      "canonical_answer": 17592186702356,
+      "value": "e^{x-y^2}(xy(x+2)\\mathbf i+x^2(1-2y^2)\\mathbf j)",
+      "expected": "Matrix([[x**2*y*exp(x - y**2) + 2*x*y*exp(x - y**2)], [-2*x**2*y**2*exp(x - y**2) + x**2*exp(x - y**2)]])",
+      "got": "Matrix([[x**2*y*exp(x)*exp(-y**2) + 2*x*y*exp(x)*exp(-y**2)], [-2*x**2*y**2*exp(x)*exp(-y**2) + x**2*exp(x)*exp(-y**2)]])",
+      "passed": true,
+      "proof": {
+        "function": "x**2*y*exp(x - y**2)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
       "entity": 17592186703607,
       "source": null,
       "topic": 4096,
@@ -3736,9 +4390,9 @@
       "field": 17592186703617,
       "canonical_answer": 17592186703623,
       "value": "- \\frac{34}{5}",
-      "expected": "0",
+      "expected": "-34/5",
       "got": "-34/5",
-      "passed": false,
+      "passed": true,
       "proof": {
         "function": "(x + sqrt(x**2 + y**2))*(x**2 + y)",
         "partial": "x",
@@ -3890,6 +4544,57 @@
       "passed": true,
       "proof": {
         "function": "1/sqrt(x**2 + z**2 + (y - 1)**2)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186705863,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186705880,
+      "canonical_answer": 17592186705859,
+      "value": "(\\ln{\\left(x - y - 2 \\right)} + 1)\\mathbf i+(- \\ln{\\left(x - y - 2 \\right)} - 1)\\mathbf j",
+      "expected": "Matrix([[log(x - y - 2) + 1], [-log(x - y - 2) - 1]])",
+      "got": "Matrix([[log(x - y - 2) + 1], [-log(x - y - 2) - 1]])",
+      "passed": true,
+      "proof": {
+        "function": "(x - y - 2)*log(x - y - 2)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186705867,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186705888,
+      "canonical_answer": 17592186705878,
+      "value": "\\mathbf i+2\\mathbf k",
+      "expected": "Matrix([[(2*x*y*z + 2*y*z**2)/(x*y*z) - (x**2*y*z + 2*x*y*z**2)/(x**2*y*z)], [(x**2*z + 2*x*z**2)/(x*y*z) - (x**2*y*z + 2*x*y*z**2)/(x*y**2*z)], [(x**2*y + 4*x*y*z)/(x*y*z) - (x**2*y*z + 2*x*y*z**2)/(x*y*z**2)]])",
+      "got": "Matrix([[1], [0], [2]])",
+      "passed": true,
+      "proof": {
+        "function": "(x**2*y*z + 2*x*y*z**2)/(x*y*z)",
+        "points": [],
+        "stream_convention": null
+      }
+    },
+    {
+      "entity": 17592186705890,
+      "source": null,
+      "topic": 1934,
+      "kind": "independent scalar/vector calculation",
+      "field": 17592186705886,
+      "canonical_answer": 17592186705866,
+      "value": "- 4 x y^{2} \\left(2 x^{2} + y\\right)\\mathbf i- 2 x^{2} y \\left(2 x^{2} + 3 y\\right)\\mathbf j",
+      "expected": "Matrix([[-4*x**3*y**2 + 4*x*y**2*(-x**2 - y)], [-2*x**2*y**2 + 4*x**2*y*(-x**2 - y)]])",
+      "got": "Matrix([[-8*x**3*y**2 - 4*x*y**3], [-4*x**4*y - 6*x**2*y**2]])",
+      "passed": true,
+      "proof": {
+        "function": "2*x**2*y**2*(-x**2 - y)",
         "points": [],
         "stream_convention": null
       }
@@ -4342,151 +5047,20 @@
   ],
   "failures": [
     {
-      "entity": 17592186129507,
-      "source": "q-160380",
-      "topic": 1999,
+      "entity": 17592186387256,
+      "source": "q-122608",
+      "topic": 3692,
       "kind": "independent scalar/vector calculation",
-      "field": 17592186277874,
-      "canonical_answer": 17592186277280,
-      "value": "6",
-      "expected": "1",
-      "got": "6",
+      "field": 17592186387257,
+      "canonical_answer": 17592186387262,
+      "value": "{sec}^{2}\u2061(x-2y)\\,i-2{sec}^{2}\u2061(x-2y)\\,j",
+      "expected": "Matrix([[tan(x - 2*y)**2 + 1], [-2*tan(x - 2*y)**2 - 2]])",
+      "got": "Matrix([[sec(x - 2*y)**2], [-2*sec(x - 2*y)**2]])",
       "passed": false,
       "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186278291,
-      "source": "q-160402",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186277938,
-      "canonical_answer": 17592186275729,
-      "value": "2",
-      "expected": "1",
-      "got": "2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186278300,
-      "source": "q-160440",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186278140,
-      "canonical_answer": 17592186277048,
-      "value": "-\\frac{1}{2}",
-      "expected": "1",
-      "got": "-1/2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186369873,
-      "source": "q-160445",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186369874,
-      "canonical_answer": 17592186369875,
-      "value": "3",
-      "expected": "1",
-      "got": "3",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186383515,
-      "source": "q-160434",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186383516,
-      "canonical_answer": 17592186383517,
-      "value": "2",
-      "expected": "1",
-      "got": "2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186490290,
-      "source": "q-160382",
-      "topic": 1999,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186490127,
-      "canonical_answer": 17592186489651,
-      "value": "-2",
-      "expected": "1",
-      "got": "-2",
-      "passed": false,
-      "proof": {
-        "transformation": "Matrix([[u], [v]])",
-        "variables": "Matrix([[u], [v]])",
-        "Jacobian": "Matrix([[1, 0], [0, 1]])",
-        "determinant_before_point": "1"
-      }
-    },
-    {
-      "entity": 17592186699138,
-      "source": null,
-      "topic": 4096,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186699136,
-      "canonical_answer": 17592186699124,
-      "value": "\\frac{14}{3}",
-      "expected": "nan",
-      "got": "14/3",
-      "passed": false,
-      "proof": {
-        "function": "y*sqrt(x**2 + y**2)",
-        "partial": "y",
-        "points": [
-          "(2, sqrt(5))",
-          "(0, 0)"
-        ]
-      }
-    },
-    {
-      "entity": 17592186703607,
-      "source": null,
-      "topic": 4096,
-      "kind": "independent scalar/vector calculation",
-      "field": 17592186703617,
-      "canonical_answer": 17592186703623,
-      "value": "- \\frac{34}{5}",
-      "expected": "0",
-      "got": "-34/5",
-      "passed": false,
-      "proof": {
-        "function": "(x + sqrt(x**2 + y**2))*(x**2 + y)",
-        "partial": "x",
-        "points": [
-          "(-3, 4)",
-          "(0, 0)"
-        ]
+        "function": "tan(x - 2*y)",
+        "points": [],
+        "stream_convention": null
       }
     }
   ],
@@ -4966,12 +5540,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186124954,
-      "source": "q-36144",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186124969,
       "source": "q-36311",
       "topic": 1939,
@@ -5006,18 +5574,6 @@
       "source": "q-36391",
       "topic": 1940,
       "reason": "dedicated method checker pending"
-    },
-    {
-      "entity": 17592186125020,
-      "source": "q-36918",
-      "topic": 1934,
-      "reason": "styled \u00a0"
-    },
-    {
-      "entity": 17592186125022,
-      "source": "q-36968",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186125074,
@@ -5149,7 +5705,7 @@
       "entity": 17592186129503,
       "source": "q-160341",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -2*u + 4*v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186129504,
@@ -5170,10 +5726,22 @@
       "reason": "dedicated method checker pending"
     },
     {
+      "entity": 17592186129507,
+      "source": "q-160380",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186129508,
+      "source": "q-160394",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
       "entity": 17592186129509,
       "source": "q-160601",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v + 4"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186129510,
@@ -5185,7 +5753,7 @@
       "entity": 17592186129525,
       "source": "q-161788",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186129526,
@@ -5218,12 +5786,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186129727,
-      "source": "q-39299",
-      "topic": 2058,
-      "reason": "transformation components unavailable"
-    },
-    {
       "entity": 17592186129728,
       "source": "q-39300",
       "topic": 2058,
@@ -5245,7 +5807,7 @@
       "entity": 17592186129754,
       "source": "q-39709",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 4*u*exp(w)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186129878,
@@ -5788,12 +6350,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186179965,
-      "source": "q-122404",
-      "topic": 3692,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186179966,
       "source": "q-122407",
       "topic": 3692,
@@ -5950,12 +6506,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186180083,
-      "source": "q-161434",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186180085,
       "source": "q-161437",
       "topic": 3717,
@@ -5972,12 +6522,6 @@
       "source": "q-162209",
       "topic": 3717,
       "reason": "dedicated method checker pending"
-    },
-    {
-      "entity": 17592186180092,
-      "source": "q-162514",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186180093,
@@ -6109,7 +6653,7 @@
       "entity": 17592186193320,
       "source": "q-35710",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186193376,
@@ -7384,24 +7928,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186262919,
-      "source": "q-128517",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186262920,
-      "source": "q-128521",
-      "topic": 1934,
-      "reason": "styled \u00a0"
-    },
-    {
-      "entity": 17592186262921,
-      "source": "q-128529",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186265711,
       "source": "q-129322",
       "topic": 1931,
@@ -7648,34 +8174,16 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186278243,
-      "source": "q-159656",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186278244,
-      "source": "q-159658",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186278245,
-      "source": "q-159660",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186278246,
       "source": "q-159700",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186278247,
       "source": "q-159709",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186278248,
@@ -7693,7 +8201,7 @@
       "entity": 17592186278250,
       "source": "q-159716",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186278251,
@@ -7705,13 +8213,31 @@
       "entity": 17592186278254,
       "source": "q-159752",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186278260,
       "source": "q-159768",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
+    },
+    {
+      "entity": 17592186278287,
+      "source": "q-160381",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278288,
+      "source": "q-160383",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278291,
+      "source": "q-160402",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186278292,
@@ -7722,6 +8248,30 @@
     {
       "entity": 17592186278293,
       "source": "q-160405",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278296,
+      "source": "q-160427",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278297,
+      "source": "q-160428",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278298,
+      "source": "q-160431",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186278300,
+      "source": "q-160440",
       "topic": 1999,
       "reason": "transformation components unavailable"
     },
@@ -7864,6 +8414,18 @@
       "reason": "dedicated method checker pending"
     },
     {
+      "entity": 17592186281326,
+      "source": "q-161793",
+      "topic": 2058,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186281327,
+      "source": "q-161794",
+      "topic": 2058,
+      "reason": "transformation components unavailable"
+    },
+    {
       "entity": 17592186281328,
       "source": "q-161796",
       "topic": 2058,
@@ -7921,31 +8483,31 @@
       "entity": 17592186281338,
       "source": "q-161809",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -u + v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281339,
       "source": "q-161812",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 3*v**2 - 3*w**2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281340,
       "source": "q-161815",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed w/(2*sqrt(u))"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281341,
       "source": "q-161817",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed (3 - v)*exp(w)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281342,
       "source": "q-161818",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 3 - 4*v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281348,
@@ -7957,37 +8519,37 @@
       "entity": 17592186281352,
       "source": "q-161838",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -2*u + 2*v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281353,
       "source": "q-161842",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -u**2 + v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281354,
       "source": "q-161843",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 4*u*v + 4"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281360,
       "source": "q-161855",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed (-2*u**2 + v)*exp(u*v)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281366,
       "source": "q-161873",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281367,
       "source": "q-161874",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281368,
@@ -7999,13 +8561,13 @@
       "entity": 17592186281371,
       "source": "q-161885",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281372,
       "source": "q-161887",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186281416,
@@ -8848,12 +9410,6 @@
       "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
-      "entity": 17592186323712,
-      "source": "q-35721",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186323732,
       "source": "q-35956",
       "topic": 1931,
@@ -8869,7 +9425,7 @@
       "entity": 17592186323740,
       "source": "q-36009",
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "command "
     },
     {
       "entity": 17592186323752,
@@ -8900,18 +9456,6 @@
       "source": "q-36909",
       "topic": 1934,
       "reason": "command "
-    },
-    {
-      "entity": 17592186323861,
-      "source": "q-36910",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186323868,
-      "source": "q-36969",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186323918,
@@ -9007,13 +9551,7 @@
       "entity": 17592186335761,
       "source": "q-64907",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186335800,
-      "source": "q-65131",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186335802,
@@ -9170,24 +9708,6 @@
       "source": "q-71411",
       "topic": 1939,
       "reason": "dedicated method checker pending"
-    },
-    {
-      "entity": 17592186338941,
-      "source": "q-71422",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186338942,
-      "source": "q-71425",
-      "topic": 1934,
-      "reason": "styled \u00a0"
-    },
-    {
-      "entity": 17592186338952,
-      "source": "q-71476",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186338958,
@@ -9646,6 +10166,12 @@
       "reason": "dedicated method checker pending"
     },
     {
+      "entity": 17592186369873,
+      "source": "q-160445",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
       "entity": 17592186369999,
       "source": "q-277919",
       "topic": 848,
@@ -9766,24 +10292,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186372034,
-      "source": "q-162492",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186372041,
-      "source": "q-162493",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186372048,
-      "source": "q-162494",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186372062,
       "source": "q-162518",
       "topic": 3717,
@@ -9812,18 +10320,6 @@
       "source": "q-162601",
       "topic": 3717,
       "reason": "dedicated method checker pending"
-    },
-    {
-      "entity": 17592186372160,
-      "source": "q-162611",
-      "topic": 3717,
-      "reason": "operatorname "
-    },
-    {
-      "entity": 17592186372174,
-      "source": "q-162616",
-      "topic": 3717,
-      "reason": "operatorname "
     },
     {
       "entity": 17592186372181,
@@ -10051,7 +10547,7 @@
       "entity": 17592186376124,
       "source": "q-161813",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed (-2*v**2 + w)/u**2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186377695,
@@ -10183,19 +10679,13 @@
       "entity": 17592186381244,
       "source": "q-159655",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186381251,
-      "source": "q-159659",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186381258,
       "source": "q-159706",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186381265,
@@ -10207,25 +10697,13 @@
       "entity": 17592186381272,
       "source": "q-159722",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186381279,
       "source": "q-159725",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186381286,
-      "source": "q-159753",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186381293,
-      "source": "q-159774",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186382124,
@@ -10237,19 +10715,7 @@
       "entity": 17592186382152,
       "source": "q-70030",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186382978,
-      "source": "q-122599",
-      "topic": 3692,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186382985,
-      "source": "q-122600",
-      "topic": 3692,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186383006,
@@ -10261,7 +10727,7 @@
       "entity": 17592186383013,
       "source": "q-122708",
       "topic": 3692,
-      "reason": "scalar function definition unavailable"
+      "reason": "char '.'"
     },
     {
       "entity": 17592186383020,
@@ -10273,24 +10739,6 @@
       "entity": 17592186383027,
       "source": "q-122802",
       "topic": 3692,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186383090,
-      "source": "q-127945",
-      "topic": 1934,
-      "reason": "operatorname "
-    },
-    {
-      "entity": 17592186383097,
-      "source": "q-127947",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186383104,
-      "source": "q-128532",
-      "topic": 1934,
       "reason": "scalar function definition unavailable"
     },
     {
@@ -10330,10 +10778,22 @@
       "reason": "transformation components unavailable"
     },
     {
+      "entity": 17592186383508,
+      "source": "q-160406",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186383515,
+      "source": "q-160434",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
       "entity": 17592186383547,
       "source": "q-161835",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -u + v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186383568,
@@ -10348,18 +10808,6 @@
       "reason": "transformation components unavailable"
     },
     {
-      "entity": 17592186385331,
-      "source": "q-35989",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186385344,
-      "source": "q-36012",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186385377,
       "source": "q-37232",
       "topic": 1939,
@@ -10370,12 +10818,6 @@
       "source": "q-38241",
       "topic": 1999,
       "reason": "transformation components unavailable"
-    },
-    {
-      "entity": 17592186385501,
-      "source": "q-71350",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186385508,
@@ -10396,12 +10838,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186385529,
-      "source": "q-71426",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186385536,
       "source": "q-71437",
       "topic": 1934,
@@ -10411,25 +10847,19 @@
       "entity": 17592186385543,
       "source": "q-71475",
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "unconsumed [('char', ','), ('char', '1'), ('char', ','), ('char', '1')]"
     },
     {
-      "entity": 17592186385550,
-      "source": "q-71484",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "entity": 17592186385755,
+      "source": "q-81264",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186387215,
       "source": "q-122542",
       "topic": 3689,
       "reason": "dedicated method checker pending"
-    },
-    {
-      "entity": 17592186387256,
-      "source": "q-122608",
-      "topic": 3692,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186387263,
@@ -10555,49 +10985,37 @@
       "entity": 17592186389181,
       "source": "q-161837",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed u**3 - v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389188,
       "source": "q-161839",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*u**2 + v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389195,
       "source": "q-161840",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*u + 2*v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389202,
       "source": "q-161841",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed (-u + v)*exp(u + v)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389209,
       "source": "q-161856",
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v + 4"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389216,
       "source": "q-161876",
       "topic": 1999,
-      "reason": "command delta"
-    },
-    {
-      "entity": 17592186389319,
-      "source": "q-162504",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186389326,
-      "source": "q-162512",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186389339,
@@ -10627,7 +11045,7 @@
       "entity": 17592186395845,
       "source": "q-36911",
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "unconsumed [('char', ','), ('char', '3')]"
     },
     {
       "entity": 17592186396120,
@@ -10717,13 +11135,13 @@
       "entity": 17592186401275,
       "source": "q-161814",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed u - 2*w"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186401282,
       "source": "q-161816",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -u*exp(2*u + w)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186401302,
@@ -10807,7 +11225,7 @@
       "entity": 17592186406771,
       "source": "q-161810",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*v"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186406786,
@@ -11014,6 +11432,12 @@
       "reason": "dedicated method checker pending"
     },
     {
+      "entity": 17592186417356,
+      "source": "q-160387",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
       "entity": 17592186418478,
       "source": "q-161185",
       "topic": 3386,
@@ -11131,7 +11555,7 @@
       "entity": 17592186424180,
       "source": "q-161811",
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed (v - w)*exp(u)"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186424181,
@@ -11293,7 +11717,7 @@
       "entity": 17592186436604,
       "source": "q-132261",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186436605,
@@ -11320,22 +11744,10 @@
       "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
-      "entity": 17592186436610,
-      "source": "q-132251",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186436611,
-      "source": "q-159691",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186436612,
       "source": "q-159653",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186436613,
@@ -11354,12 +11766,6 @@
       "source": "q-159663",
       "topic": 4096,
       "reason": "derivative target fraction or response fragment requires dedicated interpretation"
-    },
-    {
-      "entity": 17592186437018,
-      "source": "q-71515",
-      "topic": 1934,
-      "reason": "styled \u00a0"
     },
     {
       "entity": 17592186437019,
@@ -11650,10 +12056,10 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186490304,
-      "source": "q-162510",
-      "topic": 3717,
-      "reason": "scalar function definition unavailable"
+      "entity": 17592186490290,
+      "source": "q-160382",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186490314,
@@ -11959,7 +12365,7 @@
       "entity": 17592186502096,
       "source": "q-161886",
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186502222,
@@ -12337,61 +12743,61 @@
       "entity": 17592186518908,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518915,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518926,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518930,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518944,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518946,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518954,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518955,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518958,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186518966,
       "source": null,
       "topic": 1999,
-      "reason": "command delta"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186519921,
@@ -12640,36 +13046,6 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186524155,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186524157,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186524179,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186524183,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186524187,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186524276,
       "source": null,
       "topic": 1299,
@@ -12763,61 +13139,61 @@
       "entity": 17592186528079,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*u - 10"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528093,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*v + 6"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528094,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*u + 8"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528105,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*w - 6"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528109,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 10*u + 5"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528110,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 6*u - 2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528126,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -28*u - 1"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528128,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 28*u - 2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528131,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 10*u - 3"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186528132,
       "source": null,
       "topic": 2058,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*u + 2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186530652,
@@ -13465,61 +13841,61 @@
       "entity": 17592186541346,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 16*v + 32"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541347,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v - 8*u + 12*v + 30"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541352,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 2*v + 2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541357,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v - 4*u - 12*v - 9"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541361,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 16*u + 48"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541364,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v - 4*u - 4*v - 2"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541368,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 32*v - 96"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541390,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v + 12*u - 12*v + 39"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541393,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed 24*u + 24"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186541395,
       "source": null,
       "topic": 1999,
-      "reason": "Jacobian locus/orientation requires region/equation interpretation; computed -4*u*v - 4*u - 12*v - 9"
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186542282,
@@ -14731,25 +15107,13 @@
       "entity": 17592186567042,
       "source": "q-159712",
       "topic": 4096,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186567047,
-      "source": "q-159710",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
+      "reason": "derivative target fraction or response fragment requires dedicated interpretation"
     },
     {
       "entity": 17592186567072,
       "source": "q-132245",
       "topic": 4096,
       "reason": "derivative target fraction or response fragment requires dedicated interpretation"
-    },
-    {
-      "entity": 17592186567081,
-      "source": "q-159698",
-      "topic": 4096,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186567422,
@@ -14810,6 +15174,36 @@
       "source": null,
       "topic": 3344,
       "reason": "dedicated method checker pending"
+    },
+    {
+      "entity": 17592186567537,
+      "source": null,
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186567540,
+      "source": null,
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186567551,
+      "source": null,
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186567558,
+      "source": null,
+      "topic": 1999,
+      "reason": "transformation components unavailable"
+    },
+    {
+      "entity": 17592186567561,
+      "source": null,
+      "topic": 1999,
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186567576,
@@ -14935,37 +15329,13 @@
       "entity": 17592186573893,
       "source": "q-37341",
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186573901,
-      "source": "q-128524",
-      "topic": 1934,
-      "reason": "operatorname "
-    },
-    {
-      "entity": 17592186573903,
-      "source": "q-65135",
-      "topic": 1934,
-      "reason": "styled \u00a0"
-    },
-    {
-      "entity": 17592186573928,
-      "source": "q-128528",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "command "
     },
     {
       "entity": 17592186573938,
       "source": "q-128518",
       "topic": 1934,
       "reason": "unconsumed [('char', ','), ('char', '0')]"
-    },
-    {
-      "entity": 17592186573946,
-      "source": "q-71477",
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
     },
     {
       "entity": 17592186575533,
@@ -15086,6 +15456,12 @@
       "source": "q-101408",
       "topic": 177,
       "reason": "dedicated method checker pending"
+    },
+    {
+      "entity": 17592186594684,
+      "source": "q-38236",
+      "topic": 1999,
+      "reason": "transformation components unavailable"
     },
     {
       "entity": 17592186598602,
@@ -16216,24 +16592,6 @@
       "reason": "determinant statement target not interpreted"
     },
     {
-      "entity": 17592186702353,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186702366,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186702372,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186703391,
       "source": null,
       "topic": 4096,
@@ -16558,34 +16916,16 @@
       "reason": "dedicated method checker pending"
     },
     {
-      "entity": 17592186705863,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186705867,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
       "entity": 17592186705868,
       "source": null,
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "command begin"
     },
     {
       "entity": 17592186705885,
       "source": null,
       "topic": 1934,
-      "reason": "scalar function definition unavailable"
-    },
-    {
-      "entity": 17592186705890,
-      "source": null,
-      "topic": 1934,
-      "reason": "scalar function definition unavailable"
+      "reason": "command begin"
     },
     {
       "entity": 17592186705927,

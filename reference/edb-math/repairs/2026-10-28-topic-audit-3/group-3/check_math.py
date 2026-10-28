@@ -18,7 +18,7 @@ def partial_task(q):
  m=ms[-1];order=m[1]or m[2];expected=d['expression']
  for c in order:expected=sp.diff(expected,SYMS[c])
  points=tuples(tex[m.end():])
- if 'evaluate'in q[':question/problem'].lower()and points:expected=expected.subs(dict(zip(d['variables'],points[-1])))
+ if 'evaluate'in q[':question/problem'].lower()and points:expected=expected.subs(dict(zip(d['variables'],points[0])))
  return expected,scalar,{'function':str(d['expression']),'partial':order,'points':[str(p)for p in points]}
 def gradient_task(q,stream=False):
  d=function(q);defs=definitions(q[':question/problem']);F=d['expression']
@@ -27,14 +27,18 @@ def gradient_task(q,stream=False):
  if stream:expected=sp.Matrix([sp.diff(F,SYMS['y']),-sp.diff(F,SYMS['x'])])
  else:expected=sp.Matrix([sp.diff(F,v)for v in d['variables']])
  tail=q[':question/problem'][q[':question/problem'].lower().find('evaluate'):]if'evaluate'in q[':question/problem'].lower()else q[':question/problem'];points=tuples(' '.join(maths(tail)))
- if 'evaluate'in q[':question/problem'].lower()and points:expected=expected.subs(dict(zip(d['variables'],points[-1])))
+ if 'evaluate'in q[':question/problem'].lower()and points:expected=expected.subs(dict(zip(d['variables'],points[0])))
  return expected,vector,{'function':str(F),'points':[str(p)for p in points],'stream_convention':'(psi_y,−psi_x)'if stream else None}
 def determinant_task(q):
  ms=[m for tex in maths(q[':question/problem'])for m in matrices(tex)if m['value'].shape==(3,3)]
  if not ms:raise Unsupported('3x3 matrix unavailable')
  A=ms[0]['value'];return sp.simplify(A.det()),scalar,{'matrix':str(A)}
 def jacobian_task(q):
- prompt=q[':question/problem'];ms=[m for tex in maths(prompt)for m in matrices(tex)];pair=next(((a['value'],b['value'])for a,b in zip(ms,ms[1:])if a['value'].cols==b['value'].cols==1 and a['value'].rows==b['value'].rows and all(v in[SYMS[c]for c in'uvw']for v in a['value'])),None)
+ prompt=q[':question/problem'];ms=[m for tex in maths(prompt)for m in matrices(tex)];pair=None
+ for tex in maths(prompt):
+  same=matrices(tex)
+  for a,b in zip(same,same[1:]):
+   if a['value'].cols==b['value'].cols==1 and a['value'].rows==b['value'].rows and all(v in[SYMS[c]for c in'uvw']for v in a['value'])and any(arrow in tex[a['end']:b['start']]for arrow in ['⟶','→',r'\to',r'\mapsto',r'\longmapsto']):pair=(a['value'],b['value']);break
  if pair:vs,F=pair
  else:
   forms={}
