@@ -1013,9 +1013,17 @@ def normalize_source_tex(value):
 def normalize_prose(value):
     def replace(match):
         whole = match[0]; display = whole.startswith(('$$', r'\['))
+        line = text[text.rfind('\n', 0, match.start()) + 1:match.start()]
+        quote = re.match(r'^(?: {0,3}>[\t ]?)+', line)
+        if quote:
+            depth = quote[0].count('>')
+            marker = r'^(?: {0,3}>[\t ]?){' + str(depth) + '}'
+            whole = re.sub(r'\n([^\n]*)', lambda m: '\n' + re.sub(marker, '', m[1]), whole)
         normalized = normalize_tex(whole)
-        return ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
-    text = MATH.sub(replace, normalize_math_boundaries(value))
+        result = ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
+        return result.replace('\n', '\n' + quote[0]) if quote else result
+    text = normalize_math_boundaries(value)
+    text = MATH.sub(replace, text)
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)

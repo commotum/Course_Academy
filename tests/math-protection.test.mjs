@@ -34,3 +34,17 @@ test('literal dollars inside currency formulas do not close their math spans', (
   protectMath(formulas.join(' and '), s => { saved.push(s); return 'MATH'; });
   assert.deepEqual(saved, formulas);
 });
+
+test('quoted display math keeps its callout without rendering container markers', () => {
+  const saved = [];
+  const source = '> Rule\n>\n> $$\n> A \\cdot I_n = I_n \\cdot A = A.\n> $$';
+  const text = protectMath(source, s => { saved.push(s); return 'MATHTOKEN'; });
+  assert.deepEqual(saved, ['$$\nA \\cdot I_n = I_n \\cdot A = A.\n$$']);
+  assert.equal(marked.parse(text), '<blockquote>\n<p>Rule</p>\n<p>MATHTOKEN</p>\n</blockquote>\n');
+});
+
+test('quote depth preserves real inequalities and unquoted greater-than symbols', () => {
+  const saved = [];
+  protectMath('> > $$\n> > > x\n> > $$\n\n$$\n> y\n$$', s => { saved.push(s); return 'MATH'; });
+  assert.deepEqual(saved, ['$$\n> x\n$$', '$$\n> y\n$$']);
+});

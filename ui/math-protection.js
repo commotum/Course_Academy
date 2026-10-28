@@ -19,7 +19,17 @@ export function protectMath(source, replace) {
       if (!complete) continue;
       tokens.lastIndex = end;
     }
-    result += source.slice(offset, match.index) + replace(source.slice(match.index, end));
+    let tex = source.slice(match.index, end);
+    const line = source.slice(source.lastIndexOf('\n', match.index - 1) + 1, match.index);
+    const quote = line.match(/^(?: {0,3}>[\t ]?)+/);
+    if (quote && tex.includes('\n')) {
+      const depth = (quote[0].match(/>/g) || []).length;
+      // Container markers belong to Markdown. Strip exactly this quote depth
+      // from continuation lines; an additional > remains a TeX comparison.
+      const marker = new RegExp('^(?: {0,3}>[\\t ]?){' + depth + '}');
+      tex = tex.replace(/\n([^\n]*)/g, (_, line) => '\n' + line.replace(marker, ''));
+    }
+    result += source.slice(offset, match.index) + replace(tex);
     offset = end;
   }
   return result + source.slice(offset);

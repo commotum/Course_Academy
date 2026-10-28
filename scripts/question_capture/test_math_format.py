@@ -6,6 +6,13 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_quoted_display_math_keeps_markers_outside_tex_and_closes_in_quote(self):
+        source = '> Rule\n>\n> $$\n> A\\cdot I_n=A\n> $$'
+        self.assertEqual(normalize_prose(source), source)
+        self.assertEqual(normalize_prose(normalize_prose(source)), source)
+        nested = '> > $$\n> > > x\n> > $$'
+        self.assertEqual(normalize_prose(nested), nested)
+
     def test_source_equality_chain_keeps_spaced_correctness_annotation(self):
         source = r'\begin{aligned}12x-28 &= \\ (4\cdot3x)-(4\cdot7) &= \\ 4(3x-7)&.\hspace{2em}{\color{green}{✓}}\end{aligned}'
         result = normalize_tex(source)
