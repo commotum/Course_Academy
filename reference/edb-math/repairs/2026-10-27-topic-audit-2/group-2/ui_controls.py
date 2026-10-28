@@ -43,7 +43,8 @@ with sync_playwright()as p:
      const before=[...form.querySelectorAll('math-field')].map(n=>({name:n.getAttribute('name'),blank:n.value==='',tag:n.tagName}));
      for(const f of q.fields){const kind=f.type.split('/').at(-1);const input=[...form.querySelectorAll('input,select,math-field')].find(n=>n.name===f.id||n.getAttribute('name')===f.id);
        if(kind==='blank'){input.value=f.correctAnswer.value;input.dispatchEvent(new Event('input',{bubbles:true}));}
-       if(kind==='select'){input.value=f.correctAnswer.id;input.dispatchEvent(new Event('change',{bubbles:true}));}}
+       if(kind==='select'){const wrapper=input.closest('.answer-dropdown');wrapper.querySelector('.answer-select-trigger').click();wrapper.querySelectorAll('.answer-select-option')[f.choices.findIndex(a=>a.id===f.correctAnswer.id)].click();}}
+     await MathJax.typesetPromise([form]);
      const boxes=[...form.querySelectorAll('input[type=checkbox]')];const toggles=[];
      for(const box of boxes){let hidden=box.closest('label').querySelector('input[type=hidden]');const before=hidden.value;box.checked=!box.checked;box.dispatchEvent(new Event('change',{bubbles:true}));toggles.push({before,after:hidden.value,changed:before!==hidden.value});}
      return {errors:[...form.querySelectorAll('[data-mml-node=merror]')].map(n=>n.textContent),beforeMathInputs:before,

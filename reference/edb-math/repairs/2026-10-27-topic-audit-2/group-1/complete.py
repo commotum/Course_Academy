@@ -3,6 +3,9 @@ import json,re,sys
 from pathlib import Path
 import sympy as S
 H=Path(__file__).resolve().parent
+sys.path.insert(0,str(H.parents[4]/'scripts'))
+from question_capture.math_format import MATH
+from texmath import parse
 D=json.loads((H/'current.json').read_text()); Q={q[':db/id']:q for q in D['questions']}; byma={q.get(':question/math-academy-id'):q for q in Q.values()}
 reports=json.loads((H/'scalar-math-validation.json').read_text()); contexts=json.loads((H/'completion-context.json').read_text())
 keys=[];solutions=[];proofs=[];empty=[]
@@ -19,7 +22,8 @@ for r in reports:
  if r['status']!='missing-key-derived':continue
  q=Q[r['question']]; expected=r['expected'];kind=r['kind'];x=r['variable'];answers={c['field']:c['matching_answers'][0]for c in r['checks']};f=q[':question/answer-fields'][0];a=next(a for a in f[':answer-field/choices']if a[':db/id']==answers[f[':db/id']]);ans=a[':answer/value'].replace('±',r'\pm')
  if kind=='root-set':
-  solution='Rearrange the equation so that one side is zero. Solving the resulting equation gives\n\n$$\n'+ans+'.\n$$\n\nSubstitution in the original equation confirms each listed root. Both signs are required when taking a square root.' if q.get(':question/math-academy-id','')not in['q-23588','q-23594','q-23884','q-23934','q-44459','q-80588']else 'Move every term to the left, combine like terms, and factor. The zero-product rule gives\n\n$$\n'+ans+'.\n$$\n\nEach listed value makes the original equation true.'
+  texes=[m[0][2:-2]if m[0].startswith('$$')else m[0][1:-1]for m in MATH.finditer(q[':question/problem'])];equation=next(t for t in texes if '='in t);left,right=equation.split('=',1);polynomial=S.expand(parse(left)-parse(right));var=next(iter(polynomial.free_symbols));root_values=S.sympify(expected);factored=S.Mul(S.Poly(polynomial,var).LC(),*[var-v for v in sorted(root_values,key=str)],evaluate=False)
+  solution='Move every term to the left, combine like terms, and factor:\n\n$$\n'+S.latex(polynomial)+'='+S.latex(factored)+'=0.\n$$\n\nThe zero-product rule gives\n\n$$\n'+ans+'.\n$$\n\nSubstitution in the original equation confirms each listed root.'
  elif kind in ['antiderivative','definite-integral']:
   integrand=r['integrand'];var=S.Symbol(x,positive=True);expr=S.sympify(integrand,locals={x:var});primitive=S.integrate(expr,var)
   solution='Apply the sum and constant multiple rules, using the power rule or the standard trigonometric/exponential antiderivative for each term:\n\n$$\n\\int '+S.latex(expr)+r'\,\mathrm{d}'+x+'='+ans+'.\n$$\n\nDifferentiate the result to check:\n\n$$\n'+r'\frac{\mathrm{d}}{\mathrm{d}'+x+'}\\left('+S.latex(primitive)+'+C\\right)='+S.latex(S.diff(primitive,var))+'.\n$$'
@@ -46,9 +50,9 @@ manual={
 'q-136634':([17592186174390],r'Cosine has period $2\pi$ and is even. Therefore $\cos(-x+16\pi)=\cos(-x)=\cos x=-11/24$.'),
 'q-65176':([17592186175416],r'Cosine has period $2\pi$, so $\cos(x-6\pi)=\cos x$. Hence $4\cos(x-6\pi)-1=4(\sqrt3/2)-1=2\sqrt3-1$.'),
 'q-65179':([17592186175424],r'The shift $10\pi$ is five full periods, so $\cos(x+10\pi)=\cos x=-1/\sqrt3$.'),
-'q-118386':([17592186177220],r'At one half-life $H$, $e^{-0.53319H}=1/2$. Thus $H=\ln2/0.53319=1.2999\ldots\,\mathrm{s}$, which rounds to $1.3\,\mathrm{s}$.'),
+'q-118386':([17592186177220],r'At one half-life $H$, $e^{-0.53319H}=1/2$. Thus $H=\ln2/0.53319=1.3000\ldots\,\mathrm{s}$, which rounds to $1.3\,\mathrm{s}$.'),
 'q-118600':([17592186177228],r'Exponential decay gives $M(t)=M_0\,2^{-t/H}$. At the stated time, $t/H=1.5$, so $M=100\,2^{-1.5}=35.3553\ldots\,\mathrm{pg}$, or $35.36\,\mathrm{pg}$.'),
-'q-118730':([17592186177233],r'The remaining fraction is $0.15=2^{-t/717000}$. Taking logarithms gives $t=717000\ln(1/0.15)/\ln2=1962407\ldots$ years, approximately $1$ million $962$ thousand years.'),
+'q-118730':([17592186177233],r'The remaining fraction is $0.15=2^{-t/717000}$. Taking logarithms gives $t=717000\ln(1/0.15)/\ln2=1962404\ldots$ years, approximately $1$ million $962$ thousand years.'),
 'q-15574':([17592186178145],r'The remaining fraction is $6.25/200=1/32=(1/2)^5$. Five half-lives have elapsed, so $t=5(15.2)=76\,\mathrm{s}$.'),
 'q-15575':([17592186178153],r'At the half-life, $e^{-0.001k}=1/2$. Therefore $k=\ln2/0.001=693.147\ldots\,\mathrm{s}^{-1}$, which is $693$ to three significant figures.'),
 'q-336439':([17592186228337],r'Substitute $t=0$ into the stated model $Q(t)=\alpha+\beta e^{-kt}$. Since $e^0=1$ and the initial salt mass is $6\,\mathrm{kg}$, $\alpha+\beta=Q(0)=6$.'),
@@ -61,7 +65,7 @@ for ma,(aids,solution)in manual.items():
   fs=[f for f in q[':question/answer-fields']if aid in{a[':db/id']for a in f.get(':answer-field/choices',[])}];assert len(fs)==1;(f,)=fs;answers[f[':db/id']]=aid
  add(q,answers,solution.replace(r'\u2032','′').replace(r'\u2019','’'),{'calculation':solution,'bank_cardinality':len(aids),'image_check':'All five retained diagram choices visually inspected'if ma in['q-50099','q-80494','q-96477']else None})
 # Missing banks are a separate reviewable authoring request, never masquerading as existing entities.
-new=[('q-218567',r'\pm\frac25',r'$25y^2=4$ gives $y^2=4/25$, so $y=\pm2/5$.'),('q-218603',r'\pm5\sqrt2',r'$z^2=53-3=50$, hence $z=\pm\sqrt{50}=\pm5\sqrt2$.'),('q-334539','41.8',r'Without drag, $v(t)=2.6+9.8t$, so $v(4)=41.8\,\mathrm{m/s}$.'),('q-334550',r'49(1-e^{-t/5})',r'$k=25(9.8-7.4)/12=5$. Thus $v\u2032+v/5=9.8$ and $v(0)=0$, giving $v(t)=49(1-e^{-t/5})$.'),('q-334572','39.2',r'At terminal velocity, $0=mg-kv$, so $v=20(9.8)/5=39.2\,\mathrm{m/s}$.'),('q-334770','1.2+gt',r'With negligible drag, $v\u2032=g$. Integrating and using $v(0)=1.2$ gives $v(t)=1.2+gt$.'),('q-335190',r'49-44e^{-t/5}',r'$k=30(9.8-8.2)/8=6$. The ODE is $v\u2032+v/5=9.8$, whose solution with $v(0)=5$ is $v(t)=49-44e^{-t/5}$.'),('q-353607','6.3',r'The remaining fraction satisfies $0.70=2^{-t/12.3}$. Therefore $t=12.3\ln(0.70)/\ln(0.5)=6.3295\ldots$ years, or $6.3$ years to one decimal place.')]
+new=[('q-218567',r'\pm\frac25',r'$25y^2=4$ gives $y^2=4/25$, so $y=\pm2/5$.'),('q-218603',r'\pm5\sqrt2',r'$z^2=53-3=50$, hence $z=\pm\sqrt{50}=\pm5\sqrt2$.'),('q-334539','41.8',r'Without drag, $v(t)=2.6+9.8t$, so $v(4)=41.8\,\mathrm{m/s}$.'),('q-334550',r'49(1-e^{-t/5})',r'$k=25(9.8-7.4)/12=5$. Thus $v\u2032+v/5=9.8$ and $v(0)=0$, giving $v(t)=49(1-e^{-t/5})$.'),('q-334572','39.2',r'At terminal velocity, $0=mg-kv$, so $v=20(9.8)/5=39.2\,\mathrm{m/s}$.'),('q-334770','1.2+gt',r'With negligible drag, $v\u2032=g$. Integrating and using $v(0)=1.2$ gives $v(t)=1.2+gt$.'),('q-335190',r'49-44e^{-t/5}',r'$k=30(9.8-8.2)/8=6$. The ODE is $v\u2032+v/5=9.8$, whose solution with $v(0)=5$ is $v(t)=49-44e^{-t/5}$.'),('q-353607','6.3',r'The remaining fraction satisfies $0.70=2^{-t/12.3}$. Therefore $t=12.3\ln(0.70)/\ln(0.5)=6.3292\ldots$ years, or $6.3$ years to one decimal place.')]
 for ma,value,solution in new:
  q=byma[ma];f=q[':question/answer-fields'][0];assert not f.get(':answer-field/choices');empty.append({'question':q[':db/id'],'field':f[':db/id'],'field_identity':f[':answer-field/id'],'answer_type':':answer.type/math','expected_value':value,'worked_solution':solution.replace(r'\u2032','′'),'basis_t':9122,'reason':'No existing owned answer bank; new answer identity/allocation requires parent consolidation. Independently solved from prompt.','template_context':'completion-context.json'})
 (H/'key-proposals.json').write_text(json.dumps(keys,indent=2));(H/'completion-solution-proposals.json').write_text(json.dumps(solutions,indent=2));(H/'completion-proofs.json').write_text(json.dumps(proofs,indent=2));(H/'missing-bank-authoring.json').write_text(json.dumps(empty,indent=2))

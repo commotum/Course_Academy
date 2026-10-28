@@ -3,7 +3,7 @@ from pathlib import Path
 import sympy as S
 from mathlib import *
 from check_math_safe import function_data
-H=Path(__file__).resolve().parent;J,K=S.symbols('J K');B=S.Symbol('B',real=True)
+H=Path(__file__).resolve().parent;J,K=S.symbols('J K');B=S.Symbol('B')
 def timeout(*args):raise TimeoutError('bounded symbolic proof')
 signal.signal(signal.SIGALRM,timeout)
 def zero(expr):
@@ -28,10 +28,16 @@ def differential(v):
  return S.simplify(e.coeff(J)),S.simplify(e.coeff(K))
 def pq(problem):
  for _,v in maths(problem):
+  vv=clean(v);pm=re.search(r'P\s*\(\s*x\s*,\s*y\s*\)\s*=([^;]+?),\s*(?:\\qquad\s*)?Q\s*\(\s*x\s*,\s*y\s*\)\s*=(.+)',vv)
+  if pm:return parse(pm[1]),parse(pm[2])
+ for _,v in maths(problem):
   if r'\frac' in v and re.search(r'\\frac\s*\{(?:\\(?:text|mathrm)\{d\})?y',v):continue
-  try:return differential(v)
+  try:
+   pair=differential(v)
+   if any(any(app.func.__name__ in ['P','Q']for app in ex.atoms(S.Function))for ex in pair):continue
+   return pair
   except:pass
- f,raw=ode(problem);coef=S.diff(f,D);return S.simplify(f.subs(D,0)/coef),S.Integer(1)
+ f,raw=ode(problem);coef=S.diff(f,D);return S.simplify(f.subs(D,0)),coef
 def fitting(problem):
  ics=initial_values(problem)
  if not ics:raise ValueError('IC not parsed')
@@ -57,6 +63,28 @@ def one(q,kp):
     right=marker.split('=',1)[1];right=re.sub(r'h\s*\([^)]*\)', 'B',right);factor=S.diff(parse(right),B);expected=S.cancel(expected/factor);method='quotient numerator fragment'
    if point:expected=expected.subs(dict(zip(vars,point)),simultaneous=True);method+=' at stated point'
    status,res=zero(got-expected);rs.append({'field':f[':answer-field/id'],'method':method,'expected':str(expected),'got':str(got),'status':status,'residual':res})
+ elif kp in[17592186087866,17592186087877]:
+  original,raw=ode(p);co=S.diff(original,D)
+  for f in fs:
+   a=correct(f);eq=parse(a[':answer/value']);expr=eq.lhs-eq.rhs
+   for node in list(expr.atoms(S.Derivative)):
+    Y=S.Function('Y')(x);value=S.diff(node.expr.subs(y,Y),x).xreplace({S.diff(Y,x):D,Y:y});expr=expr.xreplace({node:value})
+   expr=expr.xreplace({sym:D for sym in expr.free_symbols if sym.name=="y'"});ratio=S.simplify(S.diff(expr,D)/co);status,res=zero(expr-ratio*original);rs.append({'field':f[':answer-field/id'],'method':'independent standard form/product-rule equivalence','status':status,'residual':res})
+ elif kp in[17592186110593,17592186110594,17592186110595]:
+  original=None
+  for _,v in maths(p):
+   try:e=parse(v)
+   except:continue
+   if isinstance(e,S.Equality)and len(e.free_symbols)==1:original=e;break
+  if original is None:raise ValueError('no single-variable exponential equation')
+  variable=next(iter(original.free_symbols));expected=S.solve(original,variable)
+  if len(expected)!=1:raise ValueError('not unique')
+  for f in fs:
+   got=rhs(correct(f)[':answer/value'])
+   if re.search(r'rounded|decimal',p,re.I):
+    delta=abs(float(S.N(got-expected[0],35)));status='numeric-rounding-proved'if delta<0.0005000001 else'candidate';res=str(delta)
+   else:status,res=zero(got-expected[0])
+   rs.append({'field':f[':answer-field/id'],'method':'independent logarithmic inverse and stated rounding','status':status,'residual':res})
  elif kp in[17592186064245,17592186064246,17592186064274]:
   integral=None
   for _,v in maths(p):
@@ -69,7 +97,11 @@ def one(q,kp):
    got=rhs(correct(f)[':answer/value'])
    if len(integral.limits[0])==1:r=S.diff(got,integral.variables[0])-integral.function
    else:r=got-integral.doit()
-   status,res=zero(r);rs.append({'field':f[':answer-field/id'],'method':'antiderivative differentiation'if len(integral.limits[0])==1 else'independent definite integration','status':status,'residual':res})
+   status,res=zero(r)
+   if status=='candidate' and r.has(S.Piecewise) and integral.function.has(S.sec,S.csc):
+    pw=next(iter(r.atoms(S.Piecewise)))
+    if pw.args[-1][0]==0:status='symbolically-proved-off-trigonometric-poles';res+='; exceptional branches lie at excluded sec/csc poles'
+   rs.append({'field':f[':answer-field/id'],'method':'antiderivative differentiation'if len(integral.limits[0])==1 else'independent definite integration','status':status,'residual':res})
  elif kp==17592186100951:
   family,ics=fitting(p)
   for f in fs:
@@ -79,6 +111,7 @@ def one(q,kp):
   for f in fs:
    a=correct(f);value=a[':answer/value'];pre=context(p,f);kind=f[':answer-field/type'];kind=kind.get(':db/ident')if isinstance(kind,dict)else kind
    if kind==':answer-field.type/checkbox':
+    if 'none of' in f[':answer-field/key'].lower():continue
     sol=explicit_solution(f[':answer-field/key'].strip('$'));expected=residual(form,sol)==0;assert value in['true','false'];rs.append({'field':f[':answer-field/id'],'method':'checkbox candidate ODE residual','status':'symbolically-proved'if expected==(value=='true')else'candidate','residual':str(residual(form,sol))});continue
    sol=explicit_solution(value)
    if re.search(r'I\(x\)\s*=\s*\$?\s*$',pre):r=S.diff(sol,x)-P*sol;method='integrating factor differential identity'

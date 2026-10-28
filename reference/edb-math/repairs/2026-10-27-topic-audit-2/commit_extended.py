@@ -31,9 +31,11 @@ for attempt in range(4):
   for p in detach:
    actual=values[p['entity'],p['attribute']];assert p['value']in actual,p
    if 'expected_before'in p:assert set(actual)==set(p['expected_before']),p
+  blank_type=db.query('[:find ?e :where [?e :db/ident :answer-field.type/blank]]',[],D,'blank-type-'+str(basis),basis)[0][0] if new else None
   for p in new:
    assert not values[p['field'],'answer-field/choices']and not values[p['field'],'answer-field/correct'],p
    assert str(values[p['field'],'answer-field/id'][0])==p['field_uuid'],p
+   assert values[p['field'],'answer-field/type']==[blank_type],p
    duplicates=db.query('[:find ?a :in $ ?id :where [?a :answer/id ?id]]',[uuid.UUID(p['answer_uuid'])],D,'uuid-absence-'+str(p['field'])+'-'+str(basis),basis);assert not duplicates,p
   binary=preview_executable(Config(),threading.Event());pv=subprocess.run([str(binary),'with','--database','math','--file',str(file),'--source',':agent/codex'],env=db.env,capture_output=True,text=True);(D/'preview.edn').write_text(pv.stdout);(D/'preview.stderr').write_text(pv.stderr);pv.check_returncode();pr=loads(pv.stdout);assert pr.get(':edb/speculative')is True
   if pr[':edb/db-before-t']!=basis:continue

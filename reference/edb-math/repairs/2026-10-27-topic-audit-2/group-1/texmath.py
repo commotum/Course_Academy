@@ -111,8 +111,8 @@ def integral_detail(s):
  if s.startswith('{')and s.endswith('}')and s[1:].lstrip().startswith(r'\int'):s=s[1:-1].strip()
  assert s.startswith(r'\int'),s;s=s[4:].strip();bounds=None
  if s.startswith('_'):
-  p=Parser(s[1:]);low=p.group();assert p.take('^');high=p.group();s=p.text[p.i:];bounds=(low,high)
- s=re.sub(r'\\(?:,|;|!|quad|qquad)',' ',s)
+  p=Parser(s[1:]);low=p.texarg();assert p.take('^');high=p.texarg();s=p.text[p.i:];bounds=(low,high)
+ s=re.sub(r'\\(?:,|;|!|quad|qquad)',' ',s);s=re.sub(r'\\(?:textrm|mathrm|text)\s+d',lambda m:r'\mathrm{d}',s)
  m=re.search(r'(?:\\(?:mathrm|text|textrm)\{d\}|d)\s*(\\theta|[xyztθ])\s*[.,?=]*\s*$',s)
  if not m:raise ValueError(('Missing integral differential',s))
  var='theta'if m[1]in[r'\theta','θ']else m[1];body=s[:m.start()].strip();return parse(body),S.Symbol(var,positive=True),bounds

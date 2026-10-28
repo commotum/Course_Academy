@@ -3,7 +3,7 @@ from pathlib import Path
 import sympy as S
 H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import MATH,ENV,environment,cells
 from texmath import parse,integral_detail
-D=json.loads((H/'current.json').read_text());context={p['entity']:p['after']for p in json.loads((H/'context-proposals.json').read_text())}
+D=json.loads((H/'current.json').read_text());context={p['entity']:p['after']for name in['context-proposals.json','extra-context-proposals.json']for p in json.loads((H/name).read_text())if p['attribute'].lstrip(':')=='question/problem'}
 for q in D['questions']:
  if q[':db/id']in context:q[':question/problem']=context[q[':db/id']]
 topicbyq={q:t for t,k,q in D['links']};topics={t['entity']:t for t in D['topics']};reports=[]
@@ -22,7 +22,7 @@ def expression(value):
 def correct(f):return f.get(':answer-field/correct',{}).get(':db/id')
 def matrix(text):
  for m in ENV.finditer(text):
-  if m[1]!='begin'or m[2]not in['vmatrix','bmatrix','array']:continue
+  if m[1]!='begin'or m[2]not in['vmatrix','bmatrix','matrix','array']:continue
   span=environment(text,m.start());body=text[span[0]:span[1]]
   if m[2]=='array':body=re.sub(r'^\{[clr|]+\}','',body)
   grid=cells(body)
@@ -85,9 +85,9 @@ for q in D['questions']:
    integral_parts=[m for m in ms if r'\int'in m]
    if integral_parts:
     expr=next(m for m in integral_parts if r'\int'in m);integrand,variable,bounds=integral_detail(expr.split('=')[0]);integrand=resolve(integrand,p);kind='definite-integral'if bounds else'antiderivative'
-   elif 'antiderivative'in p.lower()or"F^{′}"in p or "F'"in p:
-    definition=next((m for m in ms if re.match(r'f\([xyzt]\)\s*=',m)),None)
-    expr=definition.split('=',1)[1]if definition else ms[0];integrand=resolve(parse(expr),p);variable=S.Symbol('x',positive=True);kind='antiderivative'
+   elif 'antiderivative'in p.lower()or'integral of'in p.lower()or'calculate $F'in p or'calculate $F'in p.lower()or"F^{′}"in p or"F^{'}"in p or "F'"in p:
+    definition=next((m for m in ms if re.match(r'f\([xyzt]\)\s*=',m)),None)or next((m for m in ms if re.match(r"y'\(t\)\s*=",m)),None)
+    expr=definition.split('=',1)[1]if definition else ms[0];expr=expr.rstrip('.?, ');integrand=resolve(parse(expr),p);variable=next((v for v in integrand.free_symbols if str(v)in['x','t','y','z']),S.Symbol('x',positive=True));kind='antiderivative'
    else:raise ValueError('Conceptual/graph or unrecognized integral response family')
    expected=S.integrate(integrand,(variable,*bounds))if bounds else S.integrate(integrand,variable)
   elif topic==1109:

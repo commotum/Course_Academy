@@ -11,6 +11,7 @@ def clean(v):
  v=re.sub(r'\\(?:text|textrm|mathrm|rm)\s*\{\s*d\s*\}', 'd',v);v=re.sub(r'\\(?:textrm|mathrm|rm)\s+d\b','d',v)
  v=re.sub(r'\\operatorname\s*\{(sin|cos|tan|sec|csc|cot|ln|log|exp|sinh|cosh|arcsin|arccos|arctan)\}',lambda m:'\\'+m[1]+' ',v)
  v=re.sub(r'\\color\{[^{}]*\}|\\hspace\{[^{}]*\}|\\(?:displaystyle|textstyle|quad|qquad)\b','',v);v=re.sub(r'\\[,;!:]',' ',v)
+ v=re.sub(r'(\\(?:ln|log)\s*\{\([^{}]*\)\})\s*\^\s*\{([0-9]+)\}',r'(\1)^{\2}',v)
  v=re.sub(r'\\int(?=[A-Za-z])',lambda m:m[0]+' ',v)
  v=re.sub(r'\{?([xy])\}?\s*\^\s*\{\s*\\prime\s*\}',r"\1'",v)
  v=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log|exp)\}(?=\s*\^)',lambda m:'\\'+m[1]+' ',v)
@@ -23,8 +24,10 @@ def clean(v):
 @functools.lru_cache(maxsize=30000)
 def parse(v):
  expr=parse_latex(clean(v),strict=True)
- reps={s:SYMS.get(s.name,S.E if s.name=='e'else S.pi if s.name=='pi'else s)for s in expr.free_symbols}
+ reps={s:SYMS.get(s.name,S.E if s.name=='e'else S.pi if s.name=='pi'else s)for s in expr.atoms(S.Symbol)}
  expr=expr.xreplace(reps)
+ for app in list(expr.atoms(S.Function)):
+  if app.func.__name__ in ['pi','e'] and len(app.args)==1:expr=expr.xreplace({app:(S.pi if app.func.__name__=='pi'else S.E)*app.args[0]})
  return expr
 
 def maths(v):return [(m,m[0][2:-2]if m[0].startswith('$$')else m[0][1:-1])for m in MATH.finditer(v)]
@@ -52,6 +55,7 @@ def ode(problem):
   if not re.search(r'(?:dy|d\s*\}\s*y|prime|′|y\s*\x27)',v):continue
   vv=clean(v)
   # Initial values and explicit domain clauses follow the ODE in the same display.
+  vv=vv.split(',',1)[0]
   vv=re.split(r',\s*(?:y\s*\(|[xy]\s*\\(?:gt|ge|ne)|[xy]\s*[><])',vv)[0]
   try:f=equation(vv)
   except Exception as ex:failures.append(str(ex));continue
@@ -70,7 +74,7 @@ def residual(f,sol):return simple(f.subs({y:sol,D:S.diff(sol,x)},simultaneous=Tr
 def initial_values(problem):
  out=[]
  for _,v in maths(problem):
-  for m in re.finditer(r'y\s*\(([^()]*)\)\s*=\s*([^,;\n]+)',clean(v)):
+  for m in re.finditer(r'y\s*\(([^()]*)\)\s*=\s*([^,;\n]+)',clean(v).replace(r'y\cdot(', 'y(')):
    try:xx=parse(m[1]);yy=parse(m[2]);
    except Exception:continue
    if not xx.free_symbols and not yy.free_symbols:out.append((xx,yy))

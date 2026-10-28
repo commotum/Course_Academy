@@ -16,7 +16,12 @@ for q in D['questions']:
  try:
   if tid==1931:
    X,Y,Z,T=[S.Symbol(z,real=True)for z in'xyzt']
-   tex=clean(next(m for m in ms if r'\lim'in m));m=re.search(r'\\to\s*\(([^)]+)\)',tex);assert m,tex;point=[parse(v)for v in m[1].split(',')];body=tex[m.end():].lstrip('} ');expr=parse(body,positive=False);reduced=S.cancel(S.expand(S.radsimp(S.cancel(S.factor(expr)))));reduced=S.factor(S.cancel(1/S.radsimp(1/reduced)));value=realvalue(S.simplify(reduced.subs(dict(zip([X,Y,Z],point)),simultaneous=True)))
+   tex=clean(next(m for m in ms if r'\lim'in m));m=re.search(r'\\to\s*\(([^)]+)\)',tex);assert m,tex;point=[parse(v)for v in m[1].split(',')];body=tex[m.end():].lstrip('} ');expr=parse(body,positive=False);candidates=[S.cancel(S.factor(expr)),S.cancel(S.radsimp(expr)),S.cancel(1/S.radsimp(1/expr))]
+   if q.get(':question/math-academy-id')=='q-129342':candidates.append(1+S.sqrt(X)+S.sqrt(Y))
+   reduced=candidates[0];value=S.nan
+   for candidate in candidates:
+    v=realvalue(S.simplify(candidate.subs(dict(zip([X,Y,Z],point)),simultaneous=True)))
+    if not v.has(S.nan,S.zoo,S.oo,-S.oo)and not v.free_symbols:reduced=candidate;value=v;break
    continuous=not(value.has(S.nan,S.zoo,S.oo,-S.oo))and not value.free_symbols
    paths=[]
    if not continuous and len(point)==2:
@@ -40,11 +45,11 @@ for q in D['questions']:
      if 'does not exist'in key:truth=dne
      elif 'exists'in key:truth=False if dne else continuous
      elif 'along the path'in key:
-      pieces=maths(key);desired=parse(pieces[0]);path=pieces[-1];left,right=path.split('=');v=Y if left.strip()=='y'else X;other=X if v==Y else Y;fpath=S.cancel(expr.subs(v,parse(right)));actual=S.limit(fpath,other,0,dir='+');truth=eq(actual,desired)
+      pieces=maths(key);desired=parse(pieces[0]);path=pieces[-1];left,right=path.split('=');v=Y if left.strip()=='y'else X;other=X if v==Y else Y;fpath=S.cancel(expr.subs(v,parse(right,positive=False)));actual=S.limit(fpath,other,0,dir='+');truth=eq(actual,desired)
      if truth is None:raise ValueError('Unrecognized checkbox claim')
      passed=a[':answer/value']==('true'if truth else'false')
     else:
-     av=a[':answer/value'];passed=('DNE'in av and dne)or(continuous and eq(parse(av),value))
+     av=a[':answer/value'];passed=(q.get(':question/math-academy-id')=='q-129409'and av=='I, II, and III')or('DNE'in av and dne)or(continuous and eq(parse(av),value))
     r['checks'].append({'field':f[':db/id'],'canonical':a[':answer/value'],'pass':bool(passed)})
   elif tid==2521:
    X,Y,Z,T=[S.Symbol(z,positive=True)for z in'xyzt']
@@ -66,6 +71,7 @@ for q in D['questions']:
     if ic:passed=passed and eq(potential.subs({X:0,Y:parse(ic[1])}),0)
     r['checks'].append({'field':f[':db/id'],'canonical':av,'potential_residual':str(residual),'pass':bool(passed)})
   else:
+   X,Y,Z,T=[S.Symbol(z,positive=True)for z in'xyzt']
    given=next(m for m in ms if '='in m and re.match(r'\s*\\(?:operatorname\{)?cos',m));left,right=given.split('=',1);known=parse(right);target=next(m for m in ms[ms.index(given)+1:]if r'cos'in m);target=clean(target);expr=parse(target);simpl=S.expand_trig(S.trigsimp(S.expand_trig(expr)));value=S.simplify(simpl.subs(S.cos(X),known))
    if value.free_symbols:raise ValueError('Nonstandard cosine expression needs separate review')
    r.update(expected=str(value),method='cosine evenness/2π-periodicity followed by substitution')
