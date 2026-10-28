@@ -70,7 +70,8 @@ assert set(map(tuple,inventory['links'])).issubset(set(map(tuple,links)))
 publications=[]
 for name in publication_batches:publications+=json.loads((H/name/'generator-publications.json').read_text())
 publication_count=len(publications);publications=list({p['kp']:p for p in publications}.values())
-registered=dict(query('[:find ?kp ?path :in $ [?kp ...] :where [?kp :knowledge-point/question-generator ?g] [?g :question-generator/script ?path]]',[[p['kp']for p in publications]],'registered-generators'))
+registered_rows=query('[:find ?kp ?path :in $ [?kp ...] :where [?kp :knowledge-point/question-generator ?g] [?g :question-generator/script ?path]]',[[p['kp']for p in publications]],'registered-generators');assert len(registered_rows)==len(publications),registered_rows
+registered=dict(registered_rows)
 assert registered=={p['kp']:p['new_reference']for p in publications}
 for p in publications:verify_package(Path('/media/jake/SSD/EDB/math')/Path(p['new_reference']).parent,p['digest'])
 # Form the exact verified presentation model, including new owned blank answers.
