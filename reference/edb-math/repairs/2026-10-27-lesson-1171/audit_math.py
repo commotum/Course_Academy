@@ -6,7 +6,7 @@ H=Path(__file__).resolve().parent;R=H.parents[3];sys.path.insert(0,str(R/'script
 from question_capture.math_format import ENV,environment,cells,matrix_answer,matrix_tex,validate_math_structure
 D=json.loads((H/'current.json').read_text());Q=copy.deepcopy(D['questions']);changes=[];links=[];audit=[]
 def scalar(s):
- s=s.replace('⁡','').replace('−','-');s=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',s);s=s.replace(r'\operatorname{ln}',r'\ln');s=re.sub(r'a_\{(\d+)\}',r'a\1',s)
+ s=s.replace('⁡','').replace('−','-');s=re.sub(r'\\color\{[A-Za-z]+\}','',s);s=re.sub(r'\{a\}_\{(\d+)\}',r'a\1',s);s=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',s);s=s.replace(r'\operatorname{ln}',r'\ln');s=re.sub(r'a_\{(\d+)\}',r'a\1',s)
  def group(t,i):
   while i<len(t)and t[i].isspace():i+=1
   assert t[i]=='{',(t,i);start=i+1;depth=1;i+=1
