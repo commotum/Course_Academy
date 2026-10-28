@@ -72,7 +72,7 @@ for q in D['questions']:
     r['checks'].append({'field':f[':db/id'],'canonical':av,'potential_residual':str(residual),'pass':bool(passed)})
   else:
    X,Y,Z,T=[S.Symbol(z,positive=True)for z in'xyzt']
-   given=next(m for m in ms if '='in m and re.match(r'\s*\\(?:operatorname\{)?cos',m));left,right=given.split('=',1);known=parse(right);target=next(m for m in ms[ms.index(given)+1:]if r'cos'in m);target=clean(target);expr=parse(target);simpl=S.expand_trig(S.trigsimp(S.expand_trig(expr)));value=S.simplify(simpl.subs(S.cos(X),known))
+   given=next(m for m in ms if '='in m and'cos'in m.split('=',1)[0]);left,right=given.split('=',1);known=parse(right);cosine=parse(left);target=next(m for m in ms[ms.index(given)+1:]if r'cos'in m);target=clean(target);expr=parse(target);simpl=S.expand_trig(S.trigsimp(S.expand_trig(expr)));value=S.simplify(simpl.subs(cosine,known))
    if value.free_symbols:raise ValueError('Nonstandard cosine expression needs separate review')
    r.update(expected=str(value),method='cosine evenness/2π-periodicity followed by substitution')
    for f in q.get(':question/answer-fields',[]):

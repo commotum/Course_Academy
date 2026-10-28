@@ -1,13 +1,21 @@
 import collections,json,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];sys.path.insert(0,str(R/'scripts'));from migrate_learner_history import connection,kw
-from scripts.generator_source_policy import exclusion_query
 qmap={}
 for g,f in [('group-1','current.json'),('group-2','current.json'),('group-3','snapshot.json')]:
  for q in json.loads((H/g/f).read_text())['questions']:qmap[q[':db/id']]=q
-assert len(qmap)==3012;db=connection();direct=db.query('[:find ?m ?s ?c :where [?m :multistep/steps ?s] [?s :step/content ?c]]',[],H,'multistep-edges',9122);assigned=db.query('[:find ?p ?c :where [?p :assigned-problem/content ?c]]',[],H,'assigned-edges',9122)
-legacy=db.query('[:find ?a :where [?a :db/ident :multistep-step/question]]',[],H,'legacy-multistep-attribute',9122)
-if legacy:direct +=db.query('[:find ?m ?s ?c :where [?m :multistep/steps ?s] [?s :multistep-step/question ?c]]',[],H,'legacy-multistep-edges',9122)
+assert len(qmap)==3012;db=connection();direct=[];assigned=[];seen=set();pending=set(qmap)
+while pending:
+ current=sorted(pending-seen);pending=set();seen.update(current)
+ for offset in range(0,len(current),100):
+  ids=current[offset:offset+100];label=str(len(seen))+'-'+str(offset)
+  rows=db.query('[:find ?p ?c :in $ [?c ...] :where [?p :assigned-problem/content ?c]]',[ids],H,'assigned-bounded-'+label,9122);assigned+=rows;pending.update(p for p,c in rows if p not in seen)
+  step_rows=db.query('[:find ?c ?s :in $ [?c ...] :where [?s :step/content ?c]]',[ids],H,'content-steps-'+label,9122)
+  if step_rows:
+   owners=db.query('[:find ?m ?s :in $ [?s ...] :where [?m :multistep/steps ?s]]',[sorted({s for c,s in step_rows})],H,'step-owners-'+label,9122)
+   bystep=collections.defaultdict(list)
+   for m,s in owners:bystep[s].append(m)
+   direct.extend([m,s,c]for c,s in step_rows for m in bystep[s])
 children=collections.defaultdict(list)
 for p,c in assigned:children[p].append(c)
 contained=collections.defaultdict(set)

@@ -11,6 +11,8 @@ import argparse, hashlib, json, math, random, uuid, sys
 sys.dont_write_bytecode=True
 from math_format import normalize_prose,normalize_tex
 from pathlib import Path
+import sys
+sys.dont_write_bytecode=True
 import sympy as sp
 
 VERSION='1.2.1'

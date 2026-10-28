@@ -4893,6 +4893,406 @@
     "confidence": "high"
   },
   {
+    "entity": 17592186147725,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y={y}^{2}{e}^{x}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y={y}^{2}{e}^{x}.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186147725,
+      "identity": "q-106073",
+      "independent_P": "-1",
+      "independent_Q": "exp(x)",
+      "n": "2",
+      "z": "(C - exp(2*x))*exp(-x)/2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186147725,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)={e}^{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-{y}^{-1}={e}^{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-z={e}^{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+z=-{e}^{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=1,\\,Q(x)=-{e}^{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1)\\,\\text{d}x} \\\\  & ={e}^{x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{x}$ yields\n\n$$\n\\begin{aligned}{e}^{x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+z) & ={e}^{x}\\cdot (-{e}^{x}) \\\\ {e}^{x}\\cdot \\frac{\\text{d}z}{\\text{d}x}+z{e}^{x} & =-{e}^{2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{x}) & =-{e}^{2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{x})\\,\\text{d}x & =-\\int {e}^{2x}\\,\\text{d}x \\\\ z{e}^{x} & =-\\frac{1}{2}{e}^{2x}+{C}_{1} \\\\ z & =\\frac{C-{e}^{2x}}{2{e}^{x}},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-{e}^{2x}}{2{e}^{x}}\\,\u21d2\\,y=\\frac{2{e}^{x}}{C-{e}^{2x}}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)={e}^{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-{y}^{-1}={e}^{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-z={e}^{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+z=-{e}^{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=1,\\,Q(x)=-{e}^{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1)\\,\\text{d}x} \\\\  & ={e}^{x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{x}$ yields\n\n$$\n\\begin{aligned}{e}^{x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+z) & ={e}^{x}\\cdot (-{e}^{x}) \\\\ {e}^{x}\\cdot \\frac{\\text{d}z}{\\text{d}x}+z{e}^{x} & =-{e}^{2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{x}) & =-{e}^{2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{x})\\,\\text{d}x & =-\\int {e}^{2x}\\,\\text{d}x \\\\ z{e}^{x} & =-\\frac{1}{2}{e}^{2x}+{C}_{1} \\\\ z & =\\frac{C-{e}^{2x}}{2{e}^{x}},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-{e}^{2x}}{2{e}^{x}}\\,\u21d2\\,y=\\frac{2{e}^{x}}{C-{e}^{2x}}.\\end{aligned}\n$$\n\nUse intervals where $C-e^{2x}\\ne0$. The family displayed in the choices is nonzero. The original equation also admits $y=0$, which was excluded when dividing by a power of $y$.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186147725,
+      "identity": "q-106073",
+      "independent_P": "-1",
+      "independent_Q": "exp(x)",
+      "n": "2",
+      "z": "(C - exp(2*x))*exp(-x)/2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244216,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+xy=x{y}^{2}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+xy=x{y}^{2}.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244216,
+      "identity": "q-109026",
+      "independent_P": "x",
+      "independent_Q": "x",
+      "n": "2",
+      "z": "C*exp(x**2/2) + 1",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244216,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=x,\\,q(x)=x,\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}+x{y}^{-1}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}+xz=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-xz=-x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-x,\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-x)\\,\\text{d}x} \\\\  & ={e}^{-{x}^{2}/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-{x}^{2}/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-{x}^{2}/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-xz) & ={e}^{-{x}^{2}/2}\\cdot (-x) \\\\ {e}^{-{x}^{2}/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-xz{e}^{-{x}^{2}/2} & =-x{e}^{-{x}^{2}/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2}) & =-x{e}^{-{x}^{2}/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2})\\,\\text{d}x & =-\\int x{e}^{-{x}^{2}/2}\\,\\text{d}x \\\\ z{e}^{-{x}^{2}/2} & ={e}^{-{x}^{2}/2}+C \\\\ z & =1+C{e}^{{x}^{2}/2}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=1+C{e}^{{x}^{2}/2}\\,\u21d2\\,y=\\frac{1}{1+C{e}^{{x}^{2}/2}}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=x,\\,q(x)=x,\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}+x{y}^{-1}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}+xz=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-xz=-x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-x,\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-x)\\,\\text{d}x} \\\\  & ={e}^{-{x}^{2}/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-{x}^{2}/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-{x}^{2}/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-xz) & ={e}^{-{x}^{2}/2}\\cdot (-x) \\\\ {e}^{-{x}^{2}/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-xz{e}^{-{x}^{2}/2} & =-x{e}^{-{x}^{2}/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2}) & =-x{e}^{-{x}^{2}/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2})\\,\\text{d}x & =-\\int x{e}^{-{x}^{2}/2}\\,\\text{d}x \\\\ z{e}^{-{x}^{2}/2} & ={e}^{-{x}^{2}/2}+C \\\\ z & =1+C{e}^{{x}^{2}/2}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=1+C{e}^{{x}^{2}/2}\\,\u21d2\\,y=\\frac{1}{1+C{e}^{{x}^{2}/2}}.\\end{aligned}\n$$\n\nUse intervals where $1+Ce^{x^2/2}\\ne0$. The original equation also admits $y=0$; it is outside the requested nonzero family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244216,
+      "identity": "q-109026",
+      "independent_P": "x",
+      "independent_Q": "x",
+      "n": "2",
+      "z": "C*exp(x**2/2) + 1",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244217,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3{x}^{2}y={x}^{2}{y}^{-4}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3{x}^{2}y={x}^{2}{y}^{-4}.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244217,
+      "identity": "q-109027",
+      "independent_P": "-3*x**2",
+      "independent_Q": "x**2",
+      "n": "-4",
+      "z": "C*exp(5*x**3)/3 - 1/3",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": false,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244217,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-3{x}^{2},\\,q(x)={x}^{2},\\,n=-4.\n$$\n\nFirst, we multiply the differential equation by ${y}^{4},$ and we get\n\n$$\n{y}^{4}\\frac{dy}{dx}-3{x}^{2}{y}^{5}={x}^{2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{5}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=5{y}^{4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{4}\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}-3{x}^{2}z={x}^{2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z=5{x}^{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-15{x}^{2},\\,Q(x)=5{x}^{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-15{x}^{2})\\,\\text{d}x} \\\\  & ={e}^{-5{x}^{3}}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-5{x}^{3}}$ yields\n\n$$\n\\begin{aligned}{e}^{-5{x}^{3}}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z) & ={e}^{-5{x}^{3}}\\cdot (5{x}^{2}) \\\\ {e}^{-5{x}^{3}}\\cdot \\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z{e}^{-5{x}^{3}} & =5{x}^{2}{e}^{-5{x}^{3}} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}}) & =5{x}^{2}{e}^{-5{x}^{3}}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}})\\,\\text{d}x & =\\int 5{x}^{2}{e}^{-5{x}^{3}}\\,\\text{d}x \\\\ z{e}^{-5{x}^{3}} & =-\\frac{{e}^{-5{x}^{3}}}{3}+{C}_{1} \\\\ z & =\\frac{C{e}^{5{x}^{3}}-1}{3},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{5}.$ This results in\n\n$$\n\\begin{aligned}{y}^{5}=\\frac{C{e}^{5{x}^{3}}-1}{3}\\,\u21d2\\,y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-3{x}^{2},\\,q(x)={x}^{2},\\,n=-4.\n$$\n\nFirst, we multiply the differential equation by ${y}^{4},$ and we get\n\n$$\n{y}^{4}\\frac{dy}{dx}-3{x}^{2}{y}^{5}={x}^{2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{5}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=5{y}^{4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{4}\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}-3{x}^{2}z={x}^{2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z=5{x}^{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-15{x}^{2},\\,Q(x)=5{x}^{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-15{x}^{2})\\,\\text{d}x} \\\\  & ={e}^{-5{x}^{3}}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-5{x}^{3}}$ yields\n\n$$\n\\begin{aligned}{e}^{-5{x}^{3}}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z) & ={e}^{-5{x}^{3}}\\cdot (5{x}^{2}) \\\\ {e}^{-5{x}^{3}}\\cdot \\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z{e}^{-5{x}^{3}} & =5{x}^{2}{e}^{-5{x}^{3}} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}}) & =5{x}^{2}{e}^{-5{x}^{3}}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}})\\,\\text{d}x & =\\int 5{x}^{2}{e}^{-5{x}^{3}}\\,\\text{d}x \\\\ z{e}^{-5{x}^{3}} & =-\\frac{{e}^{-5{x}^{3}}}{3}+{C}_{1} \\\\ z & =\\frac{C{e}^{5{x}^{3}}-1}{3},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{5}.$ This results in\n\n$$\n\\begin{aligned}{y}^{5}=\\frac{C{e}^{5{x}^{3}}-1}{3}\\,\u21d2\\,y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}.\\end{aligned}\n$$\n\nTake the real fifth root and exclude points where $Ce^{5x^3}-1=0$. The original equation contains $y^{-4}$ and is undefined at $y=0$.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244217,
+      "identity": "q-109027",
+      "independent_P": "-3*x**2",
+      "independent_Q": "x**2",
+      "n": "-4",
+      "z": "C*exp(5*x**3)/3 - 1/3",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": false,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244218,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+y=-x{y}^{3}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+y=-x{y}^{3}.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244218,
+      "identity": "q-109028",
+      "independent_P": "1",
+      "independent_Q": "-x",
+      "n": "3",
+      "z": "C*exp(2*x)/2 - x - 1/2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244218,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=1,\\,q(x)=-x,\\,n=3.\n$$\n\nFirst, we divide the differential equation by ${y}^{3},$ and we get\n\n$$\n{y}^{-3}\\frac{dy}{dx}+{y}^{-2}=-x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-2{y}^{-3}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3}\\frac{\\text{d}y}{\\text{d}x}=-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}+z=-x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-2z=2x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-2,\\,Q(x)=2x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-2)\\,\\text{d}x} \\\\  & ={e}^{-2x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-2x}$ yields\n\n$$\n\\begin{aligned}{e}^{-2x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-2z) & ={e}^{-2x}\\cdot (2x) \\\\ {e}^{-2x}\\cdot \\frac{\\text{d}z}{\\text{d}x}-2z{e}^{-2x} & =2x{e}^{-2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x}) & =2x{e}^{-2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x})\\,\\text{d}x & =\\int 2x{e}^{-2x}\\,\\text{d}x \\\\ z{e}^{-2x} & =-\\frac{1}{2}{e}^{-2x}(2x+1)+{C}_{1} \\\\ z & =\\frac{C{e}^{2x}-2x-1}{2},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-2}=\\frac{C{e}^{2x}-2x-1}{2}\\,\u21d2\\,y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=1,\\,q(x)=-x,\\,n=3.\n$$\n\nFirst, we divide the differential equation by ${y}^{3},$ and we get\n\n$$\n{y}^{-3}\\frac{dy}{dx}+{y}^{-2}=-x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-2{y}^{-3}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3}\\frac{\\text{d}y}{\\text{d}x}=-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}+z=-x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-2z=2x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-2,\\,Q(x)=2x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-2)\\,\\text{d}x} \\\\  & ={e}^{-2x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-2x}$ yields\n\n$$\n\\begin{aligned}{e}^{-2x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-2z) & ={e}^{-2x}\\cdot (2x) \\\\ {e}^{-2x}\\cdot \\frac{\\text{d}z}{\\text{d}x}-2z{e}^{-2x} & =2x{e}^{-2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x}) & =2x{e}^{-2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x})\\,\\text{d}x & =\\int 2x{e}^{-2x}\\,\\text{d}x \\\\ z{e}^{-2x} & =-\\frac{1}{2}{e}^{-2x}(2x+1)+{C}_{1} \\\\ z & =\\frac{C{e}^{2x}-2x-1}{2},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-2}=\\frac{C{e}^{2x}-2x-1}{2}\\,\u21d2\\,y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}.\\end{aligned}\n$$\n\nFor the displayed nonzero real family, require $Ce^{2x}-2x-1>0$ and retain both signs of the square root. The original equation also admits $y=0$, outside this family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244218,
+      "identity": "q-109028",
+      "independent_P": "1",
+      "independent_Q": "-x",
+      "n": "3",
+      "z": "C*exp(2*x)/2 - x - 1/2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244219,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y=\\sqrt{y}.\n$$",
+    "after": "Find the general positive solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y=\\sqrt{y}.\n$$ Choose constants and intervals with $Ce^{x/2}-1>0$.",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244219,
+      "identity": "q-109029",
+      "independent_P": "-1",
+      "independent_Q": "1",
+      "n": "1/2",
+      "z": "C*exp(x/2) - 1",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244219,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)=1,\\,n=\\frac{1}{2}.\n$$\n\nFirst, we divide the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{-1/2}\\frac{dy}{dx}-{y}^{1/2}=1.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{2}{y}^{-1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-1/2}\\frac{\\text{d}y}{\\text{d}x}=2\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n2\\,\\frac{\\text{d}z}{\\text{d}x}-z=1\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z=\\frac{1}{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-\\frac{1}{2},\\,Q(x)=\\frac{1}{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-1/2)\\,\\text{d}x} \\\\  & ={e}^{-x/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-x/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-x/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z) & ={e}^{-x/2}\\cdot \\left(\\frac{1}{2}\\right) \\\\ {e}^{-x/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z{e}^{-x/2} & =\\frac{1}{2}{e}^{-x/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2}) & =\\frac{1}{2}{e}^{-x/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2})\\,\\text{d}x & =\\int \\frac{1}{2}{e}^{-x/2}\\,\\text{d}x \\\\ z{e}^{-x/2} & =-{e}^{-x/2}+{C}_{1} \\\\ z & =C{e}^{x/2}-1,\\end{aligned}\n$$\n\nwhere $C={C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{1/2}=C{e}^{x/2}-1\\,\u21d2\\,y={(C{e}^{x/2}-1)}^{2}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)=1,\\,n=\\frac{1}{2}.\n$$\n\nFirst, we divide the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{-1/2}\\frac{dy}{dx}-{y}^{1/2}=1.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{2}{y}^{-1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-1/2}\\frac{\\text{d}y}{\\text{d}x}=2\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n2\\,\\frac{\\text{d}z}{\\text{d}x}-z=1\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z=\\frac{1}{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-\\frac{1}{2},\\,Q(x)=\\frac{1}{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-1/2)\\,\\text{d}x} \\\\  & ={e}^{-x/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-x/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-x/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z) & ={e}^{-x/2}\\cdot \\left(\\frac{1}{2}\\right) \\\\ {e}^{-x/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z{e}^{-x/2} & =\\frac{1}{2}{e}^{-x/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2}) & =\\frac{1}{2}{e}^{-x/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2})\\,\\text{d}x & =\\int \\frac{1}{2}{e}^{-x/2}\\,\\text{d}x \\\\ z{e}^{-x/2} & =-{e}^{-x/2}+{C}_{1} \\\\ z & =C{e}^{x/2}-1,\\end{aligned}\n$$\n\nwhere $C={C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{1/2}=C{e}^{x/2}-1\\,\u21d2\\,y={(C{e}^{x/2}-1)}^{2}.\\end{aligned}\n$$\n\nSince $z=\\sqrt y$, require $Ce^{x/2}-1>0$ for the requested positive family. Squaring a negative value of $z$ introduces a function that does not solve the original equation. The original equation also admits $y=0$, excluded by the positive condition.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244219,
+      "identity": "q-109029",
+      "independent_P": "-1",
+      "independent_Q": "1",
+      "n": "1/2",
+      "z": "C*exp(x/2) - 1",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244240,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x}=\\sqrt{x}\\,{y}^{2}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x}=\\sqrt{x}\\,{y}^{2}.\n$$\n\nWork on intervals with $x>0$.",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244240,
+      "identity": "q-109154",
+      "independent_P": "-1/x",
+      "independent_Q": "sqrt(x)",
+      "n": "2",
+      "z": "(C - 2*x**(5/2))/(5*x)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244240,
+    "attribute": "question/worked-solution",
+    "before": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=\\sqrt{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{x}{y}^{-1}=\\sqrt{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=\\sqrt{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-\\sqrt{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-\\sqrt{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-\\sqrt{x}) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-x\\sqrt{x} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =\\int -{x}^{3/2}\\,\\text{d}x \\\\ xz & =-\\frac{2{x}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{x}^{5/2}}{5x},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{x}^{5/2}}{5x}\\,\u21d2\\,y=\\frac{5x}{C-2{x}^{5/2}}.\\end{aligned}\n$$",
+    "after": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=\\sqrt{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{x}{y}^{-1}=\\sqrt{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=\\sqrt{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-\\sqrt{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-\\sqrt{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-\\sqrt{x}) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-x\\sqrt{x} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =\\int -{x}^{3/2}\\,\\text{d}x \\\\ xz & =-\\frac{2{x}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{x}^{5/2}}{5x},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{x}^{5/2}}{5x}\\,\u21d2\\,y=\\frac{5x}{C-2{x}^{5/2}}.\\end{aligned}\n$$\n\nWork on $x>0$ and exclude zeros of $C-2x^{5/2}$. The original equation also admits $y=0$, outside the requested nonzero family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244240,
+      "identity": "q-109154",
+      "independent_P": "-1/x",
+      "independent_Q": "sqrt(x)",
+      "n": "2",
+      "z": "(C - 2*x**(5/2))/(5*x)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244246,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\nx\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4}.\n$$",
+    "after": "Find the general positive solution to the differential equation\n\n$$\nx\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4}.\n$$\n\nWork on intervals with $x>0$. Choose constants and intervals with $x^{9/4}+C>0$.",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244246,
+      "identity": "q-109170",
+      "independent_P": "1/x",
+      "independent_Q": "x",
+      "n": "3/4",
+      "z": "(C + x**(9/4))/(9*x**(1/4))",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244246,
+    "attribute": "question/worked-solution",
+    "before": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}x\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4} \\\\ \\frac{\\text{d}y}{\\text{d}x}+\\frac{y}{x} & =x{y}^{3/4}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)=x,\\,n=\\frac{3}{4}.\n$$\n\nNow, we divide the differential equation by ${y}^{3/4},$ and we get\n\n$$\n{y}^{-3/4}\\frac{dy}{dx}+{x}^{-1}{y}^{1/4}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/4}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{4}{y}^{-3/4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3/4}\\frac{\\text{d}y}{\\text{d}x}=4\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n4\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z=\\frac{x}{4}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{4x},\\,Q(x)=\\frac{x}{4}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/4x)\\,\\text{d}x} \\\\  & ={e}^{(1/4)\\operatorname{ln}\u2061x} \\\\  & ={x}^{1/4}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{1/4}$ yields\n\n$$\n\\begin{aligned}{x}^{1/4}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z) & ={x}^{1/4}\\cdot \\left(\\frac{x}{4}\\right) \\\\ {x}^{1/4}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-3/4}z & =\\frac{{x}^{5/4}}{4} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4}) & =\\frac{{x}^{5/4}}{4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4})\\,\\text{d}x & =\\int \\frac{{x}^{5/4}}{4}\\,\\text{d}x \\\\ z{x}^{1/4} & =\\frac{1}{9}{x}^{9/4}+{C}_{1} \\\\ z & =\\frac{{x}^{9/4}+C}{9{x}^{1/4}},\\end{aligned}\n$$\n\nwhere $C=9{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/4}.$ This results in\n\n$$\n{y}^{1/4}=\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\,\u21d2\\,y={\\left(\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\right)}^{4}\\,.\n$$",
+    "after": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}x\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4} \\\\ \\frac{\\text{d}y}{\\text{d}x}+\\frac{y}{x} & =x{y}^{3/4}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)=x,\\,n=\\frac{3}{4}.\n$$\n\nNow, we divide the differential equation by ${y}^{3/4},$ and we get\n\n$$\n{y}^{-3/4}\\frac{dy}{dx}+{x}^{-1}{y}^{1/4}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/4}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{4}{y}^{-3/4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3/4}\\frac{\\text{d}y}{\\text{d}x}=4\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n4\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z=\\frac{x}{4}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{4x},\\,Q(x)=\\frac{x}{4}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/4x)\\,\\text{d}x} \\\\  & ={e}^{(1/4)\\operatorname{ln}\u2061x} \\\\  & ={x}^{1/4}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{1/4}$ yields\n\n$$\n\\begin{aligned}{x}^{1/4}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z) & ={x}^{1/4}\\cdot \\left(\\frac{x}{4}\\right) \\\\ {x}^{1/4}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-3/4}z & =\\frac{{x}^{5/4}}{4} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4}) & =\\frac{{x}^{5/4}}{4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4})\\,\\text{d}x & =\\int \\frac{{x}^{5/4}}{4}\\,\\text{d}x \\\\ z{x}^{1/4} & =\\frac{1}{9}{x}^{9/4}+{C}_{1} \\\\ z & =\\frac{{x}^{9/4}+C}{9{x}^{1/4}},\\end{aligned}\n$$\n\nwhere $C=9{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/4}.$ This results in\n\n$$\n{y}^{1/4}=\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\,\u21d2\\,y={\\left(\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\right)}^{4}\\,.\n$$\n\nWork on $x>0$ and require $x^{9/4}+C>0$. This is necessary because $z=y^{1/4}>0$ in the requested positive family; taking the fourth power of a negative $z$ would not recover the same branch. The original equation also admits $y=0$, outside this family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244246,
+      "identity": "q-109170",
+      "independent_P": "1/x",
+      "independent_Q": "x",
+      "n": "3/4",
+      "z": "(C + x**(9/4))/(9*x**(1/4))",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244247,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}+2xy}{{x}^{2}}.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}+2xy}{{x}^{2}}.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244247,
+      "identity": "q-109172",
+      "independent_P": "-2/x",
+      "independent_Q": "x**(-2)",
+      "n": "2",
+      "z": "(C - x)/x**2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244247,
+    "attribute": "question/worked-solution",
+    "before": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}+2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{x}^{2}}+\\frac{2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x}-2{x}^{-1}y & ={x}^{-2}{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-2{x}^{-1},\\,q(x)={x}^{-2},\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-2{x}^{-1}{y}^{-1}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-2{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z=-{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{2}{x},\\,Q(x)=-\\frac{1}{{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (2/x)\\,\\text{d}x} \\\\  & ={e}^{2\\operatorname{ln}\u2061x} \\\\  & ={x}^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{2}$ yields\n\n$$\n\\begin{aligned}{x}^{2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z) & ={x}^{2}\\cdot (-{x}^{-2}) \\\\ {x}^{2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+2xz & =-1 \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{2}z) & =-1.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{2}z)\\,\\text{d}x & =-\\int 1\\,\\text{d}x \\\\ {x}^{2}z & =-x+C \\\\ z & =\\frac{C-x}{{x}^{2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-x}{{x}^{2}}\\,\u21d2\\,y=\\frac{{x}^{2}}{C-x}\\,.\n$$",
+    "after": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}+2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{x}^{2}}+\\frac{2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x}-2{x}^{-1}y & ={x}^{-2}{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-2{x}^{-1},\\,q(x)={x}^{-2},\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-2{x}^{-1}{y}^{-1}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-2{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z=-{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{2}{x},\\,Q(x)=-\\frac{1}{{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (2/x)\\,\\text{d}x} \\\\  & ={e}^{2\\operatorname{ln}\u2061x} \\\\  & ={x}^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{2}$ yields\n\n$$\n\\begin{aligned}{x}^{2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z) & ={x}^{2}\\cdot (-{x}^{-2}) \\\\ {x}^{2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+2xz & =-1 \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{2}z) & =-1.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{2}z)\\,\\text{d}x & =-\\int 1\\,\\text{d}x \\\\ {x}^{2}z & =-x+C \\\\ z & =\\frac{C-x}{{x}^{2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-x}{{x}^{2}}\\,\u21d2\\,y=\\frac{{x}^{2}}{C-x}\\,.\n$$\n\nUse an interval with $x\\ne0$ and $C-x\\ne0$. The original equation also admits $y=0$, outside the requested nonzero family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244247,
+      "identity": "q-109172",
+      "independent_P": "-2/x",
+      "independent_Q": "x**(-2)",
+      "n": "2",
+      "z": "(C - x)/x**2",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244248,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\sqrt{y}}-xy.\n$$",
+    "after": "Find the general positive solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\sqrt{y}}-xy.\n$$\n\nWork on intervals with $x>0$. Choose constants and intervals with $3\\sqrt{x}+C>0$.",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244248,
+      "identity": "q-109177",
+      "independent_P": "1/x",
+      "independent_Q": "x**(-2)",
+      "n": "-1/2",
+      "z": "(C + 3*sqrt(x))/x**(3/2)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": false,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186244248,
+    "attribute": "question/worked-solution",
+    "before": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={y}^{-1/2}-xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}+xy & ={y}^{-1/2} \\\\ \\frac{dy}{dx}+{x}^{-1}y & ={x}^{-2}{y}^{-1/2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)={x}^{-2},\\,n=-\\frac{1}{2}.\n$$\n\nNow, we multiply the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{1/2}\\frac{dy}{dx}+{x}^{-1}{y}^{3/2}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{3/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{3}{2}{y}^{1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{1/2}\\frac{\\text{d}y}{\\text{d}x}=\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z=\\frac{3}{2}{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{3}{2x},\\,Q(x)=\\frac{3}{2{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (3/2x)\\,\\text{d}x} \\\\  & ={e}^{(3/2)\\operatorname{ln}\u2061x} \\\\  & ={x}^{3/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{3/2}$ yields\n\n$$\n\\begin{aligned}{x}^{3/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z) & ={x}^{3/2}\\cdot (\\frac{3}{2}{x}^{-2}) \\\\ {x}^{3/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{1/2}z & =\\frac{3}{2}{x}^{-1/2} \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z) & =\\frac{3}{2}{x}^{-1/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z)\\,\\text{d}x & =\\int \\frac{3}{2}{x}^{-1/2}\\,\\text{d}x \\\\ {x}^{3/2}z & =3{x}^{1/2}+C \\\\ z & =\\frac{3\\sqrt{x}+C}{{x}^{3/2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{3/2}.$ This results in\n\n$$\n{y}^{3/2}=\\frac{3\\sqrt{x}+C}{{x}^{3/2}}\\,\u21d2\\,y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}\\,.\n$$",
+    "after": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={y}^{-1/2}-xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}+xy & ={y}^{-1/2} \\\\ \\frac{dy}{dx}+{x}^{-1}y & ={x}^{-2}{y}^{-1/2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)={x}^{-2},\\,n=-\\frac{1}{2}.\n$$\n\nNow, we multiply the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{1/2}\\frac{dy}{dx}+{x}^{-1}{y}^{3/2}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{3/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{3}{2}{y}^{1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{1/2}\\frac{\\text{d}y}{\\text{d}x}=\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z=\\frac{3}{2}{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{3}{2x},\\,Q(x)=\\frac{3}{2{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (3/2x)\\,\\text{d}x} \\\\  & ={e}^{(3/2)\\operatorname{ln}\u2061x} \\\\  & ={x}^{3/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{3/2}$ yields\n\n$$\n\\begin{aligned}{x}^{3/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z) & ={x}^{3/2}\\cdot (\\frac{3}{2}{x}^{-2}) \\\\ {x}^{3/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{1/2}z & =\\frac{3}{2}{x}^{-1/2} \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z) & =\\frac{3}{2}{x}^{-1/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z)\\,\\text{d}x & =\\int \\frac{3}{2}{x}^{-1/2}\\,\\text{d}x \\\\ {x}^{3/2}z & =3{x}^{1/2}+C \\\\ z & =\\frac{3\\sqrt{x}+C}{{x}^{3/2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{3/2}.$ This results in\n\n$$\n{y}^{3/2}=\\frac{3\\sqrt{x}+C}{{x}^{3/2}}\\,\u21d2\\,y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}\\,.\n$$\n\nWork on $x>0$ and require $3\\sqrt x+C>0$, since $z=y^{3/2}>0$. Raising a negative base to $2/3$ does not invert the positive power $y^{3/2}$. The original equation is undefined at $y=0$.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186244248,
+      "identity": "q-109177",
+      "independent_P": "1/x",
+      "independent_Q": "x**(-2)",
+      "n": "-1/2",
+      "z": "(C + 3*sqrt(x))/x**(3/2)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": false,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186399657,
+    "attribute": "question/problem",
+    "before": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}={x}^{3}{y}^{2}+xy.\n$$",
+    "after": "Find the general nonzero real solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}={x}^{3}{y}^{2}+xy.\n$$",
+    "reason": "State the nonzero/positive Bernoulli family and real intervals represented by the unchanged existing choices; prevent lost equilibria and spurious branches after division/power inversion",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186399657,
+      "identity": "q-109158",
+      "independent_P": "-1/x",
+      "independent_Q": "x",
+      "n": "2",
+      "z": "(C - x**3)/(3*x)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
+    "entity": 17592186399657,
+    "attribute": "question/worked-solution",
+    "before": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={x}^{3}{y}^{2}+xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}-xy & ={x}^{3}{y}^{2} \\\\ \\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x} & =x{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=x,\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{{y}^{-1}}{x}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-x\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-x) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-{x}^{2} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =-\\int {x}^{2}\\,\\text{d}x \\\\ xz & =-\\frac{{x}^{3}}{3}+{C}_{1} \\\\ z & =\\frac{C-{x}^{3}}{3x},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-{x}^{3}}{3x}\\,\u21d2\\,y=\\frac{3x}{C-{x}^{3}}\\,.\n$$",
+    "after": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={x}^{3}{y}^{2}+xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}-xy & ={x}^{3}{y}^{2} \\\\ \\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x} & =x{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=x,\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{{y}^{-1}}{x}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-x\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-x) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-{x}^{2} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =-\\int {x}^{2}\\,\\text{d}x \\\\ xz & =-\\frac{{x}^{3}}{3}+{C}_{1} \\\\ z & =\\frac{C-{x}^{3}}{3x},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-{x}^{3}}{3x}\\,\u21d2\\,y=\\frac{3x}{C-{x}^{3}}\\,.\n$$\n\nUse intervals with $x\\ne0$ and $C-x^3\\ne0$. The original equation also admits $y=0$, outside the requested nonzero family.",
+    "reason": "Independently proved real-branch/domain restriction and separate zero-equilibrium check for Bernoulli substitution",
+    "evidence": {
+      "basis": 9122,
+      "question": 17592186399657,
+      "identity": "q-109158",
+      "independent_P": "-1/x",
+      "independent_Q": "x",
+      "n": "2",
+      "z": "(C - x**3)/(3*x)",
+      "linearized_residual": "0",
+      "zero_equilibrium_admissible": true,
+      "proof": "For nonzero real y on the stated branch, z\u2032=(1\u2212n)y^(\u2212n)y\u2032, hence z\u2032+(1\u2212n)Pz=(1\u2212n)Q. Nonnegative roots require the displayed positive z. Direct substitution checks y=0 only where original powers are defined."
+    },
+    "confidence": "high"
+  },
+  {
     "entity": 17592186216448,
     "attribute": "answer/value",
     "before": "\\exp (\\intg(x)dx)",

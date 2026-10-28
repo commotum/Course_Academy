@@ -8,6 +8,8 @@ No asset generation, network access, database access or repository runtime paths
 """
 from __future__ import annotations
 import argparse,copy,hashlib,json,pathlib,random,sys,uuid
+import sys
+sys.dont_write_bytecode=True
 import sympy as sp
 from math_format import normalize_prose, normalize_tex, checked_math_content
 KP_ID=17592186092260

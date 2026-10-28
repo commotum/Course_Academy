@@ -4,9 +4,10 @@ H=Path(__file__).resolve().parent
 # Preserve the original 57 source-format proposals separately before consolidation.
 if not(H/'format-proposals.json').exists():(H/'format-proposals.json').write_text((H/'proposals.json').read_text())
 p={}
-for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json','integral-display-proposals.json','operator-proposals.json']:
+for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json','integral-display-proposals.json','operator-proposals.json','bernoulli-domain-proposals.json']:
  for x in json.loads((H/filename).read_text()):
   k=x['entity'],x['attribute']
+  if k in p and filename=='bernoulli-domain-proposals.json' and x['attribute']=='question/worked-solution':x['after']=p[k]['after']+x['after'][len(x['before']):]
   if k in p and filename=='operator-proposals.json':
    x['after']=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log|exp)\}(?=\s*\^)',lambda m:r'\operatorname{'+m[1]+'}',p[k]['after'])
   if k in p:x['reason']=p[k]['reason']+'; '+x['reason'];x['evidence']={'earlier':p[k]['evidence'],'current':x['evidence']}
@@ -39,5 +40,7 @@ for qid in[17592186217792,17592186167067,17592186167069,17592186167070,175921860
  q=qp[qid];fs=q[':question/answer-fields'];keep=[f for f in fs if f.get(':answer-field/correct')];assert len(keep)==len({f[':answer-field/key']for f in fs})
  relations.append({'entity':qid,'attribute':'question/answer-fields','before':sorted(f[':db/id']for f in fs),'after':sorted(f[':db/id']for f in keep),'reason':'Detach duplicate obsolete response fields from question; source proves one control per key, current keyed replacement bank is complete; retain all detached entities and learner history','evidence':{'basis':9122,'identity':q[':question/math-academy-id'],'source_control_count':len(keep),'history_policy':'No field, answer, or learner-response entity deletion or mutation'},'confidence':'high'})
  q[':question/answer-fields']=keep
+for x in json.loads((H/'choice-membership-proposals.json').read_text()):
+ f=entities[x['entity']];f[':answer-field/choices']=[a for a in f[':answer-field/choices']if a[':db/id']in x['after']]
 (H/'relation-proposals.json').write_text(json.dumps(relations,indent=2)+'\n');(H/'proposed-questions.json').write_text(json.dumps(questions,indent=2)+'\n')
 print('content',len(p),'keys',len(keys),'relations',len(relations))

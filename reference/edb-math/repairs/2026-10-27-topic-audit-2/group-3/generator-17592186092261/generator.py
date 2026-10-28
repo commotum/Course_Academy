@@ -16,6 +16,7 @@ import sys
 import uuid
 from pathlib import Path
 
+import sys
 sys.dont_write_bytecode=True
 import sympy as sp
 from math_format import normalize_prose, normalize_tex, checked_math_content

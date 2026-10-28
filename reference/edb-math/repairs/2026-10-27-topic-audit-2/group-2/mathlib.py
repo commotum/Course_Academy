@@ -20,6 +20,7 @@ def clean(v):
  v=re.sub(r'\\frac\\pi\s*([0-9])',r'\\frac{\\pi}{\1}',v)
  # x(y+h) is multiplication in multivariable formulas. ODE y(x) is handled before parsing.
  v=re.sub(r'(?<![A-Za-z\\_])([xyz])\s*\(',r'\1\\cdot(',v)
+ v=re.sub(r"\{?([xy])\}?\s*\^\s*\{\s*'\s*\}",r"\1'",v)
  return v.rstrip('.,?; ')
 @functools.lru_cache(maxsize=30000)
 def parse(v):
@@ -39,6 +40,7 @@ def simple(v):return S.simplify(S.trigsimp(v))
 def equivalent(a,b):return simple(a-b)==0
 
 def equation(v):
+ v=re.sub(r"y\s*'",'D',clean(v))
  e=parse(re.sub(r'y\s*\(\s*x\s*\)', 'y',v))
  if not isinstance(e,S.Equality):raise ValueError('No equality')
  f=e.lhs-e.rhs

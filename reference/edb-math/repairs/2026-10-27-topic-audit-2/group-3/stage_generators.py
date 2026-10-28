@@ -8,7 +8,7 @@ for kp,newversion in [(17592186092260,'linear-e-workspace-5'),(17592186092261,'g
  for p in [dest,*dest.rglob('*')]:p.chmod(0o755 if p.is_dir()else 0o644)
  for p in dest.rglob('__pycache__'):shutil.rmtree(p)
  text=source.read_text();oldversion=re.search(r"VERSION\s*=\s*'([^']+)'",text)[1];text=re.sub(r"(VERSION\s*=\s*)'[^']+'",lambda m:m[1]+repr(newversion),text,count=1)
- text=text.replace('import sympy as sp','sys.dont_write_bytecode=True\nimport sympy as sp')if 'import sys'in text else text
+ text=text.replace('import sympy as sp','import sys\nsys.dont_write_bytecode=True\nimport sympy as sp')
  if kp==17592186078584:
   text=text.replace('import argparse, hashlib, json, math, random, uuid','import argparse, hashlib, json, math, random, uuid, sys\nsys.dont_write_bytecode=True\nfrom math_format import normalize_prose,normalize_tex')
   marker="    content={'version':VERSION,'level':level,'prompt':prompt,'solution':solution,'bank':sorted(bank),'correct':right}"
