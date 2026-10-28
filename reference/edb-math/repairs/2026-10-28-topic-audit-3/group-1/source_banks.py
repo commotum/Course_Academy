@@ -24,6 +24,7 @@ def read(line):
  p=p if p.is_absolute()else R/p
  try:d=json.loads(p.read_text())
  except Exception:return None
+ if not isinstance(d,dict):return None
  fields=[]
  for f in d.get('fields',[]):
   choices=[]

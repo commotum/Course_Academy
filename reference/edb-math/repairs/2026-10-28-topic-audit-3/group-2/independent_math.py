@@ -7,7 +7,7 @@ I,J,K=S.symbols('i j k');LOC={'x':X,'y':Y,'z':Z,'t':T,'i':I,'j':J,'k':K,'u':S.Sy
 def clean(v):
  v=re.sub(r'\\(?:mathbf|boldsymbol)\s*\{([A-Za-z])\}',r'\1',v);v=re.sub(r'\\(?:mathbf|boldsymbol)\s+([A-Za-z])',r'\1',v);v=re.sub(r'\\(?:begin|end)\{aligned\}','',v).replace('&','');return v.strip().rstrip('.,')
 def scalar(v):
- v=clean(v);v=v.replace(r'\mathrm{N}','').replace(r'\mathrm{J}','');e=L.parse(v)
+ v=clean(v);v=re.sub(r'\\(sin|cos|tan|sec|csc|cot)\s*(-?\d+)\s*([tuvxyz])',lambda m:'\\'+m[1]+'{('+m[2]+m[3]+')}',v);v=v.replace(r'\mathrm{N}','').replace(r'\mathrm{J}','');e=L.parse(v)
  return e.xreplace({s:LOC.get(s.name,s)for s in e.free_symbols})
 def expr(v):return S.sympify(v,locals=LOC)
 def balanced_parts(s,separator=','):
@@ -22,11 +22,15 @@ def vector(v):
  for left,right in[(r'\begin{bmatrix}',r'\end{bmatrix}'),(r'\begin{pmatrix}',r'\end{pmatrix}'),('⟨','⟩'),(r'\langle',r'\rangle')]:
   if left in v:
    a=v.index(left)+len(left);b=v.index(right,a);body=v[a:b].replace(r'\,',' ').replace(r'\;',' ');parts=body.split('\\\\')if'begin'in left else balanced_parts(body);return S.Matrix([scalar(p)for p in parts])
+ try:
+  e=scalar(v);vv=S.Matrix([S.expand(e).coeff(i)for i in[I,J,K]])
+  if S.simplify(e-sum(vv[n]*i for n,i in enumerate([I,J,K])))==0:return vv[:2,0]if not vv[2]and'k'not in v else vv
+ except Exception:pass
  raw=L.clean(v).replace('\\\\','').replace('{}','');tokens=list(re.finditer(r'\\[A-Za-z]+|[ijk]',raw));units=[m for m in tokens if m[0]in['i','j','k']]
  if not units:raise ValueError('Not a basis vector')
  coeff={c:S.Integer(0)for c in 'ijk'};start=0
  for m in units:
-  body=raw[start:m.start()].strip().rstrip(r'\cdot').strip()
+  body=re.sub(r'\\cdot\s*$','',raw[start:m.start()].strip()).strip()
   coeff[m[0]]+=scalar(body)if body not in['','+','-']else(-1 if body=='-'else 1);start=m.end()
  if raw[start:].strip().strip('.,'):raise ValueError('Nonbasis residual')
  vv=S.Matrix([coeff[c]for c in 'ijk']);return vv[:2,0]if not vv[2]and not any(m[0]=='k'for m in units)else vv
@@ -84,6 +88,7 @@ def check(kp,record):
   grad=ass['grad_f']['value'];r=ass['r']['value'];dot=grad.subs(dict(zip([X,Y,Z],list(r))),simultaneous=True).dot(r.diff(T));point=expr(str(p['point']));return compare(v,S.simplify(dot.subs(T,point))),'Supplied gradient dotted with independently differentiated velocity, then point substitution.'
  if kp==17592186124574:
   potential=scalar(v.split('=',1)[-1]);field=ass['F']['value'];expected=S.Matrix([S.diff(potential,w)for w in[X,Y,Z]]);assert all(S.simplify(a-b)==0 for a,b in zip(expected,field));return str(expected-field),'All three partial derivatives of selected potential reproduce the supplied vector field; arbitrary constant differentiates to0.'
+ if kp==17592186166867:return compare(v,S.Rational(p['b']**2,2*p['a'])/Y),'Independent implicit derivative of y²=(b²/a)x from displayed marked point or supplied equation; vertex division excluded.'
  if kp in[17592186166865,17592186166866]:
   hh,kk=expr(str(p['h'])),expr(str(p['k']));factor=1 if kp==17592186166865 else S.Rational(p['b']**2,p['a']**2);return compare(v,-factor*(X-hh)/(Y-kk)),'Implicit differentiation of independently formed circle/ellipse equation; finite-slope denominator excluded.'
  if kp==17592186096700:
@@ -110,8 +115,14 @@ def check(kp,record):
  if kp==17592186096648:
   # The common source-derived factor is explicit in both sampled coefficient pairs.
   return compare(v,expr(str(p['k']))),'Both independent a,b coefficient equations yield the same nonzero scale factor; nonzero common vector guard retained.'
+ if kp==17592186096649:
+  expected=[S.Rational(k)for k in g['scales']];prompt_image=re.search(r'!\[\]\(([^)]+)\)',q[':question/problem'])[1];side=json.loads(Path(prompt_image).with_suffix('.json').read_text());base=side['spec']['vectors'][0]['vector'];chosen=Path(v);spec=json.loads(chosen.with_suffix('.json').read_text())['spec'];actual=[]
+  axis=0 if abs(base[0])>abs(base[1])else 1
+  for vv in spec['vectors']:actual.append(vv['vector'][axis]/base[axis])
+  assert len(actual)==len(expected)and all(abs(float(a-b))<1e-10 for a,b in zip(actual,expected)),(actual,expected)
+  return str(actual),'Actual rendered image sidecar vector components have exactly the target scalar lengths/signs/order relative to the prompt arrow; full shared viewport unchanged.'
  if kp==17592186115390:
-  raw=clean(L.maths(q[':question/problem'])[0][1]);target=raw.split('^{')[0];aa=S.symbols('A B C');sub={n:aa[i]for i,n in enumerate(['f','g','h'])}
+  raw=clean(L.maths(q[':question/problem'])[0][1]);target=raw.split('^{')[0];aa=[L.A,S.Symbol('B'),L.C];sub={n:aa[i]for i,n in enumerate(['f','g','h'])}
   for n,a in sub.items():target=target.replace(n+'(t)',str(a))
   ex=scalar(target);expected=S.zeros(3,1)
   for n,a in sub.items():
@@ -126,7 +137,7 @@ def check(kp,record):
   # Read endpoints from the actual statement, including irrational endpoints.
   endpoints=None
   for _,mm in L.maths(q[':question/problem']):
-   z=clean(mm);mt=re.search(r'([\s\S]+?)\\le\s*t\s*\\le([\s\S]+)',z)
+   z=clean(mm);z=z.split(r'\qquad')[-1].split(',')[-1];mt=re.search(r'([\s\S]+?)\\le\s*t\s*\\le([\s\S]+)',z)
    if mt:
     try:endpoints=(scalar(mt[1]),scalar(mt[2]))
     except Exception:pass

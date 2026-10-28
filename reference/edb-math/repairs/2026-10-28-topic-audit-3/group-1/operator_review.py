@@ -1,7 +1,7 @@
 import json,re,runpy
 from pathlib import Path
 H=Path(__file__).resolve().parent
-ns=runpy.run_path(str(H/'propose_formulas.py'));canon=ns['canonical'];out=[]
+ns={'__file__':str(H/'propose_formulas.py')};exec((H/'propose_formulas.py').read_text().split('props=[];reject=[]')[0],ns);canon=ns['canonical'];out=[]
 for r in json.loads((H/'comparison.json').read_text()):
  s=r['best']
  if not s or len(s['formulas'])!=len(r['current']):continue

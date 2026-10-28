@@ -2,6 +2,10 @@
 
 Use the question families identified by [Classify](3-classify.md), analyzing each difficulty and answer-field combination separately.
 
+Read the complete problem, parent setup and response frame before validating a key or changing the interaction type. Discovery excerpts and formula-only previews omit decisive conditions. For parametrized curves, check the starting point, direction, parameter interval and traversal count as well as the locus: swapping sine and cosine can preserve an ellipse while violating its required start and direction. Preserve each lesson's stated normal/orientation convention when checking flux.
+
+Search retained source archives without ignoring captured files, scoped to the source/capture directories. Include hashed observations such as `history-q-ID-HASH.json` and hashed before/after captures; an exact-basename matcher can falsely report a missing source even after complete file discovery. Confirm the observed Math Academy identity and DOM provenance inside each candidate, reconcile conflicting versions, and distinguish genuinely unavailable originals from unindexed files.
+
 Use the filtered instructional capture and its current source-eligibility ledger.
 Archived multistep parts and retired questions cannot supply a standalone family.
 Do not reconstruct their omitted prior context during template extraction. An
@@ -22,6 +26,8 @@ Keep variation inside that definition. A changed target must preserve its role a
 For example, a route-matrix sum can keep three unknowns, the expression `a+b+c`, ordinary headings, and three route-count explanations as its backbone. A template with one loop query and two other directed queries can vary their eligible cells and letter assignments while retaining that mix. A fixed B→B target is an example value of the loop slot. Changing the sum to a product, adding multistep journeys, or varying the number of unknowns is outside this template's slots.
 
 Use broad feature categories that cover different mathematical topics. Record properties such as sign, exactness, or perfect-power structure when they affect the method or difficulty. Preserve nested structure and operator inputs; naming an operation alone does not describe its template.
+
+Keep dot, cross and scalar multiplication roles distinct. In a scalar triple product, the outer dot and inner cross must stay in their original positions; curl uses a cross while divergence uses a dot. Compare the surrounding operands and ordered operator sequence, not just operator counts, and never apply scalar multiplication-style normalization to vector products.
 
 Record domains and branch restrictions alongside the expressions. Flag source errors and retain the original evidence with the supported correction so the generator does not reproduce incorrect mathematics.
 

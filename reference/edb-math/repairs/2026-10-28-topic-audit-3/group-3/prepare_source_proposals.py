@@ -33,29 +33,35 @@ for key,opts in options.items():
 # Original choice HTML retains fonts that earlier normalized capture values lost.
 bankreport=[];keyreport=[];sourcecache=[]
 for q in D['questions']:
- sid=q.get(':question/math-academy-id');paths=[p for p in M.get(sid,[])if p.endswith('.json')]
+ sid=q.get(':question/math-academy-id');paths=[p for p in M.get(sid,[])if re.search(r'\.json(?:\.previous)?$',p)]
  if not paths:continue
- chosen=next((p for p in paths if p.endswith('-before.json')),paths[0]);raw=json.loads(Path(chosen).read_text());rr=Renderer(None);candidates=collections.defaultdict(list)
- for sf in raw.get('fields',[]):
-  for choice in sf.get('choices',[]):
-   html=choice.get('html');value=rr.text(BeautifulSoup(html,'html.parser'))if html else choice.get('value','');candidates[sf['key']].append({'value':value,'role':'source choice','html':html})
- statements=[]
- soup=BeautifulSoup(raw.get('html')or raw.get('raw_html')or'','html.parser')
- for li in soup.select('.questionStatements > li'):statements.append({'value':re.sub(r'^-\s*','',rr.text(li)),'role':'source statement','html':str(li)})
+ rr=Renderer(None);candidates=collections.defaultdict(list);statements=[];seen=set()
+ for path in paths:
+  raw=json.loads(Path(path).read_text());key=json.dumps([raw.get('fields',[]),raw.get('html')or raw.get('raw_html')or''],sort_keys=True)
+  if key in seen:continue
+  seen.add(key)
+  for sf in raw.get('fields',[]):
+   for choice in sf.get('choices',[]):
+    html=choice.get('html');value=rr.text(BeautifulSoup(html,'html.parser'))if html else choice.get('value','');candidates[sf['key']].append({'value':value,'role':'source choice','html':html,'path':path})
+  soup=BeautifulSoup(raw.get('html')or raw.get('raw_html')or'','html.parser')
+  for li in soup.select('.questionStatements > li'):statements.append({'value':re.sub(r'^-\s*','',rr.text(li)),'role':'source statement','html':str(li),'path':path})
  for f in q.get(':question/answer-fields',[]):
   if f[':answer-field/type'][':db/id']==17592186408166:
-   matches=[c for c in statements if core(c['value'])==core(f[':answer-field/key'])];keyreport.append({'entity':f[':db/id'],'question':q[':db/id'],'source':sid,'path':chosen,'matches':matches})
-   if len({m['value']for m in matches})==1 and role_missing(f[':answer-field/key'],matches[0]['value']):propose(f[':db/id'],'answer-field/key',matches[0]['value'],'Restore the retained original statement notation in the checkbox label.',{'path':chosen,'question':q[':db/id'],'source_identity':sid,'source_statement':matches[0]['value']})
+   matches=[c for c in statements if core(c['value'])==core(f[':answer-field/key'])];keyreport.append({'entity':f[':db/id'],'question':q[':db/id'],'source':sid,'paths':paths,'matches':matches})
+   alternatives={m['value']:m for m in matches if role_missing(f[':answer-field/key'],m['value'])}
+   if len(alternatives)==1:
+    after,ev=next(iter(alternatives.items()));propose(f[':db/id'],'answer-field/key',after,'Restore the retained original statement notation in the checkbox label.',{'path':ev['path'],'question':q[':db/id'],'source_identity':sid,'source_statement':after})
+   elif len(alternatives)>1:unresolved.append({'entity':f[':db/id'],'attribute':'answer-field/key','reason':'source statement alternatives differ','variants':len(alternatives)})
   for answer in f.get(':answer-field/choices',[]):
-   candidates_here=candidates[f[':answer-field/key']];matches=[c for c in candidates_here if core(c['value'])==core(answer[':answer/value'])];bankreport.append({'entity':answer[':db/id'],'field':f[':db/id'],'question':q[':db/id'],'source':sid,'path':chosen,'source_candidates':len(candidates_here),'normalized_matches':len(matches)})
+   candidates_here=candidates[f[':answer-field/key']];matches=[c for c in candidates_here if core(c['value'])==core(answer[':answer/value'])];bankreport.append({'entity':answer[':db/id'],'field':f[':db/id'],'question':q[':db/id'],'source':sid,'paths':paths,'source_candidates':len(candidates_here),'normalized_matches':len(matches)})
    afters={c['value']:c for c in matches if role_missing(answer[':answer/value'],c['value'])}
    if len(afters)==1:
-    after=next(iter(afters));bare=answer[':answer/type'][':db/id']==17592186045498
+    after,ev=next(iter(afters.items()));bare=answer[':answer/type'][':db/id']==17592186045498
     if bare and len(list(MATH.finditer(after)))==1 and MATH.fullmatch(after):after=after[2:-2]if after.startswith('$$')else after[1:-1]
-    # Mixed prose incorrectly typed as math is handled in the dedicated bank repair.
     if bare and '$'in after:continue
-    propose(answer[':db/id'],'answer/value',after,'Recover the original mathematical font role or visible set braces in the choice.',{'path':chosen,'question':q[':db/id'],'source_identity':sid,'field':f[':db/id']})
- sourcecache.append({'question':q[':db/id'],'source_identity':sid,'path':chosen,'statements':statements,'choices':dict(candidates),'errors':rr.errors})
+    propose(answer[':db/id'],'answer/value',after,'Recover the original mathematical font role or visible set braces in the choice.',{'path':ev['path'],'question':q[':db/id'],'source_identity':sid,'field':f[':db/id']})
+   elif len(afters)>1:unresolved.append({'entity':answer[':db/id'],'attribute':'answer/value','reason':'source choice alternatives differ','variants':len(afters)})
+ sourcecache.append({'question':q[':db/id'],'source_identity':sid,'paths':paths,'statements':statements,'choices':dict(candidates),'errors':rr.errors})
 # Display standalone integral calculations while retaining prose references inline.
 for (e,a),f in F.items():
  if a not in ('question/problem','question/worked-solution','tutorial/content'):continue
