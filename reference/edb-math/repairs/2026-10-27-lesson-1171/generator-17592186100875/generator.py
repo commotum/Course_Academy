@@ -164,13 +164,9 @@ def replay(source_id):
     prompt = old[':question/problem']
     fs = old[':question/answer-fields']
     if all(f[':answer-field/type'][':db/ident'].endswith('/blank') for f in fs):
-        # Preserve every cell's existing key. Historical capture padding is not a data table.
-        count = len(fs)
-        n = 2 if count == 4 else 3
-        expr = re.search(r'\|[^\n]*?\$([^$]*?)=\s*', prompt).group(1)
-        expr = expr.replace(r'\,', '').strip()
-        prompt = prompt.split('\n\n|')[0] + '\n\n' + matrix_answer(expr,
-            [[f'{{{{field-{i*n+j+1}}}}}' for j in range(n)] for i in range(n)])
+        prompt = normalize_matrix_answer_tables(prompt)
+        if 'matrix-answer-brackets' not in prompt:
+            raise ValueError('Source replay requires a complete rectangular answer matrix')
     specs = []
     for f in fs:
         choices = f[':answer-field/choices']

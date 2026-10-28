@@ -8,6 +8,13 @@ for kp in D['knowledge_points']:
  p=dest/'generator.py';s=p.read_text()
  if kp[':db/id']==17592186100875:
   s=s.replace('normalize_tex, validate_generated_record)','normalize_tex, normalize_matrix_answer_tables, validate_generated_record)');s=s.replace("VERSION = 'identity-2.0'","VERSION = 'identity-2.1-layout'");s=s.replace('prompt, solution = normalize_prose(prompt),','prompt, solution = normalize_prose(normalize_matrix_answer_tables(prompt)),')
+  start=s.index('    if all(f[',s.index('def replay('));end=s.index('    specs = []',start)
+  s=s[:start]+'''    if all(f[':answer-field/type'][':db/ident'].endswith('/blank') for f in fs):
+        prompt = normalize_matrix_answer_tables(prompt)
+        if 'matrix-answer-brackets' not in prompt:
+            raise ValueError('Source replay requires a complete rectangular answer matrix')
+'''+s[end:]
+
  else:
   s=s.replace('matrix_tex, validate_generated_record','matrix_tex, matrix_answer, normalize_matrix_answer_tables, validate_generated_record');s=s.replace("VERSION = 'identity-selection-3'","VERSION = 'identity-selection-4-layout'");s=s.replace('problem = normalize_prose(problem)','problem = normalize_prose(normalize_matrix_answer_tables(problem))')
   start=s.index('            if column:\n                problem +=');end=s.index('            return seal(',start)
