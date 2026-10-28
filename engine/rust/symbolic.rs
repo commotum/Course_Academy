@@ -194,6 +194,74 @@ impl Poly {
         if !constant.is_zero() { terms.insert(BTreeMap::new(), constant); }
         Some(Poly(terms).monic())
     }
+
+    /// Remove repeated factors from an expanded rational univariate guard.
+    /// p != 0 iff p/gcd(p,p') != 0; coefficients and Euclidean division are
+    /// exact. This does not cancel the guard against an answer numerator or
+    /// infer equality from numerical samples. Other atom types stay bounded
+    /// and conservative under the existing domain comparison.
+    fn squarefree_univariate_base(&self) -> Option<Poly> {
+        let atoms: BTreeSet<_> = self.0.keys().flat_map(|m| m.keys()).collect();
+        if atoms.len() != 1 { return None; }
+        let atom = (*atoms.first()?).clone();
+        if !matches!(atom, Atom::Variable(_)) { return None; }
+        let degree = self.0.keys().map(|m| usize::from(*m.get(&atom).unwrap_or(&0))).max()?;
+        if degree < 2 || degree > MAX_POWER as usize { return None; }
+        let trim = |p: &mut Vec<Q>| { while p.last().is_some_and(Zero::is_zero) { p.pop(); } };
+        let divide = |mut a: Vec<Q>, b: &[Q], work: &mut usize| -> Option<(Vec<Q>, Vec<Q>)> {
+            let mut quotient = vec![Q::zero(); a.len().saturating_sub(b.len()) + 1];
+            while a.len() >= b.len() && !a.is_empty() {
+                let offset = a.len() - b.len();
+                let factor = a.last()? / b.last()?;
+                quotient[offset] += &factor;
+                for (index, coefficient) in b.iter().enumerate() {
+                    *work += 1;
+                    if *work > MAX_WORK { return None; }
+                    a[offset + index] -= &factor * coefficient;
+                    let value = &a[offset + index];
+                    if value.numer().bits().max(value.denom().bits()) > MAX_BITS { return None; }
+                }
+                trim(&mut a);
+            }
+            trim(&mut quotient);
+            Some((quotient, a))
+        };
+        let mut polynomial = vec![Q::zero(); degree + 1];
+        for (m, c) in &self.0 { polynomial[usize::from(*m.get(&atom).unwrap_or(&0))] += c; }
+        let derivative: Vec<_> = polynomial.iter().enumerate().skip(1)
+            .map(|(n, c)| c * Q::from_integer(n.into())).collect();
+        let (mut a, mut b) = (polynomial.clone(), derivative);
+        let mut work = 0;
+        while !b.is_empty() {
+            let (_, remainder) = divide(a, &b, &mut work)?;
+            a = b;
+            b = remainder;
+        }
+        if a.len() <= 1 { return None; }
+        let (quotient, remainder) = divide(polynomial, &a, &mut work)?;
+        if !remainder.is_empty() { return None; }
+        let terms = quotient.into_iter().enumerate().filter_map(|(degree, c)| {
+            if c.is_zero() { return None; }
+            let m = if degree == 0 { Mono::new() } else { BTreeMap::from([(atom.clone(), degree as u16)]) };
+            Some((m, c))
+        }).collect();
+        Some(Poly(terms).monic())
+    }
+    /// An everywhere nonzero exponential monomial cannot make a nonzero
+    /// rational polynomial vanish identically. Strip only that proven factor
+    /// for a rejection witness; never erase an answer's domain obligations.
+    fn rational_after_exponential_factor(&self) -> bool {
+        let Some((first, _)) = self.0.first_key_value() else { return false; };
+        let mut common: Mono = first.iter().filter(|(a, _)|
+            matches!(a, Atom::E) || matches!(a, Atom::Function(n, _) if n == "exp"))
+            .map(|(a, e)| (a.clone(), *e)).collect();
+        for m in self.0.keys() {
+            common.retain(|a, e| { *e = (*e).min(*m.get(a).unwrap_or(&0)); *e > 0 });
+        }
+        if common.is_empty() { return false; }
+        self.0.keys().all(|m| m.iter().all(|(a, e)|
+            matches!(a, Atom::Variable(_) | Atom::I) || common.get(a) == Some(e)))
+    }
     /// Prove a difference nonzero using real/imaginary component bounds.
     /// Each remaining atom must have real bounds; nested unsupported complex
     /// functions therefore stay unresolved. These bounds only reject answers.
@@ -456,8 +524,14 @@ fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
     Some((&sum - &remainder, sum + remainder))
 }
 fn exp_bounds(x: &Q) -> Option<(Q, Q)> {
-    if x.abs() > Q::from_integer(128.into()) || x.numer().bits().max(x.denom().bits()) > 128 {
+    if x.abs() > Q::from_integer(128.into()) {
         return None;
+    }
+    if x.numer().bits().max(x.denom().bits()) > 128 {
+        // Composed logarithm/power intervals carry long exact rationals.
+        // Monotonicity permits outward rounding before the bounded series.
+        let (lower, upper) = bounded_endpoints(x)?;
+        return Some((exp_bounds(&lower)?.0, exp_bounds(&upper)?.1));
     }
     if x.is_negative() {
         let (lo, hi) = exp_bounds(&-x)?;
@@ -537,7 +611,14 @@ fn function_interval(name: &str, l: &Q, h: &Q) -> Option<(Q, Q)> {
         "atan" => Some((atan_bounds(l)?.0, atan_bounds(h)?.1)),
         "asin" => Some((asin_bounds(l)?.0, asin_bounds(h)?.1)),
         "ln" => Some((log_bounds(l)?.0, log_bounds(h)?.1)),
-        "exp" => Some((exp_bounds(l)?.0, exp_bounds(h)?.1)),
+        "exp" => {
+            // Logarithm enclosures may have large exact denominators. Round
+            // outwards before composing exp so a valid rejection witness is
+            // not lost to exp_bounds' input-size guard. Bounds never accept.
+            let lower = bounded_endpoints(l)?.0;
+            let upper = bounded_endpoints(h)?.1;
+            Some((exp_bounds(&lower)?.0, exp_bounds(&upper)?.1))
+        },
         "sin" | "cos" => {
             let mid = (l + h) / Q::from_integer(2.into());
             let radius = (h - l) / Q::from_integer(2.into());
@@ -835,6 +916,9 @@ impl Algebra {
             return Ok(());
         }
         if let Some(base) = p.repeated_quadratic_base() {
+            return self.nonzero(&base);
+        }
+        if let Some(base) = p.squarefree_univariate_base() {
             return self.nonzero(&base);
         }
         let power_key = p.monic();
@@ -1143,6 +1227,16 @@ impl Algebra {
         }
         if *a == Value::atom(Atom::E) {
             return self.function("exp", b);
+        }
+        // For a positive rational base and a real exponent, a^b is exactly
+        // exp(b*ln(a)). Share that form with explicit exponential answers,
+        // including prime-factor log sums such as 8^x = exp(3*x*ln(2)).
+        // Keep nonpositive and symbolic bases on their domain-aware path;
+        // this real identity does not authorize complex logarithm branches.
+        if a.constant().is_some_and(|c| c.is_positive()) && b.real_on_domain() {
+            let logarithm = self.function("ln", a)?;
+            let exponent = self.mul(b, &logarithm)?;
+            return self.function("exp", &exponent);
         }
         Ok(Value::atom(Atom::Power(
             Box::new(a.clone()),
@@ -2424,7 +2518,7 @@ fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
                 }
                 return Err("answer comparison has unresolved domain differences".into());
             }
-            if diff.rational_variables_only() {
+            if diff.rational_variables_only() || diff.rational_after_exponential_factor() {
                 return Ok(false);
             }
             if diff.nonzero_at(None) {
@@ -2499,15 +2593,15 @@ mod tests {
         for (a, b) in [(-1, -1), (1, 1), (-2, 1), (2, -1)] {
             let arg = format!("e^({a}*x+({b}))");
             let f = format!("{arg}*tan({arg})");
-            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false));
-            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false), "{f}");
+            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false), "{f}");
             assert_eq!(compare(&f, &format!("{arg}*sin({arg})/cos({arg})"), c), Ok(true));
         }
         // Positive-base real powers are bounded without changing their form.
         for base in [2, 3, 5] {
             let f = format!("{base}^(ln(cos(x+1)))*ln({base})*tan(x+1)");
-            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false));
-            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false));
+            assert_eq!(compare(&f, &format!("-({f})"), c), Ok(false), "{f}");
+            assert_eq!(compare(&f, &format!("({f})/2"), c), Ok(false), "{f}");
             assert_eq!(compare(&f, &format!("{base}^(ln(cos(x+1)))*ln({base})*sin(x+1)/cos(x+1)"), c), Ok(true));
         }
         // Guarded cancellation remains guarded. No witness establishes equality.
@@ -3472,6 +3566,41 @@ mod assignment_branch_tests {
 }
 
 #[cfg(test)]
+mod positive_rational_exponential_form_tests {
+    use super::{compare, Context};
+    #[test]
+    fn constant_base_and_natural_exponential_forms_agree() {
+        let c = Context { natural_exponential: true, ..Context::default() };
+        for (a,b) in [
+            ("3*8^x*ln(8)+12", "9*exp(3*x*ln(2))*ln(2)+12"),
+            ("5^x", "exp(x*ln(5))"),
+            ("(1/3)^x", "exp(-x*ln(3))"),
+            ("6^(x+1)", "exp((x+1)*(ln(2)+ln(3)))"),
+            ("2^(x^2)", "exp(x^2*ln(2))"),
+        ] {
+            assert_eq!(compare(a,b,c),Ok(true),"{a} vs {b}");
+            assert_eq!(compare(b,a,c),Ok(true),"{b} vs {a}");
+        }
+    }
+    #[test]
+    fn wrong_exponents_and_changed_domains_do_not_agree() {
+        let c = Context { natural_exponential: true, ..Context::default() };
+        for (a,b) in [
+            ("8^x", "exp(2*x*ln(2))"),
+            ("5^x", "exp(x*ln(3))"),
+            ("(1/3)^x", "exp(x*ln(3))"),
+            ("2^(x+1)", "exp(x*ln(2))"),
+        ] { assert_eq!(compare(a,b,c),Ok(false),"{a} vs {b}"); }
+        for (a,b) in [
+            ("(-2)^x", "exp(x*ln(2))"),
+            ("0^x", "exp(x*ln(2))"),
+            ("x^x", "exp(x*ln(x))"),
+            ("8^(x/x)", "8"),
+        ] { assert_ne!(compare(a,b,c),Ok(true),"{a} vs {b}"); }
+    }
+}
+
+#[cfg(test)]
 mod exponential_logarithm_regression_tests {
     #[test]
     fn exponential_logarithm_integer_multiples_cancel_exactly() {
@@ -3514,4 +3643,23 @@ mod exponential_logarithm_regression_tests {
             assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
         }
     }
+    #[test]
+    fn expanded_repeated_polynomial_denominators_keep_exact_holes() {
+        use super::{compare, Context};
+        let context = Context { natural_exponential: true, ..Context::default() };
+        for (a, b) in [
+            ("exp(3*x)/(x^3+1)^2", "exp(3*x)/(x^6+2*x^3+1)"),
+            ("1/(2*x-3)^3", "1/(8*x^3-36*x^2+54*x-27)"),
+            ("1/(x^2-2)^2", "1/(x^4-4*x^2+4)"),
+            ("1/(x^3+1)^3", "1/(x^9+3*x^6+3*x^3+1)"),
+        ] { assert_eq!(compare(a, b, context), Ok(true), "{a} versus {b}"); }
+        assert_eq!(compare("1/(x^3+1)^2", "2/(x^6+2*x^3+1)", context), Ok(false));
+        assert_eq!(compare("1/(x^3+1)^2", "1/(x^6+2*x^3+2)", context), Ok(false));
+        assert_eq!(compare("(-3*x^3-3*x^2-12)*exp(-3*x)/(x^3+4)^2", "-3*x^3/(x^6*exp(3*x)+8*x^3*exp(3*x)+16*exp(3*x))-3*x^2/(x^6*exp(3*x)+8*x^3*exp(3*x)+16*exp(3*x))-12/(x^6*exp(3*x)+8*x^3*exp(3*x)+16*exp(3*x))+x+1", context), Ok(false));
+        // Zero sets may lose multiplicity, never a hole from cancellation.
+        assert!(compare("(x^3+1)/(x^3+1)", "1", context).is_err());
+        assert!(compare("(x^6+2*x^3+1)/(x^3+1)^2", "1", context).is_err());
+    }
+
 }
+
