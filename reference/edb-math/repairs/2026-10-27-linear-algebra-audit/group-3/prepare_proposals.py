@@ -60,7 +60,9 @@ for q in D['questions']:
   coeff=[[unmath(c)for c in row[2:5]]for row in rows];rhs=[[unmath(row[12])]for row in rows];assert [unmath(row[8])for row in rows]==['x','y','z']
   left=matrix_answer('A',coeff);left=re.sub(r'<span class="matrix-answer-label">.*?</span>\n','',left,count=1)
   right=matrix_answer('b',rhs);right=re.sub(r'<span class="matrix-answer-label">.*?</span>\n','',right,count=1)
-  replacement='<div class="matrix-operands">\n'+left+'\n<div>$'+matrix_tex([['x'],['y'],['z']])+'=$</div>\n'+right+'\n</div>'
+  variable=matrix_answer('x',[['x'],['y'],['z']]);variable=re.sub(r'<span class="matrix-answer-label">.*?</span>\n','',variable,count=1)
+  unnest=lambda v:v.removeprefix('<div class="matrix-answer">\n').removesuffix('\n</div>')
+  replacement='<div class="matrix-answer">\n'+unnest(left)+'\n'+unnest(variable)+'\n<span class="matrix-answer-label">$=$</span>\n'+unnest(right)+'\n</div>'
  elif len(rows)==3 and all(len(r)==4 for r in rows):replacement=matrix_answer('x',[[row[2]]for row in rows])
  else:unresolved.append({'entity':e,'reason':'unrecognized Markdown answer table','rows':rows});continue
  propose(e,'question/problem',text[:m.start()]+replacement+text[m.end():],'Restore matrix brackets and aligned cells lost when the source answer table was flattened into a Markdown table.',ev)

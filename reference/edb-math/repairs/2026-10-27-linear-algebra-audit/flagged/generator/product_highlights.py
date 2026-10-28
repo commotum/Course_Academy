@@ -30,9 +30,11 @@ def product_solution(a,b,names,targets):
         def f(v,hue):
             t=color(v,hue)
             return '('+t+')' if v<0 else t
-        dot='+'.join(f(a[i][h],'#4169E1')+r'\cdot '+f(b[h][j],'red') for h in range(n))
+        terms=[f(a[i][h],'#4169E1')+r'\cdot '+f(b[h][j],'red') for h in range(n)]
+        dot=r' \\ &\quad +'.join('+'.join(terms[start:start+2]) for start in range(0,n,2))
+        calculation=r'\begin{aligned}c_{'+str(i+1)+str(j+1)+'}&='+dot+r' \\ &='+str(c[i][j])+r'\end{aligned}'
         parts += [f'For entry $c_{{{i+1}{j+1}}}$, use row ${i+1}$ of ${x}$ (blue) and column ${j+1}$ of ${y}$ (red):',
                   '$$\n'+r'\begin{aligned}&'+matrix(aa)+matrix(bb)+r'\\ &='+matrix(progress)+r'\end{aligned}'+'\n$$',
-                  '$$\n'+r'c_{'+str(i+1)+str(j+1)+'}='+str(c[i][j])+'='+dot+'\n$$']
+                  '$$\n'+calculation+'\n$$']
     parts += ['Therefore,','$$\n'+xy+'='+matrix(c)+'.\n$$']
     return '\n\n'.join(parts)

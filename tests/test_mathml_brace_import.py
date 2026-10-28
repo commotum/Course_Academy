@@ -53,6 +53,11 @@ class MathMLBraceImportTests(unittest.TestCase):
                             '<mtd><mn mathbackground="lightgray">5</mn></mtd></mtr></mtable>',
                             r'\begin{aligned}{\color{blue}2} & 3 \\ {\color[HTML]{4169E1}4} & \bbox[lightgray, 2pt]{5}\end{aligned}')
 
+    def test_vector_basis_and_domain_fonts_remain_distinct(self):
+        self.assert_formula('<mi mathvariant="bold">v</mi><msub><mi mathvariant="script">B</mi><mn>1</mn></msub>'
+                            '<mi mathvariant="double-struck">R</mi><mi mathvariant="bold" mathcolor="red">β</mi>',
+                            r'\mathbf{v}{\mathcal{B}}_{1}\mathbb{R}\mathbf{{\color{red}β}}')
+
     def test_nested_source_color_and_background_keep_both_cues(self):
         self.assert_formula('<mstyle mathbackground="#ffe"><mstyle mathcolor="red"><mn>7</mn></mstyle></mstyle><mn>8</mn>',
                             r'\bbox[#ffe, 2pt]{{\color{red}7}}8')

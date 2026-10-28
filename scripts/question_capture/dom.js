@@ -211,7 +211,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
         // Greek command macros fix their own font in MathJax. Keep the source
         // glyph literal when applying its explicit bold/italic variant.
         const glyph = variants[0].textContent, macro = greek[glyph];
-        body = variantCommands[variant] + '{' + (macro ? body.replace(macro, glyph) : body) + '}';
+        body = cs[0]; // The scoped node renderer has already applied this font.
       }
     }
     if (unsupported.length) {
@@ -245,6 +245,18 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
         const hex = color.length === 4 ? [...color.slice(1)].map(c => c + c).join('') : color.slice(1);
         value = '{\\color[HTML]{' + hex + '}' + value + '}';
       } else value = '{\\color{' + color + '}' + value + '}';
+    }
+    const variant = n.getAttribute('mathvariant');
+    if (variant) {
+      const fonts = {normal:'\\mathrm',bold:'\\mathbf',italic:'\\mathit',
+        'bold-italic':'\\mathbfit','double-struck':'\\mathbb',script:'\\mathcal',fraktur:'\\mathfrak'};
+      if (!fonts[variant]) errors.push('Unsupported MathML mathvariant: ' + variant);
+      else {
+        // Named Greek macros reset their font; use the source glyph when
+        // the complete token has an explicit variant, as for bold vectors.
+        if (n.localName === 'mi' && greek[n.textContent]) value = value.replace(greek[n.textContent], n.textContent);
+        value = fonts[variant] + '{' + value + '}';
+      }
     }
     return value;
   }

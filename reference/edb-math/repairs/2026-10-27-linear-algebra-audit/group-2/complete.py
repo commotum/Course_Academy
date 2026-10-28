@@ -195,13 +195,39 @@ for ident in ['q-157694','q-42955','q-39865','q-43066','q-42004','q-42257','q-32
  elif ident=='q-35568':v=S.Matrix([[1,-2],[2,-2]]).inv()*S.Matrix([1,3]);v=(ms[0]*v)[2]
  want=solutions[ident][0];gs=grids(want);got=mat(gs[0])if gs else scalar(want);assert same(v,got)if isinstance(v,S.MatrixBase)else S.simplify(v-got)==0,(ident,v,want);proof.append({'identity':ident,'derived':str(v),'passed':True})
 for q in D['questions']:
- if not re.search(r'(?m)^\|',q[':question/problem']):continue
- fs=q.get(':question/answer-fields',[])
- if not fs or fs[0][':answer-field/type'][':db/ident']!=':answer-field.type/blank':continue
- # Existing matrix blank exercises in this group are matrix powers.
- m=re.search(r'\$A\^\{?(\d+)\}?\s*=\s*',q[':question/problem']);ms=list(map(mat,grids(q[':question/problem'])));
- if not m:print('unverified blank expression',q[':db/id']);continue
- expected=ms[0]**int(m[1]);ks=re.findall(r'\{\{([^{}]+)\}\}',q[':question/problem']);bykey={f[':answer-field/key']:f for f in fs};assert len(ks)==expected.rows*expected.cols
- for k,x in zip(ks,list(expected)):assert S.simplify(scalar(bykey[k][':answer-field/correct'][':answer/value'])-x)==0,(q[':db/id'],k)
- proof.append({'entity':q[':db/id'],'expression':'A^'+m[1],'shape':list(expected.shape),'all_existing_blank_answers_verified':True})
+ p=q[':question/problem'];fs=q.get(':question/answer-fields',[])
+ if not fs or fs[0][':answer-field/type'][':db/ident']!=':answer-field.type/blank' or not re.search(r'(?m)^\|',p):continue
+ ms=list(map(mat,grids(p)));label=None
+ op=re.search(r'\$(AB\+AC|BA\+BC|AC\+BC|AC-BC|CB-CA|ABC)\$',p)
+ if op:
+  label=op[1];A,B,C=ms[:3];expected={'AB+AC':lambda:A*(B+C),'BA+BC':lambda:B*(A+C),'AC+BC':lambda:(A+B)*C,'AC-BC':lambda:(A-B)*C,'CB-CA':lambda:C*(B-A),'ABC':lambda:A*B*C}[label]()
+ else:
+  power=re.search(r'Find \$\{?([A-Z])\}?\^\{(\d+)\}',p)
+  if power:label=power[1]+'^{'+power[2]+'}';expected=ms[0]**int(power[2])
+  else:
+   poly=re.search(r'f\(X\)=\{?X\}?\^\{2\}([+-](?:\d+)?X)([+-]\d+)',p)
+   assert poly,(q[':db/id'],p)
+   c=poly[1][:-1];c=int(c+'1'if c in ['+','-']else c);d=int(poly[2]);expected=ms[0]**2+c*ms[0]+d*S.eye(ms[0].rows);name=re.search(r'matrix \$([A-Z])=',p)[1];label='f('+name+')'
+ bykey={f[':answer-field/key']:f for f in fs};table=p[p.index('|'):];rows=[];header=bool(re.search(r'Column\s*1',table))
+ for line in table.splitlines():
+  raw=[c.strip()for c in line.strip().strip('|').split('|')]
+  if all(re.fullmatch(r':?-+:?',c)for c in raw):continue
+  if header:
+   if not any('{{'in c or re.fullmatch(r'\$[^$]+\$',c)for c in raw[1:]):continue
+   raw=raw[1:]
+  else:
+   raw=[c for c in raw if c and not re.fullmatch(r'\$[^$]*=\s*(?:\\,\s*)*\$',c)]
+  if not raw:continue
+  row=[c if '{{'in c else c[1:-1]for c in raw];rows.append(row)
+ assert len(rows)==expected.rows and all(len(row)==expected.cols for row in rows),(q[':db/id'],rows,expected)
+ for i,row in enumerate(rows):
+  for j,c in enumerate(row):
+   key=re.fullmatch(r'\{\{([^{}]+)\}\}',c);value=bykey[key[1]][':answer-field/correct'][':answer/value']if key else c;assert S.simplify(scalar(value)-expected[i,j])==0,(q[':db/id'],i,j,value,expected[i,j])
+ proof.append({'entity':q[':db/id'],'expression':label,'shape':list(expected.shape),'all_existing_blank_answers_and_supplied_entries_verified':True,'table_role':'authored-labeled-table'if header else'answer-matrix'})
+ if not header:
+  from question_capture.math_format import matrix_answer
+  entry=next((x for x in ps if x['entity']==q[':db/id']and x['attribute']=='question/problem'),None);old=entry['after']if entry else p;cut=old.index('|')if '|'in old else old.index('<div class="matrix-answer">');after=old[:cut]+matrix_answer(label,rows)
+  evidence={'independent_result':str(expected),'shape':list(expected.shape),'all_blanks_and_supplied_entries_match':True,'keys_in_source_row_order':True}
+  if entry:entry['after']=after;entry['confidence']='high';entry['evidence']=entry['evidence']+[evidence]if isinstance(entry['evidence'],list)else[entry['evidence'],evidence]
+  else:ps.append({'entity':q[':db/id'],'attribute':'question/problem','before':p,'after':after,'reason':'source-mixed-entry-matrix-answer-grid','evidence':evidence,'confidence':'high'})
 (H/'proposals.json').write_text(json.dumps(ps,indent=2)+'\n');(H/'missing-key-repairs.json').write_text(json.dumps(keys,indent=2)+'\n');(H/'math-verification.json').write_text(json.dumps(proof,indent=2)+'\n');print('completions',len(keys),'math verifications',len(proof))

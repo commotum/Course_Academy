@@ -3,9 +3,11 @@ from pathlib import Path
 sys.path.insert(0,'scripts');from question_capture.math_format import validate_generated_record
 H=Path(__file__).resolve().parent;G=json.loads((H/'generator-audit.json').read_text());report=[];allrecords=[]
 for r in G:
- levels=re.search(r'--difficulty \{([^}]+)\}',r['help']);levels=levels[1].split(',') if levels else ['easy'];levels=[l for l in levels if l!='all']
+ levels=re.search(r'--difficulty \{([^}]+)\}',r['help']);levels=levels[1].split(',') if levels else ['easy'];levels=[l for l in levels if l!='all'];
+ if r['kp']==17592186184172:levels=['moderate','hard']
+ if r['kp']==17592186100913:levels=['easy']
  for level in levels:
-  p=subprocess.run([sys.executable,r['script'],'--difficulty',level,'--count','3','--seed','20261027'],capture_output=True,text=True);item={'kp':r['kp'],'level':level,'exit':p.returncode,'errors':[]}
+  p=subprocess.run([sys.executable,r['script'],'--difficulty',level,'--count','3','--seed','20261027','--format','json'],capture_output=True,text=True);item={'kp':r['kp'],'level':level,'exit':p.returncode,'errors':[]}
   if not p.returncode:
    try:
     data=json.loads(p.stdout);data=data if isinstance(data,list)else[data];item['count']=len(data)

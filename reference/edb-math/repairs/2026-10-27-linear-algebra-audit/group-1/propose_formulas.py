@@ -16,9 +16,9 @@ def remove_group_cmd(v,cmd):
 def canonical(v):
  v=normalize_source_tex(v);v=remove_group_cmd(v,'phantom');v=re.sub(r'\\hspace\{[^{}]*\}','',v);v=re.sub(r'\\color\{[^{}]+\}','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',v)
  v=re.sub(r'\[\s*\{?\s*\\begin\{array\}\{[clr|]+\}',lambda m:r'\begin{bmatrix}',v);v=re.sub(r'\\end\{array\}\s*\}?\s*\]',lambda m:r'\end{bmatrix}',v)
- v=re.sub(r'\\(?:mathbf|mathbb|mathrm|mathcal|mathit|textrm)\b','',v);v=v.replace('⁡','').replace('∼',r'\sim').replace('⟹',r'\Longrightarrow').replace('⟨',r'\langle').replace('⟩',r'\rangle').replace('∞',r'\infty').replace('∈',r'\in').replace('−','-').replace('×',r'\times').replace(r'\dfrac',r'\frac');return re.sub(r'\s+|[{}]','',v)
+ v=re.sub(r'\\(?:mathbf|mathbb|mathrm|mathcal|mathit|textrm|text)\b','',v);v=v.replace(r'\{','{').replace(r'\}','}');v=re.sub(r'\\(?:Bigg|bigg|Big|big)\b','',v);v=v.rstrip('., ');v=v.replace('⁡','').replace('∼',r'\sim').replace('⟹',r'\Longrightarrow').replace('⟨',r'\langle').replace('⟩',r'\rangle').replace('∞',r'\infty').replace('∈',r'\in').replace('−','-').replace('×',r'\times').replace(r'\dfrac',r'\frac');return re.sub(r'\s+|[{}]','',v)
 def nums(v):return re.findall(r'\d+(?:\.\d+)?',remove_group_cmd(re.sub(r'\\hspace\{[^{}]*\}','',v),'phantom'))
-def role(v):return {'color':len(re.findall(r'\\color\{',v)),'vector_font':len(re.findall(r'\\(?:mathbf|mathbb)\b',v)),'partition':len(re.findall(r'\\begin\{array\}\{[^{}]*\|[^{}]*\}',v))}
+def role(v):return {'color':len(re.findall(r'\\color\{',v)),'vector_font':len(re.findall(r'\\(?:mathbf|mathbb)\b',v)),'set_delimiters':len(re.findall(r'\\[{}]',v)),'partition':len(re.findall(r'\\begin\{array\}\{[^{}]*\|[^{}]*\}',v))}
 props=[];reject=[]
 for r in json.loads((H/'comparison.json').read_text()):
  obj=next(o for o in(D['contents']if r['identity'].startswith('tutorial:')else D['questions'])if o[':db/id']==r['entity']);a=r['attribute'];before=obj[':'+a];matches=list(MATH.finditer(before));opts=[]
@@ -26,6 +26,7 @@ for r in json.loads((H/'comparison.json').read_text()):
   if len(matches)!=len(s['formulas']):continue
   changes=[]
   for i,(old,new)in enumerate(zip(r['current'],s['formulas'])):
+   if old.rstrip() and old.rstrip()[-1]not in'.,'and new.rstrip().endswith(('.',',')):new=new.rstrip().rstrip('.,')
    ro,rn=role(old),role(new)
    if not any(rn[k]>ro[k]for k in ro):continue
    if canonical(old)==canonical(new)and nums(old)==nums(new):changes.append({'index':i,'before_tex':old,'after_tex':new,'roles_before':ro,'roles_after':rn})
@@ -36,5 +37,5 @@ for r in json.loads((H/'comparison.json').read_text()):
  s,changes=max(opts,key=lambda p:len(p[1]));after=before
  for c in reversed(changes):
   m=matches[c['index']];k=2 if m[0].startswith(('$$',r'\[',r'\('))else 1;wrapped='$$\n'+c['after_tex']+'\n$$'if k==2 else'$'+c['after_tex']+'$';after=after[:m.start()]+wrapped+after[m.end():]
- validate_math_structure(after);props.append({'entity':r['entity'],'attribute':a,'before':before,'after':after,'reason':'Restore source teaching annotations lost from complete formulas: selected rows/columns, coefficients, vector notation, and/or augmented-matrix partitions.','evidence':{'basis_t':9047,'identity':r['identity'],'source_path':s['path'],'formula_changes':changes,'independent_check':'Ordered mathematical tokens and numeric values unchanged after explicitly removing style/layout commands and mapping equivalent matrix wrappers.'},'confidence':'high'})
-(H/'source-formula-proposals.json').write_text(json.dumps(props,indent=2));(H/'source-formula-review.json').write_text(json.dumps(reject,indent=2));print('proposals',len(props),'formulas',sum(len(p['evidence']['formula_changes'])for p in props),'unmatched candidates',len(reject));print([(p['evidence']['identity'],p['attribute'],len(p['evidence']['formula_changes']))for p in props]);print('reject identities',collections.Counter(r['identity']for r in reject))
+ validate_math_structure(after);props.append({'entity':r['entity'],'attribute':a,'before':before,'after':after,'reason':'Restore source teaching annotations lost from complete formulas: selected rows/columns, coefficients, vector notation, visible set braces, and/or augmented-matrix partitions.','evidence':{'basis_t':9047,'identity':r['identity'],'source_path':s['path'],'formula_changes':changes,'independent_check':'Ordered mathematical tokens and numeric values unchanged after explicitly removing style/layout commands and mapping equivalent matrix wrappers.'},'confidence':'high'})
+(H/'source-formula-proposals.json').write_text(json.dumps(props,indent=2));(H/'source-formula-review.json').write_text(json.dumps(reject,indent=2));print('proposals',len(props),'formulas',sum(len(p['evidence']['formula_changes'])for p in props),'unmatched candidates',len(reject))

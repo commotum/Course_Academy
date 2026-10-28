@@ -110,7 +110,7 @@ class MathMLHatImportTests(unittest.TestCase):
         self.assert_formula('<munder><mo>lim</mo><mrow><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder>'
                             '<msup><mi>x</mi><mn>2</mn></msup><mover><mi>x</mi><mi>n</mi></mover>'
                             '<mover><mi>x</mi><mo>∧</mo></mover>',
-                            r'{lim}_{x\to 0}{x}^{2}\overset{n}{x}\overset{∧}{x}')
+                            r'\lim_{x\to 0}{x}^{2}\overset{n}{x}\overset{∧}{x}')
 
     def test_hat_must_be_an_operator_and_unsupported_source_styles_are_explicit(self):
         self.assert_formula('<mover><mi>x</mi><mtext>^</mtext></mover>', r'\overset{\text{^}}{x}')

@@ -61,7 +61,7 @@ class Renderer:
                 # MathJax's Greek macros override font commands; a literal
                 # source glyph retains its explicit bold/italic variant.
                 glyph=variants[0].get_text();macro=GREEK.get(glyph)
-                body=variant_commands[variant]+'{'+(body.replace(macro,glyph,1) if macro else body)+'}'
+                body=cs[0] # The scoped node renderer already applied this font.
         if unsupported:
             self.errors.append('Unsupported MathML hat: '+', '.join(unsupported))
             return '\\overset{'+cs[1]+'}{'+cs[0]+'}'
@@ -80,6 +80,14 @@ class Renderer:
                 code=''.join(c*2 for c in color[1:]) if len(color)==4 else color[1:]
                 value='{\\color[HTML]{'+code+'}'+value+'}'
             else:value='{\\color{'+color+'}'+value+'}'
+        variant=n.get('mathvariant')
+        if variant:
+            fonts={'normal':'\\mathrm','bold':'\\mathbf','italic':'\\mathit','bold-italic':'\\mathbfit',
+                   'double-struck':'\\mathbb','script':'\\mathcal','fraktur':'\\mathfrak'}
+            if variant not in fonts:self.errors.append('Unsupported MathML mathvariant: '+variant)
+            else:
+                if n.name=='mi' and n.get_text() in GREEK:value=value.replace(GREEK[n.get_text()],n.get_text(),1)
+                value=fonts[variant]+'{'+value+'}'
         return value
     def math_node(self,n):
         if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),re.sub(r'[$%#]',lambda m:'\\'+m[0],str(n))))
