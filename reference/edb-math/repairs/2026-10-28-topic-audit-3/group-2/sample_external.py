@@ -1,13 +1,20 @@
 import ast,collections,concurrent.futures,hashlib,json,os,re,shutil,subprocess,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[4];G=json.loads((H/'generators.json').read_text());T=Path('/tmp/course-academy-audit3-group2');T.mkdir(exist_ok=True)
-def digest_assets(root):return {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for p in root.rglob('*')if p.is_file()}
+def digest_assets(root):return {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for p in root.rglob('*')if p.is_file()and p.suffix.lower()in ['.png','.svg','.webp','.jpg']}
 def worker(g):
  base=T/str(g['kp']);base.mkdir(exist_ok=True);reports=[];samples=[];old=Path(g['path']);legacy='generate/scratch'in str(old);runtime=base/'runtime';runtime.mkdir(exist_ok=True);dest=runtime/'generate/scratch'if legacy else runtime;dest.mkdir(parents=True,exist_ok=True)
  for name in g['files']:
   if name=='generator-package.json':continue
   p=dest/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(old.parent/name,p)
  if legacy:
+  policy=old.parent/(str(g['kp'])+'-source-policy.json')
+  if policy.exists():shutil.copyfile(policy,dest/policy.name)
+  venv=runtime/'.venv/bin';venv.mkdir(parents=True,exist_ok=True)
+  if not(venv/'python').exists():(venv/'python').symlink_to(sys.executable)
+  parser=R/'generate/runs/current/ode-scalar-parser.py'
+  if g['kp']==17592186166865:
+   target=runtime/'generate/runs/current/ode-scalar-parser.py';target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(parser,target)
   # Historical scripts depend on repository-relative shared modules. Reproduce
   # that declared layout in a private external tree; do not rely on repo cwd.
   for name in ['ca_source_policy.py','math_format.py']:
@@ -28,6 +35,8 @@ def worker(g):
    output=base/('assets-'+band+'-'+move);output.mkdir(exist_ok=True);args=[sys.executable,'-B',str(entry),'--difficulty',band,'--count','3','--seed','9837','--format','json']
    env={k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','COURSE_ACADEMY_REPO_ROOT')};env.update({'MPLBACKEND':'Agg','PYTHONDONTWRITEBYTECODE':'1','COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':str(output)})
    try:
+    if move=='b':
+     runtime_b=base/'runtime-b';shutil.copytree(runtime,runtime_b,dirs_exist_ok=True);entry_b=runtime_b/entry.relative_to(runtime);args[2]=str(entry_b)
     p=subprocess.run(args,cwd=base,capture_output=True,text=True,env=env,timeout=180);(base/f'{band}-{move}.stderr').write_text(p.stderr)
     if p.returncode:raise ValueError(p.stderr[-1800:])
     data=json.loads(p.stdout);data=data if isinstance(data,list)else[data];(base/f'{band}-{move}.json').write_text(json.dumps(data,indent=2)+'\n');outs.append((data,output))

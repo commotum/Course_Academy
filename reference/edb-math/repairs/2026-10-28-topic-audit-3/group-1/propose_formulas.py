@@ -14,7 +14,7 @@ def remove_group_cmd(v,cmd):
   v=v[:m.start()]+v[i:]
  return v
 def canonical(v):
- v=v.replace('^(→)','').replace('^{(→)}','');v=re.sub(r'\\operatorname\{(sin|cos|tan|cot|sec|csc|ln|log|exp|sinh|cosh|tanh|arcsin|arccos|arctan|det|curl|div)\}',r'\\\1 ',v);v=re.sub(r'\\(sin|cos|tan|cot|sec|csc|ln|log|exp|sinh|cosh|tanh|arcsin|arccos|arctan|det|curl|div)\b',r'\1',v)
+ v=v.replace('π',r'\pi ').replace('θ',r'\theta ').replace('α',r'\alpha ').replace('β',r'\beta ').replace('^(→)','').replace('^{(→)}','');v=re.sub(r'\\operatorname\{(sin|cos|tan|cot|sec|csc|ln|log|exp|sinh|cosh|tanh|arcsin|arccos|arctan|det|curl|div)\}',r'\\\1 ',v);v=re.sub(r'\\(sin|cos|tan|cot|sec|csc|ln|log|exp|sinh|cosh|tanh|arcsin|arccos|arctan|det|curl|div)\b',r'\1',v)
  v=normalize_source_tex(v).replace('′',"'").replace(r'\enclose{updiagonalstrike}',r'\cancel');v=re.sub(r'\\bbox(?:\[[^\]]*\])?','',v);v=remove_group_cmd(v,'phantom');v=re.sub(r'\\hspace\{[^{}]*\}','',v);v=re.sub(r'\\color\{[^{}]+\}','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',v)
  v=re.sub(r'\[\s*\{?\s*\\begin\{array\}\{[clr|]+\}',lambda m:r'\begin{bmatrix}',v);v=re.sub(r'\\end\{array\}\s*\}?\s*\]',lambda m:r'\end{bmatrix}',v)
  v=re.sub(r'\\(?:mathbf|boldsymbol|vec|overrightarrow|mathbb|mathrm|mathcal|mathit|textrm|text)\b','',v);v=v.replace(r'\{','{').replace(r'\}','}');v=re.sub(r'\\(?:Bigg|bigg|Big|big)\b','',v);v=v.rstrip('., ');v=v.replace('⁡','').replace('∼',r'\sim').replace('⟹',r'\Longrightarrow').replace('⟨',r'\langle').replace('⟩',r'\rangle').replace('∞',r'\infty').replace('∈',r'\in').replace('−','-').replace('×',r'\times').replace(r'\dfrac',r'\frac');return re.sub(r'\s+|[{}]','',v)

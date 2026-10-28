@@ -28,6 +28,8 @@ def worker(g):
    output=base/('assets-'+band+'-'+move);output.mkdir(exist_ok=True);args=[sys.executable,'-B',str(entry),'--difficulty',band,'--count','3','--seed','9837','--format','json']
    env={k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','COURSE_ACADEMY_REPO_ROOT')};env.update({'MPLBACKEND':'Agg','PYTHONDONTWRITEBYTECODE':'1','COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':str(output)})
    try:
+    if move=='b':
+     runtime_b=base/'runtime-b';shutil.copytree(runtime,runtime_b,dirs_exist_ok=True);entry_b=runtime_b/entry.relative_to(runtime);args[2]=str(entry_b)
     p=subprocess.run(args,cwd=base,capture_output=True,text=True,env=env,timeout=180);(base/f'{band}-{move}.stderr').write_text(p.stderr)
     if p.returncode:raise ValueError(p.stderr[-1800:])
     data=json.loads(p.stdout);data=data if isinstance(data,list)else[data];(base/f'{band}-{move}.json').write_text(json.dumps(data,indent=2)+'\n');outs.append((data,output))

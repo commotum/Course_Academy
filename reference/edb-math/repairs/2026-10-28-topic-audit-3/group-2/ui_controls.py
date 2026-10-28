@@ -32,8 +32,8 @@ with sync_playwright()as p:
   for q in records:
    result=page.evaluate(r'''async q=>{
      MathJax.typesetClear([content]);const form=document.createElement('form');form.addEventListener('submit',e=>e.preventDefault());
-     const prompt=render(q.problem,'prose',q.fields),list=document.createElement('div');form.append(prompt,list);content.replaceChildren(form);
-     function make(f){const host=document.createElement('fieldset');host.dataset.field=f.id;
+     const prompt=render(q.problem,'prose',q.fields),list=document.createElement('div');form.className='lesson-main';list.className='answer-fields';form.append(prompt,list);content.replaceChildren(form);
+     function make(f){const host=document.createElement('fieldset');host.dataset.field=f.id;host.className='answer-field';host.dataset.type=f.type.split('/').at(-1);
        const kind=f.type.split('/').at(-1);
        if(kind==='select') {const select=document.createElement('select');select.name=f.id;select.setAttribute('aria-label',f.key);let opt=document.createElement('option');opt.value='';select.append(opt);for(const a of f.choices){let o=document.createElement('option');o.value=a.id;o.textContent=a.value;select.append(o)}host.append(controls.richSelect(select,f.choices,a=>render(a.type.endsWith('/math')?'$'+a.value+'$':a.value,'prose'),a=>a.id,n=>MathJax.typesetPromise([n])));}
        else if(kind==='blank')host.append(controls.blankInput(f,f.key,f.id));
@@ -62,7 +62,7 @@ with sync_playwright()as p:
      if piece in['ArrowRight','^']:field.press(piece)
      else:field.press_sequentially(piece)
     page.wait_for_timeout(180)
-    result['actualKeyboardTyping']=field.evaluate('''n=>({value:n.value,width:n.getBoundingClientRect().width,scrollWidth:n.scrollWidth,clientWidth:n.clientWidth,pageWidth:innerWidth,pageScroll:document.documentElement.scrollWidth,shadowScroll:[...n.shadowRoot.querySelectorAll('[class]')].filter(x=>x.clientWidth>0&&x.scrollWidth>x.clientWidth+2).map(x=>({class:x.className,scrollWidth:x.scrollWidth,clientWidth:x.clientWidth}))})''');result['actualKeyboardTyping']['initialWidth']=before_width
+    result['actualKeyboardTyping']=field.evaluate('''n=>({value:n.value,width:n.getBoundingClientRect().width,scrollWidth:n.scrollWidth,clientWidth:n.clientWidth,pageWidth:innerWidth,pageScroll:document.documentElement.scrollWidth,shadowScroll:[...n.shadowRoot.querySelectorAll('[class]')].filter(x=>!x.classList.contains('ML__sr-only')&&x.clientWidth>0&&x.scrollWidth>x.clientWidth+2).map(x=>({class:x.className,scrollWidth:x.scrollWidth,clientWidth:x.clientWidth}))})''');result['actualKeyboardTyping']['initialWidth']=before_width
    result.update({'question':q['id'],'identity':q['identity'],'viewport':width});out.append(result)
    assert not result['errors']and not result['rawMarkers'],result
    assert all(n['controls']==1 for n in result['locations']),result

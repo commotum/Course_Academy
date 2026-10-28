@@ -1,0 +1,11 @@
+import json,collections
+from pathlib import Path
+H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());ss=json.loads((H/'sources.json').read_text());index=collections.defaultdict(list)
+for s in ss:index[s['identity']].append(s)
+records=[]
+for q in D['questions']:
+ ident=q.get(':question/math-academy-id');sources=index.get(ident,[]);records.append({'entity':q[':db/id'],'identity':ident,'kind':'source-question/example'if ident else'generated','original_problem_available':any(s['attribute']=='question/problem'for s in sources),'original_solution_available':any(s['attribute']=='question/worked-solution'for s in sources),'paths':sorted({s['path']for s in sources}),'source_limit':None if sources else'No matching retained original HTML located in complete scoped hidden/no-ignore capture index and original lesson folder.'if ident else'Generated record: audit against active authored generator, provenance and independent mathematics; no claim of original question HTML.'})
+by={r['entity']:r for r in records};counts=[]
+for t in D['topics']:
+ ids={l[2]for l in D['links']if l[0]==t['entity']};rs=[by[i]for i in ids];counts.append({'topic':t['entity'],'ma_id':t['ma_id'],'title':t['title'],'records':len(ids),'source_records':sum(r['kind']=='source-question/example'for r in rs),'generated_records':sum(r['kind']=='generated'for r in rs),'original_problem_available':sum(r['original_problem_available']for r in rs),'original_solution_available':sum(r['original_solution_available']for r in rs)})
+(H/'source-availability.json').write_text(json.dumps({'basis_t':9837,'records':records,'tutorials':[{'entity':c[':db/id'],'identity':'tutorial:'+str(c[':tutorial/math-academy-id']),'available':bool(index.get('tutorial:'+str(c[':tutorial/math-academy-id']))),'paths':sorted({s['path']for s in index.get('tutorial:'+str(c[':tutorial/math-academy-id']),[])})}for c in D['contents']if ':tutorial/content'in c]},indent=2)+'\n');(H/'topic-coverage.json').write_text(json.dumps(counts,indent=2)+'\n');print('records',len(records),'source',sum(r['kind']=='source-question/example'for r in records),'originalproblem',sum(r['original_problem_available']for r in records),'originalsolution',sum(r['original_solution_available']for r in records))
