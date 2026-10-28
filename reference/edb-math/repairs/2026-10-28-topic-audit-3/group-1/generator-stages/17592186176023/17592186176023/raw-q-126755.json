@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186176023,
+    "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+    "title": "Evaluating a Line Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "1cd79094-e027-5121-8910-e0abcb93b6f9",
+    ":question/problem": "Use Green's theorem to evaluate ${∮}_{C}F\\cdot dr,$ where $F(x,y)=⟨{4}^{x}-{y}^{3}+2,\\,\\frac{2}{{y}^{2}+1}+{x}^{3}⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=2,$ oriented counterclockwise.",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "bdef91e3-b474-50bc-825e-07d98165edd8",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "56748e57-74cd-572f-8e77-d58c77f3e36d",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "6\\pi "
+          },
+          {
+            ":answer/id": "1d417d26-1567-5d08-93a0-d71b681fe78b",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "3\\pi "
+          },
+          {
+            ":answer/id": "d3684d38-f1c9-5d32-82ca-096f7f2fd1e6",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{\\pi }{3}"
+          },
+          {
+            ":answer/id": "51632c40-8726-54d3-aefc-3c9ee7795b80",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{\\pi }{6}"
+          },
+          {
+            ":answer/id": "7e0605e3-74f0-58d7-8efd-b4969b1e8968",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{3\\pi }{2}"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "56748e57-74cd-572f-8e77-d58c77f3e36d"
+        ]
+      }
+    ],
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{∮}_{C}F\\cdot dr={∮}_{C}({4}^{x}-{y}^{3}+2)\\,dx+(\\frac{2}{{y}^{2}+1}+{x}^{3})\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{∮}_{C}P\\,dx+Q\\,dy={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/c8/c8ebdae5c3fb2c2ca7b318f32a357589d73bbe0d6471877cbf8babd813edd395.png)\n\nNow, since \n\n$$\nP(x,y)={4}^{x}-{y}^{3}+2,\\,Q(x,y)=\\frac{2}{{y}^{2}+1}+{x}^{3},\n$$\n\n we have that \n\n$$\n\\begin{aligned}\\frac{∂P}{∂y}=-3{y}^{2},\\,\\frac{∂Q}{∂x}=3{x}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{∮}_{C}({4}^{x}-{y}^{3}+2)\\,dx+(\\frac{2}{{y}^{2}+1}+{x}^{3})\\,dy & ={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\text{d}A \\\\  & ={∬}_{D}(3{x}^{2}-(-3{y}^{2}))\\,\\text{d}A \\\\  & ={∬}_{D}3({x}^{2}+{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\nΔ={(r,\\theta )\\,:\\,0\\le r\\le \\sqrt{2},\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFinally, we can calculate our double integral, as follows:\n\n$$\n\\begin{aligned}{∬}_{D}3({x}^{2}+{y}^{2})\\,\\text{d}A & ={∬}_{Δ}3({r}^{2}{cos}^{2}⁡\\theta +{r}^{2}{sin}^{2}⁡\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }{\\int }_{0}^{\\sqrt{2}}{r}^{3}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }{\\int }_{0}^{\\sqrt{2}}{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }[\\frac{{r}^{4}}{4}]_{0}^{\\sqrt{2}}\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }\\,\\text{d}\\theta  \\\\  & =3[\\theta ]_{0}^{2\\pi } \\\\  & =3(2\\pi -0) \\\\  & =6\\pi .\\end{aligned}\n$$"
+  },
+  "generation": {
+    "version": "green-polar-evaluation-v3",
+    "template": "q-126755",
+    "profile": "observed:q-126755",
+    "seed": 0,
+    "parameters": {
+      "noise": "1"
+    },
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "evidence_only": true,
+    "eligible_for_learning": false,
+    "mathematical_fingerprint": "e9cd7e490507441e2dffd34afd0a5b5d7eedb57945ddc02964efe7310786dd96",
+    "answer": "6*pi",
+    "bank_values": [
+      "pi/3",
+      "3*pi",
+      "6*pi",
+      "3*pi/2",
+      "pi/6"
+    ],
+    "bank_recipes": [
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern"
+    ],
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  }
+}

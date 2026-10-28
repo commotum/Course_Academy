@@ -1,0 +1,801 @@
+{
+  "database": "math",
+  "basis": 2751,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": {
+    ":db/id": 17592186176024,
+    ":knowledge-point/canonical-example": {
+      ":db/id": 17592186175879,
+      ":question/id": "40a301b7-9eaa-59e1-bcb0-4a35fecbff69",
+      ":question/math-academy-id": "e-9551",
+      ":question/problem": "Given that\n![](images/1e/1e78bf74df5607a1d80b3bd51b3222505e3bb201817448a7a5ebe5b0a73cffa9.svg)\nwhere $\\mathbf{F}(x,y) = \\left\\langle y^2+\\sin x, \\: 3xy-\\cos y  \\right\\rangle$ and $C$ is the circle $x^2+y^2=4$ oriented counterclockwise, what is the missing part of the equation?",
+      ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n\\displaystyle{\\oint\\limits_{C}\\mathbf{F}\\cdot\\mathrm{d}\\mathbf{r}}\n=\n\\oint\\limits_{C} (y^2+\\sin x) \\: \\mathrm{d}x + (3xy-\\cos y) \\: \\mathrm{d}y.\n$$\n\nGreen's theorem states that\n\n$$\n\\oint\\limits_{C} P\\,\\mathrm{d}x + Q\\,\\mathrm{d}y \n= \\iint\\limits_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,\\textrm d A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/79/798665574b8f0e11d991bb0d934efd01bdeb65840c2e86498be4edbc59578439.png)\n\nSince $P(x,y)= y^2+\\sin x$ and $Q(x,y)= 3xy-\\cos y,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=2y,\\,\\frac{\u2202Q}{\u2202x}=3y.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}({y}^{2}+\\operatorname{sin}\u2061x)\\,dx+(xy-\\operatorname{cos}\u2061y)\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(3y-2y)\\,\\text{d}A \\\\  & ={\u222c}_{D}y\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\\Delta = \\big\\{ (r,\\theta) \\: : \\: 0\\leq r \\leq 2,\\: 0 \\leq \\theta \\leq 2\\pi  \\big\\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n\\iint\\limits_{D} f(x,y) \\ \\mathrm d A = \\iint\\limits_{\\Delta} \\ f(r \\cos\\theta, r\\sin\\theta) \\:  r \\ \\mathrm d r \\mathrm d \\theta.\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}y\\,\\text{d}A & ={\u222c}_{\u0394}r\\operatorname{sin}\u2061\\theta \\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{2}{r}^{2}\\operatorname{sin}\u2061\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$\n\nSo, the missing expression is $r^2\\sin\\theta.$"
+    },
+    ":knowledge-point/id": "695a4336-df48-56c9-8472-c2f51a496819",
+    ":knowledge-point/key-prerequisites": [
+      {
+        ":db/id": 17592186049084,
+        ":topic/math-academy-id": 2030,
+        ":topic/title": "Double Integrals in Plane Polar Coordinates"
+      },
+      {
+        ":db/id": 17592186051070,
+        ":topic/math-academy-id": 2116,
+        ":topic/title": "Introduction to Green's Theorem"
+      }
+    ],
+    ":knowledge-point/questions": [
+      {
+        ":db/id": 17592186176311,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6763f71a-2f1e-5e1a-b5b0-80171e8077f0",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r{e}^{\\operatorname{cos}\u2061\\theta }-r{sin}^{2}\u2061\\theta ",
+                ":db/id": 17592186537433
+              },
+              {
+                ":answer/id": "da61f6d3-ed49-54d2-b863-5a31a5f2ff0f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{3}\\operatorname{sin}\u20612\\theta ",
+                ":db/id": 17592186537665
+              },
+              {
+                ":answer/id": "dce15c84-2fee-5b91-8d2e-70aabd4925cc",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186537672
+              },
+              {
+                ":answer/id": "e9bae659-b917-5899-868d-3dd4b4436e04",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r+{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186537702
+              },
+              {
+                ":answer/id": "eb7dfd07-1378-5021-b284-61af5aa9f83b",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{e}^{\\operatorname{cos}\u2061\\theta }-{sin}^{2}\u2061\\theta ",
+                ":db/id": 17592186537712
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "da61f6d3-ed49-54d2-b863-5a31a5f2ff0f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "r-{r}^{3}\\operatorname{sin}\u20612\\theta ",
+              ":db/id": 17592186537665
+            },
+            ":answer-field/id": "9608a74f-b086-5f31-b192-ae95683f2fa5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186174124
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "e77d34a7-9f25-5206-895c-5f4fa0d1f689",
+        ":question/math-academy-id": "q-125716",
+        ":question/problem": "Given that\n\n$$\n{\u222e}_{C}F\\cdot dr={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{3}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $F(x,y)=\u27e8x{y}^{2},\\,x+{e}^{\\operatorname{cos}\u2061y}\u27e9$ and $C$ is the circle ${x}^{2}+{y}^{2}=9$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{\u222e}_{C}F\\cdot dr={\u222e}_{C}x{y}^{2}\\,dx+(x+{e}^{\\operatorname{cos}\u2061y})\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/d8/d831c7fb805d16ec7a2dc2462813ea79b78d888ed2121330ed5d823b590d3c4f.png)\n\nSince $P(x,y)=x{y}^{2}$ and $Q(x,y)=x+{e}^{\\operatorname{cos}\u2061y},$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=2xy,\\,\\frac{\u2202Q}{\u2202x}=1.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}x{y}^{2}\\,dx+(x+{e}^{\\operatorname{cos}\u2061x})\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(1-2xy)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 3,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(1-2xy)\\,\\text{d}A & ={\u222c}_{\u0394}(1-2\\cdot r\\operatorname{cos}\u2061\\theta \\cdot r\\operatorname{sin}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}r-{r}^{3}\\cdot 2\\operatorname{cos}\u2061\\theta \\operatorname{sin}\u2061\\theta \\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{3}r-{r}^{3}\\operatorname{sin}\u20612\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186176485,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "95640d76-c966-5192-a081-34cc37eff21f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-2{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186416089
+              },
+              {
+                ":answer/id": "9cfeea07-4dc9-5945-8f32-4ba04d4c39db",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186416093
+              },
+              {
+                ":answer/id": "9d0c1485-b37d-59e9-8042-95dc6071d26d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186416094
+              },
+              {
+                ":answer/id": "a7529453-a85e-5454-aaea-6763faa38e7b",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-2r\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186416096
+              },
+              {
+                ":answer/id": "b5f2f158-1952-54d5-b338-cc98999f91b5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}\\operatorname{sin}\u2061\\theta -r\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186416099
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "95640d76-c966-5192-a081-34cc37eff21f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "r-2{r}^{2}\\operatorname{sin}\u2061\\theta ",
+              ":db/id": 17592186416089
+            },
+            ":answer-field/id": "b8487d6d-ade8-5e6b-aa72-6dcb7d480679",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186416108
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "bdd86cce-9e5b-5a18-9af7-54a7f6efd03e",
+        ":question/math-academy-id": "q-41469",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}{y}^{2}\\,dx+x\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{1}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=1$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "Green's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/45/459a51f3c408a9c647b3be6b978267a6ce724e747118fbe897275c370d2bb6d6.png)\n\nSince $P(x,y)={y}^{2}$ and $Q(x,y)=x,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=2y,\\,\\frac{\u2202Q}{\u2202x}=1.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}{y}^{2}\\,dx+x\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(1-2y)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 1,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(1-2y)\\,\\text{d}A & ={\u222c}_{\u0394}(1-2\\cdot r\\operatorname{sin}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{1}r-2{r}^{2}\\operatorname{sin}\u2061\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186262625,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "01e93c4c-784f-5084-ab8a-83b41a9c3b12",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-r\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186259887
+              },
+              {
+                ":answer/id": "1cbd94e5-4741-54cd-91f5-397f8394cacd",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-r\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186260121
+              },
+              {
+                ":answer/id": "26253928-a96d-5ca2-ada8-659d943f2a74",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186260209
+              },
+              {
+                ":answer/id": "bc9de10a-a9df-5704-b2e5-316ac970136e",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186261539
+              },
+              {
+                ":answer/id": "d06bbafa-a9ef-5c6e-ae57-d690593cedb8",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-\\frac{{r}^{2}\\operatorname{sin}\u2061(2\\theta )}{2}",
+                ":db/id": 17592186261716
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "bc9de10a-a9df-5704-b2e5-316ac970136e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "r-{r}^{2}\\operatorname{cos}\u2061\\theta ",
+              ":db/id": 17592186261539
+            },
+            ":answer-field/id": "3b35c4ee-3674-511e-b02e-606a2c68404b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186262230
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "d73aed01-512e-5f02-83f5-67f605d164e6",
+        ":question/math-academy-id": "q-126526",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}xy\\,dx+(x+1)\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{3}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=9$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "Green's theorem states that \n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/e6/e69bc348e36b05955d1eaa9eda4516afe137056ead176a46a4fc11bb887ed166.png)\n\nSince $P(x,y)=xy$ and $Q(x,y)=x+1,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=x,\\,\\frac{\u2202Q}{\u2202x}=1.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}xy\\,dx+(x+1)\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(1-x)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394={(r,\\theta )\\,:\\,0\\le r\\le 3,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(1-x)\\,\\text{d}A & ={\u222c}_{\u0394}(1-r\\operatorname{cos}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{3}r-{r}^{2}\\operatorname{cos}\u2061\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186262628,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "01b383de-3cfc-58c9-9df3-f58fbe8d7752",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2{r}^{2}\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186259884
+              },
+              {
+                ":answer/id": "27f0dae3-025f-5ca9-b20c-451a7f1885e8",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2r\\operatorname{cos}\u2061\\theta -1",
+                ":db/id": 17592186260225
+              },
+              {
+                ":answer/id": "5a872dfd-1e43-501e-90a1-8c43483bc0df",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2{r}^{2}\\operatorname{cos}\u2061\\theta -r",
+                ":db/id": 17592186260649
+              },
+              {
+                ":answer/id": "7cdd8636-0e7b-56ac-90ac-1af7ffaabbd8",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2r\\operatorname{sin}\u2061\\theta -1",
+                ":db/id": 17592186260958
+              },
+              {
+                ":answer/id": "d8e7086f-0275-5f12-b2e7-d454e0bef91d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2{r}^{2}\\operatorname{sin}\u2061\\theta -r",
+                ":db/id": 17592186261785
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "5a872dfd-1e43-501e-90a1-8c43483bc0df",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-2{r}^{2}\\operatorname{cos}\u2061\\theta -r",
+              ":db/id": 17592186260649
+            },
+            ":answer-field/id": "d584d815-5b73-56a5-8b00-752a8a746831",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186262493
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "5ee4972b-d705-5cec-8dc7-f572de324a82",
+        ":question/math-academy-id": "q-126542",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}y\\,dx-{x}^{2}\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{4}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=16$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "Green's theorem states that \n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/5f/5f7d53fb7692663cca39f718491b4dccb6244031e2b7c75f766b7a8340696d64.png)\n\nSince $P(x,y)=y$ and $Q(x,y)=-{x}^{2},$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=1,\\,\\frac{\u2202Q}{\u2202x}=-2x.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}y\\,dx-{x}^{2}\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(-2x-1)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394={(r,\\theta )\\,:\\,0\\le r\\le 4,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(-2x-1)\\,\\text{d}A & ={\u222c}_{\u0394}(-2\\cdot r\\operatorname{cos}\u2061\\theta -1)\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{4}-2{r}^{2}\\operatorname{cos}\u2061\\theta -r\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186262632,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6e498e93-5b24-5605-b258-5e7001367f10",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3r",
+                ":db/id": 17592186260845
+              },
+              {
+                ":answer/id": "7d508f6f-4b62-5ad5-b049-acd045b555fc",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{3}\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186260965
+              },
+              {
+                ":answer/id": "c62c0d43-3607-57f6-bbfe-2ed08e93ae7e",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{3}",
+                ":db/id": 17592186261621
+              },
+              {
+                ":answer/id": "c6bf830d-1446-55f2-9cff-18bc217fc8e5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{2}",
+                ":db/id": 17592186261631
+              },
+              {
+                ":answer/id": "e2636c40-db77-5979-a0a0-94fab8a3c54c",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{2}\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186261867
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "c62c0d43-3607-57f6-bbfe-2ed08e93ae7e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-3{r}^{3}",
+              ":db/id": 17592186261621
+            },
+            ":answer-field/id": "59816d41-8481-5201-be15-dbee5b961603",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186262277
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "db4bf9cd-fbd1-5e73-9e78-d4f96b20828d",
+        ":question/math-academy-id": "q-126567",
+        ":question/problem": "Given that\n\n$$\n{\u222e}_{C}F\\cdot dr={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{5}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $F(x,y)=\u27e8{y}^{3}+{e}^{x},\\,\\sqrt[3]{{y}^{2}+10}-{x}^{3}\u27e9$ and $C$ is the circle ${x}^{2}+{y}^{2}=25$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{\u222e}_{C}F\\cdot dr={\u222e}_{C}({y}^{3}+{e}^{x})\\,dx+(\\sqrt[3]{{y}^{2}+10}-{x}^{3})\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/3e/3e378b8f7731dbdbc44c232e9b8703067f39a5b3f836934afcbacb57d47972b2.png)\n\nSince $P(x,y)={y}^{3}+{e}^{x}$ and $Q(x,y)=\\sqrt[3]{{y}^{2}+10}-{x}^{3},$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=3{y}^{2},\\,\\frac{\u2202Q}{\u2202x}=-3{x}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}({y}^{3}+{e}^{x})\\,dx+(\\sqrt[3]{{y}^{2}+10}-{x}^{3})\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(-3{x}^{2}-3{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394={(r,\\theta )\\,:\\,0\\le r\\le 5,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(-3{x}^{2}-3{y}^{2})\\,\\text{d}A & ={\u222c}_{\u0394}(-3\\cdot (r\\operatorname{cos}\u2061\\theta )^{2}-3\\cdot (r\\operatorname{sin}\u2061\\theta )^{2})\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}(-3{r}^{2}{cos}^{2}\u2061\\theta -3{r}^{2}{sin}^{2}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}-3{r}^{3}({cos}^{2}\u2061\\theta +{sin}^{2}\u2061\\theta )\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{5}-3{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186405036,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b21e75e6-c690-5426-9022-4e65c4cd597f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{3}\\operatorname{sin}\u2061(2\\theta )",
+                ":db/id": 17592186405038
+              },
+              {
+                ":answer/id": "858df234-13ff-5820-8cad-fd7b874bd17f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-{r}^{2}\\operatorname{sin}\u2061(2\\theta )",
+                ":db/id": 17592186405039
+              },
+              {
+                ":answer/id": "132a6cae-f594-52cb-8c0a-5014dac8b218",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}\\operatorname{sin}\u2061(2\\theta )",
+                ":db/id": 17592186405040
+              },
+              {
+                ":answer/id": "289d6efd-e337-519a-9f4f-3e9ef2eb9804",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-{r}^{3}\\operatorname{sin}\u2061(2\\theta )",
+                ":db/id": 17592186405041
+              },
+              {
+                ":answer/id": "5e407d05-c2a1-5b46-ab86-013ef5134295",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}\\operatorname{sin}\u2061(2\\theta )",
+                ":db/id": 17592186405042
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "5e407d05-c2a1-5b46-ab86-013ef5134295",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{r}^{3}\\operatorname{sin}\u2061(2\\theta )",
+              ":db/id": 17592186405042
+            },
+            ":answer-field/id": "18f53d24-ffcb-51fb-8ef8-920f533f7ad1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186405037
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "a9b65d2f-1d10-5cc6-91ba-5ed12d5b8509",
+        ":question/math-academy-id": "q-126539",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}x{y}^{2}\\,dx+2{x}^{2}y\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{6}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=36$ oriented counterclockwise, what expression belongs in the blank after applying Green's theorem and changing to polar coordinates $x=r\\cos\\theta$, $y=r\\sin\\theta$, with the integrand simplified pointwise before integration?",
+        ":question/worked-solution": "Green's theorem states that \n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/c2/c2718471780b5ea4f4b0298624d14a22efb317ef4e8302b9269eeeec9449ca0d.png)\n\nSince $P(x,y)=x{y}^{2}$ and $Q(x,y)=2{x}^{2}y,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=2xy,\\,\\frac{\u2202Q}{\u2202x}=4xy.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}x{y}^{2}\\,dx+2{x}^{2}y\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(4xy-2xy)\\,\\text{d}A \\\\  & ={\u222c}_{D}2xy\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394={(r,\\theta )\\,:\\,0\\le r\\le 6,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}2xy\\,\\text{d}A & ={\u222c}_{\u0394}2\\cdot r\\operatorname{cos}\u2061\\theta \\cdot r\\operatorname{sin}\u2061\\theta \\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}2{r}^{3}\\operatorname{cos}\u2061\\theta \\operatorname{sin}\u2061\\theta \\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{6}{r}^{3}\\operatorname{sin}\u2061(2\\theta )\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186405043,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "017f8f24-8529-55cc-a1a8-41dc999d12f6",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-r\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186405045
+              },
+              {
+                ":answer/id": "71c0e048-b5e5-51cc-8ee4-8a54d22a60bf",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{sin}\u2061\\theta ",
+                ":db/id": 17592186405046
+              },
+              {
+                ":answer/id": "53d65de8-c1f0-596d-875a-4aa5f454bb9f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "2r\\operatorname{sin}\u2061\\theta -{r}^{2}\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186405047
+              },
+              {
+                ":answer/id": "0592c862-0b50-54dc-acf8-8691c79146ea",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1-r\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186405048
+              },
+              {
+                ":answer/id": "bea2f9bc-178b-5408-a4cc-86ade476f6a2",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r-{r}^{2}\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186405049
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "bea2f9bc-178b-5408-a4cc-86ade476f6a2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "r-{r}^{2}\\operatorname{cos}\u2061\\theta ",
+              ":db/id": 17592186405049
+            },
+            ":answer-field/id": "9ca86920-5215-52e0-b0cb-aabc47b3bb45",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186405044
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "88dc642a-08f7-5754-86d1-6d7942af6e8c",
+        ":question/math-academy-id": "q-126564",
+        ":question/problem": "Given that\n\n$$\n{\u222e}_{C}F\\cdot dr={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{2}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $F(x,y)=\u27e8xy-\\sqrt[3]{x+5},\\,x+2y\u27e9$ and $C$ is the circle ${x}^{2}+{y}^{2}=4$ oriented counterclockwise, what expression belongs in the blank after applying Green's theorem and changing to polar coordinates $x=r\\cos\\theta$, $y=r\\sin\\theta$, with the integrand simplified pointwise before integration?",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{\u222e}_{C}F\\cdot dr={\u222e}_{C}(xy-\\sqrt[3]{x+5})\\,dx+(x+2y)\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/79/798665574b8f0e11d991bb0d934efd01bdeb65840c2e86498be4edbc59578439.png)\n\nSince $P(x,y)=xy-\\sqrt[3]{x+5}$ and $Q(x,y)=x+2y,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=x,\\,\\frac{\u2202Q}{\u2202x}=1.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}(xy-\\sqrt[3]{x+5})\\,dx+(x+2y)\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(1-x)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394={(r,\\theta )\\,:\\,0\\le r\\le 2,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(1-x)\\,\\text{d}A & ={\u222c}_{\u0394}(1-r\\operatorname{cos}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{2}r-{r}^{2}\\operatorname{cos}\u2061\\theta \\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186416111,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "05ff21cb-9e33-53f3-b627-a88a79716c30",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r(\\operatorname{sin}\u2061\\theta -\\operatorname{cos}\u2061\\theta )",
+                ":db/id": 17592186416073
+              },
+              {
+                ":answer/id": "3abf3164-1e19-59b8-a518-c866ee98eb86",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186416079
+              },
+              {
+                ":answer/id": "7406e360-d054-59fe-8f8f-ff8531ac1adc",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}(\\operatorname{sin}\u2061\\theta -\\operatorname{cos}\u2061\\theta )",
+                ":db/id": 17592186416086
+              },
+              {
+                ":answer/id": "989f1950-08af-5b66-a148-ca15e1457577",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}",
+                ":db/id": 17592186416091
+              },
+              {
+                ":answer/id": "b9b8980a-616f-5aa2-877a-5c0ee10376d7",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "r\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186416100
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "7406e360-d054-59fe-8f8f-ff8531ac1adc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{r}^{2}(\\operatorname{sin}\u2061\\theta -\\operatorname{cos}\u2061\\theta )",
+              ":db/id": 17592186416086
+            },
+            ":answer-field/id": "634f078a-6dcb-548c-8f80-dad54be93eec",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186416105
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "d616e0c6-f6b2-5a83-83cf-32e007120166",
+        ":question/math-academy-id": "q-126569",
+        ":question/problem": "Given that\n\n$$\n{\u222e}_{C}F\\cdot dr={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{4}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $F(x,y)=\u27e8y(x-1),\\,x(y-1)\u27e9$ and $C$ is the circle ${x}^{2}+{y}^{2}=16$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{\u222e}_{C}F\\cdot dr={\u222e}_{C}y(x-1)\\,dx+x(y-1)\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/b9/b95320928a5e7482f9ba2b8bb1d1499950710545b4c7273b7f70dfe5ab8c84b8.png)\n\nSince $P(x,y)=y(x-1)$ and $Q(x,y)=x(y-1),$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=x-1,\\,\\frac{\u2202Q}{\u2202x}=y-1.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}y(x-1)\\,dx+x(y-1)\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}((y-1)-(x-1))\\,\\text{d}A \\\\  & ={\u222c}_{D}(y-x)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 4,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(y-x)\\,\\text{d}A & ={\u222c}_{\u0394}(r\\operatorname{sin}\u2061\\theta -r\\operatorname{cos}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{4}{r}^{2}(\\operatorname{sin}\u2061\\theta -\\operatorname{cos}\u2061\\theta )\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186459234,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1f21bd52-4aa7-5ea8-a034-d3560d1d5b01",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-2{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r",
+                ":db/id": 17592186458686
+              },
+              {
+                ":answer/id": "648aec14-e325-59f4-a6ad-4fe7fed0f4d4",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r+r\\operatorname{cos}\u2061\\theta ",
+                ":db/id": 17592186458801
+              },
+              {
+                ":answer/id": "6c53cfdb-2fdd-546b-ab1b-dc3144c77b6d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r",
+                ":db/id": 17592186458818
+              },
+              {
+                ":answer/id": "76be6580-ecd9-54fd-be34-2e6d6eb3bf26",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r",
+                ":db/id": 17592186458837
+              },
+              {
+                ":answer/id": "867e3063-71a8-5b3f-ba08-0e4184738773",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-{r}^{2}\\operatorname{sin}\u2061(2\\theta )-1",
+                ":db/id": 17592186458863
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "6c53cfdb-2fdd-546b-ab1b-dc3144c77b6d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r",
+              ":db/id": 17592186458818
+            },
+            ":answer-field/id": "7bb86058-0e7f-5528-b79d-a77b82e246b7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186459138
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "48fe30a0-5320-52ad-9ed5-45000abef204",
+        ":question/math-academy-id": "q-126532",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}(x+y)\\,dx-{x}^{2}y\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{5}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=25$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "Green's theorem states that \n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/04/0470588a034222b183694b087d417e8ead0d2fd72357e796373794d00523708f.png)\n\nSince $P(x,y)=x+y$ and $Q(x,y)=-{x}^{2}y,$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=1,\\,\\frac{\u2202Q}{\u2202x}=-2xy.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}(x+y)\\,dx-{x}^{2}y\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(-2xy-1)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 5,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(-2xy-1)\\,\\text{d}A & ={\u222c}_{\u0394}(-2\\cdot r\\operatorname{cos}\u2061\\theta \\cdot r\\operatorname{sin}\u2061\\theta -1)\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}(-2{r}^{3}\\operatorname{cos}\u2061\\theta \\operatorname{sin}\u2061\\theta -r)\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{5}-{r}^{3}\\operatorname{sin}\u2061(2\\theta )-r\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186537903,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0c5d1032-d8df-5131-9315-d27ce3d12daa",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{3}(\\operatorname{cos}\u2061\\theta +\\operatorname{sin}\u2061\\theta )",
+                ":db/id": 17592186537247
+              },
+              {
+                ":answer/id": "1f8a5c91-67b1-5ae9-83b6-a14d25c55b45",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{2}\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186537296
+              },
+              {
+                ":answer/id": "46824a5c-5d89-5cc0-92ba-1b68ec6d9595",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{3}\\operatorname{cos}\u2061(2\\theta )",
+                ":db/id": 17592186537373
+              },
+              {
+                ":answer/id": "9e873ca7-af38-5f44-9341-1fb3e1ea8712",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{3}",
+                ":db/id": 17592186537525
+              },
+              {
+                ":answer/id": "eb337268-12ae-51d7-ad27-55abc1397eb5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3{r}^{2}",
+                ":db/id": 17592186537710
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "9e873ca7-af38-5f44-9341-1fb3e1ea8712",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "-3{r}^{3}",
+              ":db/id": 17592186537525
+            },
+            ":answer-field/id": "600ccac0-481d-5135-af9b-c1f28719ac01",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186537793
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/easy"
+        },
+        ":question/id": "37e413b5-1ec6-5915-aa78-dfcf790b6b22",
+        ":question/math-academy-id": "q-126519",
+        ":question/problem": "Given that \n\n$$\n{\u222e}_{C}{y}^{3}\\,dx-{x}^{3}\\,dy={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{2}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $C$ is the circle ${x}^{2}+{y}^{2}=4$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "Green's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/79/798665574b8f0e11d991bb0d934efd01bdeb65840c2e86498be4edbc59578439.png)\n\nSince $P(x,y)={y}^{3}$ and $Q(x,y)=-{x}^{3},$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=3{y}^{2},\\,\\frac{\u2202Q}{\u2202x}=-3{x}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}{y}^{3}\\,dx-{x}^{3}\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}(-3{x}^{2}-3{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 2,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}(-3{x}^{2}-3{y}^{2})\\,\\text{d}A & ={\u222c}_{\u0394}(-3\\cdot (r\\operatorname{cos}\u2061\\theta )^{2}-3\\cdot (r\\operatorname{sin}\u2061\\theta )^{2})\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}(-3{r}^{2}{cos}^{2}\u2061\\theta -3{r}^{2}{sin}^{2}\u2061\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}-3{r}^{3}({cos}^{2}\u2061\\theta +{sin}^{2}\u2061\\theta )\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{2}-3{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      },
+      {
+        ":db/id": 17592186537955,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1e31ec7e-c4a0-5af1-a007-a5f374623cde",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}{sin}^{2}\u2061\\theta -r",
+                ":db/id": 17592186537294
+              },
+              {
+                ":answer/id": "307eac12-8ffa-5b27-b7eb-9fa2f8ffbd12",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}\\operatorname{sin}\u20612\\theta -r",
+                ":db/id": 17592186537332
+              },
+              {
+                ":answer/id": "4697b16a-b954-5ce9-9fdc-2eb3d67c270a",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}{cos}^{2}\u2061\\theta -1",
+                ":db/id": 17592186537374
+              },
+              {
+                ":answer/id": "4a79f07c-c8a1-549a-81cf-2a1164ba3d60",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{2}{sin}^{2}\u2061\\theta -1",
+                ":db/id": 17592186537386
+              },
+              {
+                ":answer/id": "656fd776-3d31-5e32-af9a-81ea6f3a0abf",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "{r}^{3}{cos}^{2}\u2061\\theta -r",
+                ":db/id": 17592186537431
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "1e31ec7e-c4a0-5af1-a007-a5f374623cde",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{r}^{3}{sin}^{2}\u2061\\theta -r",
+              ":db/id": 17592186537294
+            },
+            ":answer-field/id": "cf819579-d6fd-53c1-af84-bcfb66bf0607",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186537858
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "af0d631e-6f1f-57fd-bd84-ccd6cde384ee",
+        ":question/math-academy-id": "q-126546",
+        ":question/problem": "Given that\n\n$$\n{\u222e}_{C}F\\cdot dr={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{1}\\boxed{}\\,\\text{d}r\\,\\text{d}\\theta ,\n$$\n\nwhere $F(x,y)=\u27e8y+{e}^{\\operatorname{sin}\u2061x},\\,x{y}^{2}\u27e9$ and $C$ is the circle ${x}^{2}+{y}^{2}=1$ oriented counterclockwise, what is the missing part of the equation?",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{\u222e}_{C}F\\cdot dr={\u222e}_{C}(y+{e}^{\\operatorname{sin}\u2061x})\\,dx+x{y}^{2}\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{\u222e}_{C}P\\,dx+Q\\,dy={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/0c/0cb340ef33d4cc38081e3796b4c8e076f1499760c0a3ffeecb8123a41fefeec8.png)\n\nSince $P(x,y)=y+{e}^{\\operatorname{sin}\u2061x}$ and $Q(x,y)=x{y}^{2},$ we obtain\n\n$$\n\\begin{aligned}\\frac{\u2202P}{\u2202y}=1,\\,\\frac{\u2202Q}{\u2202x}={y}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{\u222e}_{C}(y+{e}^{\\operatorname{sin}\u2061x})\\,dx+x{y}^{2}\\,dy & ={\u222c}_{D}(\\frac{\u2202Q}{\u2202x}-\\frac{\u2202P}{\u2202y})\\text{d}A \\\\  & ={\u222c}_{D}({y}^{2}-1)\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\u0394=\\{(r,\\theta )\\,:\\,0\\le r\\le 1,\\,0\\le \\theta \\le 2\\pi \\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that \n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dA={\u222c}_{\u0394}\\text{\u00a0}f(r\\operatorname{cos}\u2061\\theta ,r\\operatorname{sin}\u2061\\theta )\\,r\\text{\u00a0}drd\\theta .\n$$\n\nTherefore, we can write our double integral as \n\n$$\n\\begin{aligned}{\u222c}_{D}({y}^{2}-1)\\,\\text{d}A & ={\u222c}_{\u0394}((r\\operatorname{sin}\u2061\\theta )^{2}-1)\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\u222c}_{\u0394}({r}^{2}{sin}^{2}\u2061\\theta -1)\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }\\,{\\int }_{0}^{1}{r}^{3}{sin}^{2}\u2061\\theta -r\\,\\text{d}r\\,\\text{d}\\theta .\\end{aligned}\n$$"
+      }
+    ],
+    ":knowledge-point/title": "Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem"
+  }
+}

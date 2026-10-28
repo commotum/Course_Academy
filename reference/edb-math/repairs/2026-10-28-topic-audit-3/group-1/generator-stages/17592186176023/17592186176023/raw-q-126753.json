@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186176023,
+    "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+    "title": "Evaluating a Line Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "33935342-064b-57a3-b657-11b30b300a25",
+    ":question/problem": "Use Green's theorem to evaluate ${∮}_{C}F\\cdot dr,$ where $F(x,y)=⟨{sin}^{3}⁡x-{y}^{3},{y}^{4}+{x}^{3}⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=9,$ oriented counterclockwise.",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "8c44f060-fa92-570b-b4d8-2847e90bdded",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "f98100e8-30ea-5787-ade1-f893b5b4f990",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{81\\text{ }\\,\\pi }{2}"
+          },
+          {
+            ":answer/id": "9d1d495c-d12d-506e-ab0d-6d5e8662a9cf",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{729\\text{ }\\,\\pi }{2}"
+          },
+          {
+            ":answer/id": "4947d6ff-3b9b-5c50-866f-a4e361d9c89d",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{3\\text{ }\\,\\pi }{2}"
+          },
+          {
+            ":answer/id": "cdf06a67-1e55-568c-9ab0-5168d27d7445",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{27\\text{ }\\,\\pi }{2}"
+          },
+          {
+            ":answer/id": "5222cc56-9250-5649-bab8-a471b46ed434",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{243\\text{ }\\,\\pi }{2}"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "5222cc56-9250-5649-bab8-a471b46ed434"
+        ]
+      }
+    ],
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{∮}_{C}F\\cdot dr={∮}_{C}({sin}^{3}⁡x-{y}^{3})\\,dx+({y}^{4}+{x}^{3})\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{∮}_{C}P\\,dx+Q\\,dy={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/e2/e218f4b6938b166aa6eacab02ce0276a4a863a0cfade8528816a54c2621b51e7.png)\n\nNow, since \n\n$$\nP(x,y)={sin}^{3}⁡x-{y}^{3},\\,Q(x,y)={y}^{4}+{x}^{3},\n$$\n\n we have that \n\n$$\n\\begin{aligned}\\frac{∂P}{∂y}=-3{y}^{2},\\,\\frac{∂Q}{∂x}=3{x}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{∮}_{C}({sin}^{3}⁡x-{y}^{3})\\,dx+({y}^{4}+{x}^{3})\\,dy & ={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\text{d}A \\\\  & ={∬}_{D}(3{x}^{2}-(-3{y}^{2}))\\,\\text{d}A \\\\  & ={∬}_{D}3({x}^{2}+{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\nΔ={(r,\\theta )\\,:\\,0\\le r\\le 3,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFinally, we can calculate our double integral, as follows:\n\n$$\n\\begin{aligned}{∬}_{D}3({x}^{2}+{y}^{2})\\,\\text{d}A & ={∬}_{Δ}3({r}^{2}{cos}^{2}⁡\\theta +{r}^{2}{sin}^{2}⁡\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }{\\int }_{0}^{3}{r}^{3}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }{\\int }_{0}^{3}{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }{[\\frac{{r}^{4}}{4}]}_{0}^{3}\\,\\text{d}\\theta  \\\\  & =3{\\int }_{0}^{2\\pi }\\frac{81}{4}\\,\\text{d}\\theta  \\\\  & =\\frac{243}{4}[\\theta ]_{0}^{2\\pi } \\\\  & =\\frac{243}{4}(2\\pi -0) \\\\  & =\\frac{243\\text{ }\\,\\pi }{2}.\\end{aligned}\n$$"
+  },
+  "generation": {
+    "version": "green-polar-evaluation-v3",
+    "template": "q-126753",
+    "profile": "observed:q-126753",
+    "seed": 0,
+    "parameters": {
+      "noise": "1"
+    },
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "evidence_only": true,
+    "eligible_for_learning": false,
+    "mathematical_fingerprint": "4dd03a49c217059ef2a774ddb19d66ed9add8e5da831332445f4591919948433",
+    "answer": "243*pi/2",
+    "bank_values": [
+      "3*pi/2",
+      "729*pi/2",
+      "81*pi/2",
+      "243*pi/2",
+      "27*pi/2"
+    ],
+    "bank_recipes": [
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern"
+    ],
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  }
+}

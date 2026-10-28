@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186176023,
+    "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+    "title": "Evaluating a Line Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "f80d4396-47df-54c7-ae9a-294a4ea26887",
+    ":question/problem": "![](images/d6/d675e8d06f2037531a2eec3a7e48374bb0d2e5cb59adfee0cbee5ce3a23add67.png)\n\nEvaluate ${∮}_{C}({e}^{x}-2{x}^{2}y)dx+({e}^{y}+2x{y}^{2})\\,dy,$ where the path $C$ is shown above.",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "7bfea33a-1ad2-564a-a3e6-7841d50d8acd",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "0cc31410-ac71-5092-8d9a-82686a05a232",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{27\\pi }{4}"
+          },
+          {
+            ":answer/id": "d9243785-adc0-50bf-8a69-2dad6a01b92a",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{81\\pi }{4}"
+          },
+          {
+            ":answer/id": "e10fba1c-eaec-5199-873b-7fa5009e9c5b",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{9\\pi }{4}"
+          },
+          {
+            ":answer/id": "e4a5b7d2-2287-56c8-afbd-6040751bb320",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{27\\pi }{2}"
+          },
+          {
+            ":answer/id": "b56fc2b1-5c87-50d3-b5c4-d4f20ab852ec",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{3\\pi }{2}"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "d9243785-adc0-50bf-8a69-2dad6a01b92a"
+        ]
+      }
+    ],
+    ":question/difficulty": ":question.difficulty/hard",
+    ":question/worked-solution": "Green's theorem states that\n\n$$\n{∮}_{C}P\\,dx+Q\\,dy={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/96/96998e4a17d20459622486970518a677309b23fd936c993d8c97dcf0d65a9a29.png)\n\n \n\nNow, since \n\n$$\nP(x,y)={e}^{x}-2{x}^{2}y,\\,Q(x,y)={e}^{y}+2x{y}^{2},\n$$\n\n we have that \n\n$$\n\\begin{aligned}\\frac{∂P}{∂y}=-2{x}^{2},\\,\\frac{∂Q}{∂x}=2{y}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{∮}_{C}({e}^{x}-2{x}^{2}y)dx+({e}^{y}+2x{y}^{2})\\,dy & ={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\text{d}A \\\\  & ={∬}_{D}(2{y}^{2}-(-2{x}^{2}))\\,\\text{d}A \\\\  & ={∬}_{D}2({y}^{2}+{x}^{2})\\,\\text{d}A\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\nΔ={(r,\\theta )\\,:\\,0\\le r\\le 3,\\,\\frac{\\pi }{2}\\le \\theta \\le \\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFinally, we can calculate our double integral, as follows:\n\n$$\n\\begin{aligned}{∬}_{D}2({y}^{2}+{x}^{2})\\,\\text{d}A & ={∬}_{Δ}2({r}^{2}{sin}^{2}⁡\\theta +{r}^{2}{cos}^{2}⁡\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{\\pi /2}^{\\pi }{\\int }_{0}^{3}2{r}^{3}({sin}^{2}⁡\\theta +{cos}^{2}⁡\\theta )\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & ={\\int }_{\\pi /2}^{\\pi }{\\int }_{0}^{3}2{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & ={\\int }_{\\pi /2}^{\\pi }{[\\frac{{r}^{4}}{2}]}_{0}^{3}\\,\\text{d}\\theta  \\\\  & ={\\int }_{\\pi /2}^{\\pi }\\frac{81}{2}\\,\\text{d}\\theta  \\\\  & =\\frac{81}{2}[\\theta ]_{\\pi /2}^{\\pi } \\\\  & =\\frac{81}{2}\\cdot \\frac{\\pi }{2} \\\\  & =\\frac{81\\pi }{4}.\\end{aligned}\n$$"
+  },
+  "generation": {
+    "version": "green-polar-evaluation-v3",
+    "template": "q-126756",
+    "profile": "observed:q-126756",
+    "seed": 0,
+    "parameters": {
+      "noise": "1"
+    },
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "evidence_only": true,
+    "eligible_for_learning": false,
+    "mathematical_fingerprint": "f9fc890e1aab34b2db80e98cd32288aae4f86d01035d8ae7403c2b0dc37e2413",
+    "answer": "81*pi/4",
+    "bank_values": [
+      "9*pi/4",
+      "81*pi/4",
+      "27*pi/4",
+      "3*pi/2",
+      "27*pi/2"
+    ],
+    "bank_recipes": [
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern"
+    ],
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  }
+}

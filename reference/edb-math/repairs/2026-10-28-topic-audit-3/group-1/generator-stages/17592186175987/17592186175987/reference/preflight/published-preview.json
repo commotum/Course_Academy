@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186175987,
+    "id": "7e5704a2-acbe-5ccb-98dc-aa77e0ccd803",
+    "title": "Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "442c0b16-fa87-5944-8279-ae2d47c10e31",
+    ":question/difficulty": ":question.difficulty/easy",
+    ":question/problem": "![](images/8f/8fb603f43f97d3444e3c0f520e340369f168a26ec7262e3ffa2cbc63490c4885.png)\n\nConsider the path $C$ shown above. Which of the following is equivalent to the line integral\n\n$$\n\\oint_C(3 y + \\sin{\\left(x \\right)})\\,dx+(x + \\cos{\\left(y \\right)})\\,dy\\,?\n$$\n\nThe cross partials are $\\partial P/\\partial y=3$ and $\\partial Q/\\partial x=1$.",
+    ":question/worked-solution": "Green's theorem states that\n\n$$\n\\oint_C P\\,dx+Q\\,dy=\\iint_D\\left(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\right)\\,dA.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/1e/1e49b98f2c21c06e451fa70de5a19198fbf31a97f205c57138e8358725ded108.png)\n\nSince $P(x,y)=3 y + \\sin{\\left(x \\right)}$ and $Q(x,y)=x + \\cos{\\left(y \\right)},$ we obtain\n\n$$\n\\frac{\\partial P}{\\partial y}=3,\\qquad\\frac{\\partial Q}{\\partial x}=1.\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}\\oint_C(3 y + \\sin{\\left(x \\right)})\\,dx+(x + \\cos{\\left(y \\right)})\\,dy&=\\iint_D(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y})\\,dA\\\\&=\\iint_D\\left(1-\\left(3\\right)\\right)\\,dA\\\\&=\\iint_D\\left(-2\\right)\\,dA.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\n\\Delta=\\{(r,\\theta):0\\le r\\le 6,\\ 0\\le\\theta\\le \\frac{\\pi}{2}\\}.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n\\iint_D f(x,y)\\,dA=\\iint_\\Delta f(r\\cos\\theta,r\\sin\\theta)\\,r\\,dr\\,d\\theta.\n$$\n\nTherefore, we can write our double integral as\n\n$$\n\\begin{aligned}\\iint_D\\left(-2\\right)\\,dA&=\\iint_\\Delta\\left(-2\\right)r\\,dr\\,d\\theta\\\\&=\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6}- 2 r\\,dr\\,d\\theta.\\end{aligned}\n$$",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "4e9f5a2a-077b-5bd1-8962-eac9dfdd211a",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "ad5fa325-0187-5d8f-8b92-c7984a6bad98",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6}2 r\\,dr\\,d\\theta"
+          },
+          {
+            ":answer/id": "e57a89d7-76e8-5cf7-9b59-0f813172b2dc",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6}- 2 r\\,dr\\,d\\theta"
+          },
+          {
+            ":answer/id": "05b85568-6d71-5d6e-b0c0-e13be22ee1d3",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6}4 r\\,dr\\,d\\theta"
+          },
+          {
+            ":answer/id": "f1080001-7044-5cae-8c5e-ca6c9563b93b",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6}-2\\,dr\\,d\\theta"
+          },
+          {
+            ":answer/id": "e70e10fe-71f2-5728-9617-73637c24f0b5",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{7}- 2 r\\,dr\\,d\\theta"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "e57a89d7-76e8-5cf7-9b59-0f813172b2dc"
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "version": "greens-polar-path-4",
+    "template": "easy_constant",
+    "profile": "authored_method",
+    "parameters": {
+      "radius": 6,
+      "a": 3,
+      "b": 1
+    },
+    "seed": 22875987,
+    "source": {
+      "database": "math",
+      "basis": 2272,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "source_id": null,
+    "eligible_for_learning": true,
+    "evidence_only": false,
+    "mathematical_fingerprint": "4cf355c97312302ca2c9e7f3c716bf321e232b4be7eb9919b9bc230326dddcb8",
+    "content_fingerprint": "b12cdbbeb851c1f4aafb478791ab5af1f8edcd8b88c93ceb4a9737803fdcdcc0",
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "assets": [
+      {
+        "path": "images/8f/8fb603f43f97d3444e3c0f520e340369f168a26ec7262e3ffa2cbc63490c4885.png",
+        "sha256": "8fb603f43f97d3444e3c0f520e340369f168a26ec7262e3ffa2cbc63490c4885",
+        "bytes": 9788
+      },
+      {
+        "path": "images/1e/1e49b98f2c21c06e451fa70de5a19198fbf31a97f205c57138e8358725ded108.png",
+        "sha256": "1e49b98f2c21c06e451fa70de5a19198fbf31a97f205c57138e8358725ded108",
+        "bytes": 10206
+      }
+    ]
+  }
+}

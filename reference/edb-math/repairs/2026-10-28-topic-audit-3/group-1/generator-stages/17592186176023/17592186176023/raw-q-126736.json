@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186176023,
+    "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+    "title": "Evaluating a Line Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "0a59059b-aef1-5f36-8bbd-56e862727fa7",
+    ":question/problem": "Use Green's theorem to evaluate ${∮}_{C}F\\cdot dr,$ where $F(x,y)=⟨\\operatorname{sin}⁡x-2{x}^{2}y,\\text{ }\\,\\sqrt{y+3}+2x{y}^{2}⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=1,$ oriented counterclockwise.",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "6dca88b8-b7fd-5c95-a43b-59977edee66b",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "eadd1558-b78b-5b6d-9453-056037df556d",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{\\pi }{4}"
+          },
+          {
+            ":answer/id": "3555a824-751a-500c-b404-39dfeb87ed55",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "2\\pi "
+          },
+          {
+            ":answer/id": "fac28ea0-76e2-556a-b44f-d5efda5ade5b",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{3\\pi }{2}"
+          },
+          {
+            ":answer/id": "1fcab2b0-bc9e-5829-8e98-9a130a3aea88",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\pi "
+          },
+          {
+            ":answer/id": "7fec788b-44f3-584b-bcab-40c4bd811e49",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "\\frac{\\pi }{2}"
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "1fcab2b0-bc9e-5829-8e98-9a130a3aea88"
+        ]
+      }
+    ],
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{∮}_{C}F\\cdot dr={∮}_{C}(\\operatorname{sin}⁡x-2{x}^{2}y)\\,dx+(\\sqrt{y+3}-2x{y}^{2})\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{∮}_{C}P\\,dx+Q\\,dy={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/90/902790a00a049bbfc759403125ad5f19a8c2528a46b59c721ac43fb137cd5d8e.png)\n\nNow, since \n\n$$\nP(x,y)=\\operatorname{sin}⁡x-2{x}^{2}y,\\,Q(x,y)=\\sqrt{y+3}+2x{y}^{2},\n$$\n\n we have that\n\n$$\n\\begin{aligned}\\frac{∂P}{∂y}=-2{x}^{2},\\,\\frac{∂Q}{∂x}=2{y}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{∮}_{C}(\\operatorname{sin}⁡x-2{x}^{2}y)\\,dx+(\\sqrt{y+3}-2x{y}^{2})\\,dy & ={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\text{d}A \\\\  & ={∬}_{D}(2{y}^{2}-(-2{x}^{2}))\\,\\text{d}A \\\\  & ={∬}_{D}2({x}^{2}+{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\nΔ={(r,\\theta )\\,:\\,0\\le r\\le 1,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFinally, we can calculate our double integral, as follows: \n\n$$\n\\begin{aligned}{∬}_{D}2({x}^{2}+{y}^{2})\\,\\text{d}A & ={∬}_{Δ}2({r}^{2}{cos}^{2}⁡\\theta +{r}^{2}{sin}^{2}⁡\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & =2{\\int }_{0}^{2\\pi }{\\int }_{0}^{1}{r}^{3}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =2{\\int }_{0}^{2\\pi }{\\int }_{0}^{1}{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & =2{\\int }_{0}^{2\\pi }[\\frac{{r}^{4}}{4}]_{0}^{1}\\,\\text{d}\\theta  \\\\  & =2{\\int }_{0}^{2\\pi }\\frac{1}{4}\\,\\text{d}\\theta  \\\\  & =\\frac{1}{2}[\\theta ]_{0}^{2\\pi } \\\\  & =\\pi \\end{aligned}\n$$"
+  },
+  "generation": {
+    "version": "green-polar-evaluation-v3",
+    "template": "q-126736",
+    "profile": "observed:q-126736",
+    "seed": 0,
+    "parameters": {
+      "noise": "1"
+    },
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "evidence_only": true,
+    "eligible_for_learning": false,
+    "mathematical_fingerprint": "d87a05cd1f05c19105f11365950d969915376b1e9f77dfa60819fef1e9fa5571",
+    "answer": "pi",
+    "bank_values": [
+      "3*pi/2",
+      "2*pi",
+      "pi/4",
+      "pi/2",
+      "pi"
+    ],
+    "bank_recipes": [
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern"
+    ],
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  }
+}

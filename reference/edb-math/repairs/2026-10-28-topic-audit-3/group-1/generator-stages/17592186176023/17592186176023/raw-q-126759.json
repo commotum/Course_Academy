@@ -1,0 +1,86 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186176023,
+    "id": "b2eca638-7c7b-51ed-99e3-3b3156d13669",
+    "title": "Evaluating a Line Integral Using Green's Theorem"
+  },
+  "question": {
+    ":question/id": "8013a202-ece9-542c-9769-2d57ca839d68",
+    ":question/problem": "Use Green's theorem to evaluate ${∮}_{C}F\\cdot dr,$ where $F(x,y)=⟨\\frac{\\sqrt{x+5}-{y}^{3}}{3},\\frac{\\sqrt{y+5}+{x}^{3}}{3}⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=4,$ oriented counterclockwise.",
+    ":question/answer-fields": [
+      {
+        ":answer-field/id": "55564087-53a4-50e4-82c1-699a29977b94",
+        ":answer-field/key": "selection",
+        ":answer-field/type": ":answer-field.type/radio",
+        ":answer-field/choices": [
+          {
+            ":answer/id": "e85ecca0-84eb-5df6-bf97-e6472f3a8532",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "2\\pi "
+          },
+          {
+            ":answer/id": "c571d4d7-4d6f-5a7e-b8bf-46ab3e01fe42",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "8\\pi "
+          },
+          {
+            ":answer/id": "22e1adf2-7a7c-5402-8da5-e20892000dca",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "16\\pi "
+          },
+          {
+            ":answer/id": "e6f97de0-4f54-5b07-8467-612d46254cd2",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "0"
+          },
+          {
+            ":answer/id": "788db6ab-63a6-5bab-85d0-d91875cb4756",
+            ":answer/type": ":answer.type/math",
+            ":answer/value": "4\\pi "
+          }
+        ],
+        ":answer-field/correct": [
+          ":answer/id",
+          "c571d4d7-4d6f-5a7e-b8bf-46ab3e01fe42"
+        ]
+      }
+    ],
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/worked-solution": "First, notice that we can rewrite our integral as \n\n$$\n{∮}_{C}F\\cdot dr={∮}_{C}\\frac{\\sqrt{x+5}-{y}^{3}}{3}\\,dx+\\frac{\\sqrt{y+5}+{x}^{3}}{3}\\,dy.\n$$\n\nGreen's theorem states that\n\n$$\n{∮}_{C}P\\,dx+Q\\,dy={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\,\\text{d}A.\n$$\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/09/09a69771617d73af6e4a1a42720223951e2e6edeb71a8df4d12aeb1bc22031aa.png)\n\nNow, since \n\n$$\nP(x,y)=\\frac{\\sqrt{x+5}-{y}^{3}}{3},\\,Q(x,y)=\\frac{\\sqrt{y+5}+{x}^{3}}{3},\n$$\n\n we have that\n\n$$\n\\begin{aligned}\\frac{∂P}{∂y}=-{y}^{2},\\,\\frac{∂Q}{∂x}={x}^{2}.\\end{aligned}\n$$\n\nApplying Green's theorem, we get\n\n$$\n\\begin{aligned}{∮}_{C}\\frac{\\sqrt{x+5}-{y}^{3}}{3}\\,dx+\\frac{\\sqrt{y+5}+{x}^{3}}{3}\\,dy & ={∬}_{D}(\\frac{∂Q}{∂x}-\\frac{∂P}{∂y})\\text{d}A \\\\  & ={∬}_{D}({x}^{2}-(-{y}^{2}))\\,\\text{d}A \\\\  & ={∬}_{D}({x}^{2}+{y}^{2})\\,\\text{d}A.\\end{aligned}\n$$\n\nNow, notice that the region $D$ can be represented in polar coordinates as\n\n$$\nΔ={(r,\\theta )\\,:\\,0\\le r\\le 2,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nThe change of variables formula for plane polar coordinates states that\n\n$$\n{∬}_{D}f(x,y)\\text{ }dA={∬}_{Δ}\\text{ }f(r\\operatorname{cos}⁡\\theta ,r\\operatorname{sin}⁡\\theta )\\,r\\text{ }drd\\theta .\n$$\n\nFinally, we can calculate our double integral, as follows:\n\n$$\n\\begin{aligned}{∬}_{D}({x}^{2}+{y}^{2})\\,\\text{d}A & ={∬}_{Δ}({r}^{2}{cos}^{2}⁡\\theta +{r}^{2}{sin}^{2}⁡\\theta )\\,r\\,\\text{d}r\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }{\\int }_{0}^{2}{r}^{3}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }{\\int }_{0}^{2}{r}^{3}\\,\\text{d}r\\,\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }[\\frac{{r}^{4}}{4}]_{0}^{2}\\,\\text{d}\\theta  \\\\  & ={\\int }_{0}^{2\\pi }4\\,\\text{d}\\theta  \\\\  & =4[\\theta ]_{0}^{2\\pi } \\\\  & =4(2\\pi -0) \\\\  & =8\\pi .\\end{aligned}\n$$"
+  },
+  "generation": {
+    "version": "green-polar-evaluation-v3",
+    "template": "q-126759",
+    "profile": "observed:q-126759",
+    "seed": 0,
+    "parameters": {
+      "noise": "1"
+    },
+    "source": {
+      "database": "math",
+      "basis": 1356,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+    },
+    "evidence_only": true,
+    "eligible_for_learning": false,
+    "mathematical_fingerprint": "e7d6cf6ba172448db5e39afdb04ba1641a4dee72dbf6c0547ce2afa092ba0475",
+    "answer": "8*pi",
+    "bank_values": [
+      "16*pi",
+      "8*pi",
+      "2*pi",
+      "4*pi",
+      "0"
+    ],
+    "bank_recipes": [
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern",
+      "opaque-historical-pattern"
+    ],
+    "python": "3.13.5",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  }
+}

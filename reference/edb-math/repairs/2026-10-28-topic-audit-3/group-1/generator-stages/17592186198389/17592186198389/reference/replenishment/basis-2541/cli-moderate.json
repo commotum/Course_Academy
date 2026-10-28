@@ -1,0 +1,2822 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "4ed6e5af-2150-51ed-b676-4ac61ca8579d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - y^{2}$ for $1\\le x\\le 4$ and $-1\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{4}{\\int }_{-1}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 4,\\,-1\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - v^{2}} \\\\  & =\u27e8u + v,\\,2 u + v,\\,- (- 2 u^{2} - v^{2}) - 1\u27e9 \\\\  & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + v^{2} - 1\u27e9\\cdot \u27e84 u,\\,2 v,\\,1\u27e9 \\\\  & =(u + v)\\cdot (4 u)+(2 u + v)\\cdot (2 v)+(2 u^{2} + v^{2} - 1)\\cdot (1) \\\\  & =4 u^{2} + 4 uv+4 uv + 2 v^{2}+2 u^{2} + v^{2} - 1 \\\\  & =6 u^{2} + 8 uv + 3 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(6 u^{2} + 8 uv + 3 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{1}^{4}{\\int }_{-1}^{2}(6 u^{2} + 8 uv + 3 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cf94c05a-12ff-5582-8b0f-1126b1a459c1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a8b6cc4a-eef9-568d-bb45-387ac415e38c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} - v^{2} - 1"
+            },
+            {
+              ":answer/id": "7436a512-84c9-591c-9ce9-fcc70e1d47ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 8 uv + 2 v^{2}"
+            },
+            {
+              ":answer/id": "f2b20ec7-b848-5947-b64a-04215b62f1b5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 8 uv + 3 v^{2} - 1"
+            },
+            {
+              ":answer/id": "8f050df9-ff08-51a6-b322-512385345065",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 8 uv - 3 v^{2} + 1"
+            },
+            {
+              ":answer/id": "da71da48-1d04-5e46-96ca-c7e90bbff07c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 3 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f2b20ec7-b848-5947-b64a-04215b62f1b5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479570,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -1,
+        "px": 1,
+        "py": 1,
+        "qx": 2,
+        "qy": 1,
+        "rz": -1,
+        "r0": -1,
+        "bounds": [
+          1,
+          4,
+          -1,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "f177835aebb95f80d1a73c65db382e5b30135e17a12a7f7868d173f303d2c2db",
+      "presentation_fingerprint": "670e9a6a052d4c4c85cf5224ffa9a862af38160d8c396ab7ed7637193ae0d98e",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "74c1515c-d50d-5d9f-a7b8-3c0f3e090bb9",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x - y,\\,- x + 3 y,\\,z + 1\u27e9$ and the surface $S$ defined by $z=- x^{2} - 2 y^{2}$ for $-3\\le x\\le 4$ and $-2\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{4}{\\int }_{-2}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 4,\\,-2\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x - y,\\,- x + 3 y,\\,z + 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} - 2 v^{2}} \\\\  & =\u27e83 u - v,\\,- u + 3 v,\\,(- u^{2} - 2 v^{2}) + 1\u27e9 \\\\  & =\u27e83 u - v,\\,- u + 3 v,\\,- u^{2} - 2 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u - v,\\,- u + 3 v,\\,- u^{2} - 2 v^{2} + 1\u27e9\\cdot \u27e82 u,\\,4 v,\\,1\u27e9 \\\\  & =(3 u - v)\\cdot (2 u)+(- u + 3 v)\\cdot (4 v)+(- u^{2} - 2 v^{2} + 1)\\cdot (1) \\\\  & =6 u^{2} - 2 uv- 4 uv + 12 v^{2}- u^{2} - 2 v^{2} + 1 \\\\  & =5 u^{2} - 6 uv + 10 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x - y,\\,- x + 3 y,\\,z + 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(5 u^{2} - 6 uv + 10 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{-3}^{4}{\\int }_{-2}^{4}(5 u^{2} - 6 uv + 10 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5d6e7828-aa1e-5e60-961d-f41de42d5c51",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "03138265-2aad-5cac-aea7-3cb673bb03f3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} - 6 uv + 10 v^{2} + 1"
+            },
+            {
+              ":answer/id": "40914390-37f2-59aa-a6d7-afabccbbdd5d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 5 u^{2} + 6 uv - 10 v^{2} - 1"
+            },
+            {
+              ":answer/id": "2118e949-0da7-5604-af88-a5a5bfc91e01",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} - 6 uv + 12 v^{2}"
+            },
+            {
+              ":answer/id": "f818a851-f2af-5d62-ae5d-ad9d62e92dec",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} + 2 uv - 14 v^{2} + 1"
+            },
+            {
+              ":answer/id": "745222d1-5f79-5053-a65b-b50ff6270bc9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} - 2 uv + 10 v^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "03138265-2aad-5cac-aea7-3cb673bb03f3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479571,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": -2,
+        "px": 3,
+        "py": -1,
+        "qx": -1,
+        "qy": 3,
+        "rz": 1,
+        "r0": 1,
+        "bounds": [
+          -3,
+          4,
+          -2,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "ec6b2d3364db212631de856002904b51adb7470185f8e210ddd540db666c13a7",
+      "presentation_fingerprint": "e27b6e3804ee52538cc6921dd24b116acc42d584b684ceaefe7c81cc88bfa513",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "3a7156dc-8a49-52bc-98b0-49852881e07e",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + 2 y,\\,- x + y,\\,2 - z\u27e9$ and the surface $S$ defined by $z=x^{2} + y^{2}$ for $1\\le x\\le 2$ and $-1\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{2}{\\int }_{-1}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} + v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 2,\\,-1\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} + v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} + v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,- 2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + 2 y,\\,- x + y,\\,2 - z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} + v^{2}} \\\\  & =\u27e8u + 2 v,\\,- u + v,\\,2 - (u^{2} + v^{2})\u27e9 \\\\  & =\u27e8u + 2 v,\\,- u + v,\\,- u^{2} - v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + 2 v,\\,- u + v,\\,- u^{2} - v^{2} + 2\u27e9\\cdot \u27e8- 2 u,\\,- 2 v,\\,1\u27e9 \\\\  & =(u + 2 v)\\cdot (- 2 u)+(- u + v)\\cdot (- 2 v)+(- u^{2} - v^{2} + 2)\\cdot (1) \\\\  & =- 2 u^{2} - 4 uv+2 uv - 2 v^{2}- u^{2} - v^{2} + 2 \\\\  & =- 3 u^{2} - 2 uv - 3 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + 2 y,\\,- x + y,\\,2 - z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 3 u^{2} - 2 uv - 3 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{1}^{2}{\\int }_{-1}^{4}(- 3 u^{2} - 2 uv - 3 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7f7dc13a-554c-5bca-a074-a38d478e5b34",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "75cd9606-d654-52a8-a5df-a87da24d8731",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 2 uv - 2 v^{2}"
+            },
+            {
+              ":answer/id": "0932a0b8-0fa3-568b-8122-0d1797e9cf4c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} + 2 uv + 3 v^{2} - 2"
+            },
+            {
+              ":answer/id": "58b973af-0382-5e69-80b6-ea466d6662d0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} - 6 uv + v^{2} + 2"
+            },
+            {
+              ":answer/id": "3e72d819-13b8-5082-b185-e39011021788",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} - 2 uv - 3 v^{2} + 2"
+            },
+            {
+              ":answer/id": "ee47443a-eea8-51b0-9a9a-89c398f06335",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u^{2} + 6 uv - 3 v^{2} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3e72d819-13b8-5082-b185-e39011021788"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479572,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "px": 1,
+        "py": 2,
+        "qx": -1,
+        "qy": 1,
+        "rz": -1,
+        "r0": 2,
+        "bounds": [
+          1,
+          2,
+          -1,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "52154ef83d7915c1bf67bb051c0cc469a5d130640898c8ba04e25feaa8ab432c",
+      "presentation_fingerprint": "50892382df3b7cb5b6cafe296cadb8d1ed99a3b6087698f3acf1d3861d65ada1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "9a222f71-5c1c-5947-8337-693d72d6ebf9",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x - y,\\,- 2 x + y,\\,- z - 2\u27e9$ and the surface $S$ defined by $z=2 x^{2} - 2 y^{2}$ for $0\\le x\\le 4$ and $0\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{4}{\\int }_{0}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 4,\\,0\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x - y,\\,- 2 x + y,\\,- z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} - 2 v^{2}} \\\\  & =\u27e83 u - v,\\,- 2 u + v,\\,- (2 u^{2} - 2 v^{2}) - 2\u27e9 \\\\  & =\u27e83 u - v,\\,- 2 u + v,\\,- 2 u^{2} + 2 v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u - v,\\,- 2 u + v,\\,- 2 u^{2} + 2 v^{2} - 2\u27e9\\cdot \u27e8- 4 u,\\,4 v,\\,1\u27e9 \\\\  & =(3 u - v)\\cdot (- 4 u)+(- 2 u + v)\\cdot (4 v)+(- 2 u^{2} + 2 v^{2} - 2)\\cdot (1) \\\\  & =- 12 u^{2} + 4 uv- 8 uv + 4 v^{2}- 2 u^{2} + 2 v^{2} - 2 \\\\  & =- 14 u^{2} - 4 uv + 6 v^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x - y,\\,- 2 x + y,\\,- z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 14 u^{2} - 4 uv + 6 v^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{0}^{4}{\\int }_{0}^{3}(- 14 u^{2} - 4 uv + 6 v^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4f31fcc4-3134-5b21-936a-7d9e43b33462",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c2fb8c43-78cf-570a-b762-20d95c71474e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 14 u^{2} + 12 uv - 2 v^{2} - 2"
+            },
+            {
+              ":answer/id": "b48be496-3e3d-53b0-838c-eb6f4a85833a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 14 u^{2} - 4 uv + 6 v^{2} - 2"
+            },
+            {
+              ":answer/id": "4134b830-3887-598c-b479-3d8b85171c5c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14 u^{2} + 4 uv - 6 v^{2} + 2"
+            },
+            {
+              ":answer/id": "07f9a1aa-a390-574f-b1d7-d8bb1b97478b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 12 uv + 6 v^{2} - 2"
+            },
+            {
+              ":answer/id": "995a8e1a-95c0-5a99-b35d-f82c3964898a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 u^{2} - 4 uv + 4 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b48be496-3e3d-53b0-838c-eb6f4a85833a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479573,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": -2,
+        "px": 3,
+        "py": -1,
+        "qx": -2,
+        "qy": 1,
+        "rz": -1,
+        "r0": -2,
+        "bounds": [
+          0,
+          4,
+          0,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "ea15d48e5bb86ad00b2d4087b6686bd36498eefed42d58a643e35141f20dd247",
+      "presentation_fingerprint": "9c4aae775d6d11e641bf6aabb31ffe9b09592a21d2dfc81dd56fab75d1e9d3f9",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "80291a1c-e4f6-54f8-83dc-c6ce18ed1635",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + 2 y,\\,2 x + 3 y,\\,2 z - 2\u27e9$ and the surface $S$ defined by $z=2 x^{2} + y^{2}$ for $0\\le x\\le 3$ and $0\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{3}{\\int }_{0}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} + v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 3,\\,0\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} + v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} + v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,- 2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + 2 y,\\,2 x + 3 y,\\,2 z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} + v^{2}} \\\\  & =\u27e8u + 2 v,\\,2 u + 3 v,\\,2 (2 u^{2} + v^{2}) - 2\u27e9 \\\\  & =\u27e8u + 2 v,\\,2 u + 3 v,\\,4 u^{2} + 2 v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + 2 v,\\,2 u + 3 v,\\,4 u^{2} + 2 v^{2} - 2\u27e9\\cdot \u27e8- 4 u,\\,- 2 v,\\,1\u27e9 \\\\  & =(u + 2 v)\\cdot (- 4 u)+(2 u + 3 v)\\cdot (- 2 v)+(4 u^{2} + 2 v^{2} - 2)\\cdot (1) \\\\  & =- 4 u^{2} - 8 uv- 4 uv - 6 v^{2}+4 u^{2} + 2 v^{2} - 2 \\\\  & =- 12 uv - 4 v^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + 2 y,\\,2 x + 3 y,\\,2 z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 12 uv - 4 v^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{0}^{3}{\\int }_{0}^{4}(- 12 uv - 4 v^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "acf7f6e2-91ba-5169-9992-db0e3909a286",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "20356f6f-b037-59be-966f-b091b3698cf4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 uv + 8 v^{2} - 2"
+            },
+            {
+              ":answer/id": "54edc1d0-d27e-5dd3-b36d-d7f4051319b9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 uv + 4 v^{2} + 2"
+            },
+            {
+              ":answer/id": "822197f9-d002-5835-967e-4c1e3dcf83c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 12 uv - 6 v^{2}"
+            },
+            {
+              ":answer/id": "cc77d781-d951-5e29-9131-3809cfe9f578",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 uv - 4 v^{2} - 2"
+            },
+            {
+              ":answer/id": "c24b954e-bdab-5c9a-a900-aa62e0e16490",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} + 4 uv - 4 v^{2} - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cc77d781-d951-5e29-9131-3809cfe9f578"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479574,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "px": 1,
+        "py": 2,
+        "qx": 2,
+        "qy": 3,
+        "rz": 2,
+        "r0": -2,
+        "bounds": [
+          0,
+          3,
+          0,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "01e9649717a9de8c089115259a270198039ea68de1a7e1ff8e06d679b4754757",
+      "presentation_fingerprint": "c353ffd37bd13341fcd004f42af4af3202129fe5b2492e3d0a0743008817db24",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "69ff826a-80aa-5d9d-a07b-8be2a59eb172",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + 2 y,\\,2 x + y,\\,z - 1\u27e9$ and the surface $S$ defined by $z=- x^{2} - y^{2}$ for $-2\\le x\\le 4$ and $1\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-2}^{4}{\\int }_{1}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-2\\le u\\le 4,\\,1\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + 2 y,\\,2 x + y,\\,z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} - v^{2}} \\\\  & =\u27e8u + 2 v,\\,2 u + v,\\,(- u^{2} - v^{2}) - 1\u27e9 \\\\  & =\u27e8u + 2 v,\\,2 u + v,\\,- u^{2} - v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + 2 v,\\,2 u + v,\\,- u^{2} - v^{2} - 1\u27e9\\cdot \u27e82 u,\\,2 v,\\,1\u27e9 \\\\  & =(u + 2 v)\\cdot (2 u)+(2 u + v)\\cdot (2 v)+(- u^{2} - v^{2} - 1)\\cdot (1) \\\\  & =2 u^{2} + 4 uv+4 uv + 2 v^{2}- u^{2} - v^{2} - 1 \\\\  & =u^{2} + 8 uv + v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + 2 y,\\,2 x + y,\\,z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(u^{2} + 8 uv + v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-2}^{4}{\\int }_{1}^{4}(u^{2} + 8 uv + v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a0445cd4-8cc2-549a-8e58-8478c9f419c4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b505841b-2613-5eeb-8e04-dbed51dbaf90",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} + 8 uv + 2 v^{2}"
+            },
+            {
+              ":answer/id": "27224862-df46-56cd-b325-e12812dd41b9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + v^{2} - 1"
+            },
+            {
+              ":answer/id": "26d200f3-b866-5bc8-8d08-3347f9030f24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u^{2} + 8 uv + v^{2} - 1"
+            },
+            {
+              ":answer/id": "afdd8fe3-b607-5a34-9a8d-dcb18d4dd2db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- u^{2} - 8 uv - v^{2} + 1"
+            },
+            {
+              ":answer/id": "8bd7ced3-84b5-5144-82c0-7277bcff2345",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u^{2} - 3 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "26d200f3-b866-5bc8-8d08-3347f9030f24"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479575,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": -1,
+        "px": 1,
+        "py": 2,
+        "qx": 2,
+        "qy": 1,
+        "rz": 1,
+        "r0": -1,
+        "bounds": [
+          -2,
+          4,
+          1,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "7e6f43a6621e59574bf6eb67ce37eb2bb8826415edb8c10775b5b16f6fd925c0",
+      "presentation_fingerprint": "be31456b54040e98513169c90c00a62e7294b964a129ac4c919aced509845316",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "4a06ac41-3bdc-5819-bfb0-f288c958d78e",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + 2 y,\\,- x + y,\\,2 z - 2\u27e9$ and the surface $S$ defined by $z=x^{2} - y^{2}$ for $1\\le x\\le 3$ and $1\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{3}{\\int }_{1}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 3,\\,1\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + 2 y,\\,- x + y,\\,2 z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} - v^{2}} \\\\  & =\u27e82 u + 2 v,\\,- u + v,\\,2 (u^{2} - v^{2}) - 2\u27e9 \\\\  & =\u27e82 u + 2 v,\\,- u + v,\\,2 u^{2} - 2 v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + 2 v,\\,- u + v,\\,2 u^{2} - 2 v^{2} - 2\u27e9\\cdot \u27e8- 2 u,\\,2 v,\\,1\u27e9 \\\\  & =(2 u + 2 v)\\cdot (- 2 u)+(- u + v)\\cdot (2 v)+(2 u^{2} - 2 v^{2} - 2)\\cdot (1) \\\\  & =- 4 u^{2} - 4 uv- 2 uv + 2 v^{2}+2 u^{2} - 2 v^{2} - 2 \\\\  & =- 2 u^{2} - 6 uv - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + 2 y,\\,- x + y,\\,2 z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 2 u^{2} - 6 uv - 2)\\,\\text{d}A \\\\  & ={\\int }_{1}^{3}{\\int }_{1}^{4}(- 2 u^{2} - 6 uv - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cf6e14fc-bc7b-5592-ab6a-198949437874",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f582e2a3-0046-5945-8ffb-23163975bc32",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} + 6 uv + 2"
+            },
+            {
+              ":answer/id": "8f042411-e7f1-5863-8ff2-75db3eec9114",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 2 uv - 2"
+            },
+            {
+              ":answer/id": "c3b6f1d4-ca29-52aa-b88d-c5c994133cc2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 2 uv - 4 v^{2} - 2"
+            },
+            {
+              ":answer/id": "a6126c57-c0e8-529a-9570-d982e9861a28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 6 uv - 2"
+            },
+            {
+              ":answer/id": "20141555-1bb0-5023-88b6-b8eadfe66033",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 6 uv + 2 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a6126c57-c0e8-529a-9570-d982e9861a28"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479576,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "px": 2,
+        "py": 2,
+        "qx": -1,
+        "qy": 1,
+        "rz": 2,
+        "r0": -2,
+        "bounds": [
+          1,
+          3,
+          1,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "fa7eab7b8385fddc1c1e3d42ae0560d76be07f83ca6cfb76225278d12c378ae5",
+      "presentation_fingerprint": "1510027d0d01887d0770b31ad461862f3fc7378278ad9ef3d9a2306a638499a8",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "ffc342a9-9867-5574-bf53-96fc875316df",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + y,\\,- 2 x + 2 y,\\,2 - z\u27e9$ and the surface $S$ defined by $z=- x^{2} + y^{2}$ for $1\\le x\\le 2$ and $-1\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{2}{\\int }_{-1}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} + v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 2,\\,-1\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} + v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} + v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,- 2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + y,\\,- 2 x + 2 y,\\,2 - z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} + v^{2}} \\\\  & =\u27e82 u + v,\\,- 2 u + 2 v,\\,2 - (- u^{2} + v^{2})\u27e9 \\\\  & =\u27e82 u + v,\\,- 2 u + 2 v,\\,u^{2} - v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + v,\\,- 2 u + 2 v,\\,u^{2} - v^{2} + 2\u27e9\\cdot \u27e82 u,\\,- 2 v,\\,1\u27e9 \\\\  & =(2 u + v)\\cdot (2 u)+(- 2 u + 2 v)\\cdot (- 2 v)+(u^{2} - v^{2} + 2)\\cdot (1) \\\\  & =4 u^{2} + 2 uv+4 uv - 4 v^{2}+u^{2} - v^{2} + 2 \\\\  & =5 u^{2} + 6 uv - 5 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + y,\\,- 2 x + 2 y,\\,2 - z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(5 u^{2} + 6 uv - 5 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{1}^{2}{\\int }_{-1}^{4}(5 u^{2} + 6 uv - 5 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3bb87d41-d4d3-59ff-a540-fb944d470d5e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "87b2ac1a-d70e-572d-a307-c6a288ee9c5e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + 2 uv - 5 v^{2} + 2"
+            },
+            {
+              ":answer/id": "c3a569cd-0d2d-524a-801c-06cc9cc8bf69",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} + 6 uv - 5 v^{2} + 2"
+            },
+            {
+              ":answer/id": "6a9d92e5-4319-567f-ac2d-1b431d5fbeb6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} - 2 uv + 3 v^{2} + 2"
+            },
+            {
+              ":answer/id": "ac736111-2d00-5dd5-bf80-dd4122e8143d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 6 uv - 4 v^{2}"
+            },
+            {
+              ":answer/id": "f2e59ebb-e790-55aa-b414-2258455d9f3c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 5 u^{2} - 6 uv + 5 v^{2} - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c3a569cd-0d2d-524a-801c-06cc9cc8bf69"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479577,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": 1,
+        "px": 2,
+        "py": 1,
+        "qx": -2,
+        "qy": 2,
+        "rz": -1,
+        "r0": 2,
+        "bounds": [
+          1,
+          2,
+          -1,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "a0112f3c09d74fad21caedd9310e6943b7a69f088bd221061f919f47bfde9b2b",
+      "presentation_fingerprint": "75f3970d32c84682957fe1fc369a95ab7cf5baa8fc8aaa5a26678ba4fb5c61d4",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "f773bcf8-462f-538b-ba71-3d008077990e",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x + 2 y,\\,- 2 x + 2 y,\\,2 - z\u27e9$ and the surface $S$ defined by $z=- x^{2} + 2 y^{2}$ for $0\\le x\\le 4$ and $1\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{4}{\\int }_{1}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 4,\\,1\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x + 2 y,\\,- 2 x + 2 y,\\,2 - z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} + 2 v^{2}} \\\\  & =\u27e83 u + 2 v,\\,- 2 u + 2 v,\\,2 - (- u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e83 u + 2 v,\\,- 2 u + 2 v,\\,u^{2} - 2 v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u + 2 v,\\,- 2 u + 2 v,\\,u^{2} - 2 v^{2} + 2\u27e9\\cdot \u27e82 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(3 u + 2 v)\\cdot (2 u)+(- 2 u + 2 v)\\cdot (- 4 v)+(u^{2} - 2 v^{2} + 2)\\cdot (1) \\\\  & =6 u^{2} + 4 uv+8 uv - 8 v^{2}+u^{2} - 2 v^{2} + 2 \\\\  & =7 u^{2} + 12 uv - 10 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x + 2 y,\\,- 2 x + 2 y,\\,2 - z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(7 u^{2} + 12 uv - 10 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{0}^{4}{\\int }_{1}^{3}(7 u^{2} + 12 uv - 10 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a42e198a-877d-587e-969b-a720d5088434",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "60af18d2-138a-5767-949e-0ab38816db07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7 u^{2} + 12 uv - 10 v^{2} + 2"
+            },
+            {
+              ":answer/id": "0ea7cd59-2f9f-56c8-a713-5beed56d9c8e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 5 u^{2} + 4 uv - 10 v^{2} + 2"
+            },
+            {
+              ":answer/id": "87eea975-d7af-53fe-a02b-c4a85c2ee388",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} - 12 uv + 10 v^{2} - 2"
+            },
+            {
+              ":answer/id": "28f4e668-063b-553f-82d3-1d50bdff3824",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7 u^{2} - 4 uv + 6 v^{2} + 2"
+            },
+            {
+              ":answer/id": "5ff17171-30aa-5187-b78f-2af92f32a23a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 12 uv - 8 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "60af18d2-138a-5767-949e-0ab38816db07"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479578,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": 2,
+        "px": 3,
+        "py": 2,
+        "qx": -2,
+        "qy": 2,
+        "rz": -1,
+        "r0": 2,
+        "bounds": [
+          0,
+          4,
+          1,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "b7daa0374afbeb31f076a9db704f0210741f9550cbd450bdbe3190cda521f209",
+      "presentation_fingerprint": "aebbe7543fa499c4bb8d7249050b4eaa9018ceaf68fb8cea67d8d1fbcea1c08d",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "d4680c9d-b295-56e8-85ad-b8ad77afed4c",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x - y,\\,x + 3 y,\\,2 - 2 z\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - 2 y^{2}$ for $-2\\le x\\le 5$ and $1\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-2}^{5}{\\int }_{1}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-2\\le u\\le 5,\\,1\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x - y,\\,x + 3 y,\\,2 - 2 z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - 2 v^{2}} \\\\  & =\u27e82 u - v,\\,u + 3 v,\\,2 - 2 (- 2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e82 u - v,\\,u + 3 v,\\,4 u^{2} + 4 v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u - v,\\,u + 3 v,\\,4 u^{2} + 4 v^{2} + 2\u27e9\\cdot \u27e84 u,\\,4 v,\\,1\u27e9 \\\\  & =(2 u - v)\\cdot (4 u)+(u + 3 v)\\cdot (4 v)+(4 u^{2} + 4 v^{2} + 2)\\cdot (1) \\\\  & =8 u^{2} - 4 uv+4 uv + 12 v^{2}+4 u^{2} + 4 v^{2} + 2 \\\\  & =12 u^{2} + 16 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x - y,\\,x + 3 y,\\,2 - 2 z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(12 u^{2} + 16 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{-2}^{5}{\\int }_{1}^{4}(12 u^{2} + 16 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1ccf930f-50a7-5dca-897d-4a0323ba84fd",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "867091b5-1e95-5df6-82a9-54219737716d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} + 16 v^{2} + 2"
+            },
+            {
+              ":answer/id": "c1bcbe2f-834b-5923-ae37-7439b68ca66b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} - 8 uv - 8 v^{2} + 2"
+            },
+            {
+              ":answer/id": "5e75ab13-df5c-5023-8962-2149cd52643a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 8 uv + 16 v^{2} + 2"
+            },
+            {
+              ":answer/id": "bfd8f587-55a2-5e17-8da6-f61ad789b853",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} + 12 v^{2}"
+            },
+            {
+              ":answer/id": "1244eb17-b07d-545a-a6fa-5de6d1a743c6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 u^{2} - 16 v^{2} - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "867091b5-1e95-5df6-82a9-54219737716d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479579,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -2,
+        "px": 2,
+        "py": -1,
+        "qx": 1,
+        "qy": 3,
+        "rz": -2,
+        "r0": 2,
+        "bounds": [
+          -2,
+          5,
+          1,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "02e878a24f1f9e28067d5c10723595873c765b8badcda03e29b6418fa624a086",
+      "presentation_fingerprint": "71016fb8c930d48b37554312d957a3a7799d05e1a029206d0271e861791c28bd",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "3a1bbbb7-be2f-50b7-a601-859b93c86796",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x - 2 y,\\,x + y,\\,z - 2\u27e9$ and the surface $S$ defined by $z=- x^{2} - y^{2}$ for $-2\\le x\\le 4$ and $-1\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-2}^{4}{\\int }_{-1}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-2\\le u\\le 4,\\,-1\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x - 2 y,\\,x + y,\\,z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} - v^{2}} \\\\  & =\u27e8u - 2 v,\\,u + v,\\,(- u^{2} - v^{2}) - 2\u27e9 \\\\  & =\u27e8u - 2 v,\\,u + v,\\,- u^{2} - v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u - 2 v,\\,u + v,\\,- u^{2} - v^{2} - 2\u27e9\\cdot \u27e82 u,\\,2 v,\\,1\u27e9 \\\\  & =(u - 2 v)\\cdot (2 u)+(u + v)\\cdot (2 v)+(- u^{2} - v^{2} - 2)\\cdot (1) \\\\  & =2 u^{2} - 4 uv+2 uv + 2 v^{2}- u^{2} - v^{2} - 2 \\\\  & =u^{2} - 2 uv + v^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x - 2 y,\\,x + y,\\,z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(u^{2} - 2 uv + v^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{-2}^{4}{\\int }_{-1}^{5}(u^{2} - 2 uv + v^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8110b936-2fc9-58d2-b71f-cd51410355b7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4cd85dc4-9da4-5b0a-b020-7f6bb1ed29ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u^{2} - 6 uv - 3 v^{2} - 2"
+            },
+            {
+              ":answer/id": "e18da7b8-2e73-565b-8944-7d6e032831ad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- u^{2} + 2 uv - v^{2} + 2"
+            },
+            {
+              ":answer/id": "0a78b559-04e2-56fc-888b-f1f670b62d2f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} - 2 uv + 2 v^{2}"
+            },
+            {
+              ":answer/id": "d88b2d0f-88fe-540c-971f-dba7a889d564",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + 6 uv + v^{2} - 2"
+            },
+            {
+              ":answer/id": "18d28874-4803-5a06-9685-742508b3c189",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u^{2} - 2 uv + v^{2} - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "18d28874-4803-5a06-9685-742508b3c189"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479580,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": -1,
+        "px": 1,
+        "py": -2,
+        "qx": 1,
+        "qy": 1,
+        "rz": 1,
+        "r0": -2,
+        "bounds": [
+          -2,
+          4,
+          -1,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "94a1e1f4dfdcb46ba492333aff63f2284acfd624b270e89f4c82bfb81259ef0b",
+      "presentation_fingerprint": "fe8401af208c9c81d48d5bf9b238a4c0805cfb945836e196210e0d256a9c9986",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "3bb9bc4a-4ded-52e7-b0ca-b2db259a0f21",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x - 2 y,\\,- x + 3 y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} + 2 y^{2}$ for $0\\le x\\le 3$ and $-3\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{3}{\\int }_{-3}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 3,\\,-3\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x - 2 y,\\,- x + 3 y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} + 2 v^{2}} \\\\  & =\u27e82 u - 2 v,\\,- u + 3 v,\\,- (- 2 u^{2} + 2 v^{2}) - 1\u27e9 \\\\  & =\u27e82 u - 2 v,\\,- u + 3 v,\\,2 u^{2} - 2 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u - 2 v,\\,- u + 3 v,\\,2 u^{2} - 2 v^{2} - 1\u27e9\\cdot \u27e84 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(2 u - 2 v)\\cdot (4 u)+(- u + 3 v)\\cdot (- 4 v)+(2 u^{2} - 2 v^{2} - 1)\\cdot (1) \\\\  & =8 u^{2} - 8 uv+4 uv - 12 v^{2}+2 u^{2} - 2 v^{2} - 1 \\\\  & =10 u^{2} - 4 uv - 14 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x - 2 y,\\,- x + 3 y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(10 u^{2} - 4 uv - 14 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{0}^{3}{\\int }_{-3}^{2}(10 u^{2} - 4 uv - 14 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fa3ad4b0-71e4-5974-96b9-9066ed9ef833",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f8e99d83-9da0-59a3-95d3-1f97b16d4ba8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 12 uv + 10 v^{2} - 1"
+            },
+            {
+              ":answer/id": "b3eb72e3-ac9c-5a18-8ceb-329ce4232316",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 12 uv - 14 v^{2} - 1"
+            },
+            {
+              ":answer/id": "fc30d728-2463-516b-8c28-085f70852b3a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} - 4 uv - 12 v^{2}"
+            },
+            {
+              ":answer/id": "02727d24-c558-5253-b34e-66e5b809f638",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 u^{2} + 4 uv + 14 v^{2} + 1"
+            },
+            {
+              ":answer/id": "58076d5b-98e2-5070-8490-0ccb9db14396",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 4 uv - 14 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "58076d5b-98e2-5070-8490-0ccb9db14396"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479581,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": 2,
+        "px": 2,
+        "py": -2,
+        "qx": -1,
+        "qy": 3,
+        "rz": -1,
+        "r0": -1,
+        "bounds": [
+          0,
+          3,
+          -3,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "0fe45bf05d47c0af98fa3305558fa1aefd2ca10aa99d861c264e25e02163fde2",
+      "presentation_fingerprint": "a942ed03e26203147ca9484dacdb3830db8e4d9782619cd9f772507dcbbcd932",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "1c109bb0-2487-5e2a-a1a9-7f001b60e942",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x - 2 y,\\,x + y,\\,- 2 z - 1\u27e9$ and the surface $S$ defined by $z=x^{2} - 2 y^{2}$ for $-3\\le x\\le 3$ and $0\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{3}{\\int }_{0}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 3,\\,0\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x - 2 y,\\,x + y,\\,- 2 z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} - 2 v^{2}} \\\\  & =\u27e8u - 2 v,\\,u + v,\\,- 2 (u^{2} - 2 v^{2}) - 1\u27e9 \\\\  & =\u27e8u - 2 v,\\,u + v,\\,- 2 u^{2} + 4 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u - 2 v,\\,u + v,\\,- 2 u^{2} + 4 v^{2} - 1\u27e9\\cdot \u27e8- 2 u,\\,4 v,\\,1\u27e9 \\\\  & =(u - 2 v)\\cdot (- 2 u)+(u + v)\\cdot (4 v)+(- 2 u^{2} + 4 v^{2} - 1)\\cdot (1) \\\\  & =- 2 u^{2} + 4 uv+4 uv + 4 v^{2}- 2 u^{2} + 4 v^{2} - 1 \\\\  & =- 4 u^{2} + 8 uv + 8 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x - 2 y,\\,x + y,\\,- 2 z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 4 u^{2} + 8 uv + 8 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-3}^{3}{\\int }_{0}^{3}(- 4 u^{2} + 8 uv + 8 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "14f212df-b435-59cb-8352-2313e4325a5f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a417079b-1c72-5547-9b82-f661efbf4715",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 1"
+            },
+            {
+              ":answer/id": "e7d4ff3c-c8bf-514d-a7e3-10c509130970",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 8 uv + 8 v^{2} - 1"
+            },
+            {
+              ":answer/id": "af44f3b0-2d49-559a-bdf7-ae4032869dcf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} - 8 uv - 8 v^{2} + 1"
+            },
+            {
+              ":answer/id": "7cf5013e-702b-5d43-a5df-fc022e5f98a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 v^{2} - 1"
+            },
+            {
+              ":answer/id": "4d955d41-5ba7-579e-a482-357f1c4e392d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 8 uv + 4 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e7d4ff3c-c8bf-514d-a7e3-10c509130970"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479582,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": -2,
+        "px": 1,
+        "py": -2,
+        "qx": 1,
+        "qy": 1,
+        "rz": -2,
+        "r0": -1,
+        "bounds": [
+          -3,
+          3,
+          0,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "69e95b28baecd820d44a527992c617439e66a4c9df58eb3d4b834616aed72723",
+      "presentation_fingerprint": "0b0a3054d7af5a4c398dd2de4b41c3a17c768f678c1fd4022515171645799cce",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "fe8f6e7a-cf83-546f-92df-f356db5b485b",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + y,\\,- 2 x + 3 y,\\,z + 2\u27e9$ and the surface $S$ defined by $z=2 x^{2} - 2 y^{2}$ for $1\\le x\\le 3$ and $1\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{3}{\\int }_{1}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 3,\\,1\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + y,\\,- 2 x + 3 y,\\,z + 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} - 2 v^{2}} \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,(2 u^{2} - 2 v^{2}) + 2\u27e9 \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,2 u^{2} - 2 v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + v,\\,- 2 u + 3 v,\\,2 u^{2} - 2 v^{2} + 2\u27e9\\cdot \u27e8- 4 u,\\,4 v,\\,1\u27e9 \\\\  & =(2 u + v)\\cdot (- 4 u)+(- 2 u + 3 v)\\cdot (4 v)+(2 u^{2} - 2 v^{2} + 2)\\cdot (1) \\\\  & =- 8 u^{2} - 4 uv- 8 uv + 12 v^{2}+2 u^{2} - 2 v^{2} + 2 \\\\  & =- 6 u^{2} - 12 uv + 10 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + y,\\,- 2 x + 3 y,\\,z + 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 6 u^{2} - 12 uv + 10 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{1}^{3}{\\int }_{1}^{3}(- 6 u^{2} - 12 uv + 10 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "02bb45fa-948b-5b17-a12c-46dd3e857dc8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e42a107f-85f5-5e7a-91c0-587e9ba2e90e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} - 12 uv + 12 v^{2}"
+            },
+            {
+              ":answer/id": "e082df09-5a80-5a00-9994-259627276c92",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 12 uv + 10 v^{2} + 2"
+            },
+            {
+              ":answer/id": "d498fd20-0941-58df-84b8-89ff8ea4dd68",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 4 uv + 10 v^{2} + 2"
+            },
+            {
+              ":answer/id": "e3e7a7f9-5e0d-5315-98f4-55cba0d71d2d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 12 uv - 10 v^{2} - 2"
+            },
+            {
+              ":answer/id": "b2bfa052-0992-5c2d-a9e0-ed2a3ae676d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 4 uv - 14 v^{2} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e082df09-5a80-5a00-9994-259627276c92"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479583,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": -2,
+        "px": 2,
+        "py": 1,
+        "qx": -2,
+        "qy": 3,
+        "rz": 1,
+        "r0": 2,
+        "bounds": [
+          1,
+          3,
+          1,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "7266b0e6b666bf11929a18d40902ac6af9e6eb8efa1f4f7292303d080eace702",
+      "presentation_fingerprint": "014aef6ba48f8af1009e966a396a23170e8045276b65394e212e854ab8d393ad",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "c3ac153f-c0c3-54d6-afdb-d02bc8c61794",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x - 2 y,\\,- 2 x + 2 y,\\,2 z + 1\u27e9$ and the surface $S$ defined by $z=x^{2} - y^{2}$ for $0\\le x\\le 4$ and $-1\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{4}{\\int }_{-1}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 4,\\,-1\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x - 2 y,\\,- 2 x + 2 y,\\,2 z + 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} - v^{2}} \\\\  & =\u27e82 u - 2 v,\\,- 2 u + 2 v,\\,2 (u^{2} - v^{2}) + 1\u27e9 \\\\  & =\u27e82 u - 2 v,\\,- 2 u + 2 v,\\,2 u^{2} - 2 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u - 2 v,\\,- 2 u + 2 v,\\,2 u^{2} - 2 v^{2} + 1\u27e9\\cdot \u27e8- 2 u,\\,2 v,\\,1\u27e9 \\\\  & =(2 u - 2 v)\\cdot (- 2 u)+(- 2 u + 2 v)\\cdot (2 v)+(2 u^{2} - 2 v^{2} + 1)\\cdot (1) \\\\  & =- 4 u^{2} + 4 uv- 4 uv + 4 v^{2}+2 u^{2} - 2 v^{2} + 1 \\\\  & =- 2 u^{2} + 2 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x - 2 y,\\,- 2 x + 2 y,\\,2 z + 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 2 u^{2} + 2 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{0}^{4}{\\int }_{-1}^{3}(- 2 u^{2} + 2 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "439f2654-c13a-575b-b74f-3d2bc8a32679",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9d7efedb-eac3-57c3-9ef3-5a58dba13677",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 2 v^{2} + 1"
+            },
+            {
+              ":answer/id": "187e954c-485b-575b-a52b-9db1776a2fe9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} - 2 v^{2} - 1"
+            },
+            {
+              ":answer/id": "9f616bfe-8956-5773-af6a-31e686de0def",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 4 v^{2}"
+            },
+            {
+              ":answer/id": "2a8824d9-0e64-5633-a184-fc10b0fc8d96",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} - 8 uv + 2 v^{2} + 1"
+            },
+            {
+              ":answer/id": "a3f962ed-74e5-5cf7-8410-bfdd97275d0b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 8 uv - 6 v^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9d7efedb-eac3-57c3-9ef3-5a58dba13677"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479584,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "px": 2,
+        "py": -2,
+        "qx": -2,
+        "qy": 2,
+        "rz": 2,
+        "r0": 1,
+        "bounds": [
+          0,
+          4,
+          -1,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "a5b629a149b3e2fc48b613bb2b852b8a2d5af066a58e7f7430e6f6958099eafa",
+      "presentation_fingerprint": "64fa3ae762c7c4a6b6bcee545a4f87e673b580f4ae52627a5199aa528fd5984c",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "47e04c31-db5e-5305-baca-caef01be38dc",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + y,\\,2 x + y,\\,z - 1\u27e9$ and the surface $S$ defined by $z=2 x^{2} + 2 y^{2}$ for $-1\\le x\\le 3$ and $-2\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{3}{\\int }_{-2}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 3,\\,-2\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + y,\\,2 x + y,\\,z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} + 2 v^{2}} \\\\  & =\u27e8u + v,\\,2 u + v,\\,(2 u^{2} + 2 v^{2}) - 1\u27e9 \\\\  & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + 2 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + 2 v^{2} - 1\u27e9\\cdot \u27e8- 4 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(u + v)\\cdot (- 4 u)+(2 u + v)\\cdot (- 4 v)+(2 u^{2} + 2 v^{2} - 1)\\cdot (1) \\\\  & =- 4 u^{2} - 4 uv- 8 uv - 4 v^{2}+2 u^{2} + 2 v^{2} - 1 \\\\  & =- 2 u^{2} - 12 uv - 2 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + y,\\,2 x + y,\\,z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 2 u^{2} - 12 uv - 2 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{3}{\\int }_{-2}^{4}(- 2 u^{2} - 12 uv - 2 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a314fe7f-f7c2-5075-9263-2460190c82fe",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bf0984c0-02fc-5f91-abc3-b73e7bc0c3d6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 12 uv - 2 v^{2} - 1"
+            },
+            {
+              ":answer/id": "0462eaa5-2005-56e0-9dbf-bad5cb1fecbd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 4 uv + 6 v^{2} - 1"
+            },
+            {
+              ":answer/id": "6ef2c4ba-da91-567e-93d5-cc7b7764793d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 12 uv - 4 v^{2}"
+            },
+            {
+              ":answer/id": "0332f0c9-1663-5504-82ca-f030a4e4497b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} - 4 uv - 2 v^{2} - 1"
+            },
+            {
+              ":answer/id": "920da5e1-8c6a-5e9a-8817-0a31ef8a01ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} + 12 uv + 2 v^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bf0984c0-02fc-5f91-abc3-b73e7bc0c3d6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479585,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "px": 1,
+        "py": 1,
+        "qx": 2,
+        "qy": 1,
+        "rz": 1,
+        "r0": -1,
+        "bounds": [
+          -1,
+          3,
+          -2,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "d6f1955c46aea185bfb659b26379a36a20a13ab648db53c33e919ee0b84f18be",
+      "presentation_fingerprint": "963395da7f871da3cdac104ca60bd9491a343452c947057634f61a24dec9827d",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "771e9dff-902c-5482-9c5f-338766ef8b19",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + 2 y,\\,- 2 x + y,\\,2 z - 2\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - 2 y^{2}$ for $-1\\le x\\le 5$ and $-1\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{5}{\\int }_{-1}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 5,\\,-1\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + 2 y,\\,- 2 x + y,\\,2 z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - 2 v^{2}} \\\\  & =\u27e82 u + 2 v,\\,- 2 u + v,\\,2 (- 2 u^{2} - 2 v^{2}) - 2\u27e9 \\\\  & =\u27e82 u + 2 v,\\,- 2 u + v,\\,- 4 u^{2} - 4 v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + 2 v,\\,- 2 u + v,\\,- 4 u^{2} - 4 v^{2} - 2\u27e9\\cdot \u27e84 u,\\,4 v,\\,1\u27e9 \\\\  & =(2 u + 2 v)\\cdot (4 u)+(- 2 u + v)\\cdot (4 v)+(- 4 u^{2} - 4 v^{2} - 2)\\cdot (1) \\\\  & =8 u^{2} + 8 uv- 8 uv + 4 v^{2}- 4 u^{2} - 4 v^{2} - 2 \\\\  & =4 u^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + 2 y,\\,- 2 x + y,\\,2 z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(4 u^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{5}{\\int }_{-1}^{3}(4 u^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "edf9f0cb-84c2-5a79-beb2-c03e00335616",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "de44696f-7dc1-57aa-91bc-4d091560a9a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} - 2"
+            },
+            {
+              ":answer/id": "9a9a8dbd-d8d9-5290-b27a-818a228e7e03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 - 4 u^{2}"
+            },
+            {
+              ":answer/id": "9ce3c2a5-8796-5147-a159-9761d117529f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 u^{2} - 16 uv - 2"
+            },
+            {
+              ":answer/id": "e98be324-f24f-52aa-9fad-7664bede0b26",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 16 uv - 8 v^{2} - 2"
+            },
+            {
+              ":answer/id": "ae2694c3-0cef-5681-8c51-90ca15b80535",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} + 4 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "de44696f-7dc1-57aa-91bc-4d091560a9a7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479586,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -2,
+        "px": 2,
+        "py": 2,
+        "qx": -2,
+        "qy": 1,
+        "rz": 2,
+        "r0": -2,
+        "bounds": [
+          -1,
+          5,
+          -1,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "87dbbea31078a15671a311fb0a093fec50179eaf3a5f7f79d334c32938f48881",
+      "presentation_fingerprint": "4f273663459b4bc094511cc789fd566d0ba2b7133ceb350a1f2715246013998a",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "57342acb-0452-503b-abef-82ba6a71d94c",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x + 2 y,\\,2 x + 3 y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} + 2 y^{2}$ for $-1\\le x\\le 2$ and $-1\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{2}{\\int }_{-1}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 2,\\,-1\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x + 2 y,\\,2 x + 3 y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} + 2 v^{2}} \\\\  & =\u27e83 u + 2 v,\\,2 u + 3 v,\\,- (- 2 u^{2} + 2 v^{2}) - 1\u27e9 \\\\  & =\u27e83 u + 2 v,\\,2 u + 3 v,\\,2 u^{2} - 2 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u + 2 v,\\,2 u + 3 v,\\,2 u^{2} - 2 v^{2} - 1\u27e9\\cdot \u27e84 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(3 u + 2 v)\\cdot (4 u)+(2 u + 3 v)\\cdot (- 4 v)+(2 u^{2} - 2 v^{2} - 1)\\cdot (1) \\\\  & =12 u^{2} + 8 uv- 8 uv - 12 v^{2}+2 u^{2} - 2 v^{2} - 1 \\\\  & =14 u^{2} - 14 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x + 2 y,\\,2 x + 3 y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(14 u^{2} - 14 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{2}{\\int }_{-1}^{5}(14 u^{2} - 14 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ba8a29af-02f9-558a-9e7e-0fe2dfdae677",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6dccf7a7-40d5-506f-95b2-b606f67d1887",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14 u^{2} + 16 uv + 10 v^{2} - 1"
+            },
+            {
+              ":answer/id": "73630dc5-be02-556a-8d5f-d6fe61fd7d46",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 14 u^{2} + 14 v^{2} + 1"
+            },
+            {
+              ":answer/id": "03b08d62-816f-581f-94a5-e8b24ca784f9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} - 12 v^{2}"
+            },
+            {
+              ":answer/id": "43dfdff2-0162-542e-a687-f29073346ea8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14 u^{2} - 14 v^{2} - 1"
+            },
+            {
+              ":answer/id": "b9ab4f32-e42f-55ca-aafd-4beddf272ac8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 u^{2} - 16 uv - 14 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "43dfdff2-0162-542e-a687-f29073346ea8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479587,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": 2,
+        "px": 3,
+        "py": 2,
+        "qx": 2,
+        "qy": 3,
+        "rz": -1,
+        "r0": -1,
+        "bounds": [
+          -1,
+          2,
+          -1,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "ead6e32821dc35943efbdacec6aab7313cfc7a158b2566ef386d0208be7a4eed",
+      "presentation_fingerprint": "06d4556593717b70c710867771b852db1444bc77d191227a5fa3eebe25af0775",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "0d413d3d-c09f-5439-8b0a-0b5e48f8ce13",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + 2 y,\\,- 2 x + 3 y,\\,2 z + 2\u27e9$ and the surface $S$ defined by $z=- x^{2} - 2 y^{2}$ for $1\\le x\\le 5$ and $1\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{5}{\\int }_{1}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 5,\\,1\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + 2 y,\\,- 2 x + 3 y,\\,2 z + 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} - 2 v^{2}} \\\\  & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,2 (- u^{2} - 2 v^{2}) + 2\u27e9 \\\\  & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,- 2 u^{2} - 4 v^{2} + 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,- 2 u^{2} - 4 v^{2} + 2\u27e9\\cdot \u27e82 u,\\,4 v,\\,1\u27e9 \\\\  & =(u + 2 v)\\cdot (2 u)+(- 2 u + 3 v)\\cdot (4 v)+(- 2 u^{2} - 4 v^{2} + 2)\\cdot (1) \\\\  & =2 u^{2} + 4 uv- 8 uv + 12 v^{2}- 2 u^{2} - 4 v^{2} + 2 \\\\  & =- 4 uv + 8 v^{2} + 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + 2 y,\\,- 2 x + 3 y,\\,2 z + 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 4 uv + 8 v^{2} + 2)\\,\\text{d}A \\\\  & ={\\int }_{1}^{5}{\\int }_{1}^{5}(- 4 uv + 8 v^{2} + 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "06f03050-3139-5d37-9d4c-6e6fc6a0536e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "24382799-cf30-55b2-8d27-586e1b8a8a33",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} - 4 uv + 12 v^{2}"
+            },
+            {
+              ":answer/id": "4b1b5e1f-964c-5cc6-90eb-40e79e6a43f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 12 uv + 8 v^{2} + 2"
+            },
+            {
+              ":answer/id": "36d70844-c28c-51da-81aa-16f5319e1b6f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 uv - 8 v^{2} - 2"
+            },
+            {
+              ":answer/id": "ff51b957-1436-504b-8f50-ad0e164af5af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 uv + 8 v^{2} + 2"
+            },
+            {
+              ":answer/id": "c895ea64-6f93-5db7-a76b-68a668906c70",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 uv - 16 v^{2} + 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ff51b957-1436-504b-8f50-ad0e164af5af"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479588,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": -2,
+        "px": 1,
+        "py": 2,
+        "qx": -2,
+        "qy": 3,
+        "rz": 2,
+        "r0": 2,
+        "bounds": [
+          1,
+          5,
+          1,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "3ec5389b9df48615b9bdcca42f50c77d35293a9850fee19f7b4f0a0fb8cbf1c0",
+      "presentation_fingerprint": "b377808df55be77d7294c5a45a4e7571cb6cbecb04b58bf69f965d6637dc5b62",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "5a511079-231b-51c9-9c5f-3a59f4453bb0",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9$ and the surface $S$ defined by $z=- x^{2} - y^{2}$ for $-1\\le x\\le 2$ and $-1\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{2}{\\int }_{-1}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 2,\\,-1\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} - v^{2}} \\\\  & =\u27e82 u + 2 v,\\,- 2 u + 3 v,\\,1 - 2 (- u^{2} - v^{2})\u27e9 \\\\  & =\u27e82 u + 2 v,\\,- 2 u + 3 v,\\,2 u^{2} + 2 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + 2 v,\\,- 2 u + 3 v,\\,2 u^{2} + 2 v^{2} + 1\u27e9\\cdot \u27e82 u,\\,2 v,\\,1\u27e9 \\\\  & =(2 u + 2 v)\\cdot (2 u)+(- 2 u + 3 v)\\cdot (2 v)+(2 u^{2} + 2 v^{2} + 1)\\cdot (1) \\\\  & =4 u^{2} + 4 uv- 4 uv + 6 v^{2}+2 u^{2} + 2 v^{2} + 1 \\\\  & =6 u^{2} + 8 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(6 u^{2} + 8 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{2}{\\int }_{-1}^{3}(6 u^{2} + 8 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e592a6ef-f730-5286-8a44-7f23ec5d116f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2107ea86-6d59-505a-92f2-91aac767c584",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 8 v^{2} + 1"
+            },
+            {
+              ":answer/id": "1b59e64c-1e26-5439-9113-8884e922c8f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 6 v^{2}"
+            },
+            {
+              ":answer/id": "be560858-61d2-5dbc-a033-149d9fa9fdaa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 8 uv + 8 v^{2} + 1"
+            },
+            {
+              ":answer/id": "7e220aaf-dc64-5517-bdd3-eec151b85cea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 8 v^{2} - 1"
+            },
+            {
+              ":answer/id": "dcda96e0-3298-5850-96be-211835c30257",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 8 uv - 4 v^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2107ea86-6d59-505a-92f2-91aac767c584"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479589,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": -1,
+        "px": 2,
+        "py": 2,
+        "qx": -2,
+        "qy": 3,
+        "rz": -2,
+        "r0": 1,
+        "bounds": [
+          -1,
+          2,
+          -1,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "1f4f0074ff1e55e92b3bf87c9b4a90a5af89a08abd9ba8dd809a4e6f6c57f1e4",
+      "presentation_fingerprint": "18731b3afa31b3428046d0064263c18d8ca9db78a9e66a3f5048b31b96e9ab2b",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "fbf6c0f2-f4af-530c-a45a-2ade4feb7c13",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 1\u27e9$ and the surface $S$ defined by $z=- x^{2} + 2 y^{2}$ for $0\\le x\\le 3$ and $0\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{3}{\\int }_{0}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 3,\\,0\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 2 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 2 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 2 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e82 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- u^{2} + 2 v^{2}} \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,(- u^{2} + 2 v^{2}) - 1\u27e9 \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,- u^{2} + 2 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + v,\\,- 2 u + 3 v,\\,- u^{2} + 2 v^{2} - 1\u27e9\\cdot \u27e82 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(2 u + v)\\cdot (2 u)+(- 2 u + 3 v)\\cdot (- 4 v)+(- u^{2} + 2 v^{2} - 1)\\cdot (1) \\\\  & =4 u^{2} + 2 uv+8 uv - 12 v^{2}- u^{2} + 2 v^{2} - 1 \\\\  & =3 u^{2} + 10 uv - 10 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(3 u^{2} + 10 uv - 10 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{0}^{3}{\\int }_{0}^{2}(3 u^{2} + 10 uv - 10 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6b4ca696-318f-5ff7-a40d-3be264d05a15",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "82615f7a-f2ff-5266-b196-26f6ad6970b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} - 10 uv + 10 v^{2} + 1"
+            },
+            {
+              ":answer/id": "f07114fc-4ee7-5758-bf5b-b8e72a303f9a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 10 uv - 12 v^{2}"
+            },
+            {
+              ":answer/id": "a88ef312-3f30-5fa3-89e9-c11676ac1459",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 5 u^{2} + 6 uv - 10 v^{2} - 1"
+            },
+            {
+              ":answer/id": "97e00ada-7848-5ebe-b046-a282a78fd4f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} - 6 uv + 14 v^{2} - 1"
+            },
+            {
+              ":answer/id": "bdd311e8-fddd-599e-9fa2-a520a8899a0d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} + 10 uv - 10 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bdd311e8-fddd-599e-9fa2-a520a8899a0d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479590,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -1,
+        "b": 2,
+        "px": 2,
+        "py": 1,
+        "qx": -2,
+        "qy": 3,
+        "rz": 1,
+        "r0": -1,
+        "bounds": [
+          0,
+          3,
+          0,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "6bc05addc24c93f57c246af9ea98a78f156550eefa98f7f8f4c4084d480fdbac",
+      "presentation_fingerprint": "aab1491224041f16e664a93a7121c6382049bd93c5b0a6809937b954dfb16f2f",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "6ff9b4ea-a305-5a49-aaca-9fc9c6c626a3",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x - 2 y,\\,x + y,\\,- z - 2\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - y^{2}$ for $0\\le x\\le 5$ and $0\\le y\\le 3.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{5}{\\int }_{0}^{3}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 5,\\,0\\le v\\le 3\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x - 2 y,\\,x + y,\\,- z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - v^{2}} \\\\  & =\u27e82 u - 2 v,\\,u + v,\\,- (- 2 u^{2} - v^{2}) - 2\u27e9 \\\\  & =\u27e82 u - 2 v,\\,u + v,\\,2 u^{2} + v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u - 2 v,\\,u + v,\\,2 u^{2} + v^{2} - 2\u27e9\\cdot \u27e84 u,\\,2 v,\\,1\u27e9 \\\\  & =(2 u - 2 v)\\cdot (4 u)+(u + v)\\cdot (2 v)+(2 u^{2} + v^{2} - 2)\\cdot (1) \\\\  & =8 u^{2} - 8 uv+2 uv + 2 v^{2}+2 u^{2} + v^{2} - 2 \\\\  & =10 u^{2} - 6 uv + 3 v^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x - 2 y,\\,x + y,\\,- z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(10 u^{2} - 6 uv + 3 v^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{0}^{5}{\\int }_{0}^{3}(10 u^{2} - 6 uv + 3 v^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fa95e305-d32d-58d5-b116-e982ae5a5fa8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0ad4d675-9e06-522e-a437-9b44ef50a51e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 6 uv + 3 v^{2} - 2"
+            },
+            {
+              ":answer/id": "f7eb9b01-52d4-5f73-8fcc-f2636c6e4592",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} - 10 uv - v^{2} - 2"
+            },
+            {
+              ":answer/id": "4610685f-a168-5c6c-80bc-742bfa414986",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 u^{2} + 6 uv - 3 v^{2} + 2"
+            },
+            {
+              ":answer/id": "e2240861-7aff-5949-bc6c-57dc3037c207",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} - 6 uv + 2 v^{2}"
+            },
+            {
+              ":answer/id": "2a3a796e-38f0-5a13-b98b-3cbee36f9e25",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 10 uv + 3 v^{2} - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0ad4d675-9e06-522e-a437-9b44ef50a51e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479591,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -1,
+        "px": 2,
+        "py": -2,
+        "qx": 1,
+        "qy": 1,
+        "rz": -1,
+        "r0": -2,
+        "bounds": [
+          0,
+          5,
+          0,
+          3
+        ]
+      },
+      "mathematical_fingerprint": "43042e13917a81ea8c1431acdd9baaadaee033b4b10f9241dbcdd254c426f3be",
+      "presentation_fingerprint": "7cd81d07712db06de5e948e29e59c10b687f8a727d261e737e422ca1e5a2cf3b",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "2b0f3fa6-80d0-59ac-91af-a00e148553f8",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9$ and the surface $S$ defined by $z=x^{2} + 2 y^{2}$ for $-1\\le x\\le 5$ and $-3\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{5}{\\int }_{-3}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 5,\\,-3\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} + 2 v^{2}} \\\\  & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,1 - 2 (u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,- 2 u^{2} - 4 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + 2 v,\\,- 2 u + 3 v,\\,- 2 u^{2} - 4 v^{2} + 1\u27e9\\cdot \u27e8- 2 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(u + 2 v)\\cdot (- 2 u)+(- 2 u + 3 v)\\cdot (- 4 v)+(- 2 u^{2} - 4 v^{2} + 1)\\cdot (1) \\\\  & =- 2 u^{2} - 4 uv+8 uv - 12 v^{2}- 2 u^{2} - 4 v^{2} + 1 \\\\  & =- 4 u^{2} + 4 uv - 16 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + 2 y,\\,- 2 x + 3 y,\\,1 - 2 z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 4 u^{2} + 4 uv - 16 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{5}{\\int }_{-3}^{4}(- 4 u^{2} + 4 uv - 16 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f9ed783c-737b-5560-aa2f-881469d2d4d8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "869b574a-229e-57e8-a8fe-351ef8d1a25b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 uv - 16 v^{2} + 1"
+            },
+            {
+              ":answer/id": "ea0e3729-8a68-5c51-bbdb-8d131bb69e8f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 4 uv - 16 v^{2} + 1"
+            },
+            {
+              ":answer/id": "7e534e91-5ce1-5301-93e5-5f59c5517ed1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} - 4 uv + 16 v^{2} - 1"
+            },
+            {
+              ":answer/id": "13c1e330-4b03-547a-bb37-b5ef18e88e1d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 12 uv + 8 v^{2} + 1"
+            },
+            {
+              ":answer/id": "35ecaed5-7281-5aad-b3b5-3e6e5abb568d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 4 uv - 12 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ea0e3729-8a68-5c51-bbdb-8d131bb69e8f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479592,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "px": 1,
+        "py": 2,
+        "qx": -2,
+        "qy": 3,
+        "rz": -2,
+        "r0": 1,
+        "bounds": [
+          -1,
+          5,
+          -3,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "cf91c1e85ef2e619568ca55686aeae3466229275aa05cdfab7522e1ab66ddb86",
+      "presentation_fingerprint": "0bda6396b65214d33e2e0c39da02652cd4cee6c47a6f535c3b4e619e194aa720",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "fc0649b7-1502-51de-8c3e-abc2ddde95f5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x + y,\\,2 x + y,\\,2 z - 2\u27e9$ and the surface $S$ defined by $z=2 x^{2} + 2 y^{2}$ for $0\\le x\\le 3$ and $-3\\le y\\le 4.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{3}{\\int }_{-3}^{4}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 3,\\,-3\\le v\\le 4\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x + y,\\,2 x + y,\\,2 z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} + 2 v^{2}} \\\\  & =\u27e83 u + v,\\,2 u + v,\\,2 (2 u^{2} + 2 v^{2}) - 2\u27e9 \\\\  & =\u27e83 u + v,\\,2 u + v,\\,4 u^{2} + 4 v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u + v,\\,2 u + v,\\,4 u^{2} + 4 v^{2} - 2\u27e9\\cdot \u27e8- 4 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(3 u + v)\\cdot (- 4 u)+(2 u + v)\\cdot (- 4 v)+(4 u^{2} + 4 v^{2} - 2)\\cdot (1) \\\\  & =- 12 u^{2} - 4 uv- 8 uv - 4 v^{2}+4 u^{2} + 4 v^{2} - 2 \\\\  & =- 8 u^{2} - 12 uv - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x + y,\\,2 x + y,\\,2 z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 8 u^{2} - 12 uv - 2)\\,\\text{d}A \\\\  & ={\\int }_{0}^{3}{\\int }_{-3}^{4}(- 8 u^{2} - 12 uv - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "24c7b56e-30e5-5ca4-939c-8a0bff9dd86b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b9e949f4-f8f7-5d60-806d-fd3af300a87b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} + 4 uv + 8 v^{2} - 2"
+            },
+            {
+              ":answer/id": "01639d51-248f-5d5c-8341-499cd609b99a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16 u^{2} - 4 uv - 2"
+            },
+            {
+              ":answer/id": "8197c709-afc3-56f0-98c1-2c675c1c05b8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} + 12 uv + 2"
+            },
+            {
+              ":answer/id": "a28d3800-fdd8-5dd1-a015-577658d348e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 u^{2} - 12 uv - 4 v^{2}"
+            },
+            {
+              ":answer/id": "76c506be-91be-5eb8-91cf-e54a13ca2cc6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} - 12 uv - 2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "76c506be-91be-5eb8-91cf-e54a13ca2cc6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479593,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "px": 3,
+        "py": 1,
+        "qx": 2,
+        "qy": 1,
+        "rz": 2,
+        "r0": -2,
+        "bounds": [
+          0,
+          3,
+          -3,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "74f74656cc4819307cefba46ee683ffb00ca67829c3d4b06a38eeaea095decc5",
+      "presentation_fingerprint": "60a7c98c65419fe44fd54e1bb354b8519b3ebe89cb2eff3351a79e37e28c6635",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "1d87102a-b15b-5b6f-912a-2a5e6cd82b65",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x - y,\\,2 x + 2 y,\\,1 - 2 z\u27e9$ and the surface $S$ defined by $z=x^{2} + 2 y^{2}$ for $0\\le x\\le 2$ and $-2\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{2}{\\int }_{-2}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 2,\\,-2\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x - y,\\,2 x + 2 y,\\,1 - 2 z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} + 2 v^{2}} \\\\  & =\u27e8u - v,\\,2 u + 2 v,\\,1 - 2 (u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e8u - v,\\,2 u + 2 v,\\,- 2 u^{2} - 4 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u - v,\\,2 u + 2 v,\\,- 2 u^{2} - 4 v^{2} + 1\u27e9\\cdot \u27e8- 2 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(u - v)\\cdot (- 2 u)+(2 u + 2 v)\\cdot (- 4 v)+(- 2 u^{2} - 4 v^{2} + 1)\\cdot (1) \\\\  & =- 2 u^{2} + 2 uv- 8 uv - 8 v^{2}- 2 u^{2} - 4 v^{2} + 1 \\\\  & =- 4 u^{2} - 6 uv - 12 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x - y,\\,2 x + 2 y,\\,1 - 2 z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 4 u^{2} - 6 uv - 12 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{0}^{2}{\\int }_{-2}^{5}(- 4 u^{2} - 6 uv - 12 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4b6fc0f3-dd0a-5485-8d1b-15b72c244416",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ce6fcb00-630a-5c86-a915-02c51671a52b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 uv - 12 v^{2} + 1"
+            },
+            {
+              ":answer/id": "1d9f897c-8bc0-5819-a35f-07a985b19b83",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 10 uv + 4 v^{2} + 1"
+            },
+            {
+              ":answer/id": "30ea04c3-e211-54bd-9883-165072880e57",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 6 uv + 12 v^{2} - 1"
+            },
+            {
+              ":answer/id": "07428929-6c78-5aa0-913a-d3e209c155a0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} - 6 uv - 12 v^{2} + 1"
+            },
+            {
+              ":answer/id": "14bff5b1-7e63-5fdf-bc7d-133f28b605e0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 6 uv - 8 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "07428929-6c78-5aa0-913a-d3e209c155a0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479594,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "px": 1,
+        "py": -1,
+        "qx": 2,
+        "qy": 2,
+        "rz": -2,
+        "r0": 1,
+        "bounds": [
+          0,
+          2,
+          -2,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "e33a96a19f0d315e0e8a234cdb741338141c27471fd90beecd91f5a55954af90",
+      "presentation_fingerprint": "384c019a39a26c29e5307ce8c07f00557518514541a80ef0027db19434c3feb1",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "e8c4a690-e4e9-5734-af3c-160a1467b402",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x + y,\\,- 2 x + 2 y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=x^{2} - y^{2}$ for $-1\\le x\\le 3$ and $-2\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-1}^{3}{\\int }_{-2}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-1\\le u\\le 3,\\,-2\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x + y,\\,- 2 x + 2 y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} - v^{2}} \\\\  & =\u27e83 u + v,\\,- 2 u + 2 v,\\,- (u^{2} - v^{2}) - 1\u27e9 \\\\  & =\u27e83 u + v,\\,- 2 u + 2 v,\\,- u^{2} + v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u + v,\\,- 2 u + 2 v,\\,- u^{2} + v^{2} - 1\u27e9\\cdot \u27e8- 2 u,\\,2 v,\\,1\u27e9 \\\\  & =(3 u + v)\\cdot (- 2 u)+(- 2 u + 2 v)\\cdot (2 v)+(- u^{2} + v^{2} - 1)\\cdot (1) \\\\  & =- 6 u^{2} - 2 uv- 4 uv + 4 v^{2}- u^{2} + v^{2} - 1 \\\\  & =- 7 u^{2} - 6 uv + 5 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x + y,\\,- 2 x + 2 y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 7 u^{2} - 6 uv + 5 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-1}^{3}{\\int }_{-2}^{2}(- 7 u^{2} - 6 uv + 5 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "27884186-e74b-5d2c-8898-45896a038519",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "26b4af28-e378-578b-9d82-6d269d0057aa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7 u^{2} + 6 uv - 5 v^{2} + 1"
+            },
+            {
+              ":answer/id": "805b8b49-e485-57da-b5ad-9088076f3a9b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} - 2 uv + 5 v^{2} - 1"
+            },
+            {
+              ":answer/id": "63bd4845-26df-5722-972f-bb9e0c0dee80",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} - 6 uv + 5 v^{2} - 1"
+            },
+            {
+              ":answer/id": "44866e35-7b19-5927-b77a-d09d793efba7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 6 uv + 4 v^{2}"
+            },
+            {
+              ":answer/id": "58105d57-6a5a-56b3-af9b-3bd56dc8e2d9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} + 2 uv - 3 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "63bd4845-26df-5722-972f-bb9e0c0dee80"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479595,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "px": 3,
+        "py": 1,
+        "qx": -2,
+        "qy": 2,
+        "rz": -1,
+        "r0": -1,
+        "bounds": [
+          -1,
+          3,
+          -2,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "932e0c89ae823e86b68ad42511df59b1ff91d664d3b7b7fba9a86f7b705b7221",
+      "presentation_fingerprint": "a61958e7edc3f7eabf82527fd016e27e3073cf96a2f8ea1e1ddd332576799a1f",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "9491c0e1-50c6-55d6-bd82-75707a0f9634",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 2\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - y^{2}$ for $-3\\le x\\le 2$ and $1\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{2}{\\int }_{1}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 2,\\,1\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 2\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - v^{2}} \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,(- 2 u^{2} - v^{2}) - 2\u27e9 \\\\  & =\u27e82 u + v,\\,- 2 u + 3 v,\\,- 2 u^{2} - v^{2} - 2\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e82 u + v,\\,- 2 u + 3 v,\\,- 2 u^{2} - v^{2} - 2\u27e9\\cdot \u27e84 u,\\,2 v,\\,1\u27e9 \\\\  & =(2 u + v)\\cdot (4 u)+(- 2 u + 3 v)\\cdot (2 v)+(- 2 u^{2} - v^{2} - 2)\\cdot (1) \\\\  & =8 u^{2} + 4 uv- 4 uv + 6 v^{2}- 2 u^{2} - v^{2} - 2 \\\\  & =6 u^{2} + 5 v^{2} - 2.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e82 x + y,\\,- 2 x + 3 y,\\,z - 2\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(6 u^{2} + 5 v^{2} - 2)\\,\\text{d}A \\\\  & ={\\int }_{-3}^{2}{\\int }_{1}^{2}(6 u^{2} + 5 v^{2} - 2)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ff1fd6ee-f0a2-59f4-8182-3e1c9c64362c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "203bd36a-51d4-50ea-9495-5d0e1491e113",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 u^{2} - 8 uv + 5 v^{2} - 2"
+            },
+            {
+              ":answer/id": "a8c0ccbd-1427-5718-b068-5cc03da74841",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 5 v^{2} - 2"
+            },
+            {
+              ":answer/id": "37244d51-22bb-5f05-9eef-cdcd1a07f39f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 5 v^{2} + 2"
+            },
+            {
+              ":answer/id": "9615c2b4-298f-5c2c-8624-2b5fc82626e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} + 8 uv - 7 v^{2} - 2"
+            },
+            {
+              ":answer/id": "66c1fa29-d5fa-52c3-a164-cae80131f864",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} + 6 v^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a8c0ccbd-1427-5718-b068-5cc03da74841"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479596,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -1,
+        "px": 2,
+        "py": 1,
+        "qx": -2,
+        "qy": 3,
+        "rz": 1,
+        "r0": -2,
+        "bounds": [
+          -3,
+          2,
+          1,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "b4a23369c583b807bba0055c04d1c9b270abcdd7dcc1dcd91aa8030206df2e5b",
+      "presentation_fingerprint": "c919efd2c0e60ee354c8d4e8e4cabce8cdb4ed22b2483998cb43cac065abb402",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "29ac0a28-beb1-5132-b202-089057eea0e9",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + y,\\,x + 3 y,\\,z + 1\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - y^{2}$ for $0\\le x\\le 2$ and $1\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{0}^{2}{\\int }_{1}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,0\\le u\\le 2,\\,1\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + y,\\,x + 3 y,\\,z + 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - v^{2}} \\\\  & =\u27e8u + v,\\,u + 3 v,\\,(- 2 u^{2} - v^{2}) + 1\u27e9 \\\\  & =\u27e8u + v,\\,u + 3 v,\\,- 2 u^{2} - v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + v,\\,u + 3 v,\\,- 2 u^{2} - v^{2} + 1\u27e9\\cdot \u27e84 u,\\,2 v,\\,1\u27e9 \\\\  & =(u + v)\\cdot (4 u)+(u + 3 v)\\cdot (2 v)+(- 2 u^{2} - v^{2} + 1)\\cdot (1) \\\\  & =4 u^{2} + 4 uv+2 uv + 6 v^{2}- 2 u^{2} - v^{2} + 1 \\\\  & =2 u^{2} + 6 uv + 5 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + y,\\,x + 3 y,\\,z + 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(2 u^{2} + 6 uv + 5 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{0}^{2}{\\int }_{1}^{5}(2 u^{2} + 6 uv + 5 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "65e48020-bfaa-5e76-aeb6-b80588bfc37d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f331277a-3992-5929-8d22-1a364c944e95",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{2} + 6 uv + 6 v^{2}"
+            },
+            {
+              ":answer/id": "c9077a52-823f-524e-a431-31ae142216cf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} + 6 uv + 5 v^{2} + 1"
+            },
+            {
+              ":answer/id": "48e68f34-c7ee-5f36-8a48-886c5ff9b80f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} + 2 uv - 7 v^{2} + 1"
+            },
+            {
+              ":answer/id": "0dc7854b-ee0b-5cb8-986e-fdeaf5c09eab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} - 2 uv + 5 v^{2} + 1"
+            },
+            {
+              ":answer/id": "88e552c8-db83-5f9e-a743-b9e5258bec61",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 6 uv - 5 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c9077a52-823f-524e-a431-31ae142216cf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479597,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": -2,
+        "b": -1,
+        "px": 1,
+        "py": 1,
+        "qx": 1,
+        "qy": 3,
+        "rz": 1,
+        "r0": 1,
+        "bounds": [
+          0,
+          2,
+          1,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "6804b40dcd4a8daa19c420c5585cd02e32eda96500ba384e008159d2a980fbfe",
+      "presentation_fingerprint": "4d3a4ca8d3a36671898bcf39c982c4616a74b9d6ca1337e7b8daf47902fbe231",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "40aceeec-8bb5-56da-9d8c-8bbaed526bd5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x - 2 y,\\,- x + 3 y,\\,1 - z\u27e9$ and the surface $S$ defined by $z=2 x^{2} + 2 y^{2}$ for $-3\\le x\\le 3$ and $1\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{3}{\\int }_{1}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,2 u^{2} + 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 3,\\,1\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 4 u \\\\ 0 & 1 & 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 4 u \\\\ 1 & 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 4 u \\\\ 0 & 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 4 u,\\,- 4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x - 2 y,\\,- x + 3 y,\\,1 - z\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=2 u^{2} + 2 v^{2}} \\\\  & =\u27e8u - 2 v,\\,- u + 3 v,\\,1 - (2 u^{2} + 2 v^{2})\u27e9 \\\\  & =\u27e8u - 2 v,\\,- u + 3 v,\\,- 2 u^{2} - 2 v^{2} + 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u - 2 v,\\,- u + 3 v,\\,- 2 u^{2} - 2 v^{2} + 1\u27e9\\cdot \u27e8- 4 u,\\,- 4 v,\\,1\u27e9 \\\\  & =(u - 2 v)\\cdot (- 4 u)+(- u + 3 v)\\cdot (- 4 v)+(- 2 u^{2} - 2 v^{2} + 1)\\cdot (1) \\\\  & =- 4 u^{2} + 8 uv+4 uv - 12 v^{2}- 2 u^{2} - 2 v^{2} + 1 \\\\  & =- 6 u^{2} + 12 uv - 14 v^{2} + 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x - 2 y,\\,- x + 3 y,\\,1 - z\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 6 u^{2} + 12 uv - 14 v^{2} + 1)\\,\\text{d}A \\\\  & ={\\int }_{-3}^{3}{\\int }_{1}^{2}(- 6 u^{2} + 12 uv - 14 v^{2} + 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "94267737-2476-5eb4-8f23-695a193bf67b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5491ec5a-fe5b-5d8c-809e-145a0d984f23",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 12 uv - 14 v^{2} + 1"
+            },
+            {
+              ":answer/id": "a220a686-6188-54cc-8f81-fd3e08f63801",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 4 uv + 10 v^{2} + 1"
+            },
+            {
+              ":answer/id": "a40a046e-387e-5148-b499-7eabd2ea96d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 4 u^{2} + 12 uv - 12 v^{2}"
+            },
+            {
+              ":answer/id": "a022d285-fb5f-5d56-9564-9896bc2eaf3a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} - 12 uv + 14 v^{2} - 1"
+            },
+            {
+              ":answer/id": "b4ba0312-bdf3-5ac2-a0ea-dae9a64e1ff1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{2} - 4 uv - 14 v^{2} + 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5491ec5a-fe5b-5d8c-809e-145a0d984f23"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479598,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "px": 1,
+        "py": -2,
+        "qx": -1,
+        "qy": 3,
+        "rz": -1,
+        "r0": 1,
+        "bounds": [
+          -3,
+          3,
+          1,
+          2
+        ]
+      },
+      "mathematical_fingerprint": "efa26b044bd31c0982cfb6417d1092225ec3a75a7869a3c0c8a35e3051a4ddfe",
+      "presentation_fingerprint": "5182481e5625e4b8a96a13d9b8c2d509173e187f5697d4c990b91849fb4b279c",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "6c3c9715-e598-5c01-bcc0-9422a78d4a8a",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $F(x,y,z)=\u27e83 x + 2 y,\\,2 x + 2 y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=x^{2} - 2 y^{2}$ for $-3\\le x\\le 5$ and $-1\\le y\\le 5.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{-3}^{5}{\\int }_{-1}^{5}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,u^{2} - 2 v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,-3\\le u\\le 5,\\,-1\\le v\\le 5\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,2 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(u^{2} - 2 v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 4 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & 2 u \\\\ 0 & 1 & - 4 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & 2 u \\\\ 1 & - 4 v\\end{aligned}|,\\,-|\\begin{aligned}1 & 2 u \\\\ 0 & - 4 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e8- 2 u,\\,4 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e83 x + 2 y,\\,2 x + 2 y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=u^{2} - 2 v^{2}} \\\\  & =\u27e83 u + 2 v,\\,2 u + 2 v,\\,- (u^{2} - 2 v^{2}) - 1\u27e9 \\\\  & =\u27e83 u + 2 v,\\,2 u + 2 v,\\,- u^{2} + 2 v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e83 u + 2 v,\\,2 u + 2 v,\\,- u^{2} + 2 v^{2} - 1\u27e9\\cdot \u27e8- 2 u,\\,4 v,\\,1\u27e9 \\\\  & =(3 u + 2 v)\\cdot (- 2 u)+(2 u + 2 v)\\cdot (4 v)+(- u^{2} + 2 v^{2} - 1)\\cdot (1) \\\\  & =- 6 u^{2} - 4 uv+8 uv + 8 v^{2}- u^{2} + 2 v^{2} - 1 \\\\  & =- 7 u^{2} + 4 uv + 10 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e83 x + 2 y,\\,2 x + 2 y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(- 7 u^{2} + 4 uv + 10 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{-3}^{5}{\\int }_{-1}^{5}(- 7 u^{2} + 4 uv + 10 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7169d86a-2c1b-5a76-bad2-c3c972cef889",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "be2db29d-4e72-5cec-9252-a487cd8314d7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 4 uv + 8 v^{2}"
+            },
+            {
+              ":answer/id": "2bfaca62-52b0-50c4-8c1d-566224eb931a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5 u^{2} + 12 uv + 10 v^{2} - 1"
+            },
+            {
+              ":answer/id": "066eefe7-2bfa-593e-99df-f13950a8bfdf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} - 12 uv - 6 v^{2} - 1"
+            },
+            {
+              ":answer/id": "84640527-be77-514f-97b1-bbc34b4509d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7 u^{2} - 4 uv - 10 v^{2} + 1"
+            },
+            {
+              ":answer/id": "93f22646-98f2-50db-9f9d-01792d3adfbf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 7 u^{2} + 4 uv + 10 v^{2} - 1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "93f22646-98f2-50db-9f9d-01792d3adfbf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-1",
+      "seed": 977479599,
+      "template": "quadratic_graph",
+      "profile": "authored_operations",
+      "parameters": {
+        "a": 1,
+        "b": -2,
+        "px": 3,
+        "py": 2,
+        "qx": 2,
+        "qy": 2,
+        "rz": -1,
+        "r0": -1,
+        "bounds": [
+          -3,
+          5,
+          -1,
+          5
+        ]
+      },
+      "mathematical_fingerprint": "34af83ede3a7fcee9309086be58e2838d9ce274c3739c1962345451dc555808d",
+      "presentation_fingerprint": "52e6d6bb414a555b96db4a650024750aeff093b4a46c42b2433dc2f6cb231353",
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "authored",
+      "bank_origin": "authored",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_cross_order",
+        "reverse_first_normal_component",
+        "reverse_second_normal_component",
+        "omit_third_dot_term"
+      ],
+      "orientation": "ru cross rv, upward",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "plots": []
+    }
+  }
+]
