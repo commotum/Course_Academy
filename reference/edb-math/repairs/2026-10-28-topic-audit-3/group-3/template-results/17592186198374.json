@@ -17,14 +17,98 @@
   "results": [
     {
       "band": "easy",
-      "template": null,
+      "template": "cosine_square",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "easy",
+      "template": "exponential",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "easy",
+      "template": "exponential_square",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "easy",
+      "template": "polynomial",
       "api": "generate_easy",
       "passed": true,
       "records": 1
     },
     {
+      "band": "easy",
+      "template": "rational",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "easy",
+      "template": "shifted_polynomial",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "easy",
+      "template": "sine",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
       "band": "hard",
-      "template": null,
+      "template": "cosine_square",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "exponential",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "exponential_square",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "polynomial",
+      "api": "generate_hard",
+      "rejected_selector": true,
+      "error": "template outside difficulty"
+    },
+    {
+      "band": "hard",
+      "template": "rational",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "shifted_polynomial",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "sine",
       "api": "generate_hard",
       "passed": true,
       "records": 1
@@ -33,7 +117,7 @@
   "samples": [
     {
       "level": "easy",
-      "template_selector": null,
+      "template_selector": "polynomial",
       "record": {
         "knowledge_point": {
           "db_id": 17592186198374,
@@ -41,45 +125,45 @@
           "title": "Cases When the Transformation Is Inferred From the Integrand"
         },
         "question": {
-          ":question/id": "30db2b93-8f93-5fdc-bfba-1cea2cfe6b21",
+          ":question/id": "38784879-9681-559c-b119-1c0c5b7a3c8d",
           ":question/difficulty": ":question.difficulty/easy",
-          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 2 y^{2} \\left(x + 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(-1,1)$, $(2,1)$, $(-4,4)$ and $(-7,4)$.",
-          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=2 y^{2} \\left(x + 2 y\\right)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x + 2 y,\\qquad v=y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(-1,1)&=(\\left(1\\right)\\cdot \\left(-1\\right)+\\left(2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(-1\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(1,1) \\\\ T^{-1}(2,1)&=(\\left(1\\right)\\cdot \\left(2\\right)+\\left(2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(2\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(-4,4)&=(\\left(1\\right)\\cdot \\left(-4\\right)+\\left(2\\right)\\cdot \\left(4\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(-4\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(4,4) \\\\ T^{-1}(-7,4)&=(\\left(1\\right)\\cdot \\left(-7\\right)+\\left(2\\right)\\cdot \\left(4\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(-7\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(1,4)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):1\\le u\\le 4,\\ 1\\le v\\le 4\\}\n$$\n\n![](/tmp/ca9837-templates-z7ii9jxi/17592186198374/32218537aacf51268427.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&2\\\\0&1\\end{vmatrix} \\\\ &=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=u - 2 v,\\qquad y=v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 2 y^{2} \\left(x + 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 2 u v^{2}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 2 u v^{2}\\,\\left|1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{4}\\int_{1}^{4}u v^{2}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=2\\cdot \\int_{1}^{4}v^{2}\\,\\mathrm{d}v\\cdot \\int_{1}^{4}u\\,\\mathrm{d}u \\\\ &=2\\cdot \\left[\\frac{v^{3}}{3}\\right]_{1}^{4}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{1}^{4} \\\\ &=2\\cdot \\left(\\left(4\\right)^{3}/3-\\left(\\left(1\\right)^{3}/3\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(1\\right)^{2}/2\\right)\\right) \\\\ &=2\\cdot \\left(\\left(\\frac{64}{3}\\right)-\\left(\\frac{1}{3}\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(\\frac{1}{2}\\right)\\right) \\\\ &=2\\cdot \\left(21\\right)\\cdot \\left(\\frac{15}{2}\\right) \\\\ &=315.\\end{aligned}\n$$\n\n",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 3 y^{2} \\left(x - 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(4,1)$, $(6,1)$, $(12,4)$ and $(10,4)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=3 y^{2} \\left(x - 2 y\\right)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x - 2 y,\\qquad v=y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(4,1)&=(\\left(1\\right)\\cdot \\left(4\\right)+\\left(-2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(4\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(2,1) \\\\ T^{-1}(6,1)&=(\\left(1\\right)\\cdot \\left(6\\right)+\\left(-2\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(12,4)&=(\\left(1\\right)\\cdot \\left(12\\right)+\\left(-2\\right)\\cdot \\left(4\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(12\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(4,4) \\\\ T^{-1}(10,4)&=(\\left(1\\right)\\cdot \\left(10\\right)+\\left(-2\\right)\\cdot \\left(4\\right)+\\left(0\\right),\\left(0\\right)\\cdot \\left(10\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(2,4)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 1\\le v\\le 4\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/78e86f1cf28c3c9fcc7d.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-2\\\\0&1\\end{vmatrix} \\\\ &=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=u + 2 v,\\qquad y=v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 3 y^{2} \\left(x - 2 y\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 3 u v^{2}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 u v^{2}\\,\\left|1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{1}^{4}\\int_{2}^{4}u v^{2}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{1}^{4}v^{2}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}u\\,\\mathrm{d}u \\\\ &=3\\cdot \\left[\\frac{v^{3}}{3}\\right]_{1}^{4}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{2}^{4} \\\\ &=3\\cdot \\left(\\left(4\\right)^{3}/3-\\left(\\left(1\\right)^{3}/3\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(2\\right)^{2}/2\\right)\\right) \\\\ &=3\\cdot \\left(\\left(\\frac{64}{3}\\right)-\\left(\\frac{1}{3}\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right) \\\\ &=3\\cdot \\left(21\\right)\\cdot \\left(6\\right) \\\\ &=378.\\end{aligned}\n$$\n\n",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "7d8fed2e-31c0-55f2-8d3d-8662d9ab80e0",
+              ":answer-field/id": "112bb828-b190-5b0c-82f9-76d3a6e2161b",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "c752c685-764b-54fb-a30b-1bb530ac21e1",
+                  ":answer/id": "cc841232-f1f5-5c45-9f9c-11f1e98e6307",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "315"
+                  ":answer/value": "378"
                 },
                 {
-                  ":answer/id": "05e94c4d-ede7-5d87-b390-0acd0a1cf2d3",
+                  ":answer/id": "84e3983d-542c-5abd-a1e6-2c2f9c115748",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "-315"
+                  ":answer/value": "-378"
                 },
                 {
-                  ":answer/id": "8bb0efdf-9a12-51af-8336-e607945b1886",
+                  ":answer/id": "4254164f-fdf6-57ea-8ab8-ae6d37e0c344",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "630"
+                  ":answer/value": "1134"
                 },
                 {
-                  ":answer/id": "92a7d4a0-910a-57fd-88ae-eedb07acf34f",
+                  ":answer/id": "593cc8d1-6d10-5e5e-a013-acae97b4d4cf",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "756"
+                },
+                {
+                  ":answer/id": "4cbe8be5-d74d-5e17-916e-b349a3ab576e",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "126"
-                },
-                {
-                  ":answer/id": "69d68992-4174-542b-997a-ad19117e45b3",
-                  ":answer/type": ":answer.type/math",
-                  ":answer/value": "945"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "c752c685-764b-54fb-a30b-1bb530ac21e1"
+                "cc841232-f1f5-5c45-9f9c-11f1e98e6307"
               ]
             }
           ]
@@ -92,7 +176,7 @@
           "parameters": {
             "matrix": [
               "1",
-              "2",
+              "-2",
               "0",
               "1"
             ],
@@ -101,14 +185,14 @@
               "0"
             ],
             "bounds": [
-              "1",
+              "2",
               "4",
               "1",
               "4"
             ],
-            "scale": "2"
+            "scale": "3"
           },
-          "mathematical_fingerprint": "ab21e3d981f0b53c23072a411150732c2fb5bf4226008139d66ba52562899a2a",
+          "mathematical_fingerprint": "37b93373aa0d5f5cb6232a4ed39d839812fe076091f53551eddd4b6825fe0834",
           "eligible_for_learning": true,
           "evidence_only": false,
           "authored_level": true,
@@ -119,12 +203,12 @@
             "basis": 1356,
             "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
           },
-          "answer_exact": "315",
+          "answer_exact": "378",
           "choices_exact": [
-            "315",
-            "-315",
-            "630",
-            "945",
+            "378",
+            "-378",
+            "756",
+            "1134",
             "126"
           ],
           "recipes": [
@@ -135,7 +219,7 @@
             "replace u by1"
           ],
           "domain": "affine globally injective; rectangular preimage; denominator positive where used",
-          "plot": "/tmp/ca9837-templates-z7ii9jxi/17592186198374/32218537aacf51268427.png",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/78e86f1cf28c3c9fcc7d.png",
           "runtime": {
             "python": "3.13.5",
             "sympy": "1.14.0",
@@ -146,7 +230,7 @@
     },
     {
       "level": "hard",
-      "template_selector": null,
+      "template_selector": "cosine_square",
       "record": {
         "knowledge_point": {
           "db_id": 17592186198374,
@@ -154,45 +238,275 @@
           "title": "Cases When the Transformation Is Inferred From the Integrand"
         },
         "question": {
-          ":question/id": "1dbdcaef-ae1d-548a-938d-cc01274304fa",
+          ":question/id": "d60a1e35-2b3a-5e17-a78a-9ff1315c35fc",
           ":question/difficulty": ":question.difficulty/hard",
-          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D \\left(3 x - y\\right) e^{\\left(3 x - y\\right)^{2}}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(3,8)$, $(4,11)$, $(4,8)$ and $(3,5)$.",
-          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=\\left(3 x - y\\right) e^{\\left(3 x - y\\right)^{2}}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\qquad v=3 x - y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(3,8)&=(\\left(1\\right)\\cdot \\left(3\\right)+\\left(0\\right)\\cdot \\left(8\\right)+\\left(0\\right),\\left(3\\right)\\cdot \\left(3\\right)+\\left(-1\\right)\\cdot \\left(8\\right)+\\left(0\\right)) \\\\ &=(3,1) \\\\ T^{-1}(4,11)&=(\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)\\cdot \\left(11\\right)+\\left(0\\right),\\left(3\\right)\\cdot \\left(4\\right)+\\left(-1\\right)\\cdot \\left(11\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(4,8)&=(\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)\\cdot \\left(8\\right)+\\left(0\\right),\\left(3\\right)\\cdot \\left(4\\right)+\\left(-1\\right)\\cdot \\left(8\\right)+\\left(0\\right)) \\\\ &=(4,4) \\\\ T^{-1}(3,5)&=(\\left(1\\right)\\cdot \\left(3\\right)+\\left(0\\right)\\cdot \\left(5\\right)+\\left(0\\right),\\left(3\\right)\\cdot \\left(3\\right)+\\left(-1\\right)\\cdot \\left(5\\right)+\\left(0\\right)) \\\\ &=(3,4)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):3\\le u\\le 4,\\ 1\\le v\\le 4\\}\n$$\n\n![](/tmp/ca9837-templates-z7ii9jxi/17592186198374/4e01b7b25bf48dabef3d.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&0\\\\3&-1\\end{vmatrix} \\\\ &=-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=-1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=u,\\qquad y=3 u - v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D \\left(3 x - y\\right) e^{\\left(3 x - y\\right)^{2}}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta v e^{v^{2}}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta v e^{v^{2}}\\,\\left|-1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=1\\cdot \\int_{1}^{4}\\int_{3}^{4}v e^{v^{2}}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=1\\cdot \\int_{1}^{4}v e^{v^{2}}\\,\\mathrm{d}v\\cdot \\int_{3}^{4}1\\,\\mathrm{d}u \\\\ &=1\\cdot \\left[\\frac{e^{v^{2}}}{2}\\right]_{1}^{4}\\cdot \\left[u\\right]_{3}^{4} \\\\ &=1\\cdot \\left(e^{\\left(4\\right)^{2}}/2-\\left(e^{\\left(1\\right)^{2}}/2\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(\\left(3\\right)\\right)\\right) \\\\ &=1\\cdot \\left(\\left(\\frac{e^{16}}{2}\\right)-\\left(\\frac{e}{2}\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(3\\right)\\right) \\\\ &=1\\cdot \\left(- \\frac{e \\left(1 - e^{15}\\right)}{2}\\right)\\cdot \\left(1\\right) \\\\ &=- \\frac{e \\left(1 - e^{15}\\right)}{2}.\\end{aligned}\n$$\n\n",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D \\left(3 x^{2} - 3 y^{2}\\right) \\cos{\\left(\\left(x + y\\right)^{2} \\right)}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(1,-1)$, $(2,-2)$, $(\\frac{\\pi}{4} + 2,-2 + \\frac{\\pi}{4})$ and $(\\frac{\\pi}{4} + 1,-1 + \\frac{\\pi}{4})$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=\\left(3 x^{2} - 3 y^{2}\\right) \\cos{\\left(\\left(x + y\\right)^{2} \\right)}=3(x-y)(x+y)\\cos((x+y)^2)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x - y,\\qquad v=x + y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(1,-1)&=(\\left(1\\right)\\cdot \\left(1\\right)+\\left(-1\\right)\\cdot \\left(-1\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(1\\right)+\\left(1\\right)\\cdot \\left(-1\\right)+\\left(0\\right)) \\\\ &=(2,0) \\\\ T^{-1}(2,-2)&=(\\left(1\\right)\\cdot \\left(2\\right)+\\left(-1\\right)\\cdot \\left(-2\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(2\\right)+\\left(1\\right)\\cdot \\left(-2\\right)+\\left(0\\right)) \\\\ &=(4,0) \\\\ T^{-1}(\\frac{\\pi}{4} + 2,-2 + \\frac{\\pi}{4})&=(\\left(1\\right)\\cdot \\left(\\frac{\\pi}{4} + 2\\right)+\\left(-1\\right)\\cdot \\left(-2 + \\frac{\\pi}{4}\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(\\frac{\\pi}{4} + 2\\right)+\\left(1\\right)\\cdot \\left(-2 + \\frac{\\pi}{4}\\right)+\\left(0\\right)) \\\\ &=(4,\\frac{\\pi}{2}) \\\\ T^{-1}(\\frac{\\pi}{4} + 1,-1 + \\frac{\\pi}{4})&=(\\left(1\\right)\\cdot \\left(\\frac{\\pi}{4} + 1\\right)+\\left(-1\\right)\\cdot \\left(-1 + \\frac{\\pi}{4}\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(\\frac{\\pi}{4} + 1\\right)+\\left(1\\right)\\cdot \\left(-1 + \\frac{\\pi}{4}\\right)+\\left(0\\right)) \\\\ &=(2,\\frac{\\pi}{2})\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 0\\le v\\le \\frac{\\pi}{2}\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/cf412cca14a23f19001f.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-1\\\\1&1\\end{vmatrix} \\\\ &=2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=\\frac{1}{2}\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=\\frac{u}{2} + \\frac{v}{2},\\qquad y=- \\frac{u}{2} + \\frac{v}{2}.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D \\left(3 x^{2} - 3 y^{2}\\right) \\cos{\\left(\\left(x + y\\right)^{2} \\right)}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_D 3(x-y)(x+y)\\cos((x+y)^2)\\,\\mathrm{d}x\\,\\mathrm{d}y \\\\ &=\\iint_\\Delta 3 u v \\cos{\\left(v^{2} \\right)}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 u v \\cos{\\left(v^{2} \\right)}\\,\\left|\\frac{1}{2}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\frac{3}{2}\\cdot \\int_{0}^{\\frac{\\pi}{2}}\\int_{2}^{4}u v \\cos{\\left(v^{2} \\right)}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\frac{3}{2}\\cdot \\int_{0}^{\\frac{\\pi}{2}}v \\cos{\\left(v^{2} \\right)}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}u\\,\\mathrm{d}u \\\\ &=\\frac{3}{2}\\cdot \\left[\\frac{\\sin{\\left(v^{2} \\right)}}{2}\\right]_{0}^{\\frac{\\pi}{2}}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{2}^{4} \\\\ &=\\frac{3}{2}\\cdot \\left(\\sin\\left(\\left(\\frac{\\pi}{2}\\right)^{2}\\right)/2-\\left(\\sin\\left(\\left(0\\right)^{2}\\right)/2\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(2\\right)^{2}/2\\right)\\right) \\\\ &=\\frac{3}{2}\\cdot \\left(\\left(\\frac{\\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}\\right)-\\left(0\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right) \\\\ &=\\frac{3}{2}\\cdot \\left(\\frac{\\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}\\right)\\cdot \\left(6\\right) \\\\ &=\\frac{9 \\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}.\\end{aligned}\n$$\n\n",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "a4648a6d-73fb-5d11-bd93-38905fef0023",
+              ":answer-field/id": "6601cfe9-7572-593a-82a2-ca20775149fc",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "8a7c9983-9e61-5f4f-86c1-d48f2b6f6d0a",
+                  ":answer/id": "890516a5-b71e-52af-a783-7f4b2147d3d6",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "- \\frac{e \\left(1 - e^{15}\\right)}{2}"
+                  ":answer/value": "9"
                 },
                 {
-                  ":answer/id": "2bf069a3-8d3c-5801-aa1c-2504a1d73e80",
+                  ":answer/id": "e94c070a-6006-5ea9-95d6-2431d3e30f4c",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{e \\left(1 - e^{15}\\right)}{2}"
+                  ":answer/value": "- \\frac{9 \\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}"
                 },
                 {
-                  ":answer/id": "72b609aa-80bf-5056-97ee-36cb5d3c5ee0",
+                  ":answer/id": "93a02053-cb0b-55c1-953d-4f96e6f9f50f",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "- e + e^{4}"
+                  ":answer/value": "9 \\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}"
                 },
                 {
-                  ":answer/id": "a7141507-78c8-5e2c-a90b-e230892ebc4e",
+                  ":answer/id": "d6560cbe-8b44-52fe-ae33-7e1c7b05364b",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "- e + e^{16}"
+                  ":answer/value": "\\frac{9 \\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}"
                 },
                 {
-                  ":answer/id": "f3067c3e-28b2-571a-992a-174f570cacfd",
+                  ":answer/id": "59acd4a3-518a-5c31-ba14-be6ec2cdeeca",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{e \\left(1 + e^{15}\\right)}{2}"
+                  ":answer/value": "\\frac{3 \\sin{\\left(\\frac{\\pi^{2}}{4} \\right)}}{2}"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "8a7c9983-9e61-5f4f-86c1-d48f2b6f6d0a"
+                "d6560cbe-8b44-52fe-ae33-7e1c7b05364b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "integrand-transform-2-audit9837",
+          "template": "cosine_square",
+          "difficulty": "hard",
+          "profile": "method",
+          "parameters": {
+            "matrix": [
+              "1",
+              "-1",
+              "1",
+              "1"
+            ],
+            "shift": [
+              "0",
+              "0"
+            ],
+            "bounds": [
+              "2",
+              "4",
+              "0",
+              "pi/2"
+            ],
+            "scale": "3"
+          },
+          "mathematical_fingerprint": "0ea37728e119879449bddb838f76202fcce742019e836f1fb7aa7eb6c7b1c538",
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "authored_level": false,
+          "authored_bank": true,
+          "source_id": [
+            "q-160935"
+          ],
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "answer_exact": "9*sin(pi**2/4)/2",
+          "choices_exact": [
+            "9*sin(pi**2/4)/2",
+            "-9*sin(pi**2/4)/2",
+            "9*sin(pi**2/4)",
+            "9",
+            "3*sin(pi**2/4)/2"
+          ],
+          "recipes": [
+            "correct",
+            "reverse bounds",
+            "omit chain factor1/2",
+            "replace sin(v^2) endpoint by sin(v)",
+            "replace u by1"
+          ],
+          "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/cf412cca14a23f19001f.png",
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "exponential",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198374,
+          "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+          "title": "Cases When the Transformation Is Inferred From the Integrand"
+        },
+        "question": {
+          ":question/id": "9ce99560-6ee9-5f4f-9197-b8c1d9f957ae",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 3 \\left(\\frac{x}{2} + y\\right) e^{x + 3 y}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(18,-7)$, $(30,-11)$, $(18,-5)$ and $(6,-1)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=3 \\left(\\frac{x}{2} + y\\right) e^{x + 3 y}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=\\frac{x}{2} + y,\\qquad v=x + 3 y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(18,-7)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(18\\right)+\\left(1\\right)\\cdot \\left(-7\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(18\\right)+\\left(3\\right)\\cdot \\left(-7\\right)+\\left(0\\right)) \\\\ &=(2,-3) \\\\ T^{-1}(30,-11)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(30\\right)+\\left(1\\right)\\cdot \\left(-11\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(30\\right)+\\left(3\\right)\\cdot \\left(-11\\right)+\\left(0\\right)) \\\\ &=(4,-3) \\\\ T^{-1}(18,-5)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(18\\right)+\\left(1\\right)\\cdot \\left(-5\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(18\\right)+\\left(3\\right)\\cdot \\left(-5\\right)+\\left(0\\right)) \\\\ &=(4,3) \\\\ T^{-1}(6,-1)&=(\\left(\\frac{1}{2}\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(-1\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(6\\right)+\\left(3\\right)\\cdot \\left(-1\\right)+\\left(0\\right)) \\\\ &=(2,3)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ -3\\le v\\le 3\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/230d96747f942d21650b.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}\\frac{1}{2}&1\\\\1&3\\end{vmatrix} \\\\ &=\\frac{1}{2}.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=2\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=6 u - 2 v,\\qquad y=- 2 u + v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 3 \\left(\\frac{x}{2} + y\\right) e^{x + 3 y}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 3 u e^{v}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 u e^{v}\\,\\left|2\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=6\\cdot \\int_{-3}^{3}\\int_{2}^{4}u e^{v}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=6\\cdot \\int_{-3}^{3}e^{v}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}u\\,\\mathrm{d}u \\\\ &=6\\cdot \\left[e^{v}\\right]_{-3}^{3}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{2}^{4} \\\\ &=6\\cdot \\left(e^{3}-\\left(e^{-3}\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(2\\right)^{2}/2\\right)\\right) \\\\ &=6\\cdot \\left(\\left(e^{3}\\right)-\\left(e^{-3}\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right) \\\\ &=6\\cdot \\left(- \\frac{1}{e^{3}} + e^{3}\\right)\\cdot \\left(6\\right) \\\\ &=- \\frac{36}{e^{3}} + 36 e^{3}.\\end{aligned}\n$$\n\n",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "15a2ad4d-0340-5b15-a18c-7138ffeb6cd4",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "c062ff11-dad6-5dc0-91af-ef5bc4e2135a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{36}{e^{3}} + 36 e^{3}"
+                },
+                {
+                  ":answer/id": "12ab2307-d0b1-5cb6-96d4-f3873587c234",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 36 e^{3} + \\frac{36}{e^{3}}"
+                },
+                {
+                  ":answer/id": "cf501769-2c0a-5b27-95e5-2d0da9c49c4b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{12}{e^{3}} + 12 e^{3}"
+                },
+                {
+                  ":answer/id": "eda753c4-06d7-576a-ba90-8b60ae2b2336",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{72}{e^{3}} + 72 e^{3}"
+                },
+                {
+                  ":answer/id": "81262783-8e7c-5db2-9f7a-d0e87f00363f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{36}{e^{3}} + 36 e^{3}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "c062ff11-dad6-5dc0-91af-ef5bc4e2135a"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "integrand-transform-2-audit9837",
+          "template": "exponential",
+          "difficulty": "hard",
+          "profile": "method",
+          "parameters": {
+            "matrix": [
+              "1/2",
+              "1",
+              "1",
+              "3"
+            ],
+            "shift": [
+              "0",
+              "0"
+            ],
+            "bounds": [
+              "2",
+              "4",
+              "-3",
+              "3"
+            ],
+            "scale": "3"
+          },
+          "mathematical_fingerprint": "07732f9d7f25e46a0b8163fdebe1a8f207d8e2fee08511aa1d46cbfb5226e259",
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "authored_level": false,
+          "authored_bank": true,
+          "source_id": [
+            "q-160904"
+          ],
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "answer_exact": "-36*exp(-3) + 36*exp(3)",
+          "choices_exact": [
+            "-36*exp(-3) + 36*exp(3)",
+            "-36*exp(3) + 36*exp(-3)",
+            "-72*exp(-3) + 72*exp(3)",
+            "-12*exp(-3) + 12*exp(3)",
+            "36*exp(-3) + 36*exp(3)"
+          ],
+          "recipes": [
+            "correct",
+            "reverse bounds",
+            "omit u primitive denominator2",
+            "replace u by1",
+            "add v endpoints"
+          ],
+          "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/230d96747f942d21650b.png",
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "exponential_square",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198374,
+          "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+          "title": "Cases When the Transformation Is Inferred From the Integrand"
+        },
+        "question": {
+          ":question/id": "a49c7b4f-2dcb-5cb3-87ba-8c204b3a5605",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 3 \\left(x - y\\right) e^{\\left(x - y\\right)^{2}}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(2,1)$, $(4,3)$, $(4,0)$ and $(2,-2)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=3 \\left(x - y\\right) e^{\\left(x - y\\right)^{2}}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\qquad v=x - y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(2,1)&=(\\left(1\\right)\\cdot \\left(2\\right)+\\left(0\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(2\\right)+\\left(-1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(2,1) \\\\ T^{-1}(4,3)&=(\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)\\cdot \\left(3\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(4\\right)+\\left(-1\\right)\\cdot \\left(3\\right)+\\left(0\\right)) \\\\ &=(4,1) \\\\ T^{-1}(4,0)&=(\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)\\cdot \\left(0\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(4\\right)+\\left(-1\\right)\\cdot \\left(0\\right)+\\left(0\\right)) \\\\ &=(4,4) \\\\ T^{-1}(2,-2)&=(\\left(1\\right)\\cdot \\left(2\\right)+\\left(0\\right)\\cdot \\left(-2\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(2\\right)+\\left(-1\\right)\\cdot \\left(-2\\right)+\\left(0\\right)) \\\\ &=(2,4)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 1\\le v\\le 4\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/78e86f1cf28c3c9fcc7d.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&0\\\\1&-1\\end{vmatrix} \\\\ &=-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=-1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=u,\\qquad y=u - v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 3 \\left(x - y\\right) e^{\\left(x - y\\right)^{2}}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 3 v e^{v^{2}}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 v e^{v^{2}}\\,\\left|-1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{1}^{4}\\int_{2}^{4}v e^{v^{2}}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{1}^{4}v e^{v^{2}}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}1\\,\\mathrm{d}u \\\\ &=3\\cdot \\left[\\frac{e^{v^{2}}}{2}\\right]_{1}^{4}\\cdot \\left[u\\right]_{2}^{4} \\\\ &=3\\cdot \\left(e^{\\left(4\\right)^{2}}/2-\\left(e^{\\left(1\\right)^{2}}/2\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(\\left(2\\right)\\right)\\right) \\\\ &=3\\cdot \\left(\\left(\\frac{e^{16}}{2}\\right)-\\left(\\frac{e}{2}\\right)\\right)\\cdot \\left(\\left(4\\right)-\\left(2\\right)\\right) \\\\ &=3\\cdot \\left(- \\frac{e \\left(1 - e^{15}\\right)}{2}\\right)\\cdot \\left(2\\right) \\\\ &=- 3 e \\left(1 - e^{15}\\right).\\end{aligned}\n$$\n\n",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "7879571d-598a-55ce-ba5a-fe404de7468f",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "9d9062cf-f145-5962-b823-e84ede5acab2",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 3 e \\left(1 - e^{15}\\right)"
+                },
+                {
+                  ":answer/id": "c130707b-3407-51ae-a1ae-f3a046ae1daa",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3 e \\left(1 - e^{15}\\right)"
+                },
+                {
+                  ":answer/id": "3441db5e-0971-595a-be80-9a55c2641626",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 6 e \\left(1 - e^{3}\\right)"
+                },
+                {
+                  ":answer/id": "a13059fa-cb91-57b8-9f5a-c5cbf556ae84",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 6 e \\left(1 - e^{15}\\right)"
+                },
+                {
+                  ":answer/id": "b0ec48a1-afd7-5647-979b-94707005d731",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3 e \\left(1 + e^{15}\\right)"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "9d9062cf-f145-5962-b823-e84ede5acab2"
               ]
             }
           ]
@@ -206,7 +520,7 @@
             "matrix": [
               "1",
               "0",
-              "3",
+              "1",
               "-1"
             ],
             "shift": [
@@ -214,14 +528,14 @@
               "0"
             ],
             "bounds": [
-              "3",
+              "2",
               "4",
               "1",
               "4"
             ],
-            "scale": "1"
+            "scale": "3"
           },
-          "mathematical_fingerprint": "023cc21dd9f4927eb60c1c038ab91eb624f6bb6519e5ef53fdcaeba45a7cba9d",
+          "mathematical_fingerprint": "26a922f24a79985f0a7f37be990c8e37d2a2b5369078133c94d56cd9239fbdd5",
           "eligible_for_learning": true,
           "evidence_only": false,
           "authored_level": false,
@@ -234,13 +548,13 @@
             "basis": 1356,
             "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
           },
-          "answer_exact": "-E*(1 - exp(15))/2",
+          "answer_exact": "-3*E*(1 - exp(15))",
           "choices_exact": [
-            "-E*(1 - exp(15))/2",
-            "E*(1 - exp(15))/2",
-            "-E + exp(16)",
-            "-E + exp(4)",
-            "E*(1 + exp(15))/2"
+            "-3*E*(1 - exp(15))",
+            "3*E*(1 - exp(15))",
+            "-6*E*(1 - exp(15))",
+            "-6*E*(1 - exp(3))",
+            "3*E*(1 + exp(15))"
           ],
           "recipes": [
             "correct",
@@ -250,7 +564,352 @@
             "add v endpoints"
           ],
           "domain": "affine globally injective; rectangular preimage; denominator positive where used",
-          "plot": "/tmp/ca9837-templates-z7ii9jxi/17592186198374/4e01b7b25bf48dabef3d.png",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/78e86f1cf28c3c9fcc7d.png",
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "rational",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198374,
+          "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+          "title": "Cases When the Transformation Is Inferred From the Integrand"
+        },
+        "question": {
+          ":question/id": "4e891a05-bf03-5c44-a649-df5de80a2fb8",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D \\frac{3 \\left(x + y\\right)^{2}}{2 x + y}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(1,1)$, $(-1,5)$, $(0,4)$ and $(2,0)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=\\frac{3 \\left(x + y\\right)^{2}}{2 x + y}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x + y,\\qquad v=2 x + y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(1,1)&=(\\left(1\\right)\\cdot \\left(1\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(2\\right)\\cdot \\left(1\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(2,3) \\\\ T^{-1}(-1,5)&=(\\left(1\\right)\\cdot \\left(-1\\right)+\\left(1\\right)\\cdot \\left(5\\right)+\\left(0\\right),\\left(2\\right)\\cdot \\left(-1\\right)+\\left(1\\right)\\cdot \\left(5\\right)+\\left(0\\right)) \\\\ &=(4,3) \\\\ T^{-1}(0,4)&=(\\left(1\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right),\\left(2\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(4,4) \\\\ T^{-1}(2,0)&=(\\left(1\\right)\\cdot \\left(2\\right)+\\left(1\\right)\\cdot \\left(0\\right)+\\left(0\\right),\\left(2\\right)\\cdot \\left(2\\right)+\\left(1\\right)\\cdot \\left(0\\right)+\\left(0\\right)) \\\\ &=(2,4)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 3\\le v\\le 4\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/bceabf6a5fae7aea062b.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&1\\\\2&1\\end{vmatrix} \\\\ &=-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=-1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=- u + v,\\qquad y=2 u - v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D \\frac{3 \\left(x + y\\right)^{2}}{2 x + y}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta \\frac{3 u^{2}}{v}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta \\frac{3 u^{2}}{v}\\,\\left|-1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta \\frac{3 u^{2}}{v}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{3}^{4}\\int_{2}^{4}\\frac{u^{2}}{v}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{2}^{4}u^{2}\\,\\mathrm{d}u\\cdot \\int_{3}^{4}\\frac{1}{v}\\,\\mathrm{d}v \\\\ &=3\\cdot \\left[\\frac{u^{3}}{3}\\right]_{2}^{4}\\cdot \\left[\\ln{\\left(v \\right)}\\right]_{3}^{4} \\\\ &=3\\cdot \\left(\\left(4\\right)^{3}/3-\\left(\\left(2\\right)^{3}/3\\right)\\right)\\cdot \\left(\\ln \\left(4\\right)-\\left(\\ln \\left(3\\right)\\right)\\right) \\\\ &=3\\cdot \\left(\\left(\\frac{64}{3}\\right)-\\left(\\frac{8}{3}\\right)\\right)\\cdot \\left(\\left(\\ln{\\left(4 \\right)}\\right)-\\left(\\ln{\\left(3 \\right)}\\right)\\right) \\\\ &=3\\cdot \\left(\\frac{56}{3}\\right)\\cdot \\left(\\ln{\\left(\\frac{4}{3} \\right)}\\right) \\\\ &=\\ln{\\left(\\frac{5192296858534827628530496329220096}{523347633027360537213511521} \\right)}.\\end{aligned}\n$$\n\n",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "bfbaec14-c9f3-5bf6-82aa-754a7621b7f8",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "c27fa194-6ea7-5220-b6b4-828cd09d5457",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\ln{\\left(\\frac{5192296858534827628530496329220096}{523347633027360537213511521} \\right)}"
+                },
+                {
+                  ":answer/id": "435f1ca3-52ff-5de8-b2ee-681eb97753b8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\ln{\\left(\\frac{5192296858534827628530496329220096}{523347633027360537213511521} \\right)}"
+                },
+                {
+                  ":answer/id": "d83d23f0-dd70-54ad-9c4c-45a0e41f7a8f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\ln{\\left(\\frac{139984046386112763159840142535527767382602843577165595931249318810236991948760059086304843329475444736}{143341119796678074027577337316118932770382415738332565090012937927177499182473761} \\right)}"
+                },
+                {
+                  ":answer/id": "cf10c859-7dd0-5a54-9989-9768e80b6250",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\ln{\\left(\\frac{4096}{729} \\right)}"
+                },
+                {
+                  ":answer/id": "beb83c00-22a2-5c05-a4ab-38b0265f0c73",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "56"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "c27fa194-6ea7-5220-b6b4-828cd09d5457"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "integrand-transform-2-audit9837",
+          "template": "rational",
+          "difficulty": "hard",
+          "profile": "method",
+          "parameters": {
+            "matrix": [
+              "1",
+              "1",
+              "2",
+              "1"
+            ],
+            "shift": [
+              "0",
+              "0"
+            ],
+            "bounds": [
+              "2",
+              "4",
+              "3",
+              "4"
+            ],
+            "scale": "3"
+          },
+          "mathematical_fingerprint": "4d49d2b246058142f6939e8f07c0983a43a71aa440a739865060da041c7a1b35",
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "authored_level": false,
+          "authored_bank": true,
+          "source_id": [
+            "q-160433"
+          ],
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "answer_exact": "log(5192296858534827628530496329220096/523347633027360537213511521)",
+          "choices_exact": [
+            "log(5192296858534827628530496329220096/523347633027360537213511521)",
+            "-log(5192296858534827628530496329220096/523347633027360537213511521)",
+            "log(139984046386112763159840142535527767382602843577165595931249318810236991948760059086304843329475444736/143341119796678074027577337316118932770382415738332565090012937927177499182473761)",
+            "log(4096/729)",
+            "56"
+          ],
+          "recipes": [
+            "correct",
+            "reverse u bounds",
+            "omit u primitive denominator3",
+            "replace u^2 by1",
+            "replace1/v by1"
+          ],
+          "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/bceabf6a5fae7aea062b.png",
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "shifted_polynomial",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198374,
+          "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+          "title": "Cases When the Transformation Is Inferred From the Integrand"
+        },
+        "question": {
+          ":question/id": "b20d9ab7-7f8c-5a03-99a9-ebb709a670be",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 3 \\left(x + y\\right)^{2} \\left(2 x + 2\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(0,2)$, $(1,1)$, $(1,4)$ and $(0,5)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=3 \\left(x + y\\right)^{2} \\left(2 x + 2\\right)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=2 x + 2,\\qquad v=x + y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(0,2)&=(\\left(2\\right)\\cdot \\left(0\\right)+\\left(0\\right)\\cdot \\left(2\\right)+\\left(2\\right),\\left(1\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(2\\right)+\\left(0\\right)) \\\\ &=(2,2) \\\\ T^{-1}(1,1)&=(\\left(2\\right)\\cdot \\left(1\\right)+\\left(0\\right)\\cdot \\left(1\\right)+\\left(2\\right),\\left(1\\right)\\cdot \\left(1\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(4,2) \\\\ T^{-1}(1,4)&=(\\left(2\\right)\\cdot \\left(1\\right)+\\left(0\\right)\\cdot \\left(4\\right)+\\left(2\\right),\\left(1\\right)\\cdot \\left(1\\right)+\\left(1\\right)\\cdot \\left(4\\right)+\\left(0\\right)) \\\\ &=(4,5) \\\\ T^{-1}(0,5)&=(\\left(2\\right)\\cdot \\left(0\\right)+\\left(0\\right)\\cdot \\left(5\\right)+\\left(2\\right),\\left(1\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(5\\right)+\\left(0\\right)) \\\\ &=(2,5)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):2\\le u\\le 4,\\ 2\\le v\\le 5\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/cbe6098849047b47b218.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}2&0\\\\1&1\\end{vmatrix} \\\\ &=2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=\\frac{1}{2}\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=\\frac{u}{2} - 1,\\qquad y=- \\frac{u}{2} + v + 1.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 3 \\left(x + y\\right)^{2} \\left(2 x + 2\\right)\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 3 u v^{2}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 u v^{2}\\,\\left|\\frac{1}{2}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\frac{3}{2}\\cdot \\int_{2}^{5}\\int_{2}^{4}u v^{2}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\frac{3}{2}\\cdot \\int_{2}^{5}v^{2}\\,\\mathrm{d}v\\cdot \\int_{2}^{4}u\\,\\mathrm{d}u \\\\ &=\\frac{3}{2}\\cdot \\left[\\frac{v^{3}}{3}\\right]_{2}^{5}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{2}^{4} \\\\ &=\\frac{3}{2}\\cdot \\left(\\left(5\\right)^{3}/3-\\left(\\left(2\\right)^{3}/3\\right)\\right)\\cdot \\left(\\left(4\\right)^{2}/2-\\left(\\left(2\\right)^{2}/2\\right)\\right) \\\\ &=\\frac{3}{2}\\cdot \\left(\\left(\\frac{125}{3}\\right)-\\left(\\frac{8}{3}\\right)\\right)\\cdot \\left(\\left(8\\right)-\\left(2\\right)\\right) \\\\ &=\\frac{3}{2}\\cdot \\left(39\\right)\\cdot \\left(6\\right) \\\\ &=351.\\end{aligned}\n$$\n\n",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "97e8854f-9d24-56af-9da4-683fe790b8f0",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "92003333-2fbe-5202-8721-4c4c9f03afdd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "351"
+                },
+                {
+                  ":answer/id": "455f047f-f2fc-523b-8f7f-3116fd48513a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-351"
+                },
+                {
+                  ":answer/id": "49bcbcfc-e64a-54de-8e00-4e6201608fbf",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1053"
+                },
+                {
+                  ":answer/id": "ba0adc26-70c0-5513-b471-2365011f3c09",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "702"
+                },
+                {
+                  ":answer/id": "a003dbcb-da7e-5071-99b1-ef2bb0ae629f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "117"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "92003333-2fbe-5202-8721-4c4c9f03afdd"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "integrand-transform-2-audit9837",
+          "template": "shifted_polynomial",
+          "difficulty": "hard",
+          "profile": "method",
+          "parameters": {
+            "matrix": [
+              "2",
+              "0",
+              "1",
+              "1"
+            ],
+            "shift": [
+              "2",
+              "0"
+            ],
+            "bounds": [
+              "2",
+              "4",
+              "2",
+              "5"
+            ],
+            "scale": "3"
+          },
+          "mathematical_fingerprint": "c777127afe818cdb878ae90fae3fcc9b7c83112878307fdda99f2e118114b633",
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "authored_level": false,
+          "authored_bank": true,
+          "source_id": [
+            "q-160896"
+          ],
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "answer_exact": "351",
+          "choices_exact": [
+            "351",
+            "-351",
+            "702",
+            "1053",
+            "117"
+          ],
+          "recipes": [
+            "correct",
+            "reverse u bounds",
+            "omit u primitive denominator2",
+            "omit v primitive denominator3",
+            "replace u by1"
+          ],
+          "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/cbe6098849047b47b218.png",
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "sine",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186198374,
+          "id": "b2682751-23e4-5cf2-9a46-82c75765423f",
+          "title": "Cases When the Transformation Is Inferred From the Integrand"
+        },
+        "question": {
+          ":question/id": "bef851f9-1bfe-5b41-bcd2-39b8ffac7fb7",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\iint_D 3 x \\sin{\\left(\\pi \\left(x + y\\right) \\right)}\\,\\mathrm{d}x\\,\\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(0,0)$, $(6,-6)$, $(6,-5)$ and $(0,1)$.",
+          ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=3 x \\sin{\\left(\\pi \\left(x + y\\right) \\right)}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\qquad v=x + y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\nT^{-1}:(x,y)\\mapsto (u(x,y),v(x,y)).\n$$\n\n**Step 2**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $\u0394$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}T^{-1}(0,0)&=(\\left(1\\right)\\cdot \\left(0\\right)+\\left(0\\right)\\cdot \\left(0\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(0\\right)+\\left(0\\right)) \\\\ &=(0,0) \\\\ T^{-1}(6,-6)&=(\\left(1\\right)\\cdot \\left(6\\right)+\\left(0\\right)\\cdot \\left(-6\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(-6\\right)+\\left(0\\right)) \\\\ &=(6,0) \\\\ T^{-1}(6,-5)&=(\\left(1\\right)\\cdot \\left(6\\right)+\\left(0\\right)\\cdot \\left(-5\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(6\\right)+\\left(1\\right)\\cdot \\left(-5\\right)+\\left(0\\right)) \\\\ &=(6,1) \\\\ T^{-1}(0,1)&=(\\left(1\\right)\\cdot \\left(0\\right)+\\left(0\\right)\\cdot \\left(1\\right)+\\left(0\\right),\\left(1\\right)\\cdot \\left(0\\right)+\\left(1\\right)\\cdot \\left(1\\right)+\\left(0\\right)) \\\\ &=(0,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta=\\{(u,v):0\\le u\\le 6,\\ 0\\le v\\le 1\\}\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186198374/c339298a5cb20e8e0fc5.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v)}{\\partial(x,y)}&=\\begin{vmatrix}\\partial u/\\partial x&\\partial u/\\partial y\\\\\\partial v/\\partial x&\\partial v/\\partial y\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&0\\\\1&1\\end{vmatrix} \\\\ &=1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\left(\\frac{\\partial(u,v)}{\\partial(x,y)}\\right)^{-1}=1\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\nSolving these affine equations also gives\n\n$$\nx=u,\\qquad y=- u + v.\n$$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}\\iint_D 3 x \\sin{\\left(\\pi \\left(x + y\\right) \\right)}\\,\\mathrm{d}x\\,\\mathrm{d}y&=\\iint_\\Delta 3 u \\sin{\\left(\\pi v \\right)}\\,\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=\\iint_\\Delta 3 u \\sin{\\left(\\pi v \\right)}\\,\\left|1\\right|\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{0}^{1}\\int_{0}^{6}u \\sin{\\left(\\pi v \\right)}\\,\\mathrm{d}u\\,\\mathrm{d}v \\\\ &=3\\cdot \\int_{0}^{1}\\sin{\\left(\\pi v \\right)}\\,\\mathrm{d}v\\cdot \\int_{0}^{6}u\\,\\mathrm{d}u \\\\ &=3\\cdot \\left[- \\frac{\\cos{\\left(\\pi v \\right)}}{\\pi}\\right]_{0}^{1}\\cdot \\left[\\frac{u^{2}}{2}\\right]_{0}^{6} \\\\ &=3\\cdot \\left(-\\cos\\left(\\pi\\cdot \\left(1\\right)\\right)/\\pi-\\left(-\\cos\\left(\\pi\\cdot \\left(0\\right)\\right)/\\pi\\right)\\right)\\cdot \\left(\\left(6\\right)^{2}/2-\\left(\\left(0\\right)^{2}/2\\right)\\right) \\\\ &=3\\cdot \\left(\\left(\\frac{1}{\\pi}\\right)-\\left(- \\frac{1}{\\pi}\\right)\\right)\\cdot \\left(\\left(18\\right)-\\left(0\\right)\\right) \\\\ &=3\\cdot \\left(\\frac{2}{\\pi}\\right)\\cdot \\left(18\\right) \\\\ &=\\frac{108}{\\pi}.\\end{aligned}\n$$\n\n",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "5d57a112-95d8-5477-89fe-eef75c8613a0",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "789a5ebf-975e-5b90-b083-f31f9c167b72",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{108}{\\pi}"
+                },
+                {
+                  ":answer/id": "ed02c706-14d3-5e12-b07b-7478997c97ab",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{108}{\\pi}"
+                },
+                {
+                  ":answer/id": "f0adec58-77eb-5e60-8e31-e21cc41264bc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{36}{\\pi}"
+                },
+                {
+                  ":answer/id": "8624e416-973a-5433-bdef-0ef6d1944c2b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "108"
+                },
+                {
+                  ":answer/id": "f911ccf5-f8ed-58f5-be42-5573e36a1a57",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "108 \\pi"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "789a5ebf-975e-5b90-b083-f31f9c167b72"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "integrand-transform-2-audit9837",
+          "template": "sine",
+          "difficulty": "hard",
+          "profile": "method",
+          "parameters": {
+            "matrix": [
+              "1",
+              "0",
+              "1",
+              "1"
+            ],
+            "shift": [
+              "0",
+              "0"
+            ],
+            "bounds": [
+              "0",
+              "6",
+              "0",
+              "1"
+            ],
+            "scale": "3"
+          },
+          "mathematical_fingerprint": "6ae88316828ef7c3723c2b8ce0f4b0ed13f3af1a0bc41ef054154153e3c64005",
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "authored_level": false,
+          "authored_bank": true,
+          "source_id": [
+            "q-160901"
+          ],
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "answer_exact": "108/pi",
+          "choices_exact": [
+            "108/pi",
+            "-108/pi",
+            "108",
+            "108*pi",
+            "36/pi"
+          ],
+          "recipes": [
+            "correct",
+            "reverse bounds",
+            "omit reciprocal frequency",
+            "multiply frequency instead of divide",
+            "replace u by1"
+          ],
+          "domain": "affine globally injective; rectangular preimage; denominator positive where used",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186198374/c339298a5cb20e8e0fc5.png",
           "runtime": {
             "python": "3.13.5",
             "sympy": "1.14.0",

@@ -13,16 +13,315 @@
   "results": [
     {
       "band": "easy",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192794,
+          "id": "35c6e3db-073b-5867-8137-1d8660b20887",
+          "title": "Applying the Quotient Rule"
+        },
+        "question": {
+          ":question/id": "99f5ecd2-ef54-51ba-b08f-fc337a0fa721",
+          ":question/problem": "For the function\n\n$$\nf(x,y)=\\frac{\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)}}{\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1},\n$$\n\nthe partial derivative with respect to $y$ is given by\n\n$$\n\\frac{\\partial f}{\\partial y}=\\frac{h(x,y)}{\\left(\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1\\right)^2}.\n$$\n\nFind $h(x,y)$, where $\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1\\ne0$.",
+          ":question/worked-solution": "Hold $x$ constant and differentiate with respect to $y$. Write $N=\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)}$ and $D=\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1$. The component derivatives are\n\n$$\n\\begin{aligned}\nN_{y}&=- \\sin{\\left(y \\right)}, \\\\\nD_{y}&=2 \\sin{\\left(y \\right)}.\n\\end{aligned}\n$$\n\n Apply the quotient rule, keeping its subtraction and squared denominator:\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial y}&=\\frac{N_{y}D-ND_{y}}{D^2} \\\\\n&=\\frac{\\left(- \\sin{\\left(y \\right)}\\right)D-N\\left(2 \\sin{\\left(y \\right)}\\right)}{D^2} \\\\\n&=\\frac{- 3 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}}{\\left(\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1\\right)^2}.\n\\end{aligned}\n$$\n\nThe last step distributes the subtraction and collects like terms. Comparing with the supplied form gives $h(x,y)=- 3 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}$. These expressions apply where $\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1\\ne0$.",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "4deb637c-8685-515f-9a9b-eb209e2af72c",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "6903d385-c340-535c-b91f-5b9b0fd73aad",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 3 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "ee5c401d-0c9a-593d-a589-c4df5256de1d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 4 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "b51fdf9d-0c52-5250-858d-a8835faa7cd7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "478bc16c-1a7d-57f2-b685-bfbc890f3284",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 3 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)}"
+                },
+                {
+                  ":answer/id": "95249762-c29e-5591-bf7e-e74d4ccb296d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 5 \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - \\sin{\\left(y \\right)}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "6903d385-c340-535c-b91f-5b9b0fd73aad"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.0.4-bounded-batch-retry",
+          "family": "trigonometric",
+          "target": "y",
+          "parameters": [
+            1,
+            -2,
+            1,
+            -1,
+            2,
+            1
+          ],
+          "point": null,
+          "numeric_rank": 1,
+          "profile": [
+            "double_denominator_trig_contribution",
+            "double_numerator_trig_contribution",
+            "drop_constant_contribution",
+            "add_trig_coefficients"
+          ],
+          "source_question_ids": [
+            "d9fb48fb-ee18-53c2-9d40-be28dc7c4677",
+            "ba29a24e-25aa-5034-8849-e753260af75f"
+          ],
+          "domain": "\\sin{\\left(x \\right)} - 2 \\cos{\\left(y \\right)} + 1\\ne0",
+          "answer_form": "fragment",
+          "choice_errors": [
+            "correct",
+            "double_numerator_trig_contribution",
+            "add_trig_coefficients",
+            "drop_constant_contribution",
+            "double_denominator_trig_contribution"
+          ],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempts": 7,
+          "requested_batch_seed": 983755,
+          "batch_retry": 0
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192794,
+          "id": "35c6e3db-073b-5867-8137-1d8660b20887",
+          "title": "Applying the Quotient Rule"
+        },
+        "question": {
+          ":question/id": "dd37a3c3-c033-5553-8394-79bf0cd60819",
+          ":question/problem": "For the function\n\n$$\nf(x,y)=\\frac{e^{x y^{2}}}{x + y^{2} + 2},\n$$\n\nfind $\\frac{\\partial f}{\\partial y}$, where $x + y^{2} + 2\\ne0$.",
+          ":question/worked-solution": "Hold $x$ constant and differentiate with respect to $y$. Write $N=e^{x y^{2}}$ and $D=x + y^{2} + 2$. The component derivatives are\n\n$$\n\\begin{aligned}\nN_{y}&=2 x y e^{x y^{2}}, \\\\\nD_{y}&=2 y.\n\\end{aligned}\n$$\n\nThe chain rule differentiates the exponent first; its inner derivative is $2 x y$. Apply the quotient rule, keeping its subtraction and squared denominator:\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial y}&=\\frac{N_{y}D-ND_{y}}{D^2} \\\\\n&=\\frac{\\left(2 x y e^{x y^{2}}\\right)D-N\\left(2 y\\right)}{D^2} \\\\\n&=\\frac{e^{x y^{2}}\\left(2 x^{2} y + 2 x y^{3} + 4 x y - 2 y\\right)}{\\left(x + y^{2} + 2\\right)^2}.\n\\end{aligned}\n$$\n\nThe last step factors the common nonzero exponential $e^{x y^{2}}$ from the numerator.  These expressions apply where $x + y^{2} + 2\\ne0$.",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "09c21d37-dd4e-5769-8ead-9d7f28fc4692",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "7ef9beb5-7ed4-5e23-8c41-40a183b3c390",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e^{x y^{2}}\\left(- 2 y\\right)}{\\left(x + y^{2} + 2\\right)^2}"
+                },
+                {
+                  ":answer/id": "fb2503ee-897a-5ba5-b889-0ac22c4736db",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e^{x y^{2}}\\left(2 x^{2} y + 2 x y^{3} + 4 x y - 2 y\\right)}{\\left(x + y^{2} + 2\\right)^2}"
+                },
+                {
+                  ":answer/id": "21bcacc4-b559-5770-8242-141f6de33e0c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e^{x y^{2}}\\left(4 x^{2} y + 4 x y^{3} + 8 x y - 2 y\\right)}{\\left(x + y^{2} + 2\\right)^2}"
+                },
+                {
+                  ":answer/id": "b08a65f6-35d2-5e09-9fb5-213a3f3c6001",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e^{x y^{2}}\\left(2 x^{3} y + 4 x^{2} y^{3} + 8 x^{2} y + 2 x y^{5} + 8 x y^{3} + 6 x y - 2 y^{3} - 4 y\\right)}{\\left(x + y^{2} + 2\\right)^2}"
+                },
+                {
+                  ":answer/id": "c237cdf7-f82d-5f1e-9ced-ec3a18ea13bc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{e^{x y^{2}}\\left(x y^{2} + y^{4} + 2 y^{2} - 1\\right)}{\\left(x + y^{2} + 2\\right)^2}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "fb2503ee-897a-5ba5-b889-0ac22c4736db"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.0.4-bounded-batch-retry",
+          "family": "exponential",
+          "target": "y",
+          "parameters": [
+            -1,
+            -3,
+            2,
+            1,
+            1,
+            0
+          ],
+          "point": null,
+          "numeric_rank": 2,
+          "profile": [
+            "unsquared_denominator",
+            "double_numerator_derivative",
+            "differentiate_other_variable",
+            "omit_numerator_term"
+          ],
+          "source_question_ids": [
+            "27e4d0e6-6215-57d4-b123-69cd51f3932f",
+            "6f6e1b67-30d1-5d26-980f-cea342aa0dc8",
+            "9537a10a-ace7-5581-a0a1-2a2907755cd0"
+          ],
+          "domain": "x + y^{2} + 2\\ne0",
+          "answer_form": "whole derivative",
+          "choice_errors": [
+            "omit_numerator_term",
+            "correct",
+            "double_numerator_derivative",
+            "unsquared_denominator",
+            "differentiate_other_variable"
+          ],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempts": 1,
+          "requested_batch_seed": 983755,
+          "batch_retry": 0
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186192794,
+          "id": "35c6e3db-073b-5867-8137-1d8660b20887",
+          "title": "Applying the Quotient Rule"
+        },
+        "question": {
+          ":question/id": "197bf510-eb9d-537f-b965-99f70c6c4db4",
+          ":question/problem": "For the function\n\n$$\nf(x,y)=\\frac{\\sin{\\left(x \\right)} + 2 \\cos{\\left(y \\right)}}{\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)} + 2},\n$$\n\nevaluate $\\frac{\\partial f}{\\partial y}$ at the point $(- \\frac{\\pi}{2},\\frac{\\pi}{2})$.",
+          ":question/worked-solution": "Hold $x$ constant and differentiate with respect to $y$. Write $N=\\sin{\\left(x \\right)} + 2 \\cos{\\left(y \\right)}$ and $D=\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)} + 2$. The component derivatives are\n\n$$\n\\begin{aligned}\nN_{y}&=- 2 \\sin{\\left(y \\right)}, \\\\\nD_{y}&=- \\sin{\\left(y \\right)}.\n\\end{aligned}\n$$\n\n Apply the quotient rule, keeping its subtraction and squared denominator:\n\n$$\n\\begin{aligned}\n\\frac{\\partial f}{\\partial y}&=\\frac{N_{y}D-ND_{y}}{D^2} \\\\\n&=\\frac{\\left(- 2 \\sin{\\left(y \\right)}\\right)D-N\\left(- \\sin{\\left(y \\right)}\\right)}{D^2} \\\\\n&=\\frac{- \\sin{\\left(x \\right)} \\sin{\\left(y \\right)} - 4 \\sin{\\left(y \\right)}}{\\left(\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)} + 2\\right)^2}.\n\\end{aligned}\n$$\n\nThe last step distributes the subtraction and collects like terms. Now substitute the point, after differentiating:\n\n$$\n\\begin{aligned}\n\\left.\\frac{\\partial f}{\\partial y}\\right|_{(- \\frac{\\pi}{2},\\frac{\\pi}{2})}&=\\frac{\\left(-2\\right)\\left(1\\right)-\\left(-1\\right)\\left(-1\\right)}{\\left(1\\right)^2} \\\\\n&=-3.\n\\end{aligned}\n$$\n\n These expressions apply where $\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)} + 2\\ne0$.",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "7ff552e7-cbcf-5935-ae44-baf3de1a1415",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "0124de72-1cb4-55dc-a660-9e1fa23c209f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-3"
+                },
+                {
+                  ":answer/id": "4b1fd612-46e7-5450-aeb2-1721ef75505c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2"
+                },
+                {
+                  ":answer/id": "04c51ab7-01e1-57d8-b0c5-d22bfe2bfa46",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-1"
+                },
+                {
+                  ":answer/id": "962d035b-8626-5cee-9f4a-630911e26c3b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "9"
+                },
+                {
+                  ":answer/id": "1199a91b-87ba-5f6d-8291-d2faa464002e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-2"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "0124de72-1cb4-55dc-a660-9e1fa23c209f"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.0.4-bounded-batch-retry",
+          "family": "trigonometric",
+          "target": "y",
+          "parameters": [
+            2,
+            1,
+            2,
+            3,
+            2,
+            1
+          ],
+          "point": [
+            "-pi/2",
+            "pi/2"
+          ],
+          "numeric_rank": 0,
+          "profile": [
+            "omit_numerator_term",
+            "differentiate_denominator_twice",
+            "square_numerator_too",
+            "divide_derivatives"
+          ],
+          "source_question_ids": [
+            "d9fb48fb-ee18-53c2-9d40-be28dc7c4677",
+            "ba29a24e-25aa-5034-8849-e753260af75f"
+          ],
+          "domain": "\\sin{\\left(x \\right)} + \\cos{\\left(y \\right)} + 2\\ne0",
+          "answer_form": "value",
+          "choice_errors": [
+            "correct",
+            "divide_derivatives",
+            "omit_numerator_term",
+            "square_numerator_too",
+            "differentiate_denominator_twice"
+          ],
+          "math_format": "course-academy-tex-v1",
+          "seed": 983755,
+          "index": 0,
+          "attempts": 29,
+          "requested_batch_seed": 983755,
+          "batch_retry": 0
+        }
+      }
+    }
+  ]
 }

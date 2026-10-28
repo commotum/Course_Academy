@@ -7,7 +7,7 @@ I,J,K=S.symbols('i j k');LOC={'x':X,'y':Y,'z':Z,'t':T,'i':I,'j':J,'k':K,'u':S.Sy
 def clean(v):
  v=re.sub(r'\\(?:mathbf|boldsymbol)\s*\{([A-Za-z])\}',r'\1',v);v=re.sub(r'\\(?:mathbf|boldsymbol)\s+([A-Za-z])',r'\1',v);v=re.sub(r'\\(?:begin|end)\{aligned\}','',v).replace('&','');return v.strip().rstrip('.,')
 def scalar(v):
- v=clean(v);v=re.sub(r'\\(sin|cos|tan|sec|csc|cot)\s*(-?\d+)\s*([tuvxyz])',lambda m:'\\'+m[1]+'{('+m[2]+m[3]+')}',v);v=v.replace(r'\mathrm{N}','').replace(r'\mathrm{J}','');e=L.parse(v)
+ v=clean(v).replace(r'\operatorname{atan}',r'\arctan');v=re.sub(r'\\(sin|cos|tan|sec|csc|cot)\s*(-?\d+)\s*([tuvxyz])',lambda m:'\\'+m[1]+'{('+m[2]+m[3]+')}',v);v=v.replace(r'\mathrm{N}','').replace(r'\mathrm{J}','');e=L.parse(v)
  return e.xreplace({s:LOC.get(s.name,s)for s in e.free_symbols})
 def expr(v):return S.sympify(v,locals=LOC)
 def balanced_parts(s,separator=','):

@@ -1281,6 +1281,27 @@ impl Algebra {
             let exponent = self.mul(b, &logarithm)?;
             return self.function("exp", &exponent);
         }
+        // A nonrational exponent may contain an additive integer shift.
+        // On the real-power domain already recorded above, a^(u+n) = a^u*a^n.
+        // Canonicalize that shift so x^(sqrt(5)-1) and x^sqrt(5)/x share
+        // an exact form. Keep every sign/nonzero guard and the bounded integer
+        // expansion limit; do not distribute an arbitrary symbolic exponent.
+        if b.den == Poly::integer(1) {
+            let scalar = b.num.0.get(&Mono::new());
+            if let Some(n) = scalar.filter(|q| q.is_integer())
+                .and_then(|q| q.to_integer().to_i32())
+                .filter(|n| *n != 0 && n.unsigned_abs() <= MAX_POWER)
+            {
+                let mut remainder = b.num.clone();
+                remainder.0.remove(&Mono::new());
+                let remainder = self.value(remainder, Poly::integer(1))?;
+                let symbolic = Value::atom(Atom::Power(
+                    Box::new(a.clone()), Box::new(remainder),
+                ));
+                let integer = self.integer_power(a, n)?;
+                return self.mul(&symbolic, &integer);
+            }
+        }
         Ok(Value::atom(Atom::Power(
             Box::new(a.clone()),
             Box::new(b.clone()),
@@ -3842,3 +3863,36 @@ mod exponential_logarithm_regression_tests {
 
 }
 
+
+#[cfg(test)]
+mod symbolic_integer_exponent_shift_tests {
+    use super::{compare, Context};
+    #[test]
+    fn real_power_integer_shifts_share_exact_form() {
+        let c = Context { natural_exponential: true, ..Context::default() };
+        for (a,b) in [
+            ("6/x-sqrt(5)*x^(sqrt(5)-1)", "6/x-sqrt(5)*x^sqrt(5)/x"),
+            ("2/x+pi*x^(pi-1)", "(2+pi*x^pi)/x"),
+            ("e*x^(e-1)+1/x", "(e*x^e+1)/x"),
+            ("(x+2)^(sqrt(3)+2)", "(x+2)^sqrt(3)*(x+2)^2"),
+            ("x^(pi-3)", "x^pi/x^3"),
+        ] {
+            assert_eq!(compare(a,b,c),Ok(true),"{a} vs {b}");
+            assert_eq!(compare(b,a,c),Ok(true),"{b} vs {a}");
+        }
+    }
+    #[test]
+    fn integer_shifts_keep_wrong_values_and_domain_changes_out() {
+        let c = Context { natural_exponential: true, ..Context::default() };
+        for (a,b) in [
+            ("x^(pi-1)", "x^pi/x^2"),
+            ("6/x-sqrt(5)*x^(sqrt(5)-1)", "6/x+sqrt(5)*x^sqrt(5)/x"),
+            ("e*x^(e-1)+1/x", "e*x^e+1/x"),
+        ] { assert_eq!(compare(a,b,c),Ok(false),"{a} vs {b}"); }
+        for (a,b) in [
+            ("x^(sqrt(5)-1)", "abs(x)^sqrt(5)/abs(x)"),
+            ("x^(pi-1)", "(-x)^pi/(-x)"),
+            ("x^(pi-pi)", "1"),
+        ] { assert_ne!(compare(a,b,c),Ok(true),"{a} vs {b}"); }
+    }
+}

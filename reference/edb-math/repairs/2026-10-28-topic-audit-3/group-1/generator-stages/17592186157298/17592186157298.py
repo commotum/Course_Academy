@@ -14,7 +14,7 @@ except ImportError:
  interpreter=Path(__file__).resolve().parents[2]/'.venv/bin/python'
  if interpreter.is_file() and str(interpreter)!=sys.executable:os.execv(str(interpreter),[str(interpreter),str(Path(__file__).resolve()),*sys.argv[1:]])
  raise
-os.environ.setdefault('MPLCONFIGDIR',str(Path(__file__).with_suffix('')/'reference/mpl-cache'))
+os.environ.setdefault('MPLCONFIGDIR',str(_ca_asset_output(Path('matplotlib-cache')).parent/'matplotlib-cache'))
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application, convert_xor
 HERE=Path(__file__).with_suffix(''); ROOT=HERE.parents[2]
 SNAP=json.loads((HERE/'reference/initial/source.json').read_text())

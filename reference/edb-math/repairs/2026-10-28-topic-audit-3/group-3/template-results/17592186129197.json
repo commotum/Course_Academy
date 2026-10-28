@@ -18,21 +18,56 @@
   "results": [
     {
       "band": "easy",
-      "template": null,
+      "template": "simple",
       "api": "generate_easy",
       "passed": true,
       "records": 1
     },
     {
       "band": "hard",
-      "template": null,
+      "template": "down",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "hyper_x",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "hyper_y",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "quartic",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "up",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "vertical",
       "api": "generate_hard",
       "passed": true,
       "records": 1
     },
     {
       "band": "moderate",
-      "template": null,
+      "template": "mixed",
       "api": "generate_moderate",
       "passed": true,
       "records": 1
@@ -41,7 +76,7 @@
   "samples": [
     {
       "level": "easy",
-      "template_selector": null,
+      "template_selector": "simple",
       "record": {
         "knowledge_point": {
           "db_id": 17592186129197,
@@ -49,45 +84,45 @@
           "title": "Finding an Area by Transforming to a Type I Region"
         },
         "question": {
-          ":question/problem": "Using the change of variables \n\n$$\nu=x - 6 y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x - 6 y)^{2}-(y)=0$ and the line $y=1.$",
-          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x - 6 y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x - 6 y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n(x - 6 y)^{2}-(y)=0\\,\u27f9\\,u^{2}-v=0\\,\u27f9\\,v=u^{2}.\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\nv=1.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,u=\\pm 1\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,u^{2}\\le v\\le 1\\}.\n$$\n\n![](/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/285e4a212301c46ce0123cc4.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-6\\\\0&1\\end{vmatrix} \\\\ &=1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |1|\\,dudv \\\\ &=1\\int_{-1}^{1}[\\int_{u^{2}}^{1}dv]du \\\\ &=1\\int_{-1}^{1}[v]_{u^{2}}^{1}du \\\\ &=1\\int_{-1}^{1}(1)-(u^{2})du \\\\ &=1\\int_{-1}^{1}(1 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + u]_{-1}^{1} \\\\ &=1(((1)+\\left(- \\frac{1}{3}\\right))-((-1)+\\left(\\frac{1}{3}\\right))) \\\\ &=1\\left(\\frac{4}{3}\\right) \\\\ &=\\frac{4}{3}\\end{aligned}\n$$",
+          ":question/problem": "Using the change of variables \n\n$$\nu=x - 4 y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x - 4 y)^{2}-(y)=0$ and the line $y=9.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x - 4 y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x - 4 y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n(x - 4 y)^{2}-(y)=0\\,\u27f9\\,u^{2}-v=0\\,\u27f9\\,v=u^{2}.\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\nv=9.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} \\\\ v &=9\\end{aligned}\\right.\\,\u27f9\\,u=\\pm 3\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 3,9).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-3\\le u\\le 3,\\,u^{2}\\le v\\le 9\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/3a931359251be4c6f04a7150.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-4\\\\0&1\\end{vmatrix} \\\\ &=1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |1|\\,dudv \\\\ &=1\\int_{-3}^{3}[\\int_{u^{2}}^{9}dv]du \\\\ &=1\\int_{-3}^{3}[v]_{u^{2}}^{9}du \\\\ &=1\\int_{-3}^{3}(9)-(u^{2})du \\\\ &=1\\int_{-3}^{3}(9 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + 9 u]_{-3}^{3} \\\\ &=1(((27)+(-9))-((-27)+(9))) \\\\ &=1(36) \\\\ &=36\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/easy",
-          ":question/id": "4eec0b25-d45f-5036-94d0-7a768062904b",
+          ":question/id": "5acbe98c-7208-522e-89e2-c63cc6180201",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "5874c5ea-93c3-55d1-b6f4-71a3410d82ba",
+              ":answer-field/id": "9951d0c1-9517-5b49-a12b-4e5c7b4b255e",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "3baaa598-ddcc-5d86-9be7-e0a09932017a",
+                  ":answer/id": "fbce6a6a-81e4-53be-bce0-c35d547a0fcb",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "288"
                 },
                 {
-                  ":answer/id": "d517d608-ae80-5574-9357-b4f5f691dfe2",
+                  ":answer/id": "a39265ea-1e24-508e-89ca-a2d7c9e50b62",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{4}{3}"
+                  ":answer/value": "36"
                 },
                 {
-                  ":answer/id": "0aa32089-488a-56f2-976c-ba6b31c95343",
+                  ":answer/id": "9550abc3-635f-5476-9f43-d01bd2ec5078",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{256}{3}"
                 },
                 {
-                  ":answer/id": "7813f9ef-a258-5bfc-a84e-7faee3f30715",
+                  ":answer/id": "5b9d0425-47dc-5542-aaf5-e6676dafbb05",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{500}{3}"
                 },
                 {
-                  ":answer/id": "2ae7d7e2-7217-55bb-a8b1-59fdc97c190c",
+                  ":answer/id": "376b589d-e45d-5e1a-bb6b-18b8ece93896",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{32}{3}"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "d517d608-ae80-5574-9357-b4f5f691dfe2"
+                "a39265ea-1e24-508e-89ca-a2d7c9e50b62"
               ]
             }
           ]
@@ -98,12 +133,12 @@
           "profile": "method",
           "seed": 983755,
           "parameters": {
-            "a": 6,
-            "h": 1,
+            "a": 4,
+            "h": 9,
             "k": 0
           },
-          "mathematical_fingerprint": "52822adadac7f391063bca19b00c4fa67b3039ecdb603eac226616cec5674161",
-          "content_fingerprint": "2e931f85a5ba51d2c6bb1a2ad10d1dbe0104daa5fac0e6643ac3ae2a5035828d",
+          "mathematical_fingerprint": "f7dfd0c377bf7b3852bbcb3dfe8219cd8853f8bff1ab906243307bc8b7526b99",
+          "content_fingerprint": "79645607414ff88df901117e75c1fca0a55c021ec5998bba865904e3d2909cd1",
           "source": {
             "database": "math",
             "basis": 1356,
@@ -119,8 +154,8 @@
           "bank_construction": "compatible-instance-areas",
           "bank_parameters": [
             {
-              "a": 6,
-              "h": 1,
+              "a": 4,
+              "h": 9,
               "k": 0
             },
             {
@@ -145,11 +180,591 @@
             }
           ],
           "source_question": "q-38374",
-          "plot": "/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/285e4a212301c46ce0123cc4.png",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/3a931359251be4c6f04a7150.png",
           "domain": {
-            "lo": "-1",
-            "hi": "1",
+            "lo": "-3",
+            "hi": "3",
             "low": "u**2",
+            "high": "9"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "down",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129197,
+          "id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+          "title": "Finding an Area by Transforming to a Type I Region"
+        },
+        "question": {
+          ":question/problem": "Using the change of variables \n\n$$\nu=x - 3 y,\\,v=y + 4,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x - 3 y)^{2}+y=3$ and the line $y=0.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x - 3 y,\\,v=y + 4\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x - 3 y=u$ and $y + 4=v$ into the equation of the first curve, we get\n\n$$\n(x - 3 y)^{2}+y=3\\,\u27f9\\,(y+4)=7-(x - 3 y)^{2}\\,\u27f9\\,v=7 - u^{2}.\n$$\n\nwhile substituting $y + 4=v$ into the equation of the line, we obtain\n\n$$\nv=4.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=4 \\\\ v &=7 - u^{2}\\end{aligned}\\right.\\,\u27f9\\,u=\\pm \\sqrt{3}\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{3},4).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,- \\sqrt{3}\\le u\\le \\sqrt{3},\\,4\\le v\\le 7 - u^{2}\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/fd3a9e76850b9f81e7eb5d26.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-3\\\\0&1\\end{vmatrix} \\\\ &=1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |1|\\,dudv \\\\ &=1\\int_{- \\sqrt{3}}^{\\sqrt{3}}[\\int_{4}^{7 - u^{2}}dv]du \\\\ &=1\\int_{- \\sqrt{3}}^{\\sqrt{3}}[v]_{4}^{7 - u^{2}}du \\\\ &=1\\int_{- \\sqrt{3}}^{\\sqrt{3}}(7 - u^{2})-(4)du \\\\ &=1\\int_{- \\sqrt{3}}^{\\sqrt{3}}(3 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + 3 u]_{- \\sqrt{3}}^{\\sqrt{3}} \\\\ &=1(((3 \\sqrt{3})+(- \\sqrt{3}))-((- 3 \\sqrt{3})+(\\sqrt{3}))) \\\\ &=1(4 \\sqrt{3}) \\\\ &=4 \\sqrt{3}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "a17b58f5-702e-55a5-b708-d3bc82a4a56b",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "0828b4f2-50cb-5f85-93ae-2f79830e69ea",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "ddf718b3-d85f-5062-a7d7-ade3c0132cb8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "32 \\sqrt{3}"
+                },
+                {
+                  ":answer/id": "1861c825-428f-5a72-ae54-d32ac5d6d5d6",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{64 \\sqrt{2}}{3}"
+                },
+                {
+                  ":answer/id": "e9cfe13e-dbba-59c1-b246-a82bf9468e1b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4 \\sqrt{3}"
+                },
+                {
+                  ":answer/id": "bc5beffc-4099-5366-9822-4afdf1bebfaf",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{40 \\sqrt{10}}{3}"
+                },
+                {
+                  ":answer/id": "619ab05c-cbb2-57fe-ad72-fb627124dbb4",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{20 \\sqrt{5}}{3}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "e9cfe13e-dbba-59c1-b246-a82bf9468e1b"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "type-I-area-1-audit9837",
+          "template": "down",
+          "profile": "method",
+          "seed": 983755,
+          "parameters": {
+            "a": 3,
+            "h": 3,
+            "k": 4
+          },
+          "mathematical_fingerprint": "be085f0a7b1c07742d6022fb43f6de363e235eee85a369c44525a29ecd2e05cd",
+          "content_fingerprint": "a0741dacafb6368b19bd25419c270d3a6513e1e25292f96506fde6d168884377",
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          },
+          "bank_construction": "compatible-instance-areas",
+          "bank_parameters": [
+            {
+              "a": 4,
+              "h": 8,
+              "k": 1
+            },
+            {
+              "a": 1,
+              "h": 10,
+              "k": 3
+            },
+            {
+              "a": 7,
+              "h": 12,
+              "k": 3
+            },
+            {
+              "a": 3,
+              "h": 3,
+              "k": 4
+            },
+            {
+              "a": 3,
+              "h": 5,
+              "k": 2
+            }
+          ],
+          "source_question": "q-82878",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/fd3a9e76850b9f81e7eb5d26.png",
+          "domain": {
+            "lo": "-sqrt(3)",
+            "hi": "sqrt(3)",
+            "low": "4",
+            "high": "7 - u**2"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "hyper_x",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129197,
+          "id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+          "title": "Finding an Area by Transforming to a Type I Region"
+        },
+        "question": {
+          ":question/problem": "Using the change of variables \n\n$$\nu=x - 5 y,\\,v=x + 5 y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the lines $x + 5 y=1,$ $x - 5 y=1$ and the curve $x^{2} - 25 y^{2}=3.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x - 5 y,\\,v=x + 5 y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x + 5 y=v$ into the equation of the first line, we get\n\n$$\nx + 5 y=1\\,\u27f9\\,v=1.\n$$\n\nwhile substituting $x - 5 y=u$ into the equation of the second line, we obtain\n\n$$\nx - 5 y=1\\,\u27f9\\,u=1.\n$$\n\nSubstituting $x + 5 y=v$ and $x - 5 y=u$ into the equation of curve, we get\n\n$$\nx^{2} - 25 y^{2}=3\\,\u27f9\\,(x - 5 y)(x + 5 y)=3\\,\u27f9\\,uv=3.\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\left\\{\\begin{aligned}uv &=3 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}v &=1 \\\\ u &=3\\end{aligned}\\right.\n$$\n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\left\\{\\begin{aligned}uv &=3 \\\\ u &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=1 \\\\ v &=3\\end{aligned}\\right.\n$$\n\nSo, the intersection points are $(1,1),$ $(1,3)$ and $(3,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,1\\le u\\le 3,\\,1\\le v\\le \\frac{3}{u}\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/497f6b83157d33998474e0f5.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-5\\\\1&5\\end{vmatrix} \\\\ &=10\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(10)^{-1}=\\frac{1}{10}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |\\frac{1}{10}|\\,dudv \\\\ &=\\frac{1}{10}\\int_{1}^{3}[\\int_{1}^{\\frac{3}{u}}dv]du \\\\ &=\\frac{1}{10}\\int_{1}^{3}[v]_{1}^{\\frac{3}{u}}du \\\\ &=\\frac{1}{10}\\int_{1}^{3}\\left(\\frac{3}{u}\\right)-(1)du \\\\ &=\\frac{1}{10}[- u + 3 \\ln{\\left(u \\right)}]_{1}^{3} \\\\ &=\\frac{1}{10}(((3 \\ln{\\left(3 \\right)})+(-3))-((0)+(-1))) \\\\ &=\\frac{1}{10}(-2 + \\ln{\\left(27 \\right)}) \\\\ &=- \\frac{1}{5} + \\frac{3 \\ln{\\left(3 \\right)}}{10}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "e710e823-935a-5ab9-8647-cb51c68ec3c9",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "3a13dfe1-264f-5b03-9017-64be74e92f96",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "6b2cb5b9-bf14-5d27-b706-7a54ab6d6cfb",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{11 \\ln{\\left(3 \\right)}}{6} - \\frac{1}{6} + \\frac{11 \\ln{\\left(11 \\right)}}{12}"
+                },
+                {
+                  ":answer/id": "f12363e2-83c6-50a4-a6aa-40a28c227657",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{5 \\ln{\\left(2 \\right)}}{4} - \\frac{1}{8} + \\frac{5 \\ln{\\left(5 \\right)}}{8}"
+                },
+                {
+                  ":answer/id": "c109eb56-74c7-58e2-855d-20921fd1825e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{3 \\ln{\\left(3 \\right)}}{4} - \\frac{3}{16} + \\frac{3 \\ln{\\left(2 \\right)}}{2}"
+                },
+                {
+                  ":answer/id": "2e4f8c61-6229-5482-9827-ca13614cd33a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-1 + \\ln{\\left(\\frac{161051 \\sqrt{11}}{177147} \\right)}"
+                },
+                {
+                  ":answer/id": "25e27267-0a03-5f08-aa71-c5ba3ce01d98",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{1}{5} + \\frac{3 \\ln{\\left(3 \\right)}}{10}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "25e27267-0a03-5f08-aa71-c5ba3ce01d98"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "type-I-area-1-audit9837",
+          "template": "hyper_x",
+          "profile": "method",
+          "seed": 983755,
+          "parameters": {
+            "a": 5,
+            "h": 3,
+            "k": 1
+          },
+          "mathematical_fingerprint": "6b923694fda27113f815b6c07214725f9f29dc0219958faccfddcd02991a626c",
+          "content_fingerprint": "cd11147ffd67398123ea9863b5a2f479fec680b785b4664ed79585f43df5ac5f",
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          },
+          "bank_construction": "compatible-instance-areas",
+          "bank_parameters": [
+            {
+              "a": 4,
+              "h": 5,
+              "k": 2
+            },
+            {
+              "a": 1,
+              "h": 11,
+              "k": 3
+            },
+            {
+              "a": 6,
+              "h": 11,
+              "k": 3
+            },
+            {
+              "a": 8,
+              "h": 12,
+              "k": 3
+            },
+            {
+              "a": 5,
+              "h": 3,
+              "k": 1
+            }
+          ],
+          "source_question": "q-160710",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/497f6b83157d33998474e0f5.png",
+          "domain": {
+            "lo": "1",
+            "hi": "3",
+            "low": "1",
+            "high": "3/u"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "hyper_y",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129197,
+          "id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+          "title": "Finding an Area by Transforming to a Type I Region"
+        },
+        "question": {
+          ":question/problem": "Using the change of variables \n\n$$\nu=5 x + y,\\,v=- 5 x + y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the lines $5 x + y=1,$ $- 5 x + y=1$ and the curve $- 25 x^{2} + y^{2}=3.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=5 x + y,\\,v=- 5 x + y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $5 x + y=u$ into the equation of the first line, we get\n\n$$\n5 x + y=1\\,\u27f9\\,u=1.\n$$\n\nwhile substituting $- 5 x + y=v$ into the equation of the second line, we obtain\n\n$$\n- 5 x + y=1\\,\u27f9\\,v=1.\n$$\n\nSubstituting $u=5 x + y$ and $v=- 5 x + y$ into the equation of curve, we get\n\n$$\n- 25 x^{2} + y^{2}=3\\,\u27f9\\,(5 x + y)(- 5 x + y)=3\\,\u27f9\\,uv=3.\n$$\n\nThe intersection point of the two lines in the $uv$-plane is $(1,1).$\n\nTo find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:\n\n$$\n\\left\\{\\begin{aligned}uv &=3 \\\\ u &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}u &=1 \\\\ v &=3\\end{aligned}\\right.\n$$\n\nTo find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:\n\n$$\n\\left\\{\\begin{aligned}uv &=3 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}v &=1 \\\\ u &=3\\end{aligned}\\right.\n$$\n\nSo, the intersection points are $(1,1),$ $(1,3)$ and $(3,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,1\\le u\\le 3,\\,1\\le v\\le \\frac{3}{u}\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/564df23be513e73187ad20c1.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}5&1\\\\-5&1\\end{vmatrix} \\\\ &=10\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(10)^{-1}=\\frac{1}{10}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |\\frac{1}{10}|\\,dudv \\\\ &=\\frac{1}{10}\\int_{1}^{3}[\\int_{1}^{\\frac{3}{u}}dv]du \\\\ &=\\frac{1}{10}\\int_{1}^{3}[v]_{1}^{\\frac{3}{u}}du \\\\ &=\\frac{1}{10}\\int_{1}^{3}\\left(\\frac{3}{u}\\right)-(1)du \\\\ &=\\frac{1}{10}[- u + 3 \\ln{\\left(u \\right)}]_{1}^{3} \\\\ &=\\frac{1}{10}(((3 \\ln{\\left(3 \\right)})+(-3))-((0)+(-1))) \\\\ &=\\frac{1}{10}(-2 + \\ln{\\left(27 \\right)}) \\\\ &=- \\frac{1}{5} + \\frac{3 \\ln{\\left(3 \\right)}}{10}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "e139ac20-c681-5dfb-90cf-5cdd9cf05f88",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "e7ca2b10-838b-5350-a16e-e8ccb2ca91f4",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "58212338-1605-511f-a159-2a96f6006cb6",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{11 \\ln{\\left(3 \\right)}}{6} - \\frac{1}{6} + \\frac{11 \\ln{\\left(11 \\right)}}{12}"
+                },
+                {
+                  ":answer/id": "aafbf9fd-cf4f-5a18-8ebf-2bf5cbdfcc0c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{5 \\ln{\\left(2 \\right)}}{4} - \\frac{1}{8} + \\frac{5 \\ln{\\left(5 \\right)}}{8}"
+                },
+                {
+                  ":answer/id": "05ab44bf-2fe5-5740-a74e-ab731e735197",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{3 \\ln{\\left(3 \\right)}}{4} - \\frac{3}{16} + \\frac{3 \\ln{\\left(2 \\right)}}{2}"
+                },
+                {
+                  ":answer/id": "b51cf126-e4f7-533e-91af-d56ebc1af0d1",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-1 + \\ln{\\left(\\frac{161051 \\sqrt{11}}{177147} \\right)}"
+                },
+                {
+                  ":answer/id": "2df88d90-600b-524d-a2ee-5c4b8a2e6406",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{1}{5} + \\frac{3 \\ln{\\left(3 \\right)}}{10}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "2df88d90-600b-524d-a2ee-5c4b8a2e6406"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "type-I-area-1-audit9837",
+          "template": "hyper_y",
+          "profile": "method",
+          "seed": 983755,
+          "parameters": {
+            "a": 5,
+            "h": 3,
+            "k": 1
+          },
+          "mathematical_fingerprint": "ce34f7725a0fe4398fbf94964cf3ad8cc2290581a8354655421f2b14d62a258c",
+          "content_fingerprint": "37ddee6cefa340b5500d3c9fa9e1b5110fd7f00f514e4138243acecd624351fc",
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          },
+          "bank_construction": "compatible-instance-areas",
+          "bank_parameters": [
+            {
+              "a": 4,
+              "h": 5,
+              "k": 2
+            },
+            {
+              "a": 1,
+              "h": 11,
+              "k": 3
+            },
+            {
+              "a": 6,
+              "h": 11,
+              "k": 3
+            },
+            {
+              "a": 8,
+              "h": 12,
+              "k": 3
+            },
+            {
+              "a": 5,
+              "h": 3,
+              "k": 1
+            }
+          ],
+          "source_question": "q-160885",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/564df23be513e73187ad20c1.png",
+          "domain": {
+            "lo": "1",
+            "hi": "3",
+            "low": "1",
+            "high": "3/u"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "quartic",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129197,
+          "id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+          "title": "Finding an Area by Transforming to a Type I Region"
+        },
+        "question": {
+          ":question/problem": "Using the change of variables \n\n$$\nu=x + 7 y,\\,v=x - 7 y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $\\frac{(x + 7 y)^{4}}{8}- x + 7 y=0$ and the line $y=0.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x + 7 y,\\,v=x - 7 y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x + 7 y=u$ and $x - 7 y=v$ into the equation of the first curve, we get\n\n$$\n\\frac{(x + 7 y)^{4}}{8}- x + 7 y=0\\,\u27f9\\,\\frac{(x + 7 y)^{4}}{8}-(x - 7 y)=0\\,\u27f9\\,v=\\frac{u^{4}}{8}.\n$$\n\nNow,\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}x + 7 y &=u \\\\ x - 7 y &=v\\end{aligned}\\right.\\,\u27f9\\,y=\\frac{u-v}{14}.\\end{aligned}\n$$\n\nSubstituting this value into the equation of the given line yields:\n\n$$\ny=0\\,\u27f9\\,\\frac{u-v}{14}=0\\,\u27f9\\,v=u.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=\\frac{u^{4}}{8} \\\\ v &=u\\end{aligned}\\right.\\,\u27f9\\,u(u^{3}-8)=0\\end{aligned}\n$$\n\nSo, the intersection points are $(0,0)$ and $(2,2).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,0\\le u\\le 2,\\,\\frac{u^{4}}{8}\\le v\\le u\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/7c7c4d5711829c09059ca5ab.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&7\\\\1&-7\\end{vmatrix} \\\\ &=-14\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-14)^{-1}=- \\frac{1}{14}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |- \\frac{1}{14}|\\,dudv \\\\ &=\\frac{1}{14}\\int_{0}^{2}[\\int_{\\frac{u^{4}}{8}}^{u}dv]du \\\\ &=\\frac{1}{14}\\int_{0}^{2}[v]_{\\frac{u^{4}}{8}}^{u}du \\\\ &=\\frac{1}{14}\\int_{0}^{2}(u)-\\left(\\frac{u^{4}}{8}\\right)du \\\\ &=\\frac{1}{14}[- \\frac{u^{5}}{40} + \\frac{u^{2}}{2}]_{0}^{2} \\\\ &=\\frac{1}{14}(((2)+\\left(- \\frac{4}{5}\\right))-((0)+(0))) \\\\ &=\\frac{1}{14}\\left(\\frac{6}{5}\\right) \\\\ &=\\frac{3}{35}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "8bd9e141-923a-533a-a49b-c6570d9eba39",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "593d3124-9d7d-5651-a93a-d65351ae4f34",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "9bc8d2c1-a20a-58dd-bfb3-d5e277ddbc4c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{27}{140}"
+                },
+                {
+                  ":answer/id": "f922dd42-ebf0-56e7-ab83-e851e2d32fa7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{3}{20}"
+                },
+                {
+                  ":answer/id": "333f8dd5-8e26-51ab-8b09-236a32a90fe9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{9}{40}"
+                },
+                {
+                  ":answer/id": "963b9010-c3d8-5fed-b19b-efe801c90db5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{27}{20}"
+                },
+                {
+                  ":answer/id": "c14e6fa2-0e0d-5487-8cfe-a857ca700098",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{3}{35}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "c14e6fa2-0e0d-5487-8cfe-a857ca700098"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "type-I-area-1-audit9837",
+          "template": "quartic",
+          "profile": "method",
+          "seed": 983755,
+          "parameters": {
+            "a": 7,
+            "h": 2,
+            "k": 0
+          },
+          "mathematical_fingerprint": "f225b4b669d0b7f191034a70d2a174457bdee9f3e595c47491dde0c2acd75820",
+          "content_fingerprint": "5b534e27158ea7fca1cee4ff0e26e8def21b664cba7e06e980183d70ff66bae8",
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          },
+          "bank_construction": "compatible-instance-areas",
+          "bank_parameters": [
+            {
+              "a": 4,
+              "h": 2,
+              "k": 0
+            },
+            {
+              "a": 1,
+              "h": 3,
+              "k": 0
+            },
+            {
+              "a": 7,
+              "h": 3,
+              "k": 0
+            },
+            {
+              "a": 6,
+              "h": 3,
+              "k": 0
+            },
+            {
+              "a": 7,
+              "h": 2,
+              "k": 0
+            }
+          ],
+          "source_question": "q-82874",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/7c7c4d5711829c09059ca5ab.png",
+          "domain": {
+            "lo": "0",
+            "hi": "2",
+            "low": "u**4/8",
+            "high": "u"
+          }
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "up",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186129197,
+          "id": "da85f713-e8f7-5e04-b9e6-b1b33383be9f",
+          "title": "Finding an Area by Transforming to a Type I Region"
+        },
+        "question": {
+          ":question/problem": "Using the change of variables \n\n$$\nu=x - 4 y,\\,v=y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x - 4 y)^{2}-(y)=5$ and the line $y=1.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x - 4 y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $x - 4 y=u$ and $y=v$ into the equation of the first curve, we get\n\n$$\n(x - 4 y)^{2}-(y)=5\\,\u27f9\\,u^{2}-v=5\\,\u27f9\\,v=u^{2} - 5.\n$$\n\nwhile substituting $y=v$ into the equation of the second curve, we obtain\n\n$$\nv=1.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} - 5 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,u=\\pm \\sqrt{6}\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{6},1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,- \\sqrt{6}\\le u\\le \\sqrt{6},\\,u^{2} - 5\\le v\\le 1\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/d2bfd262c66b0c95bc438211.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}1&-4\\\\0&1\\end{vmatrix} \\\\ &=1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(1)^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |1|\\,dudv \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[\\int_{u^{2} - 5}^{1}dv]du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[v]_{u^{2} - 5}^{1}du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(1)-(u^{2} - 5)du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(6 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + 6 u]_{- \\sqrt{6}}^{\\sqrt{6}} \\\\ &=1(((6 \\sqrt{6})+(- 2 \\sqrt{6}))-((- 6 \\sqrt{6})+(2 \\sqrt{6}))) \\\\ &=1(8 \\sqrt{6}) \\\\ &=8 \\sqrt{6}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "19d36006-2272-549b-b6d3-5756f38124eb",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "9fe56c74-a0a8-52f3-a060-6b60fef22444",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d5e61a80-c6b5-5c9a-b7d6-6a1f38f943bd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "32 \\sqrt{3}"
+                },
+                {
+                  ":answer/id": "83d61aad-3f11-5b8c-9206-f676cf244c79",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "8 \\sqrt{6}"
+                },
+                {
+                  ":answer/id": "6e657a4c-4b23-5e22-8d78-8055d53472b5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4 \\sqrt{3}"
+                },
+                {
+                  ":answer/id": "97b77518-211f-5f1f-875a-93f0abc97b9d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{40 \\sqrt{10}}{3}"
+                },
+                {
+                  ":answer/id": "cb5e41f2-6e41-598c-88eb-c2c4c7df3842",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{20 \\sqrt{5}}{3}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "83d61aad-3f11-5b8c-9206-f676cf244c79"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "type-I-area-1-audit9837",
+          "template": "up",
+          "profile": "method",
+          "seed": 983755,
+          "parameters": {
+            "a": 4,
+            "h": 6,
+            "k": -5
+          },
+          "mathematical_fingerprint": "904b18d3d7b82b8137a040ce4983afb46430103561599a9bc261b1e682d1bfc7",
+          "content_fingerprint": "71df15f0a2311372f57e347025aa6bf9d95252fa6e5cc1a486c1cd3b23edbfce",
+          "source": {
+            "database": "math",
+            "basis": 1356,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "eligible_for_learning": true,
+          "evidence_only": false,
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0",
+            "matplotlib": "3.11.2"
+          },
+          "bank_construction": "compatible-instance-areas",
+          "bank_parameters": [
+            {
+              "a": 4,
+              "h": 6,
+              "k": -5
+            },
+            {
+              "a": 1,
+              "h": 10,
+              "k": 2
+            },
+            {
+              "a": 8,
+              "h": 12,
+              "k": 5
+            },
+            {
+              "a": 5,
+              "h": 3,
+              "k": -4
+            },
+            {
+              "a": 7,
+              "h": 5,
+              "k": 3
+            }
+          ],
+          "source_question": "q-83943",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/d2bfd262c66b0c95bc438211.png",
+          "domain": {
+            "lo": "-sqrt(6)",
+            "hi": "sqrt(6)",
+            "low": "u**2 - 5",
             "high": "1"
           }
         }
@@ -157,7 +772,7 @@
     },
     {
       "level": "hard",
-      "template_selector": null,
+      "template_selector": "vertical",
       "record": {
         "knowledge_point": {
           "db_id": 17592186129197,
@@ -166,7 +781,7 @@
         },
         "question": {
           ":question/problem": "Using the change of variables \n\n$$\nu=4 x + y,\\,v=x,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(4 x + y)^{2}-(x)=5$ and the line $x=1.$",
-          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=4 x + y,\\,v=x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $4 x + y=u$ and $x=v$ into the equation of the first curve, we get\n\n$$\n(4 x + y)^{2}-(x)=5\\,\u27f9\\,u^{2}-v=5\\,\u27f9\\,v=u^{2} - 5.\n$$\n\nwhile substituting $x=v$ into the equation of the second curve, we obtain\n\n$$\nv=1.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} - 5 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,u=\\pm \\sqrt{6}\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{6},1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,- \\sqrt{6}\\le u\\le \\sqrt{6},\\,u^{2} - 5\\le v\\le 1\\}.\n$$\n\n![](/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/df1b480713e83cab812b76da.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}4&1\\\\1&0\\end{vmatrix} \\\\ &=-1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-1)^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |-1|\\,dudv \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[\\int_{u^{2} - 5}^{1}dv]du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[v]_{u^{2} - 5}^{1}du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(1)-(u^{2} - 5)du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(6 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + 6 u]_{- \\sqrt{6}}^{\\sqrt{6}} \\\\ &=1(((6 \\sqrt{6})+(- 2 \\sqrt{6}))-((- 6 \\sqrt{6})+(2 \\sqrt{6}))) \\\\ &=1(8 \\sqrt{6}) \\\\ &=8 \\sqrt{6}\\end{aligned}\n$$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=4 x + y,\\,v=x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $4 x + y=u$ and $x=v$ into the equation of the first curve, we get\n\n$$\n(4 x + y)^{2}-(x)=5\\,\u27f9\\,u^{2}-v=5\\,\u27f9\\,v=u^{2} - 5.\n$$\n\nwhile substituting $x=v$ into the equation of the second curve, we obtain\n\n$$\nv=1.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} - 5 \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,u=\\pm \\sqrt{6}\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm \\sqrt{6},1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,- \\sqrt{6}\\le u\\le \\sqrt{6},\\,u^{2} - 5\\le v\\le 1\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/df1b480713e83cab812b76da.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}4&1\\\\1&0\\end{vmatrix} \\\\ &=-1\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(-1)^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |-1|\\,dudv \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[\\int_{u^{2} - 5}^{1}dv]du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}[v]_{u^{2} - 5}^{1}du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(1)-(u^{2} - 5)du \\\\ &=1\\int_{- \\sqrt{6}}^{\\sqrt{6}}(6 - u^{2})du \\\\ &=1[- \\frac{u^{3}}{3} + 6 u]_{- \\sqrt{6}}^{\\sqrt{6}} \\\\ &=1(((6 \\sqrt{6})+(- 2 \\sqrt{6}))-((- 6 \\sqrt{6})+(2 \\sqrt{6}))) \\\\ &=1(8 \\sqrt{6}) \\\\ &=8 \\sqrt{6}\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/hard",
           ":question/id": "a0289595-fd7f-5dd6-9046-0d08e69489c7",
           ":question/answer-fields": [
@@ -261,7 +876,7 @@
             }
           ],
           "source_question": "q-83947",
-          "plot": "/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/df1b480713e83cab812b76da.png",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/df1b480713e83cab812b76da.png",
           "domain": {
             "lo": "-sqrt(6)",
             "hi": "sqrt(6)",
@@ -273,7 +888,7 @@
     },
     {
       "level": "moderate",
-      "template_selector": null,
+      "template_selector": "mixed",
       "record": {
         "knowledge_point": {
           "db_id": 17592186129197,
@@ -281,45 +896,45 @@
           "title": "Finding an Area by Transforming to a Type I Region"
         },
         "question": {
-          ":question/problem": "Using the change of variables \n\n$$\nu=2 x - 2 y,\\,v=x + y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(2 x - 2 y)^{2}-(x + y)=0$ and the line $x + y=25.$",
-          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=2 x - 2 y,\\,v=x + y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $2 x - 2 y=u$ and $x + y=v$ into the equation of the first curve, we get\n\n$$\n(2 x - 2 y)^{2}-(x + y)=0\\,\u27f9\\,u^{2}-v=0\\,\u27f9\\,v=u^{2}.\n$$\n\nwhile substituting $x + y=v$ into the equation of the second curve, we obtain\n\n$$\nv=25.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} \\\\ v &=25\\end{aligned}\\right.\\,\u27f9\\,u=\\pm 5\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 5,25).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-5\\le u\\le 5,\\,u^{2}\\le v\\le 25\\}.\n$$\n\n![](/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/70f8febbdf1cef9cd29e6a68.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}2&-2\\\\1&1\\end{vmatrix} \\\\ &=4\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(4)^{-1}=\\frac{1}{4}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |\\frac{1}{4}|\\,dudv \\\\ &=\\frac{1}{4}\\int_{-5}^{5}[\\int_{u^{2}}^{25}dv]du \\\\ &=\\frac{1}{4}\\int_{-5}^{5}[v]_{u^{2}}^{25}du \\\\ &=\\frac{1}{4}\\int_{-5}^{5}(25)-(u^{2})du \\\\ &=\\frac{1}{4}\\int_{-5}^{5}(25 - u^{2})du \\\\ &=\\frac{1}{4}[- \\frac{u^{3}}{3} + 25 u]_{-5}^{5} \\\\ &=\\frac{1}{4}(((125)+\\left(- \\frac{125}{3}\\right))-((-125)+\\left(\\frac{125}{3}\\right))) \\\\ &=\\frac{1}{4}\\left(\\frac{500}{3}\\right) \\\\ &=\\frac{125}{3}\\end{aligned}\n$$",
+          ":question/problem": "Using the change of variables \n\n$$\nu=4 x - 2 y,\\,v=x + y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(4 x - 2 y)^{2}-(x + y)=0$ and the line $x + y=1.$",
+          ":question/worked-solution": "The area of the required region is given by\n\n$$\n{\u222c}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\to \\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{\u222c}_{D}dxdy={\u222c}_{\u0394}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=4 x - 2 y,\\,v=x + y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$\n\nSubstituting $4 x - 2 y=u$ and $x + y=v$ into the equation of the first curve, we get\n\n$$\n(4 x - 2 y)^{2}-(x + y)=0\\,\u27f9\\,u^{2}-v=0\\,\u27f9\\,v=u^{2}.\n$$\n\nwhile substituting $x + y=v$ into the equation of the second curve, we obtain\n\n$$\nv=1.\n$$\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\left\\{\\begin{aligned}v &=u^{2} \\\\ v &=1\\end{aligned}\\right.\\,\u27f9\\,u=\\pm 1\\end{aligned}\n$$\n\nSo, the intersection points are $(\\pm 1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\n\u0394=\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,u^{2}\\le v\\le 1\\}.\n$$\n\n![](/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/8a7836644e5d0d7c2823eb2a.png)\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x}&\\frac{\u2202u}{\u2202y}\\\\\\frac{\u2202v}{\u2202x}&\\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\ &=\\begin{vmatrix}4&-2\\\\1&1\\end{vmatrix} \\\\ &=6\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={\\left(\\frac{\u2202(u,v)}{\u2202(x,y)}\\right)}^{-1}=(6)^{-1}=\\frac{1}{6}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$  In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}\\iint_D dxdy &=\\iint_\u0394 |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,dudv \\\\ &=\\iint_\u0394 |\\frac{1}{6}|\\,dudv \\\\ &=\\frac{1}{6}\\int_{-1}^{1}[\\int_{u^{2}}^{1}dv]du \\\\ &=\\frac{1}{6}\\int_{-1}^{1}[v]_{u^{2}}^{1}du \\\\ &=\\frac{1}{6}\\int_{-1}^{1}(1)-(u^{2})du \\\\ &=\\frac{1}{6}\\int_{-1}^{1}(1 - u^{2})du \\\\ &=\\frac{1}{6}[- \\frac{u^{3}}{3} + u]_{-1}^{1} \\\\ &=\\frac{1}{6}(((1)+\\left(- \\frac{1}{3}\\right))-((-1)+\\left(\\frac{1}{3}\\right))) \\\\ &=\\frac{1}{6}\\left(\\frac{4}{3}\\right) \\\\ &=\\frac{2}{9}\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/moderate",
-          ":question/id": "44f324b1-2227-5acf-a2a4-4e632564b18b",
+          ":question/id": "1d5f0927-c2c9-55ff-a743-bc80e2c3d24e",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "35ea524b-7ce1-5028-ac00-0465378a78f0",
+              ":answer-field/id": "908dd3c6-506f-519b-b73c-1ac45433bde9",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "b6f31dd1-870a-5b5d-92b3-7232a236266e",
+                  ":answer/id": "e147e662-dde3-5ddc-be78-aa116bdebbed",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{500}{27}"
                 },
                 {
-                  ":answer/id": "5aa96677-92d5-5f63-889b-f7afa185a888",
+                  ":answer/id": "37d3f21c-5503-5245-be72-b07b0d786524",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{125}{3}"
+                  ":answer/value": "\\frac{2}{9}"
                 },
                 {
-                  ":answer/id": "c6af2229-7f2c-5de2-ad8b-beff4c94f0f5",
+                  ":answer/id": "aaf04553-0635-5c8e-ba93-36b1cbf32e15",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{4}{15}"
                 },
                 {
-                  ":answer/id": "8488479b-fd9b-5ae5-90ff-ce94a9ef821f",
+                  ":answer/id": "7f556470-a7e1-56f3-afe1-334641be51e2",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{32}{3}"
                 },
                 {
-                  ":answer/id": "511ef695-0274-5f0e-b093-9744c12b84b1",
+                  ":answer/id": "aec59fc5-429f-5a4e-8096-9093334ffaf3",
                   ":answer/type": ":answer.type/math",
                   ":answer/value": "\\frac{128}{9}"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "5aa96677-92d5-5f63-889b-f7afa185a888"
+                "37d3f21c-5503-5245-be72-b07b0d786524"
               ]
             }
           ]
@@ -330,12 +945,12 @@
           "profile": "method",
           "seed": 983755,
           "parameters": {
-            "a": 2,
-            "h": 25,
+            "a": 4,
+            "h": 1,
             "k": 0
           },
-          "mathematical_fingerprint": "ab64b4428768f126f20e29f0d2b725e4bf43910872573a6b0e10e9765b30d30e",
-          "content_fingerprint": "e030e6baeb4984783d88f9c9e791a64606e83269d40cd3d6d926abdb646c1c1e",
+          "mathematical_fingerprint": "a72edcfabbb5cee195ee5c7aa939cfc4bf6aeababc1a550b7e065c164f950ee7",
+          "content_fingerprint": "c5795304d5db84998d12dc19896245a6cb0191f8940d6f1e1dfc9c8fdb105996",
           "source": {
             "database": "math",
             "basis": 1356,
@@ -351,8 +966,8 @@
           "bank_construction": "compatible-instance-areas",
           "bank_parameters": [
             {
-              "a": 2,
-              "h": 25,
+              "a": 4,
+              "h": 1,
               "k": 0
             },
             {
@@ -377,12 +992,12 @@
             }
           ],
           "source_question": null,
-          "plot": "/tmp/ca9837-templates-z7ii9jxi/17592186129197/plots/70f8febbdf1cef9cd29e6a68.png",
+          "plot": "/tmp/ca9837-templates-5ek4tgt5/17592186129197/plots/8a7836644e5d0d7c2823eb2a.png",
           "domain": {
-            "lo": "-5",
-            "hi": "5",
+            "lo": "-1",
+            "hi": "1",
             "low": "u**2",
-            "high": "25"
+            "high": "1"
           }
         }
       }

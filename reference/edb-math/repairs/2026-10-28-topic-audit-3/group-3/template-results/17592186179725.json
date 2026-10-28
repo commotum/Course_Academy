@@ -17,30 +17,156 @@
   "results": [
     {
       "band": "easy",
-      "template": null,
+      "template": "cosine",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "easy",
+      "template": "exponential",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "easy",
+      "template": "polynomial",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "easy",
+      "template": "quotient",
+      "api": "generate_easy",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "easy",
+      "template": "radical",
+      "api": "generate_easy",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "easy",
+      "template": "sine",
+      "api": "generate_easy",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "easy",
+      "template": "sum",
       "api": "generate_easy",
       "passed": true,
       "records": 1
     },
     {
       "band": "hard",
-      "template": null,
+      "template": "cosine",
       "api": "generate_hard",
       "passed": true,
       "records": 1
     },
     {
+      "band": "hard",
+      "template": "exponential",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "polynomial",
+      "api": "generate_hard",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "hard",
+      "template": "quotient",
+      "api": "generate_hard",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "hard",
+      "template": "radical",
+      "api": "generate_hard",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "hard",
+      "template": "sine",
+      "api": "generate_hard",
+      "passed": true,
+      "records": 1
+    },
+    {
+      "band": "hard",
+      "template": "sum",
+      "api": "generate_hard",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
       "band": "moderate",
-      "template": null,
+      "template": "cosine",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "moderate",
+      "template": "exponential",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "moderate",
+      "template": "polynomial",
       "api": "generate_moderate",
       "passed": true,
       "records": 1
+    },
+    {
+      "band": "moderate",
+      "template": "quotient",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "moderate",
+      "template": "radical",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "moderate",
+      "template": "sine",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
+    },
+    {
+      "band": "moderate",
+      "template": "sum",
+      "api": "generate_moderate",
+      "rejected_selector": true,
+      "error": "template level mismatch (unrated sources explicitly assigned)"
     }
   ],
   "samples": [
     {
       "level": "easy",
-      "template_selector": null,
+      "template_selector": "quotient",
       "record": {
         "knowledge_point": {
           "db_id": 17592186179725,
@@ -48,45 +174,136 @@
           "title": "Line Integrals Along Segments in Three Dimensions"
         },
         "question": {
-          ":question/problem": "Which of the following is equivalent to the line integral of the function $f(x,y,z)=\\sqrt{2x+y-z},$ traversed along the line segment from $(0,1,-2)$ to $(1,-1,-1)?$",
-          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(t,1 - 2 t,t - 2\\right) \\\\  \\mathbf r(0)&=\\left(0,1,-2\\right) \\\\  \\mathbf r(1)&=\\left(1,-1,-1\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(1,-2,1\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(1)^2+(-2)^2+(1)^2} \\\\  &=\\sqrt{6}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\sqrt{2(t)+(1 - 2 t)-(t - 2)} \\\\  &=\\sqrt{3 - t}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{6}{\\int }_{0}^{1}(\\sqrt{3 - t})\\,\\text{d}t\\end{aligned}\n$$",
+          ":question/problem": "Which of the following is equivalent to the line integral of the function $f(x,y,z)=\\frac{y+z}{x},$ traversed along the line segment from $(-5,-3,5)$ to $(-4,-5,7)?$",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(t - 5,- 2 t - 3,2 t + 5\\right) \\\\  \\mathbf r(0)&=\\left(-5,-3,5\\right) \\\\  \\mathbf r(1)&=\\left(-4,-5,7\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(1,-2,2\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(1)^2+(-2)^2+(2)^2} \\\\  &=3\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\frac{(- 2 t - 3)+(2 t + 5)}{t - 5} \\\\  &=\\frac{2}{t - 5}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=3{\\int }_{0}^{1}\\left(\\frac{2}{t - 5}\\right)\\,\\text{d}t\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/easy",
-          ":question/id": "898c6184-3f28-5616-abfa-854d55e88554",
+          ":question/id": "fbcbbe48-372e-50a3-b05a-f9c402a40db0",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "db9a41d5-82e4-517f-b6e2-4402258911bd",
+              ":answer-field/id": "d4ea0da4-da40-531b-a13d-6ddebffc5c83",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "a88160ab-c5e5-5478-9e95-b26661b5149b",
+                  ":answer/id": "ce8ef8e5-2b5c-57ae-9e15-44c5453d9856",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\sqrt{6}{\\int }_{0}^{1}(\\sqrt{3 - t})\\,\\text{d}t"
+                  ":answer/value": "3{\\int }_{0}^{1}\\left(\\frac{2}{t - 5}\\right)\\,\\text{d}t"
                 },
                 {
-                  ":answer/id": "d990ff67-1bbd-5418-8cae-234415f6536b",
+                  ":answer/id": "d3f3f5b7-291f-5ea5-95fd-3a5acee7376a",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\sqrt{2}{\\int }_{0}^{1}(\\sqrt{t + 3})\\,\\text{d}t"
+                  ":answer/value": "3{\\int }_{0}^{1}\\left(\\frac{5}{t - 5}\\right)\\,\\text{d}t"
                 },
                 {
-                  ":answer/id": "326e9c0f-f853-53a7-9af8-2886100a3ff4",
+                  ":answer/id": "e261e575-cf07-5e16-98c7-ab292c1ce455",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\sqrt{5}{\\int }_{0}^{1}(\\sqrt{3})\\,\\text{d}t"
+                  ":answer/value": "3{\\int }_{0}^{1}\\left(\\frac{2 \\left(2 t + 1\\right)}{t - 5}\\right)\\,\\text{d}t"
                 },
                 {
-                  ":answer/id": "5d6f5e88-d91a-537f-813c-9551cc03a170",
+                  ":answer/id": "3688d130-80fa-5cbd-ad7a-3ae8ed9fd891",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\sqrt{6}{\\int }_{0}^{1}(\\sqrt{2 - t})\\,\\text{d}t"
+                  ":answer/value": "3{\\int }_{0}^{1}\\left(- \\frac{3}{t - 5}\\right)\\,\\text{d}t"
                 },
                 {
-                  ":answer/id": "714a6992-bf27-5198-b9a4-7abc65362b78",
+                  ":answer/id": "53985fc7-ff37-5743-8666-9e02205f50c5",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\sqrt{5}{\\int }_{0}^{1}(\\sqrt{3 - 3 t})\\,\\text{d}t"
+                  ":answer/value": "2 \\sqrt{2}{\\int }_{0}^{1}\\left(- \\frac{2}{5}\\right)\\,\\text{d}t"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "a88160ab-c5e5-5478-9e95-b26661b5149b"
+                "ce8ef8e5-2b5c-57ae-9e15-44c5453d9856"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segments-3d-2",
+          "template": "quotient",
+          "profile": "quotient-c",
+          "seed": 983755,
+          "parameters": {
+            "a": [
+              -5,
+              -3,
+              5
+            ],
+            "b": [
+              -4,
+              -5,
+              7
+            ]
+          },
+          "source_id": "bda2dabe-428d-5884-9572-9eaa49f96d4c",
+          "source": {
+            "database": "math",
+            "basis": 7786,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "difficulty_claim": "observed",
+          "mathematical_fingerprint": "6f3bcbec6f5af560635304b6a2f519fed9c556f6a8de94476f42d5f16d6c0e98",
+          "content_hash": "d56dd036e44b38437044fa180f85e0906ced21edcd19adebdc920542061f7318",
+          "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
+          "bank_interpretation": "complete method-derived operations",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "easy",
+      "template_selector": "radical",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179725,
+          "id": "14ab317b-fd33-5d6e-9d54-87e749b78283",
+          "title": "Line Integrals Along Segments in Three Dimensions"
+        },
+        "question": {
+          ":question/problem": "Which of the following is equivalent to the line integral of the function $f(x,y,z)=\\sqrt{2x+y-z},$ traversed along the line segment from $(1,1,1)$ to $(3,-1,0)?$",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(2 t + 1,1 - 2 t,1 - t\\right) \\\\  \\mathbf r(0)&=\\left(1,1,1\\right) \\\\  \\mathbf r(1)&=\\left(3,-1,0\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(2,-2,-1\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(2)^2+(-2)^2+(-1)^2} \\\\  &=3\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\sqrt{2(2 t + 1)+(1 - 2 t)-(1 - t)} \\\\  &=\\sqrt{3 t + 2}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=3{\\int }_{0}^{1}(\\sqrt{3 t + 2})\\,\\text{d}t\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/id": "5b86d6de-567f-579f-b44a-f176f0e2c859",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "105a2cdc-51dd-5c85-afee-6d93b024c19f",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d886dd42-0697-5a8a-b3d0-96048bd24c19",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3{\\int }_{0}^{1}(\\sqrt{3 t + 1})\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "71a446b8-6c7c-5a85-82a0-745eb5400ab6",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{5}{\\int }_{0}^{1}(\\sqrt{5 t + 2})\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "074b9e0f-fa15-5337-8d20-75aae221e875",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3{\\int }_{0}^{1}(\\sqrt{3 t + 3})\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "7e3353d9-2317-5efd-a327-157a87d1c314",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3{\\int }_{0}^{1}(\\sqrt{3 t + 2})\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "4d4fcf62-8004-5ad6-9916-c76d23a54e74",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3{\\int }_{0}^{1}(\\sqrt{3} \\sqrt{t})\\,\\text{d}t"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "7e3353d9-2317-5efd-a327-157a87d1c314"
               ]
             }
           ]
@@ -94,18 +311,18 @@
         "generation": {
           "version": "segments-3d-2",
           "template": "radical",
-          "profile": "paths-a",
+          "profile": "paths-c",
           "seed": 983755,
           "parameters": {
             "a": [
-              0,
               1,
-              -2
+              1,
+              1
             ],
             "b": [
-              1,
+              3,
               -1,
-              -1
+              0
             ]
           },
           "source_id": "963025de-8b37-535e-a08b-0b16983c48ad",
@@ -117,8 +334,99 @@
           "evidence_only": false,
           "eligible_for_learning": true,
           "difficulty_claim": "observed",
-          "mathematical_fingerprint": "eda97eda6dd76dff6399fdfa62f3083c3a5e09ce775e4506b40a3db317d6f590",
-          "content_hash": "e26127f962fd204b722a8997f0421b440854b12df69712d22cb432db86beefac",
+          "mathematical_fingerprint": "8501754dfeb0a9f5ce145d05c09df9823b89135dd37bd2836bf2dda4502bbe91",
+          "content_hash": "8d78ce32d48e6d58022b07583ec3e952a7a34ae40f7b6d7567b92f1c9860ce4d",
+          "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
+          "bank_interpretation": "complete method-derived operations",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "easy",
+      "template_selector": "sum",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179725,
+          "id": "14ab317b-fd33-5d6e-9d54-87e749b78283",
+          "title": "Line Integrals Along Segments in Three Dimensions"
+        },
+        "question": {
+          ":question/problem": "Which of the following is equivalent to the line integral of the function $f(x, y, z) = x + y + z$, traversed along the line segment from $(-1, 1, -4)$ to $(0, 4, -7)$?",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(t - 1,3 t + 1,- 3 t - 4\\right) \\\\  \\mathbf r(0)&=\\left(-1,1,-4\\right) \\\\  \\mathbf r(1)&=\\left(0,4,-7\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(1,3,-3\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(1)^2+(3)^2+(-3)^2} \\\\  &=\\sqrt{19}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=(t - 1)+(3 t + 1)+(- 3 t - 4) \\\\  &=t - 4\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{19}{\\int }_{0}^{1}(t - 4)\\,\\text{d}t\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/id": "d686fd59-195f-5fff-b969-b67633970023",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "a644ab14-ceab-5d3d-ba83-aba718f307c4",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "c1904848-a5e0-5188-b6bb-4021136571e2",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{19}{\\int }_{0}^{1}(t - 4)\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "00db1dc5-c3d0-5894-9ede-c64a93c2cc58",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{19}{\\int }_{0}^{1}(t - 3)\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "b90f7c4a-23e6-5de4-ad5e-fb5da7f1516a",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{19}{\\int }_{0}^{1}(t - 5)\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "e98bebed-d5a3-5be3-9d4c-ddce16841c39",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{19}{\\int }_{0}^{1}(t)\\,\\text{d}t"
+                },
+                {
+                  ":answer/id": "3daa7ec6-7e43-50d9-8705-ab33b4ee8bfe",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\sqrt{10}{\\int }_{0}^{1}(- 2 t - 4)\\,\\text{d}t"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "c1904848-a5e0-5188-b6bb-4021136571e2"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segments-3d-2",
+          "template": "sum",
+          "profile": "paths-c",
+          "seed": 983755,
+          "parameters": {
+            "a": [
+              -1,
+              1,
+              -4
+            ],
+            "b": [
+              0,
+              4,
+              -7
+            ]
+          },
+          "source_id": "471bb8a9-9025-5051-9cad-6b9d143c1f78",
+          "source": {
+            "database": "math",
+            "basis": 7786,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "difficulty_claim": "authored assignment of unrated source",
+          "mathematical_fingerprint": "d39b1cbfa89d147639ad732a658eb44e87c951ab730ccb4b8d5b4a6a2006e00e",
+          "content_hash": "28e69f25b397020b5b43b10311478cdc066ba6883ee63ed6e387513befd9c0df",
           "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
           "bank_interpretation": "complete method-derived operations",
           "dependencies": {
@@ -131,7 +439,7 @@
     },
     {
       "level": "hard",
-      "template_selector": null,
+      "template_selector": "cosine",
       "record": {
         "knowledge_point": {
           "db_id": 17592186179725,
@@ -139,53 +447,53 @@
           "title": "Line Integrals Along Segments in Three Dimensions"
         },
         "question": {
-          ":question/problem": "Evaluate the integral ${\\int }_{C}\\sin \\left(\\frac{\u03c0y}{4}\\right)ds$ along the line segment from $(0, 4, -3)$ to $(-3, 2, -5)$.",
-          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(- 3 t,4 - 2 t,- 2 t - 3\\right) \\\\  \\mathbf r(0)&=\\left(0,4,-3\\right) \\\\  \\mathbf r(1)&=\\left(-3,2,-5\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(-3,-2,-2\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(-3)^2+(-2)^2+(-2)^2} \\\\  &=\\sqrt{17}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\sin\\left(\\frac{\\pi}{4}(4 - 2 t)\\right) \\\\  &=\\sin{\\left(- \\frac{\\pi t}{2} + \\pi \\right)}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{17}{\\int }_{0}^{1}(\\sin{\\left(- \\frac{\\pi t}{2} + \\pi \\right)})\\,\\text{d}t\\end{aligned}\n$$\n\nUse $u=- \\frac{\\pi t}{2} + \\pi$ and $\\mathrm{d}u=\\left(- \\frac{\\pi}{2}\\right)\\,\\mathrm{d}t$. The new bounds are $u(0)=\\pi$ and $u(1)=\\frac{\\pi}{2}$.\n\n$$\n\\begin{aligned}I&=- \\frac{2 \\sqrt{17}}{\\pi}\\int_{\\pi}^{\\frac{\\pi}{2}}\\sin u\\,\\mathrm{d}u \\\\  &=- \\frac{2 \\sqrt{17}}{\\pi}\\left[-\\cos u\\right]_{\\pi}^{\\frac{\\pi}{2}} \\\\  &=- \\frac{2 \\sqrt{17}}{\\pi}\\left(-\\cos\\left(\\frac{\\pi}{2}\\right)+\\cos(\\pi)\\right) \\\\  &=- \\frac{2 \\sqrt{17}}{\\pi}\\left((0)-(1)\\right) \\\\  &=\\frac{2 \\sqrt{17}}{\\pi}\\end{aligned}\n$$",
+          ":question/problem": "Evaluate the integral ${\\int }_{C}\\operatorname{cos}\u2061(\\frac{\\pi }{4}(x+z))\\,\\text{d}s$ along the line segment from $(0,4,-3)$ to $(-3,2,-5).$",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(- 3 t,4 - 2 t,- 2 t - 3\\right) \\\\  \\mathbf r(0)&=\\left(0,4,-3\\right) \\\\  \\mathbf r(1)&=\\left(-3,2,-5\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(-3,-2,-2\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(-3)^2+(-2)^2+(-2)^2} \\\\  &=\\sqrt{17}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\cos\\left(\\frac{\\pi}{4}((- 3 t)+(- 2 t - 3))\\right) \\\\  &=\\cos{\\left(- \\frac{5 \\pi t}{4} - \\frac{3 \\pi}{4} \\right)}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{17}{\\int }_{0}^{1}(\\cos{\\left(- \\frac{5 \\pi t}{4} - \\frac{3 \\pi}{4} \\right)})\\,\\text{d}t\\end{aligned}\n$$\n\nUse $u=- \\frac{5 \\pi t}{4} - \\frac{3 \\pi}{4}$ and $\\mathrm{d}u=\\left(- \\frac{5 \\pi}{4}\\right)\\,\\mathrm{d}t$. The new bounds are $u(0)=- \\frac{3 \\pi}{4}$ and $u(1)=- 2 \\pi$.\n\n$$\n\\begin{aligned}I&=- \\frac{4 \\sqrt{17}}{5 \\pi}\\int_{- \\frac{3 \\pi}{4}}^{- 2 \\pi}\\cos u\\,\\mathrm{d}u \\\\  &=- \\frac{4 \\sqrt{17}}{5 \\pi}\\left[\\sin u\\right]_{- \\frac{3 \\pi}{4}}^{- 2 \\pi} \\\\  &=- \\frac{4 \\sqrt{17}}{5 \\pi}\\left(\\sin(- 2 \\pi)-\\sin\\left(- \\frac{3 \\pi}{4}\\right)\\right) \\\\  &=- \\frac{4 \\sqrt{17}}{5 \\pi}\\left((0)-\\left(- \\frac{\\sqrt{2}}{2}\\right)\\right) \\\\  &=- \\frac{2 \\sqrt{34}}{5 \\pi}\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/hard",
-          ":question/id": "61898d77-358f-5558-badf-78f6203e271c",
+          ":question/id": "356c09bf-0222-5d3d-afa8-b8a6248ce55e",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "13669710-7a4d-50cf-a534-9d2b94799a91",
+              ":answer-field/id": "08256e04-70eb-5b14-8ae8-24b555bc4ceb",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "592f1cda-5675-5eca-931b-64dd53e8efcd",
+                  ":answer/id": "cda7cbd6-5cd5-58f5-bed7-0ecd2a911021",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{4 \\sqrt{2}}{\\pi}"
+                  ":answer/value": "\\frac{2 \\sqrt{17} \\left(-2 - \\sqrt{2}\\right)}{5 \\pi}"
                 },
                 {
-                  ":answer/id": "ffc323a2-ad5e-519a-8b0a-316da48054ec",
+                  ":answer/id": "c8538f55-13f4-5f09-af18-72c01579d3f4",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "- \\sqrt{17}"
+                  ":answer/value": "\\frac{2 \\sqrt{26}}{5 \\pi}"
                 },
                 {
-                  ":answer/id": "141d219a-38ff-5151-a6c2-ccfb06bb0493",
+                  ":answer/id": "25f9e1d0-e3a5-5f03-a2d2-a8d9ed1d31f3",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{2 \\sqrt{17}}{\\pi}"
+                  ":answer/value": "- \\frac{2 \\sqrt{34}}{5 \\pi}"
                 },
                 {
-                  ":answer/id": "0c1bb1a4-a546-5624-9ed9-4315d98ddb88",
+                  ":answer/id": "78dc39f7-4af0-5b3b-ba9d-8da69c1003a1",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{2}{\\pi}"
+                  ":answer/value": "- \\frac{2 \\sqrt{26}}{5 \\pi}"
                 },
                 {
-                  ":answer/id": "ecdaf42c-9983-5705-b69e-acab6ae0eb19",
+                  ":answer/id": "e9bd0ebc-42d6-57a3-a59f-7ead7952c1ea",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "- \\frac{2 \\sqrt{17}}{\\pi}"
+                  ":answer/value": "0"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "141d219a-38ff-5151-a6c2-ccfb06bb0493"
+                "25f9e1d0-e3a5-5f03-a2d2-a8d9ed1d31f3"
               ]
             }
           ]
         },
         "generation": {
           "version": "segments-3d-2",
-          "template": "sine",
-          "profile": "sine-b",
+          "template": "cosine",
+          "profile": "trig-c",
           "seed": 983755,
           "parameters": {
             "a": [
@@ -199,6 +507,188 @@
               -5
             ]
           },
+          "source_id": "07d5db28-c47d-5f6c-be75-b0e883a1921b",
+          "source": {
+            "database": "math",
+            "basis": 7786,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "difficulty_claim": "observed",
+          "mathematical_fingerprint": "8b485d9f6454e312388ce8b3c0d949795eca4959a4ab6b6b9462f603257109ed",
+          "content_hash": "56d376eeb88e70c78e861bcaca0976333eb6f906db229ccbea30e0bc5ebb8b8b",
+          "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
+          "bank_interpretation": "complete method-derived operations",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "exponential",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179725,
+          "id": "14ab317b-fd33-5d6e-9d54-87e749b78283",
+          "title": "Line Integrals Along Segments in Three Dimensions"
+        },
+        "question": {
+          ":question/problem": "Evaluate the integral ${\\int }_{C}x{e}^{yz}\\,\\text{d}s$ along the line segment from $(4,3,1)$ to $(2,2,0).$",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(4 - 2 t,3 - t,1 - t\\right) \\\\  \\mathbf r(0)&=\\left(4,3,1\\right) \\\\  \\mathbf r(1)&=\\left(2,2,0\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(-2,-1,-1\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(-2)^2+(-1)^2+(-1)^2} \\\\  &=\\sqrt{6}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=(4 - 2 t)e^{(3 - t)(1 - t)} \\\\  &=\\left(4 - 2 t\\right) e^{t^{2} - 4 t + 3}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{6}{\\int }_{0}^{1}(\\left(4 - 2 t\\right) e^{t^{2} - 4 t + 3})\\,\\text{d}t\\end{aligned}\n$$\n\nUse $u=t^{2} - 4 t + 3$ and $\\mathrm{d}u=(2 t - 4)\\,\\mathrm{d}t$. The new bounds are $u(0)=3$ and $u(1)=0$. Since $x(t)=-1\\,u^{\\prime}(t)$, the differential contributes the factor $-1$.\n\n$$\n\\begin{aligned}I&=- \\sqrt{6}\\int_{3}^{0}e^u\\,\\mathrm{d}u \\\\  &=- \\sqrt{6}\\left[e^u\\right]_{3}^{0} \\\\  &=- \\sqrt{6}\\left(e^{0}-e^{3}\\right) \\\\  &=- \\sqrt{6}\\left(1-(e^{3})\\right) \\\\  &=- \\sqrt{6} \\left(1 - e^{3}\\right)\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "41ba6d24-ee4c-5769-a56a-033f27f71f1f",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "96c14943-fa58-5eaa-8bc5-0fff95ab1eb4",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d0d3322a-444d-505a-9cb8-e8c8e252afa9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sqrt{6} \\left(- e^{3} + e^{4}\\right)"
+                },
+                {
+                  ":answer/id": "ae1bc6d8-5a2c-5f76-9ee0-fff0fc820401",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sqrt{6} \\left(1 - e^{3}\\right)"
+                },
+                {
+                  ":answer/id": "18c124da-cf00-527f-b425-1760c1b8e3bf",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sqrt{5} \\left(1 - e^{3}\\right)"
+                },
+                {
+                  ":answer/id": "77d29b50-3dfa-5e02-bc7a-9f162cb5d70d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sqrt{5} \\left(1 + e^{3}\\right)"
+                },
+                {
+                  ":answer/id": "1d5937fa-8faf-52c7-9218-8e6bd0df9b10",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\sqrt{5}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "ae1bc6d8-5a2c-5f76-9ee0-fff0fc820401"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segments-3d-2",
+          "template": "exponential",
+          "profile": "exp-e",
+          "seed": 983755,
+          "parameters": {
+            "a": [
+              4,
+              3,
+              1
+            ],
+            "b": [
+              2,
+              2,
+              0
+            ]
+          },
+          "source_id": "a763ea78-00d8-589b-9ab8-583f7360f0c4",
+          "source": {
+            "database": "math",
+            "basis": 7786,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "difficulty_claim": "observed",
+          "mathematical_fingerprint": "449850ccac071fb5c2671bf54d232530cda1fc482974100b3fc723a288228747",
+          "content_hash": "dc7b7ce9424cb71f3e1dd35da8819a00fd37f61fdaf4b67bd265c7286a3b919b",
+          "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
+          "bank_interpretation": "complete method-derived operations",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": "sine",
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186179725,
+          "id": "14ab317b-fd33-5d6e-9d54-87e749b78283",
+          "title": "Line Integrals Along Segments in Three Dimensions"
+        },
+        "question": {
+          ":question/problem": "Evaluate the integral ${\\int }_{C}\\sin \\left(\\frac{\u03c0y}{4}\\right)ds$ along the line segment from $(-1, 1, -4)$ to $(0, 4, -7)$.",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(t - 1,3 t + 1,- 3 t - 4\\right) \\\\  \\mathbf r(0)&=\\left(-1,1,-4\\right) \\\\  \\mathbf r(1)&=\\left(0,4,-7\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(1,3,-3\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(1)^2+(3)^2+(-3)^2} \\\\  &=\\sqrt{19}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=\\sin\\left(\\frac{\\pi}{4}(3 t + 1)\\right) \\\\  &=\\sin{\\left(\\frac{3 \\pi t}{4} + \\frac{\\pi}{4} \\right)}\\end{aligned}\n$$\n\nThe equivalent definite integral is\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{19}{\\int }_{0}^{1}(\\sin{\\left(\\frac{3 \\pi t}{4} + \\frac{\\pi}{4} \\right)})\\,\\text{d}t\\end{aligned}\n$$\n\nUse $u=\\frac{3 \\pi t}{4} + \\frac{\\pi}{4}$ and $\\mathrm{d}u=\\left(\\frac{3 \\pi}{4}\\right)\\,\\mathrm{d}t$. The new bounds are $u(0)=\\frac{\\pi}{4}$ and $u(1)=\\pi$.\n\n$$\n\\begin{aligned}I&=\\frac{4 \\sqrt{19}}{3 \\pi}\\int_{\\frac{\\pi}{4}}^{\\pi}\\sin u\\,\\mathrm{d}u \\\\  &=\\frac{4 \\sqrt{19}}{3 \\pi}\\left[-\\cos u\\right]_{\\frac{\\pi}{4}}^{\\pi} \\\\  &=\\frac{4 \\sqrt{19}}{3 \\pi}\\left(-\\cos(\\pi)+\\cos\\left(\\frac{\\pi}{4}\\right)\\right) \\\\  &=\\frac{4 \\sqrt{19}}{3 \\pi}\\left((1)-\\left(- \\frac{\\sqrt{2}}{2}\\right)\\right) \\\\  &=\\frac{2 \\sqrt{19} \\left(\\sqrt{2} + 2\\right)}{3 \\pi}\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/id": "f3153372-16e7-5954-9ed2-0d44420093e1",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "c56ae3f5-a59c-510b-b6b6-b92321022df1",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "764286d4-7bea-53f7-ba82-26819ae3040c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{2 \\sqrt{19} \\left(\\sqrt{2} + 2\\right)}{3 \\pi}"
+                },
+                {
+                  ":answer/id": "66110f4e-2769-59fc-ab2e-6d48733c30b9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{2 \\sqrt{10} \\left(\\sqrt{2} + 2\\right)}{3 \\pi}"
+                },
+                {
+                  ":answer/id": "01d45e7c-420d-53f7-8dea-ad2087eaed4b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{2 \\sqrt{10} \\left(2 - \\sqrt{2}\\right)}{3 \\pi}"
+                },
+                {
+                  ":answer/id": "16371572-8ed7-5f9e-98d0-9d1eeed4fe64",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\frac{4 \\sqrt{10}}{3 \\pi}"
+                },
+                {
+                  ":answer/id": "1578114b-3cef-5e99-8e34-dfe02ae8ad78",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- \\frac{2 \\sqrt{38}}{3 \\pi}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "764286d4-7bea-53f7-ba82-26819ae3040c"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "segments-3d-2",
+          "template": "sine",
+          "profile": "trig-c",
+          "seed": 983755,
+          "parameters": {
+            "a": [
+              -1,
+              1,
+              -4
+            ],
+            "b": [
+              0,
+              4,
+              -7
+            ]
+          },
           "source_id": "bd6e5c6e-c45a-513e-b007-721402a77203",
           "source": {
             "database": "math",
@@ -208,8 +698,8 @@
           "evidence_only": false,
           "eligible_for_learning": true,
           "difficulty_claim": "authored assignment of unrated source",
-          "mathematical_fingerprint": "50d34f22cc3e569ef2de6916554b1165153dfb31f27a3b800c4ea1b33cf98a18",
-          "content_hash": "9001dc2b102071895de597553ca8729a0229116f9bb338f17397a7ab1cd389c6",
+          "mathematical_fingerprint": "94e4e283bf954e401e47adf4bdda177785ef155e5d30403ae7b0873193dd1d6a",
+          "content_hash": "46a94b7312760b72c3a28cfe5eb8bcf5eebcd5c4a29e76bcdde36f55290bbe7e",
           "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
           "bank_interpretation": "complete method-derived operations",
           "dependencies": {
@@ -222,7 +712,7 @@
     },
     {
       "level": "moderate",
-      "template_selector": null,
+      "template_selector": "polynomial",
       "record": {
         "knowledge_point": {
           "db_id": 17592186179725,
@@ -230,45 +720,45 @@
           "title": "Line Integrals Along Segments in Three Dimensions"
         },
         "question": {
-          ":question/problem": "Evaluate the integral ${\\int }_{C}x{y}^{2}\\,\\text{d}s$ along the line segment from $(1,1,1)$ to $(4,3,3).$",
-          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(3 t + 1,2 t + 1,2 t + 1\\right) \\\\  \\mathbf r(0)&=\\left(1,1,1\\right) \\\\  \\mathbf r(1)&=\\left(4,3,3\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(3,2,2\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(3)^2+(2)^2+(2)^2} \\\\  &=\\sqrt{17}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=(3 t + 1)(2 t + 1)^2 \\\\  &=12 t^{3} + 16 t^{2} + 7 t + 1\\end{aligned}\n$$\n\nIntegrate the expanded polynomial and subtract the endpoint values:\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{17}{\\int }_{0}^{1}(12 t^{3} + 16 t^{2} + 7 t + 1)\\,\\text{d}t \\\\  &=\\sqrt{17}\\left[3 t^{4} + \\frac{16 t^{3}}{3} + \\frac{7 t^{2}}{2} + t\\right]_0^1 \\\\  &=\\sqrt{17}\\left(\\left(\\frac{77}{6}\\right)-(0)\\right) \\\\  &=\\frac{77 \\sqrt{17}}{6}\\end{aligned}\n$$",
+          ":question/problem": "Evaluate the integral ${\\int }_{C}x{y}^{2}\\,\\text{d}s$ along the line segment from $(3,1,1)$ to $(1,4,4).$",
+          ":question/worked-solution": "For scalar arc length, use\n\n$$\n\\int_C f\\,\\mathrm{d}s=\\int_0^1 f(\\mathbf r(t))\\|\\mathbf r^{\\prime}(t)\\|\\,\\mathrm{d}t\n$$\n\nParametrize the segment and check its endpoints:\n\n$$\n\\begin{aligned}\\mathbf r(t)&=A+t(B-A) \\\\  &=\\left(3 - 2 t,3 t + 1,3 t + 1\\right) \\\\  \\mathbf r(0)&=\\left(3,1,1\\right) \\\\  \\mathbf r(1)&=\\left(1,4,4\\right)\\end{aligned}\n$$\n\nFor $0\\le t\\le1$, the velocity and speed are\n\n$$\n\\begin{aligned}\\mathbf r^{\\prime}(t)&=\\left(-2,3,3\\right) \\\\  \\|\\mathbf r^{\\prime}(t)\\|&=\\sqrt{(-2)^2+(3)^2+(3)^2} \\\\  &=\\sqrt{22}\\end{aligned}\n$$\n\nSubstitute all three coordinates:\n\n$$\n\\begin{aligned}f(\\mathbf r(t))&=(3 - 2 t)(3 t + 1)^2 \\\\  &=- 18 t^{3} + 15 t^{2} + 16 t + 3\\end{aligned}\n$$\n\nIntegrate the expanded polynomial and subtract the endpoint values:\n\n$$\n\\begin{aligned}\\int_C f\\,\\mathrm{d}s&=\\sqrt{22}{\\int }_{0}^{1}(- 18 t^{3} + 15 t^{2} + 16 t + 3)\\,\\text{d}t \\\\  &=\\sqrt{22}\\left[- \\frac{9 t^{4}}{2} + 5 t^{3} + 8 t^{2} + 3 t\\right]_0^1 \\\\  &=\\sqrt{22}\\left(\\left(\\frac{23}{2}\\right)-(0)\\right) \\\\  &=\\frac{23 \\sqrt{22}}{2}\\end{aligned}\n$$",
           ":question/difficulty": ":question.difficulty/moderate",
-          ":question/id": "70a97039-7a87-54f8-8039-780bac39968a",
+          ":question/id": "4e7f168d-7a77-561d-b96f-47686557eeda",
           ":question/answer-fields": [
             {
-              ":answer-field/id": "5e5aa4b9-8f3c-5113-b9a5-995bb92695a1",
+              ":answer-field/id": "8539ed11-a872-5c9e-8eed-b9d89ce1e770",
               ":answer-field/key": "selection",
               ":answer-field/type": ":answer-field.type/radio",
               ":answer-field/choices": [
                 {
-                  ":answer/id": "a52f96af-5429-573a-b811-88aba2a26c90",
+                  ":answer/id": "667011f5-bc1c-53a7-bed8-cd638c36e08f",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{77 \\sqrt{17}}{6}"
+                  ":answer/value": "\\frac{23 \\sqrt{22}}{2}"
                 },
                 {
-                  ":answer/id": "1bfcdeeb-883a-50f7-b592-bc3900560b9d",
+                  ":answer/id": "7b702276-bd60-5bd7-a6c9-3d86c143a4d8",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{17 \\sqrt{17}}{2}"
+                  ":answer/value": "\\frac{61 \\sqrt{22}}{2}"
                 },
                 {
-                  ":answer/id": "c6e4f1a9-a8ec-5dc8-b065-02a83a259250",
+                  ":answer/id": "8bbf8c4d-2d9c-57c1-9a71-017e75c5b66b",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{13 \\sqrt{17}}{3}"
+                  ":answer/value": "\\frac{23 \\sqrt{13}}{2}"
                 },
                 {
-                  ":answer/id": "c5439671-aec3-55e5-ae3d-bb8f420f8f16",
+                  ":answer/id": "608735dd-1207-55d3-b144-97fc3164233f",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{5 \\sqrt{17}}{6}"
+                  ":answer/value": "\\frac{3 \\sqrt{22}}{2}"
                 },
                 {
-                  ":answer/id": "601a0684-b34b-53c6-9464-899352587bcd",
+                  ":answer/id": "cca9d476-a21b-5f47-8c3c-f2bb199f3847",
                   ":answer/type": ":answer.type/math",
-                  ":answer/value": "\\frac{26 \\sqrt{2}}{3}"
+                  ":answer/value": "- \\frac{19 \\sqrt{22}}{2}"
                 }
               ],
               ":answer-field/correct": [
                 ":answer/id",
-                "a52f96af-5429-573a-b811-88aba2a26c90"
+                "667011f5-bc1c-53a7-bed8-cd638c36e08f"
               ]
             }
           ]
@@ -276,18 +766,18 @@
         "generation": {
           "version": "segments-3d-2",
           "template": "polynomial",
-          "profile": "polynomial-c",
+          "profile": "polynomial-b",
           "seed": 983755,
           "parameters": {
             "a": [
-              1,
+              3,
               1,
               1
             ],
             "b": [
+              1,
               4,
-              3,
-              3
+              4
             ]
           },
           "source_id": "27ad0c20-f0d9-5a56-ac84-89e9373c74a6",
@@ -299,8 +789,8 @@
           "evidence_only": false,
           "eligible_for_learning": true,
           "difficulty_claim": "observed",
-          "mathematical_fingerprint": "1d876cf256d89f76ef2e6e18cc53dec093801428abd428d693bec83e2f62a643",
-          "content_hash": "776b5e021e7208fe24d1bf54316e2077957c870cf119c44944a2269ea15fa39f",
+          "mathematical_fingerprint": "77a6985ef6893792f12f3085aa73c89832c753cecad1ec5ea7708710a4edf1db",
+          "content_hash": "c02fe28a07a0ec91765ee9c225749ed08c1a25942cb6618485283dd1d5d10ba0",
           "domain": "nonzero straight segment, all three coordinate derivatives; real pullback and pole-free learner bank",
           "bank_interpretation": "complete method-derived operations",
           "dependencies": {

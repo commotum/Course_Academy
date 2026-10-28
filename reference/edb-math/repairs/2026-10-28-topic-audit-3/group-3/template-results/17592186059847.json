@@ -4,16 +4,372 @@
   "results": [
     {
       "band": "easy",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample_batch",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "hard",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample_batch",
+      "passed": true,
+      "records": 1
     },
     {
       "band": "moderate",
-      "error": "Public API needs explicit model/parameters; CLI baseline remains covered"
+      "template": null,
+      "api": "sample_batch",
+      "passed": true,
+      "records": 1
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "level": "easy",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186059847,
+          "id": "979859e4-b60c-548d-8da6-b180400e1b07",
+          "title": "Calculating the Determinant of a 3x3 Matrix"
+        },
+        "question": {
+          ":question/id": "ad58da93-6192-5844-9702-afe5ebdca6bd",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Find $\\det(C)$ for\n\n$$\nC=\\begin{bmatrix}0 & -4 & 0 \\\\ 2 & 3 & 4 \\\\ 1 & -2 & -3\\end{bmatrix}.\n$$",
+          ":question/worked-solution": "Expand across the top row with signs $+,-,+$. Delete each entry's row and column to form its minor, then subtract the diagonal products. Terms with a zero top-row entry vanish.\n\n$$\n\\begin{aligned}M_{12}&=\\begin{vmatrix}2 & 4 \\\\ 1 & -3\\end{vmatrix} \\\\ &=2\\cdot (-3)-4\\cdot 1 \\\\ &=-10.\\end{aligned}\n$$\n\nCombine the signed contributions:\n\n$$\n\\begin{aligned}\\det(C)&=0M_{11}-(-4)M_{12}+0M_{13} \\\\ &=0-(-4)(-10)+0 \\\\ &=0-40+0 \\\\ &=-40.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "08ae494a-b7d0-507c-820f-94327c94b5dc",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "06b94d53-5e7e-58d7-9910-c5f333cca8a9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-40"
+                },
+                {
+                  ":answer/id": "fcf174f4-3588-52b8-becb-3c1b2b9a6f7f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-24"
+                },
+                {
+                  ":answer/id": "a2a87aab-df9d-5942-b97b-16e7fecaf8e8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-8"
+                },
+                {
+                  ":answer/id": "71464f9f-6d86-5843-9a25-bf86be4fe103",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-10"
+                },
+                {
+                  ":answer/id": "8ef59e5c-7dcb-5f76-8079-e9b36e2cc126",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "16"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "06b94d53-5e7e-58d7-9910-c5f333cca8a9"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "top-row-cofactors-2",
+          "seed": 7805107893334333968,
+          "parameters": {
+            "matrix": [
+              0,
+              -4,
+              0,
+              2,
+              3,
+              4,
+              1,
+              -2,
+              -3
+            ],
+            "name": "C"
+          },
+          "template": "top_row_radio",
+          "bank_profile": "diagonal",
+          "distractor_recipes": {
+            "-8": "add_minor_products",
+            "-24": "omit_second_product",
+            "16": "omit_first_product_subtraction",
+            "-10": "omit_signed_multiplier"
+          },
+          "source_question_ids": [
+            "78a8b15f-9044-5eb2-9f6b-f2e65c9a7882"
+          ],
+          "source_basis": 7445,
+          "authored_extension": true,
+          "worked_values": {
+            "minor_inputs": [
+              [
+                3,
+                4,
+                -2,
+                -3
+              ],
+              [
+                2,
+                4,
+                1,
+                -3
+              ],
+              [
+                2,
+                3,
+                1,
+                -2
+              ]
+            ],
+            "minors": [
+              -1,
+              -10,
+              -7
+            ],
+            "signed_coefficients": [
+              0,
+              4,
+              0
+            ],
+            "contributions": [
+              0,
+              -40,
+              0
+            ],
+            "determinant": -40
+          },
+          "content_fingerprint": "3261035573a3e55ff4cac1b7770a7aa9b7f4fca1e144bf645a289890e0b61563",
+          "answer_shape": "integer",
+          "plot_rating": "none",
+          "plot_assets": {},
+          "math_format": "course-academy-tex-v1",
+          "batch_seed": 983755,
+          "batch_index": 0,
+          "sampling_attempts": 1
+        }
+      }
+    },
+    {
+      "level": "hard",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186059847,
+          "id": "979859e4-b60c-548d-8da6-b180400e1b07",
+          "title": "Calculating the Determinant of a 3x3 Matrix"
+        },
+        "question": {
+          ":question/id": "72187f1c-a03a-5a09-ab30-4c761282ba43",
+          ":question/difficulty": ":question.difficulty/hard",
+          ":question/problem": "Find $\\det(C)$ for\n\n$$\nC=\\begin{bmatrix}-3 & 2 & -3 \\\\ 2 & 1 & 3 \\\\ 2 & -1 & 2\\end{bmatrix}.\n$$\n\n$\\det(C)=${{field-1}}.",
+          ":question/worked-solution": "Expand across the top row with signs $+,-,+$. Delete each entry's row and column to form its minor, then subtract the diagonal products.\n\n$$\n\\begin{aligned}M_{11}&=\\begin{vmatrix}1 & 3 \\\\ -1 & 2\\end{vmatrix} \\\\ &=1\\cdot 2-3\\cdot (-1) \\\\ &=5.\\end{aligned}\n$$\n\n$$\n\\begin{aligned}M_{12}&=\\begin{vmatrix}2 & 3 \\\\ 2 & 2\\end{vmatrix} \\\\ &=2\\cdot 2-3\\cdot 2 \\\\ &=-2.\\end{aligned}\n$$\n\n$$\n\\begin{aligned}M_{13}&=\\begin{vmatrix}2 & 1 \\\\ 2 & -1\\end{vmatrix} \\\\ &=2\\cdot (-1)-1\\cdot 2 \\\\ &=-4.\\end{aligned}\n$$\n\nCombine the signed contributions:\n\n$$\n\\begin{aligned}\\det(C)&=(-3)M_{11}-2M_{12}+(-3)M_{13} \\\\ &=(-3)(5)-2(-2)+(-3)(-4) \\\\ &=-15+4+12 \\\\ &=1.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "5fc2096e-341f-5cb9-ac1a-f0fe606f6024",
+              ":answer-field/key": "field-1",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "bbd35a58-ed7b-5c7c-83d2-6a1add4ea535",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "bbd35a58-ed7b-5c7c-83d2-6a1add4ea535"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "top-row-cofactors-2",
+          "seed": 8522442966688312830,
+          "parameters": {
+            "matrix": [
+              -3,
+              2,
+              -3,
+              2,
+              1,
+              3,
+              2,
+              -1,
+              2
+            ],
+            "name": "C"
+          },
+          "template": "top_row_blank",
+          "bank_profile": null,
+          "distractor_recipes": {},
+          "source_question_ids": [
+            "4c583368-3601-5727-a2d2-942c7b9558d3"
+          ],
+          "source_basis": 7445,
+          "authored_extension": true,
+          "worked_values": {
+            "minor_inputs": [
+              [
+                1,
+                3,
+                -1,
+                2
+              ],
+              [
+                2,
+                3,
+                2,
+                2
+              ],
+              [
+                2,
+                1,
+                2,
+                -1
+              ]
+            ],
+            "minors": [
+              5,
+              -2,
+              -4
+            ],
+            "signed_coefficients": [
+              -3,
+              -2,
+              -3
+            ],
+            "contributions": [
+              -15,
+              4,
+              12
+            ],
+            "determinant": 1
+          },
+          "content_fingerprint": "a55cc53ee42439193b4c030b7ce5b6f46009cdf7e5435c0169d98b52664caf3a",
+          "answer_shape": "integer",
+          "plot_rating": "none",
+          "plot_assets": {},
+          "math_format": "course-academy-tex-v1",
+          "batch_seed": 983755,
+          "batch_index": 0,
+          "sampling_attempts": 1
+        }
+      }
+    },
+    {
+      "level": "moderate",
+      "template_selector": null,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186059847,
+          "id": "979859e4-b60c-548d-8da6-b180400e1b07",
+          "title": "Calculating the Determinant of a 3x3 Matrix"
+        },
+        "question": {
+          ":question/id": "883d059b-d13d-565e-96a9-558870ee27b0",
+          ":question/difficulty": ":question.difficulty/moderate",
+          ":question/problem": "Find $\\det(C)$ for\n\n$$\nC=\\begin{bmatrix}-4 & 0 & 3 \\\\ 2 & 3 & 4 \\\\ 1 & -2 & -3\\end{bmatrix}.\n$$\n\n$\\det(C)=${{field-1}}.",
+          ":question/worked-solution": "Expand across the top row with signs $+,-,+$. Delete each entry's row and column to form its minor, then subtract the diagonal products. Terms with a zero top-row entry vanish.\n\n$$\n\\begin{aligned}M_{11}&=\\begin{vmatrix}3 & 4 \\\\ -2 & -3\\end{vmatrix} \\\\ &=3\\cdot (-3)-4\\cdot (-2) \\\\ &=-1.\\end{aligned}\n$$\n\n$$\n\\begin{aligned}M_{13}&=\\begin{vmatrix}2 & 3 \\\\ 1 & -2\\end{vmatrix} \\\\ &=2\\cdot (-2)-3\\cdot 1 \\\\ &=-7.\\end{aligned}\n$$\n\nCombine the signed contributions:\n\n$$\n\\begin{aligned}\\det(C)&=(-4)M_{11}-0M_{12}+3M_{13} \\\\ &=(-4)(-1)-0+3(-7) \\\\ &=4+0-21 \\\\ &=-17.\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "faa1256d-e17c-56f4-9fb0-47b548303140",
+              ":answer-field/key": "field-1",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "a7423ff2-cfd9-589e-a3a7-3b3f1639cf8e",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "-17"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "a7423ff2-cfd9-589e-a3a7-3b3f1639cf8e"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "top-row-cofactors-2",
+          "seed": 7805107893334333968,
+          "parameters": {
+            "matrix": [
+              -4,
+              0,
+              3,
+              2,
+              3,
+              4,
+              1,
+              -2,
+              -3
+            ],
+            "name": "C"
+          },
+          "template": "top_row_blank",
+          "bank_profile": null,
+          "distractor_recipes": {},
+          "source_question_ids": [
+            "5aadd6ce-d715-5a22-9944-d786941130cb"
+          ],
+          "source_basis": 7445,
+          "authored_extension": true,
+          "worked_values": {
+            "minor_inputs": [
+              [
+                3,
+                4,
+                -2,
+                -3
+              ],
+              [
+                2,
+                4,
+                1,
+                -3
+              ],
+              [
+                2,
+                3,
+                1,
+                -2
+              ]
+            ],
+            "minors": [
+              -1,
+              -10,
+              -7
+            ],
+            "signed_coefficients": [
+              -4,
+              0,
+              3
+            ],
+            "contributions": [
+              4,
+              0,
+              -21
+            ],
+            "determinant": -17
+          },
+          "content_fingerprint": "0e156fbcc40cc2a2fa2d9221e9943a360a932b79eee70196cedbdf210ff3d475",
+          "answer_shape": "integer",
+          "plot_rating": "none",
+          "plot_assets": {},
+          "math_format": "course-academy-tex-v1",
+          "batch_seed": 983755,
+          "batch_index": 0,
+          "sampling_attempts": 1
+        }
+      }
+    }
+  ]
 }

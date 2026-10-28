@@ -27,7 +27,10 @@ for name in['LEVELS','LEVEL','FAMILIES','TEMPLATES','CASES','SPECS','MODELS','DA
 results=[];records=[]
 for band,names in selectors.items():
  known={'level':band,'difficulty':band,'band':band,'count':1,'seed':983755,'output':Path(os.environ['COURSE_ACADEMY_GENERATOR_OUTPUT_DIR']),'output_dir':Path(os.environ['COURSE_ACADEMY_GENERATOR_OUTPUT_DIR']),'out':Path(os.environ['COURSE_ACADEMY_GENERATOR_OUTPUT_DIR']),'outdir':Path(os.environ['COURSE_ACADEMY_GENERATOR_OUTPUT_DIR']),'rng':random.Random(983755)}
- funcs=[getattr(m,n,None)for n in ['generate_'+band,'generate','build','batch','generate_batch','generate_one']];func=None
+ if callable(getattr(m,'parameters',None)):
+  try:known['p']=next(iter(m.parameters(band)))
+  except Exception:pass
+ funcs=[getattr(m,n,None)for n in ['generate_'+band,'generate','build','batch','generate_batch','generate_one','sample_batch','sample']];func=None
  for candidate in funcs:
   if not callable(candidate):continue
   sig=inspect.signature(candidate)
@@ -36,9 +39,12 @@ for band,names in selectors.items():
  if func is None:results.append({'band':band,'error':'Public API needs explicit model/parameters; CLI baseline remains covered'});continue
  sig=inspect.signature(func);params=sig.parameters;selector='template'if'template'in params else'family'if'family'in params else None
  # A batch-only API does not expose selectors; do not misclassify ignored keywords as template coverage.
+ varkw=any(v.kind==inspect.Parameter.VAR_KEYWORD for v in params.values())
+ if selector is None and varkw:selector='template'
  if selector is None:names={None}
  for name in sorted(names or{None},key=str):
   args={k:v for k,v in known.items()if k in params}
+  if varkw:args['seed']=983755
   if name is not None:args[selector]=name
   try:
    r=func(**args);rs=[r]if isinstance(r,dict)and'question'in r else r if isinstance(r,list)else[]
