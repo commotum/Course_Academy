@@ -12,7 +12,7 @@ from math_format import normalize_prose, normalize_tex, validate_generated_recor
 KP = 17592186119808
 TITLE = 'Determining Whether a Vector Lies in the Span of Given Vectors'
 NS = UUID('aaefbc53-9df9-54a0-a969-66e062553d5c')
-VERSION = '1.1.0'
+VERSION = '1.1.1-source-notation'
 
 
 def tex(x):
@@ -77,32 +77,32 @@ def eliminate(A, b):
 
 
 def nonmember(n):
-    return r'b\notin\operatorname{Span}\{' + ','.join('a_{'+str(i)+'}' for i in range(1,n+1)) + r'\}'
+    return r'\mathbf{b}\notin\operatorname{Span}\{' + ','.join(r'\mathbf{a}_{'+str(i)+'}' for i in range(1,n+1)) + r'\}'
 
 
 def build(A, b, band, rng, bank=None, source=None):
     A = [list(map(F,row)) for row in A]; b = list(map(F,b)); n = len(A[0])
     reduced, stages, bad, xs, back = eliminate(A,b)
     assert bad is not None or xs is not None, 'Ambiguous coefficient product'
-    names = ','.join('a_{'+str(i)+'}' for i in range(1,n+1))
+    names = ','.join(r'\mathbf{a}_{'+str(i)+'}' for i in range(1,n+1))
     span = r'\operatorname{Span}\{' + names+r'\}'
     product = r'\cdot '.join('x_{'+str(i)+'}' for i in range(1,n+1))
-    decomposition = '+'.join('x_{'+str(i)+'}a_{'+str(i)+'}' for i in range(1,n+1))
-    prompt = f'The vectors ${names}$ and $b$ are given below. Determine whether $b\\in {span}$. In the affirmative case, find ${product}$ from the decomposition $b={decomposition}$.'
+    decomposition = '+'.join('x_{'+str(i)+r'}\mathbf{a}_{'+str(i)+'}' for i in range(1,n+1))
+    prompt = f'The vectors ${names}$ and $\\mathbf{{b}}$ are given below. Determine whether $\\mathbf{{b}}\\in {span}$. In the affirmative case, find ${product}$ from the decomposition $\\mathbf{{b}}={decomposition}$.'
     cols = list(zip(*A))
-    displays = ['a_{'+str(j+1)+'}='+vector(col) for j,col in enumerate(cols)]+['b='+vector(b)]
+    displays = [r'\mathbf{a}_{'+str(j+1)+'}='+vector(col) for j,col in enumerate(cols)]+[r'\mathbf{b}='+vector(b)]
     prompt += '\n\n'+matrix_operands(displays)
-    solution = f'By the definition of span, $b\\in {span}$ exactly when coefficients exist such that\n\n$$\n{decomposition}=b.\n$$\n\nEquating components gives\n\n$$\n'
+    solution = f'By the definition of span, $\\mathbf{{b}}\\in {span}$ exactly when coefficients exist such that\n\n$$\n{decomposition}=\\mathbf{{b}}.\n$$\n\nEquating components gives\n\n$$\n'
     solution += r'\left\{\begin{aligned}'+r' \\ '.join(linear(row)+' &= '+tex(y) for row,y in zip(A,b))+r'\end{aligned}\right.'+'\n$$\n\nSet up the augmented matrix and use elementary row operations:\n\n$$\n'
     solution += aug([row+[y] for row,y in zip(A,b)])+'\n$$'
     for op, matrix in stages:
         solution += '\n\n$$\n'+op+'\n$$\n\n$$\n'+aug(matrix)+'\n$$'
     if bad is not None:
-        solution += f'\n\nRow ${bad+1}$ gives $0={tex(reduced[bad][-1])}$, a contradiction. No coefficients satisfy every component, so $b\\notin {span}$.'
+        solution += f'\n\nRow ${bad+1}$ gives $0={tex(reduced[bad][-1])}$, a contradiction. No coefficients satisfy every component, so $\\mathbf{{b}}\\notin {span}$.'
         key = nonmember(n)
     else:
         solution += '\n\nBack-substitution gives\n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(back)+r'\end{aligned}'+'\n$$'
-        solution += f'\n\nAll component equations hold. Thus $b\\in {span}$ and the coefficients are unique. Finally,\n\n$$\n{product}='+r'\cdot '.join(r'\left('+tex(x)+r'\right)' for x in xs)+'='+tex(prod(xs))+'.\n$$'
+        solution += f'\n\nAll component equations hold. Thus $\\mathbf{{b}}\\in {span}$ and the coefficients are unique. Finally,\n\n$$\n{product}='+r'\cdot '.join(r'\left('+tex(x)+r'\right)' for x in xs)+'='+tex(prod(xs))+'.\n$$'
         key = tex(prod(xs))
     recipes = None
     if bank is None:

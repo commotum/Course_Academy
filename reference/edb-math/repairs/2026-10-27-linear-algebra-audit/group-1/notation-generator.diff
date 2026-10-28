@@ -1,0 +1,142 @@
+--- /media/jake/SSD/EDB/math/generators/24/24fe5000bed3ae9a072b460ab54adab68d1085f5a0968bd3a19e0f471448d4f5/17592186119805.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-linear-algebra-audit/group-1/generator-notation-17592186119805/17592186119805.py
+@@ -6,10 +6,11 @@
+ import argparse, hashlib, json, random, re, uuid
+ from pathlib import Path
+ import sympy as sp
++from vector_notation import vector_prose, plain_vector_prose
+ KP_ID=17592186119805
+ KP_UUID='33586620-e110-5a37-874f-a92103c5e9fb'
+ GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'linear-combination-coefficient-generator-v1'))
+-VERSION='1.2.0'
++VERSION='1.2.0-notation-v1'
+ SOURCE=json.loads(Path(__file__).with_name('source-data.json').read_text())
+ PROFILES={q[':question/math-academy-id']:q for q in SOURCE['questions'] if q.get(':question/difficulty')}
+ LEVELS={level:tuple(sid for sid,q in PROFILES.items() if q[':question/difficulty'][':db/ident'].endswith('/'+level)) for level in ('easy','moderate')}
+@@ -85,10 +86,10 @@
+     else:
+         sol+='From the final equation above, we can tell that $'+letter+'='+correct+'.$'
+         if moderate or sid.startswith('hard:'):sol+=' This value satisfies every component.'
+-    return problem,sol,correct,bank
++    return vector_prose(problem),vector_prose(sol),correct,bank
+ 
+ def fingerprint(q):
+-    text=q[':question/problem'];a,u,*bs=vectors(text)
++    text=plain_vector_prose(q[':question/problem']);a,u,*bs=vectors(text)
+     minus=bool(re.search(r'\{a\}_\{1\}-[a-z]',text))
+     match=re.search(r'if \$(\d+)',text);c=int(match[1]) if match else 1
+     b=bs[0] if bs else [0]*len(a)
+@@ -103,7 +104,7 @@
+     p=parameters if parameters is not None else sample_parameters(sid,rng)
+     problem,solution,correct,bank=render(sid,p)
+     # Same mathematical task/profile always has the same field-owned identities.
+-    qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),json.dumps([sid,p,bank],sort_keys=True)))
++    qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),json.dumps([VERSION,sid,p,bank],sort_keys=True)))
+     fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/text' if value=='No solution' else ':answer.type/math',':answer/value':value} for value in bank]
+     f={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==correct)]}
+--- /media/jake/SSD/EDB/math/generators/8b/8bf90e82a57e4c521e5ae60f268df8eda070c41f67bfa028a9d60377a2142def/17592186119806.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-linear-algebra-audit/group-1/generator-notation-17592186119806/17592186119806.py
+@@ -15,13 +15,14 @@
+ import re
+ import uuid
+ import sympy as sp
++from vector_notation import vector_prose, plain_vector_prose
+ 
+ HERE = Path(__file__).resolve().with_suffix('')
+ SOURCE = json.loads((HERE / 'source.json').read_text())
+ KP_ID = 17592186119806
+ KP_UUID = SOURCE['record'][':knowledge-point/id']
+ GENERATOR_UUID = str(uuid.uuid5(uuid.NAMESPACE_URL, 'course-academy:generator:' + str(KP_ID)))
+-VERSION = 'vector-linear-combination-3'
++VERSION='vector-linear-combination-3-notation-v1'
+ SUPPORTED_LEVELS = ('easy','moderate','hard')
+ CASES = {q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions'] if q.get(':question/worked-solution') and q.get(':question/difficulty', {}).get(':db/ident') == ':question.difficulty/easy'}
+ MATRIX = re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}', re.S)
+@@ -36,6 +37,7 @@
+     return str(value)
+ 
+ def parse_problem(problem):
++    problem=plain_vector_prose(problem)
+     m = re.search(r'\$(\d+)a([+-])(\d+)x=b\$', problem)
+     if not m:
+         raise ValueError('Unrecognized source equation')
+@@ -169,6 +171,7 @@
+         else:arithmetic=str(u)+'-'+('('+str(w)+')' if w<0 else str(w))
+         spacing='' if 'Therefore,${' in old[':question/worked-solution'] else ' '
+         solution=head+'Therefore,'+spacing+'$'+target_tex(target)+'='+arithmetic+'='+str(answer)+'.$'
++    problem=vector_prose(problem,'abx');solution=vector_prose(solution,'abx')
+     bank=sorted(map(tex,values));content=hashlib.sha256(json.dumps([VERSION,problem,solution,bank],sort_keys=True).encode()).hexdigest()
+     uid=lambda s:str(uuid.uuid5(uuid.NAMESPACE_URL,str(KP_ID)+':'+content+':'+s))
+     choices=[{':answer/id':uid('selection:'+tex(v)),':answer/type':':answer.type/math',':answer/value':tex(v)} for v in values]
+--- /media/jake/SSD/EDB/math/generators/5c/5c2a0f55cc9014392369366fd2cbd756f7ae34cc6bc3f580f39638252308ed12/17592186119854.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-linear-algebra-audit/group-1/generator-notation-17592186119854/17592186119854.py
+@@ -7,11 +7,12 @@
+ import argparse,hashlib,json,random,re,sys,uuid
+ from pathlib import Path
+ import sympy as sp
++from vector_notation import vector_prose, plain_vector_prose
+ HERE=Path(__file__).with_suffix('')
+ from math_format import matrix_tex,system_tex,normalize_prose,normalize_tex,checked_math_content
+ SOURCE=json.loads((HERE/'source.json').read_text());RAW=SOURCE['record'];KP_ID=17592186119854;KP_UUID=RAW[':knowledge-point/id']
+ GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:generator:'+str(KP_ID)))
+-VERSION='three-coefficient-systems-3';SUPPORTED_LEVELS=('easy','moderate','hard')
++VERSION='three-coefficient-systems-3-notation-v1';SUPPORTED_LEVELS=('easy','moderate','hard')
+ TARGETS={}
+ CASES={q[':question/math-academy-id']:q for q in RAW[':knowledge-point/questions'] if q.get(':question/difficulty') and q.get(':question/worked-solution') and all(':answer-field/correct' in f for f in q[':question/answer-fields'])}
+ EXAMPLE=RAW[':knowledge-point/canonical-example']
+@@ -106,7 +107,7 @@
+   s+='Finally, substituting these values into the first equation, we obtain'+display(sp.latex(m[0,0])+'x_1+('+sp.latex(m[0,1])+')('+sp.latex(x[1])+')+('+sp.latex(m[0,2])+')('+sp.latex(x[2])+')='+sp.latex(m[0,3])+r'\quad\Rightarrow\quad x_1='+sp.latex(x[0]))
+   s+='So, the solution of the system is '+', '.join('$x_'+str(i+1)+'='+sp.latex(v)+'$' for i,v in enumerate(x))+', which means'+display(sp.latex(x[0])+'a_1+('+sp.latex(x[1])+')a_2+('+sp.latex(x[2])+')a_3=b.')
+   s+='Consequently,'+display(t+'='+ '+'.join('('+sp.latex(c*v)+')' for c,v in zip(target(sid),x))+'='+sp.latex(z)+'.')
+- return normalize_prose(p),normalize_prose(s)
++ return normalize_prose(vector_prose(p)),normalize_prose(vector_prose(s))
+ 
+ def structure(sid,b):
+  # Quotient equation row scaling/order and permutation of supplied vector columns.
+--- /media/jake/SSD/EDB/math/generators/d9/d9d1a799afbf3f92161c1c055b0a1bccc9adc96cf96237d74a1dd3bb90dfac41/generator.py
++++ /home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-27-linear-algebra-audit/group-1/generator-notation-17592186119857/generator.py
+@@ -11,7 +11,7 @@
+ import uuid
+ from math_format import normalize_prose, normalize_tex, validate_generated_record
+ 
+-VERSION = '1.1.0'
++VERSION='1.1.0-notation-v1'
+ KP = {'db_id':17592186119857,'id':'6f644bed-7adb-5907-87b4-99b1902e7850',
+       'title':'Finding a Basis of the Space Spanned by a Set of Vectors by Identifying Pivot Columns'}
+ SOURCES = {
+@@ -31,7 +31,7 @@
+     return r'\begin{bmatrix}' + r' \\ '.join(' & '.join(tex(x) for x in row) for row in rows)+r'\end{bmatrix}'
+ 
+ def vector(v):return matrix([[x] for x in v])
+-def basis(vs):return normalize_tex(r'B=\left\{'+r',\;'.join(vector(v) for v in vs)+r'\right\}')
++def basis(vs):return normalize_tex(r'\mathcal{B}=\left\{'+r',\;'.join(vector(v) for v in vs)+r'\right\}')
+ def columns(vs):return [list(row) for row in zip(*vs)]
+ def signature(vs):return tuple(sorted(tuple(F(x) for x in v) for v in vs))
+ 
+@@ -177,20 +177,20 @@
+         entries=[(x,'source-replay' if signature(x)!=signature(replay['correct']) else 'correct') for x in replay['bank']]
+         if signature(selected)!=signature(replay['correct']):raise ValueError('Source key is not the pivot basis')
+     else:entries=bank(vs,pivots,rng,profile)
+-    names=','.join('a_{'+str(i+1)+'}' for i in range(len(vs)))
++    names=','.join(r'\mathbf{a}_{'+str(i+1)+'}' for i in range(len(vs)))
+     # Two vectors per display row prevents horizontal overflow in the real UI.
+     rows=[]
+     for i in range(0,len(vs),2):
+-        rows.append(r'\qquad '.join('a_{'+str(j+1)+'} &='+vector(vs[j]) for j in range(i,min(i+2,len(vs)))))
++        rows.append(r'\qquad '.join(r'\mathbf{a}_{'+str(j+1)+'} &='+vector(vs[j]) for j in range(i,min(i+2,len(vs)))))
+     prompt='Consider the vectors\n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$\n\n'
+-    prompt+='Find a basis $B$ of $S=\\operatorname{Span}\\{'+names+r'\}$ by identifying pivot columns.'
++    prompt+='Find a basis $\\mathcal{B}$ of $S=\\operatorname{Span}\\{'+names+r'\}$ by identifying pivot columns.'
+     solution='Place the vectors in the columns of a matrix:\n\n$$\nA='+matrix(a)+'\n$$\n\n'
+     if not steps:solution+='This matrix is already in row echelon form.\n\n'
+     for op,state in steps:
+         solution+='Apply $'+op+'$:\n\n$$\nA\\sim '+matrix(state)+'\n$$\n\n'
+     labels=', '.join(str(x+1) for x in pivots)
+-    refs=r',\;'.join('a_{'+str(i+1)+'}' for i in pivots)
+-    solution+='The leading nonzero entries are in columns $'+labels+'$. Select the corresponding columns from the **original matrix**, giving $B=\\{'+refs+r'\}$:'+'\n\n$$\n'+basis(selected)+'.\n$$\n\n'
++    refs=r',\;'.join(r'\mathbf{a}_{'+str(i+1)+'}' for i in pivots)
++    solution+='The leading nonzero entries are in columns $'+labels+'$. Select the corresponding columns from the **original matrix**, giving $\\mathcal{B}=\\{'+refs+r'\}$:'+'\n\n$$\n'+basis(selected)+'.\n$$\n\n'
+     solution+='These pivot columns are linearly independent and span the column space of $A$, which is $S$. The nonpivot columns can be removed without changing the span. Row operations locate the pivot indices; use the original vectors when writing the basis.'
+     prompt=normalize_prose(prompt);solution=normalize_prose(solution)
+     values=[basis(x) for x,_ in entries]

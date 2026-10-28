@@ -12,6 +12,7 @@ for p in proposals:
  assert p['before']!=p['after'];forms.append([kw('db/cas'),p['entity'],kw(p['attribute']),p['before'],p['after']])
  if p['attribute'].startswith('question/'):ensures.add((p['entity'],'question/validate'))
  elif p['attribute'].startswith('tutorial/'):ensures.add((p['entity'],'tutorial/validate'))
+ elif p['attribute'].startswith('answer/'):ensures.add((p['entity'],'answer/validate'))
  elif p['attribute'].startswith('answer-field/'):
   ensures.add((p['entity'],'answer-field/validate'))
   if p['attribute']=='answer-field/correct':ensures.add((p['after'],'answer/validate'))
