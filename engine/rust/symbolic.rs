@@ -1502,6 +1502,30 @@ impl Algebra {
                 if let Some(angle) = pi_multiple(x) {
                     return self.special_trig(name, angle);
                 }
+                // Exact double-angle normalization for bounded even integer
+                // polynomial coefficients. Halving the whole argument preserves
+                // shifts and nonlinear terms; never halve only its leading term.
+                // Recursion terminates at an odd coefficient. The coefficient
+                // bound also limits expansion depth before the usual work cap.
+                if x.den == Poly::integer(1)
+                    && x.num.0.values().all(|c| c.is_integer()
+                        && c.to_integer().to_i32().is_some_and(|n|
+                            n.unsigned_abs() <= 64 && n % 2 == 0))
+                {
+                    let half = self.value(
+                        x.num.scale(&Q::new(1.into(), 2.into())),
+                        Poly::integer(1),
+                    )?;
+                    let sin = self.function("sin", &half)?;
+                    if name == "sin" {
+                        let cos = self.function("cos", &half)?;
+                        let product = self.mul(&sin, &cos)?;
+                        return self.mul(&Value::integer(2), &product);
+                    }
+                    let square = self.mul(&sin, &sin)?;
+                    let twice = self.mul(&Value::integer(2), &square)?;
+                    return self.add(&Value::integer(1), &twice.neg());
+                }
             }
             _ => return Err(format!("unsupported function: {name}")),
         }
@@ -2629,6 +2653,35 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn even_trig_arguments_use_exact_double_angle_identities() {
+        use super::{compare, Context};
+        let c = Context::default();
+        for (a, b) in [
+            ("sin(2*x)", "2*sin(x)*cos(x)"),
+            ("sin(-2*x)", "-2*sin(x)*cos(x)"),
+            ("cos(2*x)", "cos(x)^2-sin(x)^2"),
+            ("cos(-2*x)", "1-2*sin(x)^2"),
+            ("3*sin(2*x)+3/2*sin(4*x)", "12*cos(x)^3*sin(x)"),
+            ("sin(2*x+2)", "2*sin(x+1)*cos(x+1)"),
+            ("sin(2*x^2+4)", "2*sin(x^2+2)*cos(x^2+2)"),
+            ("sin(4*x)", "4*sin(x)*cos(x)*(1-2*sin(x)^2)"),
+            ("sin(2*x)/(2*cos(x))", "sin(x)*cos(x)/cos(x)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, c), Ok(true), "{b} vs {a}");
+        }
+        for (a, b) in [
+            ("sin(2*x)", "sin(x)*cos(x)"),
+            ("cos(2*x)", "1+2*sin(x)^2"),
+            ("sin(2*x+2)", "2*sin(x)*cos(x)"),
+            ("3*sin(2*x)+3/2*sin(4*x)", "-12*cos(x)^3*sin(x)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}");
+        }
+        // The identity must not erase an original denominator restriction.
+        assert_ne!(compare("sin(2*x)/(2*cos(x))", "sin(x)", c), Ok(true));
+    }
     #[test]
     fn translated_squared_trig_arguments_use_period_enclosures() {
         use super::{compare, Context};
