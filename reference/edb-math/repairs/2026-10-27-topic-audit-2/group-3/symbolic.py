@@ -34,9 +34,11 @@ class Evaluate:
    arg=self.absolute()
   elif n[0]in ('fence','group'):
    arg=self.node(self.consume())
+  elif n[0]=='script'and n[1][0]in ('fence','group')and not n[2]:
+   self.consume();arg=self.node(n[1]);power=evaluate(n[3])if power is None else power*evaluate(n[3])
   else:
-   arg=self.factor()
-   while self.peek()is not None and self.symbol(self.peek())not in ('+','-','=',';',',','|','<','>','*','/')and self.peek()[0]not in ('operator',):arg*=self.factor()
+   numeric=n[0]=='char'and re.fullmatch(r'\d+(?:\.\d+)?',n[1]);arg=self.factor()
+   if numeric and self.peek()is not None and(self.peek()[0]=='char'and self.peek()[1].isalpha()or self.peek()[0]=='script'and self.peek()[1][0]=='char'):arg*=self.factor()
   if fn=='log'and base is not None:v=sp.log(arg,base)
   else:v=FN[fn](arg)
   return v**power if power is not None else v
@@ -97,7 +99,7 @@ def evaluate(nodes):
  if p.i!=len(p.ns):raise Unsupported('unconsumed '+repr(p.ns[p.i:]))
  return v
 def parse(tex):
- tex=tex.strip().strip('$').strip().rstrip('.,');tex=re.sub(r'\\(?:color)\{[^{}]+\}','',tex);tex=tex.replace('⁡','').replace('−','-')
+ tex=tex.strip().strip('$').strip().rstrip('.,');tex=re.sub(r'\\(?:color)\{[^{}]+\}','',tex);tex=tex.replace('−','-')
  tex=re.sub(r'\\operatorname\{(arcsec|arccsc|arcsin|arccos|arctan|sin|cos|tan|ln|log|exp)\}',lambda m:'\\'+m[1],tex)
  tex=re.sub(r'\\mathrm\{e\}', 'e',tex)
  tex=re.sub(r'(?<![A-Za-z\\])(arcsec|arccsc|arccot|arcsin|arccos|arctan)(?=[A-Za-z(])',lambda m:r'\operatorname{'+m[1]+'}',tex)

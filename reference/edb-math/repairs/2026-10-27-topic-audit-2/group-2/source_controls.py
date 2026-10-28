@@ -6,16 +6,39 @@ p=R/'reference/edb-math/repairs/2026-10-26-structural-math/recover_formulas.py';
 from question_capture.math_format import validate_math_structure
 class ControlRenderer(ns['CompleteSourceRenderer']):
  def __init__(self):super().__init__(None);self.controls=[]
+ def register(self,n):
+  known={c['dom_id']:c for c in self.controls}
+  for node in n.find_all(class_='selectList'):
+   ident=node.get('id')
+   if ident in known:continue
+   values=[]
+   for option in node.find_all(class_='selectListOption'):
+    fs=ns['formulas'](str(option));v=fs[0]if len(fs)==1 and isinstance(fs[0],str)else option.get_text(' ',strip=True)
+    if v not in values:values.append(v)
+   key='field-'+str(len(self.controls)+1);item={'key':key,'values':values,'dom_id':ident,'html':str(node)};self.controls.append(item);known[ident]=item
+ def m(self,n):
+  if isinstance(n,Tag)and n.name=='msub':
+   cs=n.find_all(recursive=False)
+   if len(cs)==2:
+    marker=re.fullmatch(r'\(S(\d+)\)',cs[1].get_text('',strip=True))
+    if marker:
+     index=int(marker[1]);assert index<len(self.controls),(index,len(self.controls));return'{{'+self.controls[index]['key']+'}}'
+  if isinstance(n,Tag)and n.name=='mrow':
+   cs=n.find_all(recursive=False)
+   if len(cs)==3 and cs[0].get_text()=='{'and cs[-1].get_text()=='}'and cs[1].name=='msub':
+    inner=cs[1].find_all(recursive=False)
+    if len(inner)==2 and re.fullmatch(r'\(S\d+\)',inner[1].get_text('',strip=True)):return self.m(cs[1])
+  return super().m(n)
  def render(self,n,extract_fields=False):
   if not isinstance(n,Tag):return super().render(n,extract_fields)
   cs=n.get('class',[])
-  if extract_fields and ('selectList'in cs or'freeResponseTextbox'in cs):
-   key='field-'+str(len(self.controls)+1);values=[]
-   for option in n.find_all(class_='selectListOption'):
-    v=self.text(option);v=v[1:-1]if v.startswith('$')and v.endswith('$')and not v.startswith('$$')else v
-    if v not in values:values.append(v)
-   self.controls.append({'key':key,'values':values,'dom_id':n.get('id'),'html':str(n)});return'{{'+key+'}}'
+  if extract_fields and 'selectList'in cs:
+   ident=n.get('id');item=next(c for c in self.controls if c['dom_id']==ident);return'{{'+item['key']+'}}'
+  if extract_fields and 'freeResponseTextbox'in cs:
+   key='field-'+str(len(self.controls)+1);self.controls.append({'key':key,'values':[],'dom_id':n.get('id'),'html':str(n)});return'{{'+key+'}}'
   if n.name in ['svg','math','mjx-container']or'mjpage'in cs:
+   if extract_fields and n.find(class_='selectList'):
+    roots=n.find_all('mjx-assistive-mml',recursive=False);assert len(roots)==1,('direct-assistive-roots',len(roots));math=roots[0].find('math');assert math is not None;tex=ns['normalize_source_tex'](self.m(math));display=n.get('display')in['true','block'];return'\n\n$$\n'+tex+'\n$$\n\n'if display else'$'+tex+'$'
    fs=ns['formulas'](str(n))
    if len(fs)==1 and isinstance(fs[0],str):
     display=n.get('display')in['true','block']or'mjpage__block'in cs or(n.parent and'mjpage__block'in n.parent.get('class',[]));return'\n\n$$\n'+fs[0]+'\n$$\n\n'if display else'$'+fs[0]+'$'
@@ -30,7 +53,8 @@ for q in D['questions']:
  opts=[]
  for s in src[q.get(':question/math-academy-id')]:
   r=ControlRenderer()
-  try:text=r.text(BeautifulSoup(s['html'],'html.parser'),True);validate_math_structure(text)
+  try:
+   soup=BeautifulSoup(s['html'],'html.parser');r.register(soup);text=r.text(soup,True);validate_math_structure(text)
   except Exception as ex:opts.append({'path':s['path'],'error':str(ex)});continue
   if r.controls:opts.append({'path':s['path'],'problem':text,'controls':r.controls,'errors':r.errors})
  out.append({'entity':q[':db/id'],'identity':q.get(':question/math-academy-id'),'existing_fields':[{'entity':f[':db/id'],'key':f[':answer-field/key'],'values':[a[':answer/value']for a in f.get(':answer-field/choices',[])]}for f in q.get(':question/answer-fields',[])],'options':opts})

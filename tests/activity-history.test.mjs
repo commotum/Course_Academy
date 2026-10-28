@@ -83,8 +83,10 @@ test('quiz question headings show their own topic without changing question numb
   f.run("markdown = value => el('div', 'prose', value || '')");
   const first = f.run('renderItem({contentId:303,kind:"question",fields:[],status:"correct",topic:{id:40,title:"Linear equations"}},1)');
   const second = f.run('renderItem({contentId:304,kind:"question",fields:[],status:"incorrect",topic:{id:43,title:"Fractions"}},2)');
-  assert.match(first.children[0].textContent, /Question 1.*Topic: Linear equations/);
-  assert.match(second.children[0].textContent, /Question 2.*Topic: Fractions/);
+  assert.match(first.children[0].textContent, /Question 1.*Linear equations/);
+  assert.match(second.children[0].textContent, /Question 2.*Fractions/);
+  assert.equal(first.children[0].children[0].textContent, 'Linear equations');
+  assert.equal(second.children[0].children[0].textContent, 'Fractions');
   assert.equal(first.children[0].children[0].className, 'history-question-topic');
   const lesson = f.run('renderItem({contentId:305,kind:"question",fields:[],status:"correct"},3)');
   assert.equal(lesson.children[0].textContent, 'Question 3');

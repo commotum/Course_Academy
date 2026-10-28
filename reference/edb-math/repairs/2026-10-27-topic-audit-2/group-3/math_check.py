@@ -40,9 +40,14 @@ def relation(tex):
  if SYMS['t']in(l-r).free_symbols:state['variable']='t'
  return l-r,state
 
-def zero(expr,var,domain=None):
+def zero(expr,var,domain=None,radicands=()):
  z=sp.simplify(expr)
  if z==0:return True
+ if isinstance(z,sp.Piecewise)and all(value==0 or value.has(sp.zoo,sp.nan)for value,condition in z.args):return True
+ if radicands:
+  for b in radicands:
+   p=sp.Symbol('positive_radicand',positive=True);test=z.subs(b,p).subs(sp.factor(b),p);test=sp.powdenest(test,force=True)
+   if sp.simplify(test)==0:return True
  # Arcsecant and absolute-value derivatives have separate real components.
  if domain=='arcsec':
   p=sp.Symbol('p',positive=True)
@@ -55,6 +60,7 @@ def derivative_task(q):
   if match:
    var=match[1]or'x';expr=match[2]
    if '\\'in expr and r'\begin'in expr:continue
+   if re.search(r'[fgh]\s*\(',expr):raise Unsupported('named composition requires original function definitions')
    return parse(expr),SYMS[var]
  raise Unsupported('no scalar function definition')
 def integral_task(q):
@@ -62,7 +68,7 @@ def integral_task(q):
   if r'\int'not in m:continue
   body=m.split(r'\int',1)[1].strip()
   if body.startswith(('_','^')):raise Unsupported('definite integral')
-  body=re.sub(r'\\(?:mathrm|textrm|text)\s*\{?\s*d\s*\}?', 'd',body);body=body.rstrip(' .?\n')
+  body=re.sub(r'\\(?:mathrm|textrm|text)\s*\{?\s*d\s*\}?', 'd',body);body=body.rstrip(' .?=\n');body=re.sub(r'(?:\\[,;]|\s|=)+$','',body)
   mat=re.search(r'd\s*([xyut])\s*$',body)
   if not mat:raise Unsupported('differential not recognized '+body)
   expression=body[:mat.start()].strip().rstrip(r'\, ');return parse(expression),SYMS[mat[1]],'arcsec'if'|'in expression or r'\mid'in expression else None
@@ -82,12 +88,30 @@ checks=[];unresolved=[];bad=[];completion_matches=[]
 for q in D['questions']:
  topics=topicof[q[':db/id']];kind='derivative'if topics&{1007,1108}else'integral'if topics&{312,342}else'ode'if topics&{466,1061,1179,878,614}else None
  if not kind:continue
+ if kind=='ode'and any(word in q[':question/problem'].lower()for word in ('separate the variables','transformation','cannot','could **not**','λ','\\lambda')):
+  unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'transformed equation/characteristic roots/non-solution requires dedicated check'});continue
  fs=q.get(':question/answer-fields',[])
  if len(fs)!=1:unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'canonical example without fields or multipart response','fields':len(fs)});continue
  f=fs[0]
+ if f[':answer-field/type'][':db/id']==17592186045492:
+  placeholder='{{'+f[':answer-field/key']+'}}';pos=q[':question/problem'].find(placeholder)
+  preceding=[m for m in MATH.finditer(q[':question/problem'])if m.end()<=pos and not q[':question/problem'][m.end():pos].strip()]
+  if preceding:
+   body=preceding[-1][0].strip('$').strip()
+   if '='in body and body.split('=',1)[1].strip():
+    unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'partial expression blank requires reconstruction'});continue
  if f[':answer-field/type'][':db/id']not in (17592186045492,17592186045493):unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'non scalar radio/blank response'});continue
  try:
-  if kind=='derivative':definition,var=derivative_task(q);expected=sp.diff(definition,var)
+  if kind=='derivative':
+   definition,var=derivative_task(q);expected=sp.diff(definition,var)
+   if 'slope'in q[':question/problem'].lower()or 'tangent'in q[':question/problem'].lower():
+    points=[clean(m).split('=',1)[1]for m in maths(q[':question/problem'])if re.match(r'\s*'+str(var)+r'\s*=',clean(m))]
+    if not points:
+     pairs=[m for m in maths(q[':question/problem'])if re.fullmatch(r'\s*\([^(),]+,[^(),]+\)\s*',clean(m))]
+     if not pairs:raise Unsupported('tangent evaluation point not extracted')
+     points=[clean(pairs[-1])[1:-1].split(',')[0]]
+    point=parse(points[-1]);slope=expected.subs(var,point)
+    expected=slope*(var-point)+definition.subs(var,point)if 'equation'in q[':question/problem'].lower()else slope
   elif kind=='integral':integrand,var,domain=integral_task(q)
   else:residual,state=ode_task(q);var=SYMS[state['variable']]
  except Exception as ex:unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':str(ex)[:300]});continue
@@ -99,14 +123,17 @@ for q in D['questions']:
     left,rightpart=a[':answer/value'].split('=',1);left=clean(left)
     if left not in ('y','f(x)','f(t)','y(x)','y(t)'):implicit=parse(left)-parse(clean(rightpart))
    expression=answer_expr(a)if implicit is None else implicit
-   if kind=='derivative':difference=expression-expected;passed=zero(difference,var)
+   if kind=='derivative':difference=expression-expected;passed=zero(difference,var,radicands=[p.base for p in definition.atoms(sp.Pow)if p.exp.is_Rational and p.exp.q==2])
    elif kind=='integral':difference=sp.diff(expression,var)-integrand;passed=zero(difference,var,domain)
    else:
     if implicit is None:difference=residual.subs({SYMS['y']:expression,SYMS['f']:expression,SYMS['Z']:sp.diff(expression,var),SYMS['W']:sp.diff(expression,var,2)},simultaneous=True)
     elif state['order']==1:
      slope=-sp.diff(implicit,var)/sp.diff(implicit,SYMS['y']);difference=residual.subs(SYMS['Z'],slope)
     else:raise Unsupported('implicit higher-order solution')
-    passed=zero(difference,var)
+    passed=zero(sp.trigsimp(difference),var)
+    if not passed and implicit is not None:
+     try:passed=sp.Poly(sp.together(difference).as_numer_denom()[0],SYMS['y'],domain='EX').rem(sp.Poly(implicit,SYMS['y'],domain='EX')).as_expr()==0
+     except Exception:pass
     if passed and 'general solution'in q[':question/problem'].lower():
      constants=expression.free_symbols-{SYMS['x'],SYMS['t'],SYMS['y']};passed=len(constants)>=state['order']
    results.append({'answer':a[':db/id'],'value':a[':answer/value'],'passes':bool(passed),'difference':str(sp.simplify(difference))[:350]})

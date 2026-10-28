@@ -185,7 +185,7 @@ function renderItem(item, number) {
   attachStepMenu(card, item.contentId, item.mathAcademyId, { kind: item.kind === 'tutorial' ? 'tutorial' : 'question' });
   const heading = el('h3', 'history-question-title', item.kind === 'question' ? `Question ${number}` : item.title || 'Worked example');
   if (item.kind === 'question' && item.topic?.title) {
-    heading.append(el('span', 'history-question-topic', `Topic: ${item.topic.title}`));
+    heading.append(el('span', 'history-question-topic', item.topic.title));
   }
   card.append(heading);
   const prompt = markdown(item.markdown, item.fields); card.append(prompt);
@@ -201,9 +201,12 @@ function renderItem(item, number) {
     footer.append(badge, el('span', 'difficulty-name', label));
   } else if (item.kind === 'question') footer.append(el('span', 'history-note', 'Difficulty unavailable'));
   footer.append(timestamp(item.answeredAt, item.recordedOnly), el('span', '', `Elapsed: ${duration(item.elapsedSeconds)}`));
-  if (['correct', 'incorrect'].includes(short(item.status))) {
-    const result = feedbackHeading(item.status); result.className = 'history-result'; footer.append(result);
-  } else footer.append(el('span', 'history-result', resultLabel(item)));
+  const label = resultLabel(item);
+  if (['correct', 'incorrect'].includes(short(item.status)) || (item.kind === 'question' && label === 'Not submitted')) {
+    const result = feedbackHeading(short(item.status) === 'correct' ? 'correct' : 'incorrect');
+    result.children[0].textContent = label;
+    result.className = 'history-result'; footer.append(result);
+  } else footer.append(el('span', 'history-result', label));
   const solution = el('details', 'history-solution');
   const hasSolution = Boolean(item.solution || item.fields?.some(field => field.correctAnswer || field.response?.feedback));
   if (hasSolution) {

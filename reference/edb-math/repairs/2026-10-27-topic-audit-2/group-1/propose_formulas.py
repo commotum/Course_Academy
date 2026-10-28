@@ -14,7 +14,7 @@ def remove_group_cmd(v,cmd):
   v=v[:m.start()]+v[i:]
  return v
 def canonical(v):
- v=normalize_source_tex(v);v=re.sub(r'\\bbox(?:\[[^\]]*\])?','',v);v=remove_group_cmd(v,'phantom');v=re.sub(r'\\hspace\{[^{}]*\}','',v);v=re.sub(r'\\color\{[^{}]+\}','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',v)
+ v=normalize_source_tex(v).replace('′',"'").replace(r'\enclose{updiagonalstrike}',r'\cancel');v=re.sub(r'\\bbox(?:\[[^\]]*\])?','',v);v=remove_group_cmd(v,'phantom');v=re.sub(r'\\hspace\{[^{}]*\}','',v);v=re.sub(r'\\color\{[^{}]+\}','',v);v=re.sub(r'\\(?:left|right|displaystyle|textstyle)|\\[,;!]','',v)
  v=re.sub(r'\[\s*\{?\s*\\begin\{array\}\{[clr|]+\}',lambda m:r'\begin{bmatrix}',v);v=re.sub(r'\\end\{array\}\s*\}?\s*\]',lambda m:r'\end{bmatrix}',v)
  v=re.sub(r'\\(?:mathbf|mathbb|mathrm|mathcal|mathit|textrm|text)\b','',v);v=v.replace(r'\{','{').replace(r'\}','}');v=re.sub(r'\\(?:Bigg|bigg|Big|big)\b','',v);v=v.rstrip('., ');v=v.replace('⁡','').replace('∼',r'\sim').replace('⟹',r'\Longrightarrow').replace('⟨',r'\langle').replace('⟩',r'\rangle').replace('∞',r'\infty').replace('∈',r'\in').replace('−','-').replace('×',r'\times').replace(r'\dfrac',r'\frac');return re.sub(r'\s+|[{}]','',v)
 def nums(v):
