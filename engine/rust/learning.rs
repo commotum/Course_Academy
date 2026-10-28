@@ -268,10 +268,13 @@ pub fn validate_response_question(s: &EntitySnapshot, question: u64) -> Result<(
             if canonical.trim().is_empty() {
                 return Err("canonical blank answer is empty".into());
             }
+            let context = math_context(s, question)?;
             match ident(s, correct, "answer/type")?.as_str() {
                 "answer.type/math"
                     if RationalParser::parse(&normalize_math(canonical)).is_some()
-                        || symbolic::supports(canonical, math_context(s, question)?) => {}
+                        || symbolic::supports(canonical, context)
+                        || comma_values(canonical, s.entity(question)?.get("question/problem").and_then(Value::as_str).unwrap_or(""))
+                            .is_some_and(|values| values.iter().all(|v| symbolic::supports(v, context))) => {}
                 "answer.type/text" => {}
                 _ => {
                     return Err("this blank needs a symbolic grader before it can be served".into());
@@ -1889,11 +1892,45 @@ pub fn grade(s: &EntitySnapshot, question: u64, responses: &BTreeMap<u64, String
     if fields != responses.keys().copied().collect() {
         return Err("answer every field of the current question".into());
     }
+    if let Some([(f1, a), (f2, b)]) = interchangeable_exponents(s, question)? {
+        let c=math_context(s, question)?;
+        // Both exponent labels may be exchanged, but duplicate roots cannot
+        // replace a fundamental pair. Require one complete bijection.
+        let direct=compare_math(&responses[&f1],&a,c)? && compare_math(&responses[&f2],&b,c)?;
+        let swapped=compare_math(&responses[&f1],&b,c)? && compare_math(&responses[&f2],&a,c)?;
+        return Ok(direct || swapped);
+    }
     let mut correct = true;
     for field in fields {
         correct &= grade_field(s, question, field, &responses[&field])?;
     }
     Ok(correct)
+}
+
+/// The two exponents of c1*exp(r1*x)+c2*exp(r2*x) are labels, not an
+/// ordered coordinate pair. Restrict this to that explicit two-blank contract;
+/// arbitrary two-field questions retain their independent canonical values.
+fn interchangeable_exponents(s: &EntitySnapshot, question: u64) -> Result<Option<[(u64,String);2]>> {
+    let q=s.entity(question)?;
+    let prompt=q.get("question/problem").and_then(Value::as_str).unwrap_or("").to_lowercase();
+    let compact=normalize_math(&prompt);
+    if !prompt.contains("general solution") || !compact.contains("c_1e^{r_1x}+c_2e^{r_2x}")
+        || ["increasing order", "decreasing order", "ascending order", "descending order", "r_1<r_2", "r_1>r_2", "r_1 < r_2", "r_1 > r_2"].iter().any(|word| prompt.contains(word)) {
+        return Ok(None);
+    }
+    let fields=s.refs(question,"question/answer-fields")?;
+    if fields.len()!=2 { return Ok(None); }
+    let mut pair=Vec::new();
+    for f in fields {
+        let key=s.entity(f)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
+        if !["r1","r2"].contains(&key) || ident(s,f,"answer-field/type")? != "answer-field.type/blank" { return Ok(None); }
+        let a=s.reference(f,"answer-field/correct")?;
+        if ident(s,a,"answer/type")? != "answer.type/math" { return Ok(None); }
+        let value=s.entity(a)?.get("answer/value").and_then(Value::as_str).ok_or("math answer needs a value")?.to_owned();
+        pair.push((f,value));
+    }
+    if compare_math(&pair[0].1,&pair[1].1,math_context(s,question)?)? { return Ok(None); }
+    Ok(Some([pair.remove(0),pair.remove(0)]))
 }
 
 /// Compare one submitted field using the same choice/text/symbolic rules as
@@ -1933,6 +1970,10 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
                     .ok_or("Question needs a problem statement")?
                     .to_lowercase();
                 let context = math_context(s, question)?;
+                if let Some(pair) = interchangeable_exponents(s, question)? {
+                    return Ok(compare_math(submitted, &pair[0].1, context)?
+                        || compare_math(submitted, &pair[1].1, context)?);
+                }
                 let key = s.entity(field)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
                 if displayed_integration_constant(&prompt, key)
                     || displayed_solution_family_constant(&prompt, key)
@@ -2241,6 +2282,17 @@ fn ordered_pair_coordinates(value: &str) -> Option<(&str, &str)> {
     (!left.is_empty() && !right.is_empty()).then_some((left, right))
 }
 
+/// Bare comma lists are finite values only under an explicit comma-values
+/// instruction. Nested commas and ordered pairs do not acquire set semantics.
+fn comma_values(value: &str, prompt: &str) -> Option<Vec<String>> {
+    let p=prompt.to_lowercase();
+    if !(p.contains("values") && p.contains("separate") && p.contains("commas")) || p.contains("ordered") { return None; }
+    let compact=normalize_math(value);
+    let wrapped=format!("({compact})");
+    let (a,b)=ordered_pair_coordinates(&wrapped)?;
+    Some(vec![a.to_owned(),b.to_owned()])
+}
+
 /// Error-preserving comparison shared by grading and content reconciliation.
 pub fn compare_math_in_context(
     a: &str,
@@ -2248,6 +2300,12 @@ pub fn compare_math_in_context(
     prompt: &str,
     context: symbolic::Context,
 ) -> Result<bool> {
+    if let Some(expected)=comma_values(b,prompt) {
+        let Some(actual)=comma_values(a,prompt) else { return Ok(false); };
+        return crate::set_answers::compare(&format!(r"\{{{}\}}",actual.join(",")),
+            &format!(r"\{{{}\}}",expected.join(",")), |x,y| compare_math(x,y,context))
+            .ok_or("unsupported comma-separated values")?;
+    }
     if let Some(result) = crate::set_answers::compare(a, b, |x, y| compare_math(x, y, context)) {
         return result;
     }
@@ -5355,5 +5413,33 @@ mod explicit_prompt_sign_regressions {
             let context = comparison_context(prompt, &["with $b>0$".into()]);
             assert_ne!(compare("10|b|", "10b", context), Ok(true), "{prompt}");
         }
+    }
+}
+
+#[cfg(test)]
+mod assignment_answer_shape_tests {
+    use super::*;
+    #[test]
+    fn comma_values_accept_both_orders_and_reject_missing_or_wrong_roots() {
+        let p="Find the values of r. Separate the values by commas.";
+        for a in ["4,5","5,4","8/2,10/2"] { assert_eq!(compare_math_in_context(a,"4,5",p,symbolic::Context::default()),Ok(true)); }
+        for a in ["4,4","4,6","4","(4,5)"] { assert_eq!(compare_math_in_context(a,"4,5",p,symbolic::Context::default()),Ok(false)); }
+        assert!(compare_math_in_context("5,4","4,5","Find an ordered pair.",symbolic::Context::default()).is_err());
+        assert!(compare_math_in_context("unknown(x),5","4,5",p,symbolic::Context::default()).is_err());
+    }
+    #[test]
+    fn exponential_root_labels_can_swap_without_accepting_duplicate_roots() {
+        let mut s=tests::fixture();
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(r"The general solution is $y=c_1e^{r_1x}+c_2e^{r_2x}$. Find $r_1=$ {{r1}} and $r_2=$ {{r2}}."));
+        s.entities.get_mut(&100).unwrap().insert("question/answer-fields".into(),json!([200,201]));
+        for (f,a,key,value) in [(200,300,"r1","4"),(201,301,"r2","-6")] {
+            s.entities.insert(f,json!({"answer-field/id":format!("field-{f}"),"answer-field/key":key,"answer-field/type":"answer-field.type/blank","answer-field/choices":[a],"answer-field/correct":a}).as_object().unwrap().clone());
+            s.entities.insert(a,json!({"answer/id":format!("answer-{a}"),"answer/type":"answer.type/math","answer/value":value}).as_object().unwrap().clone());
+        }
+        for values in [["4","-6"],["-6","4"]] {assert_eq!(grade(&s,100,&BTreeMap::from([(200,values[0].into()),(201,values[1].into())])),Ok(true));}
+        for values in [["4","4"],["-6","-6"],["4","6"]] {assert_eq!(grade(&s,100,&BTreeMap::from([(200,values[0].into()),(201,values[1].into())])),Ok(false));}
+        for value in ["4","-6"] {assert_eq!(grade_field(&s,100,200,value),Ok(true));}
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(r"The general solution is $y=c_1e^{r_1x}+c_2e^{r_2x}$. Put the roots in increasing order."));
+        assert!(interchangeable_exponents(&s,100).unwrap().is_none());
     }
 }

@@ -2112,11 +2112,18 @@ fn matrix_cells(source: &str) -> Result<Option<Vec<Vec<&str>>>> {
     Ok(None)
 }
 
+fn plus_minus(source: &str) -> Option<&str> {
+    let source = source.trim();
+    source.strip_prefix('±').or_else(|| source.strip_prefix(r"\pm")
+        .filter(|rest| !rest.starts_with(|c: char| c.is_ascii_alphabetic())))
+        .map(str::trim)
+}
+
 /// Whether a canonical answer has a bounded, supported representation.
 pub fn supports(source: &str, context: Context) -> bool {
     match matrix_cells(source) {
         Ok(Some(rows)) => rows.iter().flatten().all(|cell| parse(cell, context).is_ok()),
-        Ok(None) => parse(source, context).is_ok(),
+        Ok(None) => parse(plus_minus(source).unwrap_or(source), context).is_ok(),
         Err(_) => false,
     }
 }
@@ -2254,11 +2261,14 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
     // A leading plus/minus denotes two possible values. Against a scalar,
     // both branches must equal it: an extra, provably distinct value is wrong.
     // This does not claim support for arbitrary set-valued expressions.
-    fn plus_minus(source: &str) -> Option<&str> {
-        let source = source.trim();
-        source.strip_prefix('±').or_else(|| source.strip_prefix(r"\pm")
-            .filter(|rest| !rest.starts_with(|c: char| c.is_ascii_alphabetic())))
-            .map(str::trim)
+    if let (Some(a), Some(b)) = (plus_minus(a), plus_minus(b)) {
+        // Each expression denotes the pair {u, -u}; either bijection proves
+        // equality. Preserve unresolved/domain errors when neither is proved.
+        return match (compare_single(a, b, context), compare_single(a, &format!("-({b})"), context)) {
+            (Ok(true), _) | (_, Ok(true)) => Ok(true),
+            (Ok(false), Ok(false)) => Ok(false),
+            (Err(error), _) | (_, Err(error)) => Err(error),
+        };
     }
     let pair = match (plus_minus(a), plus_minus(b)) {
         (Some(rest), None) => Some((rest, b)),
@@ -3351,5 +3361,24 @@ mod explicit_signed_variable_regressions {
         assert_eq!(compare("10abs(b-1)", "10b-10", positive), Ok(false));
         assert_eq!(compare("10abs(c)", "10c", positive), Ok(false));
         assert_eq!(compare("10abs(b)", "10b", Context { positive_variables: bit, negative_variables: bit, ..Context::default() }), Ok(false));
+    }
+}
+
+#[cfg(test)]
+mod assignment_branch_tests {
+    use super::*;
+    #[test]
+    fn paired_energy_branches_preserve_signs_and_domains() {
+        let c=Context::default();
+        assert!(!supports(r"\pm\sqrt{(2E-kx^2)/m}",c));
+        let positive_mass=Context{positive_variables:1 << (b'm'-b'a'),..c};
+        assert!(supports(r"\pm\sqrt{(2E-kx^2)/m}",positive_mass), "{:?}",parse(r"\sqrt{(2E-kx^2)/m}",positive_mass));
+        assert_eq!(compare(r"\pm\sqrt{x}",r"±sqrt(x)",c),Ok(true));
+        assert_eq!(compare(r"\pm\sqrt{x}",r"\pm(-\sqrt{x})",c),Ok(true));
+        assert_eq!(compare(r"\pm\sqrt{x}",r"\pm2\sqrt{x}",c),Ok(false));
+        assert_eq!(compare(r"\sqrt{x}",r"\pm\sqrt{x}",c),Ok(false));
+        assert!(compare(r"\pm\sqrt{x}",r"\pm\sqrt{-x}",c).is_err());
+        assert!(compare(r"\pm\sqrt{x/x}",r"\pm1",c).is_err());
+        assert!(!supports(r"\pm\unknown{x}",c));
     }
 }
