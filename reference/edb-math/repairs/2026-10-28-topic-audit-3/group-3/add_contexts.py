@@ -1,0 +1,3 @@
+import json
+from pathlib import Path
+H=Path(__file__).resolve().parent;D=json.loads((H/'snapshot.json').read_text());ids={q[':db/id']for q in D['questions']};parents=[p for p in json.loads((H.parent/'scoped-contexts.json').read_text())if any(s.get(':step/content',{}).get(':db/id')in ids for s in p.get(':multistep/steps',[]))];existing={c[':db/id']for c in D['content']};D['content'] += [p for p in parents if p[':db/id']not in existing];D['parents']=parents;(H/'snapshot.json').write_text(json.dumps(D,indent=2));print('snapshot ready',len(D['questions']),'content',len(D['content']),'tutorials',sum(':tutorial/content'in c for c in D['content']),'parents',len(parents))
