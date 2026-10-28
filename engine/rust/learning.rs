@@ -2576,14 +2576,23 @@ pub fn comparison_context(prompt: &str, titles: &[String]) -> symbolic::Context 
     // be decided, a worked solution, or the owning KP's title. Restrict each
     // protected math span to a single strict sign assertion.
     static DECLARED_SIGN: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
-        regex::Regex::new(r"(?i:\b(?:with|where|given that|assuming|assume|for))\s+\$\s*([a-z])\s*(>|<|\\gt|\\lt)\s*0\s*[.,;]?\s*\$")
+        regex::Regex::new(r"\$\s*([a-z])\s*(>|<|\\gt|\\lt)\s*0\s*[.,;]?\s*\$")
             .expect("valid explicit sign declaration")
+    });
+    // A declaration may close a comma-separated list of premises, e.g.
+    // "where $x=r\cos\theta$, $y=r\sin\theta$, and $r>0$". Match each
+    // sign span separately so earlier, conflicting signs are never swallowed
+    // by a greedy list match. An unanchored "and" alone is not a premise.
+    static DECLARATION_PREFIX: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
+        regex::Regex::new(r"(?i:\b(?:with|where|given that|assuming|assume|for))\s+(?:\$[^$\n]+\$\s*,\s*(?:(?i:and)\s+)?)*$")
+            .expect("valid explicit declaration list prefix")
     });
     let mut positive_variables = 0;
     let mut negative_variables = 0;
     for capture in DECLARED_SIGN.captures_iter(prompt) {
         let span = capture.get(0).expect("whole sign declaration");
         let before = &prompt[..span.start()];
+        if !DECLARATION_PREFIX.is_match(before) { continue; }
         let after = prompt[span.end()..].trim_start().trim_start_matches(',').trim_start();
         // A hypothetical/disjunctive or negated clause supplies no assumption.
         let clause = before.rsplit(['.', '!', '?', ';']).next().unwrap_or("");
@@ -5481,5 +5490,42 @@ mod assignment_answer_shape_tests {
         for value in ["4","-6"] {assert_eq!(grade_field(&s,100,200,value),Ok(true));}
         s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(r"The general solution is $y=c_1e^{r_1x}+c_2e^{r_2x}$. Put the roots in increasing order."));
         assert!(interchangeable_exponents(&s,100).unwrap().is_none());
+    }
+}
+
+#[cfg(test)]
+mod declared_coordinate_domain_tests {
+    use super::comparison_context;
+    use crate::symbolic::compare;
+
+    #[test]
+    fn final_list_sign_supplies_only_the_explicit_domain() {
+        let prompt = r"Let $f(r,\theta)=r^2$, where $x=r\cos\theta$, $y=r\sin\theta$, and $r>0$. Find its derivative.";
+        let c = comparison_context(prompt, &[]);
+        assert_eq!(compare("r/r", "1", c), Ok(true));
+        assert_eq!(compare("2r^2/r", "2r", c), Ok(true));
+        assert_eq!(compare("-2r^2/r", "2r", c), Ok(false));
+        assert_eq!(compare(r"\sqrt{r^2}", "r", c), Ok(true));
+        // A different hole is still an obligation, even with positive radius.
+        assert!(compare("(r-1)/(r-1)", "1", c).is_err());
+        // Unrelated variables do not inherit the radial declaration.
+        assert!(compare("x/x", "1", c).is_err());
+    }
+
+    #[test]
+    fn lists_preserve_conflicts_negation_and_question_boundaries() {
+        for prompt in [
+            "where $r>0$, and $r<0$.",
+            "where $r<0$, and $r>0$.",
+            "Do not assume $x=1$, and $r>0$.",
+            "Determine whether $x=1$, and $r>0$.",
+            "with $x=1$, and $r>0$ or $r<0$.",
+            "Find a relation between $x=1$, and $r>0$.",
+        ] {
+            let c = comparison_context(prompt, &["where $r>0$".into()]);
+            assert_ne!(compare(r"\sqrt{r^2}", "r", c), Ok(true), "{prompt}");
+        }
+        let negative = comparison_context("where $x=1$, and $r<0$.", &[]);
+        assert_eq!(compare(r"\sqrt{r^2}", "-r", negative), Ok(true));
     }
 }
