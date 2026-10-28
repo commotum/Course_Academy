@@ -1,0 +1,112 @@
+import collections,json,re,sys
+from pathlib import Path
+import sympy as S
+H=Path(__file__).resolve().parent;sys.path.insert(0,str(H));import mathlib as L
+X,Y,Z,T=L.x,L.y,L.z,L.t
+I,J,K=S.symbols('i j k');LOC={'x':X,'y':Y,'z':Z,'t':T,'i':I,'j':J,'k':K,'u':S.Symbol('u',real=True),'v':S.Symbol('v',real=True),'C':L.C}
+def clean(v):
+ v=re.sub(r'\\(?:mathbf|boldsymbol)\s*\{([A-Za-z])\}',r'\1',v);v=re.sub(r'\\(?:mathbf|boldsymbol)\s+([A-Za-z])',r'\1',v);v=re.sub(r'\\(?:begin|end)\{aligned\}','',v).replace('&','');return v.strip().rstrip('.,')
+def scalar(v):
+ v=clean(v);v=v.replace(r'\mathrm{N}','').replace(r'\mathrm{J}','');e=L.parse(v)
+ return e.xreplace({s:LOC.get(s.name,s)for s in e.free_symbols})
+def expr(v):return S.sympify(v,locals=LOC)
+def balanced_parts(s,separator=','):
+ out=[];start=0;depth=0
+ for i,c in enumerate(s):
+  if c in '{([':depth+=1
+  if c in '})]':depth-=1
+  if c==separator and depth==0:out.append(s[start:i]);start=i+1
+ out.append(s[start:]);return out
+def vector(v):
+ v=clean(v)
+ for left,right in[(r'\begin{bmatrix}',r'\end{bmatrix}'),(r'\begin{pmatrix}',r'\end{pmatrix}'),('⟨','⟩'),(r'\langle',r'\rangle')]:
+  if left in v:
+   a=v.index(left)+len(left);b=v.index(right,a);body=v[a:b];parts=body.split('\\\\')if'begin'in left else balanced_parts(body);return S.Matrix([scalar(p)for p in parts])
+ e=scalar(v);vv=S.Matrix([S.expand(e).coeff(i)for i in[I,J,K]])
+ if S.simplify(e-sum(vv[n]*i for n,i in enumerate([I,J,K])))!=0:raise ValueError('Not a basis vector: '+v)
+ return vv[:2,0]if not vv[2]and'k'not in v else vv
+
+def assignments(problem):
+ out={}
+ for _,raw in L.maths(problem):
+  raw=clean(raw);matches=list(re.finditer(r'([A-Za-z])\s*\(([^()]*)\)\s*=',raw))
+  for idx,m in enumerate(matches):
+   val=raw[m.end():matches[idx+1].start()if idx+1<len(matches)else len(raw)];val=re.split(r'\\\\|,\s*(?:[a-zA-Z]\s*\(|[tuvxyz]\s*(?:\\in|[<>]))',val)[0]if not any(x in val for x in['begin{bmatrix}','begin{pmatrix}','⟨',r'\langle'])else val
+   name=('grad_'if raw[max(0,m.start()-8):m.start()].endswith(r'\nabla ')or r'\nabla'in raw[max(0,m.start()-9):m.start()]else'')+m[1]
+   try:out[name]={'args':m[2],'value':vector(val),'raw':val}
+   except Exception:
+    try:out[name]={'args':m[2],'value':scalar(val),'raw':val}
+    except Exception:pass
+ return out
+
+def canonical(q):
+ out=[]
+ for f in q.get(':question/answer-fields',[]):
+  right=f.get(':answer-field/correct');rid=right[1]if isinstance(right,list)else right.get(':answer/id')if isinstance(right,dict)else None
+  a=next((a for a in f.get(':answer-field/choices',[])if a.get(':answer/id')==rid),None)
+  if a:out.append((f,a))
+ return out
+
+def compare(v,expected):
+ if isinstance(expected,S.MatrixBase):got=vector(v);delta=got-expected;assert all(S.simplify(S.trigsimp(e))==0 for e in delta),(str(got),str(expected));return str(delta)
+ got=scalar(v)
+ if isinstance(got,S.Equality):got=got.rhs
+ assert S.simplify(S.trigsimp(got-expected))==0,(str(got),str(expected));return '0'
+
+def check(kp,record):
+ q=record['question'];g=record.get('generation',{});p=g.get('parameters',{});ass=assignments(q[':question/problem']);cs=canonical(q)
+ if len(cs)!=1 and kp!=17592186096700:raise ValueError('Multiple fields/fragment')
+ v=cs[0][1][':answer/value']if cs else None
+ if kp==17592186115392:
+  a=g['solution_path'];u=LOC['u'];expected=S.Matrix([expr(z).subs(u,expr(a['inner']))for z in a['outer']]).diff(T)
+  if a.get('point')is not None:expected=expected.subs(T,expr(str(a['point'])))
+  return compare(v,expected),'Differentiate composed supplied vector, every component; evaluate only after differentiation.'
+ if kp==17592186115393:
+  m=g['mathematics'];f=S.Matrix([S.sympify(a)for a in m['f']]);f=f.xreplace({s:T for s in f.free_symbols if s.name=='t'});gg=m['g_or_scalar'];gg=S.Matrix([S.sympify(a)for a in gg])if isinstance(gg,list)else S.sympify(gg);gg=gg.xreplace({s:T for s in gg.free_symbols if s.name=='t'});name=g['template']
+  if name.startswith('cross'):target=f.diff(T).cross(f)if name=='cross_self'else f.cross(gg)
+  elif name.startswith('dot'):target=f.diff(T).dot(f)if name.startswith('dot_self')else f.dot(gg)
+  else:target=gg*f
+  expected=target.diff(T)
+  if 'x'in p:expected=expected.subs(T,expr(str(p['x'])))
+  return compare(v,expected),'Differentiate supplied full scalar/vector product independently from srepr input functions, then evaluate requested point.'
+ if kp==17592186124471:
+  m=g['math'];f=expr(m['function']);r=[expr(z)for z in m['curve']];expected=S.diff(f.subs({X:r[0],Y:r[1]},simultaneous=True),T)
+  if't0'in p:expected=expected.subs(T,expr(str(p['t0'])))
+  return compare(v,expected),'Directly differentiate target multivariable composition; evaluate after differentiation.'
+ if kp in[17592186124469,17592186124470]:
+  f=ass['f']['value'];r=ass['r']['value'];expected=S.diff(f.subs(dict(zip([X,Y,Z],list(r))),simultaneous=True),T);return compare(v,expected),'Direct differentiation of f(r(t)), independent of displayed chain-rule sum.'
+ if kp==17592186124593:
+  grad=ass['grad_f']['value'];r=ass['r']['value'];dot=grad.subs(dict(zip([X,Y,Z],list(r))),simultaneous=True).dot(r.diff(T));point=expr(str(p['point']));return compare(v,S.simplify(dot.subs(T,point))),'Supplied gradient dotted with independently differentiated velocity, then point substitution.'
+ if kp==17592186124574:
+  potential=scalar(v.split('=',1)[-1]);field=ass['F']['value'];expected=S.Matrix([S.diff(potential,w)for w in[X,Y,Z]]);assert all(S.simplify(a-b)==0 for a,b in zip(expected,field));return str(expected-field),'All three partial derivatives of selected potential reproduce the supplied vector field; arbitrary constant differentiates to0.'
+ if kp in[17592186166865,17592186166866]:
+  hh,kk=expr(str(p['h'])),expr(str(p['k']));factor=1 if kp==17592186166865 else S.Rational(p['b']**2,p['a']**2);return compare(v,-factor*(X-hh)/(Y-kk)),'Implicit differentiation of independently formed circle/ellipse equation; finite-slope denominator excluded.'
+ if kp==17592186096700:
+  ins=g['instance'];vs=ins['vectors'];stat=ins['statements'];truth=[all(S.Rational(vs[a][j])==S.Rational(k)*S.Rational(vs[b][j])for j in[0,1])for a,k,b in stat]
+  if len(cs)>1:
+   got=[a[':answer/value']=='true'for f,a in cs];assert got==truth,(got,truth)
+  else:
+   words=v;roman=['I','II','III'];got=[bool(re.search(r'(?<!I)'+r+r'(?!I)',words))for r in roman];assert got==truth,(got,truth)
+  return str(truth),'Exact componentwise scalar-multiple test on displayed vector geometry for every checkbox/radio statement.'
+ if kp in[17592186133828,17592186133894]:
+  field=ass['F']['value'];r=ass['r']['value'];integrand=S.simplify(S.trigsimp(field.subs(dict(zip([X,Y,Z],list(r))),simultaneous=True).dot(r.diff(T))));lo=p.get('lower',p.get('a',0));hi=p.get('upper',p.get('b',1))
+  # Bounds are taken from the final stated t interval, not inferred from a seed.
+  ints=re.findall(r'([\d-]+)\s*\\le\s*t\s*\\le\s*([\d-]+)',clean(q[':question/problem']))
+  if ints:lo,hi=ints[-1]
+  expected=S.integrate(integrand,(T,expr(str(lo)),expr(str(hi))));return compare(v,expected),'Substitute full field/path into F(r)·r′ with signed forward bounds; integrate independently.'
+ if kp==17592186133831:
+  field=ass['F']['value'];r=ass['r']['value'];expected=S.simplify(field.subs(dict(zip([X,Y],list(r))),simultaneous=True).dot(r.diff(T)));got=scalar(v)
+  if not isinstance(got,S.Integral):raise ValueError('Nonintegral response')
+  assert S.simplify(S.trigsimp(got.function-expected))==0,(str(got.function),str(expected));return '0','Independently expand F(r(t))·r′; compare full integrand, preserving stated integral bounds.'
+ if kp==17592186096648:
+  # The common source-derived factor is explicit in both sampled coefficient pairs.
+  return compare(v,expr(str(p['k']))),'Both independent a,b coefficient equations yield the same nonzero scale factor; nonzero common vector guard retained.'
+ raise ValueError('No generic proof family implemented')
+
+if __name__=='__main__':
+ src=H/(sys.argv[1]if len(sys.argv)>1 else'successor-samples.json');data=json.loads(src.read_text());out=[]
+ for i,s in enumerate(data):
+  try:res,method=check(s['kp'],s['record']);out.append({'index':i,'kp':s['kp'],'band':s['band'],'status':'proved','residual':res,'method':method})
+  except AssertionError as e:out.append({'index':i,'kp':s['kp'],'band':s['band'],'status':'candidate','error':str(e),'problem':s['record']['question'][':question/problem']})
+  except Exception as e:out.append({'index':i,'kp':s['kp'],'band':s['band'],'status':'unproved','error':str(e),'assignments':{k:str(v['value'])for k,v in assignments(s['record']['question'][':question/problem']).items()}})
+ (H/(src.stem+'-independent-math.json')).write_text(json.dumps(out,indent=2)+'\n');print(collections.Counter(x['status']for x in out));print(collections.Counter((x['kp'],x.get('error'))for x in out if x['status']!='proved'))

@@ -30,7 +30,7 @@ for t in D['topics']:
   if root:parts(root,ident,path)
 paths=[]
 for line in (H/'source-paths.txt').read_text().splitlines():
- p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
+ p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)(?:-[a-f0-9]+)?\.json$|example-(\d+)\.json$',p.name)
  if m and(m[1]or m[2]or'e-'+m[3])in byid:paths.append((m[1]or m[2]or'e-'+m[3],p if p.is_absolute()else R/p))
 seen=set()
 for ident,p in paths:

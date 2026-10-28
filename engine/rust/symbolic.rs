@@ -165,6 +165,33 @@ impl Poly {
                     })
             })
     }
+    /// Strip a common, provably nonzero constant logarithmic coefficient.
+    /// Rational logs expand into sums, so (x^5-2)*ln(10) otherwise records
+    /// a different guard from (x^5-2) with ln(10) divided out separately.
+    /// Coefficients must be exactly proportional; interval bounds discharge
+    /// only the variable-free factor, never a variable's domain restriction.
+    fn without_nonzero_log_coefficient(&self) -> Option<Poly> {
+        let mut coefficients = BTreeMap::<Mono, BTreeMap<Mono, Q>>::new();
+        for (mono, coefficient) in &self.0 {
+            let (logs, rest): (Mono, Mono) = mono.iter()
+                .map(|(a, e)| (a.clone(), *e))
+                .partition(|(a, _)| matches!(a, Atom::Function(n, v)
+                    if n == "ln" && v.constant().is_some()));
+            coefficients.entry(rest).or_default().insert(logs, coefficient.clone());
+        }
+        let first = Poly(coefficients.first_key_value()?.1.clone());
+        if first.constant().is_some() { return None; }
+        let common = first.monic();
+        let (lo, hi) = common.interval()?;
+        if !lo.is_positive() && !hi.is_negative() { return None; }
+        let mut residual = BTreeMap::new();
+        for (mono, terms) in coefficients {
+            let coefficient = Poly(terms);
+            if coefficient.monic() != common { return None; }
+            residual.insert(mono, coefficient.0.first_key_value()?.1.clone());
+        }
+        Some(Poly(residual))
+    }
     fn rational_variables_only(&self) -> bool {
         self.0
             .keys()
@@ -927,6 +954,9 @@ impl Algebra {
             .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
         {
             return Ok(());
+        }
+        if let Some(base) = p.without_nonzero_log_coefficient() {
+            return self.nonzero(&base);
         }
         if let Some(base) = p.repeated_quadratic_base() {
             return self.nonzero(&base);
@@ -3009,6 +3039,23 @@ mod tests {
         assert!(compare_up_to_constant("ln(t^2)/2+3", "ln(t)", Context::default()).is_err());
         assert_eq!(compare_up_to_constant("0", "ln(t)", Context::default()), Ok(false));
         assert_eq!(compare_up_to_constant("0", "1/sqrt(t)", Context::default()), Ok(false));
+    }
+    #[test]
+    fn factored_log_denominators_preserve_nonzero_guards() {
+        for (a, b) in [
+            ("5x^4/((x^5-2)*ln(10))", "(1/ln(10))*(5x^4/(x^5-2))"),
+            ("1/((x-2)*ln(6))", "(1/ln(6))/(x-2)"),
+            ("1/((x^2+1)*ln(2/3))", "(1/ln(2/3))/(x^2+1)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        assert_eq!(compare("1/((x-2)*ln(6))", "1/((x-2)*ln(10))", Context::default()), Ok(false));
+        // Removing a known nonzero constant must retain cancelled holes.
+        assert!(compare("(x-2)/((x-2)*ln(10))", "1/ln(10)", Context::default()).is_err());
+        // Variable log arguments must never be treated as constants.
+        assert!(compare("ln(x)/ln(x)", "1", Context::default()).is_err());
+        assert!(!supports("1/ln(1)", Context::default()));
     }
     #[test]
     fn rational_logarithm_identities_preserve_grading_and_domains() {
