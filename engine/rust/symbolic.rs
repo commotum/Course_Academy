@@ -1547,6 +1547,31 @@ impl Algebra {
                     };
                     return self.add(&first, &second);
                 }
+                // Normalize a bounded whole-argument factor of three exactly.
+                // This accepts learner triple-angle expansions without numerical
+                // guessing and preserves every original domain guard. Dividing
+                // ALL coefficients (including constants) prevents lost shifts;
+                // recursion strictly decreases their maximum magnitude.
+                if x.den == Poly::integer(1)
+                    && x.num.0.values().all(|c| c.is_integer()
+                        && c.to_integer().to_i32().is_some_and(|n|
+                            n.unsigned_abs() <= 64 && n % 3 == 0))
+                {
+                    let third = self.value(
+                        x.num.scale(&Q::new(1.into(), 3.into())),
+                        Poly::integer(1),
+                    )?;
+                    let base = self.function(name, &third)?;
+                    let square = self.mul(&base, &base)?;
+                    let cube = self.mul(&square, &base)?;
+                    let triple = self.mul(&Value::integer(3), &base)?;
+                    let quadruple = self.mul(&Value::integer(4), &cube)?;
+                    return if name == "sin" {
+                        self.add(&triple, &quadruple.neg())
+                    } else {
+                        self.add(&quadruple, &triple.neg())
+                    };
+                }
                 // Exact double-angle normalization for bounded even integer
                 // polynomial coefficients. Halving the whole argument preserves
                 // shifts and nonlinear terms; never halve only its leading term.
@@ -2777,6 +2802,31 @@ mod tests {
             assert_ne!(compare(a, "2/(cos(t)-sin(t))^2", c), Ok(true), "{a}");
         }
         assert_ne!(compare("(1-sin(2*t))/(cos(t)-sin(t))^2", "1", c), Ok(true));
+    }
+
+    #[test]
+    fn bounded_triple_angle_expansions_preserve_shifts_and_domains() {
+        let c = Context::default();
+        for (a, b) in [
+            ("sin(3*x)", "3*sin(x)-4*sin(x)^3"),
+            ("cos(3*x)", "4*cos(x)^3-3*cos(x)"),
+            ("sin(-3*x)", "4*sin(x)^3-3*sin(x)"),
+            ("cos(-3*x)", "4*cos(x)^3-3*cos(x)"),
+            ("sin(3*x+3)", "3*sin(x+1)-4*sin(x+1)^3"),
+            ("cos(3*x^2+6)", "4*cos(x^2+2)^3-3*cos(x^2+2)"),
+            ("sin(6*x)", "3*sin(2*x)-4*sin(2*x)^3"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, c), Ok(true), "{b} vs {a}");
+        }
+        for (a, b) in [
+            ("sin(3*x)", "3*sin(x)+4*sin(x)^3"),
+            ("cos(3*x)", "4*cos(x)^3+3*cos(x)"),
+            ("sin(3*x+1)", "3*sin(x)-4*sin(x)^3"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}");
+        }
+        assert_ne!(compare("sin(3*x)/sin(x)", "3-4*sin(x)^2", c), Ok(true));
     }
 
     #[test]
