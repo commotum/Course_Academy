@@ -32,6 +32,10 @@ for item in json.loads((H/'source-control-reconstructions.json').read_text()):
    if 'A scientific calculator is required'in q[':question/problem']and'A scientific calculator is required'not in after:after+='\n\n> A scientific calculator is required to answer this question.'
    if q[':db/id']==17592186167223:
     after=after.replace(r'3\operatorname{cos}(2t)',r'3\operatorname{cos}(6t)').replace(r'3\operatorname{sin}(2t)',r'3\operatorname{sin}(6t)')
+   old_assets=re.findall(r'!\[[^]]*\]\(([^)]+)\)',q[':question/problem']);new_assets=re.findall(r'!\[[^]]*\]\(([^)]+)\)',after)
+   if len(old_assets)!=len(new_assets):continue
+   if new_assets:
+    asset_iter=iter(old_assets);after=re.sub(r'!\[([^]]*)\]\(([^)]+)\)',lambda m:'!['+m[1]+']('+next(asset_iter)+')',after)
    if source.get('errors'):continue
    candidates.append((after,source['path'],proof))
  if not candidates:

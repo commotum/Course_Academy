@@ -1,4 +1,4 @@
-import collections,json,re,sys
+import collections,json,re,sys,signal
 from pathlib import Path
 import sympy as sp
 from symbolic import parse,SYMS,Unsupported,evaluate
@@ -84,6 +84,8 @@ def ode_task(q):
  raise Unsupported('no parseable ODE')
 def answer_expr(a):
  v=clean(a[':answer/value']);v=v.split('=',1)[1]if '='in v else v;return parse(v)
+def timeout_handler(*args):raise TimeoutError('symbolic simplification limit')
+signal.signal(signal.SIGALRM,timeout_handler)
 checks=[];unresolved=[];bad=[];completion_matches=[]
 for q in D['questions']:
  topics=topicof[q[':db/id']];kind='derivative'if topics&{1007,1108}else'integral'if topics&{312,342}else'ode'if topics&{466,1061,1179,878,614}else None
@@ -102,6 +104,7 @@ for q in D['questions']:
     unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'partial expression blank requires reconstruction'});continue
  if f[':answer-field/type'][':db/id']not in (17592186045492,17592186045493):unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':'non scalar radio/blank response'});continue
  try:
+  signal.alarm(4)
   if kind=='derivative':
    definition,var=derivative_task(q);expected=sp.diff(definition,var)
    if 'slope'in q[':question/problem'].lower()or 'tangent'in q[':question/problem'].lower():
@@ -114,10 +117,12 @@ for q in D['questions']:
     expected=slope*(var-point)+definition.subs(var,point)if 'equation'in q[':question/problem'].lower()else slope
   elif kind=='integral':integrand,var,domain=integral_task(q)
   else:residual,state=ode_task(q);var=SYMS[state['variable']]
- except Exception as ex:unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':str(ex)[:300]});continue
+ except Exception as ex:signal.alarm(0);unresolved.append({'entity':q[':db/id'],'kind':kind,'reason':str(ex)[:300]});continue
+ signal.alarm(0)
  results=[]
  for a in f[':answer-field/choices']:
   try:
+   signal.alarm(2)
    implicit=None
    if kind=='ode'and '='in a[':answer/value']:
     left,rightpart=a[':answer/value'].split('=',1);left=clean(left)
@@ -138,11 +143,14 @@ for q in D['questions']:
      constants=expression.free_symbols-{SYMS['x'],SYMS['t'],SYMS['y']};passed=len(constants)>=state['order']
    results.append({'answer':a[':db/id'],'value':a[':answer/value'],'passes':bool(passed),'difference':str(sp.simplify(difference))[:350]})
   except Exception as ex:results.append({'answer':a[':db/id'],'value':a[':answer/value'],'error':str(ex)[:180]})
+  finally:signal.alarm(0)
  right=f.get(':answer-field/correct',{}).get(':db/id');selected=next((r for r in results if r['answer']==right),None);matches=[r['answer']for r in results if r.get('passes')];row={'entity':q[':db/id'],'source':q.get(':question/math-academy-id'),'field':f[':db/id'],'kind':kind,'correct':right,'matches':matches,'selected_passes':selected.get('passes')if selected else None,'answers':results}
  if kind=='derivative':row.update(function=str(definition),expected=str(expected))
  elif kind=='integral':row.update(integrand=str(integrand),domain_note='arcsec |x|>1 components checked'if domain else'derivative equality on the integrand real domain; additive constants ignored')
  else:row.update(residual=str(residual),state=state,completeness_note='Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately.')
  checks.append(row)
+ if len(checks)%50==0:
+  (H/'symbolic-math-progress.json').write_text(json.dumps({'checks':len(checks),'last_entity':q[':db/id'],'mismatches':len(bad)}));print('symbolic',len(checks),flush=True)
  if selected and selected.get('passes')is False:bad.append(row)
  if right is None and len(matches)==1:completion_matches.append(row)
 (H/'symbolic-math-validation.json').write_text(json.dumps({'checks':checks,'mismatches':bad,'unresolved':unresolved,'unique_missing_key_candidates':completion_matches},indent=2));print('checked',len(checks),'kinds',collections.Counter(r['kind']for r in checks),'mismatch',len(bad),'unresolved',len(unresolved),'missingmatch',len(completion_matches));print('mismatch IDs',[(r['entity'],r['source'])for r in bad]);print('unresolved reasons',collections.Counter(r['reason'][:80]for r in unresolved).most_common(12))

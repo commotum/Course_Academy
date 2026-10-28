@@ -11,6 +11,7 @@ class Parser:
   value=str(text).strip().replace('−','-');value=re.sub(r'\\(?:text|textrm)\{\s*\}', ' ',value)
   funcs='arcsin|arccos|arctan|sinh|cosh|tanh|sin|cos|tan|sec|csc|cot|ln|log|exp'
   value=re.sub(r'(?<![A-Za-z{])\{('+funcs+r')\}((?:\^\{[^{}]*\})?)⁡?',lambda m:'\\'+m[1]+m[2]+' ',value)
+  value=re.sub(r'('+funcs+r')⁡',lambda m:'\\'+m[1]+' ',value)
   value=re.sub(r'(?<![A-Za-z\\])('+funcs+r')(?=⁡|\(|[xyzt])',lambda m:'\\'+m[1]+' ',value)
   value=re.sub(r'\\[,;!]|\\(?:quad|qquad|bigl|bigr|Bigl|Bigr)\b',' ',value)
   self.text=value.replace('⁡','').replace('θ',r'\theta ').replace('π',r'\pi ').replace('α',r'\alpha ').replace('β',r'\beta ');self.i=0;self.positive=positive

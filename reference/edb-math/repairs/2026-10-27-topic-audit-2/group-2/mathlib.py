@@ -13,11 +13,12 @@ def clean(v):
  v=re.sub(r'\\color\{[^{}]*\}|\\hspace\{[^{}]*\}|\\(?:displaystyle|textstyle|quad|qquad)\b','',v);v=re.sub(r'\\[,;!:]',' ',v)
  v=re.sub(r'\\int(?=[A-Za-z])',lambda m:m[0]+' ',v)
  v=re.sub(r'\{?([xy])\}?\s*\^\s*\{\s*\\prime\s*\}',r"\1'",v)
+ v=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log|exp)\}(?=\s*\^)',lambda m:'\\'+m[1]+' ',v)
  v=re.sub(r'\\(?:left|right|big|Big|bigg|Bigg)(?:[lrm])?\b','',v)
  v=re.sub(r'\{\s*(\\(?:sin|cos|tan|sec|csc|cot|ln|log|exp))\s*\}',r'\1 ',v)
  v=re.sub(r'\\frac\\pi\s*([0-9])',r'\\frac{\\pi}{\1}',v)
  # x(y+h) is multiplication in multivariable formulas. ODE y(x) is handled before parsing.
- v=re.sub(r'(?<![A-Za-z\\])([xyz])\s*\(',r'\1\\cdot(',v)
+ v=re.sub(r'(?<![A-Za-z\\_])([xyz])\s*\(',r'\1\\cdot(',v)
  return v.rstrip('.,?; ')
 @functools.lru_cache(maxsize=30000)
 def parse(v):

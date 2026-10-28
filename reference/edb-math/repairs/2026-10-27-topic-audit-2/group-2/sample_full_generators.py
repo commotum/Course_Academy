@@ -9,13 +9,18 @@ for k in ['TEMPLATES','FAMILIES','SPECS','CASES','PROFILES','SUPPORTED_LEVELS','
  if isinstance(v,dict):o[k]={str(a): (b if isinstance(b,(str,int,list,tuple,dict))else str(b)) for a,b in v.items()}
  elif isinstance(v,(list,tuple)):o[k]=v
 print(json.dumps(o,default=str))'''
+if (H/'generator-full-invocations.json').exists():
+ report=json.loads((H/'generator-full-invocations.json').read_text());out=json.loads((H/'generator-full-samples.json').read_text())
+done={x['kp']for x in report}
 for g in G:
+ if g['kp']in done:continue
  code=Path(g['path']).read_text();p=subprocess.run([sys.executable,'-c',probe,g['path']],capture_output=True,text=True,env=env,timeout=120)
  try:meta=json.loads(p.stdout)
  except:report.append({'kp':g['kp'],'probe_error':p.stderr});continue
  info={'kp':g['kp'],'meta':meta,'invocations':[]};jobs=[]
  if "'--template'"in code or '"--template"'in code:
   spec=meta.get('TEMPLATES')or meta.get('SPECS')or meta.get('CASES')or{}
+  if isinstance(spec,list):spec={str(n):None for n in spec}
   for name,v in spec.items():
    level=v.get('level',v.get('difficulty'))if isinstance(v,dict)else v[0]if isinstance(v,(list,tuple))else v
    if level not in['easy','moderate','hard']:

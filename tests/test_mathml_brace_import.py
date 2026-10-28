@@ -62,6 +62,15 @@ class MathMLBraceImportTests(unittest.TestCase):
         self.assert_formula('<mstyle mathbackground="#ffe"><mstyle mathcolor="red"><mn>7</mn></mstyle></mstyle><mn>8</mn>',
                             r'\bbox[#ffe, 2pt]{{\color{red}7}}8')
 
+    def test_powered_named_functions_keep_observed_application_marker(self):
+        self.assert_formula('<msup><mi>csc</mi><mn>2</mn></msup><mo>⁡</mo><mi>x</mi>',
+                            r'{\operatorname{csc}}^{2}x')
+        self.assert_formula('<msub><mstyle><mi>log</mi></mstyle><mn>2</mn></msub><mo>⁡</mo><mi>x</mi>',
+                            r'{\operatorname{log}}_{2}x')
+        self.assert_formula('<msup><mi>x</mi><mi>csc</mi></msup><mo>⁡</mo><mi>y</mi>',
+                            r'{x}^{csc}y')
+        self.assert_formula('<msup><mi>csc</mi><mn>2</mn></msup><mi>x</mi>', r'{csc}^{2}x')
+
     def test_literal_currency_and_percent_are_escaped_by_every_importer(self):
         self.assert_formula('<mtext>$</mtext><mn>12</mn><mo>%</mo>', r'\text{\$}12\%')
         self.assert_formula('<mtext>12% off</mtext>', r'\text{12\% off}')

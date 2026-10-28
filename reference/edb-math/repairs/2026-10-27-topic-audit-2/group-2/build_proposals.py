@@ -4,9 +4,11 @@ H=Path(__file__).resolve().parent
 # Preserve the original 57 source-format proposals separately before consolidation.
 if not(H/'format-proposals.json').exists():(H/'format-proposals.json').write_text((H/'proposals.json').read_text())
 p={}
-for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json']:
+for filename in ['format-proposals.json','control-proposals.json','completion-proposals.json','operator-proposals.json']:
  for x in json.loads((H/filename).read_text()):
   k=x['entity'],x['attribute']
+  if k in p and filename=='operator-proposals.json':
+   x['after']=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|csc|cot|ln|log|exp)\}(?=\s*\^)',lambda m:r'\operatorname{'+m[1]+'}',p[k]['after'])
   if k in p:x['reason']=p[k]['reason']+'; '+x['reason'];x['evidence']={'earlier':p[k]['evidence'],'current':x['evidence']}
   p[k]=x
 fields=json.loads((H/'fields.json').read_text())

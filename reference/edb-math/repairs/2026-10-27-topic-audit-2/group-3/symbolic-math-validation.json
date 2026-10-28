@@ -984,8 +984,10 @@
       "field": 17592186353897,
       "kind": "ode",
       "correct": 17592186353447,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186353447
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186351594,
@@ -1014,7 +1016,7 @@
         {
           "answer": 17592186353447,
           "value": "{y}^{2}=-{x}^{2}\\operatorname{ln}\u2061{x}^{2}+C{x}^{2}",
-          "passes": false,
+          "passes": true,
           "difference": "C*x/y - x*log(x**2)/y - y/x"
         }
       ],
@@ -2012,28 +2014,42 @@
       "expected": "-3*exp(-1)"
     },
     {
-      "entity": 17592186235351,
-      "source": "q-128191",
-      "field": 17592186235152,
-      "kind": "ode",
-      "correct": 17592186234935,
+      "entity": 17592186235436,
+      "source": "q-167332",
+      "field": 17592186235163,
+      "kind": "integral",
+      "correct": 17592186234669,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186234935,
-          "value": "{x}^{2}",
+          "answer": 17592186234669,
+          "value": "2{e}^{x}-\\frac{{x}^{4}}{2}+12{x}^{2}",
           "passes": false,
-          "difference": "x*(2 - x**4)"
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
         }
       ],
-      "residual": "Z - x*y**2",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
+    },
+    {
+      "entity": 17592186235485,
+      "source": "q-167786",
+      "field": 17592186235228,
+      "kind": "integral",
+      "correct": 17592186234788,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186234788,
+          "value": "2{e}^{x}-\\frac{{x}^{4}}{2}+12{x}^{2}",
+          "passes": false,
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
+        }
+      ],
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
       "entity": 17592186240789,
@@ -2241,41 +2257,43 @@
       "field": 17592186240555,
       "kind": "ode",
       "correct": 17592186239071,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186239071
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186239071,
           "value": "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+4{x}^{2}",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x + 1/tan(x))) - cos(x)"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186239189,
           "value": "y=\\operatorname{sin}\u2061x+4{x}^{2}-1",
           "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x + cos(x))) - cos(x)"
+          "difference": "(sin(x) - 1)*cos(x)"
         },
         {
           "answer": 17592186239852,
           "value": "y=\\operatorname{cos}\u2061x+8{x}^{2}-{\\pi }^{2}",
           "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(16*x - sin(x))) - cos(x)"
+          "difference": "8*x*sin(x) - sin(x)**2 - cos(x)"
         },
         {
           "answer": 17592186240204,
           "value": "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+8{x}^{2}-{\\pi }^{2}",
           "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(16*x + 1/tan(x))) - cos(x)"
+          "difference": "8*x*sin(x)"
         },
         {
           "answer": 17592186240205,
           "value": "y=\\operatorname{cos}\u2061x+4{x}^{2}",
           "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x - sin(x))) - cos(x)"
+          "difference": "cos(x)**2 - cos(x) - 1"
         }
       ],
-      "residual": "-8*x*sin(x) + sin(Z*x) - cos(x)",
+      "residual": "Z*sin(x) - 8*x*sin(x) - cos(x)",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -5429,6 +5447,46 @@
       "domain_note": "arcsec |x|>1 components checked"
     },
     {
+      "entity": 17592186297339,
+      "source": "q-312451",
+      "field": 17592186296938,
+      "kind": "derivative",
+      "correct": 17592186295698,
+      "matches": [
+        17592186295698
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186295698,
+          "value": "20{x}^{4}{e}^{4{x}^{5}}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "exp(4*x**5)",
+      "expected": "20*x**4*exp(4*x**5)"
+    },
+    {
+      "entity": 17592186297340,
+      "source": "q-312462",
+      "field": 17592186296767,
+      "kind": "derivative",
+      "correct": 17592186296581,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186296581,
+          "value": "3{x}^{2}\\operatorname{ln}(5)",
+          "passes": false,
+          "difference": "3*x**2*(1 - 5**(x**3 + 1))*log(5)"
+        }
+      ],
+      "function": "5**(x**3 + 1)",
+      "expected": "3*5**(x**3 + 1)*x**2*log(5)"
+    },
+    {
       "entity": 17592186297341,
       "source": "q-31249",
       "field": 17592186296672,
@@ -5709,6 +5767,34 @@
       "expected": "-1/(2*x + 7)**(3/2)"
     },
     {
+      "entity": 17592186314963,
+      "source": "q-340496",
+      "field": 17592186314351,
+      "kind": "derivative",
+      "correct": 17592186524810,
+      "matches": [
+        17592186313486,
+        17592186524810
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186313486,
+          "value": "-3{e}^{-3x+5}+8",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186524810,
+          "value": "8-3e^{-3x+5}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "8*x + exp(5 - 3*x)",
+      "expected": "8 - 3*exp(5 - 3*x)"
+    },
+    {
       "entity": 17592186314964,
       "source": "q-340497",
       "field": 17592186314681,
@@ -5811,6 +5897,48 @@
       ],
       "function": "5**(-x**3 + x)",
       "expected": "-2*log(5)"
+    },
+    {
+      "entity": 17592186317301,
+      "source": "q-342630",
+      "field": 17592186317143,
+      "kind": "derivative",
+      "correct": 17592186316001,
+      "matches": [
+        17592186316001
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186316001,
+          "value": "4",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(x**2 + 2*x + 1)**2",
+      "expected": "4"
+    },
+    {
+      "entity": 17592186317308,
+      "source": "q-342663",
+      "field": 17592186316705,
+      "kind": "derivative",
+      "correct": 17592186316117,
+      "matches": [
+        17592186316117
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186316117,
+          "value": "-96",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(3*x + 1)**4",
+      "expected": "-96"
     },
     {
       "entity": 17592186317312,
@@ -5918,43 +6046,115 @@
       "expected": "-5/(2*(5*x + 1)**(3/2))"
     },
     {
+      "entity": 17592186317326,
+      "source": "q-342802",
+      "field": 17592186316728,
+      "kind": "derivative",
+      "correct": 17592186315311,
+      "matches": [
+        17592186315311
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186315311,
+          "value": "-\\frac{1}{18}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "1/sqrt(3*x**2 + 12*x)",
+      "expected": "-1/18"
+    },
+    {
+      "entity": 17592186317327,
+      "source": "q-342804",
+      "field": 17592186316778,
+      "kind": "derivative",
+      "correct": 17592186541677,
+      "matches": [
+        17592186316184,
+        17592186541677
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186316184,
+          "value": "20(4x+3)^{4}",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186541677,
+          "value": "20(4x+3)^4",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(4*x + 3)**5",
+      "expected": "20*(4*x + 3)**4"
+    },
+    {
+      "entity": 17592186317335,
+      "source": "q-342883",
+      "field": 17592186316583,
+      "kind": "derivative",
+      "correct": 17592186315600,
+      "matches": [
+        17592186315600
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186315600,
+          "value": "\\frac{5}{2\\sqrt{5x-4}}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(5*x - 4)",
+      "expected": "5/(2*sqrt(5*x - 4))"
+    },
+    {
       "entity": 17592186317337,
       "source": "q-342910",
       "field": 17592186316955,
       "kind": "derivative",
       "correct": 17592186316002,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186316002,
-          "value": "-6x+11",
-          "passes": false,
-          "difference": "24*x**2 - 78*x + 65"
-        }
-      ],
-      "function": "(3 - 2*x)**3",
-      "expected": "-6*(3 - 2*x)**2"
-    },
-    {
-      "entity": 17592186320948,
-      "source": "q-352066",
-      "field": 17592186320686,
-      "kind": "ode",
-      "correct": 17592186319489,
       "matches": [
-        17592186319489
+        17592186316002
       ],
       "selected_passes": true,
       "answers": [
         {
-          "answer": 17592186319489,
-          "value": "-\\frac{8}{x-3}+9",
+          "answer": 17592186316002,
+          "value": "-6x+11",
           "passes": true,
           "difference": "0"
         }
       ],
-      "residual": "Z*(x - 3)**2 - 8",
+      "function": "(3 - 2*x)**3",
+      "expected": "11 - 6*x"
+    },
+    {
+      "entity": 17592186319204,
+      "source": "q-347853",
+      "field": 17592186318602,
+      "kind": "ode",
+      "correct": 17592186318296,
+      "matches": [
+        17592186318296
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186318296,
+          "value": "\\frac{2}{4x+1}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z + 2*y**2",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -5963,24 +6163,176 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186320949,
-      "source": "q-352068",
-      "field": 17592186320280,
+      "entity": 17592186320759,
+      "source": "q-350957",
+      "field": 17592186320202,
       "kind": "ode",
-      "correct": 17592186319981,
+      "correct": 17592186319625,
       "matches": [
-        17592186319981
+        17592186319625
       ],
       "selected_passes": true,
       "answers": [
         {
-          "answer": 17592186319981,
-          "value": "8\\sqrt{x+1}-6",
+          "answer": 17592186319625,
+          "value": "\\operatorname{ln}(2{x}^{3}-x)",
           "passes": true,
           "difference": "0"
         }
       ],
-      "residual": "Z*sqrt(x + 1) - 4",
+      "residual": "Z - 6*x**2*exp(-y) + exp(-y)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323684,
+      "source": "q-355525",
+      "field": 17592186323329,
+      "kind": "ode",
+      "correct": 17592186322470,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186322470,
+          "value": "-\\frac{3}{4}\\operatorname{cos}(4x)",
+          "passes": false,
+          "difference": "(3*cos(9*cos(4*x)/4) - 1)*sin(4*x)"
+        }
+      ],
+      "residual": "Z*cos(3*y) - sin(4*x)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323685,
+      "source": "q-355528",
+      "field": 17592186323631,
+      "kind": "ode",
+      "correct": 17592186322468,
+      "matches": [
+        17592186322468
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186322468,
+          "value": "({x}^{2}+2)^{2}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - 4*x*sqrt(y)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323686,
+      "source": "q-355544",
+      "field": 17592186323508,
+      "kind": "ode",
+      "correct": 17592186322350,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186322350,
+          "value": "\\frac{4}{7}\\operatorname{tan}(7x)",
+          "passes": false,
+          "difference": "-sec(7*x)**2 + 4*sec(16*tan(7*x)/7)**2/cos(7*x)**2"
+        }
+      ],
+      "residual": "Z*sec(4*y)**2 - sec(7*x)**2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323687,
+      "source": "q-355546",
+      "field": 17592186323290,
+      "kind": "ode",
+      "correct": 17592186323077,
+      "matches": [
+        17592186323077
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186323077,
+          "value": "-\\frac{5}{x}+4{x}^{2}+7",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*x**2 - 8*x**3 - 5",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323688,
+      "source": "q-355547",
+      "field": 17592186323609,
+      "kind": "ode",
+      "correct": 17592186321308,
+      "matches": [
+        17592186321308
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186321308,
+          "value": "6\\sqrt{x}+2{x}^{2}+3",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*sqrt(x) - 4*x**(3/2) - 3",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323689,
+      "source": "q-355559",
+      "field": 17592186323197,
+      "kind": "ode",
+      "correct": 17592186321390,
+      "matches": [
+        17592186321390
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186321390,
+          "value": "\\sqrt{2{e}^{2{x}^{2}}-1}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "2*Z*y - 4*x*y**2 - 4*x",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -6007,6 +6359,58 @@
         }
       ],
       "residual": "Z - x*y",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323691,
+      "source": "q-355564",
+      "field": 17592186323490,
+      "kind": "ode",
+      "correct": 17592186321286,
+      "matches": [
+        17592186321286
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186321286,
+          "value": "(2x-1){e}^{2x}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*(2/y - 1/(x*y)) - 4",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323693,
+      "source": "q-355577",
+      "field": 17592186323218,
+      "kind": "ode",
+      "correct": 17592186322129,
+      "matches": [
+        17592186322129
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186322129,
+          "value": "\\operatorname{ln}(\\frac{5}{4}-{e}^{-x})",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - exp(-x - y)",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -6059,6 +6463,32 @@
         }
       ],
       "residual": "Z - y/sqrt(x)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186323696,
+      "source": "q-355582",
+      "field": 17592186323392,
+      "kind": "ode",
+      "correct": 17592186321501,
+      "matches": [
+        17592186321501
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186321501,
+          "value": "\\operatorname{ln}(2-{e}^{-x})",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - exp(-x - y)",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -6312,42 +6742,44 @@
       "field": 17592186329311,
       "kind": "derivative",
       "correct": 17592186328449,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186328449
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186327093,
           "value": "y=20ex\\cdot ln\u2061(5)",
           "passes": false,
-          "difference": "20*E*x*log(5) - 20*exp(4*x)"
+          "difference": "20*E*x*(-1 + log(5))"
         },
         {
           "answer": 17592186327386,
           "value": "y=5ex",
           "passes": false,
-          "difference": "5*E*x - 20*exp(4*x)"
+          "difference": "-15*E*x"
         },
         {
           "answer": 17592186327428,
           "value": "y=ex",
           "passes": false,
-          "difference": "E*x - 20*exp(4*x)"
+          "difference": "-19*E*x"
         },
         {
           "answer": 17592186327685,
           "value": "y=4ex",
           "passes": false,
-          "difference": "4*E*x - 20*exp(4*x)"
+          "difference": "-16*E*x"
         },
         {
           "answer": 17592186328449,
           "value": "y=20ex",
-          "passes": false,
-          "difference": "20*E*x - 20*exp(4*x)"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "5*exp(4*x)",
-      "expected": "20*exp(4*x)"
+      "expected": "20*E*(x - 1/4) + 5*E"
     },
     {
       "entity": 17592186329902,
@@ -6445,42 +6877,44 @@
       "field": 17592186329394,
       "kind": "derivative",
       "correct": 17592186327821,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186327821
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186327394,
           "value": "y=-12x+25",
           "passes": false,
-          "difference": "-12*x - 12*(3*x - 5)**3 + 25"
+          "difference": "48 - 24*x"
         },
         {
           "answer": 17592186327821,
           "value": "y=12x-23",
-          "passes": false,
-          "difference": "12*x - 12*(3*x - 5)**3 - 23"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186327971,
           "value": "y=-3x+7",
           "passes": false,
-          "difference": "-3*x - 12*(3*x - 5)**3 + 7"
+          "difference": "30 - 15*x"
         },
         {
           "answer": 17592186328087,
           "value": "y=-4x+9",
           "passes": false,
-          "difference": "-4*x - 12*(3*x - 5)**3 + 9"
+          "difference": "32 - 16*x"
         },
         {
           "answer": 17592186328579,
           "value": "y=4x-7",
           "passes": false,
-          "difference": "4*x - 12*(3*x - 5)**3 - 7"
+          "difference": "16 - 8*x"
         }
       ],
       "function": "(5 - 3*x)**4",
-      "expected": "-12*(5 - 3*x)**3"
+      "expected": "12*x - 23"
     },
     {
       "entity": 17592186332663,
@@ -7784,8 +8218,10 @@
       "field": 17592186347969,
       "kind": "ode",
       "correct": 17592186347184,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186347184
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186345370,
@@ -7814,7 +8250,7 @@
         {
           "answer": 17592186347184,
           "value": "{y}^{3}=3{e}^{{x}^{2}}-2",
-          "passes": false,
+          "passes": true,
           "difference": "2*x*(-y**3 + 3*exp(x**2) - 2)"
         }
       ],
@@ -8660,6 +9096,30 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
+      "entity": 17592186373003,
+      "source": "q-355560",
+      "field": 17592186373004,
+      "kind": "ode",
+      "correct": 17592186373005,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186373005,
+          "value": "4-x-{x}^{2}",
+          "passes": false,
+          "difference": "-2*x - (x**2 + x - 4)**2 - 1 - 4*(x**2 + x - 4)**2/x**2"
+        }
+      ],
+      "residual": "Z - y**2 - 4*y**2/x**2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
       "entity": 17592186373526,
       "source": "q-104056",
       "field": 17592186373527,
@@ -9420,6 +9880,55 @@
       "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
+      "entity": 17592186493330,
+      "source": null,
+      "field": 17592186493329,
+      "kind": "derivative",
+      "correct": 17592186493335,
+      "matches": [
+        17592186493335,
+        17592186529467
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186493335,
+          "value": "20(4x+6)^{4}",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186529467,
+          "value": "20\\left(4x+6\\right)^4",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(4*x + 6)**5",
+      "expected": "20*(4*x + 6)**4"
+    },
+    {
+      "entity": 17592186493331,
+      "source": null,
+      "field": 17592186493328,
+      "kind": "derivative",
+      "correct": 17592186493327,
+      "matches": [
+        17592186493327
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186493327,
+          "value": "\\frac{5}{2\\sqrt{5x-3}}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(5*x - 3)",
+      "expected": "5/(2*sqrt(5*x - 3))"
+    },
+    {
       "entity": 17592186496406,
       "source": null,
       "field": 17592186496428,
@@ -9778,26 +10287,30 @@
       "field": 17592186496487,
       "kind": "ode",
       "correct": 17592186496443,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186496443,
+        17592186496467,
+        17592186496471
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186496443,
           "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + D + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186496467,
           "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + D + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186496471,
           "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186496480,
@@ -9809,7 +10322,7 @@
           "answer": 17592186496485,
           "value": "y=\\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + D - \\frac{5 x^{3}}{6} + 8 \\sin{\\left(\\frac{x}{2} \\right)}",
           "passes": false,
-          "difference": "6*2**x*log(2) + 12*2**x - 40*x - 16*sin(x/2)"
+          "difference": "24*2**x - 40*x - 16*sin(x/2)"
         }
       ],
       "residual": "12*2**x + 4*W - 20*x - 8*sin(x/2)",
@@ -10531,32 +11044,6 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186496555,
-      "source": null,
-      "field": 17592186496571,
-      "kind": "ode",
-      "correct": 17592186496584,
-      "matches": [
-        17592186496584
-      ],
-      "selected_passes": true,
-      "answers": [
-        {
-          "answer": 17592186496584,
-          "value": "- 3 x^{2} - 5 + e^{- 2 x}",
-          "passes": true,
-          "difference": "0"
-        }
-      ],
-      "residual": "Z + 6*x + 2*exp(-2*x)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
       "entity": 17592186496574,
       "source": null,
       "field": 17592186496576,
@@ -10608,30 +11095,23 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186496590,
-      "source": null,
-      "field": 17592186496585,
-      "kind": "ode",
-      "correct": 17592186496561,
-      "matches": [
-        17592186496561
-      ],
-      "selected_passes": true,
+      "entity": 17592186514423,
+      "source": "q-166079",
+      "field": 17592186514300,
+      "kind": "integral",
+      "correct": 17592186513767,
+      "matches": [],
+      "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186496561,
-          "value": "- 2 x^{3} - 2 \\sin{(x )} - 5 + e^{- 2 x}",
-          "passes": true,
-          "difference": "0"
+          "answer": 17592186513767,
+          "value": "2e^x+12x^2-\\frac{x^4}{2}",
+          "passes": false,
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
         }
       ],
-      "residual": "Z + 6*x**2 + 2*cos(x) + 2*exp(-2*x)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
       "entity": 17592186520457,
@@ -10769,6 +11249,54 @@
       "expected": "1/sqrt(2*x - 1)"
     },
     {
+      "entity": 17592186520516,
+      "source": "q-314192",
+      "field": 17592186520382,
+      "kind": "derivative",
+      "correct": 17592186520068,
+      "matches": [
+        17592186520068
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186520068,
+          "value": "2",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186576511,
+          "value": "\\frac{2}{\\sqrt{4x+1}}",
+          "passes": false,
+          "difference": "-2 + 2/sqrt(4*x + 1)"
+        }
+      ],
+      "function": "sqrt(4*x + 1)",
+      "expected": "2"
+    },
+    {
+      "entity": 17592186524983,
+      "source": "q-342792",
+      "field": 17592186524945,
+      "kind": "derivative",
+      "correct": 17592186524684,
+      "matches": [
+        17592186524684
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186524684,
+          "value": "-2",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(3*x**2 + 2*x)",
+      "expected": "-2"
+    },
+    {
       "entity": 17592186524994,
       "source": "q-340970",
       "field": 17592186524934,
@@ -10816,42 +11344,88 @@
       "field": 17592186524890,
       "kind": "derivative",
       "correct": 17592186524441,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186524441
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186524441,
           "value": "y=\\operatorname{ln}\u2061(2)\\,x+\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
-          "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + x + 1)) + 1/4"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186524506,
           "value": "y=2\\operatorname{ln}\u2061(2)\\,x+2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
           "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + 2*x + 2)) + 1/4"
+          "difference": "(x + 1)*log(2)"
         },
         {
           "answer": 17592186524605,
           "value": "y=-\\operatorname{ln}\u2061(2)\\,x-\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
           "passes": false,
-          "difference": "1/4 - log(2**(2**(4*x + 4) + x + 1))"
+          "difference": "2*(-x - 1)*log(2)"
         },
         {
           "answer": 17592186524650,
           "value": "y=-2\\operatorname{ln}\u2061(2)\\,x-2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
           "passes": false,
-          "difference": "1/4 - log(2**(2**(4*x + 4) + 2*x + 2))"
+          "difference": "3*(-x - 1)*log(2)"
         },
         {
           "answer": 17592186524774,
           "value": "y=\\frac{1}{2}\\operatorname{ln}\u2061(2)\\,x+\\frac{1}{2}\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
           "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + x/2 + 1/2)) + 1/4"
+          "difference": "(-x - 1)*log(2)/2"
         }
       ],
       "function": "4**(2*x + 1)",
-      "expected": "2*4**(2*x + 1)*log(4)"
+      "expected": "(x + 1)*log(4)/2 + 1/4"
+    },
+    {
+      "entity": 17592186525021,
+      "source": "q-48622",
+      "field": 17592186524872,
+      "kind": "derivative",
+      "correct": 17592186524511,
+      "matches": [
+        17592186524511
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186524465,
+          "value": "192",
+          "passes": false,
+          "difference": "-192"
+        },
+        {
+          "answer": 17592186524511,
+          "value": "384",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186524613,
+          "value": "3,072",
+          "error": "unconsumed [('char', ','), ('char', '072')]"
+        },
+        {
+          "answer": 17592186524712,
+          "value": "768",
+          "passes": false,
+          "difference": "384"
+        },
+        {
+          "answer": 17592186524761,
+          "value": "758",
+          "passes": false,
+          "difference": "374"
+        }
+      ],
+      "function": "(3*x**2 - 10)**4",
+      "expected": "384"
     },
     {
       "entity": 17592186534162,
@@ -10959,6 +11533,27 @@
       "expected": "-12*exp(-8)"
     },
     {
+      "entity": 17592186542130,
+      "source": "q-342789",
+      "field": 17592186542020,
+      "kind": "derivative",
+      "correct": 17592186541574,
+      "matches": [
+        17592186541574
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186541574,
+          "value": "0",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(-x**2 + 2*x)",
+      "expected": "0"
+    },
+    {
       "entity": 17592186542221,
       "source": "q-20181",
       "field": 17592186541965,
@@ -11025,47 +11620,70 @@
       "expected": "4*exp(-x - 5)"
     },
     {
+      "entity": 17592186546037,
+      "source": null,
+      "field": 17592186546023,
+      "kind": "derivative",
+      "correct": 17592186546074,
+      "matches": [
+        17592186546074
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186546074,
+          "value": "4 e^{4 x - 6} + 2",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "2*x + exp(4*x - 6)",
+      "expected": "4*exp(4*x - 6) + 2"
+    },
+    {
       "entity": 17592186546039,
       "source": null,
       "field": 17592186546076,
       "kind": "derivative",
       "correct": 17592186546042,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186546042
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186546026,
           "value": "y=- 12 e x + 6 + 3 e",
           "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) + 6 + 3*E"
+          "difference": "21*E"
         },
         {
           "answer": 17592186546028,
           "value": "y=- 12 e \\left(x + \\frac{7}{4}\\right) + 3 e",
           "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) - 18*E"
+          "difference": "-6"
         },
         {
           "answer": 17592186546042,
           "value": "y=- 12 e x - 18 e + 6",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) - 18*E + 6"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186546055,
           "value": "y=3 e \\left(x + \\frac{7}{4}\\right) + 6 + 3 e",
           "passes": false,
-          "difference": "3*E*x + 12*exp(-4*x - 6) + 6 + 33*E/4"
+          "difference": "15*E*(4*x + 7)/4"
         },
         {
           "answer": 17592186546064,
           "value": "y=12 e \\left(x + \\frac{7}{4}\\right) + 6 + 3 e",
           "passes": false,
-          "difference": "12*E*x + 12*exp(-4*x - 6) + 6 + 24*E"
+          "difference": "6*E*(4*x + 7)"
         }
       ],
       "function": "3*exp(-4*x - 6) + 6",
-      "expected": "-12*exp(-4*x - 6)"
+      "expected": "-12*E*(x + 7/4) + 6 + 3*E"
     },
     {
       "entity": 17592186546047,
@@ -11073,42 +11691,44 @@
       "field": 17592186546056,
       "kind": "derivative",
       "correct": 17592186546027,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186546027
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186546022,
           "value": "y=- 2 e \\left(x - \\frac{1}{3}\\right) - 2 e + 3",
           "passes": false,
-          "difference": "-2*E*x - 6*exp(2 - 3*x) - 4*E/3 + 3"
+          "difference": "8*E*(1 - 3*x)/3"
         },
         {
           "answer": 17592186546027,
           "value": "y=6 e x - 4 e + 3",
-          "passes": false,
-          "difference": "6*E*x - 6*exp(2 - 3*x) - 4*E + 3"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186546031,
           "value": "y=6 e \\left(x - \\frac{1}{3}\\right) - 2 e",
           "passes": false,
-          "difference": "2*((3*x - 2)*exp(3*x - 1) - 3)*exp(2 - 3*x)"
+          "difference": "-3"
         },
         {
           "answer": 17592186546049,
           "value": "y=- 6 e \\left(x - \\frac{1}{3}\\right) - 2 e + 3",
           "passes": false,
-          "difference": "-6*E*x - 6*exp(2 - 3*x) + 3"
+          "difference": "4*E*(1 - 3*x)"
         },
         {
           "answer": 17592186546063,
           "value": "y=6 e x - 2 e + 3",
           "passes": false,
-          "difference": "6*E*x - 6*exp(2 - 3*x) - 2*E + 3"
+          "difference": "2*E"
         }
       ],
       "function": "3 - 2*exp(2 - 3*x)",
-      "expected": "6*exp(2 - 3*x)"
+      "expected": "6*E*(x - 1/3) - 2*E + 3"
     },
     {
       "entity": 17592186546052,
@@ -11161,42 +11781,44 @@
       "field": 17592186546036,
       "kind": "derivative",
       "correct": 17592186546077,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186546077
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186546032,
           "value": "y=- 30 e \\left(x - \\frac{5}{6}\\right) + 1 + 5 e",
           "passes": false,
-          "difference": "-30*E*x - 30*exp(6*x - 4) + 1 + 30*E"
+          "difference": "10*E*(5 - 6*x)"
         },
         {
           "answer": 17592186546034,
           "value": "y=30 e x + 1 + 5 e",
           "passes": false,
-          "difference": "30*E*x - 30*exp(6*x - 4) + 1 + 5*E"
+          "difference": "25*E"
         },
         {
           "answer": 17592186546043,
           "value": "y=5 e \\left(x - \\frac{5}{6}\\right) + 1 + 5 e",
           "passes": false,
-          "difference": "5*E*x - 30*exp(6*x - 4) + 1 + 5*E/6"
+          "difference": "25*E*(5 - 6*x)/6"
         },
         {
           "answer": 17592186546045,
           "value": "y=30 e \\left(x - \\frac{5}{6}\\right) + 5 e",
           "passes": false,
-          "difference": "5*E*(6*x - 5) - 30*exp(6*x - 4) + 5*E"
+          "difference": "-1"
         },
         {
           "answer": 17592186546077,
           "value": "y=30 e x - 20 e + 1",
-          "passes": false,
-          "difference": "30*E*x - 30*exp(6*x - 4) - 20*E + 1"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "5*exp(6*x - 4) + 1",
-      "expected": "30*exp(6*x - 4)"
+      "expected": "30*E*(x - 5/6) + 1 + 5*E"
     },
     {
       "entity": 17592186546062,
@@ -11204,42 +11826,44 @@
       "field": 17592186546061,
       "kind": "derivative",
       "correct": 17592186546060,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186546060
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186546035,
           "value": "y=- 12 e x - 4 e - 3",
           "passes": false,
-          "difference": "-12*E*x + 12*exp(3*x - 5) - 4*E - 3"
+          "difference": "-24*E"
         },
         {
           "answer": 17592186546051,
           "value": "y=12 e \\left(x - 2\\right) - 4 e - 3",
           "passes": false,
-          "difference": "12*E*(x - 2) + 12*exp(3*x - 5) - 4*E - 3"
+          "difference": "24*E*(x - 2)"
         },
         {
           "answer": 17592186546060,
           "value": "y=- 12 e x - 3 + 20 e",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(3*x - 5) - 3 + 20*E"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186546065,
           "value": "y=- 12 e \\left(x - 2\\right) - 4 e",
           "passes": false,
-          "difference": "-12*E*(x - 2) + 12*exp(3*x - 5) - 4*E"
+          "difference": "3"
         },
         {
           "answer": 17592186546073,
           "value": "y=- 4 e \\left(x - 2\\right) - 4 e - 3",
           "passes": false,
-          "difference": "-4*E*(x - 2) + 12*exp(3*x - 5) - 4*E - 3"
+          "difference": "8*E*(x - 2)"
         }
       ],
       "function": "-4*exp(3*x - 5) - 3",
-      "expected": "-12*exp(3*x - 5)"
+      "expected": "-12*E*(x - 2) - 4*E - 3"
     },
     {
       "entity": 17592186546066,
@@ -11247,42 +11871,44 @@
       "field": 17592186546071,
       "kind": "derivative",
       "correct": 17592186546069,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186546069
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186546046,
           "value": "y=- 2 e \\left(x - 3\\right) - 2 e - 3",
           "passes": false,
-          "difference": "-2*E*(x - 3) + 4*exp(2*x - 5) - 2*E - 3"
+          "difference": "2*E*(x - 3)"
         },
         {
           "answer": 17592186546053,
           "value": "y=4 e \\left(x - 3\\right) - 2 e - 3",
           "passes": false,
-          "difference": "4*E*(x - 3) + 4*exp(2*x - 5) - 2*E - 3"
+          "difference": "8*E*(x - 3)"
         },
         {
           "answer": 17592186546059,
           "value": "y=- 4 e x - 2 e - 3",
           "passes": false,
-          "difference": "-4*E*x + 4*exp(2*x - 5) - 2*E - 3"
+          "difference": "-12*E"
         },
         {
           "answer": 17592186546069,
           "value": "y=- 4 e x - 3 + 10 e",
-          "passes": false,
-          "difference": "-4*E*x + 4*exp(2*x - 5) - 3 + 10*E"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186546079,
           "value": "y=- 4 e \\left(x - 3\\right) - 2 e",
           "passes": false,
-          "difference": "-4*E*(x - 3) + 4*exp(2*x - 5) - 2*E"
+          "difference": "3"
         }
       ],
       "function": "-2*exp(2*x - 5) - 3",
-      "expected": "-4*exp(2*x - 5)"
+      "expected": "-4*E*(x - 3) - 2*E - 3"
     },
     {
       "entity": 17592186546072,
@@ -12002,6 +12628,27 @@
       ],
       "function": "sqrt(2*x + 1)",
       "expected": "1/3"
+    },
+    {
+      "entity": 17592186557301,
+      "source": "q-314205",
+      "field": 17592186557088,
+      "kind": "derivative",
+      "correct": 17592186556637,
+      "matches": [
+        17592186556637
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186556637,
+          "value": "36(6x-5)^{5}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(6*x - 5)**6",
+      "expected": "36*(6*x - 5)**5"
     },
     {
       "entity": 17592186562394,
@@ -12941,43 +13588,89 @@
           "answer": 17592186573702,
           "value": "-3\\operatorname{ln}\u20613{\\left(\\frac{1}{3}\\right)}^{x}+C",
           "passes": false,
-          "difference": "3*log(3) - 1/3**x"
+          "difference": "(-1 + 3*log(3)**2)/3**x"
         },
         {
           "answer": 17592186573734,
           "value": "\\operatorname{ln}\u20613{\\left(\\frac{1}{3}\\right)}^{x}+C",
           "passes": false,
-          "difference": "-log(3) - 1/3**x"
+          "difference": "(-log(3)**2 - 1)/3**x"
         }
       ],
       "integrand": "(1/3)**x",
       "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
-      "entity": 17592186608984,
-      "source": "q-352076",
-      "field": 17592186608874,
-      "kind": "ode",
-      "correct": 17592186608639,
+      "entity": 17592186578821,
+      "source": "q-167322",
+      "field": 17592186578744,
+      "kind": "integral",
+      "correct": 17592186578358,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186578358,
+          "value": "\\frac{2}{3}x^3+2x^2+x+e^x",
+          "passes": false,
+          "difference": "-g*x + 2*x**2 + 4*x - sqrt(h*x) + exp(x) + 1"
+        }
+      ],
+      "integrand": "g*x + sqrt(h*x)",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
+    },
+    {
+      "entity": 17592186597617,
+      "source": "q-342787",
+      "field": 17592186597437,
+      "kind": "derivative",
+      "correct": 17592186597161,
       "matches": [
-        17592186608639
+        17592186597161,
+        17592186670962
       ],
       "selected_passes": true,
       "answers": [
         {
-          "answer": 17592186608639,
-          "value": "4\\sin x+1",
+          "answer": 17592186597161,
+          "value": "\\frac{3}{5}",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186670961,
+          "value": "3",
+          "passes": false,
+          "difference": "12/5"
+        },
+        {
+          "answer": 17592186670962,
+          "value": "\\frac35",
           "passes": true,
           "difference": "0"
         }
       ],
-      "residual": "Z - 4*cos(x)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+      "function": "sqrt(6*x + 1)",
+      "expected": "3/5"
+    },
+    {
+      "entity": 17592186600797,
+      "source": "q-167775",
+      "field": 17592186600716,
+      "kind": "integral",
+      "correct": 17592186600579,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186600579,
+          "value": "\\frac{2}{3}x^3+2x^2+x+e^x",
+          "passes": false,
+          "difference": "-g*x + 2*x**2 + 4*x - sqrt(h*x) + exp(x) + 1"
+        }
+      ],
+      "integrand": "g*x + sqrt(h*x)",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
       "entity": 17592186608989,
@@ -13471,23 +14164,98 @@
       "expected": "(8*x**3 + 5)*exp(2*x**4 + 5*x)"
     },
     {
+      "entity": 17592186610488,
+      "source": null,
+      "field": 17592186610489,
+      "kind": "derivative",
+      "correct": 17592186610481,
+      "matches": [
+        17592186610481
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186610481,
+          "value": "18 x^{5} e^{3 x^{6}}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "exp(3*x**6)",
+      "expected": "18*x**5*exp(3*x**6)"
+    },
+    {
+      "entity": 17592186611609,
+      "source": "q-355529",
+      "field": 17592186611525,
+      "kind": "ode",
+      "correct": 17592186611383,
+      "matches": [
+        17592186611383
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186611383,
+          "value": "\\frac{1}{x^2+1}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z + 2*x*y**2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186611628,
+      "source": "q-347850",
+      "field": 17592186611491,
+      "kind": "ode",
+      "correct": 17592186611105,
+      "matches": [
+        17592186611105
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186611105,
+          "value": "\\sqrt{2x^4+7}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - 4*x**3/y",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
       "entity": 17592186611693,
       "source": null,
       "field": 17592186611696,
       "kind": "derivative",
       "correct": 17592186611691,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186611691
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186611691,
           "value": "- 8 x - 7",
-          "passes": false,
-          "difference": "-8*x - 8*(2*x + 1)**3 - 7"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "(2*x + 1)**4",
-      "expected": "8*(2*x + 1)**3"
+      "expected": "-8*x - 7"
     },
     {
       "entity": 17592186611694,
@@ -13495,18 +14263,20 @@
       "field": 17592186611690,
       "kind": "derivative",
       "correct": 17592186611697,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186611697
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186611697,
           "value": "80 - 64 x",
-          "passes": false,
-          "difference": "-64*x - 64*(x - 2)**3 + 80"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "(2*x - 4)**4",
-      "expected": "8*(2*x - 4)**3"
+      "expected": "80 - 64*x"
     },
     {
       "entity": 17592186611695,
@@ -13514,18 +14284,20 @@
       "field": 17592186611692,
       "kind": "derivative",
       "correct": 17592186611698,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186611698
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186611698,
           "value": "12 x + 1",
-          "passes": false,
-          "difference": "12*x - 12*(3*x + 1)**3 + 1"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "(3*x + 1)**4",
-      "expected": "12*(3*x + 1)**3"
+      "expected": "12*x + 1"
     },
     {
       "entity": 17592186614585,
@@ -14037,6 +14809,51 @@
         "order": 1
       },
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186620984,
+      "source": null,
+      "field": 17592186620981,
+      "kind": "derivative",
+      "correct": 17592186620982,
+      "matches": [
+        17592186620982
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186620978,
+          "value": "-32",
+          "passes": false,
+          "difference": "-16"
+        },
+        {
+          "answer": 17592186620979,
+          "value": "-12",
+          "passes": false,
+          "difference": "4"
+        },
+        {
+          "answer": 17592186620980,
+          "value": "-64",
+          "passes": false,
+          "difference": "-48"
+        },
+        {
+          "answer": 17592186620982,
+          "value": "-16",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186620983,
+          "value": "16",
+          "passes": false,
+          "difference": "32"
+        }
+      ],
+      "function": "(2*x**2 - 3)**4",
+      "expected": "-16"
     },
     {
       "entity": 17592186639398,
@@ -14656,32 +15473,6 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186641795,
-      "source": null,
-      "field": 17592186641803,
-      "kind": "ode",
-      "correct": 17592186641786,
-      "matches": [
-        17592186641786
-      ],
-      "selected_passes": true,
-      "answers": [
-        {
-          "answer": 17592186641786,
-          "value": "-1 + \\frac{8}{x - 3}",
-          "passes": true,
-          "difference": "0"
-        }
-      ],
-      "residual": "Z*(x - 3)**2 + 8",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
       "entity": 17592186641796,
       "source": null,
       "field": 17592186641785,
@@ -14832,6 +15623,27 @@
         "order": 1
       },
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186657635,
+      "source": null,
+      "field": 17592186657633,
+      "kind": "derivative",
+      "correct": 17592186657644,
+      "matches": [
+        17592186657644
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186657644,
+          "value": "- 6 \\cdot 6^{- 2 x^{3} - 4} x^{2} \\ln{\\left(6 \\right)}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "6**(-2*x**3 - 4)",
+      "expected": "-6*6**(-2*x**3 - 4)*x**2*log(6)"
     },
     {
       "entity": 17592186657636,
@@ -15080,13 +15892,15 @@
       "field": 17592186657659,
       "kind": "derivative",
       "correct": 17592186657664,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186657664
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186657664,
           "value": "-\\frac{4}{\\sqrt{(8x+2)^{3}}}",
-          "passes": false,
+          "passes": true,
           "difference": "-sqrt(2)/sqrt((4*x + 1)**3) + sqrt(2)/(4*x + 1)**(3/2)"
         }
       ],
@@ -15887,6 +16701,110 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
+      "entity": 17592186672493,
+      "source": null,
+      "field": 17592186672501,
+      "kind": "ode",
+      "correct": 17592186672497,
+      "matches": [
+        17592186672497
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186672497,
+          "value": "6\\sqrt{(x + 2)}+2{(x + 2)}^{2}+3",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*sqrt(x + 2) - sqrt(x + 2)*(4*x + 8) - 3",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186672494,
+      "source": null,
+      "field": 17592186672506,
+      "kind": "ode",
+      "correct": 17592186672496,
+      "matches": [
+        17592186672496
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186672496,
+          "value": "-\\frac{5}{(x - 3)}+4{(x - 3)}^{2}+7",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*(x - 3)**2 - 8*(x - 3)**3 - 5",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186672499,
+      "source": null,
+      "field": 17592186672503,
+      "kind": "ode",
+      "correct": 17592186672495,
+      "matches": [
+        17592186672495
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186672495,
+          "value": "-\\frac{5}{(x + 3)}+4{(x + 3)}^{2}+7",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z*(x + 3)**2 - 8*(x + 3)**3 - 5",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186672500,
+      "source": null,
+      "field": 17592186672492,
+      "kind": "ode",
+      "correct": 17592186672498,
+      "matches": [
+        17592186672498
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186672498,
+          "value": "\\operatorname{ln}(\\frac{5}{4}-{e}^{-(x - 1)})",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - exp(-x - y + 1)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
       "entity": 17592186672504,
       "source": null,
       "field": 17592186672505,
@@ -16088,6 +17006,48 @@
       "expected": "30*(6*x - 7)**4"
     },
     {
+      "entity": 17592186674306,
+      "source": null,
+      "field": 17592186674316,
+      "kind": "derivative",
+      "correct": 17592186674307,
+      "matches": [
+        17592186674307
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186674307,
+          "value": "-\\frac{7}{8}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(16 - 7*x)",
+      "expected": "-7/8"
+    },
+    {
+      "entity": 17592186674308,
+      "source": null,
+      "field": 17592186674305,
+      "kind": "derivative",
+      "correct": 17592186674312,
+      "matches": [
+        17592186674312
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186674312,
+          "value": "\\frac{3}{2}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(2*x**2 + 6*x)",
+      "expected": "3/2"
+    },
+    {
       "entity": 17592186674309,
       "source": null,
       "field": 17592186674319,
@@ -16107,6 +17067,27 @@
       ],
       "function": "sqrt(4*x**2 - 7*x)",
       "expected": "25/12"
+    },
+    {
+      "entity": 17592186674315,
+      "source": null,
+      "field": 17592186674317,
+      "kind": "derivative",
+      "correct": 17592186674321,
+      "matches": [
+        17592186674321
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186674321,
+          "value": "-\\frac{1}{4}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "sqrt(-5*x**2 + 9*x)",
+      "expected": "-1/4"
     },
     {
       "entity": 17592186674322,
@@ -16159,42 +17140,44 @@
       "field": 17592186677848,
       "kind": "derivative",
       "correct": 17592186677864,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186677864
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186677851,
           "value": "y=- 96 x \\ln{\\left(2 \\right)} - 96 \\ln{\\left(2 \\right)} + 16",
           "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 96*x - 96)) + 16"
+          "difference": "32*(x + 1)*log(2)"
         },
         {
           "answer": 17592186677856,
           "value": "y=- 32 x \\ln{\\left(2 \\right)} - 32 \\ln{\\left(2 \\right)} + 16",
           "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 32*x - 32)) + 16"
+          "difference": "96*(x + 1)*log(2)"
         },
         {
           "answer": 17592186677860,
           "value": "y=96 x \\ln{\\left(2 \\right)} + 16 + 96 \\ln{\\left(2 \\right)}",
           "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) + 96*x + 96)) + 16"
+          "difference": "224*(x + 1)*log(2)"
         },
         {
           "answer": 17592186677864,
           "value": "y=- 128 x \\ln{\\left(2 \\right)} - 128 \\ln{\\left(2 \\right)} + 16",
-          "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 128*x - 128)) + 16"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186677870,
           "value": "y=32 x \\ln{\\left(2 \\right)} + 16 + 32 \\ln{\\left(2 \\right)}",
           "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) + 32*x + 32)) + 16"
+          "difference": "160*(x + 1)*log(2)"
         }
       ],
       "function": "4**(-4*x - 2)",
-      "expected": "-4*4**(-4*x - 2)*log(4)"
+      "expected": "-64*(x + 1)*log(4) + 16"
     },
     {
       "entity": 17592186677855,
@@ -16202,42 +17185,44 @@
       "field": 17592186677846,
       "kind": "derivative",
       "correct": 17592186677869,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186677869
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186677852,
           "value": "y=36 x \\ln{\\left(2 \\right)} + 4",
           "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 36*x)) + 4"
+          "difference": "52*x*log(2)"
         },
         {
           "answer": 17592186677857,
           "value": "y=4 x \\ln{\\left(2 \\right)} + 4",
           "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 4*x)) + 4"
+          "difference": "20*x*log(2)"
         },
         {
           "answer": 17592186677858,
           "value": "y=- 20 x \\ln{\\left(2 \\right)} + 4",
           "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) - 20*x)) + 4"
+          "difference": "-4*x*log(2)"
         },
         {
           "answer": 17592186677859,
           "value": "y=28 x \\ln{\\left(2 \\right)} + 4",
           "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 28*x)) + 4"
+          "difference": "44*x*log(2)"
         },
         {
           "answer": 17592186677869,
           "value": "y=- 16 x \\ln{\\left(2 \\right)} + 4",
-          "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) - 16*x)) + 4"
+          "passes": true,
+          "difference": "0"
         }
       ],
       "function": "2**(2 - 4*x)",
-      "expected": "-4*2**(2 - 4*x)*log(2)"
+      "expected": "-16*x*log(2) + 4"
     },
     {
       "entity": 17592186677861,
@@ -16245,42 +17230,44 @@
       "field": 17592186677849,
       "kind": "derivative",
       "correct": 17592186677845,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186677845
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186677845,
           "value": "y=- 2 x \\ln{\\left(2 \\right)} - 2 \\ln{\\left(2 \\right)} + 1",
-          "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 2*x - 2)) + 1"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186677854,
           "value": "y=- 10 x \\ln{\\left(2 \\right)} - 10 \\ln{\\left(2 \\right)} + 1",
           "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 10*x - 10)) + 1"
+          "difference": "8*(-x - 1)*log(2)"
         },
         {
           "answer": 17592186677862,
           "value": "y=4 x \\ln{\\left(2 \\right)} + 1 + 4 \\ln{\\left(2 \\right)}",
           "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) + 4*x + 4)) + 1"
+          "difference": "6*(x + 1)*log(2)"
         },
         {
           "answer": 17592186677865,
           "value": "y=- 4 x \\ln{\\left(2 \\right)} - 4 \\ln{\\left(2 \\right)} + 1",
           "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 4*x - 4)) + 1"
+          "difference": "2*(-x - 1)*log(2)"
         },
         {
           "answer": 17592186677872,
           "value": "y=6 x \\ln{\\left(2 \\right)} + 1 + 6 \\ln{\\left(2 \\right)}",
           "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) + 6*x + 6)) + 1"
+          "difference": "8*(x + 1)*log(2)"
         }
       ],
       "function": "4**(-x - 1)",
-      "expected": "-4**(-x - 1)*log(4)"
+      "expected": "-(x + 1)*log(4) + 1"
     },
     {
       "entity": 17592186677867,
@@ -16288,42 +17275,44 @@
       "field": 17592186677866,
       "kind": "derivative",
       "correct": 17592186677863,
-      "matches": [],
-      "selected_passes": false,
+      "matches": [
+        17592186677863
+      ],
+      "selected_passes": true,
       "answers": [
         {
           "answer": 17592186677847,
           "value": "y=- 2 x \\ln{\\left(2 \\right)} + \\frac{1}{2} + 2 \\ln{\\left(2 \\right)}",
           "passes": false,
-          "difference": "log(2**(-2*x + 2 + 192/2**(6*x))) + 1/2"
+          "difference": "(x - 1)*log(2)"
         },
         {
           "answer": 17592186677853,
           "value": "y=x \\ln{\\left(2 \\right)} - \\ln{\\left(2 \\right)} + \\frac{1}{2}",
           "passes": false,
-          "difference": "log(2**(x - 1 + 192/2**(6*x))) + 1/2"
+          "difference": "4*(x - 1)*log(2)"
         },
         {
           "answer": 17592186677863,
           "value": "y=- 3 x \\ln{\\left(2 \\right)} + \\frac{1}{2} + 3 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(-3*x + 3 + 192/2**(6*x))) + 1/2"
+          "passes": true,
+          "difference": "0"
         },
         {
           "answer": 17592186677868,
           "value": "y=\\frac{3 x \\ln{\\left(2 \\right)}}{2} - \\frac{3 \\ln{\\left(2 \\right)}}{2} + \\frac{1}{2}",
           "passes": false,
-          "difference": "log(2**(3*x/2 - 3/2 + 192/2**(6*x))) + 1/2"
+          "difference": "9*(x - 1)*log(2)/2"
         },
         {
           "answer": 17592186677871,
           "value": "y=\\frac{x \\ln{\\left(2 \\right)}}{2} - \\frac{\\ln{\\left(2 \\right)}}{2} + \\frac{1}{2}",
           "passes": false,
-          "difference": "x*log(2)/2 - log(2)/2 + 1/2 + 192*log(2)/2**(6*x)"
+          "difference": "7*(x - 1)*log(2)/2"
         }
       ],
       "function": "2**(5 - 6*x)",
-      "expected": "-6*2**(5 - 6*x)*log(2)"
+      "expected": "-3*(x - 1)*log(2) + 1/2"
     },
     {
       "entity": 17592186678461,
@@ -16473,32 +17462,6 @@
       "expected": "-5/(2*sqrt(-5*x - 8))"
     },
     {
-      "entity": 17592186683610,
-      "source": null,
-      "field": 17592186683603,
-      "kind": "ode",
-      "correct": 17592186683605,
-      "matches": [
-        17592186683605
-      ],
-      "selected_passes": true,
-      "answers": [
-        {
-          "answer": 17592186683605,
-          "value": "x^2+\\frac12e^{-2x}-1-\\frac12e^{-2}",
-          "passes": true,
-          "difference": "0"
-        }
-      ],
-      "residual": "2*Z - 4*x + 2*exp(-2*x)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
       "entity": 17592186683613,
       "source": null,
       "field": 17592186683614,
@@ -16550,32 +17513,6 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186683748,
-      "source": null,
-      "field": 17592186683749,
-      "kind": "ode",
-      "correct": 17592186683747,
-      "matches": [
-        17592186683747
-      ],
-      "selected_passes": true,
-      "answers": [
-        {
-          "answer": 17592186683747,
-          "value": "2 x^{3} + \\frac{e^{2 x + 1}}{2} - \\frac{1}{2 e} + 5",
-          "passes": true,
-          "difference": "0"
-        }
-      ],
-      "residual": "-2*Z + 12*x**2 + 2*exp(2*x + 1)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
       "entity": 17592186684216,
       "source": null,
       "field": 17592186684217,
@@ -16595,6 +17532,32 @@
       ],
       "function": "1/sqrt(3*x - 11)",
       "expected": "-3/(2*(3*x - 11)**(3/2))"
+    },
+    {
+      "entity": 17592186691519,
+      "source": null,
+      "field": 17592186691528,
+      "kind": "ode",
+      "correct": 17592186691529,
+      "matches": [
+        17592186691529
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186691529,
+          "value": "\\ln(x^2-x+2)",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "residual": "Z - 2*x*exp(-y) + exp(-y)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
       "entity": 17592186691530,
@@ -16641,6 +17604,150 @@
         }
       ],
       "residual": "Z*x**2 - 2*x**3 - 3",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691531,
+      "source": null,
+      "field": 17592186691520,
+      "kind": "ode",
+      "correct": 17592186691526,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691526,
+          "value": "1-e^{1-x^2}",
+          "passes": false,
+          "difference": "2*x*exp(1 - x**2)*cos(2*exp(1 - x**2) - 2) - x*sin(2*exp(1 - x**2) - 2) - x"
+        }
+      ],
+      "residual": "Z*cos(2*y) + x*sin(2*y) - x",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691969,
+      "source": null,
+      "field": 17592186691971,
+      "kind": "ode",
+      "correct": 17592186691978,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691978,
+          "value": "e^{\\frac{3 \\left(x - 2\\right)^{2}}{2} - \\frac{3}{2}} - 1",
+          "passes": false,
+          "difference": "-x + (2 - x)*sin(3*exp(3*(x - 2)**2/2 - 3/2) - 3) + 3*(x - 2)*exp(3*(x - 2)**2/2 - 3/2)*cos(3*exp(3*(x - 2)**2/2 - 3/2) - 3) + 2"
+        }
+      ],
+      "residual": "Z*cos(3*y) - x + (2 - x)*sin(3*y) + 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691970,
+      "source": null,
+      "field": 17592186691973,
+      "kind": "ode",
+      "correct": 17592186691979,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691979,
+          "value": "e^{\\frac{3}{2} - \\frac{3 \\left(x - 2\\right)^{2}}{2}} - 1",
+          "passes": false,
+          "difference": "((6 - 3*x)*cos(3*exp(-3*x**2/2 + 6*x - 9/2) - 3) + (x + (x - 2)*sin(3*exp(-3*x**2/2 + 6*x - 9/2) - 3) - 2)*exp(3*(x - 2)**2/2 - 3/2))*exp(3/2 - 3*(x - 2)**2/2)"
+        }
+      ],
+      "residual": "Z*cos(3*y) + x + (x - 2)*sin(3*y) - 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691972,
+      "source": null,
+      "field": 17592186691968,
+      "kind": "ode",
+      "correct": 17592186691980,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691980,
+          "value": "-1 + e^{- \\frac{3 \\left(x - 1\\right)^{2}}{2}}",
+          "passes": false,
+          "difference": "(3*(1 - x)*cos(3*exp(-3*x**2/2 + 3*x - 3/2) - 3) + (x + (x - 1)*sin(3*exp(-3*x**2/2 + 3*x - 3/2) - 3) - 1)*exp(3*(x - 1)**2/2))*exp(-3*(x - 1)**2/2)"
+        }
+      ],
+      "residual": "Z*cos(3*y) + x + (x - 1)*sin(3*y) - 1",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691975,
+      "source": null,
+      "field": 17592186691977,
+      "kind": "ode",
+      "correct": 17592186691982,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691982,
+          "value": "\\frac{e^{\\frac{\\left(x - 2\\right)^{2}}{2}}}{2} - 1",
+          "passes": false,
+          "difference": "-x + (2 - x)*sin(exp((x - 2)**2/2)/2 - 1) + (x - 2)*exp((x - 2)**2/2)*cos(exp((x - 2)**2/2)/2 - 1)/2 + 2"
+        }
+      ],
+      "residual": "Z*cos(y) - x + (2 - x)*sin(y) + 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691976,
+      "source": null,
+      "field": 17592186691981,
+      "kind": "ode",
+      "correct": 17592186691974,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691974,
+          "value": "1 - \\frac{e^{- x^{2}}}{2}",
+          "passes": false,
+          "difference": "x*sin(2 - exp(-x**2)) - x + x*exp(-x**2)*cos(2 - exp(-x**2))"
+        }
+      ],
+      "residual": "Z*cos(2*y) + x*sin(2*y) - x",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -16906,6 +18013,29 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
+      "entity": 17592186693465,
+      "source": null,
+      "field": 17592186693463,
+      "kind": "ode",
+      "correct": 17592186693464,
+      "matches": [],
+      "selected_passes": null,
+      "answers": [
+        {
+          "answer": 17592186693464,
+          "value": "- \\frac{4 \\tan{\\left(7 x - 14 \\right)}}{7}",
+          "error": "symbolic simplification limit"
+        }
+      ],
+      "residual": "Z + sec(7*x - 14)**2/sec(4*y)**2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
       "entity": 17592186697156,
       "source": null,
       "field": 17592186697167,
@@ -16949,6 +18079,27 @@
       ],
       "function": "(2*x + 1)**3",
       "expected": "6*(2*x + 1)**2"
+    },
+    {
+      "entity": 17592186697163,
+      "source": null,
+      "field": 17592186697166,
+      "kind": "derivative",
+      "correct": 17592186697165,
+      "matches": [
+        17592186697165
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186697165,
+          "value": "-8(3-2x)^3",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(3 - 2*x)**4",
+      "expected": "-8*(3 - 2*x)**3"
     },
     {
       "entity": 17592186698030,
@@ -16996,6 +18147,34 @@
       "expected": "-15*(9 - 5*x)**2"
     },
     {
+      "entity": 17592186698031,
+      "source": null,
+      "field": 17592186698038,
+      "kind": "derivative",
+      "correct": 17592186698048,
+      "matches": [
+        17592186698024,
+        17592186698048
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186698024,
+          "value": "(54 \\left(9 x - 11\\right)^{5})",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186698048,
+          "value": "54 \\left(9 x - 11\\right)^{5}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(9*x - 11)**6",
+      "expected": "54*(9*x - 11)**5"
+    },
+    {
       "entity": 17592186698040,
       "source": null,
       "field": 17592186698032,
@@ -17039,6 +18218,34 @@
       ],
       "function": "(1 - 5*x)**8",
       "expected": "-40*(1 - 5*x)**7"
+    },
+    {
+      "entity": 17592186698042,
+      "source": null,
+      "field": 17592186698041,
+      "kind": "derivative",
+      "correct": 17592186698045,
+      "matches": [
+        17592186698033,
+        17592186698045
+      ],
+      "selected_passes": true,
+      "answers": [
+        {
+          "answer": 17592186698033,
+          "value": "(- 30 \\left(8 - 6 x\\right)^{4})",
+          "passes": true,
+          "difference": "0"
+        },
+        {
+          "answer": 17592186698045,
+          "value": "- 30 \\left(8 - 6 x\\right)^{4}",
+          "passes": true,
+          "difference": "0"
+        }
+      ],
+      "function": "(8 - 6*x)**5",
+      "expected": "-30*(8 - 6*x)**4"
     },
     {
       "entity": 17592186698050,
@@ -20161,124 +21368,42 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186088445,
-      "source": "q-8844",
-      "field": 17592186353897,
-      "kind": "ode",
-      "correct": 17592186353447,
+      "entity": 17592186235436,
+      "source": "q-167332",
+      "field": 17592186235163,
+      "kind": "integral",
+      "correct": 17592186234669,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186351594,
-          "value": "{y}^{2}=x\\operatorname{ln}\u2061(C{x}^{3}+x)",
+          "answer": 17592186234669,
+          "value": "2{e}^{x}-\\frac{{x}^{4}}{2}+12{x}^{2}",
           "passes": false,
-          "difference": "(x*(3*C*x**2 + (C*x**2 + 1)*log(x*(C*x**2 + 1)) + 1)/2 + (x**2 - y**2)*(C*x**2 + 1))/(x*y*(C*x**2 + 1))"
-        },
-        {
-          "answer": 17592186351768,
-          "value": "{y}^{2}=-{x}^{3}+C{x}^{2}",
-          "passes": false,
-          "difference": "C*x/y - 3*x**2/(2*y) + x/y - y/x"
-        },
-        {
-          "answer": 17592186352200,
-          "value": "{y}^{2}=x\\operatorname{ln}\u2061x+C{x}^{3}",
-          "passes": false,
-          "difference": "(x**2 + x*(3*C*x**2 + log(x) + 1)/2 - y**2)/(x*y)"
-        },
-        {
-          "answer": 17592186352407,
-          "value": "{y}^{3}={x}^{2}\\operatorname{ln}\u2061({x}^{2}+Cx)",
-          "passes": false,
-          "difference": "(x**2*(C + 2*x + 2*(C + x)*log(x*(C + x)))/3 + y*(C + x)*(x**2 - y**2))/(x*y**2*(C + x))"
-        },
-        {
-          "answer": 17592186353447,
-          "value": "{y}^{2}=-{x}^{2}\\operatorname{ln}\u2061{x}^{2}+C{x}^{2}",
-          "passes": false,
-          "difference": "C*x/y - x*log(x**2)/y - y/x"
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
         }
       ],
-      "residual": "Z - (-x**2 + y**2)/(x*y)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
-      "entity": 17592186235351,
-      "source": "q-128191",
-      "field": 17592186235152,
-      "kind": "ode",
-      "correct": 17592186234935,
+      "entity": 17592186235485,
+      "source": "q-167786",
+      "field": 17592186235228,
+      "kind": "integral",
+      "correct": 17592186234788,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186234935,
-          "value": "{x}^{2}",
+          "answer": 17592186234788,
+          "value": "2{e}^{x}-\\frac{{x}^{4}}{2}+12{x}^{2}",
           "passes": false,
-          "difference": "x*(2 - x**4)"
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
         }
       ],
-      "residual": "Z - x*y**2",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
-      "entity": 17592186240794,
-      "source": "q-104065",
-      "field": 17592186240555,
-      "kind": "ode",
-      "correct": 17592186239071,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186239071,
-          "value": "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+4{x}^{2}",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x + 1/tan(x))) - cos(x)"
-        },
-        {
-          "answer": 17592186239189,
-          "value": "y=\\operatorname{sin}\u2061x+4{x}^{2}-1",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x + cos(x))) - cos(x)"
-        },
-        {
-          "answer": 17592186239852,
-          "value": "y=\\operatorname{cos}\u2061x+8{x}^{2}-{\\pi }^{2}",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(16*x - sin(x))) - cos(x)"
-        },
-        {
-          "answer": 17592186240204,
-          "value": "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+8{x}^{2}-{\\pi }^{2}",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(16*x + 1/tan(x))) - cos(x)"
-        },
-        {
-          "answer": 17592186240205,
-          "value": "y=\\operatorname{cos}\u2061x+4{x}^{2}",
-          "passes": false,
-          "difference": "-8*x*sin(x) + sin(x*(8*x - sin(x))) - cos(x)"
-        }
-      ],
-      "residual": "-8*x*sin(x) + sin(Z*x) - cos(x)",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
       "entity": 17592186275110,
@@ -20377,109 +21502,71 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186317337,
-      "source": "q-342910",
-      "field": 17592186316955,
+      "entity": 17592186297340,
+      "source": "q-312462",
+      "field": 17592186296767,
       "kind": "derivative",
-      "correct": 17592186316002,
+      "correct": 17592186296581,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186316002,
-          "value": "-6x+11",
+          "answer": 17592186296581,
+          "value": "3{x}^{2}\\operatorname{ln}(5)",
           "passes": false,
-          "difference": "24*x**2 - 78*x + 65"
+          "difference": "3*x**2*(1 - 5**(x**3 + 1))*log(5)"
         }
       ],
-      "function": "(3 - 2*x)**3",
-      "expected": "-6*(3 - 2*x)**2"
+      "function": "5**(x**3 + 1)",
+      "expected": "3*5**(x**3 + 1)*x**2*log(5)"
     },
     {
-      "entity": 17592186329901,
-      "source": "q-48657",
-      "field": 17592186329311,
-      "kind": "derivative",
-      "correct": 17592186328449,
+      "entity": 17592186323684,
+      "source": "q-355525",
+      "field": 17592186323329,
+      "kind": "ode",
+      "correct": 17592186322470,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186327093,
-          "value": "y=20ex\\cdot ln\u2061(5)",
+          "answer": 17592186322470,
+          "value": "-\\frac{3}{4}\\operatorname{cos}(4x)",
           "passes": false,
-          "difference": "20*E*x*log(5) - 20*exp(4*x)"
-        },
-        {
-          "answer": 17592186327386,
-          "value": "y=5ex",
-          "passes": false,
-          "difference": "5*E*x - 20*exp(4*x)"
-        },
-        {
-          "answer": 17592186327428,
-          "value": "y=ex",
-          "passes": false,
-          "difference": "E*x - 20*exp(4*x)"
-        },
-        {
-          "answer": 17592186327685,
-          "value": "y=4ex",
-          "passes": false,
-          "difference": "4*E*x - 20*exp(4*x)"
-        },
-        {
-          "answer": 17592186328449,
-          "value": "y=20ex",
-          "passes": false,
-          "difference": "20*E*x - 20*exp(4*x)"
+          "difference": "(3*cos(9*cos(4*x)/4) - 1)*sin(4*x)"
         }
       ],
-      "function": "5*exp(4*x)",
-      "expected": "20*exp(4*x)"
+      "residual": "Z*cos(3*y) - sin(4*x)",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186329904,
-      "source": "q-48666",
-      "field": 17592186329394,
-      "kind": "derivative",
-      "correct": 17592186327821,
+      "entity": 17592186323686,
+      "source": "q-355544",
+      "field": 17592186323508,
+      "kind": "ode",
+      "correct": 17592186322350,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186327394,
-          "value": "y=-12x+25",
+          "answer": 17592186322350,
+          "value": "\\frac{4}{7}\\operatorname{tan}(7x)",
           "passes": false,
-          "difference": "-12*x - 12*(3*x - 5)**3 + 25"
-        },
-        {
-          "answer": 17592186327821,
-          "value": "y=12x-23",
-          "passes": false,
-          "difference": "12*x - 12*(3*x - 5)**3 - 23"
-        },
-        {
-          "answer": 17592186327971,
-          "value": "y=-3x+7",
-          "passes": false,
-          "difference": "-3*x - 12*(3*x - 5)**3 + 7"
-        },
-        {
-          "answer": 17592186328087,
-          "value": "y=-4x+9",
-          "passes": false,
-          "difference": "-4*x - 12*(3*x - 5)**3 + 9"
-        },
-        {
-          "answer": 17592186328579,
-          "value": "y=4x-7",
-          "passes": false,
-          "difference": "4*x - 12*(3*x - 5)**3 - 7"
+          "difference": "-sec(7*x)**2 + 4*sec(16*tan(7*x)/7)**2/cos(7*x)**2"
         }
       ],
-      "function": "(5 - 3*x)**4",
-      "expected": "-12*(5 - 3*x)**3"
+      "residual": "Z*sec(4*y)**2 - sec(7*x)**2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
       "entity": 17592186332805,
@@ -20522,54 +21609,6 @@
         }
       ],
       "residual": "Z*(2*x + 1) - 2",
-      "state": {
-        "dependent": "y",
-        "variable": "x",
-        "order": 1
-      },
-      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
-    },
-    {
-      "entity": 17592186348224,
-      "source": "q-79425",
-      "field": 17592186347969,
-      "kind": "ode",
-      "correct": 17592186347184,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186345370,
-          "value": "{y}^{2}=3{e}^{x}-2",
-          "passes": false,
-          "difference": "-2*x*y**3 - 4*x + 9*y*exp(x)/2"
-        },
-        {
-          "answer": 17592186345607,
-          "value": "{y}^{2}=2{e}^{{x}^{2}}-1",
-          "passes": false,
-          "difference": "2*x*(-y**3 + 3*y*exp(x**2) - 2)"
-        },
-        {
-          "answer": 17592186345974,
-          "value": "y=2{e}^{x}-1",
-          "passes": false,
-          "difference": "-2*x*(2*exp(x) - 1)**3 - 4*x + 6*(2*exp(x) - 1)**2*exp(x)"
-        },
-        {
-          "answer": 17592186346935,
-          "value": "{y}^{3}={e}^{{x}^{2}}",
-          "passes": false,
-          "difference": "2*x*(-y**3 + exp(x**2) - 2)"
-        },
-        {
-          "answer": 17592186347184,
-          "value": "{y}^{3}=3{e}^{{x}^{2}}-2",
-          "passes": false,
-          "difference": "2*x*(-y**3 + 3*exp(x**2) - 2)"
-        }
-      ],
-      "residual": "3*Z*y**2 - 2*x*y**3 - 4*x",
       "state": {
         "dependent": "y",
         "variable": "x",
@@ -20674,367 +21713,85 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186496445,
-      "source": null,
-      "field": 17592186496487,
+      "entity": 17592186373003,
+      "source": "q-355560",
+      "field": 17592186373004,
       "kind": "ode",
-      "correct": 17592186496443,
+      "correct": 17592186373005,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186496443,
-          "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + D + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
+          "answer": 17592186373005,
+          "value": "4-x-{x}^{2}",
           "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
-        },
-        {
-          "answer": 17592186496467,
-          "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + D + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
-        },
-        {
-          "answer": 17592186496471,
-          "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + \\frac{5 x^{3}}{6} - 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*(2 - log(2))"
-        },
-        {
-          "answer": 17592186496480,
-          "value": "y=- \\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}} + C x + D + \\frac{5 x^{2}}{2} - 4 \\cos{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "-12*2**x*log(2) + 12*2**x - 20*x - 8*sin(x/2) + 4*cos(x/2) + 20"
-        },
-        {
-          "answer": 17592186496485,
-          "value": "y=\\frac{3 \\cdot 2^{x}}{\\ln{\\left(2 \\right)}^{2}} + C x + D - \\frac{5 x^{3}}{6} + 8 \\sin{\\left(\\frac{x}{2} \\right)}",
-          "passes": false,
-          "difference": "6*2**x*log(2) + 12*2**x - 40*x - 16*sin(x/2)"
+          "difference": "-2*x - (x**2 + x - 4)**2 - 1 - 4*(x**2 + x - 4)**2/x**2"
         }
       ],
-      "residual": "12*2**x + 4*W - 20*x - 8*sin(x/2)",
+      "residual": "Z - y**2 - 4*y**2/x**2",
       "state": {
         "dependent": "y",
         "variable": "x",
-        "order": 2
+        "order": 1
       },
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186524997,
-      "source": "q-107463",
-      "field": 17592186524890,
-      "kind": "derivative",
-      "correct": 17592186524441,
+      "entity": 17592186514423,
+      "source": "q-166079",
+      "field": 17592186514300,
+      "kind": "integral",
+      "correct": 17592186513767,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186524441,
-          "value": "y=\\operatorname{ln}\u2061(2)\\,x+\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
+          "answer": 17592186513767,
+          "value": "2e^x+12x^2-\\frac{x^4}{2}",
           "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + x + 1)) + 1/4"
-        },
-        {
-          "answer": 17592186524506,
-          "value": "y=2\\operatorname{ln}\u2061(2)\\,x+2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
-          "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + 2*x + 2)) + 1/4"
-        },
-        {
-          "answer": 17592186524605,
-          "value": "y=-\\operatorname{ln}\u2061(2)\\,x-\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
-          "passes": false,
-          "difference": "1/4 - log(2**(2**(4*x + 4) + x + 1))"
-        },
-        {
-          "answer": 17592186524650,
-          "value": "y=-2\\operatorname{ln}\u2061(2)\\,x-2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
-          "passes": false,
-          "difference": "1/4 - log(2**(2**(4*x + 4) + 2*x + 2))"
-        },
-        {
-          "answer": 17592186524774,
-          "value": "y=\\frac{1}{2}\\operatorname{ln}\u2061(2)\\,x+\\frac{1}{2}\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
-          "passes": false,
-          "difference": "log(2**(-2**(4*x + 4) + x/2 + 1/2)) + 1/4"
+          "difference": "-4*f*x - 3*g*x - 2*x**3 + 24*x + 2*exp(x)"
         }
       ],
-      "function": "4**(2*x + 1)",
-      "expected": "2*4**(2*x + 1)*log(4)"
+      "integrand": "4*f*x + 3*g*x",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
-      "entity": 17592186546039,
-      "source": null,
-      "field": 17592186546076,
-      "kind": "derivative",
-      "correct": 17592186546042,
+      "entity": 17592186578821,
+      "source": "q-167322",
+      "field": 17592186578744,
+      "kind": "integral",
+      "correct": 17592186578358,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186546026,
-          "value": "y=- 12 e x + 6 + 3 e",
+          "answer": 17592186578358,
+          "value": "\\frac{2}{3}x^3+2x^2+x+e^x",
           "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) + 6 + 3*E"
-        },
-        {
-          "answer": 17592186546028,
-          "value": "y=- 12 e \\left(x + \\frac{7}{4}\\right) + 3 e",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) - 18*E"
-        },
-        {
-          "answer": 17592186546042,
-          "value": "y=- 12 e x - 18 e + 6",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(-4*x - 6) - 18*E + 6"
-        },
-        {
-          "answer": 17592186546055,
-          "value": "y=3 e \\left(x + \\frac{7}{4}\\right) + 6 + 3 e",
-          "passes": false,
-          "difference": "3*E*x + 12*exp(-4*x - 6) + 6 + 33*E/4"
-        },
-        {
-          "answer": 17592186546064,
-          "value": "y=12 e \\left(x + \\frac{7}{4}\\right) + 6 + 3 e",
-          "passes": false,
-          "difference": "12*E*x + 12*exp(-4*x - 6) + 6 + 24*E"
+          "difference": "-g*x + 2*x**2 + 4*x - sqrt(h*x) + exp(x) + 1"
         }
       ],
-      "function": "3*exp(-4*x - 6) + 6",
-      "expected": "-12*exp(-4*x - 6)"
+      "integrand": "g*x + sqrt(h*x)",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
-      "entity": 17592186546047,
-      "source": null,
-      "field": 17592186546056,
-      "kind": "derivative",
-      "correct": 17592186546027,
+      "entity": 17592186600797,
+      "source": "q-167775",
+      "field": 17592186600716,
+      "kind": "integral",
+      "correct": 17592186600579,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186546022,
-          "value": "y=- 2 e \\left(x - \\frac{1}{3}\\right) - 2 e + 3",
+          "answer": 17592186600579,
+          "value": "\\frac{2}{3}x^3+2x^2+x+e^x",
           "passes": false,
-          "difference": "-2*E*x - 6*exp(2 - 3*x) - 4*E/3 + 3"
-        },
-        {
-          "answer": 17592186546027,
-          "value": "y=6 e x - 4 e + 3",
-          "passes": false,
-          "difference": "6*E*x - 6*exp(2 - 3*x) - 4*E + 3"
-        },
-        {
-          "answer": 17592186546031,
-          "value": "y=6 e \\left(x - \\frac{1}{3}\\right) - 2 e",
-          "passes": false,
-          "difference": "2*((3*x - 2)*exp(3*x - 1) - 3)*exp(2 - 3*x)"
-        },
-        {
-          "answer": 17592186546049,
-          "value": "y=- 6 e \\left(x - \\frac{1}{3}\\right) - 2 e + 3",
-          "passes": false,
-          "difference": "-6*E*x - 6*exp(2 - 3*x) + 3"
-        },
-        {
-          "answer": 17592186546063,
-          "value": "y=6 e x - 2 e + 3",
-          "passes": false,
-          "difference": "6*E*x - 6*exp(2 - 3*x) - 2*E + 3"
+          "difference": "-g*x + 2*x**2 + 4*x - sqrt(h*x) + exp(x) + 1"
         }
       ],
-      "function": "3 - 2*exp(2 - 3*x)",
-      "expected": "6*exp(2 - 3*x)"
-    },
-    {
-      "entity": 17592186546058,
-      "source": null,
-      "field": 17592186546036,
-      "kind": "derivative",
-      "correct": 17592186546077,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186546032,
-          "value": "y=- 30 e \\left(x - \\frac{5}{6}\\right) + 1 + 5 e",
-          "passes": false,
-          "difference": "-30*E*x - 30*exp(6*x - 4) + 1 + 30*E"
-        },
-        {
-          "answer": 17592186546034,
-          "value": "y=30 e x + 1 + 5 e",
-          "passes": false,
-          "difference": "30*E*x - 30*exp(6*x - 4) + 1 + 5*E"
-        },
-        {
-          "answer": 17592186546043,
-          "value": "y=5 e \\left(x - \\frac{5}{6}\\right) + 1 + 5 e",
-          "passes": false,
-          "difference": "5*E*x - 30*exp(6*x - 4) + 1 + 5*E/6"
-        },
-        {
-          "answer": 17592186546045,
-          "value": "y=30 e \\left(x - \\frac{5}{6}\\right) + 5 e",
-          "passes": false,
-          "difference": "5*E*(6*x - 5) - 30*exp(6*x - 4) + 5*E"
-        },
-        {
-          "answer": 17592186546077,
-          "value": "y=30 e x - 20 e + 1",
-          "passes": false,
-          "difference": "30*E*x - 30*exp(6*x - 4) - 20*E + 1"
-        }
-      ],
-      "function": "5*exp(6*x - 4) + 1",
-      "expected": "30*exp(6*x - 4)"
-    },
-    {
-      "entity": 17592186546062,
-      "source": null,
-      "field": 17592186546061,
-      "kind": "derivative",
-      "correct": 17592186546060,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186546035,
-          "value": "y=- 12 e x - 4 e - 3",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(3*x - 5) - 4*E - 3"
-        },
-        {
-          "answer": 17592186546051,
-          "value": "y=12 e \\left(x - 2\\right) - 4 e - 3",
-          "passes": false,
-          "difference": "12*E*(x - 2) + 12*exp(3*x - 5) - 4*E - 3"
-        },
-        {
-          "answer": 17592186546060,
-          "value": "y=- 12 e x - 3 + 20 e",
-          "passes": false,
-          "difference": "-12*E*x + 12*exp(3*x - 5) - 3 + 20*E"
-        },
-        {
-          "answer": 17592186546065,
-          "value": "y=- 12 e \\left(x - 2\\right) - 4 e",
-          "passes": false,
-          "difference": "-12*E*(x - 2) + 12*exp(3*x - 5) - 4*E"
-        },
-        {
-          "answer": 17592186546073,
-          "value": "y=- 4 e \\left(x - 2\\right) - 4 e - 3",
-          "passes": false,
-          "difference": "-4*E*(x - 2) + 12*exp(3*x - 5) - 4*E - 3"
-        }
-      ],
-      "function": "-4*exp(3*x - 5) - 3",
-      "expected": "-12*exp(3*x - 5)"
-    },
-    {
-      "entity": 17592186546066,
-      "source": null,
-      "field": 17592186546071,
-      "kind": "derivative",
-      "correct": 17592186546069,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186546046,
-          "value": "y=- 2 e \\left(x - 3\\right) - 2 e - 3",
-          "passes": false,
-          "difference": "-2*E*(x - 3) + 4*exp(2*x - 5) - 2*E - 3"
-        },
-        {
-          "answer": 17592186546053,
-          "value": "y=4 e \\left(x - 3\\right) - 2 e - 3",
-          "passes": false,
-          "difference": "4*E*(x - 3) + 4*exp(2*x - 5) - 2*E - 3"
-        },
-        {
-          "answer": 17592186546059,
-          "value": "y=- 4 e x - 2 e - 3",
-          "passes": false,
-          "difference": "-4*E*x + 4*exp(2*x - 5) - 2*E - 3"
-        },
-        {
-          "answer": 17592186546069,
-          "value": "y=- 4 e x - 3 + 10 e",
-          "passes": false,
-          "difference": "-4*E*x + 4*exp(2*x - 5) - 3 + 10*E"
-        },
-        {
-          "answer": 17592186546079,
-          "value": "y=- 4 e \\left(x - 3\\right) - 2 e",
-          "passes": false,
-          "difference": "-4*E*(x - 3) + 4*exp(2*x - 5) - 2*E"
-        }
-      ],
-      "function": "-2*exp(2*x - 5) - 3",
-      "expected": "-4*exp(2*x - 5)"
-    },
-    {
-      "entity": 17592186611693,
-      "source": null,
-      "field": 17592186611696,
-      "kind": "derivative",
-      "correct": 17592186611691,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186611691,
-          "value": "- 8 x - 7",
-          "passes": false,
-          "difference": "-8*x - 8*(2*x + 1)**3 - 7"
-        }
-      ],
-      "function": "(2*x + 1)**4",
-      "expected": "8*(2*x + 1)**3"
-    },
-    {
-      "entity": 17592186611694,
-      "source": null,
-      "field": 17592186611690,
-      "kind": "derivative",
-      "correct": 17592186611697,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186611697,
-          "value": "80 - 64 x",
-          "passes": false,
-          "difference": "-64*x - 64*(x - 2)**3 + 80"
-        }
-      ],
-      "function": "(2*x - 4)**4",
-      "expected": "8*(2*x - 4)**3"
-    },
-    {
-      "entity": 17592186611695,
-      "source": null,
-      "field": 17592186611692,
-      "kind": "derivative",
-      "correct": 17592186611698,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186611698,
-          "value": "12 x + 1",
-          "passes": false,
-          "difference": "12*x - 12*(3*x + 1)**3 + 1"
-        }
-      ],
-      "function": "(3*x + 1)**4",
-      "expected": "12*(3*x + 1)**3"
+      "integrand": "g*x + sqrt(h*x)",
+      "domain_note": "derivative equality on the integrand real domain; additive constants ignored"
     },
     {
       "entity": 17592186657676,
@@ -21054,25 +21811,6 @@
       ],
       "function": "1/sqrt(2*x - 6)",
       "expected": "-1/(2*x - 6)**(3/2)"
-    },
-    {
-      "entity": 17592186657680,
-      "source": null,
-      "field": 17592186657659,
-      "kind": "derivative",
-      "correct": 17592186657664,
-      "matches": [],
-      "selected_passes": false,
-      "answers": [
-        {
-          "answer": 17592186657664,
-          "value": "-\\frac{4}{\\sqrt{(8x+2)^{3}}}",
-          "passes": false,
-          "difference": "-sqrt(2)/sqrt((4*x + 1)**3) + sqrt(2)/(4*x + 1)**(3/2)"
-        }
-      ],
-      "function": "1/sqrt(8*x + 2)",
-      "expected": "-4/(8*x + 2)**(3/2)"
     },
     {
       "entity": 17592186671882,
@@ -21147,176 +21885,148 @@
       "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186677850,
+      "entity": 17592186691531,
       "source": null,
-      "field": 17592186677848,
-      "kind": "derivative",
-      "correct": 17592186677864,
+      "field": 17592186691520,
+      "kind": "ode",
+      "correct": 17592186691526,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186677851,
-          "value": "y=- 96 x \\ln{\\left(2 \\right)} - 96 \\ln{\\left(2 \\right)} + 16",
+          "answer": 17592186691526,
+          "value": "1-e^{1-x^2}",
           "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 96*x - 96)) + 16"
-        },
-        {
-          "answer": 17592186677856,
-          "value": "y=- 32 x \\ln{\\left(2 \\right)} - 32 \\ln{\\left(2 \\right)} + 16",
-          "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 32*x - 32)) + 16"
-        },
-        {
-          "answer": 17592186677860,
-          "value": "y=96 x \\ln{\\left(2 \\right)} + 16 + 96 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) + 96*x + 96)) + 16"
-        },
-        {
-          "answer": 17592186677864,
-          "value": "y=- 128 x \\ln{\\left(2 \\right)} - 128 \\ln{\\left(2 \\right)} + 16",
-          "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) - 128*x - 128)) + 16"
-        },
-        {
-          "answer": 17592186677870,
-          "value": "y=32 x \\ln{\\left(2 \\right)} + 16 + 32 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(2**(-8*x - 1) + 32*x + 32)) + 16"
+          "difference": "2*x*exp(1 - x**2)*cos(2*exp(1 - x**2) - 2) - x*sin(2*exp(1 - x**2) - 2) - x"
         }
       ],
-      "function": "4**(-4*x - 2)",
-      "expected": "-4*4**(-4*x - 2)*log(4)"
+      "residual": "Z*cos(2*y) + x*sin(2*y) - x",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186677855,
+      "entity": 17592186691969,
       "source": null,
-      "field": 17592186677846,
-      "kind": "derivative",
-      "correct": 17592186677869,
+      "field": 17592186691971,
+      "kind": "ode",
+      "correct": 17592186691978,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186677852,
-          "value": "y=36 x \\ln{\\left(2 \\right)} + 4",
+          "answer": 17592186691978,
+          "value": "e^{\\frac{3 \\left(x - 2\\right)^{2}}{2} - \\frac{3}{2}} - 1",
           "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 36*x)) + 4"
-        },
-        {
-          "answer": 17592186677857,
-          "value": "y=4 x \\ln{\\left(2 \\right)} + 4",
-          "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 4*x)) + 4"
-        },
-        {
-          "answer": 17592186677858,
-          "value": "y=- 20 x \\ln{\\left(2 \\right)} + 4",
-          "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) - 20*x)) + 4"
-        },
-        {
-          "answer": 17592186677859,
-          "value": "y=28 x \\ln{\\left(2 \\right)} + 4",
-          "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) + 28*x)) + 4"
-        },
-        {
-          "answer": 17592186677869,
-          "value": "y=- 16 x \\ln{\\left(2 \\right)} + 4",
-          "passes": false,
-          "difference": "log(2**(2**(4 - 4*x) - 16*x)) + 4"
+          "difference": "-x + (2 - x)*sin(3*exp(3*(x - 2)**2/2 - 3/2) - 3) + 3*(x - 2)*exp(3*(x - 2)**2/2 - 3/2)*cos(3*exp(3*(x - 2)**2/2 - 3/2) - 3) + 2"
         }
       ],
-      "function": "2**(2 - 4*x)",
-      "expected": "-4*2**(2 - 4*x)*log(2)"
+      "residual": "Z*cos(3*y) - x + (2 - x)*sin(3*y) + 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186677861,
+      "entity": 17592186691970,
       "source": null,
-      "field": 17592186677849,
-      "kind": "derivative",
-      "correct": 17592186677845,
+      "field": 17592186691973,
+      "kind": "ode",
+      "correct": 17592186691979,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186677845,
-          "value": "y=- 2 x \\ln{\\left(2 \\right)} - 2 \\ln{\\left(2 \\right)} + 1",
+          "answer": 17592186691979,
+          "value": "e^{\\frac{3}{2} - \\frac{3 \\left(x - 2\\right)^{2}}{2}} - 1",
           "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 2*x - 2)) + 1"
-        },
-        {
-          "answer": 17592186677854,
-          "value": "y=- 10 x \\ln{\\left(2 \\right)} - 10 \\ln{\\left(2 \\right)} + 1",
-          "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 10*x - 10)) + 1"
-        },
-        {
-          "answer": 17592186677862,
-          "value": "y=4 x \\ln{\\left(2 \\right)} + 1 + 4 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) + 4*x + 4)) + 1"
-        },
-        {
-          "answer": 17592186677865,
-          "value": "y=- 4 x \\ln{\\left(2 \\right)} - 4 \\ln{\\left(2 \\right)} + 1",
-          "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) - 4*x - 4)) + 1"
-        },
-        {
-          "answer": 17592186677872,
-          "value": "y=6 x \\ln{\\left(2 \\right)} + 1 + 6 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(2**(-2*x - 1) + 6*x + 6)) + 1"
+          "difference": "((6 - 3*x)*cos(3*exp(-3*x**2/2 + 6*x - 9/2) - 3) + (x + (x - 2)*sin(3*exp(-3*x**2/2 + 6*x - 9/2) - 3) - 2)*exp(3*(x - 2)**2/2 - 3/2))*exp(3/2 - 3*(x - 2)**2/2)"
         }
       ],
-      "function": "4**(-x - 1)",
-      "expected": "-4**(-x - 1)*log(4)"
+      "residual": "Z*cos(3*y) + x + (x - 2)*sin(3*y) - 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     },
     {
-      "entity": 17592186677867,
+      "entity": 17592186691972,
       "source": null,
-      "field": 17592186677866,
-      "kind": "derivative",
-      "correct": 17592186677863,
+      "field": 17592186691968,
+      "kind": "ode",
+      "correct": 17592186691980,
       "matches": [],
       "selected_passes": false,
       "answers": [
         {
-          "answer": 17592186677847,
-          "value": "y=- 2 x \\ln{\\left(2 \\right)} + \\frac{1}{2} + 2 \\ln{\\left(2 \\right)}",
+          "answer": 17592186691980,
+          "value": "-1 + e^{- \\frac{3 \\left(x - 1\\right)^{2}}{2}}",
           "passes": false,
-          "difference": "log(2**(-2*x + 2 + 192/2**(6*x))) + 1/2"
-        },
-        {
-          "answer": 17592186677853,
-          "value": "y=x \\ln{\\left(2 \\right)} - \\ln{\\left(2 \\right)} + \\frac{1}{2}",
-          "passes": false,
-          "difference": "log(2**(x - 1 + 192/2**(6*x))) + 1/2"
-        },
-        {
-          "answer": 17592186677863,
-          "value": "y=- 3 x \\ln{\\left(2 \\right)} + \\frac{1}{2} + 3 \\ln{\\left(2 \\right)}",
-          "passes": false,
-          "difference": "log(2**(-3*x + 3 + 192/2**(6*x))) + 1/2"
-        },
-        {
-          "answer": 17592186677868,
-          "value": "y=\\frac{3 x \\ln{\\left(2 \\right)}}{2} - \\frac{3 \\ln{\\left(2 \\right)}}{2} + \\frac{1}{2}",
-          "passes": false,
-          "difference": "log(2**(3*x/2 - 3/2 + 192/2**(6*x))) + 1/2"
-        },
-        {
-          "answer": 17592186677871,
-          "value": "y=\\frac{x \\ln{\\left(2 \\right)}}{2} - \\frac{\\ln{\\left(2 \\right)}}{2} + \\frac{1}{2}",
-          "passes": false,
-          "difference": "x*log(2)/2 - log(2)/2 + 1/2 + 192*log(2)/2**(6*x)"
+          "difference": "(3*(1 - x)*cos(3*exp(-3*x**2/2 + 3*x - 3/2) - 3) + (x + (x - 1)*sin(3*exp(-3*x**2/2 + 3*x - 3/2) - 3) - 1)*exp(3*(x - 1)**2/2))*exp(-3*(x - 1)**2/2)"
         }
       ],
-      "function": "2**(5 - 6*x)",
-      "expected": "-6*2**(5 - 6*x)*log(2)"
+      "residual": "Z*cos(3*y) + x + (x - 1)*sin(3*y) - 1",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691975,
+      "source": null,
+      "field": 17592186691977,
+      "kind": "ode",
+      "correct": 17592186691982,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691982,
+          "value": "\\frac{e^{\\frac{\\left(x - 2\\right)^{2}}{2}}}{2} - 1",
+          "passes": false,
+          "difference": "-x + (2 - x)*sin(exp((x - 2)**2/2)/2 - 1) + (x - 2)*exp((x - 2)**2/2)*cos(exp((x - 2)**2/2)/2 - 1)/2 + 2"
+        }
+      ],
+      "residual": "Z*cos(y) - x + (2 - x)*sin(y) + 2",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
+    },
+    {
+      "entity": 17592186691976,
+      "source": null,
+      "field": 17592186691981,
+      "kind": "ode",
+      "correct": 17592186691974,
+      "matches": [],
+      "selected_passes": false,
+      "answers": [
+        {
+          "answer": 17592186691974,
+          "value": "1 - \\frac{e^{- x^{2}}}{2}",
+          "passes": false,
+          "difference": "x*sin(2 - exp(-x**2)) - x + x*exp(-x**2)*cos(2 - exp(-x**2))"
+        }
+      ],
+      "residual": "Z*cos(2*y) + x*sin(2*y) - x",
+      "state": {
+        "dependent": "y",
+        "variable": "x",
+        "order": 1
+      },
+      "completeness_note": "Residual is necessary, not proof of all equilibria/branches/domains; reviewed separately."
     }
   ],
   "unresolved": [
@@ -21606,14 +22316,19 @@
       "fields": 0
     },
     {
+      "entity": 17592186235351,
+      "kind": "ode",
+      "reason": "partial expression blank requires reconstruction"
+    },
+    {
       "entity": 17592186235352,
       "kind": "ode",
-      "reason": "no parseable ODE"
+      "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186235382,
       "kind": "derivative",
-      "reason": "no scalar function definition"
+      "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186235434,
@@ -21621,29 +22336,19 @@
       "reason": "named composition requires original function definitions"
     },
     {
-      "entity": 17592186235436,
-      "kind": "integral",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186235482,
       "kind": "derivative",
       "reason": "named composition requires original function definitions"
     },
     {
-      "entity": 17592186235485,
-      "kind": "integral",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186235519,
       "kind": "ode",
-      "reason": "no parseable ODE"
+      "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186235520,
       "kind": "ode",
-      "reason": "no parseable ODE"
+      "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186265781,
@@ -21731,47 +22436,7 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186297339,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186297340,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186314963,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186317301,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186317308,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186317326,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186317327,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186317333,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186317335,
       "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -21786,12 +22451,12 @@
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186319204,
+      "entity": 17592186320948,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186320759,
+      "entity": 17592186320949,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -21801,52 +22466,7 @@
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186323684,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323685,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323686,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323687,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323688,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323689,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323691,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186323692,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323693,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186323696,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -21936,11 +22556,6 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186373003,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186403158,
       "kind": "ode",
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
@@ -21976,18 +22591,13 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186493330,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186493331,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186493332,
       "kind": "derivative",
+      "reason": "partial expression blank requires reconstruction"
+    },
+    {
+      "entity": 17592186496555,
+      "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
@@ -22016,6 +22626,11 @@
       "reason": "no parseable ODE"
     },
     {
+      "entity": 17592186496590,
+      "kind": "ode",
+      "reason": "partial expression blank requires reconstruction"
+    },
+    {
       "entity": 17592186503728,
       "kind": "ode",
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
@@ -22026,29 +22641,9 @@
       "reason": "named composition requires original function definitions"
     },
     {
-      "entity": 17592186514423,
-      "kind": "integral",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186520484,
       "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186520516,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186524983,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186525021,
-      "kind": "derivative",
-      "reason": "tangent evaluation point not extracted"
     },
     {
       "entity": 17592186532969,
@@ -22081,17 +22676,7 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186542130,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186546033,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186546037,
       "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -22103,11 +22688,6 @@
     {
       "entity": 17592186547982,
       "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186557301,
-      "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
     },
     {
@@ -22136,11 +22716,6 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186578821,
-      "kind": "integral",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186578837,
       "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
@@ -22148,16 +22723,6 @@
     {
       "entity": 17592186594665,
       "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186597617,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186600797,
-      "kind": "integral",
       "reason": "partial expression blank requires reconstruction"
     },
     {
@@ -22171,22 +22736,12 @@
       "reason": "partial expression blank requires reconstruction"
     },
     {
+      "entity": 17592186608984,
+      "kind": "ode",
+      "reason": "partial expression blank requires reconstruction"
+    },
+    {
       "entity": 17592186609013,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186610488,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186611609,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186611628,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -22211,17 +22766,17 @@
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186620984,
-      "kind": "derivative",
-      "reason": "tangent evaluation point not extracted"
-    },
-    {
       "entity": 17592186623673,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186623700,
+      "kind": "ode",
+      "reason": "partial expression blank requires reconstruction"
+    },
+    {
+      "entity": 17592186641795,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
@@ -22251,11 +22806,6 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186657635,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186671807,
       "kind": "ode",
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
@@ -22279,26 +22829,6 @@
       "entity": 17592186671837,
       "kind": "ode",
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
-    },
-    {
-      "entity": 17592186672493,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186672494,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186672499,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186672500,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186673462,
@@ -22351,82 +22881,22 @@
       "reason": "transformed equation/characteristic roots/non-solution requires dedicated check"
     },
     {
-      "entity": 17592186674306,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186674308,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186674315,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
       "entity": 17592186683604,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186691519,
+      "entity": 17592186683610,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
-      "entity": 17592186691531,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186691969,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186691970,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186691972,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186691975,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186691976,
-      "kind": "ode",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186693465,
+      "entity": 17592186683748,
       "kind": "ode",
       "reason": "partial expression blank requires reconstruction"
     },
     {
       "entity": 17592186697162,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186697163,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186698031,
-      "kind": "derivative",
-      "reason": "partial expression blank requires reconstruction"
-    },
-    {
-      "entity": 17592186698042,
       "kind": "derivative",
       "reason": "partial expression blank requires reconstruction"
     },

@@ -68,6 +68,21 @@ class Renderer:
             return '\\overset{'+cs[1]+'}{'+cs[0]+'}'
         # MathJax's hat disables stretching; widehat retains the default.
         return ('\\hat{' if stretchy=='false' else '\\widehat{')+body+'}'
+    @staticmethod
+    def function_application(node):
+        current=node
+        while isinstance(current,Tag):
+            nxt=current.find_next_sibling()
+            if nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':
+                return current is node or len(node.get_text())>1
+            parent=current.parent
+            if not isinstance(parent,Tag):return False
+            children=[n for n in parent.find_all(recursive=False) if n.name not in ('annotation','annotation-xml')]
+            wrapper=parent.name in ('mrow','mstyle','mpadded','semantics') and len(children)==1
+            powered=parent.name in ('msup','msub','msubsup') and children and children[0] is current
+            if not wrapper and not powered:return False
+            current=parent
+        return False
     def m(self,n):
         value=self.math_node(n)
         if not isinstance(n,Tag) or not value:return value
@@ -141,8 +156,7 @@ class Renderer:
         if t=='mtext':return '\\text{'+re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text())+'}'
         if t=='mo':return OPS.get(n.get_text(),GREEK.get(n.get_text(),re.sub(r'[$%#{}]',lambda m:'\\'+m[0],n.get_text())))
         if t=='mi':
-            nxt=n.find_next_sibling()
-            if re.fullmatch('[A-Za-z]+',n.get_text()) and nxt is not None and nxt.name=='mo' and nxt.get_text()=='\u2061':return '\\operatorname{'+n.get_text()+'}'
+            if re.fullmatch('[A-Za-z]+',n.get_text()) and self.function_application(n):return '\\operatorname{'+n.get_text()+'}'
             return GREEK.get(n.get_text(),re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text()))
         if t=='mtable':
             rows=[[self.m(cell) for cell in row.find_all('mtd',recursive=False)] for row in n.find_all('mtr',recursive=False)]

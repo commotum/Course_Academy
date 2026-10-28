@@ -228,6 +228,21 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     if (['msup', 'msub', 'msubsup'].includes(n?.localName) && n.children[0]?.localName === 'mo') return n.children[0].textContent;
     return null;
   }
+  function functionApplication(node) {
+    let current = node;
+    for (;;) {
+      const next = current.nextElementSibling;
+      if (next?.localName === 'mo' && next.textContent === '\u2061')
+        return current === node || node.textContent.length > 1;
+      const parent = current.parentElement;
+      if (!parent) return false;
+      const children = [...parent.children].filter(n => !['annotation', 'annotation-xml'].includes(n.localName));
+      const wrapper = ['mrow', 'mstyle', 'mpadded', 'semantics'].includes(parent.localName) && children.length === 1;
+      const poweredBase = ['msup', 'msub', 'msubsup'].includes(parent.localName) && children[0] === current;
+      if (!wrapper && !poweredBase) return false;
+      current = parent;
+    }
+  }
   function m(n, environment=null) {
     let value = mathNode(n, environment);
     if (n.nodeType !== 1 || !value) return value;
@@ -346,7 +361,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
         if (/^[A-Za-z]+$/.test(n.textContent) &&
-            n.nextElementSibling?.localName === 'mo' && n.nextElementSibling.textContent === '\u2061') {
+            functionApplication(n)) {
           return '\\operatorname{' + n.textContent + '}';
         }
         // A literal percent can be an identifier token in captured MathML.

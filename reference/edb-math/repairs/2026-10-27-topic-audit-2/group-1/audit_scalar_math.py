@@ -16,7 +16,7 @@ def equal(a,b):
  try:return S.simplify(S.trigsimp(a-b))==0
  except Exception:return False
 def expression(value):
- s=value.strip().strip('$').rstrip('.,?');s=re.sub(r'^\\displaystyle\s*','',s)
+ s=value.strip().strip('$').rstrip('.,?\\ ');s=re.sub(r'^\\displaystyle\s*','',s)
  if '='in s:s=s.split('=')[-1]
  return parse(s)
 def correct(f):return f.get(':answer-field/correct',{}).get(':db/id')
