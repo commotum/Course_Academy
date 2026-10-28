@@ -30,6 +30,16 @@ class SourceTableTests(unittest.TestCase):
   for name,value in results.items():
    with self.subTest(importer=name):
     self.assertEqual(shape(value),expected);self.assertIn('$x<2$',value);self.assertRegex(value,r'\$(?:π|\\pi)\s*\$');self.assertIn('<strong>Exact</strong>',value);self.assertIn('<em>answer</em>',value);self.assertIn('<ol type="i" start="2">',value);self.assertIn('<caption>Example</caption>',value);self.assertEqual(value.count('class="source-table"'),2);self.assertNotIn('style=',value)
+ def test_hidden_fraction_edges_are_not_collapsed_into_none(self):
+  source='<table rules="all" border="1"><tr><td rowspan="2" style="border:hidden">y=</td><td style="border:1px solid;border-top:hidden;border-left:hidden;border-right:hidden">x</td></tr><tr><td style="border:1px solid;border-bottom:hidden;border-left:hidden;border-right:hidden">{{field-1}}</td></tr></table>'
+  for name,value in self.values(source).items():
+   with self.subTest(importer=name):
+    cells=BeautifulSoup(value,'html.parser').find_all('td')
+    self.assertEqual(cells[0]['data-border-right'],'hidden')
+    self.assertEqual(cells[1]['data-border-bottom'],'solid')
+    self.assertEqual(cells[2]['data-border-top'],'solid')
+    self.assertEqual(cells[2]['data-border-bottom'],'hidden')
+
  def test_no_invented_headers_and_safe_text(self):
   for name,value in self.values('<table><tr><td>A &amp; B</td><td>3 &lt; 4</td></tr></table>').items():
    self.assertNotIn('<th',value,name);self.assertIn('A &amp; B',value);self.assertIn('3 &lt; 4',value)

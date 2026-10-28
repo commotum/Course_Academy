@@ -9,6 +9,7 @@ def index(x):
  elif isinstance(x,list):
   for v in x:index(v)
 index(D);props={};merge=[]
+ledger=json.loads((H.parent/'source-eligibility.json').read_text());excluded={q[':db/id']:q for q in ledger['excluded_questions']};parents={p[':db/id']:p for p in json.loads((H.parent/'multistep-parent-records.json').read_text())};rejected_context=[]
 def add(p):
  p=copy.deepcopy(p);p['attribute']=':'+p['attribute'].lstrip(':');k=p['entity'],p['attribute'];prior=props.get(k)
  if prior:
@@ -17,8 +18,11 @@ def add(p):
   elif after!=current:merge.append({'entity':k[0],'attribute':k[1],'resolution':'Later authored standalone task/solution takes precedence over source-only annotation reconstruction. Both evidence records retained.','earlier':prior['reason'],'later':p['reason']})
   p['before']=old;p['after']=after;p['evidence']={'combined':[prior['evidence'],p['evidence']]};p['reason']=prior['reason']+' '+p['reason']
  props[k]=p
-for file in['source-formula-proposals.json','answer-format-proposals.json','context-proposals.json','completion-solution-proposals.json','extra-context-proposals.json']:
- for p in json.loads((H/file).read_text()):add(p)
+for file in['source-formula-proposals.json','answer-format-proposals.json','context-proposals.json','completion-solution-proposals.json','extra-context-proposals.json','layout-proposals.json']:
+ for p in json.loads((H/file).read_text()):
+  if p['entity']in excluded and p['attribute'].lstrip(':')=='question/problem'and file in['context-proposals.json','extra-context-proposals.json']:
+   entry=excluded[p['entity']];rejected_context.append({'proposal':p,'disposition':'Rejected: valid structurally contained child. Preserve parent-owned definitions/domain and child task scope. No standalone givens added.','eligibility':entry,'parent_contexts':[{'entity':pid,'context':parents[pid].get(':multistep/context')}for pid in entry['multistep_parents']]});continue
+  add(p)
 topics={t['entity']:t['ma_id']for t in D['topics']};tq={q:topics[t]for t,k,q in D['links']};display=[]
 for q in D['questions']:
  if tq[q[':db/id']]not in[285,308,1112,3769]:continue
@@ -49,12 +53,13 @@ def patch(x):
  elif isinstance(x,list):
   for v in x:patch(v)
 patch(proposed)
-keys=json.loads((H/'key-proposals.json').read_text());ans={a[':db/id']:a for q in proposed['questions']for f in q.get(':question/answer-fields',[])for a in f.get(':answer-field/choices',[])}
+keys=json.loads((H/'key-proposals.json').read_text())+json.loads((H/'incorrect-key-proposals.json').read_text());ans={a[':db/id']:a for q in proposed['questions']for f in q.get(':question/answer-fields',[])for a in f.get(':answer-field/choices',[])}
 for q in proposed['questions']:
  for f in q.get(':question/answer-fields',[]):
   ps=[p for p in keys if p['entity']==f[':db/id']]
   if ps:f[':answer-field/correct']=copy.deepcopy(ans[ps[0]['after']])
 (H/'proposals.json').write_text(json.dumps(out,indent=2));(H/'proposed.json').write_text(json.dumps(proposed,indent=2));(H/'display-proposals.json').write_text(json.dumps(display,indent=2));(H/'merge-review.json').write_text(json.dumps(merge,indent=2));(H/'proposed-structure-validation.json').write_text(json.dumps(validation,indent=2));print('content',len(out),collections.Counter(p['attribute']for p in out),'display',len(display),'merges',len(merge),'errors',validation)
+(H/'context-candidates-rejected.json').write_text(json.dumps(rejected_context,indent=2))
 # Separate explicit ownership/history-preserving duplicate detach recommendation.
 dups=[]
 for qid,stale in[(17592186115783,17592186113665),(17592186115785,17592186113667),(17592186125222,17592186123932),(17592186125224,17592186123944)]:

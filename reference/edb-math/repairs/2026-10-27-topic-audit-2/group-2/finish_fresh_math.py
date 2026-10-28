@@ -14,10 +14,17 @@ def checks(q,kp):
  if kp==17592186147454:
   residual0,raw=ode(p);right=S.cancel(-residual0.subs(D,0)/S.diff(residual0,D));powers={}
   for term in S.Add.make_args(S.expand(right)):
+   term=S.factor(term)
    n=term.as_powers_dict().get(y,0);coef=S.cancel(term/y**n);assert not coef.has(y);powers[n]=powers.get(n,0)+coef
   nonlinear=set(powers)-{S.Integer(1)};assert len(nonlinear)==1;n=next(iter(nonlinear));P=-powers.get(S.Integer(1),0);Q0=powers[n]
   for f in fs:
-   v=correct(f)[':answer/value'].replace(r'\pm','');sol=explicit_solution(v);zz=S.powdenest(sol**(1-n),force=True);zz=S.powsimp(zz,force=True)
+   v=correct(f)[':answer/value'].replace(r'\pm','');sol=explicit_solution(v)
+   zforms=[]
+   for _,v0 in maths(q[':question/worked-solution']):
+    if v0.strip().startswith('z='):
+     candidate=parse(v0.strip()[2:])
+     if candidate.has(C):zforms.append(candidate)
+   assert zforms;zz=zforms[-1];recovered=S.powdenest(zz**(1/(1-n)),force=True);assert S.simplify(S.powdenest(sol-recovered,force=True))==0
    add(f,'independently derive Bernoulli n/P/Q; verify z=y^(1-n) linearized residual',S.diff(zz,x)+(1-n)*P*zz-(1-n)*Q0,'Use precisely the positive-coordinate/positive-z intervals stated in the fresh prompt; ± branches share y^-2 and are both retained.')
  elif kp in[17592186217248,17592186217249]:
   P,Q0=pq(p);n=len(fs);isy=kp==17592186217249;ratio=S.cancel((S.diff(P,y)-S.diff(Q0,x))/(P if isy else Q0));ratiofield=fs[-3];factorfield=fs[-2];lastfield=fs[-1];mu=rhs(correct(factorfield)[':answer/value'])
@@ -52,8 +59,10 @@ def checks(q,kp):
  elif kp==17592186064246:
   integral=next(parse(v)for _,v in maths(p)if r'\int'in v);integral=integral.lhs if isinstance(integral,S.Equality)else integral
   for f in fs:
-   sol=rhs(correct(f)[':answer/value']);reps={log:S.log(log.args[0].args[0])for log in sol.atoms(S.log)if isinstance(log.args[0],S.Abs)};formal=sol.xreplace(reps)
-   add(f,'differentiate antiderivative using (log|u|)′=u′/u off original integrand poles',S.diff(formal,x)-integral.function,'all real intervals avoiding sin/cos denominator zeros')
+   sol=rhs(correct(f)[':answer/value']);trig=next(iter(integral.function.atoms(S.sec,S.csc)));arg=trig.args[0];rate=S.diff(arg,x);linear=S.cancel(integral.function/trig**2);slope=S.diff(linear,x);assert not rate.has(x)and not slope.has(x)
+   if trig.func==S.sec:expected=linear/rate*S.tan(arg)+slope/rate**2*S.log(S.Abs(S.cos(arg)))
+   else:expected=-linear/rate*S.cot(arg)+slope/rate**2*S.log(S.Abs(S.sin(arg)))
+   add(f,'independent generic integration-by-parts formula, exact linear factor/function argument/rate',sol-(expected+C),'Each real component avoiding original sec/csc poles; (log|u|)′=u′/u verifies the formula there')
  elif kp in[17592186110594,17592186110595]:
   expr=next(parse(v)for _,v in maths(p)if'='in v);assert isinstance(expr,S.Equality);var=next(iter(expr.free_symbols));real=S.Symbol(var.name,real=True);expr=expr.subs(var,real);roots=S.solve(expr,real);assert len(roots)==1
   for f in fs:

@@ -22,6 +22,7 @@ def context(p,f):
 def differential(v):
  v=re.sub(r'\\(?:text|textrm|mathrm)\s*\{\s*d\s*\}\s*x|(?<![A-Za-z])dx',r'\\cdot J',v)
  v=re.sub(r'\\(?:text|textrm|mathrm)\s*\{\s*d\s*\}\s*y|(?<![A-Za-z])dy',r'\\cdot K',v)
+ v=re.sub(r'(^|[+(=\-])\s*(?:\\[,;!]\s*)*\\cdot\s*([JK])',r'\1\2',v)
  e=parse(v);e=e.lhs-e.rhs if isinstance(e,S.Equality)else e;e=S.expand(e)
  if not e.has(J)or not e.has(K):raise ValueError('not differential form')
  if e.subs({J:0,K:0})!=0:raise ValueError('unexpected constant in form')

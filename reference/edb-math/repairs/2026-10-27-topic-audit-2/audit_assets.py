@@ -10,7 +10,7 @@ class Images(HTMLParser):
  def handle_starttag(self,t,a):
   if t=='img':self.urls +=[v for k,v in a if k=='src' and v]
 D=H/'assets';D.mkdir(exist_ok=True);db=connection();image_id=db.query('[:find ?e :where [?e :db/ident :answer.type/image]]',[],D,'image-enum',9122)[0][0];texts={};direct=[]
-attrs={':question/problem',':question/worked-solution',':tutorial/content',':answer/value',':answer/feedback',':answer-field/key'}
+attrs={':question/problem',':question/worked-solution',':tutorial/content',':answer/value',':answer/feedback',':answer-field/key',':multistep/context'}
 def visit(v):
  if isinstance(v,list):
   for n in v:visit(n)
@@ -22,6 +22,7 @@ def visit(v):
     if a==':answer/value'and image:direct.append((e,a,s))
    elif isinstance(s,(dict,list)):visit(s)
 for g,f in [('group-1','current.json'),('group-2','current.json'),('group-3','snapshot.json')]:visit(json.loads((H/g/f).read_text()))
+visit(json.loads((H/'scoped-contexts.json').read_text()))
 refs=[]
 for(e,a),s in texts.items():
  parser=Images();parser.feed(s)

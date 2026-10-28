@@ -61,7 +61,7 @@ def attrs(node,last_rows):
     if tag in {'td','th'}:
         for side in ['top','right','bottom','left']:
             value=s.get('border-'+side,s.get('border'))
-            if value is not None:put('data-border-'+side,'none'if re.match(r'^(?:none|hidden|0(?:px)?)(?:\s|$)',value)else'solid')
+            if value is not None:put('data-border-'+side,'hidden'if re.search(r'\bhidden\b',value)else'none'if re.match(r'^(?:none|0(?:px)?)(?:\s|$)',value)else'solid')
     return ''.join(a)
 
 def source_table_html(table,render_leaf,skip=lambda node:False):

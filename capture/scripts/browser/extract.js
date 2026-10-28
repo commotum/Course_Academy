@@ -23,7 +23,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     const fill=color(node.getAttribute('bgcolor')||s['background-color']||s.background);if(fill)put('data-fill',fill);
     if(/^(?:bold|[6-9]00)$/.test(s['font-weight']||''))put('data-cell-weight','bold');
     if(['top','middle','bottom'].includes(s['vertical-align']||node.getAttribute('valign')))put('data-cell-valign',s['vertical-align']||node.getAttribute('valign'));
-    if(['td','th'].includes(tag))for(const side of ['top','right','bottom','left']){const value=s['border-'+side]??s.border;if(value!==undefined)put('data-border-'+side,/^(?:none|hidden|0(?:px)?)(?:\s|$)/.test(value)?'none':'solid')}
+    if(['td','th'].includes(tag))for(const side of ['top','right','bottom','left']){const value=s['border-'+side]??s.border;if(value!==undefined)put('data-border-'+side,/\bhidden\b/.test(value)?'hidden':/^(?:none|0(?:px)?)(?:\s|$)/.test(value)?'none':'solid')}
     return a.join('');
   }
   function walk(node){

@@ -100,7 +100,7 @@ def evaluate(nodes):
  return v
 def parse(tex):
  tex=tex.strip().strip('$').strip().rstrip('.,');tex=re.sub(r'\\(?:color)\{[^{}]+\}','',tex);tex=tex.replace('−','-')
- tex=re.sub(r'\\operatorname\{(arcsec|arccsc|arcsin|arccos|arctan|sin|cos|tan|ln|log|exp)\}',lambda m:'\\'+m[1],tex)
+ tex=re.sub(r'\\operatorname\{(arcsec|arccsc|arcsin|arccos|arctan|sin|cos|tan|ln|log|exp)\}',lambda m:'\\'+m[1]+' ',tex)
  tex=re.sub(r'\\mathrm\{e\}', 'e',tex)
  tex=re.sub(r'(?<![A-Za-z\\])(arcsec|arccsc|arccot|arcsin|arccos|arctan)(?=[A-Za-z(])',lambda m:r'\operatorname{'+m[1]+'}',tex)
  return evaluate(Parser(tokens(tex)).sequence())
