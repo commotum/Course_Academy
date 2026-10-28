@@ -13,6 +13,15 @@ for p in json.loads((H/'independent-proposals.json').read_text()):
  for detail in p['evidence']['derivations']:
   old,new,count=detail['before_fragment'],detail['after_fragment'],detail['occurrences'];assert after.count(old)==count,(key,old,after.count(old));after=after.replace(old,new)
  base['after']=after;base['reason']+=' '+p['reason'];base['evidence']['independent_correction']=p['evidence']
+guards=[]
+for e,a,v,bare in json.loads((H/'items.json').read_text()):
+ after=re.sub(r'(\\begin\{aligned\})(\s*)(?=\[)',lambda m:m[1]+m[2]+'{}',v)
+ if after==v:continue
+ p={'entity':e,'attribute':a,'before':v,'after':after,'reason':'Protect the visible initial bracket in aligned from being parsed as an optional placement argument.','evidence':{'basis_t':9047,'guard':'Insert exactly {} immediately before initial visible [ after begin{aligned}; preserve all source characters and mathematics.'},'confidence':'high'};guards.append(p);key=e,a
+ if key not in merged:merged[key]=copy.deepcopy(p)
+ else:
+  base=merged[key];base['after']=re.sub(r'(\\begin\{aligned\})(\s*)(?=\[)',lambda m:m[1]+m[2]+'{}',base['after']);base['reason']+=' '+p['reason'];base['evidence']['initial_bracket_guard']=p['evidence']
+(H/'initial-bracket-proposals.json').write_text(json.dumps(guards,indent=2))
 props=list(merged.values());P=copy.deepcopy(D);objects={o[':db/id']:o for o in P['questions']+P['contents']}
 for p in props:
  validate_math_structure(p['after'],bare_math=p['attribute']=='answer/value');

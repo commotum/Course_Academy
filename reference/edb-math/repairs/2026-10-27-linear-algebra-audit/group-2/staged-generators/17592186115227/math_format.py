@@ -968,6 +968,10 @@ def normalize_tex(value):
     if MATH.fullmatch(text):
         size = 2 if text.startswith(('$$', r'\[', r'\(')) else 1
         text = text[size:-size].strip()
+    # An initial [A|I] is visible content, not aligned's optional position.
+    # MathJax accepts arbitrary text as that option and silently drops it.
+    text = re.sub(r'(\\begin\{aligned\})(?=\s*\[(?!\s*[tbc]\s*\]))',
+                  lambda match: match[1] + '{}', text)
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
@@ -1066,6 +1070,8 @@ def normalize_prose(value):
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
     text = str(value); depth = 0; stack = []; fences = []
+    if re.search(r'\\begin\{aligned\}\s*\[(?!\s*[tbc]\s*\])', text):
+        raise ValueError('Visible initial bracket in aligned is consumed as placement; insert {} or use scalable fences')
     if re.search(r'\\(?:left|right|middle)(?![A-Za-z])\s*$', text):
         raise ValueError('Missing left/right delimiter glyph')
     check_fences = not re.search(r'\\(?:newcommand|renewcommand|def)(?![A-Za-z])', text)

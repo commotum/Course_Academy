@@ -189,10 +189,13 @@ class MathMLBraceImportTests(unittest.TestCase):
                 with self.subTest(over=over, attribute=attribute):
                     formula = '<math><' + tag + '><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mo ' + attribute + '="' + value + '">' + glyph + '</mo></' + tag + '></math>'
                     self.page.set_content('<div id="fixture"><div class="questionWidget-text">' + formula + '</div></div>')
-                    result = self.page.locator('#fixture').evaluate(self.sources['question_capture'])
-                    self.assertEqual(result['errors'], ['Unsupported styled MathML brace: ' + attribute])
+                    results = [self.page.locator('#fixture').evaluate(source) for source in self.sources.values()]
+                    for result in results:self.assertEqual(result['errors'], ['Unsupported styled MathML brace: ' + attribute])
                     expected = r'\overset{' + expected_accent + '}{a+b}' if over else '{a+b}_{' + expected_accent + '}'
-                    self.assertEqual(result['problem'], '$' + expected + '$')
+                    for result in results:self.assertEqual(result['problem'], '$' + expected + '$')
+                    renderer=HISTORY.Renderer(None)
+                    self.assertEqual(renderer.m(BeautifulSoup(formula,'html.parser').math), expected)
+                    self.assertEqual(renderer.errors, ['Unsupported styled MathML brace: ' + attribute])
         # An inherited/no-op color does not prevent faithful brace conversion.
         self.page.set_content('<div id="fixture"><div class="questionWidget-text"><math><munder><mi>x</mi><mo mathcolor="inherit">⏟</mo></munder></math></div></div>')
         result = self.page.locator('#fixture').evaluate(self.sources['question_capture'])

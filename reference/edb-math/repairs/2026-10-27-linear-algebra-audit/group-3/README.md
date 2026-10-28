@@ -22,3 +22,11 @@ Read `validation-report.json` and `coverage.json` for counts and limits. `snapsh
 Source e-4722 contains two original MathML error nodes; its existing E2 E1 A solution is correct and renders, so those source errors are not propagated. KP 17592186100913 advertises moderate/hard CLI arguments although fresh generation supports only easy; unsupported bands are not counted as failures. KP 17592186184172 supports moderate/hard rather than easy. Initial sample invocations without `--format json` were corrected; the final sample report uses the actual supported JSON protocol.
 
 Some coefficient-matrix repairs change textual placeholder traversal order because coefficient and right-hand-side brackets are separate groups. Field entities, keys, answer banks, and original matrix-cell positions are preserved; compare placeholder multisets.
+
+## Final aligned-bracket UI regression and package refresh
+
+`aligned-guard-regression.json` exercises the actual UI renderer, `ui/math-protection.js`, and vendored SVG MathJax. Both minimal visible `[A | I_3]` labels and original tutorial 3170 (entity 17592186116501, from group 2) retain A, I, brackets, and the vertical bar. Direct unguarded MathJax silently renders only `= B`. Screens are in `aligned-guard-screens/`. Genuine `[t]`, `[b]`, and `[c]` options remain byte-for-byte unchanged and produce MathJax alignments `baseline 1`, `baseline -1`, and `axis`, respectively. No MathJax errors occurred.
+
+`aligned-leading-bracket-scan.json` scans all 5,438 group 3 fields after merging the exact after-values reported committed at T9071 with the captured baseline. It finds **zero** affected entity IDs.
+
+The staged KP873 package now contains the latest `scripts/question_capture/math_format.py`, including the new normalization guards. `generator-candidates.json` includes the complete publication descriptor and approved digest `0bb7250591b2ca521fbab7a0201654c5f7dd325cbd74ada055fdca171c88f1e6`. Twelve fresh staged samples, all ten complete source replays, 842 native grading checks, and all 1,139 generated render fields were rerun successfully after the helper refresh. Complete source replay JSON and raw source-data bytes remain unchanged; no source normalization differences appeared. `staged-helper-refresh.json` records the helper hashes.

@@ -11,6 +11,84 @@ import re
 
 FORMAT_VERSION = 'course-academy-tex-v1'
 
+
+def markdown_emphasis(body, marker):
+    """Convert an HTML emphasis body without putting whitespace inside markers.
+
+    HTML permits padded and empty emphasis elements; Markdown does not. Keep
+    the padding outside the delimiters so adjacent words retain their spacing.
+    Only use this for an explicit HTML emphasis node, never arbitrary Markdown.
+    """
+    core = body.strip()
+    if not core:
+        return body
+    start = len(body) - len(body.lstrip())
+    end = len(body.rstrip())
+    return body[:start] + marker + body[start:end] + marker + body[end:]
+
+
+def mathml_ruled_table(rows, attributes):
+    """Preserve explicit MathML table rules and alignment as a TeX array.
+
+    A table with no rules is outside this helper's scope: its caller must
+    distinguish equation alignment, matrices and other layouts. Short MathML
+    attribute lists repeat their last value. Missing cells remain empty.
+    """
+    def values(name, default='none'):
+        return str(attributes.get(name) or default).split()
+
+    rules = {name: values(name) for name in ('columnlines', 'rowlines', 'frame')}
+    if all(v == 'none' for items in rules.values() for v in items):
+        return None
+    for name, items in rules.items():
+        if any(v not in ('none', 'solid') for v in items):
+            raise ValueError('Unsupported MathML table ' + name)
+    align = values('columnalign', 'center')
+    if any(v not in ('left', 'right', 'center') for v in align):
+        raise ValueError('Unsupported MathML table columnalign')
+    if not rows or not max(map(len, rows)):
+        raise ValueError('Empty ruled MathML table')
+    width = max(map(len, rows))
+    at = lambda items, index: items[min(index, len(items) - 1)]
+    frame = rules['frame'][0] == 'solid'
+    if not frame and not any(at(rules['columnlines'], i) == 'solid' for i in range(width - 1)) \
+            and not any(at(rules['rowlines'], i) == 'solid' for i in range(len(rows) - 1)):
+        return None  # Extra attribute-list entries do not create columns/rows.
+    columns = '|' if frame else ''
+    for i in range(width):
+        columns += {'left': 'l', 'right': 'r', 'center': 'c'}[at(align, i)]
+        if (i < width - 1 and at(rules['columnlines'], i) == 'solid') or (i == width - 1 and frame):
+            columns += '|'
+    body = r'\hline ' if frame else ''
+    for i, row in enumerate(rows):
+        body += ' & '.join(row + [''] * (width - len(row)))
+        if i < len(rows) - 1:
+            body += r' \\ ' + (r'\hline ' if at(rules['rowlines'], i) == 'solid' else '')
+    if frame:
+        body += r' \\ \hline'
+    return r'\begin{array}{' + columns + '}' + body + r'\end{array}'
+
+def mathml_unruled_table(rows, attributes):
+    """Keep explicit 1em column layout on an unfenced source data table.
+
+    Callers handle fences and ruled tables first. Equation alignments normally
+    declare zero spacing between their right/left pairs and stay aligned.
+    """
+    spacing = str(attributes.get('columnspacing') or '').split()
+    if not spacing or any(value != '1em' for value in spacing):
+        return None
+    if not rows or max(map(len, rows)) < 2:
+        return None
+    alignment = str(attributes.get('columnalign') or 'center').split()
+    if not alignment or any(value not in ('left', 'center', 'right') for value in alignment):
+        raise ValueError('Unsupported MathML table columnalign')
+    width = max(map(len, rows))
+    columns = ''.join({'left': 'l', 'center': 'c', 'right': 'r'}[
+        alignment[min(i, len(alignment) - 1)]] for i in range(width))
+    body = r' \\ '.join(' & '.join(row + [''] * (width - len(row))) for row in rows)
+    return r'\begin{array}{' + columns + '}' + body + r'\end{array}'
+
+
 ENV = re.compile(r'\\(begin|end)\{([^{}]+)\}')
 
 def environment(text, start):
@@ -210,7 +288,317 @@ def legacy_choice(text):
     return system(r' \\ '.join(rows)) if rows else text
 
 
-MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
+MATH = re.compile(r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
+
+
+def source_multiplication_tex(source):
+    """Recover the explicit digit columns in an archived MA arithmetic table.
+
+    Unlike ordinary algebra, these vertical bars separate digit columns. Check
+    every supplied result/carry against integer arithmetic before rendering.
+    Unsupported source layouts are rejected rather than converted as matrices.
+    """
+    parts = [p.strip() for p in source.split(';')]
+    carries = []
+    if parts and parts[0].startswith('_('):
+        carries = re.findall(r'_\((\d)\)', parts.pop(0))
+    if len(parts) < 3 or not re.fullmatch(r'\d(?:\|\d)+', parts[0]) or not re.fullmatch(r'[×⋅]\|\d', parts[1]):
+        raise ValueError('Unsupported source multiplication layout')
+    digits = parts[0].split('|');factor = int(parts[1][-1]);product = str(int(''.join(digits)) * factor)
+    tokens = parts[2].split('|');result=[];caption=[]
+    for i,t in enumerate(tokens):
+        clean = re.sub(r'\[/?math\]', '', t).strip()
+        if re.fullmatch(r'\d|\\phantom\{[\di]\}|\\color\{(?:red|blue)\}\d', clean):
+            result.append(clean)
+        else:
+            caption = ['|'.join(tokens[i:])] + parts[3:];break
+    if not result or len(result)>len(product):raise ValueError('Invalid source product width')
+    for shown,actual in zip(result,product[-len(result):]):
+        if r'\phantom{' not in shown and re.sub(r'\\color\{[^}]+\}', '', shown)!=actual:
+            raise ValueError('Source multiplication digit disagrees with arithmetic')
+    carry=0;expected=[]
+    for digit in reversed(digits):
+        carry=(int(digit)*factor+carry)//10;expected.append(str(carry))
+    expected=list(reversed(expected[:-1]))
+    if carries and carries!=expected[-len(carries):]:raise ValueError('Source multiplication carries disagree with arithmetic')
+    width=len(product)
+    def row(values,sign=''):
+        return ' & '.join([sign]+['']*(width-len(values))+values)
+    rows=[]
+    if carries:rows.append(row([r'\scriptstyle '+v for v in carries]+['']))
+    rows += [row(digits),row([str(factor)],r'\times'),r'\hline '+row(result)]
+    tex=r'\begin{array}{'+'r'*(width+1)+'}'+r' \\ '.join(rows)+r'\end{array}'
+    if caption:
+        body='; '.join(caption).replace('×',r'\times ').replace('−','-')
+        body=body.replace('and',r'\quad\text{and}\quad ')
+        body=re.sub(r'\b(Carry|Write):',lambda m:r'\quad\text{'+m[1]+r': }',body)
+        tex+=r'\qquad '+body
+    return tex
+
+
+def normalize_source_arithmetic(value):
+    text=str(value);offset=0
+    while (start:=text.find('[MATH:',offset))>=0:
+        depth,end=1,start+6
+        while end<len(text) and depth:
+            depth+=(text[end]=='[')-(text[end]==']');end+=1
+        if depth:raise ValueError('Unclosed source math placeholder')
+        body=text[start+6:end-1].strip()
+        if not re.search(r';\s*[×⋅]\|\d',body):
+            offset=end;continue
+        replacement='$$\n'+source_multiplication_tex(body)+'\n$$'
+        text=text[:start]+replacement+text[end:];offset=start+len(replacement)
+    return text
+
+
+def _normalize_math_boundary_pass(value, *, wrap_environments=False):
+    """Recover explicit legacy math boundaries without changing equations.
+
+    This is deliberately narrower than normalize_tex: authored content, answer
+    identities, and algebra are untouched. Raw source environments must survive
+    Markdown before MathJax can see them. Historical currency glyphs and empty
+    table cells must not become display-math delimiters.
+    """
+    text = str(value)
+    # An empty source formula was sometimes prepended to an ordinary prompt.
+    # Restrict this repair to explicit prose openers, never a TeX expression.
+    text = re.sub(r'\A\$\$[ \t]*\n\s*(?=(?:Find|If|The|Calculate|Evaluate|First|Given|Consider|Note|Which)\b|[A-Z][a-z]+ (?:has|is|uses|buys)\b)', '', text)
+    # The legacy dollar-to-[math] substitution also touched escaped currency.
+    text = re.sub(r'\\\[/?math\]', lambda _: r'\$', text)
+    protected = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'\$-\s*\$((?:\\,\s*)*\d[^$\n]*)\$', text))):
+        if not any(start < match.start() < end for start, end in protected):
+            text = text[:match.start()] + '$-' + r'\$' + match[1] + '$' + text[match.end():]
+    text = re.sub(r'\$-\$\$(?=\s*\{\{)', lambda _: '$-$' + r'\$', text)
+    text = re.sub(r'\(\$(?=\))', lambda _: '(' + r'\$', text)
+    if re.search(r'\b(?:investment|savings|account|money|pay|dollars|price|profit|cost|charge|paid|worth|bank|policy)\b', text, re.I):
+        text = re.sub(r'(\$\d[\d.,{}]*\\(?:cdot|times)\s*)\$(\d[^$=\n]*=)\$(\d[^$\n]*)\$',
+                      lambda m: m[1] + r'\$' + m[2] + r'\$' + m[3] + '$', text)
+        text = re.sub(r'(?<![\\$])(\$(?:\\.|[^$\\\n])*=\s*)\$((?:\\,\s*)*\d[^$\n]*)\$',
+                      lambda m: m[1] + r'\$' + m[2] + '$', text)
+    text = re.sub(r'\\\$(?= and \$[01]\s*\\land)', '$', text)
+    protected = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'(?<!\\)\$(?=\s*\{\{[^{}]+\}\}\$(?:\\[,!])+\$)', text))):
+        if not any(start < match.start() < end for start, end in protected):
+            text = text[:match.start()] + r'\$' + text[match.end():]
+    # A source math box containing a dollar sign was wrapped once more in $...$.
+    currency_or_math = re.compile(
+        r'(?<!\\)\\\[[\s\S]*?\\\]|(?<!\\)\\\([\s\S]*?\\\)|'
+        r'(?<!\\)\$\$(?P<currency>(?:\\,\s*)*\d[^$\n]*?)(?<!\\)\$(?!\$)|'
+        r'\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
+    text = currency_or_math.sub(lambda m: ('$' + r'\$' + m['currency'] + '$')
+                                if m['currency'] is not None else m[0], text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$(?=[ \t]*\|)', lambda m: m[1], text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$\?(?=[ \t]*\|)', lambda m: m[1] + '?', text)
+    text = re.sub(r'(?m)(\|[ \t]*)\$\$([.:])(?=[ \t]*\|)', lambda m: m[1] + m[2], text)
+    text = re.sub(r'(\{\{[^{}]+\}\}[ \t\n]*)\$\$(?=[,;:])', lambda m: m[1], text)
+    text = re.sub(r'\A\$\$[ \t]*\n[ \t\n]*(\$(?!\$)[^$\n]+\$)(?=\n|$)',
+                  lambda m: '$$\n' + m[1][1:-1] + '\n$$', text)
+    # Triple dollars on their own lines are duplicated display wrappers. Other
+    # triple-dollar uses in this corpus are a currency glyph beside a widget or
+    # in a table header; do not reinterpret general unmatched dollars.
+    text = re.sub(r'(?m)^[ \t]*\${3}[ \t]*$', '$$', text)
+    text = re.sub(r'\${3,}(?=[ \t\n]*\{\{)', lambda _: r'\$', text)
+    text = re.sub(r'\${3}(?=[ \t]*(?:\)|\(\$))', lambda _: r'\$', text)
+    # Adjacent closing inline/opening display delimiters need a paragraph break.
+    text = re.sub(r'(?<=[^$\n])\${3}(?=\n\\)', '$\n\n$$', text)
+
+    def inner_markers(match):
+        return re.sub(r'\[/?(?:math|latex|tex|displaymath)\]', '', match[0])
+    text = MATH.sub(inner_markers, text)
+    def bracket_math(match):
+        body = match[2]
+        display = match[1] == 'displaymath' or r'\begin{' in body
+        return ('$$\n' + body.strip() + '\n$$') if display else '$' + body.strip() + '$'
+    text = re.sub(r'\[(math|latex|tex|displaymath)\]([\s\S]*?)\[/\1\]', bracket_math, text)
+
+    # Legacy flattened HTML tables used TeX row breaks between separately
+    # delimited formulas. A break outside math is HTML, not part of the next
+    # dollar opener. Do not touch any row break inside a recognized expression.
+    pieces, offset = [], 0
+    for match in MATH.finditer(text):
+        pieces += [re.sub(r'\\\\(?=\$)', '<br>', text[offset:match.start()]), match[0]]
+        offset = match.end()
+    pieces.append(re.sub(r'\\\\(?=\$)', '<br>', text[offset:]))
+    text = ''.join(pieces)
+
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    changes, consumed = [], -1
+    for match in ENV.finditer(text):
+        if not wrap_environments:
+            break
+        if match[1] != 'begin' or match.start() < consumed:
+            continue
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        span = environment(text, match.start())
+        if not span:
+            continue
+        name = match[2]
+        if name not in {'align', 'align*', 'aligned', 'alignedat', 'alignat', 'alignat*',
+                        'eqnarray', 'eqnarray*', 'gather', 'gather*', 'gathered',
+                        'equation', 'equation*', 'multline', 'multline*', 'split',
+                        'matrix', 'bmatrix', 'pmatrix', 'vmatrix', 'Bmatrix', 'Vmatrix',
+                        'smallmatrix', 'cases', 'array'}:
+            continue
+        tex = text[match.start():span[2]]
+        mapping = {'align': 'aligned', 'align*': 'aligned', 'alignat': 'alignedat',
+                   'alignat*': 'alignedat', 'eqnarray': 'aligned', 'eqnarray*': 'aligned',
+                   'gather': 'gathered', 'gather*': 'gathered', 'equation': 'gathered',
+                   'equation*': 'gathered', 'multline': 'gathered', 'multline*': 'gathered',
+                   'split': 'aligned'}
+        if name in mapping:
+            tex = r'\begin{' + mapping[name] + '}' + text[span[0]:span[1]] + r'\end{' + mapping[name] + '}'
+        tex = _legacy_commands(tex)
+        # Remove only a redundant whole inner alignment, keeping its rows exact.
+        body_match = re.match(r'\\begin\{aligned\}\s*(?=\\begin\{aligned\})', tex)
+        if body_match:
+            inner = environment(tex, body_match.end())
+            if inner and re.fullmatch(r'\s*\\end\{aligned\}', tex[inner[2]:]):
+                tex = tex[body_match.end():inner[2]]
+        changes.append((match.start(), span[2], '$$\n' + tex + '\n$$'))
+        consumed = span[2]
+    for start, end, replacement in reversed(changes):
+        text = text[:start] + replacement + text[end:]
+
+    # Fix only explicit numeric percentage glyphs, not arbitrary TeX comments.
+    # The MathML converters emitted e.g. 12%=12/100, silently commenting out
+    # the rest of that formula in MathJax.
+    def percentages(match):
+        value = re.sub(r'(?<=\d)(?<!\\)%|(?<!\\)%(?=\\,error\b)', lambda _: r'\%', match[0])
+        return re.sub(r'(?<!\\)#(?=\s+[A-Za-z])', lambda _: r'\#', value)
+    text = MATH.sub(percentages, text)
+    def spacing(match):
+        whole = match[0]
+        size = 2 if whole.startswith(('$$', r'\[', r'\(')) else 1
+        body = whole[size:-size]
+        fixed = _label_row_spacing(body)
+        length = r'\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\]'
+        gap = re.compile(r'(?<!\\)\\(' + length + ')')
+        if gap.search(fixed):
+            if not gap.sub('', fixed).strip().strip('\\ '):
+                fixed = gap.sub(lambda m: r'\rule{0pt}{' + m[1][1:-1].strip() + '}', fixed)
+            elif gap.search(fixed.rstrip()) and gap.search(fixed.rstrip()).end() == len(fixed.rstrip()):
+                fixed = gap.sub('', fixed)
+            else:
+                fixed = gap.sub(lambda m: r'\\' + m[1], fixed)
+                if r'\begin{' not in fixed:
+                    fixed = r'\begin{gathered}' + fixed + r'\end{gathered}'
+        return whole[:size] + fixed + whole[-size:]
+    text = MATH.sub(spacing, text)
+    # An indented formula opener otherwise becomes <pre><code>, which MathJax
+    # explicitly skips. Indentation within a protected formula remains exact.
+    text = re.sub(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', '', text)
+    saved = []
+    prefix = 'CABOUNDARYMATHTOKEN'
+    while prefix in text:
+        prefix += 'X'
+    def protect_for_indent(match):
+        saved.append(match[0])
+        return prefix + str(len(saved) - 1) + 'END'
+    protected_text = MATH.sub(protect_for_indent, text)
+    protected_text = re.sub(r'(?m)^[ \t]{4,}(?=[^\n]*(?:' + prefix + r'|\{\{|\\\$))', '', protected_text)
+    text = re.sub(prefix + r'(\d+)END', lambda m: saved[int(m[1])], protected_text)
+    # Empty formula artifacts outside complete math spans carry no equation.
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    changes = []
+    for match in re.finditer(r'(?<!\\)\$\$', text):
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        before, after = text[:match.start()], text[match.end():]
+        if (not before.rsplit('\n', 1)[-1].strip() and not after.split('\n', 1)[0].strip()
+                or after.startswith(('?', ',"', '\n- '))
+                or before.endswith('.') and after.startswith('\n\n|')):
+            changes.append((match.start(), match.end(), ''))
+    for start, end, replacement in reversed(changes):
+        text = text[:start] + replacement + text[end:]
+    # A literal currency sign immediately before a widget has no closing math
+    # delimiter. Work only outside complete spans to preserve e.g. $x=$ {{x}}.
+    pieces, offset = [], 0
+    for match in MATH.finditer(text):
+        pieces += [re.sub(r'(?<!\\)\$(?=\s*\{\{)', lambda _: r'\$', text[offset:match.start()]), match[0]]
+        offset = match.end()
+    pieces.append(re.sub(r'(?<!\\)\$(?=\s*\{\{)', lambda _: r'\$', text[offset:]))
+    text = ''.join(pieces)
+    return text
+
+
+def normalize_math_boundaries(value):
+    """Normalize explicit source encodings to a stable Markdown math boundary."""
+    text = normalize_source_arithmetic(value)
+    # Settle delimiter/currency encodings before deciding which environments
+    # are bare. A transient malformed delimiter must not cause double wrapping.
+    for phase in (False, True, False):
+        if phase and not ENV.search(MATH.sub('', text)):
+            continue
+        for _ in range(4):
+            result = _normalize_math_boundary_pass(text, wrap_environments=phase)
+            if result == text:
+                break
+            text = result
+        else:
+            if _normalize_math_boundary_pass(text, wrap_environments=phase) != text:
+                raise ValueError('Math boundary normalization did not converge')
+    spans = [(m.start(), m.end()) for m in MATH.finditer(text)]
+    for match in reversed(list(re.finditer(r'(?m)^([^\n$]+)$', text))):
+        line = match[1].strip()
+        if not ('=' in line or '≈' in line) or not re.search(r'\\(?:frac|dfrac|sqrt|sum|int)\b', line):
+            continue
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        residual = re.sub(r'\\text\{[^{}]*\}|\\[A-Za-z]+', '', line)
+        if re.search(r'[A-Za-z]{4,}', residual) or r'\begin{' in line or r'\end{' in line:
+            continue
+        try:
+            validate_tex(line)
+        except ValueError:
+            continue
+        text = text[:match.start()] + '$$\n' + line + '\n$$' + text[match.end():]
+    return text
+
+
+def validate_math_boundaries(value, *, strict=False):
+    """Catch unparsed TeX as well as errors inside recognized math spans."""
+    text = str(value)
+    # Markdown code spans/fences suppress MathJax even when the TeX inside
+    # has valid delimiters. Inspect those bodies before removing math spans.
+    def code_has_math(body):
+        return MATH.search(body) or re.search(r'\\(?:begin|end)\{|\\(?:frac|dfrac|sqrt|sum|int)\b', body)
+
+    fenced = []
+    cursor = 0
+    opener = re.compile(r'(?m)^[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n')
+    while match := opener.search(text, cursor):
+        marker = match[1]
+        closing = re.search(r'(?m)^[ \t]{0,3}' + re.escape(marker[0])
+                            + '{' + str(len(marker)) + r',}[ \t]*$', text[match.end():])
+        end = match.end() + closing.start() if closing else len(text)
+        if code_has_math(text[match.end():end]):
+            raise ValueError('Fenced math becomes a Markdown code block')
+        cursor = match.end() + closing.end() if closing else len(text)
+        fenced.append((match.start(), cursor))
+    for match in re.finditer(r'(?<!`)(`+)(?!`)(.*?)(?<!`)\1(?!`)', text, re.S):
+        if any(start <= match.start() < end for start, end in fenced):
+            continue
+        if code_has_math(match[2]):
+            raise ValueError('Math inside a Markdown code span is not rendered')
+    outside = MATH.sub('', text)
+    if strict and re.search(r'\\(?:frac|dfrac|sqrt|eqalign)\b', outside):
+        raise ValueError('Unprotected TeX expression outside math delimiters')
+    if re.search(r'\\(?:begin|end)\{|\\(?:eqalign|matrix)\s*\{', outside):
+        raise ValueError('Unprotected TeX environment; use a delimited display block')
+    if re.search(r'\[/?(?:math|latex|tex|displaymath)\]', text):
+        raise ValueError('Legacy math delimiter; use $ or $$')
+    if '[MATH:' in text or re.search(r'\\lef\b', text):
+        raise ValueError('Unresolved or damaged legacy source layout')
+    if re.search(r'(?<!\\)\$', outside):
+        raise ValueError('Unpaired math dollar delimiter; escape literal currency')
+    if re.search(r'(?m)^[ \t]{4,}(?=(?:\$|\\\[|\\\())', text):
+        raise ValueError('Indented math becomes a Markdown code block')
+    for match in MATH.finditer(text):
+        if re.search(r'(?<=\d)(?<!\\)%', match[0]):
+            raise ValueError('Unescaped percentage glyph comments out math')
+    return text
 
 
 def matrix_tex(rows, *, augmented=False):
@@ -255,6 +643,39 @@ def matrix_answer(expression, rows):
             '<table aria-label="Answer matrix"><tbody>\n' + '\n'.join(
                 '<tr>' + ''.join('<td>' + entry(value) + '</td>' for value in row) + '</tr>' for row in rows
             ) + '\n</tbody></table>\n</div>\n</div>')
+
+
+def normalize_matrix_answer_tables(value):
+    """Recover blank-only answer grids in an explicitly known matrix question."""
+    text = str(value)
+    if not re.search(r'\\begin\{(?:bmatrix|pmatrix|matrix)\}', text):
+        return text
+    def replace(match):
+        rows, labels = [], []
+        for line in match[0].splitlines():
+            entries = [cell.strip() for cell in line.strip().strip('|').split('|')]
+            if all(re.fullmatch(r':?-+:?', cell) for cell in entries):
+                continue
+            fields = []
+            for cell in entries:
+                if not cell:
+                    continue
+                if re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', cell):
+                    fields.append(cell)
+                    continue
+                label = re.fullmatch(r'\$([^$]+?)=\s*(?:\\,\s*)*\$', cell)
+                if not label:
+                    return match[0]
+                labels.append(label[1].strip())
+            if fields:
+                rows.append(fields)
+        if len(labels) != 1 or not rows or len({len(row) for row in rows}) != 1:
+            return match[0]
+        keys = [cell for row in rows for cell in row]
+        if len(keys) != len(set(keys)):
+            return match[0]
+        return matrix_answer(labels[0], rows)
+    return re.sub(r'(?m)^\|[^\n]*\|[ \t]*(?:\n\|[^\n]*\|[ \t]*)+', replace, text)
 
 
 def system_tex(equations, *, annotations=None):
@@ -322,6 +743,13 @@ def _matrix_layouts(text):
             if not left or not right or (left[1], right[1]) not in [('[', ']'), ('(', ')'), ('|', '|')]: continue
             body = text[opening.end():closing.start()]; rows = cells(body)
             if not rows or any(_system_row([cell]) for row in rows for cell in row): continue
+            # An empty alignment column plus an explicit binary continuation
+            # denotes a wrapped scalar expression, not matrix cells. Preserve
+            # the author's aligned layout; explicit matrix environments still
+            # carry matrix semantics regardless of their cell contents.
+            if opening[2] == 'aligned' and all(len(row) == 2 and not row[0].strip() for row in rows) \
+                    and any(re.match(r'\s*\{\}\s*\+', row[1]) for row in rows[1:]):
+                continue
             width = min(map(len, rows))
             if any(len(row) != width for row in rows):
                 if not all(not cell for row in rows for cell in row[width:]): continue
@@ -331,6 +759,19 @@ def _matrix_layouts(text):
             changed = True; break
         if not changed: return text
     raise ValueError('Excessive matrix nesting')
+
+
+def validate_matrix_layouts(value, *, bare_math=False):
+    """Reject fenced equation alignments that need actual matrix spacing.
+
+    Inspect only protected formulas (or an explicitly typed math answer).
+    Ordinary derivations and wrapped scalar continuations remain unchanged.
+    This guard does not rewrite authored content or answer identities.
+    """
+    spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
+    if any(_matrix_layouts(span) != span for span in spans):
+        raise ValueError('Fenced matrix needs a matrix environment; normalize its complete formula')
+    return value
 
 
 def _label_row_spacing(text):
@@ -392,7 +833,7 @@ def normalize_equality_chains(text):
                     after = rhs
                 elif rhs in ('.', ','):
                     expression += rhs
-                elif row is rows[-1] and re.fullmatch(r'(?:\\,|\s|[{}]|\\color\{[A-Za-z]+\})*(?:✓|\\checkmark|\\times)(?:\s|[{}])*', rhs):
+                elif row is rows[-1] and re.fullmatch(r'[.,]?(?:\\,|\\quad|\\qquad|\\hspace\{\d+(?:\.\d+)?(?:em|ex|pt|px)\}|\s|[{}]|\\color\{[A-Za-z]+\})*(?:✓|\\checkmark|\\times)(?:\s|[{}])*', rhs):
                     annotation = rhs
                 elif rhs:
                     break  # A complete equation or an annotation is not a chain.
@@ -462,15 +903,79 @@ def scalable_fraction_parentheses(text):
     return text
 
 
+def normalize_sized_bars(text):
+    """A sizing command needs a delimiter glyph, not the relation macro mid."""
+    return re.sub(r'(\\(?:left|right|middle|[Bb]ig(?:g)?[lrm]?)\s*)\\mid(?![A-Za-z])',
+                  lambda m: m[1] + r'\vert', text)
+
+
+def normalize_piecewise_cases(text):
+    """Recover a literal, unmatched left brace on value/condition rows."""
+    changes = []
+    condition = re.compile(r'[<>=]|\\(?:leq?|geq?|in|notin|neq?)(?![A-Za-z])|\\text\{\s*(?:otherwise|else)\s*\}')
+    for match in re.finditer(r'(?<!\\)\{\s*(?=\\begin\{aligned\})', text):
+        span = environment(text, match.end())
+        if not span or text[span[2]:].lstrip().startswith('}'): continue
+        rows = cells(text[span[0]:span[1]])
+        if not rows or len(rows) < 2 or any(len(row) != 2 or not all(row) or
+                not condition.search(row[1]) or '=' in row[0] for row in rows): continue
+        changes.append((match.start(), span[2], r'\begin{cases}' + text[span[0]:span[1]] + r'\end{cases}'))
+    for start, end, value in reversed(changes): text = text[:start] + value + text[end:]
+    return text
+
+
+def normalize_limit_operators(text):
+    """Recover a limit's role from a balanced, explicit tendency condition."""
+    text = re.sub(r'\\lim_\\limits(?=\s*\{)', lambda _: r'\lim_', text)
+    def end_group(opening, left='{', right='}'):
+        depth, cursor = 1, opening + 1
+        while cursor < len(text):
+            if text[cursor] == '\\' and cursor + 1 < len(text):
+                cursor += 2
+                continue
+            depth += (text[cursor] == left) - (text[cursor] == right)
+            cursor += 1
+            if not depth:
+                return cursor
+        return None
+    protected = []
+    for match in re.finditer(r'\\(?:text|textrm|mathrm|mathit|mathbf|mathbfit|operatorname\*?)\s*\{', text):
+        end = end_group(match.end() - 1)
+        if end: protected.append((match.start(), end))
+    tendency = re.compile(r'\\(?:to|rightarrow|longrightarrow|uparrow|downarrow)(?![A-Za-z])|[→⟶↑↓]')
+    edits = []
+    pattern = re.compile(r'(?P<operator>\{(?:lim|\\lim)\}|(?<![\\A-Za-z])lim)\s*_\s*(?P<opening>[{(])')
+    for match in pattern.finditer(text):
+        if any(a <= match.start() < b for a, b in protected): continue
+        preceding = re.search(r'\\([A-Za-z]+)\*?\s*$', text[:match.start()])
+        if preceding and preceding[1] not in ('displaystyle', 'textstyle', 'scriptstyle', 'scriptscriptstyle', 'quad', 'qquad'):
+            continue
+        left = match['opening']; end = end_group(match.end() - 1, left, '}' if left == '{' else ')')
+        if not end: continue
+        body = text[match.end():end - 1]
+        if not tendency.search(body): continue
+        if left == '{':
+            edits.append((match.start('operator'), match.end('operator'), r'\lim'))
+        else:
+            body = body.replace('→', r'\to ').replace('⟶', r'\longrightarrow ').replace('∞', r'\infty')
+            edits.append((match.start(), end, r'\lim_{' + body.strip() + '}'))
+    for start, end, value in reversed(edits): text = text[:start] + value + text[end:]
+    return text
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
         size = 2 if text.startswith(('$$', r'\[', r'\(')) else 1
         text = text[size:-size].strip()
+    # An initial [A|I] is visible content, not aligned's optional position.
+    # MathJax accepts arbitrary text as that option and silently drops it.
+    text = re.sub(r'(\\begin\{aligned\})(?=\s*\[(?!\s*[tbc]\s*\]))',
+                  lambda match: match[1] + '{}', text)
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
-    text = _label_row_spacing(text)
+    text = normalize_piecewise_cases(normalize_sized_bars(normalize_limit_operators(_label_row_spacing(text))))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
     text = re.sub(r'\\require\s*\{(?:cancel|enclose)\}\s*', '', text)
@@ -545,9 +1050,17 @@ def normalize_source_tex(value):
 def normalize_prose(value):
     def replace(match):
         whole = match[0]; display = whole.startswith(('$$', r'\['))
+        line = text[text.rfind('\n', 0, match.start()) + 1:match.start()]
+        quote = re.match(r'^(?: {0,3}>[\t ]?)+', line)
+        if quote:
+            depth = quote[0].count('>')
+            marker = r'^(?: {0,3}>[\t ]?){' + str(depth) + '}'
+            whole = re.sub(r'\n([^\n]*)', lambda m: '\n' + re.sub(marker, '', m[1]), whole)
         normalized = normalize_tex(whole)
-        return ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
-    text = MATH.sub(replace, str(value))
+        result = ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
+        return result.replace('\n', '\n' + quote[0]) if quote else result
+    text = normalize_math_boundaries(value)
+    text = MATH.sub(replace, text)
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
@@ -556,7 +1069,14 @@ def normalize_prose(value):
 
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
-    text = str(value); depth = 0; stack = []
+    text = str(value); depth = 0; stack = []; fences = []
+    if re.search(r'\\begin\{aligned\}\s*\[(?!\s*[tbc]\s*\])', text):
+        raise ValueError('Visible initial bracket in aligned is consumed as placement; insert {} or use scalable fences')
+    if re.search(r'\\(?:left|right|middle)(?![A-Za-z])\s*$', text):
+        raise ValueError('Missing left/right delimiter glyph')
+    check_fences = not re.search(r'\\(?:newcommand|renewcommand|def)(?![A-Za-z])', text)
+    if re.search(r'\\[Bb]ig(?:g)?[lrm]?\s*\\(?:left|right|middle)(?![A-Za-z])', text):
+        raise ValueError('Sizing command cannot take a left/right command as its delimiter')
     if legacy_system_rows(text):
         raise ValueError('Flattened equation system; use explicit system rows')
     for token in re.findall(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|.', text, re.S):
@@ -566,6 +1086,10 @@ def validate_tex(value):
             elif not stack or stack.pop() != env[2]: raise ValueError('Mismatched TeX environment')
         elif token == '{': depth += 1
         elif token == '}': depth -= 1
+        elif check_fences and token == r'\left': fences.append((depth, tuple(stack)))
+        elif check_fences and token == r'\right':
+            if not fences or fences.pop() != (depth, tuple(stack)):
+                raise ValueError('Crossed or unmatched left/right fence scope')
         if depth < 0: raise ValueError('Unmatched closing TeX brace')
         if token in [r'\matrix', r'\eqalign']: raise ValueError('Legacy TeX layout command')
         if token in [r'\[', r'\]', r'\(', r'\)']:
@@ -576,6 +1100,7 @@ def validate_tex(value):
             raise ValueError('Runtime TeX extension loading is unsupported; use a preloaded extension')
         if token == '$': raise ValueError('Math fields must not contain nested dollar delimiters')
     if depth or stack: raise ValueError('Unclosed TeX group or environment')
+    if fences: raise ValueError('Unclosed left/right fence scope')
     for match in re.finditer(r'\\begin\{aligned\}', text):
         span = environment(text, match.start())
         rows = cells(text[span[0]:span[1]]) if span else None
@@ -593,13 +1118,29 @@ def validate_tex(value):
 
 
 def validate_prose(value):
-    text = str(value)
+    text = validate_math_boundaries(value)
     for match in MATH.finditer(text):
         size = 2 if match[0].startswith(('$$', r'\[', r'\(')) else 1
         validate_tex(match[0][size:-size])
     outside = MATH.sub('', text)
     if re.search(r'(?<!\\)\$', outside): raise ValueError('Unpaired math dollar delimiter')
     return text
+
+
+def validate_math_structure(value, *, bare_math=False):
+    """Check groups, environments and grids at an authoring boundary."""
+    validate_matrix_layouts(value, bare_math=bare_math)
+    spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
+    for span in spans:
+        if MATH.fullmatch(span):
+            size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
+            span = span[size:-size]
+        validate_tex(span)
+        if normalize_limit_operators(span) != span:
+            raise ValueError('Malformed limit operator; normalize the tendency condition')
+        if normalize_sized_bars(span) != span:
+            raise ValueError('Sized bar needs a delimiter glyph, not mid')
+    return value
 
 
 def validate_generated_record(record):

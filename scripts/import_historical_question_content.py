@@ -107,6 +107,13 @@ class Renderer:
         if t=='msup':return base+'^{'+cs[1]+'}'
         if t=='msub':return base+'_{'+cs[1]+'}'
         if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
+        if t in ('munder','mover'):
+            accent=n.find_all(recursive=False)[1]
+            if self.brace_glyph(accent,'⏟' if t=='munder' else '⏞'):
+                styling=[a for a in ('mathcolor','mathbackground') if accent.get(a) not in (None,'','transparent','inherit','none')]
+                if styling:
+                    self.errors.append('Unsupported styled MathML brace: '+', '.join(styling))
+                    return '{'+cs[0]+'}_{'+cs[1]+'}' if t=='munder' else '\\overset{'+cs[1]+'}{'+cs[0]+'}'
         if t=='munder':
             if cs[0]=='lim':return '\\lim_{'+cs[1]+'}'
             if self.brace_glyph(n.find_all(recursive=False)[1],'⏟'):return '\\underbrace{'+cs[0]+'}'

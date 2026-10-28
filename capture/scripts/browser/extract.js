@@ -329,6 +329,20 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
     // MathJax may attach a script to just the closing fence glyph. Wrapping
     // that glyph in braces obscures the fence boundary in extracted LaTeX.
     const scriptBase = [')',']','}','\\}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
+    if (t === 'munder' && braceGlyph(n.children[1], '⏟') || t === 'mover' && braceGlyph(n.children[1], '⏞')) {
+      const accent = n.children[1];
+      const styling = ['mathcolor', 'mathbackground'].filter(attribute => {
+        const value = accent.getAttribute(attribute);
+        return value && !['transparent', 'inherit', 'none'].includes(value);
+      });
+      if (styling.length) {
+        // Coloring the whole underbrace/overbrace would also recolor its base.
+        // Keep the source cue, and require review instead of silently dropping
+        // operator-only styling that the semantic brace macro cannot express.
+        fail('Unsupported styled MathML brace: ' + styling.join(', '));
+        return t === 'munder' ? '{' + cs[0] + '}_{' + cs[1] + '}' : '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      }
+    }
     switch(t) {
       case 'mfrac': {
         // A zero-rule fraction is a stack, not division. Keep the source's rule.

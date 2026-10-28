@@ -6,6 +6,17 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
+        value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
+        guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'
+        with self.assertRaisesRegex(ValueError, 'consumed as placement'): validate_tex(value)
+        self.assertEqual(normalize_tex(value), guarded)
+        validate_tex(guarded)
+        self.assertEqual(normalize_tex(guarded), guarded)
+        for option in ['t', 'b', 'c']:
+            positioned = r'\begin{aligned}[' + option + r']x&=1\end{aligned}'
+            self.assertEqual(normalize_tex(positioned), positioned)
+
     def test_legacy_matrix_controls_keep_rows_and_leave_data_tables_alone(self):
         from math_format import normalize_matrix_answer_tables
         given = r'$A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$'

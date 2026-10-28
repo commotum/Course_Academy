@@ -1,0 +1,9 @@
+import json,re,sys
+from pathlib import Path
+H=Path(__file__).resolve().parent;R=H.parents[4];sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import MATH,validate_math_structure
+D=json.loads((H/'current.json').read_text());P=json.loads((H/'proposals.json').read_text());specs={17592186272237:('&=n=',r'&={\color{blue}n}='),17592186272267:(r'\text{invertible}',r'{\color{blue}\text{invertible}}'),17592186272335:(r'\text{invertible}',r'{\color{blue}\text{invertible}}'),17592186272337:(r'\text{Col}(A)',r'{\color{blue}\text{Col}(A)}'),17592186124791:(r'\dim(\operatorname{Col}(A))',r'{\color{blue}\dim(\operatorname{Col}(A))}')}
+for e,(old,new)in specs.items():
+ q=next(q for q in D['questions']if q[':db/id']==e);p=next((p for p in P if p['entity']==e and p['attribute']=='question/worked-solution'),None);v=p['after']if p else q[':question/worked-solution'];m=list(MATH.finditer(v))[2];tex=m[0];assert tex.count(old)==1,(e,tex,old);tex=tex.replace(old,new).replace('{R}^{n}',r'\mathbb{R}^{n}');after=v[:m.start()]+tex+v[m.end():];validate_math_structure(after);ev={'source_identity':q[':question/math-academy-id'],'source_path':'/home/jake/Developer/MA/DATA/Lessons/1869/Source/1869.html','source_feature':'Blue highlight identifies exactly the queried concept in the repeated complete theorem. Current theorem layout and equation alignment retained.'}
+ if p:p['after']=after;p['reason']+=',source-query-highlight';p['evidence']=p['evidence']+[ev]if isinstance(p['evidence'],list)else[p['evidence'],ev]
+ else:P.append({'entity':e,'attribute':'question/worked-solution','before':q[':question/worked-solution'],'after':after,'reason':'source-query-highlight','evidence':ev,'confidence':'high'})
+(H/'proposals.json').write_text(json.dumps(P,indent=2)+'\n');print('restored5theorem highlights;proposals',len(P))

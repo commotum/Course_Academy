@@ -37,7 +37,8 @@ for g in json.loads((H/'generators.json').read_text()):
   if len(edits)>before:path.write_text(json.dumps(data,indent=2)+'\n')
  helper=dest/'math_format.py';helper_changed=False
  if helper.exists():
-  new=(R/'scripts/question_capture/math_format.py').read_text();helper_changed=helper.read_text()!=new;helper.write_text(new)
+  new=(R/'scripts/question_capture/math_format.py').read_text()
+  helper_changed=helper.read_text()!=new;helper.write_text(new)
  if not edits and not helper_changed:shutil.rmtree(dest);continue
  manifest=json.loads((dest/'generator-package.json').read_text());manifest['files']={str(p.relative_to(dest)):{'bytes':p.stat().st_size,'executable':bool(p.stat().st_mode&0o111),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in dest.rglob('*')if p.is_file()and p.name!='generator-package.json'and '__pycache__'not in str(p)};(dest/'generator-package.json').write_text(json.dumps(manifest,indent=2)+'\n')
  staged.append({**g,'staged':str(dest.resolve()),'helper_updated':helper_changed,'source_field_edits':edits,'source_mismatches_retained':unmatched,'publication':'not published or registered'})
