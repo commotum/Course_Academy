@@ -11,6 +11,7 @@ numeric comparisons and theorem-claim polarity. Explicit original parameters
 without a truth subset replay the captured source.
 """
 import argparse,copy,hashlib,json,random,re,sys,uuid
+sys.dont_write_bytecode=True
 from pathlib import Path
 import sympy as sp
 from math_format import normalize_prose
@@ -58,11 +59,14 @@ def is_vector(key):return bool(list(vector_blocks(Q[key][':question/problem'])))
 def level_of(key):return Q[key][':question/difficulty'][':db/ident'].split('/')[-1]
 def n_of(text):return int(re.search(r'\$(\d+)\s*\\times\s*(\d+)\$',text)[1])
 
+def source_space_notation(value):
+ if r'\text{Col}(A)' in value:value=value.replace('{R}',r'{\mathbb{R}}')
+ return value
+
 def statement_key(value):
  # Original Col(A) statements refer to real Euclidean space. Preserve that
  # source mathematical role before decisions and identity hashes are formed.
- if r'\text{Col}(A)' in value:value=value.replace('{R}',r'{\mathbb{R}}')
- return normalize_prose(value)
+ return normalize_prose(source_space_notation(value))
 
 def clean(q):
  r={k:q[k] for k in (':question/id',':question/problem',':question/worked-solution')}
@@ -213,6 +217,7 @@ def generate(difficulty,seed=0,template=None,parameters=None):
  if 'truths' in parameters:
   assert parameters['truths'] in allowed_truths(key)
   apply_decisions(q,parameters['truths'],rng)
+ for attribute in (':question/problem',':question/worked-solution'):q[attribute]=source_space_notation(q[attribute])
  bank=json.dumps([(f[':answer-field/key'],f[':answer-field/type'],sorted(a[':answer/value'] for a in f[':answer-field/choices'])) for f in q[':question/answer-fields']],sort_keys=True)
  identity=uuid.uuid5(uuid.UUID(GENERATOR_UUID),fingerprint(q)+bank);q[':question/id']=str(identity)
  for f in q[':question/answer-fields']:
