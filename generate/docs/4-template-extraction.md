@@ -4,6 +4,10 @@ Use the question families identified by [Classify](3-classify.md), analyzing eac
 
 Read the complete problem, parent setup and response frame before validating a key or changing the interaction type. Discovery excerpts and formula-only previews omit decisive conditions. For parametrized curves, check the starting point, direction, parameter interval and traversal count as well as the locus: swapping sine and cosine can preserve an ellipse while violating its required start and direction. Preserve each lesson's stated normal/orientation convention when checking flux.
 
+Audit solution completeness separately from canonical-answer completeness: an existing valid key does not imply a worked solution exists. Check both absent attributes and empty strings. Recover the original explanation when available, or record an independently proved authored completion with provenance.
+
+Check that the source task is mathematically defined on its full stated domain before treating its key as authoritative. For integration, distinguish a permitted improper singularity from a radical or logarithm that is nonreal on an open subset of the solid. Review complete choice-bank recipes and their domains when defining fresh sampling guards; preserve valid families rather than imposing a stricter bound needed only by a different bank profile.
+
 Search retained source archives without ignoring captured files, scoped to the source/capture directories. Include hashed observations such as `history-q-ID-HASH.json` and hashed before/after captures; an exact-basename matcher can falsely report a missing source even after complete file discovery. Confirm the observed Math Academy identity and DOM provenance inside each candidate, reconcile conflicting versions, and distinguish genuinely unavailable originals from unindexed files.
 
 Use the filtered instructional capture and its current source-eligibility ledger.

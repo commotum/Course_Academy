@@ -93,6 +93,7 @@ def transform(v):
   p=new_by_field[e];a={':db/id':p['entity'],':answer/id':p['answer_uuid'],':answer/type':{':db/ident':p['type']},':answer/value':p['value']};v[':answer-field/choices']=v.get(':answer-field/choices',[])+[a];v[':answer-field/correct']={':db/id':p['entity']}
  return {k:transform(x)for k,x in v.items()}
 model=transform(list(original.values()));missing=[];native=[];render=[]
+missing_solutions=[q[':db/id']for q in model if not q.get(':question/worked-solution','').strip()];assert not missing_solutions,missing_solutions
 for q in model:
  fs=q.get(':question/answer-fields',[]);assert len({f[':answer-field/key']for f in fs})==len(fs)
  for a in [':question/problem',':question/worked-solution']:
@@ -119,7 +120,7 @@ content=transform(snapshots[0]['contents']+[x for act in snapshots[1]['activitie
 tutorials={x[':db/id']:x for x in content if ':tutorial/content'in x}
 render.extend({'entity':e,'attribute':':tutorial/content','value':v[':tutorial/content']}for e,v in tutorials.items())
 (D/'model.json').write_text(json.dumps(model,indent=2,default=str)+'\n');(D/'grading-input.json').write_text(json.dumps(native,indent=2,default=str)+'\n');(D/'render-input.json').write_text(json.dumps(render,indent=2,default=str)+'\n')
-report={'passed':True,'basis_t':t,'topics':len(inventory['topics']),'questions_examples':len(original),'tutorials':len(tutorials),'registered_verified_successors':len(publications),'question_field_answer_UUIDs_preserved':True,'original_pool_links_preserved':True,'exact_expected_field_and_choice_memberships':True,'retained_field_entities':len(fields),'active_fields':len(expected_fields),'created_owned_answers':len(created),'scalar_changes':sum(r['scalar_changes']for r in reports),'membership_retractions':sum(r['membership_retractions']for r in reports),'remaining_unkeyed_fields':missing}
+report={'passed':True,'basis_t':t,'topics':len(inventory['topics']),'questions_examples':len(original),'tutorials':len(tutorials),'registered_verified_successors':len(publications),'question_field_answer_UUIDs_preserved':True,'original_pool_links_preserved':True,'exact_expected_field_and_choice_memberships':True,'retained_field_entities':len(fields),'active_fields':len(expected_fields),'created_owned_answers':len(created),'scalar_changes':sum(r['scalar_changes']for r in reports),'membership_retractions':sum(r['membership_retractions']for r in reports),'remaining_unkeyed_fields':missing,'remaining_missing_solutions':missing_solutions}
 report['immutable_package_versions_published']=publication_count
 report['additional_live_learner_blank_answers']=[{'field':f,'answer':a}for f,a in sorted(live_entries)]
 report['additional_pool_links_since_snapshot']=len(set(map(tuple,links))-set(map(tuple,inventory['links'])))
