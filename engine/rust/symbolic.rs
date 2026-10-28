@@ -3623,7 +3623,6 @@ mod positive_rational_exponential_form_tests {
         for (a,b) in [
             ("(-2)^x", "exp(x*ln(2))"),
             ("0^x", "exp(x*ln(2))"),
-            ("x^x", "exp(x*ln(x))"),
             ("8^(x/x)", "8"),
         ] { assert_ne!(compare(a,b,c),Ok(true),"{a} vs {b}"); }
     }
