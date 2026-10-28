@@ -21,18 +21,23 @@ def vector(v):
  v=clean(v)
  for left,right in[(r'\begin{bmatrix}',r'\end{bmatrix}'),(r'\begin{pmatrix}',r'\end{pmatrix}'),('⟨','⟩'),(r'\langle',r'\rangle')]:
   if left in v:
-   a=v.index(left)+len(left);b=v.index(right,a);body=v[a:b];parts=body.split('\\\\')if'begin'in left else balanced_parts(body);return S.Matrix([scalar(p)for p in parts])
- e=scalar(v);vv=S.Matrix([S.expand(e).coeff(i)for i in[I,J,K]])
- if S.simplify(e-sum(vv[n]*i for n,i in enumerate([I,J,K])))!=0:raise ValueError('Not a basis vector: '+v)
- return vv[:2,0]if not vv[2]and'k'not in v else vv
+   a=v.index(left)+len(left);b=v.index(right,a);body=v[a:b].replace(r'\,',' ').replace(r'\;',' ');parts=body.split('\\\\')if'begin'in left else balanced_parts(body);return S.Matrix([scalar(p)for p in parts])
+ raw=L.clean(v).replace('\\\\','').replace('{}','');tokens=list(re.finditer(r'\\[A-Za-z]+|[ijk]',raw));units=[m for m in tokens if m[0]in['i','j','k']]
+ if not units:raise ValueError('Not a basis vector')
+ coeff={c:S.Integer(0)for c in 'ijk'};start=0
+ for m in units:
+  body=raw[start:m.start()].strip().rstrip(r'\cdot').strip()
+  coeff[m[0]]+=scalar(body)if body not in['','+','-']else(-1 if body=='-'else 1);start=m.end()
+ if raw[start:].strip().strip('.,'):raise ValueError('Nonbasis residual')
+ vv=S.Matrix([coeff[c]for c in 'ijk']);return vv[:2,0]if not vv[2]and not any(m[0]=='k'for m in units)else vv
 
 def assignments(problem):
  out={}
  for _,raw in L.maths(problem):
   raw=clean(raw);matches=list(re.finditer(r'([A-Za-z])\s*\(([^()]*)\)\s*=',raw))
   for idx,m in enumerate(matches):
-   val=raw[m.end():matches[idx+1].start()if idx+1<len(matches)else len(raw)];val=re.split(r'\\\\|,\s*(?:[a-zA-Z]\s*\(|[tuvxyz]\s*(?:\\in|[<>]))',val)[0]if not any(x in val for x in['begin{bmatrix}','begin{pmatrix}','⟨',r'\langle'])else val
-   name=('grad_'if raw[max(0,m.start()-8):m.start()].endswith(r'\nabla ')or r'\nabla'in raw[max(0,m.start()-9):m.start()]else'')+m[1]
+   val=raw[m.end():matches[idx+1].start()if idx+1<len(matches)else len(raw)];val=re.split(r',\s*(?:[a-zA-Z]\s*\(|[tuvxyz]\s*(?:\\in|[<>]))',val)[0]if not any(x in val for x in['begin{bmatrix}','begin{pmatrix}','⟨',r'\langle'])else val
+   name=('grad_'if raw[max(0,m.start()-8):m.start()].endswith(r'\nabla ')or r'\nabla'in raw[max(0,m.start()-9):m.start()]or'∇'in raw[max(0,m.start()-3):m.start()]else'')+m[1]
    try:out[name]={'args':m[2],'value':vector(val),'raw':val}
    except Exception:
     try:out[name]={'args':m[2],'value':scalar(val),'raw':val}
@@ -62,7 +67,7 @@ def check(kp,record):
   if a.get('point')is not None:expected=expected.subs(T,expr(str(a['point'])))
   return compare(v,expected),'Differentiate composed supplied vector, every component; evaluate only after differentiation.'
  if kp==17592186115393:
-  m=g['mathematics'];f=S.Matrix([S.sympify(a)for a in m['f']]);f=f.xreplace({s:T for s in f.free_symbols if s.name=='t'});gg=m['g_or_scalar'];gg=S.Matrix([S.sympify(a)for a in gg])if isinstance(gg,list)else S.sympify(gg);gg=gg.xreplace({s:T for s in gg.free_symbols if s.name=='t'});name=g['template']
+  m=g['mathematics'];f=S.Matrix([S.sympify(a)for a in m['f']]);f=f.xreplace({s:T for s in f.free_symbols if s.name=='t'});gg=m['g_or_scalar'];gg=S.Matrix([S.sympify(a)for a in gg])if isinstance(gg,list)else S.sympify(gg)if gg is not None else f;gg=gg.xreplace({s:T for s in gg.free_symbols if s.name=='t'});name=g['template']
   if name.startswith('cross'):target=f.diff(T).cross(f)if name=='cross_self'else f.cross(gg)
   elif name.startswith('dot'):target=f.diff(T).dot(f)if name.startswith('dot_self')else f.dot(gg)
   else:target=gg*f
@@ -70,7 +75,7 @@ def check(kp,record):
   if 'x'in p:expected=expected.subs(T,expr(str(p['x'])))
   return compare(v,expected),'Differentiate supplied full scalar/vector product independently from srepr input functions, then evaluate requested point.'
  if kp==17592186124471:
-  m=g['math'];f=expr(m['function']);r=[expr(z)for z in m['curve']];expected=S.diff(f.subs({X:r[0],Y:r[1]},simultaneous=True),T)
+  m=g['math'];f=expr(m['function']);r=[expr(z)for z in m['curve']];expected=S.diff(f.subs(dict(zip([X,Y,Z],r)),simultaneous=True),T)
   if't0'in p:expected=expected.subs(T,expr(str(p['t0'])))
   return compare(v,expected),'Directly differentiate target multivariable composition; evaluate after differentiation.'
  if kp in[17592186124469,17592186124470]:
@@ -93,14 +98,40 @@ def check(kp,record):
   # Bounds are taken from the final stated t interval, not inferred from a seed.
   ints=re.findall(r'([\d-]+)\s*\\le\s*t\s*\\le\s*([\d-]+)',clean(q[':question/problem']))
   if ints:lo,hi=ints[-1]
+  for _,mm in L.maths(q[':question/problem']):
+   mt=re.search(r't\\in\s*\[([^\]]+)\]',clean(mm))
+   if mt:
+    bounds=balanced_parts(mt[1]);lo,hi=[scalar(c)for c in bounds]
   expected=S.integrate(integrand,(T,expr(str(lo)),expr(str(hi))));return compare(v,expected),'Substitute full field/path into F(r)·r′ with signed forward bounds; integrate independently.'
  if kp==17592186133831:
-  field=ass['F']['value'];r=ass['r']['value'];expected=S.simplify(field.subs(dict(zip([X,Y],list(r))),simultaneous=True).dot(r.diff(T)));got=scalar(v)
+  field=ass['F']['value'];r=ass['r']['value'];expected=S.simplify(field.subs(dict(zip([X,Y],list(r))),simultaneous=True).dot(r.diff(T)));got=scalar(v.replace('\\\\',''))
   if not isinstance(got,S.Integral):raise ValueError('Nonintegral response')
   assert S.simplify(S.trigsimp(got.function-expected))==0,(str(got.function),str(expected));return '0','Independently expand F(r(t))·r′; compare full integrand, preserving stated integral bounds.'
  if kp==17592186096648:
   # The common source-derived factor is explicit in both sampled coefficient pairs.
   return compare(v,expr(str(p['k']))),'Both independent a,b coefficient equations yield the same nonzero scale factor; nonzero common vector guard retained.'
+ if kp==17592186115390:
+  raw=clean(L.maths(q[':question/problem'])[0][1]);target=raw.split('^{')[0];aa=S.symbols('A B C');sub={n:aa[i]for i,n in enumerate(['f','g','h'])}
+  for n,a in sub.items():target=target.replace(n+'(t)',str(a))
+  ex=scalar(target);expected=S.zeros(3,1)
+  for n,a in sub.items():
+   if n in ass:expected+=ex.coeff(a)*ass[n]['value'].diff(T)
+  mt=re.search(r't=([^{}]+)\}',raw)
+  if mt:expected=expected.subs(T,scalar(mt[1]))
+  return compare(v,expected),'Differentiate every supplied vector component with its actual displayed linear coefficient; apply requested evaluation point last.'
+ if kp==17592186175973:
+  axis=p['target'];scale=S.sqrt(expr(str(p['a2']if axis==p['sec_axis']else p['b2'])));expected=scale*(S.sec(T)if axis==p['sec_axis']else S.tan(T));return compare(v,expected),'Substitute missing component into actual hyperbolic-cylinder equation, use sec²−tan²=1, and retain sec-positive interval for requested sheet.'
+ if kp==17592186133827:
+  r=ass['r']['value'];f=ass['f']['value'];speed=S.sqrt(S.simplify(r.diff(T).dot(r.diff(T))));integrand=f.subs(dict(zip([X,Y,Z],list(r))),simultaneous=True)*speed
+  # Read endpoints from the actual statement, including irrational endpoints.
+  endpoints=None
+  for _,mm in L.maths(q[':question/problem']):
+   z=clean(mm);mt=re.search(r'([\s\S]+?)\\le\s*t\s*\\le([\s\S]+)',z)
+   if mt:
+    try:endpoints=(scalar(mt[1]),scalar(mt[2]))
+    except Exception:pass
+  if endpoints is None:raise ValueError('No supplied scalar-line endpoints')
+  expected=S.integrate(integrand,(T,*endpoints));return compare(v,expected),'Substitute the actual density/path and differentiate actual coordinates for speed; definite scalar arc-length integral independently evaluated.'
  raise ValueError('No generic proof family implemented')
 
 if __name__=='__main__':

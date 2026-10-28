@@ -17,9 +17,9 @@ for t in D['topics']:
   opts=widget.select('.questionWidget-choiceText')
   if opts:rows.append({'identity':ident,'path':str(p),'kind':'original-lesson','choices':[{'html':str(n),'formulas':ns['formulas'](str(n))}for n in opts]})
 def read(line):
- p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
+ p=Path(line);m=re.search(r'(q-\d+)|(?:example|e)-(\d+)',p.name)
  if not m:return None
- ident=m[1]or m[2]or'e-'+m[3]
+ ident=m[1]or'e-'+m[2]
  if ident not in wanted:return None
  p=p if p.is_absolute()else R/p
  try:d=json.loads(p.read_text())

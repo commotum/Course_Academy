@@ -22,9 +22,9 @@ for t in ([]if prior else D['topics']):
   add(ident,'question/problem',node.find(class_='exampleQuestion')if ident.startswith('e-')else node.find(class_='questionText')or node.find(class_='questionWidget-text'),p)
   add(ident,'question/worked-solution',node.find(class_='exampleSolution')or node.find(class_='questionExplanation')or node.find(class_='questionWidget-explanation'),p)
 for line in((H/'source-paths-added.txt')if prior else(H/'source-paths-fresh.txt')).read_text().splitlines():
- p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
+ p=Path(line);m=re.search(r'(q-\d+)|(?:example|e)-(\d+)',p.name)
  if not m:continue
- ident=m[1]or m[2]or'e-'+m[3]
+ ident=m[1]or'e-'+m[2]
  if ident not in targets:continue
  p=p if p.is_absolute()else R/p
  if not p.exists():continue
@@ -33,6 +33,8 @@ for line in((H/'source-paths-added.txt')if prior else(H/'source-paths-fresh.txt'
  html=d.get('html')or d.get('raw_html')
  if not html:continue
  s=BeautifulSoup(html,'html.parser')
+ observed={('q-'+m[1]) for n in s.select('[id]') if (m:=re.fullmatch(r'question-(\d+)',n.get('id','')))}
+ if observed and ident not in observed:continue
  add(ident,'question/problem',s.find(class_='exampleQuestion')if ident.startswith('e-')else s.find(class_='questionWidget-text')or s.find(class_='questionText'),p)
  add(ident,'question/worked-solution',s.find(class_='exampleSolution')or s.find(class_='questionExplanation')or s.find(class_='questionWidget-explanation'),p)
 (H/'sources.json').write_text(json.dumps(sources,indent=2)+'\n');print('source records',len(sources),'identities',len(set(s['identity']for s in sources)),'tutorials',len(tu),'source question identities',len(targets));print('source formula errors',[(s['identity'],s['attribute'],f)for s in sources for f in s['formulas']if not isinstance(f,str)])
