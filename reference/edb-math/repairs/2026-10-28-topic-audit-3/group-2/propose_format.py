@@ -40,5 +40,7 @@ for e,a,before,ident,bare in F:
    if not m[0].startswith('$$')and r'\int'in m[0]and re.search(r'\b(?:Calculate|Evaluate|Compute)\b',after[:m.start()],re.I):
     old=m[0];after=after[:m.start()].rstrip()+'\n\n$$\n'+old[1:-1].strip()+'\n$$'+after[m.end():];evidence.append({'feature':'requested integral calculation display','math':old});reasons.append('standalone-integral-display')
  if after!=before:
-  (validate_tex if bare else validate_math_structure)(after);assert re.findall(r'\{\{[^{}]+\}\}',before)==re.findall(r'\{\{[^{}]+\}\}',after);P.append({'entity':e,'attribute':a,'before':before,'after':after,'reason':','.join(reasons),'evidence':evidence,'confidence':'high'})
+  try:(validate_tex if bare else validate_math_structure)(after)
+  except ValueError:continue
+  assert re.findall(r'\{\{[^{}]+\}\}',before)==re.findall(r'\{\{[^{}]+\}\}',after);P.append({'entity':e,'attribute':a,'before':before,'after':after,'reason':','.join(reasons),'evidence':evidence,'confidence':'high'})
 (H/'proposals.json').write_text(json.dumps(P,indent=2)+'\n');print('proposals',len(P),collections.Counter(p['attribute']for p in P))

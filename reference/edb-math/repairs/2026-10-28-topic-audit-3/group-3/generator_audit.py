@@ -2,7 +2,7 @@ import ast,collections,hashlib,json,re,subprocess,sys,os
 from pathlib import Path
 H=Path(__file__).resolve().parent;root=Path('/media/jake/SSD/EDB/math');G=json.loads((H/'generators.json').read_text());report=[]
 for kp,e,path in G:
- script=root/path;r={'kp':kp,'entity':e,'script':str(script),'exists':script.exists()}
+ script=root/path if (root/path).exists()else Path(path).resolve();r={'kp':kp,'entity':e,'script':str(script),'exists':script.exists()}
  if script.exists():
   text=script.read_text();r['sha256']=hashlib.sha256(script.read_bytes()).hexdigest();r['helpers']=[str(p.name)for p in script.parent.glob('*.py')];r['source_loss_signals']=[]
   for pattern,reason in [(r'"\| |\'\| ','Markdown table'),(r'begin\{aligned\}','aligned environment'),(r'full matrix product','repeated operands')]:

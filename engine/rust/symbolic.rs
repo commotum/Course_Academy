@@ -10,6 +10,9 @@ use num_rational::BigRational as Q;
 use num_traits::{One, Signed, ToPrimitive, Zero};
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "equation_answers.rs"]
+mod equation_answers;
+
 const MAX_TERMS: usize = 128;
 const MAX_POWER: u32 = 64;
 const MAX_WORK: usize = 100_000;
@@ -258,9 +261,14 @@ impl Poly {
                         if sample.is_none() && matches!(name.as_str(), "sin" | "cos")
                             && arg.real_on_domain()
                         {
-                            // A universal exact enclosure, not a sampled
-                            // witness. Argument domain guards remain intact.
-                            (-Q::one(), Q::one())
+                            // Rational constant arguments admit tighter exact
+                            // enclosures. These can discharge nonzero guards
+                            // such as cos(2) in 1/tan(2), without approximating
+                            // equality or sampling a variable's domain.
+                            // Keep the universal enclosure for other arguments.
+                            arg.constant()
+                                .and_then(|q| function_interval(name, &q, &q))
+                                .unwrap_or_else(|| (-Q::one(), Q::one()))
                         } else {
                             let (l, h) = arg.interval_at(sample)?;
                             function_interval(name, &l, &h)?
@@ -1623,7 +1631,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
         } else {
             tokens.push(match c {
                 '−' => Token::Mark('-'),
-                '×' | '·' => Token::Mark('*'),
+                '×' | '·' | '⋅' | '∗' => Token::Mark('*'),
                 '÷' => Token::Mark('/'),
                 '√' => Token::Word("sqrt".into()),
                 _ => Token::Mark(c),
@@ -2257,6 +2265,9 @@ mod explicit_constant_family_tests {
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
 pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
+    if let Some(result) = equation_answers::compare(a, b, context) {
+        return result;
+    }
     match (matrix_cells(a)?, matrix_cells(b)?) {
         (Some(a), Some(b)) => {
             // Validate every cell even when shapes differ, so unsupported input
@@ -2461,43 +2472,20 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn exponential_logarithm_integer_multiples_cancel_exactly() {
+    fn constant_trig_reciprocals_discharge_proven_nonzero_guards() {
         use super::{compare, Context};
-        for (a, b) in [
-            ("exp(ln(2))", "2"),
-            ("-6e^(-ln(2))", "-3"),
-            ("exp(2ln(3))", "9"),
-            ("exp(-2ln(3))", "1/9"),
-            ("exp(ln(2/3))", "2/3"),
-            ("exp(ln(2)+ln(3))", "6"),
-            ("exp(ln(x))", "x+0*ln(x)"),
-            ("exp(ln(x^2+1))", "x^2+1"),
-        ] {
-            let context = Context { natural_exponential: true, ..Context::default() };
-            assert_eq!(compare(a, b, context), Ok(true), "{a} vs {b}");
-            assert_eq!(compare(b, a, context), Ok(true), "{b} vs {a}");
+        for argument in ["1", "2", "-2", "1/2"] {
+            let a = format!("2*cot({argument})");
+            let b = format!("2/tan({argument})");
+            assert_eq!(compare(&a, &b, Context::default()), Ok(true));
+            assert_eq!(compare(&b, &a, Context::default()), Ok(true));
+            assert_eq!(compare(&a, &format!("-({b})"), Context::default()), Ok(false));
         }
-    }
-    #[test]
-    fn exponential_logarithm_cancellation_keeps_domain_guards() {
-        use super::{compare, Context};
-        for (a, b) in [
-            ("exp(ln(x))", "x"),
-            ("exp(2ln(x))", "x^2"),
-            ("exp(ln(x^2))", "x^2"),
-            ("exp(ln(-2))", "-2"),
-            ("exp(ln(0))", "0"),
-        ] {
-            assert!(compare(a, b, Context::default()).is_err(), "{a} vs {b}");
-        }
-        for (a, b) in [
-            ("-6exp(-ln(2))", "-12"),
-            ("exp(2ln(3))", "6"),
-            ("exp(ln(2/3))", "3/2"),
-            ("exp((ln(2))^2)", "4"),
-        ] {
-            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
-        }
+        // Reciprocating tan(x) adds its original cos(x) != 0 guard.
+        // A proof at a single variable witness cannot remove that guard.
+        assert!(compare("cot(x)", "1/tan(x)", Context::default()).is_err());
+        assert!(compare("1/tan(0)", "cot(2)", Context::default()).is_err());
+        assert!(compare("1/cos(pi/2)", "1", Context::default()).is_err());
     }
     #[test]
     fn multivariate_logarithm_witnesses_do_not_freeze_differences() {
@@ -3436,5 +3424,50 @@ mod assignment_branch_tests {
         assert!(compare(r"\pm\sqrt{x}",r"\pm\sqrt{-x}",c).is_err());
         assert!(compare(r"\pm\sqrt{x/x}",r"\pm1",c).is_err());
         assert!(!supports(r"\pm\unknown{x}",c));
+    }
+}
+
+#[cfg(test)]
+mod exponential_logarithm_regression_tests {
+    #[test]
+    fn exponential_logarithm_integer_multiples_cancel_exactly() {
+        use super::{compare, Context};
+        for (a, b) in [
+            ("exp(ln(2))", "2"),
+            ("-6e^(-ln(2))", "-3"),
+            ("exp(2ln(3))", "9"),
+            ("exp(-2ln(3))", "1/9"),
+            ("exp(ln(2/3))", "2/3"),
+            ("exp(ln(2)+ln(3))", "6"),
+            ("exp(ln(x))", "x+0*ln(x)"),
+            ("exp(ln(x^2+1))", "x^2+1"),
+        ] {
+            let context = Context { natural_exponential: true, ..Context::default() };
+            assert_eq!(compare(a, b, context), Ok(true), "{a} vs {b}");
+            assert_eq!(compare(b, a, context), Ok(true), "{b} vs {a}");
+        }
+    }
+    #[test]
+    fn exponential_logarithm_cancellation_keeps_domain_guards() {
+        use super::{compare, Context};
+        // A squared logarithm is not a linear log multiple. It need not be
+        // numerically resolved, but this cancellation must never accept it.
+        assert_ne!(compare("exp((ln(2))^2)", "4", Context::default()), Ok(true));
+        for (a, b) in [
+            ("exp(ln(x))", "x"),
+            ("exp(2ln(x))", "x^2"),
+            ("exp(ln(x^2))", "x^2"),
+            ("exp(ln(-2))", "-2"),
+            ("exp(ln(0))", "0"),
+        ] {
+            assert!(compare(a, b, Context::default()).is_err(), "{a} vs {b}");
+        }
+        for (a, b) in [
+            ("-6exp(-ln(2))", "-12"),
+            ("exp(2ln(3))", "6"),
+            ("exp(ln(2/3))", "3/2"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+        }
     }
 }

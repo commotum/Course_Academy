@@ -21,7 +21,7 @@ for t in D['topics']:
   if ident not in targets:continue
   add(ident,'question/problem',node.find(class_='exampleQuestion')if ident.startswith('e-')else node.find(class_='questionText')or node.find(class_='questionWidget-text'),p)
   add(ident,'question/worked-solution',node.find(class_='exampleSolution')or node.find(class_='questionExplanation')or node.find(class_='questionWidget-explanation'),p)
-for line in(R/'.local/edb/mathml-tables-work/source-paths.txt').read_text().splitlines():
+for line in(H/'source-paths-fresh.txt').read_text().splitlines():
  p=Path(line);m=re.search(r'(q-\d+)-(?:before|after)\.json$|history-(q-\d+)\.json$|example-(\d+)\.json$',p.name)
  if not m:continue
  ident=m[1]or m[2]or'e-'+m[3]
