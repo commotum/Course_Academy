@@ -26,6 +26,12 @@ Do not force randomness or reject useful simplifications that express the target
 
 Check proposed variations against the lesson context, prerequisites, and the reasoning required at the intended difficulty. Vary the application while keeping the assessed skill and workload comparable; do not introduce other topics, additional skills, or branches that expand the knowledge point’s scope. Variations within one difficulty level have no instructional progression. Each question should stand on its own as another instance of the same skill at the same level.
 
+## Independent practice and difficulty
+
+Ordinary practice must preserve the mathematical decisions, method selection, and formula recall required by the target KP's standalone source questions at every difficulty. Make easy variants manageable through simpler expressions, coefficients, coordinates, and arithmetic without supplying those decisions or their intermediate results. Keep procedural reminders, formulas to recall, substituted setups, and intermediate calculations in the worked solution. Prompt support is justified only when the target's source question supplies that support for the same objective and practice stage; a tutorial, worked solution, or unrelated reference KP does not establish that permission. A missing easy anchor is not permission to turn independent practice into a guided exercise. Compare what the learner must do before feedback, including answer-choice cues, and correct existing exemplars that violate this rule rather than treating their publication as instructional authority.
+
+A numerical progression may preserve the same reasoning in every band. Avoid awkward arithmetic and unsupported additional skills, but do not require an extra reasoning stage or a reduction in hints merely to distinguish bands. Explicitly guided teaching activities remain appropriate when the source and intended activity support them.
+
 ## Math content format
 
 All generated content must follow [the shared UI math convention](../docs/math-content.md).
