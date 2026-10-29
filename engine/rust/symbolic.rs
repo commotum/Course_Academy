@@ -129,6 +129,18 @@ impl Poly {
         }
         None
     }
+    /// A sign proof for a variable-free real algebraic constant. The exact
+    /// interval enclosure is used only to establish positivity, never equality.
+    fn positive_algebraic_constant(&self) -> bool {
+        fn algebraic(p: &Poly) -> bool {
+            p.0.keys().all(|m| m.keys().all(|a| match a {
+                Atom::Root(_, radicand) => algebraic(radicand),
+                _ => false,
+            }))
+        }
+        algebraic(self) && Value { num: self.clone(), den: Poly::integer(1) }
+            .interval_at(None).is_some_and(|(lo, _)| lo.is_positive())
+    }
     fn is_zero(&self) -> bool {
         self.0.is_empty()
     }
@@ -1361,14 +1373,40 @@ impl Algebra {
                 if *x == Value::atom(Atom::E) {
                     return Ok(Value::integer(1));
                 }
-                // A ratio of positive rational-root monomials has an exact
-                // real logarithm sum. Restrict coefficients and radicands to
-                // positive rational constants; this does not expand symbolic
-                // log products or discard their real-domain guards.
+                // Normalize positive algebraic sums by their rational scalar
+                // content. This gives ln((a+b*sqrt(c))/d) the same opaque
+                // positive unit argument as the corresponding difference of
+                // endpoint logarithms. Do not distribute a logarithm over a sum.
+                // Both numerator and denominator need independent positivity
+                // proofs, and variables are excluded from this constant rule.
+                if (x.num.0.len() > 1 || x.den.0.len() > 1)
+                    && x.num.positive_algebraic_constant()
+                    && x.den.positive_algebraic_constant()
+                {
+                    let mut sum = Value::integer(0);
+                    for (p, sign) in [(&x.num, 1i64), (&x.den, -1i64)] {
+                        let content = p.0.first_key_value().unwrap().1.abs();
+                        let unit = p.scale(&content.recip());
+                        let scalar_log = self.function("ln", &Value::number(content))?;
+                        let unit_value = Value { num: unit.clone(), den: Poly::integer(1) };
+                        let unit_log = if unit.0.len() > 1 {
+                            Value::atom(Atom::Function("ln".into(), Box::new(unit_value)))
+                        } else {
+                            self.function("ln", &unit_value)?
+                        };
+                        let term = self.add(&scalar_log, &unit_log)?;
+                        let term = self.mul(&Value::integer(sign), &term)?;
+                        sum = self.add(&sum, &term)?;
+                    }
+                    return Ok(sum);
+                }
+                // Positive algebraic root monomials have exact real log sums.
+                // Radicands require a constant positivity proof; symbolic log
+                // products and their real-domain guards are left unchanged.
                 let rational_roots = |p: &Poly| p.0.len() == 1
                     && p.0.iter().all(|(m, c)| c.is_positive()
                         && m.keys().all(|atom| matches!(atom, Atom::Root(_, radicand)
-                            if radicand.constant().is_some_and(|q| q.is_positive()))));
+                            if radicand.positive_algebraic_constant())));
                 if rational_roots(&x.num) && rational_roots(&x.den)
                     && (x.num.constant().is_none() || x.den.constant().is_none())
                 {
@@ -1380,7 +1418,7 @@ impl Algebra {
                         sum = self.add(&sum, &term)?;
                         for (atom, exponent) in m {
                             if let Atom::Root(degree, radicand) = atom {
-                                let logarithm = self.function("ln", &Value::number(radicand.constant().unwrap()))?;
+                                let logarithm = self.function("ln", &Value { num: (**radicand).clone(), den: Poly::integer(1) })?;
                                 let factor = Value::number(Q::new((sign * i32::from(*exponent)).into(), (*degree).into()));
                                 let term = self.mul(&factor, &logarithm)?;
                                 sum = self.add(&sum, &term)?;
@@ -3356,6 +3394,23 @@ mod tests {
         assert!(compare("ln(sqrt(x))", "ln(x)/2", Context::default()).is_err());
         assert!(compare("ln(sqrt(x^2))", "ln(x)", Context::default()).is_err());
         assert!(compare("ln(sqrt(3))*x/x", "ln(3)/2", Context::default()).is_err());
+    }
+    #[test]
+    fn algebraic_constant_logarithms_keep_scalar_content_and_domains() {
+        for (a,b) in [
+            ("ln((sqrt(3)+2)/3)/4", "(ln(1+sqrt(3)/2)-ln(3/2))/4"),
+            ("ln((sqrt(3)+2)/3)/4", "(ln(2+sqrt(3))-ln(3))/4"),
+            ("ln(((sqrt(3)+2)/3)^(1/4))", "ln((sqrt(3)+2)/3)/4"),
+            ("ln((3+sqrt(5))/2)", "ln(3+sqrt(5))-ln(2)"),
+            ("ln(1/(2+sqrt(3)))", "-ln(2+sqrt(3))"),
+        ] { eq(a,b); eq(b,a); }
+        for wrong in ["(ln(2+sqrt(3))+ln(3))/4", "ln(2+sqrt(3))/4", "0"] {
+            assert_eq!(compare("ln((sqrt(3)+2)/3)/4",wrong,Context::default()),Ok(false));
+        }
+        assert!(!supports("ln(1-sqrt(3))",Context::default()));
+        assert!(!supports("ln(0)",Context::default()));
+        assert!(compare("ln(x^2)","2ln(x)",Context::default()).is_err());
+        assert!(compare("ln((2+sqrt(3))/3)*x/x","ln((2+sqrt(3))/3)",Context::default()).is_err());
     }
     #[test]
     fn imaginary_radical_differences_have_exact_nonzero_components() {
