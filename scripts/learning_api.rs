@@ -1,5 +1,6 @@
 //! Local learner application boundary: immutable EDB reads and guarded durable writes.
 mod activity_history;
+mod review_interaction;
 mod study_stats;
 mod forecast_reader;
 mod assignment_interaction;
@@ -2534,7 +2535,7 @@ fn mutate_with_selection(
                 forms.push(add(json!(i), "task-item/responses", response));
             }
             let answered_state=if correct {"correct"}else{"incorrect"};
-            if let Some(millis)=body["submittedAt"].as_i64() {
+            if let Some(millis)=body["submittedAt"].as_i64().filter(|_|body.get("_queuedReview").is_none()) {
                 let until=DateTime::from_timestamp_millis(millis).ok_or("Invalid submission instant")?;
                 let elapsed=timing::elapsed_until(s,i,at,until)?;
                 transition_with_elapsed(s,t,i,answered_state,elapsed,&mut forms)?;
@@ -2697,6 +2698,7 @@ impl Application {
 
     fn process(&mut self, body: &Json) -> Result<Json> {
         let action = body["action"].as_str().ok_or("Action required")?;
+        if body["action"] == "persist-review" { return review_interaction::persist(self,body); }
         let s = &self.snapshot;
         let learner = &self.learner;
         if s.entities
@@ -2715,6 +2717,7 @@ impl Application {
                 .ok_or("Learner not found")?;
         }
         let l = self.learner_eid;
+        if matches!(action,"review-session"|"review-grade"|"review-decision") {return review_interaction::read(s,l,body);}
         // Developer inspection must return before request journaling or any
         // learner mutation. These functions only receive an immutable snapshot.
         match action {
@@ -2810,7 +2813,7 @@ impl Application {
         } else {
             let at = Utc::now();
             let planning = Instant::now();
-            let (forms, result) = if action == "queue" {
+            let (mut forms, result) = if action == "queue" {
                 let forms = if cached_queue.is_some() {
                     vec![]
                 } else {
@@ -2831,6 +2834,7 @@ impl Application {
             } else {
                 mutate(&s, l, action, &body, at)?
             };
+            review_interaction::attach_periods(s,l,body,&mut forms)?;
             trace("plan", planning);
             let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty(),"source":ENGINE_SOURCE});
             std::fs::create_dir_all(journal.parent().unwrap())?;
@@ -2909,7 +2913,7 @@ impl Application {
         // Task evidence commits first. Intermediate steps return immediately;
         // completion refreshes availability with a separate replayable request.
         let queue_error =
-            if needs_queue_refresh(action, &status(&self.snapshot, t, "learner-task/status")?) {
+            if body["_deferQueue"] != true && needs_queue_refresh(action, &status(&self.snapshot, t, "learner-task/status")?) {
                 let request = format!("queue-after-{l}-{}", self.snapshot.basis_t);
                 // Retain the freshly computed home at its new basis. Calling
                 // process directly discarded it and forced Home to plan again.

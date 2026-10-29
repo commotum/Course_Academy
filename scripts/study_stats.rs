@@ -67,6 +67,18 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
             seconds[day] += (end.min(starts[day+1])-start.max(starts[day])).max(0) as f64 / 1000.;
         }
     };
+    let mut interval_items=BTreeSet::new();
+    for item in &item_ids {
+        let periods=s.refs(*item,"task-item/working-periods")?;
+        if periods.is_empty(){continue;}
+        interval_items.insert(*item);
+        for period in periods {
+            let e=s.entity(period)?;
+            let start=schema::parse_instant(e.get("working-period/started-at").ok_or("Working period needs a start")?)?.timestamp_millis();
+            let end=e.get("working-period/ended-at").map(schema::parse_instant).transpose()?.map(|at|at.timestamp_millis()).unwrap_or(now.timestamp_millis());
+            add_interval(&mut seconds,start,end);
+        }
+    }
     for event in &s.status_history {
         let at = schema::parse_instant(&event.at)?.timestamp_millis();
         if at > now.timestamp_millis() { continue; }
@@ -74,7 +86,7 @@ pub(super) fn summary(s: &EntitySnapshot, learner: u64, body: &Json, now: DateTi
             let state = s.ident(&event.value)?;
             if state == "learner-task.status/started" { task_starts.insert(event.entity); }
             if matches!(state.as_str(),"learner-task.status/completed"|"learner-task.status/failed") { finished.insert(event.entity, at); }
-        } else if event.attribute == "task-item/status" && item_ids.contains(&event.entity) {
+        } else if event.attribute == "task-item/status" && item_ids.contains(&event.entity) && !interval_items.contains(&event.entity) {
             if let Some(start) = running.remove(&event.entity) { add_interval(&mut seconds,start,at.min(cutoffs.get(&event.entity).copied().unwrap_or(at))); }
             if s.ident(&event.value)? == "task-item.status/started" { running.insert(event.entity,at); }
         }

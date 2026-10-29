@@ -39,6 +39,22 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Calculated performance magnitude used by the engine. Positive and finite; may exceed one. Distinct from correctness and XP. Omit until evaluated; the application checks the range."}
 
+ {:db/ident :task-item/working-periods
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Server-observed work intervals for asynchronously saved presentations. These intervals time learner work independently of delayed database commit times."}
+ {:db/ident :working-period/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity}
+ {:db/ident :working-period/started-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :working-period/ended-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one}
+
  {:db/ident :task-item/working-ended-at
   :db/valueType :db.type/instant
   :db/cardinality :db.cardinality/one

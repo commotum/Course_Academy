@@ -155,6 +155,23 @@ fn saved_elapsed(snapshot: &EntitySnapshot, entity: u64, attribute: &str) -> Res
 }
 
 pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Result<f64> {
+    let periods = snapshot.refs(item,"task-item/working-periods")?;
+    if !periods.is_empty() {
+        let running=status(snapshot,item,"task-item/status")?=="task-item.status/started";
+        let mut intervals=periods.into_iter().map(|p| {
+            let e=snapshot.entity(p)?;
+            Ok((parse_instant(e.get("working-period/started-at").ok_or("working period needs a start")?)?,e.get("working-period/ended-at").map(parse_instant).transpose()?))
+        }).collect::<Result<Vec<_>>>()?;
+        intervals.sort_by_key(|p|p.0);
+        let mut total=0.;let mut previous=None;let mut open=false;
+        for (start,end) in intervals {
+            if start>at || end.is_some_and(|end|end<start||end>at) || previous.is_some_and(|end|start<end) || open {return Err("invalid working periods".into());}
+            open=end.is_none(); previous=end;
+            total+=(end.unwrap_or(at)-start).num_milliseconds() as f64/1000.;
+        }
+        if open!=running {return Err("working period disagrees with presentation status".into());}
+        return Ok(total);
+    }
     let events = history(snapshot, item, "task-item/status")?;
     let imported = events[0].1 != "task-item.status/started";
     if imported && events[0].1 != "task-item.status/paused" && !terminal(&events[0].1) {
