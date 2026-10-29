@@ -25,6 +25,7 @@ test('actual graph initialization uses the server code policy for the targets ov
     const elements = new Map(), calls = [];
     const context = vm.createContext({
       URL, loading: false, focusedModeRefresh: false, snapshot: null,
+      graphPreferences: { refresh: async () => {} },
       location: { protocol: 'http:', href: 'http://example.test/?view=targets' },
       $: id => { if (!elements.has(id)) elements.set(id, {}); return elements.get(id); },
       readRequest: async () => ({ ok: true, json: async () => data }),

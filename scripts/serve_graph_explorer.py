@@ -36,6 +36,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
 from review_outbox import ReviewOutbox
+from graph_preferences import read_preferences, update_preferences
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
@@ -359,6 +360,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     feedback_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "feedback-worker") if learning else None
     persistence_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "review-save-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
+    graph_preferences_path = Path(environment.get('COURSE_ACADEMY_GRAPH_PREFERENCES', ROOT / '.local/graph-preferences.json'))
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
 
@@ -618,12 +620,22 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             except (OSError, ValueError, KeyError, TypeError):
                 self.send_bytes(503, b'{"error":"Developer mode could not be confirmed. Activity recording is unavailable until the setting can be read."}', "application/json")
 
+        def graph_preferences_request(self, changes=None) -> None:
+            try:
+                value = (read_preferences(graph_preferences_path) if changes is None else
+                         update_preferences(graph_preferences_path, changes, save_json))
+                self.send_bytes(200, json.dumps(value).encode(), 'application/json')
+            except ValueError as error:
+                self.send_bytes(400, json.dumps({'error': str(error)}).encode(), 'application/json')
+            except OSError:
+                self.send_bytes(503, b'{"error":"Could not sync display settings. Retry shortly."}', 'application/json')
+
         def do_POST(self) -> None:
             if not self.trusted():
                 return
             action = urlsplit(self.path).path.removeprefix("/api/")
             # Profile preferences remain editable in inspection mode; study writes do not.
-            if action not in MUTATING_ACTIONS | {"review-save-retry", "developer-mode", "preview-answer", "profile-settings", "daily-xp-goal", "focused-mode"}:
+            if action not in MUTATING_ACTIONS | {"review-save-retry", "developer-mode", "preview-answer", "profile-settings", "daily-xp-goal", "focused-mode", "graph-preferences"}:
                 self.send_bytes(404, b"Not found", "text/plain")
                 return
             try:
@@ -633,11 +645,15 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 body = json.loads(self.rfile.read(size))
                 if not isinstance(body, dict):
                     raise ValueError("Expected a JSON object")
+                if action == 'graph-preferences' and not isinstance(body.get('changes'), dict):
+                    raise ValueError('Expected graph display changes')
                 body["action"] = action
             except (ValueError, TypeError) as error:
                 self.send_bytes(400, json.dumps({"error": str(error)}).encode(), "application/json")
                 return
-            if action == "developer-mode":
+            if action == 'graph-preferences':
+                self.graph_preferences_request(body.get('changes', {}))
+            elif action == "developer-mode":
                 self.mode_request(body)
             else:
                 self.learning_request(body)
@@ -647,7 +663,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 return
             path = urlsplit(self.path).path
             query = parse_qs(urlsplit(self.path).query)
-            if path == "/api/developer-mode":
+            if path == '/api/graph-preferences':
+                self.graph_preferences_request()
+            elif path == "/api/developer-mode":
                 self.mode_request()
             elif path == "/api/review-save-status":
                 try:
@@ -757,7 +775,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "study-stats.js", "forecast-sidebar.js", "forecast-worker.js", "forecast.js", "route-matrix.css", "question-fields.js", "content-tables.js", "prose-lists.js", "math-protection.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-scope.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "entity-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
+                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "study-stats.js", "forecast-sidebar.js", "forecast-worker.js", "forecast.js", "route-matrix.css", "question-fields.js", "content-tables.js", "prose-lists.js", "math-protection.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-scope.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "entity-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js", "graph-preferences.js"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

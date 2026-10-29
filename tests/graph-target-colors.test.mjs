@@ -41,7 +41,8 @@ function fixture() {
     minimapLayout: null, minimap: { width: 440, height: 280 },
     minimapBase: { width: 0, height: 0, getContext: () => ctx },
     mctx: { clearRect() {}, drawImage() {}, strokeRect() {} },
-    localStorage: { setItem: (key, value) => storage.set(key, value) },
+    localStorage: { setItem() { throw Error('Browser storage is unavailable'); } },
+    persistGraphPreferences: changes => { for(const [key,value] of Object.entries(changes))storage.set(key,value); },
     targetsView: false, loading: false, targetTopicId: null,
     // This fixture models focused exploration; full root changes are covered
     // by targets-graph.test.mjs.
@@ -131,7 +132,7 @@ test('Color Code toggles red, green, and blue together in both graph views and t
     for (const id of [1, 2, 3]) assert.equal(elements.get('topic-' + id).styles['--node'], c.competencyFor(id).fill);
     assert.equal(elements.get('targetColorToggle').attrs['aria-checked'], 'false');
   }
-  assert.equal(storage.get('test-graph-color'), 'false');
+  assert.equal(storage.get('colorCode'), false);
   assert.equal(c.state.layout, layout); assert.equal(c.state.view, view); assert.equal(elements.get('topic-1'), node);
   assert.equal(JSON.stringify(c.snapshot.learner), membership);
 });
@@ -269,19 +270,11 @@ test('membership changes repaint a newly completed target and do not require bro
   c.setColorCode(false); assert.equal(elements.get('targetColorToggle').attrs['aria-checked'], 'false');
 });
 
-test('Color Code preserves the former switch preference and prioritizes the new setting', () => {
-  const preferenceSource = html.slice(html.indexOf('  const targetColorKey ='), html.indexOf('  let targetTopicId ='));
-  for (const [values, expected] of [
-    [{}, false], [{ 'course-academy.graph-targets-red': 'true' }, true],
-    [{ 'course-academy.graph-targets-red': 'false' }, false],
-    [{ 'course-academy.graph-targets-red': 'true', 'course-academy.graph-color-code': 'false' }, false],
-    [{ 'course-academy.graph-color-code': 'true' }, true],
-  ]) {
-    const c = vm.createContext({ localStorage: { getItem: key => values[key] ?? null } });
-    vm.runInContext(preferenceSource, c); assert.equal(vm.runInContext('colorCodeEnabled', c), expected);
-  }
+test('Color Code starts enabled without consulting origin-specific browser storage', () => {
+  const preferenceSource = html.slice(html.indexOf('  let colorCodeEnabled ='), html.indexOf('  let targetTopicId ='));
   const c = vm.createContext({ localStorage: { getItem() { throw Error('Unavailable'); } } });
-  vm.runInContext(preferenceSource, c); assert.equal(vm.runInContext('colorCodeEnabled', c), false);
+  vm.runInContext(preferenceSource, c);
+  assert.equal(vm.runInContext('colorCodeEnabled', c), true);
 });
 
 

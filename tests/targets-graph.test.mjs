@@ -40,8 +40,8 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
     URL, $, attachGraphTopicMenu() {}, document: { createElement: element, createElementNS: element, getElementById: $, querySelector: () => $('.app'), title: '' },
     location: { href: 'http://example.test/?view=targets&course=course-a&topic=2' },
     snapshot: { learner: { targets, courseId: 'course-a' }, courses: [{ id: 'course-a', title: 'Course A', topicIds: [1, 2] }] },
-    storage: new Map(),
-    localStorage: { getItem(key) { return key === 'course-academy.graph-targets-split' ? splitSaved : key === 'course-academy.graph-target-queue' ? queueSaved : null; }, setItem(key, value) { context.storage.set(key, value); } },
+    preferences: {},
+    persistGraphPreferences(changes) { Object.assign(context.preferences, changes); },
     NODES: nodes, LINKS: links,
     dependencyOrder: [4, 1, 2, 3, 5, 6],
     inMap: new Map(nodes.map(n => [n.id, links.filter(e => e.target === n.id).map(e => e.source)])),
@@ -62,6 +62,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
   context.history = { replaceState(_state, _title, url) { context.location.href = String(url); } };
   vm.runInContext(`${weekSource}\n${targetScopeSource}\n${helperSource}\n${geometrySource}\n${columnSource}\n${selectionSource}\n${depthSource}\n${resetSource}\n${scopeSource}\n${activeSource}\n${layoutSource}\n${guidesSource}\nfunction learnerChanged(learner) { ${changeSource} }`, context);
   vm.runInContext(`function queueChanged(learner) { ${queueChangeSource} }`, context);
+  vm.runInContext(`splitTargetsByCourse=${splitSaved === true};targetQueueEnabled=${queueSaved !== false};`, context);
   return context;
 }
 
@@ -291,7 +292,7 @@ test('week clicks and Shift-click ranges change target roots while retaining dep
   assert.equal(buttons[1].attributes['aria-pressed'], 'true'); // Empty intervening week is selected too.
   assert.match(c.$('targetWeekReadout').textContent, /Weeks 1–3 - 9\/27-10\/17 · 3 due · 0 queued/);
   assert.equal(JSON.stringify(c.snapshot.learner), learner);
-  const saved=JSON.parse(c.storage.get('course-academy.graph-target-weeks'));
+  const saved=c.preferences.weeks;
   assert.equal(saved.kind, 'range'); assert.equal(saved.end-saved.start, 14);
   c.$('targetWeeksUnscheduled').listeners.click();
   assert.deepEqual([...c.filteredTargetIds()], [5]);
@@ -326,17 +327,17 @@ test('Split switch persists and retains the selected topics, depth, history, URL
   c.$('targetSplitToggle').listeners.click();
   assert.equal(c.$('targetSplitToggle').attributes['aria-checked'], 'true');
   assert.equal(c.$('targetSplitToggle').dataset.animate, 'true');
-  assert.equal(c.storage.get('course-academy.graph-targets-split'), 'true');
+  assert.equal(c.preferences.splitByCourse, true);
   assert.deepEqual([...c.state.activeIds], active);
   assert.equal(c.state.depth, '2'); assert.equal(c.state.history, history);
   assert.equal(c.location.href, url); assert.equal(JSON.stringify(c.snapshot.learner), learner);
   assert.equal(c.redraws.at(-1), true);
-  const restored = fixture([1, 3], { splitSaved: c.storage.get('course-academy.graph-targets-split') });
+  const restored = fixture([1, 3], { splitSaved: c.preferences.splitByCourse });
   addSchoolCourses(restored); restored.changeCourse(null, true, 'targets');
   assert.equal(restored.$('targetSplitToggle').attributes['aria-checked'], 'true');
   assert.ok(restored.layoutCurrent().courseBands.length);
   c.setTargetSplit(false); assert.equal(c.$('targetSplitToggle').attributes['aria-checked'], 'false');
-  assert.equal(c.storage.get('course-academy.graph-targets-split'), 'false');
+  assert.equal(c.preferences.splitByCourse, false);
 });
 
 test('split layout vertically separates labeled courses and keeps all nodes and cross-course links exactly once', () => {
@@ -473,7 +474,7 @@ test('expanded prerequisites receive course tracks without adding hidden topics 
 });
 
 test('empty targets and regular course views remain usable with the Split preference enabled', () => {
-  const c = fixture([], { splitSaved: 'true' }); addSchoolCourses(c); c.changeCourse(null, true, 'targets');
+  const c = fixture([], { splitSaved: true }); addSchoolCourses(c); c.changeCourse(null, true, 'targets');
   const empty = c.layoutCurrent(); c.renderGuides();
   assert.equal(empty.courseBands.length, 0); assert.equal(empty.activeNodes.length, 0);
   assert.ok(Object.values(empty.bounds).every(Number.isFinite));
@@ -522,7 +523,7 @@ test('course switches filter assignment targets, preserve shared targets and lea
   assert.equal(c.buildActiveSet().edgeSet.size, 0);
   assert.equal(c.state.selected, 6);
   assert.deepEqual([...c.snapshot.learner.targets], saved);
-  assert.equal(c.storage.get('course-academy.graph-target-courses'), '[]');
+  assert.equal(JSON.stringify(c.preferences.courses), '[]');
   for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, true);
   assert.deepEqual([...c.buildActiveSet().nodeIds], saved);
 });
@@ -581,7 +582,7 @@ test('membership in any curriculum or assignment keeps a target subject to filte
   assert.deepEqual([...c.courseTopics], []);
 });
 
-test('Queue switch independently adds queued roots, deduplicates overlaps and persists without requests or membership changes', () => {
+test('Queue switch independently adds queued roots, deduplicates overlaps and saves display preferences without membership changes', () => {
   const c = fixture([1, 3]); addSchoolCourses(c);
   c.snapshot.learner.queue = [3, 6, 6, 999];
   const learner = JSON.stringify(c.snapshot.learner);
@@ -598,13 +599,13 @@ test('Queue switch independently adds queued roots, deduplicates overlaps and pe
   assert.equal(c.state.depth, '2');
   assert.equal(c.state.history.length, 1);
   assert.equal(c.location.href, 'http://example.test/?view=targets');
-  assert.equal(c.storage.get('course-academy.graph-target-queue'), 'false');
+  assert.equal(c.preferences.includeQueue, false);
   assert.equal(JSON.stringify(c.snapshot.learner), learner);
   c.setTargetCourseEnabled('256', true);
   assert.deepEqual([...c.courseTopics], [1, 3]); // Shared target survives Queue being off.
   c.setTargetQueueEnabled(true);
   assert.deepEqual([...c.courseTopics], [1, 3, 6]);
-  const restored = fixture([1], { queueSaved: 'false' });
+  const restored = fixture([1], { queueSaved: false });
   restored.snapshot.learner.queue = [6]; restored.changeCourse(null, true, 'targets');
   assert.deepEqual([...restored.courseTopics], [1]);
   assert.equal(restored.$('targetQueueToggle').attributes['aria-checked'], 'false');

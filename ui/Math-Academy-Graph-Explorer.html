@@ -316,6 +316,7 @@ button,input,select { font:inherit; }
 <button class="pill" id="overviewBtn">Course overview</button>
 </div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
 <div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Color Code</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
+<p id="graphPreferencesStatus" class="profile-help" role="status" hidden></p>
 <section id="targetCourseFilters" class="target-course-filters" aria-label="Filter targets by course and queue" hidden>
 <div class="info-kicker">Courses</div>
 <div class="target-course-row target-split-row"><label id="targetSplitLabel" for="targetSplitToggle">Split by course</label><button id="targetSplitToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetSplitLabel" aria-checked="false"></button></div>
@@ -366,6 +367,7 @@ import { isLightTheme, themeColor } from "/ui/profile.js";
 import { attachTopicMenu } from "/ui/topic-menu.js";
 import { attachEntityMenu, detachEntityMenu, closeEntityMenu, copyText } from "/ui/entity-menu.js";
 import { readRequest } from "/ui/requests.js";
+import { createGraphPreferences } from "/ui/graph-preferences.js";
 import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabel, normalizeTargetWeekSelection,
   selectTargetWeek, filterScheduledTargets, targetWeekSelectionLabel } from "/ui/target-weeks.js";
 
@@ -530,13 +532,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   };
   let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
   let targetsView = false;
-  const targetColorKey = 'course-academy.graph-color-code';
-  function readColorCodePreference() {
-    try { return (localStorage.getItem(targetColorKey) ?? localStorage.getItem('course-academy.graph-targets-red')) === 'true'; }
-    catch { return false; }
-  }
-  let colorCodeEnabled = false;
-  colorCodeEnabled = readColorCodePreference();
+  let colorCodeEnabled = true;
   let targetTopicId = null;
   const targetControls = createTargetControls({
     onChange: learner => {
@@ -1381,7 +1377,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   }
   function setColorCode(enabled,persist=true) {
     colorCodeEnabled=enabled;
-    if(persist){try{localStorage.setItem(targetColorKey,String(enabled));}catch{ /* Keep the local view usable. */ }}
+    if(persist)persistGraphPreferences({colorCode:enabled});
     refreshTargetColors();
   }
   function updateScopeReadout() {
@@ -1982,23 +1978,12 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
   const targetCourseCodes=TARGET_COURSE_CODES;
-  const targetCourseFilterKey='course-academy.graph-target-courses';
-  const targetQueueFilterKey='course-academy.graph-target-queue';
   let targetQueueEnabled=true;
-  try{targetQueueEnabled=localStorage.getItem(targetQueueFilterKey)!=='false';}catch{ /* Keep Queue enabled without browser storage. */ }
-  const targetSplitKey='course-academy.graph-targets-split';
   let splitTargetsByCourse=false;
-  try{splitTargetsByCourse=localStorage.getItem(targetSplitKey)==='true';}catch{ /* Split also works without browser storage. */ }
   let enabledTargetCourses=new Set(targetCourseCodes);
-  try{
-    const saved=JSON.parse(localStorage.getItem(targetCourseFilterKey));
-    if(Array.isArray(saved))enabledTargetCourses=new Set(saved.filter(code=>targetCourseCodes.includes(code)));
-  }catch{ /* Filters also work without browser storage. */ }
-  const targetWeekFilterKey='course-academy.graph-target-weeks';
   let targetCalendar=buildTargetCalendar(snapshot?.targetSchedule || []), targetWeekSelection={kind:'all'};
   let targetWeekButtonsCalendar=null, targetWeekFocusDay=null;
   const targetWeekButtons=new Map();
-  try{targetWeekSelection=JSON.parse(localStorage.getItem(targetWeekFilterKey)) || targetWeekSelection;}catch{ /* Keep All if storage is unavailable. */ }
   function installTargetCalendar(schedule) {
     targetCalendar=buildTargetCalendar(schedule);
     targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,targetWeekSelection);
@@ -2019,7 +2004,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function setTargetWeekSelection(selection) {
     if(!targetsView || !snapshot || loading)return;
     targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,selection);
-    try{localStorage.setItem(targetWeekFilterKey,JSON.stringify(targetWeekSelection));}catch{ /* Keep the in-page filter. */ }
+    persistGraphPreferences({weeks:targetWeekSelection});
     // Changing weeks starts from the newly filtered roots; old focus/history
     // must not leave an excluded target visible. Keep depth and Split settings.
     changeCourse(null,true,'targets',state.depth);
@@ -2093,7 +2078,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function setTargetSplit(enabled) {
     if(!targetsView || !snapshot || loading || splitTargetsByCourse===enabled)return;
     splitTargetsByCourse=enabled;
-    try{localStorage.setItem(targetSplitKey,String(enabled));}catch{ /* Keep the in-page layout. */ }
+    persistGraphPreferences({splitByCourse:enabled});
     if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
     renderTargetCourseFilters();
     redraw(true);
@@ -2105,7 +2090,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     if(!targetsView || !snapshot || loading || !targetCourseCodes.includes(code))return;
     if(enabledTargetCourses.has(code)===enabled)return;
     if(enabled)enabledTargetCourses.add(code);else enabledTargetCourses.delete(code);
-    try{localStorage.setItem(targetCourseFilterKey,JSON.stringify([...enabledTargetCourses]));}catch{ /* Keep the in-page filter. */ }
+    persistGraphPreferences({courses:[...enabledTargetCourses]});
     // Start from the filtered group so a focused topic or old history entry
     // cannot keep an excluded course visible. Retain prerequisite depth.
     changeCourse(null,true,'targets',state.depth);
@@ -2113,7 +2098,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function setTargetQueueEnabled(enabled) {
     if(!targetsView || !snapshot || loading || targetQueueEnabled===enabled)return;
     targetQueueEnabled=enabled;
-    try{localStorage.setItem(targetQueueFilterKey,String(enabled));}catch{ /* Keep the in-page filter. */ }
+    persistGraphPreferences({includeQueue:enabled});
     changeCourse(null,true,'targets',state.depth);
   }
   $('targetQueueToggle').addEventListener('click',()=>{
@@ -2197,6 +2182,32 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   });
 
   let loading=false;
+  const graphPreferences=createGraphPreferences({apply:applyGraphPreferences,onError:graphPreferenceError});
+  function persistGraphPreferences(changes) {graphPreferences.save(changes);}
+  function graphPreferenceError(error) {
+    $('graphPreferencesStatus').hidden=!error;
+    $('graphPreferencesStatus').textContent=error?'Could not sync display settings. Retrying…':'';
+  }
+  function applyGraphPreferences(value) {
+    const courses=value.courses.filter(code=>targetCourseCodes.includes(code));
+    const weeks=snapshot?normalizeTargetWeekSelection(targetCalendar,value.weeks):value.weeks;
+    const scopeChanged=targetQueueEnabled!==value.includeQueue ||
+      JSON.stringify([...enabledTargetCourses].sort())!==JSON.stringify([...courses].sort()) ||
+      JSON.stringify(targetWeekSelection)!==JSON.stringify(weeks);
+    const splitChanged=splitTargetsByCourse!==value.splitByCourse;
+    enabledTargetCourses=new Set(courses);targetQueueEnabled=value.includeQueue;
+    splitTargetsByCourse=value.splitByCourse;targetWeekSelection=weeks;
+    if(colorCodeEnabled!==value.colorCode)setColorCode(value.colorCode,false);
+    if(!snapshot || loading)return;
+    if(targetsView && (scopeChanged || splitChanged))changeCourse(null,false,'targets',state.depth);
+    else {renderTargetCourseFilters();renderTargetWeekStrip();}
+  }
+  function refreshGraphPreferences() {
+    if(!document.hidden && !loading)void graphPreferences.refresh().catch(graphPreferenceError);
+  }
+  window.addEventListener('focus',refreshGraphPreferences);
+  document.addEventListener('visibilitychange',refreshGraphPreferences);
+  setInterval(refreshGraphPreferences,5000);
   let focusedModeRefresh=false;
   let progressRefresh=null;
   async function refreshLearningProgress() {
@@ -2227,6 +2238,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     $('loadMessage').textContent='Loading your knowledge graph…';
     try {
       if(location.protocol==='file:')throw new Error('Open the explorer through its local server to load your database.');
+      await graphPreferences.refresh();
       const response=await readRequest('/api/graph-explorer');
       if(!response.ok)throw new Error('The database could not be loaded. Check the local explorer server and retry.');
       const data=await response.json();installSnapshot(data);
@@ -2259,12 +2271,6 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
   $('targetColorToggle').addEventListener('click',()=>{
     $('targetColorToggle').dataset.animate='true';setColorCode(!colorCodeEnabled);
-  });
-  window.addEventListener('storage',event=>{
-    if(event.key===targetColorKey || event.key==='course-academy.graph-targets-red' || event.key===null){
-      const enabled=readColorCodePreference();
-      setColorCode(enabled,false);
-    }
   });
 
   window.addEventListener('resize', () => { resize(); redraw(false); });
