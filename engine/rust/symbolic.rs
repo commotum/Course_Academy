@@ -954,6 +954,25 @@ impl Algebra {
             let num = self.padd(&a.num, &b.num)?;
             return self.value(num, a.den.clone());
         }
+        // Reuse a squared common denominator instead of multiplying it
+        // by its base on every addition. A displayed quotient-rule result
+        // and its expanded terms routinely mix p and p^2. Test the exact
+        // polynomial relation, including normalization's scalar; no factor
+        // or original nonzero condition is discarded. Bound this optional
+        // optimization to small bases rather than increasing the work limit.
+        for (small, large) in [(a, b), (b, a)] {
+            if !(2..=8).contains(&small.den.0.len()) || large.den.0.len() < 2 {
+                continue;
+            }
+            let square = self.pmul(&small.den, &small.den)?;
+            if square.monic() == large.den {
+                let coefficient = square.0.first_key_value().unwrap().1;
+                let lifted = self.pmul(&small.num, &small.den)?
+                    .scale(&coefficient.recip());
+                let num = self.padd(&lifted, &large.num)?;
+                return self.value(num, large.den.clone());
+            }
+        }
         let l = self.pmul(&a.num, &b.den)?;
         let r = self.pmul(&b.num, &a.den)?;
         let num = self.padd(&l, &r)?;
@@ -4257,5 +4276,26 @@ mod compound_quotient_witness_tests {
         assert_ne!(compare(&format!("({key})*x/x"), key, context), Ok(true));
         // Unknown identities remain errors; interval overlap proves nothing.
         assert!(compare("foo(x)", "x", context).is_err());
+    }
+}
+
+#[cfg(test)]
+mod squared_common_denominator_tests {
+    use super::{compare, Context};
+    #[test]
+    fn expanded_compound_quotients_keep_small_common_denominators() {
+        let c = Context { natural_exponential: true, ..Context::default() };
+        let compact = "(-4*x-2*sin(x))/(exp(x)-2*cos(x))-(-2*x^2+2*cos(x))*(exp(x)+2*sin(x))/(exp(x)-2*cos(x))^2";
+        let expanded = "2*x^2*exp(x)/(exp(2*x)-4*exp(x)*cos(x)+4*cos(x)^2)+4*x^2*sin(x)/(exp(2*x)-4*exp(x)*cos(x)+4*cos(x)^2)-4*x/(exp(x)-2*cos(x))-2*exp(x)*cos(x)/(exp(2*x)-4*exp(x)*cos(x)+4*cos(x)^2)-4*sin(x)*cos(x)/(exp(2*x)-4*exp(x)*cos(x)+4*cos(x)^2)-2*sin(x)/(exp(x)-2*cos(x))";
+        assert_eq!(compare(expanded, compact, c), Ok(true));
+        assert_eq!(compare(compact, expanded, c), Ok(true));
+        assert_eq!(compare(&format!("({expanded})+1"), compact, c), Ok(false));
+        for (a, b) in [
+            ("1/(x+1)+1/(x+1)^2", "(x+2)/(x+1)^2"),
+            ("1/(2*x+3)^2+1/(2*x+3)", "(2*x+4)/(2*x+3)^2"),
+            ("1/(x+y)+1/(x+y)^2", "(x+y+1)/(x+y)^2"),
+        ] { assert_eq!(compare(a,b,c), Ok(true)); }
+        assert_eq!(compare("1/(x+1)+1/(x+1)^2", "(x+3)/(x+1)^2",c), Ok(false));
+        assert!(compare("x/(x+1)+1/(x+1)", "1",c).is_err());
     }
 }
