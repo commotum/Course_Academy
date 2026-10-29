@@ -1975,7 +1975,11 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
                         || compare_math(submitted, &pair[1].1, context)?);
                 }
                 let key = s.entity(field)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
-                if displayed_integration_constant(&prompt, key)
+                if displayed_squared_blank(&prompt, key) {
+                    // Compare the mathematical object the learner completes,
+                    // rather than imposing a sign on an externally squared factor.
+                    compare_math(&format!("({submitted})^2"), &format!("({canonical})^2"), context)?
+                } else if displayed_integration_constant(&prompt, key)
                     || displayed_solution_family_constant(&prompt, key)
                 {
                     symbolic::compare_up_to_constant(submitted, canonical, context)?
@@ -2172,6 +2176,50 @@ fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
     match (RationalParser::parse(&a), RationalParser::parse(&b)) {
         (Some(a), Some(b)) => Ok(a == b),
         _ => symbolic::compare(original_a, original_b, context),
+    }
+}
+
+/// A whole blank displayed as (blank)^2 is determined only up to sign.
+/// Do not apply this to a term within a larger factor, another field, an
+/// unsquared blank, or a prompt explicitly constraining the factor's sign/form.
+fn displayed_squared_blank(prompt: &str, key: &str) -> bool {
+    if key.is_empty() || requires_answer_form(prompt) {
+        return false;
+    }
+    let constrained = regex::Regex::new(r"\b(?:positive|negative|nonnegative|nonpositive|monic)\b|leading coefficient").unwrap();
+    if constrained.is_match(prompt) { return false; }
+    let marker = format!("{{{{{}}}}}", key.to_lowercase());
+    let mut compact: String = prompt.chars().filter(|c| !c.is_whitespace() && *c != '$').collect();
+    for command in ["\\left", "\\right", "\\,", "\\!", "\\;", "\\quad", "\\qquad"] {
+        compact = compact.replace(command, "");
+    }
+    if compact.matches(&marker).count() != 1 { return false; }
+    let Some((prefix, suffix)) = compact.split_once(&marker) else { return false; };
+    if !prefix.ends_with('(') { return false; }
+    if suffix.starts_with(")^{2}") { return true; }
+    suffix.strip_prefix(")^2").is_some_and(|tail| {
+        tail.chars().next().is_none_or(|c| !c.is_ascii_digit() && c != '.')
+    })
+}
+
+#[cfg(test)]
+mod squared_blank_tests {
+    use super::*;
+    #[test]
+    fn whole_squared_blank_only() {
+        for prompt in [r"$p=($ {{factor}} $)^{2}-3$", r"$p=\left({{factor}}\right)^2+1$", r"$p=({{factor}})^2x$"] {
+            assert!(displayed_squared_blank(prompt, "factor"), "{prompt}");
+        }
+        for prompt in [r"$p=({{factor}}+1)^2$", r"$p={{factor}}^2$", r"$p=({{other}})^2+{{factor}}$", r"$p=({{factor}})^20$", r"$p=({{factor}})^2.5$", r"$p=({{factor}})^3$", r"Give a monic factor: $p=({{factor}})^2$", r"Give a positive factor: $p=({{factor}})^2$", r"$p=({{factor}})^2+{{factor}}$"] {
+            assert!(!displayed_squared_blank(prompt, "factor"), "{prompt}");
+        }
+    }
+    #[test]
+    fn square_comparison_accepts_sign_and_rejects_changed_factor() {
+        let ctx = symbolic::Context::default();
+        assert!(compare_math("(-x-3)^2", "(x+3)^2", ctx).unwrap());
+        assert!(!compare_math("(x-3)^2", "(x+3)^2", ctx).unwrap());
+        assert!(!compare_math("(-x-4)^2", "(x+3)^2", ctx).unwrap());
     }
 }
 
