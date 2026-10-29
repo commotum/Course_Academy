@@ -1361,6 +1361,34 @@ impl Algebra {
                 if *x == Value::atom(Atom::E) {
                     return Ok(Value::integer(1));
                 }
+                // A ratio of positive rational-root monomials has an exact
+                // real logarithm sum. Restrict coefficients and radicands to
+                // positive rational constants; this does not expand symbolic
+                // log products or discard their real-domain guards.
+                let rational_roots = |p: &Poly| p.0.len() == 1
+                    && p.0.iter().all(|(m, c)| c.is_positive()
+                        && m.keys().all(|atom| matches!(atom, Atom::Root(_, radicand)
+                            if radicand.constant().is_some_and(|q| q.is_positive()))));
+                if rational_roots(&x.num) && rational_roots(&x.den)
+                    && (x.num.constant().is_none() || x.den.constant().is_none())
+                {
+                    let mut sum = Value::integer(0);
+                    for (p, sign) in [(&x.num, 1i32), (&x.den, -1i32)] {
+                        let (m, coefficient) = p.0.first_key_value().unwrap();
+                        let logarithm = self.function("ln", &Value::number(coefficient.clone()))?;
+                        let term = self.mul(&Value::integer(sign.into()), &logarithm)?;
+                        sum = self.add(&sum, &term)?;
+                        for (atom, exponent) in m {
+                            if let Atom::Root(degree, radicand) = atom {
+                                let logarithm = self.function("ln", &Value::number(radicand.constant().unwrap()))?;
+                                let factor = Value::number(Q::new((sign * i32::from(*exponent)).into(), (*degree).into()));
+                                let term = self.mul(&factor, &logarithm)?;
+                                sum = self.add(&sum, &term)?;
+                            }
+                        }
+                    }
+                    return Ok(sum);
+                }
                 // Positive rational constants have an exact logarithm sum.
                 // Bound trial division; any remaining factor stays opaque.
                 // This never expands ln(x*y) for symbolic, possibly negative
@@ -3306,6 +3334,28 @@ mod tests {
         assert!(!supports("ln(0)", Context::default()));
         assert!(compare("ln(x^2)", "2ln(x)", Context::default()).is_err());
         assert!(compare("ln(4)*x/x", "2ln(2)", Context::default()).is_err());
+    }
+    #[test]
+    fn rational_root_logarithms_preserve_exact_values_and_domains() {
+        for (a, b) in [
+            ("ln(sqrt(3))", "ln(3)/2"),
+            ("ln(sqrt(3)/2)", "ln(3)/2-ln(2)"),
+            ("ln(2*sqrt(3))", "ln(2)+ln(3)/2"),
+            ("ln(cbrt(2))", "ln(2)/3"),
+            ("ln(1/sqrt(3))", "-ln(3)/2"),
+            ("ln(sqrt(2)*sqrt(3))", "ln(6)/2"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for wrong in ["ln(3)", "-ln(3)/2", "ln(2)/2", "0"] {
+            assert_eq!(compare("ln(sqrt(3))", wrong, Context::default()), Ok(false));
+        }
+        assert!(!supports("ln(-sqrt(3))", Context::default()));
+        assert!(!supports("ln(sqrt(0))", Context::default()));
+        assert!(compare("ln(sqrt(x))", "ln(x)/2", Context::default()).is_err());
+        assert!(compare("ln(sqrt(x^2))", "ln(x)", Context::default()).is_err());
+        assert!(compare("ln(sqrt(3))*x/x", "ln(3)/2", Context::default()).is_err());
     }
     #[test]
     fn imaginary_radical_differences_have_exact_nonzero_components() {
