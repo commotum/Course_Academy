@@ -19,6 +19,38 @@ let retryOperation = null;
 let renderGeneration = 0;
 let clock = { at: 0, elapsed: 0, running: false };
 let assessmentClock = null;
+let reviewSaveTask = null;
+let reviewSaveTimer = null;
+function showReviewSaveState(state, taskId) {
+  if (!state) return;
+  let node = document.getElementById('reviewSaveStatus');
+  if (!node) {
+    node = el('div', 'review-save-status'); node.id = 'reviewSaveStatus';
+    node.setAttribute('role', 'status'); node.setAttribute('aria-live', 'polite');
+    document.body.append(node);
+  }
+  clearTimeout(reviewSaveTimer);
+  reviewSaveTask = taskId;
+  node.replaceChildren();
+  node.hidden = state.status === 'saved';
+  node.dataset.status = state.status;
+  if (state.status === 'error') {
+    node.append(el('span', '', 'Answers queued · Saving needs attention. '));
+    node.append(button('Retry saving', 'text-button', async () => {
+      try { showReviewSaveState(await api('/api/review-save-retry', { taskId }), taskId); }
+      catch { node.firstChild.textContent = 'Answers remain queued. Retry saving. '; }
+    }));
+    return;
+  }
+  if (state.status !== 'pending') return;
+  node.textContent = 'Saving…';
+  reviewSaveTimer = setTimeout(async () => {
+    if (reviewSaveTask !== taskId) return;
+    try { showReviewSaveState(await api('/api/review-save-status?taskId=' + encodeURIComponent(taskId)), taskId); }
+    catch { showReviewSaveState({ status: 'pending' }, taskId); }
+  }, 700);
+}
+
 let typesetting = Promise.resolve();
 let mathLoader = null;
 const drafts = new Map();
@@ -1076,6 +1108,7 @@ function taskContent(data, step, number, total, archived = false) {
 }
 
 async function renderTask(data) {
+  showReviewSaveState(data.saveState, data.taskId);
   if (modeChanging) return;
   if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
   const revision = settingsRevision;

@@ -39,6 +39,7 @@ pub(super) fn read(s:&EntitySnapshot,l:u64,body:&Json)->Result<Json>{
     }
     let q=required(body,"questionId")?;
     if !steps.iter().any(|st|st.content==q){return Err("Question is not reserved by this review".into());}
+    if body["action"]=="review-skip" {return Ok(json!({"step":content_step_json(s,&steps,q,None,"skipped",Some(0.))?}));}
     let fields=s.refs(q,"question/answer-fields")?;
     let responses=body["responses"].as_array().ok_or("Responses required")?;
     let mut submitted=BTreeMap::new();

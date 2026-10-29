@@ -2717,7 +2717,7 @@ impl Application {
                 .ok_or("Learner not found")?;
         }
         let l = self.learner_eid;
-        if matches!(action,"review-session"|"review-grade"|"review-decision") {return review_interaction::read(s,l,body);}
+        if matches!(action,"review-session"|"review-grade"|"review-skip"|"review-decision") {return review_interaction::read(s,l,body);}
         // Developer inspection must return before request journaling or any
         // learner mutation. These functions only receive an immutable snapshot.
         match action {

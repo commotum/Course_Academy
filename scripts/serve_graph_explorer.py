@@ -35,6 +35,7 @@ import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
+from review_outbox import ReviewOutbox
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
@@ -354,6 +355,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     learning_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "learning-worker") if learning else None
     page_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "page-worker") if learning else None
     stats_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "stats-worker") if learning else None
+    scheduler_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "scheduler-worker") if learning else None
+    feedback_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "feedback-worker") if learning else None
+    persistence_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "review-save-worker") if learning else None
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     mode_path = request_directory / "developer-mode.json"
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
@@ -365,6 +369,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()
     inventory_refresh.set()
+    review_outbox = ReviewOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, inventory_refresh.set) if learning_worker else None
     candidate_reader = None
 
     def inventory_hook():
@@ -392,7 +397,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 with (request_directory / 'api.lock').open('a') as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
                     if not developer_mode(mode_path):
-                        response = learning_worker.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
+                        response = scheduler_worker.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
                         if not response.get('ok'):
                             raise ValueError(response.get('error', 'Queue preparation unavailable'))
                         inventory_refresh.set()
@@ -495,6 +500,31 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 directory = Path(environment["LEARNING_REQUEST_DIR"])
                 directory.mkdir(parents=True, exist_ok=True)
                 body = admit_answer(body, directory, learner, received)
+                # Never accept server-only command envelopes from HTTP callers.
+                if any(key.startswith('_') for key in body):
+                    raise ValueError("Private interaction fields are not accepted")
+                if review_outbox and not developer_mode(mode_path):
+                    action = body.get('action')
+                    if action in {'review-save-status', 'review-save-retry'}:
+                        value = (review_outbox.retry if action == 'review-save-retry' else review_outbox.status)(body['taskId'])
+                        self.send_bytes(200, json.dumps(value).encode(), "application/json")
+                        return
+                    if action == 'task':
+                        value = review_outbox.task_view(body['taskId'])
+                        if value is not None:
+                            self.send_bytes(200, json.dumps(value).encode(), "application/json")
+                            return
+                    value = review_outbox.request(body, received)
+                    if value is not None:
+                        if '_error' in value:
+                            self.send_bytes(409, json.dumps({'error': value['_error'], 'code': value['_code']}).encode(), "application/json")
+                        else:
+                            self.send_bytes(200, json.dumps(value).encode(), "application/json")
+                        print(f"Learning immediate {action}: {(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
+                        return
+                    if action in {'start', 'study-topic', 'review-topic', 'profile-settings'}:
+                        review_outbox.drain()
+
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
                 page_read = body.get("action") in {"assignments", "activity-history", "study-stats", "forecast-inputs"}
@@ -559,6 +589,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             self.send_bytes(400, b'{"error":"A boolean enabled value and stable requestId are required."}', "application/json")
                             return
                         if desired and not enabled:
+                            if review_outbox:
+                                review_outbox.drain()
                             if learning_worker is None:
                                 raise ValueError("Learning API is unavailable")
                             active = learning_worker.request({"action": "preview-active-tasks"})
@@ -582,7 +614,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 return
             action = urlsplit(self.path).path.removeprefix("/api/")
             # Profile preferences remain editable in inspection mode; study writes do not.
-            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings", "daily-xp-goal", "focused-mode"}:
+            if action not in MUTATING_ACTIONS | {"review-save-retry", "developer-mode", "preview-answer", "profile-settings", "daily-xp-goal", "focused-mode"}:
                 self.send_bytes(404, b"Not found", "text/plain")
                 return
             try:
@@ -608,6 +640,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             query = parse_qs(urlsplit(self.path).query)
             if path == "/api/developer-mode":
                 self.mode_request()
+            elif path == "/api/review-save-status":
+                try:
+                    task_id = int(query.get("taskId", [""])[0])
+                    self.learning_request({"action":"review-save-status", "taskId":task_id})
+                except (ValueError, TypeError):
+                    self.send_bytes(400, b'{"error":"A task ID is required"}', "application/json")
             elif path == "/api/profile":
                 self.learning_request({"action": "profile"})
             elif path == "/api/learner":
@@ -764,12 +802,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         def do_HEAD(self) -> None:
             self.do_GET()
 
-    Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker)
+    Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker, scheduler_worker, feedback_worker, persistence_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.mark_generator_interruption = staticmethod(inventory_jobs.mark_service_interruption)
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
-    Handler.background = (scheduler_loop, *(build_loop(slot) for slot in range(builder_count)),
+    Handler.background = (scheduler_loop, review_outbox.loop, *(build_loop(slot) for slot in range(builder_count)),
                           generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
 
@@ -794,7 +832,7 @@ def main() -> None:
             worker.request(body)
         except (OSError, ValueError):
             pass  # A foreground request retries startup and reports any failure.
-    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "home"}, {"action": "activity-history"})):
+    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "profile"}, {"action": "activity-history"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"})):
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     def stop(_signum, _frame):
