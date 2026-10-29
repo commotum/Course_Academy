@@ -1066,6 +1066,24 @@ impl Algebra {
         }
         Ok(())
     }
+    fn has_nonnegative_guard(&self, v: &Value) -> bool {
+        self.conditions.iter().any(|condition| {
+            let (Condition::Positive(g) | Condition::Nonnegative(g)) = condition else {
+                return false;
+            };
+            // Root normalization may record x/2+1 instead of x+2.
+            // Only a positive rational scale preserves the known sign.
+            if v.num.monic() != g.num.monic() || v.den.monic() != g.den.monic() {
+                return false;
+            }
+            let (Some((_, vn)), Some((_, vd)), Some((_, gn)), Some((_, gd))) =
+                (v.num.0.first_key_value(), v.den.0.first_key_value(),
+                 g.num.0.first_key_value(), g.den.0.first_key_value()) else {
+                return false;
+            };
+            (vn * vd * gn * gd).is_positive()
+        })
+    }
     fn sign_condition(&mut self, v: &Value, positive: bool) -> Result<()> {
         if let Some(c) = v.constant() {
             if c.is_negative() || (positive && c.is_zero()) {
@@ -1353,8 +1371,26 @@ impl Algebra {
         )))
     }
     fn function(&mut self, name: &str, x: &Value) -> Result<Value> {
-        let name = match name { "arctan" => "atan", "arcsin" => "asin", _ => name };
+        let name = match name { "arctan" => "atan", "arcsin" => "asin", "arccot" => "acot", "arcsec" => "asec", "arccsc" => "acsc", _ => name };
         match name {
+            "acot" | "asec" | "acsc" => {
+                // Principal real branches: acot in (0,pi), asec in [0,pi]
+                // excluding pi/2, and acsc in [-pi/2,pi/2] excluding zero.
+                // Reuse exact atan/asin algebra and retain their domain guards.
+                if !x.real_on_domain() {
+                    return Err("inverse reciprocal trig requires a real argument".into());
+                }
+                if name == "acot" {
+                    let angle = self.function("atan", x)?;
+                    let half_pi = self.div(&Value::atom(Atom::Pi), &Value::integer(2))?;
+                    return self.add(&half_pi, &angle.neg());
+                }
+                let reciprocal = self.div(&Value::integer(1), x)?;
+                let angle = self.function("asin", &reciprocal)?;
+                if name == "acsc" { return Ok(angle); }
+                let half_pi = self.div(&Value::atom(Atom::Pi), &Value::integer(2))?;
+                return self.add(&half_pi, &angle.neg());
+            }
             "sinh" | "cosh" => {
                 // Exact exponential definitions share the existing bounded
                 // real algebra, parity, zero values, and domain obligations.
@@ -1615,12 +1651,10 @@ impl Algebra {
             "abs" => {
                 // These guards came from this expression's own real domain.
                 // Never import the other answer's restrictions to erase a branch.
-                if self.conditions.contains(&Condition::Positive(x.clone()))
-                    || self.conditions.contains(&Condition::Nonnegative(x.clone())) {
+                if self.has_nonnegative_guard(x) {
                     return Ok(x.clone());
                 }
-                if self.conditions.contains(&Condition::Positive(x.neg()))
-                    || self.conditions.contains(&Condition::Nonnegative(x.neg())) {
+                if self.has_nonnegative_guard(&x.neg()) {
                     return Ok(x.neg());
                 }
                 if let Some(c) = x.constant() {
@@ -1991,6 +2025,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                     | "arctan"
                     | "asin"
                     | "arcsin"
+                    | "acot" | "arccot" | "asec" | "arcsec" | "acsc" | "arccsc"
                     | "ln"
                     | "log"
                     | "exp"
@@ -2278,6 +2313,7 @@ impl Parser {
                         | "arctan"
                     | "asin"
                     | "arcsin"
+                    | "acot" | "arccot" | "asec" | "arcsec" | "acsc" | "arccsc"
                         | "ln"
                         | "log"
                         | "exp"
@@ -2638,6 +2674,28 @@ pub fn compare_polynomial_constant_family(a: &str, b: &str, context: Context) ->
 #[cfg(test)]
 mod explicit_constant_family_tests {
     use super::*;
+    #[test]
+    fn inverse_reciprocal_trig_principal_real_answers() {
+        for (a,b) in [
+            (r"\operatorname{arccot}(x)", r"\arccot(x)"),
+            ("acot(x)", "pi/2-atan(x)"),
+            (r"\operatorname{arcsec}(x^2)", "asec(x*x)"),
+            (r"\arccsc(x)", "asin(1/x)"),
+            ("asec(x)", "pi/2-asin(1/x)"),
+            ("acot(-1)", "3*pi/4"),
+            ("asec(-1)", "pi"), ("acsc(-1)", "-pi/2"),
+            ("acot(0)", "pi/2"),
+        ] { assert_eq!(compare(a,b,Context::default()), Ok(true), "{a} / {b}"); }
+        for (a,b) in [
+            ("acot(x)", "atan(x)"), ("asec(x)", "acsc(x)"),
+            ("acsc(x)", "-acsc(x)"), ("acot(x)", "acot(x+1)"),
+            ("asec(x^2)", "asec(x)"),
+        ] { assert_ne!(compare(a,b,Context::default()).unwrap(), true, "{a} / {b}"); }
+        for a in ["asec(0)", "acsc(1/2)", "asec(-1/2)", "acot(i*x)"] {
+            assert!(compare(a,a,Context::default()).is_err(), "{a}");
+        }
+    }
+
     #[test]
     fn polynomial_antiderivative_families_preserve_full_constant_freedom() {
         let key = "x^5/5+C";
