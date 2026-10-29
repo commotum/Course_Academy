@@ -145,6 +145,7 @@ export function createStudySidebar() {
     forecast.updateGoal(event.detail.dailyXpGoal);
     void load({ refreshForecast: false });
   }, { signal: events.signal });
+  window.addEventListener('course-academy:review-saved', () => { if (sidebar.isConnected) void load({ refreshForecast: false }); }, { signal: events.signal });
   window.addEventListener('pageshow', () => { if (sidebar.isConnected) void load(); }, { signal: events.signal });
   document.addEventListener('visibilitychange', () => { if (!document.hidden && sidebar.isConnected) void load(); }, { signal: events.signal });
   // Show this tab's last summary immediately; always refresh from the server.

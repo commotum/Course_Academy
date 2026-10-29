@@ -134,6 +134,7 @@ class ReviewOutbox:
                 graded = feedback['data']['step']
                 graded['itemId'] = step['itemId']
                 view['step'] = graded
+                view['progress']['answered'] = view['progress'].get('answered', 0) + 1
             elif action == 'skip':
                 if step['status'] != 'started':
                     raise ValueError('This question has already ended')
@@ -179,6 +180,11 @@ class ReviewOutbox:
                     # Resume is idempotent and must not split a running clock.
                     clock_periods = state['periods']
             op['_queuedReview'] = {'questionId': q, 'periods': clock_periods}
+            if action in {'answer', 'skip'}:
+                op['_queuedReview']['expectedStatus'] = view['step']['status']
+            if action == 'continue':
+                op['_queuedReview']['nextQuestionId'] = view['step']['contentId'] if view['status'] == 'started' else None
+                op['_queuedReview']['expectedTaskStatus'] = view['status']
             state['periods'] = clock_periods
             state['operations'].append({'requestId': request, 'input': copy.deepcopy(body), 'operation': op,
                                         'saved': False, 'receivedAt': now})

@@ -20,6 +20,7 @@ let renderGeneration = 0;
 let clock = { at: 0, elapsed: 0, running: false };
 let assessmentClock = null;
 let reviewSaveTask = null;
+let reviewSavePending = false;
 let reviewSaveTimer = null;
 function showReviewSaveState(state, taskId) {
   if (!state) return;
@@ -30,7 +31,14 @@ function showReviewSaveState(state, taskId) {
     document.body.append(node);
   }
   clearTimeout(reviewSaveTimer);
+  const settled = reviewSaveTask === taskId && reviewSavePending && state.status === 'saved';
   reviewSaveTask = taskId;
+  reviewSavePending = state.status !== 'saved';
+  if (settled) {
+    window.dispatchEvent(new CustomEvent('course-academy:review-saved', { detail: { taskId } }));
+    window.dispatchEvent(new Event('course-academy:queue-changed'));
+    try { localStorage.setItem('course-academy-queue-changed', String(Date.now())); } catch { /* This tab still refreshes. */ }
+  }
   node.replaceChildren();
   node.hidden = state.status === 'saved';
   node.dataset.status = state.status;

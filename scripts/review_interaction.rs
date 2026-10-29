@@ -23,7 +23,13 @@ pub(super) fn read(s:&EntitySnapshot,l:u64,body:&Json)->Result<Json>{
             }else{
                 let events=timing::history(s,i,"task-item/status")?;
                 if events.first().is_none_or(|(_,v)|v!="task-item.status/started"){return Err("Historical review timing requires synchronous continuation".into());}
-                for (index,(at,state)) in events.iter().enumerate(){if state=="task-item.status/started" {periods.push(json!({"id":uid()?,"start":at.timestamp_millis(),"end":events.get(index+1).map(|v|v.0.timestamp_millis())}));}}
+                let cutoff=s.entity(i)?.get("task-item/working-ended-at").map(schema::parse_instant).transpose()?.map(|at|at.timestamp_millis());
+                for (index,(at,state)) in events.iter().enumerate(){
+                    let start=at.timestamp_millis();
+                    if state!="task-item.status/started" || cutoff.is_some_and(|end|start>=end){continue;}
+                    let end=events.get(index+1).map(|v|v.0.timestamp_millis()).map(|end|end.min(cutoff.unwrap_or(end)));
+                    periods.push(json!({"id":uid()?,"start":start,"end":end}));
+                }
             }
         }
         periods.sort_by_key(|p|p["start"].as_i64());
@@ -76,6 +82,14 @@ pub(super) fn attach_periods(s:&EntitySnapshot,l:u64,body:&Json,forms:&mut Vec<J
     let (t,_,_)=review(s,l,body)?;
     let action=body["action"].as_str().unwrap_or("");
     let target=if action=="continue" && forms.iter().any(|v|v.get("db/id")==Some(&json!("new-item"))){json!("new-item")}else{json!(required(body,"itemId")?)};
+    if let Some(expected)=queued["expectedStatus"].as_str(){
+        let projected=forms.iter().find(|f|f.get(0)==Some(&kw("db/cas"))&&f.get(1)==Some(&json!(required(body,"itemId").unwrap_or(0)))&&f.get(2)==Some(&kw("task-item/status"))).and_then(|f|f.get(4));
+        if projected!=Some(&kw(&format!("task-item.status/{expected}"))){return Err("Review answer changed before saving; queued answer retained".into());}
+    }
+    if action=="continue" && queued.get("nextQuestionId").is_some(){
+        let actual=forms.iter().find(|f|f.get("db/id")==Some(&json!("new-item"))).and_then(|f|f.get("task-item/content")).cloned().unwrap_or(Json::Null);
+        if actual!=queued["nextQuestionId"]{return Err("Review route changed before saving; queued work retained".into());}
+    }
     let periods=queued["periods"].as_array().ok_or("Queued working periods required")?;
     let at=Utc::now().timestamp_millis();let mut last=None;let mut open=false;
     for (n,p) in periods.iter().enumerate(){
