@@ -112,6 +112,11 @@ chosen HTTPS port. The host must remain awake. Serve's background configuration
 persists across reboots. To remove this endpoint, run
 `sudo tailscale serve --bg --https=8443 off`.
 
+Graph Color Code, course and Queue filters, Split by course, and week selection
+are shared across local and remote browsers through `.local/graph-preferences.json`.
+Open graphs refresh these display settings every five seconds and on focus.
+These preferences are local server configuration and are not stored in EDB.
+
 Entered mathematical answers use our [Rust symbolic checker](reference/symbolic-grader-2026-10-05/README.md).
 It proves supported equivalences using exact arithmetic and keeps unresolved
 comparisons out of learner progress.

@@ -48,7 +48,7 @@ class GraphPreferences(unittest.TestCase):
         status, body, _ = request.send_bytes.call_args.args
         return status, json.loads(body) if status != 403 else None
 
-    def test_local_save_is_visible_through_public_origin_and_after_handler_restart(self):
+    def test_local_save_is_visible_through_public_origin_and_persisted_to_file(self):
         self.assertEqual(self.request(changes={'colorCode': False, 'courses': ['341']})[0], 200)
         status, settings = self.request('eve.example.ts.net:8443')
         self.assertEqual(status, 200)

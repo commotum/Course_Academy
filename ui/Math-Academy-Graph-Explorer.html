@@ -2199,8 +2199,11 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     splitTargetsByCourse=value.splitByCourse;targetWeekSelection=weeks;
     if(colorCodeEnabled!==value.colorCode)setColorCode(value.colorCode,false);
     if(!snapshot || loading)return;
-    if(targetsView && (scopeChanged || splitChanged))changeCourse(null,false,'targets',state.depth);
-    else {renderTargetCourseFilters();renderTargetWeekStrip();}
+    if(targetsView && scopeChanged)changeCourse(null,false,'targets',state.depth);
+    else {
+      renderTargetCourseFilters();renderTargetWeekStrip();
+      if(targetsView && splitChanged)redraw(true);
+    }
   }
   function refreshGraphPreferences() {
     if(!document.hidden && !loading)void graphPreferences.refresh().catch(graphPreferenceError);
