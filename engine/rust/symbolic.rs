@@ -1613,6 +1613,16 @@ impl Algebra {
                 }
             }
             "abs" => {
+                // These guards came from this expression's own real domain.
+                // Never import the other answer's restrictions to erase a branch.
+                if self.conditions.contains(&Condition::Positive(x.clone()))
+                    || self.conditions.contains(&Condition::Nonnegative(x.clone())) {
+                    return Ok(x.clone());
+                }
+                if self.conditions.contains(&Condition::Positive(x.neg()))
+                    || self.conditions.contains(&Condition::Nonnegative(x.neg())) {
+                    return Ok(x.neg());
+                }
                 if let Some(c) = x.constant() {
                     return Ok(Value::number(c.abs()));
                 }
@@ -1863,6 +1873,16 @@ enum Ast {
     Binary(char, Box<Ast>, Box<Ast>),
     Function(String, Box<Ast>),
     Root(u8, Box<Ast>),
+}
+impl Ast {
+    fn contains_absolute_value(&self) -> bool {
+        match self {
+            Self::Function(name, arg) => name == "abs" || arg.contains_absolute_value(),
+            Self::Neg(arg) | Self::Root(_, arg) => arg.contains_absolute_value(),
+            Self::Binary(_, a, b) => a.contains_absolute_value() || b.contains_absolute_value(),
+            _ => false,
+        }
+    }
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
 enum Token {
@@ -2415,7 +2435,14 @@ fn parse(source: &str, context: Context) -> Result<Answer> {
         nonzero_power_bases: BTreeMap::new(),
         context,
     };
-    let value = algebra.eval(&ast)?;
+    let mut value = algebra.eval(&ast)?;
+    // Collect the whole expression's guards before resolving absolute values.
+    // This makes sqrt(x)+|x| and |x|+sqrt(x) independent of evaluation order.
+    // Keep every original guard, including restrictions lost by cancellation.
+    if ast.contains_absolute_value() && algebra.conditions.iter().any(|c|
+        matches!(c, Condition::Positive(_) | Condition::Nonnegative(_))) {
+        value = algebra.eval(&ast)?;
+    }
     algebra.check(value.num.clone())?;
     algebra.check(value.den.clone())?;
     // Positive implies both nonnegative and nonzero; canonicalize this common
@@ -4297,5 +4324,28 @@ mod squared_common_denominator_tests {
         ] { assert_eq!(compare(a,b,c), Ok(true)); }
         assert_eq!(compare("1/(x+1)+1/(x+1)^2", "(x+3)/(x+1)^2",c), Ok(false));
         assert!(compare("x/(x+1)+1/(x+1)", "1",c).is_err());
+    }
+}
+
+#[cfg(test)]
+mod absolute_value_domain_regressions {
+    use super::*;
+    #[test]
+    fn resolves_only_signs_proved_by_the_expression_domain() {
+        let c = Context::default();
+        for (a, b) in [
+            (r"1/(2*sqrt(x))+3/(|x|*sqrt(x^2-1))", r"1/(2*sqrt(x))+3/(x*sqrt(x^2-1))"),
+            (r"|x|+sqrt(x)", r"x+sqrt(x)"),
+            (r"sqrt(x)+|x|", r"sqrt(x)+x"),
+            (r"|x|+sqrt(-x)", r"-x+sqrt(-x)"),
+            (r"sqrt(x+2)+|x+2|", r"sqrt(x+2)+x+2"),
+        ] { assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}"); }
+        for (a, b) in [
+            (r"1/(|x|*sqrt(x^2-1))", r"1/(x*sqrt(x^2-1))"),
+            (r"sqrt(-x)+|x|", r"sqrt(-x)+x"),
+            (r"sqrt(x)+|x|", r"sqrt(x)-x"),
+            (r"|x|", r"x"),
+        ] { assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}"); }
+        assert!(!matches!(compare(r"sqrt(x)+|x|", r"2*x", c), Ok(true)));
     }
 }
