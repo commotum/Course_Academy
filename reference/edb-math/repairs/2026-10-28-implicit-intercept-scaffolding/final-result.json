@@ -1,0 +1,158 @@
+{
+  "verdict": "accepted",
+  "summary": "Direct repair review by Codex: removed unsupported easy prompt scaffolding while preserving all mathematical construction, choices and solutions. Existing review reused only for unchanged source scope and bank design; final repaired samples independently checked.",
+  "source_analysis": {
+    "skill": "Determine an axis intercept of a tangent or normal to an implicitly defined curve.",
+    "reasoning_steps": [
+      "Apply chain and, for xy, product rules with y=y(x).",
+      "Solve for dy/dx and evaluate at the supplied on-curve point.",
+      "For a normal use -1/m, otherwise retain m.",
+      "Form y-y0=s(x-x0); set y=0 for x intercept or x=0 for y intercept.",
+      "Report both coordinates in a radio pair or two exact-entry blanks."
+    ],
+    "invariants": [
+      "Point lies on curve; curve regular at point.",
+      "Requested line has a unique finite axis intersection.",
+      "Every derivative, reciprocal, and intercept step appears in solution.",
+      "No requirement that point signs, line type, target axis, intercept sign or choice position remain fixed.",
+      "Every band retains implicit differentiation, slope evaluation, line construction, and intercept determination without added procedural hints."
+    ],
+    "permitted_variations": [
+      "Small integer/rational coefficients, translated quadratic terms, xy product terms, ellipse/hyperbola/parabola forms supported by source.",
+      "Tangent versus normal, x versus y target, reflected point signs and zero intercepts where intersection remains unique.",
+      "Easy may use simple tangent arithmetic while retaining differentiation and intercept completion; moderate increases implicit algebra; hard can require reciprocal and product-rule combination."
+    ],
+    "source_refs": [
+      "cd630daa-4813-5ca8-b3d4-5fe35c4af4fa (e-192): derivative (2-2x)/(2y+4), normal slope 3, x intercept (5/3,0).",
+      "20636dab-8594-514a-8d86-b7740f06ab8d: 2x\u00b2+6y\u00b2=8, tangent (1,1), y intercept 4/3.",
+      "ada3b28b-b3a4-5dcc-bddd-f6c1a31f531f: xy+x\u00b2=1, normal at (1,0), y intercept -1/2.",
+      "9e44cd61-adda-5320-9484-a3532ad9dce1: x\u00b2+xy=6y\u00b2, product rule, normal at (2,1), blanks (0,5).",
+      "69007ed8-dcbc-586e-9203-0e7716f8329c: x\u00b2+2y=20, tangent at (2,8), x-axis blanks.",
+      "019eae01-b09f-5893-aaf7-0f3dd1c87dc4: translated ellipse 4x\u00b2+y\u00b2=20x.",
+      "Lesson 9909dcbb-b89b-5206-8845-506fff77b2d7 step 73b8ac60-1c84-5c86-a80d-cef53c382fb9: e-192 states normal is negative reciprocal and sets y=0.",
+      "Same lesson step ae453d7c-abe1-5c23-af16-160d6d1d7d2a / e-191: product-rule derivative then evaluate at point.",
+      "Prerequisite df59a07a-922c-50b9-8c2c-22ed57ac2bda: normal intercept by setting y=0."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source/source.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "details": "Ten complete source replay records exactly match prior reviewed runtime; original imports untouched.",
+      "evidence_paths": [
+        "source-replay-check.json",
+        "source-analysis.json"
+      ]
+    },
+    "math": {
+      "status": "passed",
+      "details": "51 sampled questions checked from displayed equations and points by independent differentiation and line intersection; reported case yields (0,-17/4).",
+      "evidence_paths": [
+        "math.json",
+        "reported-case-clean.json"
+      ]
+    },
+    "variety": {
+      "status": "passed",
+      "details": "Both requested axes, supported families and signs remain sampled; existing batch guard rerun at ordinary and regression sizes.",
+      "evidence_paths": [
+        "math.json",
+        "final-easy-bank-check.json",
+        "sample-easy-bank-check.json"
+      ]
+    },
+    "decision_variation": {
+      "status": "passed",
+      "details": "Removed procedural cues without changing bank construction; controlled axis and scaling counterfactuals pass. Existing bank/selection review reused with recorded new regression counts.",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json"
+      ]
+    },
+    "scope": {
+      "status": "passed",
+      "details": "All 51 solution-to-key transitions independently checked; full target reasoning remains in every prompt.",
+      "evidence_paths": [
+        "solution-paths.json",
+        "math.json"
+      ]
+    },
+    "grading": {
+      "status": "passed",
+      "details": "Real native grader accepts 85 valid responses and rejects 136 wrong responses; no unresolved results.",
+      "evidence_paths": [
+        "grading.json"
+      ]
+    },
+    "rendering": {
+      "status": "passed",
+      "details": "All three response families render through actual learning UI; no raw TeX, math errors, broken images or dangling glyphs. Easy screenshot inspected for clean prompt and complete solution.",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render/question-001.png",
+        "render/question-002.png",
+        "render/question-003.png"
+      ]
+    },
+    "packaging": {
+      "status": "passed",
+      "details": "Relocated runtime outside repository reproduces reviewed easy batch deterministically twice. Moderate/hard outputs and replay remain unchanged.",
+      "evidence_paths": [
+        "packaging.json",
+        "math.json"
+      ]
+    },
+    "progression": {
+      "status": "passed",
+      "details": "Easy retains differentiation, slope evaluation, line construction and intercept recall; simpler diagonal curves/radio response reduce demand without formulas or intermediate results. Moderate/hard retain previously reviewed algebra and normal conversion.",
+      "evidence_paths": [
+        "source-analysis.json",
+        "final-easy.json",
+        "final-moderate.json",
+        "final-hard.json"
+      ]
+    }
+  },
+  "band_verification": {
+    "easy": {
+      "status": "passed",
+      "batch_sha256": "4506e22f164fc49c03eab393c1c84eace503efa724d2da735f5a3ca5d3bf628a",
+      "details": "Final batch independently checked for mathematics, retained independent work, grading, and delivery; representative UI render verified.",
+      "evidence_paths": [
+        "final-easy.json",
+        "math.json",
+        "grading.json",
+        "delivery-easy/delivery.json",
+        "render/rendering.json"
+      ]
+    },
+    "moderate": {
+      "status": "passed",
+      "batch_sha256": "dc3c5de0e8f61c35f46f78c2e7d27cca0bf86804343a483a3ac87a27c3ba515d",
+      "details": "Final batch independently checked for mathematics, retained independent work, grading, and delivery; representative UI render verified.",
+      "evidence_paths": [
+        "final-moderate.json",
+        "math.json",
+        "grading.json",
+        "delivery-moderate/delivery.json",
+        "render/rendering.json"
+      ]
+    },
+    "hard": {
+      "status": "passed",
+      "batch_sha256": "cf819d1cbb17e49c7a4fbf504f3754571ca36bc2b153668d4fa268dcf1b052b4",
+      "details": "Final batch independently checked for mathematics, retained independent work, grading, and delivery; representative UI render verified.",
+      "evidence_paths": [
+        "final-hard.json",
+        "math.json",
+        "grading.json",
+        "delivery-hard/delivery.json",
+        "render/rendering.json"
+      ]
+    }
+  },
+  "findings": []
+}
