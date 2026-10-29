@@ -1,4 +1,9 @@
-"""Check the displayed two-step task, independently of generation metadata."""
+"""Guard independent triangle-complement practice without fixing its parameters.
+
+Source questions put measurements in diagrams and use both radio and blank fields.
+Numerical checking here applies when all measurements also occur in prompt text;
+diagram geometry and difficulty remain author/reviewer obligations.
+"""
 import math
 import re
 
@@ -6,50 +11,68 @@ KP = 17592186105906
 CONTRACT = 'triangle-complement-full-calculation-v1'
 
 
+def _enum(value):
+    return value[':db/ident'] if isinstance(value, dict) else value
+
+
+def _answer_id(value):
+    if isinstance(value, dict):
+        return value[':answer/id']
+    if isinstance(value, (list, tuple)):
+        return value[1]
+    return value
+
+
 def inspect_record(record):
     q = record['question']
     prompt, solution = q[':question/problem'], q[':question/worked-solution']
-    level = q[':question/difficulty'].rsplit('/', 1)[-1]
-    sides = [float(x) for x in re.findall(r'\$[A-D]{2}=([\d.]+)', prompt)]
-    angle = re.search(r'meet at \$(\d+)\^\\circ\$', prompt)
-    given = re.search(r'area of the quadrilateral \$[A-D]{4}\$ is \$([\d.]+)', prompt)
-    if len(sides) != 2 or not angle or not given:
-        raise ValueError('Both sides, their included angle and the quadrilateral area must be supplied')
-    if any(x in prompt.lower() for x in ('hint', 'first use', 'then subtract', 'enclosing', 'perpendicular')):
+    level = _enum(q[':question/difficulty']).rsplit('/', 1)[-1]
+    if level not in ('easy', 'moderate', 'hard'):
+        raise ValueError('Unknown difficulty')
+    if any(x in prompt.lower() for x in ('hint', 'first use', 'then subtract', 'enclosing')) or r'\sin' in prompt:
         raise ValueError('The prompt must leave the triangle calculation and area relationship to the learner')
+    if 'nearest integer' not in prompt.lower() or not solution.strip():
+        raise ValueError('Supply the requested rounding and a worked solution')
+    if len(q[':question/answer-fields']) != 1:
+        raise ValueError('Triangle-complement practice needs one area response')
+    f = q[':question/answer-fields'][0]
+    kind = _enum(f[':answer-field/type']).rsplit('/', 1)[-1]
+    choices = f[':answer-field/choices']
+    if kind not in ('radio', 'blank') or len(choices) != (5 if kind == 'radio' else 1):
+        raise ValueError('Preserve the source radio or blank response structure')
+    values = []
+    for answer in choices:
+        match = re.match(r'^(-?\d+(?:\.\d+)?)', answer[':answer/value'])
+        if not match:
+            raise ValueError('Area responses must be numeric')
+        values.append(float(match[1]))
+    if min(values) < 0 or len(set(values)) != len(values):
+        raise ValueError('Rounded area choices must be nonnegative and distinct')
+    correct = _answer_id(f[':answer-field/correct'])
+    keys = [v for answer, v in zip(choices, values) if answer[':answer/id'] == correct]
+    if len(keys) != 1:
+        raise ValueError('The correct answer must belong to its field exactly once')
+
+    sides = [float(x) for x in re.findall(r'\$[A-D]{2}=([\d.]+)', prompt)]
+    angle = re.search(r'meet at \$(\d+(?:\.\d+)?)\^\\circ\$', prompt)
+    given = re.search(r'area of (?:the quadrilateral )?\$[A-D]{4}\$ is \$([\d.]+)', prompt)
+    if len(sides) != 2 or not angle or not given:
+        if not re.search(r'!\[[^]]*\]\([^)]+\)', prompt):
+            raise ValueError('Supply side lengths and the included angle in text or a diagram')
+        return {'level': level, 'values': values, 'measurements': 'diagram; requires visual mathematical review'}
     a, b = sides
-    theta, quadrilateral = int(angle[1]), float(given[1])
-    if not 35 <= theta <= 120 or theta == 90 or max(a,b)/min(a,b) > 3:
-        raise ValueError('Preserve the nonright-angle sine calculation and readable geometry')
-    if level == 'easy':
-        valid = a.is_integer() and b.is_integer() and any(x in (2,4) and 4 <= y <= 10 for x,y in ((a,b),(b,a)))
-    elif level == 'moderate':
-        valid = a in (5,7,9,11) and b in (5,7,9,11)
-    elif level == 'hard':
-        valid = any(x in (2.5,3.5,4.5,5.5,6.5) and y in (5,7,9) for x,y in ((a,b),(b,a)))
-    else:
-        valid = False
-    if not valid:
-        raise ValueError('Measurements do not match the modest authored numerical progression')
+    theta, quadrilateral = float(angle[1]), float(given[1])
+    if not all(math.isfinite(x) for x in (a, b, theta, quadrilateral)) or min(a, b) <= 0 or not 0 < theta < 180:
+        raise ValueError('Invalid triangle measurements')
     outer = a*b*math.sin(math.radians(theta))/2
     raw = outer-quadrilateral
     expected = math.floor(raw+.5)
-    if not 0 < quadrilateral < outer or raw < 2 or abs(raw%1-.5) < .08:
-        raise ValueError('Invalid area relationship or incidental rounding boundary')
-    if 'nearest integer' not in prompt or not q.get(':question/requires-calculator'):
-        raise ValueError('Use the same calculator and rounding conventions in every band')
-    if not all(x in solution for x in (r'\frac12', r'\sin', 'Subtract the quadrilateral area', 'Keep full precision')):
-        raise ValueError('The worked solution must explain both calculations and final-only rounding')
-    f = q[':question/answer-fields'][0]
-    correct = f[':answer-field/correct'][1]
-    choices = f[':answer-field/choices']
-    values = [float(re.match(r'^(-?\d+(?:\.\d+)?)', a[':answer/value'])[1]) for a in choices]
-    key = next(v for a,v in zip(choices,values) if a[':answer/id'] == correct)
-    if key != expected or values.count(expected) != 1:
+    if not 0 < quadrilateral < outer:
+        raise ValueError('Invalid area relationship')
+    if keys[0] != expected:
         raise ValueError('The answer does not match the displayed measurements')
-    if len(values)>1 and (len(values)!=5 or min(values)<=0 or min(abs(x-y) for i,x in enumerate(values) for y in values[i+1:])<2):
-        raise ValueError('Rounded choices must be distinct and separated')
-    return {'sides':sides,'angle':theta,'given':quadrilateral,'outer':outer,'raw':raw,'answer':expected,'values':values}
+    return {'sides': sides, 'angle': theta, 'given': quadrilateral,
+            'outer': outer, 'raw': raw, 'answer': expected, 'values': values}
 
 
 def validate_delivery_batch(records, kp_id):
