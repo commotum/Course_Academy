@@ -77,7 +77,35 @@ pub(super) fn persist(app:&mut Application,body:&Json)->Result<Json>{
     app.process(&op)
 }
 
-pub(super) fn attach_periods(s:&EntitySnapshot,l:u64,body:&Json,forms:&mut Vec<Json>)->Result<()>{
+fn close_other_clocks(s:&EntitySnapshot,body:&Json,at:DateTime<Utc>,forms:&mut Vec<Json>)->Result<()>{
+    let queued=body.get("_queuedReview").is_some();
+    let selected=body["itemId"].as_u64();
+    let transitions=forms.iter().filter(|f|f.get(0)==Some(&kw("db/cas"))&&f.get(2)==Some(&kw("task-item/status")))
+        .filter_map(|f|Some((f[1].as_u64()?,f[4].clone()))).collect::<Vec<_>>();
+    for (item,next) in transitions {
+        if queued&&Some(item)==selected{continue;}
+        let periods=s.refs(item,"task-item/working-periods")?;
+        if periods.is_empty(){continue;}
+        let before=status(s,item,"task-item/status")?;
+        let after=s.ident(&next)?;
+        if before=="started" && after!="task-item.status/started" {
+            for period in periods {
+                if !s.entity(period)?.contains_key("working-period/ended-at"){
+                    let end=if body["action"]=="answer"&&Some(item)==selected{body["submittedAt"].as_i64().unwrap_or(at.timestamp_millis())}else{at.timestamp_millis()};
+                    forms.push(json!([kw("db/cas"),period,kw("working-period/ended-at"),null,{"$instant":end}]));
+                }
+            }
+        }else if before=="paused" && after=="task-item.status/started" {
+            let id=format!("clock-resume-{item}");
+            forms.push(json!({"db/id":id,"working-period/id":{"$uuid":uid()?},"working-period/started-at":{"$instant":at.timestamp_millis()}}));
+            forms.push(add(json!(item),"task-item/working-periods",json!(id)));
+        }
+    }
+    Ok(())
+}
+
+pub(super) fn attach_periods(s:&EntitySnapshot,l:u64,body:&Json,at:DateTime<Utc>,forms:&mut Vec<Json>)->Result<()>{
+    close_other_clocks(s,body,at,forms)?;
     let Some(queued)=body.get("_queuedReview")else{return Ok(())};
     let (t,_,_)=review(s,l,body)?;
     let action=body["action"].as_str().unwrap_or("");
@@ -89,6 +117,10 @@ pub(super) fn attach_periods(s:&EntitySnapshot,l:u64,body:&Json,forms:&mut Vec<J
     if action=="continue" && queued.get("nextQuestionId").is_some(){
         let actual=forms.iter().find(|f|f.get("db/id")==Some(&json!("new-item"))).and_then(|f|f.get("task-item/content")).cloned().unwrap_or(Json::Null);
         if actual!=queued["nextQuestionId"]{return Err("Review route changed before saving; queued work retained".into());}
+        if let Some(expected)=queued["expectedTaskStatus"].as_str(){
+            let actual=forms.iter().find(|f|f.get(0)==Some(&kw("db/cas"))&&f.get(1)==Some(&json!(t))&&f.get(2)==Some(&kw("learner-task/status"))).and_then(|f|f.get(4)).cloned().unwrap_or(kw(&format!("learner-task.status/{}",status(s,t,"learner-task/status").unwrap_or_default())));
+            if actual!=kw(&format!("learner-task.status/{expected}")){return Err("Review stopping rule changed before saving; queued work retained".into());}
+        }
     }
     let periods=queued["periods"].as_array().ok_or("Queued working periods required")?;
     let at=Utc::now().timestamp_millis();let mut last=None;let mut open=false;

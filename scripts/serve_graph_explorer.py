@@ -522,8 +522,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         print(f"Learning immediate {action}: {(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
                         return
-                    if action in {'start', 'study-topic', 'review-topic', 'profile-settings'}:
-                        review_outbox.drain()
+                    if action in {'start', 'study-topic', 'review-topic', 'profile-settings', 'assignment-focus'}:
+                        review_outbox.drain(pause_active=True)
 
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
@@ -558,6 +558,15 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     refresh_inventory = response.get('ok') and (focus_change or body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
+                    if response['data'].get('type') == 'review' and body.get('action') in {'start','review-topic','resume','task'}:
+                        # Refresh a long-idle feedback peer while the learner
+                        # reads, rather than on their first Check answer click.
+                        def warm_review(task_id=response['data']['taskId']):
+                            try:
+                                feedback_worker.request({'action':'review-session','taskId':task_id})
+                            except (OSError, ValueError):
+                                pass
+                        threading.Thread(target=warm_review, daemon=True).start()
                     if refresh_inventory:
                         inventory_refresh.set()
                 else:
@@ -590,7 +599,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             return
                         if desired and not enabled:
                             if review_outbox:
-                                review_outbox.drain()
+                                review_outbox.drain(pause_active=True)
                             if learning_worker is None:
                                 raise ValueError("Learning API is unavailable")
                             active = learning_worker.request({"action": "preview-active-tasks"})

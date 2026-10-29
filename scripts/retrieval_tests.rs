@@ -2592,9 +2592,9 @@ fn queued_review_feedback_is_read_only_and_delayed_saves_preserve_route_and_work
         let ended=logical_start+400;
         let persisted=f.now+10_000+n as i64*3000;
         let body=json!({"action":"answer","taskId":task,"itemId":item,"responses":responses,"submittedAt":ended,
-            "_queuedReview":{"questionId":q,"periods":[{"id":uuid(9000+n),"start":logical_start,"end":ended}]}});
+            "_queuedReview":{"questionId":q,"expectedStatus":"correct","periods":[{"id":uuid(9000+n),"start":logical_start,"end":ended}]}});
         let (mut forms,_)=mutate(&s,f.learner,"answer",&body,DateTime::from_timestamp_millis(persisted).unwrap())?;
-        review_interaction::attach_periods(&s,f.learner,&body,&mut forms)?;
+        review_interaction::attach_periods(&s,f.learner,&body,DateTime::from_timestamp_millis(persisted).unwrap(),&mut forms)?;
         f.tx(forms,persisted)?;
         let answered=f.snapshot()?;
         assert_eq!(timing::elapsed(&answered,item,Utc::now())?,0.4);
@@ -2602,9 +2602,10 @@ fn queued_review_feedback_is_read_only_and_delayed_saves_preserve_route_and_work
         let decision=review_interaction::read(&answered,f.learner,&json!({"action":"review-decision","taskId":task,"outcomes":accepted}))?;
         assert_eq!(decision["complete"],n==2);
         let periods=if n<2{json!([{"id":uuid(9001+n),"start":logical_start+600,"end":null}])}else{body["_queuedReview"]["periods"].clone()};
-        let next=json!({"action":"continue","taskId":task,"itemId":item,"_queuedReview":{"questionId":q,"periods":periods}});
+        let next_question=if n<2{let a=answered.reference(task,"learner-task/activity")?;json!(learning::lesson_steps(&answered,a)?[n as usize+1].content)}else{Json::Null};
+        let next=json!({"action":"continue","taskId":task,"itemId":item,"_queuedReview":{"questionId":q,"periods":periods,"nextQuestionId":next_question,"expectedTaskStatus":if n==2{"completed"}else{"started"}}});
         let (mut forms,_)=mutate(&answered,f.learner,"continue",&next,DateTime::from_timestamp_millis(persisted+500).unwrap())?;
-        review_interaction::attach_periods(&answered,f.learner,&next,&mut forms)?;
+        review_interaction::attach_periods(&answered,f.learner,&next,DateTime::from_timestamp_millis(persisted+500).unwrap(),&mut forms)?;
         f.tx(forms,persisted+500)?;
     }
     let final_state=f.snapshot()?;
@@ -2651,5 +2652,26 @@ fn fast_multiple_choice_review_fixture() -> Result<()> {
     }
     let decisions=(1..=3).map(|n|review_interaction::read(&s,f.learner,&json!({"action":"review-decision","taskId":task,"outcomes":vec!["correct";n]}))).collect::<Result<Vec<_>>>()?;
     std::fs::write(path,serde_json::to_vec(&json!({"session":session,"feedback":feedback,"answers":answers,"decisions":decisions}))?)?;
+    Ok(())
+}
+
+#[test]
+fn ordinary_pause_and_resume_preserve_an_asynchronously_started_review_clock() -> Result<()> {
+    let mut f=Fixture::new(true)?;let(task,s)=f.start("review")?;
+    let item=items(&s,task)?[0];let q=s.reference(item,"task-item/content")?;
+    let start=timing::history(&s,item,"task-item/status")?[0].0.timestamp_millis();
+    let pause=json!({"action":"pause","taskId":task,"itemId":item,"_queuedReview":{"questionId":q,"periods":[{"id":uuid(99001),"start":start,"end":start+500}]}});
+    let at=DateTime::from_timestamp_millis(f.now+10_000).unwrap();
+    let(mut forms,_)=mutate(&s,f.learner,"pause",&pause,at)?;
+    review_interaction::attach_periods(&s,f.learner,&pause,at,&mut forms)?;f.tx(forms,at.timestamp_millis())?;
+    for (action,offset) in [("resume",12_000),("pause",13_000)]{
+        let s=f.snapshot()?;let body=json!({"action":action,"taskId":task});let at=DateTime::from_timestamp_millis(f.now+offset).unwrap();
+        let(mut forms,_)=mutate(&s,f.learner,action,&body,at)?;
+        review_interaction::attach_periods(&s,f.learner,&body,at,&mut forms)?;f.tx(forms,at.timestamp_millis())?;
+    }
+    let final_state=f.snapshot()?;
+    assert_eq!(timing::elapsed(&final_state,item,Utc::now())?,1.5);
+    assert_eq!(timing::elapsed_until(&final_state,item,Utc::now(),DateTime::from_timestamp_millis(f.now+12_500).unwrap())?,1.0);
+    assert_eq!(status(&final_state,item,"task-item/status")?,"paused");
     Ok(())
 }

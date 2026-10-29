@@ -53,6 +53,8 @@ class ReviewOutbox:
     def task_view(self, task):
         with self.lock:
             state = self.load(self.path(task))
+            if state and state['view']['status'] in {'completed', 'failed'} and not self.pending(state) and not state.get('error'):
+                return None  # Finished history comes from the authoritative database.
             return self.view(state) if state else None
 
     def status(self, task):
@@ -250,7 +252,16 @@ class ReviewOutbox:
             self.wake.wait(0.5)
             self.wake.clear()
 
-    def drain(self, timeout=55):
+    def drain(self, timeout=55, *, pause_active=False):
+        if pause_active:
+            # The ordinary start/assignment/profile path pauses other activity.
+            # Admit that pause through the outbox first so its logical clock and
+            # the database cannot diverge when another tab changes activities.
+            with self.lock:
+                active = [self.load(p) for p in self.directory.glob('*.json')]
+                for state in active:
+                    if state['view']['status'] == 'started':
+                        self.request({'action':'pause','taskId':state['view']['taskId'],'requestId':str(uuid.uuid4())})
         deadline = time.monotonic() + timeout
         self.wake.set()
         while time.monotonic() < deadline:

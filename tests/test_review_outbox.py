@@ -140,6 +140,21 @@ class ReviewOutboxTest(unittest.TestCase):
         self.assertEqual(view['saveState']['pending'], 6)
         self.assertEqual(len(view['history']), 3)
 
+    def test_switching_activity_pauses_the_queued_clock_before_draining(self):
+        self.answer()
+        next_step = self.advance()
+        thread = threading.Thread(target=self.queue.loop, daemon=True)
+        thread.start()
+        try:
+            self.queue.drain(timeout=2, pause_active=True)
+            self.assertEqual(self.queue.task_view(1)['status'], 'paused')
+            operations = [call.args[0]['operation']['action'] for call in self.writer.request.call_args_list]
+            self.assertEqual(operations, ['answer', 'continue', 'pause'])
+        finally:
+            self.stop.set()
+            self.queue.wake.set()
+            thread.join(2)
+
     def test_assessments_keep_synchronous_submission_and_never_use_fast_grade(self):
         self.grader.request = Mock(return_value={'ok': False, 'error': 'Fast interaction requires a review'})
         self.assertIsNone(self.answer())

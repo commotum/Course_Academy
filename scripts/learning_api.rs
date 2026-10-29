@@ -2834,7 +2834,7 @@ impl Application {
             } else {
                 mutate(&s, l, action, &body, at)?
             };
-            review_interaction::attach_periods(s,l,body,&mut forms)?;
+            review_interaction::attach_periods(s,l,body,at,&mut forms)?;
             trace("plan", planning);
             let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty(),"source":ENGINE_SOURCE});
             std::fs::create_dir_all(journal.parent().unwrap())?;
