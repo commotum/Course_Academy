@@ -26,7 +26,7 @@ class PageReadAdmission(unittest.TestCase):
                 return {"ok": True, "data": {"forecast": True}}
             page.request.side_effect = forecast
             stats.request.return_value = {"ok": True, "data": {"days": []}}
-            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), page, stats]):
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), page, stats, Mock(), Mock(), Mock()]):
                 cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
             def read(action):
                 request = cls.__new__(cls)
@@ -44,6 +44,32 @@ class PageReadAdmission(unittest.TestCase):
                     release.set()
                     pending.result(timeout=2)
             self.assertIn(stats, cls.workers)
+
+    def test_review_feedback_does_not_wait_for_scheduler_lock_or_persistence_worker(self):
+        from test_review_outbox import Grader
+        from serve_graph_explorer import save_json
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            workers = {name: Mock() for name in ['graph-worker','learning-worker','page-worker','stats-worker','scheduler-worker','feedback-worker','review-save-worker']}
+            workers['feedback-worker'] = Grader()
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=lambda cmd,env,name: workers[name]):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            # Simulate the scheduler/publication holding admission while EDB save is unavailable.
+            with (Path(directory)/'api.lock').open('a') as lock:
+                fcntl.flock(lock,fcntl.LOCK_EX)
+                request = cls.__new__(cls)
+                replies=[]
+                request.send_bytes=lambda status,body,ctype:replies.append((status,json.loads(body)))
+                with ThreadPoolExecutor(max_workers=1) as executor:
+                    future=executor.submit(request.learning_request,{'action':'answer','taskId':1,'itemId':100,'requestId':'review-answer-001','responses':[{'fieldId':30,'choiceId':20}]})
+                    future.result(timeout=1)
+            self.assertEqual(replies[0][0],200)
+            self.assertEqual(replies[0][1]['step']['status'],'correct')
+            self.assertEqual(replies[0][1]['saveState']['status'],'pending')
+            workers['learning-worker'].request.assert_not_called()
+            workers['scheduler-worker'].request.assert_not_called()
+            workers['review-save-worker'].request.assert_not_called()
+            self.assertTrue((Path(directory)/'review-outbox/1.json').exists())
 
     def test_forecast_get_uses_only_the_read_only_page_reader(self):
         with tempfile.TemporaryDirectory() as directory:

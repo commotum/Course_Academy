@@ -223,6 +223,15 @@ mod tests {
         s.entities.get_mut(&5).unwrap().insert("task-item/working-ended-at".into(),json!({"$instant":day+80_000}));
         let stopped=summary(&s,1,&body,DateTime::from_timestamp_millis(day+110_000).unwrap())?;
         assert_eq!(stopped["days"][1]["workingSeconds"],50.);
+        // Delayed commits must use the observed work periods, including pauses
+        // and a local-midnight crossing, rather than the commit clock.
+        s.entities.get_mut(&5).unwrap().insert("task-item/working-periods".into(),json!([30,31]));
+        s.entities.insert(30,json!({"working-period/started-at":{"$instant":day-5_000},"working-period/ended-at":{"$instant":day+5_000}}).as_object().unwrap().clone());
+        s.entities.insert(31,json!({"working-period/started-at":{"$instant":day+20_000},"working-period/ended-at":{"$instant":day+30_000}}).as_object().unwrap().clone());
+        let delayed=summary(&s,1,&body,DateTime::from_timestamp_millis(day+110_000).unwrap())?;
+        assert_eq!(delayed["days"][0]["workingSeconds"],5.);
+        assert_eq!(delayed["days"][1]["workingSeconds"],25.); // 15 closed plus the other active item's 10.
+
         s.entities.get_mut(&2).unwrap().insert("learner-task/xp-earned".into(),json!(-9));
         s.entities.get_mut(&3).unwrap().remove("learner-task/xp-earned");
         let penalties=summary(&s,1,&body,DateTime::from_timestamp_millis(day+110_000).unwrap())?;

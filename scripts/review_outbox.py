@@ -46,7 +46,8 @@ class ReviewOutbox:
         view['elapsedSeconds'] = state['closedSeconds'] + elapsed
         pending = self.pending(state)
         view['saveState'] = {'status': 'error' if state.get('error') else 'pending' if pending else 'saved',
-                             'pending': len(pending), 'error': state.get('error')}
+                             'pending': len(pending), 'error': state.get('error'),
+                             'retrying': any(op.get('lastError') for op in pending)}
         return view
 
     def task_view(self, task):
@@ -85,7 +86,9 @@ class ReviewOutbox:
                     # their existing authoritative path, including assessments.
                     return None
                 data = initial['data']
-                view = data['view']
+                view = data.get('view', {})
+                if view.get('type') != 'review':
+                    return None
                 if view['status'] not in {'started', 'paused'} or view.get('awaitingQuestions'):
                     return None
                 cursor = next(i for i, step in enumerate(data['steps']) if step['contentId'] == view['step']['contentId'])

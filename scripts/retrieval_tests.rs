@@ -2567,3 +2567,89 @@ fn manual_review_before_a_first_lesson_can_start_answer_and_complete() -> Result
     }
     Ok(())
 }
+
+#[test]
+fn queued_review_feedback_is_read_only_and_delayed_saves_preserve_route_and_work_time() -> Result<()> {
+    let mut f=Fixture::new(true)?;
+    let (task,initial)=f.start("review")?;
+    let before=initial.entities.clone();
+    let session=review_interaction::read(&initial,f.learner,&json!({"action":"review-session","taskId":task}))?;
+    assert_eq!(session["steps"].as_array().unwrap().len(),5);
+    assert!(session["steps"].as_array().unwrap().iter().all(|step|step.get("solution").is_none_or(|v|v.is_null()) && step["fields"].as_array().unwrap().iter().all(|f|f.get("correctAnswer").is_none())));
+    assert_eq!(initial.entities,before);
+    let first_start=timing::history(&initial,items(&initial,task)?[0],"task-item/status")?[0].0.timestamp_millis();
+    let mut accepted=vec![];
+    for n in 0..3u128 {
+        let s=f.snapshot()?;let item=*items(&s,task)?.last().unwrap();let q=s.reference(item,"task-item/content")?;
+        let responses=s.refs(q,"question/answer-fields")?.into_iter().map(|field|{
+            let key=s.reference(field,"answer-field/correct").unwrap();
+            if status(&s,field,"answer-field/type").unwrap()=="blank" {json!({"fieldId":field,"value":text(&s,key,"answer/value")})}else{json!({"fieldId":field,"choiceId":key})}
+        }).collect::<Vec<_>>();
+        let readonly=review_interaction::read(&s,f.learner,&json!({"action":"review-grade","taskId":task,"questionId":q,"responses":responses}))?;
+        assert_eq!(readonly["step"]["status"],"correct");
+        accepted.push(json!("correct"));
+        let logical_start=first_start+n as i64*600;
+        let ended=logical_start+400;
+        let persisted=f.now+10_000+n as i64*3000;
+        let body=json!({"action":"answer","taskId":task,"itemId":item,"responses":responses,"submittedAt":ended,
+            "_queuedReview":{"questionId":q,"periods":[{"id":uuid(9000+n),"start":logical_start,"end":ended}]}});
+        let (mut forms,_)=mutate(&s,f.learner,"answer",&body,DateTime::from_timestamp_millis(persisted).unwrap())?;
+        review_interaction::attach_periods(&s,f.learner,&body,&mut forms)?;
+        f.tx(forms,persisted)?;
+        let answered=f.snapshot()?;
+        assert_eq!(timing::elapsed(&answered,item,Utc::now())?,0.4);
+        assert_eq!(number(&answered,item,"task-item/elapsed-seconds"),0.4);
+        let decision=review_interaction::read(&answered,f.learner,&json!({"action":"review-decision","taskId":task,"outcomes":accepted}))?;
+        assert_eq!(decision["complete"],n==2);
+        let periods=if n<2{json!([{"id":uuid(9001+n),"start":logical_start+600,"end":null}])}else{body["_queuedReview"]["periods"].clone()};
+        let next=json!({"action":"continue","taskId":task,"itemId":item,"_queuedReview":{"questionId":q,"periods":periods}});
+        let (mut forms,_)=mutate(&answered,f.learner,"continue",&next,DateTime::from_timestamp_millis(persisted+500).unwrap())?;
+        review_interaction::attach_periods(&answered,f.learner,&next,&mut forms)?;
+        f.tx(forms,persisted+500)?;
+    }
+    let final_state=f.snapshot()?;
+    assert_eq!(status(&final_state,task,"learner-task/status")?,"completed");
+    assert_eq!(items(&final_state,task)?.len(),3);
+    assert!((timing::task_elapsed(&final_state,task,Utc::now())?-1.2).abs()<1e-9);
+    assert_eq!(task_json(&final_state,f.learner,task)?["status"],"completed");
+    Ok(())
+}
+
+#[test]
+fn fast_review_feedback_cannot_reveal_assessment_answers() -> Result<()> {
+    let mut f=Fixture::new(false)?;let(task,s)=f.start("assessment")?;
+    assert!(review_interaction::read(&s,f.learner,&json!({"action":"review-session","taskId":task})).is_err());
+    assert!(review_interaction::read(&s,f.learner,&json!({"action":"review-grade","taskId":task,"questionId":1,"responses":[]})).is_err());
+    Ok(())
+}
+
+#[test]
+fn fast_multiple_choice_review_fixture() -> Result<()> {
+    let Some(path)=std::env::var_os("REVIEW_BROWSER_FIXTURE")else{return Ok(())};
+    let mut f=Fixture::new(true)?;let(task,s)=f.start("review")?;
+    let a=s.reference(task,"learner-task/activity")?;let steps=learning::lesson_steps(&s,a)?;
+    let mut forms=vec![];
+    for (n,st) in steps.iter().enumerate(){
+        let field=s.refs(st.content,"question/answer-fields")?[0];
+        let key=format!("wrong-{n}");
+        forms.push(json!({"db/id":key,"answer/id":{"$uuid":uuid(80_000+n as u128)},"answer/type":kw("answer.type/math"),"answer/value":"3"}));
+        forms.push(add(json!(field),"answer-field/type",kw("answer-field.type/radio")));
+        forms.push(add(json!(field),"answer-field/choices",json!(key)));
+    }
+    f.tx(forms,f.now+101)?;let s=f.snapshot()?;
+    let session=review_interaction::read(&s,f.learner,&json!({"action":"review-session","taskId":task}))?;
+    let mut feedback=serde_json::Map::new();let mut answers=vec![];
+    for st in &steps{
+        let field=s.refs(st.content,"question/answer-fields")?[0];let correct=s.reference(field,"answer-field/correct")?;
+        let wrong=s.refs(field,"answer-field/choices")?.into_iter().find(|v|*v!=correct).unwrap();
+        let mut both=serde_json::Map::new();
+        for (label,choice) in [("correct",correct),("incorrect",wrong)]{
+            let responses=json!([{"fieldId":field,"choiceId":choice}]);
+            both.insert(label.into(),review_interaction::read(&s,f.learner,&json!({"action":"review-grade","taskId":task,"questionId":st.content,"responses":responses}))?);
+        }
+        feedback.insert(st.content.to_string(),json!(both));answers.push(json!({"questionId":st.content,"fieldId":field,"choiceId":correct}));
+    }
+    let decisions=(1..=3).map(|n|review_interaction::read(&s,f.learner,&json!({"action":"review-decision","taskId":task,"outcomes":vec!["correct";n]}))).collect::<Result<Vec<_>>>()?;
+    std::fs::write(path,serde_json::to_vec(&json!({"session":session,"feedback":feedback,"answers":answers,"decisions":decisions}))?)?;
+    Ok(())
+}

@@ -43,7 +43,7 @@ function showReviewSaveState(state, taskId) {
     return;
   }
   if (state.status !== 'pending') return;
-  node.textContent = 'Saving…';
+  node.textContent = state.retrying ? 'Answers queued · Retrying save…' : 'Saving…';
   reviewSaveTimer = setTimeout(async () => {
     if (reviewSaveTask !== taskId) return;
     try { showReviewSaveState(await api('/api/review-save-status?taskId=' + encodeURIComponent(taskId)), taskId); }

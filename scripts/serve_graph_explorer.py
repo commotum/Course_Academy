@@ -279,7 +279,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     libraries = {}
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
-    sources = (source, ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
+    sources = (source, ROOT / "scripts/review_interaction.rs", ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
                ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs", ROOT / "scripts/forecast_reader.rs", ROOT / "scripts/quiz_labels.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
