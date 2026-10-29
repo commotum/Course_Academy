@@ -943,6 +943,13 @@ impl Algebra {
         })
     }
     fn add(&mut self, a: &Value, b: &Value) -> Result<Value> {
+        // Equal denominators need no cross multiplication. In particular,
+        // long expanded polynomials all have denominator one. Keep the
+        // previously collected domain obligations and ordinary size checks.
+        if a.den == b.den {
+            let num = self.padd(&a.num, &b.num)?;
+            return self.value(num, a.den.clone());
+        }
         let l = self.pmul(&a.num, &b.den)?;
         let r = self.pmul(&b.num, &a.den)?;
         let num = self.padd(&l, &r)?;
@@ -1968,8 +1975,10 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
                 _ => Token::Mark(c),
             });
         }
-        if tokens.len() > 512 {
-            return Err("math input exceeds 512 tokens".into());
+        // Expanded products of two ordinary binomial powers can contain more
+        // than 512 tokens while remaining within all algebra resource bounds.
+        if tokens.len() > 2048 {
+            return Err("math input exceeds 2048 tokens".into());
         }
     }
     Ok(tokens)
@@ -2833,6 +2842,31 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn expanded_polynomial_answers_retain_exact_grading_and_input_guards() {
+        use super::{compare, lex, supports, Context};
+        let c = Context::default();
+        fn binom(n: u64, k: u64) -> u64 {
+            (0..k).fold(1, |v, i| v * (n - i) / (i + 1))
+        }
+        let terms: Vec<_> = (0..=7).flat_map(|i| (0..=8).map(move |j| {
+            let mut term = vec![(binom(7,i)*binom(8,j)).to_string()];
+            if i > 0 { term.push(format!("x^{i}")); }
+            if j > 0 { term.push(format!("y^{j}")); }
+            term.join("*")
+        })).collect();
+        let expanded = terms.join("+");
+        assert!(lex(&expanded, c).unwrap().len() > 512);
+        assert_eq!(compare(&expanded, "(x+1)^7*(y+1)^8", c), Ok(true));
+        assert_eq!(compare(&(expanded + "+1"), "(x+1)^7*(y+1)^8", c), Ok(false));
+        assert_eq!(compare("1/x+2/x", "3/x", c), Ok(true));
+        assert_ne!(compare("1/x-1/x", "0", c), Ok(true));
+        let too_many_tokens = "x+".repeat(1100) + "x";
+        assert!(lex(&too_many_tokens,c).unwrap_err().contains("2048 tokens"));
+        assert!(!supports(&("(".repeat(65) + "x" + &")".repeat(65)),c));
+        assert!(!supports("(x+y+z)^64",c));
+    }
+
     #[test]
     fn two_binomial_powers_grade_with_bounded_expansion() {
         use super::{compare, supports, Context};
