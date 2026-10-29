@@ -184,7 +184,7 @@ fn capture(db: &DatabaseValue, learner: &str, assignments: bool) -> Result<(Enti
                 &["activity/course"]
             }
         } else if record.contains_key("task-item/content") {
-            &["task-item/content"]
+            &["task-item/content", "task-item/working-periods"]
         } else if assignments && record.contains_key("step/id") {
             &["step/content", "step/next"]
         } else if assignments && record.contains_key("assigned-problem/id") {
@@ -219,7 +219,11 @@ pub(super) fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(Entity
     let mut entities=BTreeMap::from([(learner,record(db,learner)?)]);
     for task in references(&entities[&learner],"learner/activity") {
         let task_record=record(db,task)?;
-        for item in references(&task_record,"learner-task/items") { entities.insert(item,record(db,item)?); }
+        for item in references(&task_record,"learner-task/items") {
+            let item_record=record(db,item)?;
+            for period in references(&item_record,"task-item/working-periods") { entities.insert(period,record(db,period)?); }
+            entities.insert(item,item_record);
+        }
         // Activity totals use completed attempts, never inferred repetitions.
         let completed=task_record.get("learner-task/status").and_then(Json::as_u64).and_then(|id|db.ident(id))
             .is_some_and(|ident|ident.qualified_name()=="learner-task.status/completed");

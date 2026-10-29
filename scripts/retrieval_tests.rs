@@ -2613,6 +2613,10 @@ fn queued_review_feedback_is_read_only_and_delayed_saves_preserve_route_and_work
     assert_eq!(items(&final_state,task)?.len(),3);
     assert!((timing::task_elapsed(&final_state,task,Utc::now())?-1.2).abs()<1e-9);
     assert_eq!(task_json(&final_state,f.learner,task)?["status"],"completed");
+    let (small,l)=page_reader::capture_stats(&f.db.database_value(),&text(&final_state,f.learner,"learner/id"))?;
+    let day=86_400_000i64;let first=Utc::now().timestamp_millis()/day*day-6*day;
+    let body=json!({"dayStarts":(0..8).map(|i|first+i*day).collect::<Vec<_>>()});let at=Utc::now();
+    assert_eq!(study_stats::summary(&small,l,&body,at)?,study_stats::summary(&final_state,f.learner,&body,at)?);
     Ok(())
 }
 
