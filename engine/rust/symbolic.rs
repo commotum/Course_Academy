@@ -338,7 +338,11 @@ impl Poly {
         }))
     }
     fn interval_at(&self, sample: Option<&Witness>) -> Option<(Q, Q)> {
-        if self.0.len() > 16
+        // Cross multiplication of ordinary compound quotients can exceed
+        // sixteen terms even though each operand is small. Keep rejection
+        // witnesses bounded independently of the parser's larger term limit.
+        // Enclosures only prove inequality; acceptance remains exact algebra.
+        if self.0.len() > 64
             || self.0.iter().any(|(m, c)| {
                 m.values().map(|e| u32::from(*e)).sum::<u32>() > 4 * MAX_POWER
                     || c.numer().bits().max(c.denom().bits()) > 256
@@ -2604,6 +2608,43 @@ mod explicit_constant_family_tests {
     }
 }
 
+
+/// Compare rational expressions on the domain of an explicitly supplied source
+/// function, as in a derivative question. A simplified derivative may fill a
+/// removable hole of the original function; it must not introduce a new hole.
+/// All equalities and domain implications are exact. Unsupported guards leave
+/// ordinary strict comparison in charge rather than dropping an obligation.
+pub fn compare_rational_on_source_domain(
+    a: &str, b: &str, source: &str, context: Context,
+) -> Result<Option<bool>> {
+    let Ok(Answer::Expression(source, domain)) = parse(source, context) else { return Ok(None); };
+    let Ok(Answer::Expression(a, ca)) = parse(a, context) else { return Ok(None); };
+    let Ok(Answer::Expression(b, cb)) = parse(b, context) else { return Ok(None); };
+    let rational = |v: &Value| v.num.0.keys().chain(v.den.0.keys())
+        .all(|m| m.keys().all(|atom| matches!(atom, Atom::Variable(_))));
+    if ![&source, &a, &b].into_iter().all(rational) { return Ok(None); }
+    let mut algebra = Algebra { work: 0, depth: 0, conditions: BTreeSet::new(),
+        nonzero_power_bases: BTreeMap::new(), context };
+    let mut product = Poly::integer(1);
+    for condition in &domain {
+        let Condition::Nonzero(p) = condition else { return Ok(None); };
+        product = algebra.pmul(&product, p)?;
+    }
+    let squarefree = |p: &Poly| p.squarefree_univariate_base().unwrap_or_else(|| p.clone()).monic();
+    let original = squarefree(&product);
+    for condition in ca.iter().chain(cb.iter()) {
+        let Condition::Nonzero(p) = condition else { return Ok(None); };
+        // Nonzero(D) implies Nonzero(p) precisely when p adds no factor to
+        // squarefree(D). Bounded univariate reduction proves this sufficient
+        // condition; multivariate or oversized cases conservatively fall back.
+        let combined = algebra.pmul(&product, p)?;
+        if squarefree(&combined) != original { return Ok(None); }
+    }
+    let left = algebra.pmul(&a.num, &b.den)?;
+    let right = algebra.pmul(&b.num, &a.den)?;
+    Ok(Some(left == right))
+}
+
 /// True is proved by exact normal forms. A nonzero rational polynomial proves
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
@@ -4197,5 +4238,24 @@ mod symbolic_integer_exponent_shift_tests {
             ("x^(pi-1)", "(-x)^pi/(-x)"),
             ("x^(pi-pi)", "1"),
         ] { assert_ne!(compare(a,b,c),Ok(true),"{a} vs {b}"); }
+    }
+}
+
+#[cfg(test)]
+mod compound_quotient_witness_tests {
+    use super::{compare, Context};
+    #[test]
+    fn compound_quotient_rejection_and_equivalence() {
+        let context = Context { natural_exponential: true, ..Context::default() };
+        let key = "2*(x^2*exp(x)+2*x^2*sin(x)-2*x*exp(x)+4*x*cos(x)-exp(x)*sin(x)-exp(x)*cos(x))/(exp(x)-2*cos(x))^2";
+        let copied_function = "(-2*x^2+2*cos(x))/(exp(x)-2*cos(x))";
+        assert_eq!(compare(copied_function, key, context), Ok(false));
+        assert_eq!(compare(key, copied_function, context), Ok(false));
+        let quotient_form = "((-4*x-2*sin(x))*(exp(x)-2*cos(x))-(-2*x^2+2*cos(x))*(exp(x)+2*sin(x)))/(exp(x)-2*cos(x))^2";
+        assert_eq!(compare(quotient_form, key, context), Ok(true));
+        // A cancelled hole must still prevent an equality claim.
+        assert_ne!(compare(&format!("({key})*x/x"), key, context), Ok(true));
+        // Unknown identities remain errors; interval overlap proves nothing.
+        assert!(compare("foo(x)", "x", context).is_err());
     }
 }

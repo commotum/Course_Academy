@@ -2293,6 +2293,24 @@ fn comma_values(value: &str, prompt: &str) -> Option<Vec<String>> {
     Some(vec![a.to_owned(),b.to_owned()])
 }
 
+
+/// Use only a single explicit f(x) definition in a request for its symbolic
+/// derivative. A mention of a rational expression in unrelated practice must
+/// not weaken ordinary answer-domain checks.
+fn derivative_source_function(prompt: &str) -> Option<String> {
+    let compact = normalize_math(prompt);
+    let request = compact.replace("\\prime", "'").replace('′', "'")
+        .replace(['{', '}', '^'], "");
+    if !request.contains("f'(x)")
+        || !["find", "calculate", "derivative", "differentiate"].iter().any(|word| prompt.contains(word))
+    { return None; }
+    let definitions: Vec<_> = compact.split('$')
+        .filter_map(|part| part.strip_prefix("f(x)="))
+        .map(|value| value.trim_end_matches([',', '.']).to_owned()).collect();
+    if definitions.len() != 1 || definitions[0].is_empty() { return None; }
+    Some(definitions[0].clone())
+}
+
 /// Error-preserving comparison shared by grading and content reconciliation.
 pub fn compare_math_in_context(
     a: &str,
@@ -2366,6 +2384,11 @@ pub fn compare_math_in_context(
         }
         Ok(false)
     } else {
+        if let Some(source) = derivative_source_function(prompt)
+            && let Some(equal) = symbolic::compare_rational_on_source_domain(a, b, &source, context)?
+        {
+            return Ok(equal);
+        }
         compare_math(a, b, context)
     }
 }
@@ -5527,5 +5550,41 @@ mod declared_coordinate_domain_tests {
         }
         let negative = comparison_context("where $x=1$, and $r<0$.", &[]);
         assert_eq!(compare(r"\sqrt{r^2}", "-r", negative), Ok(true));
+    }
+}
+
+
+#[cfg(test)]
+mod derivative_source_domain_tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn derivative_cancellation_uses_original_domain_without_creating_holes() {
+        let mut s = tests::fixture();
+        s.entities.get_mut(&200).unwrap().insert("answer-field/type".into(),json!("answer-field.type/blank"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("(-x^2-2x-1)/(x^2-1)^2"));
+        for prompt in [
+            "Given that $f(x)=\\frac{x+1}{x^2-1}$, find $f^{\\prime}(x)$. $f^{\\prime}(x)=$ {{x}}",
+            "Given that $f(x)=(x+1)/(x^2-1)$, find $f'(x)$. {{x}}",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(prompt));
+            for value in ["-1/(x-1)^2", "-1/(x^2-2*x+1)", "(-x^2-2*x-1)/(x^2-1)^2"] {
+                assert_eq!(grade_field(&s,100,200,value),Ok(true),"{prompt}: {value}");
+            }
+            for value in ["1/(x-1)^2", "-2/(x-1)^2", "-1/(x+1)^2"] {
+                assert_eq!(grade_field(&s,100,200,value),Ok(false),"{value}");
+            }
+            // x=0 was allowed by the original function. An extra x/x hole
+            // remains unresolved, never accepted as an equivalent derivative.
+            assert!(grade_field(&s,100,200,"-x/(x*(x-1)^2)").is_err());
+        }
+        for prompt in [
+            "Simplify $f(x)=(x+1)/(x^2-1)$. {{x}}",
+            "Find an expression equal to $(-x^2-2x-1)/(x^2-1)^2$. {{x}}",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),json!(prompt));
+            assert!(grade_field(&s,100,200,"-1/(x-1)^2").is_err(),"{prompt}");
+        }
     }
 }
