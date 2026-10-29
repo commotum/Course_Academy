@@ -1322,6 +1322,19 @@ impl Algebra {
     fn function(&mut self, name: &str, x: &Value) -> Result<Value> {
         let name = match name { "arctan" => "atan", "arcsin" => "asin", _ => name };
         match name {
+            "sinh" | "cosh" => {
+                // Exact exponential definitions share the existing bounded
+                // real algebra, parity, zero values, and domain obligations.
+                // This is an identity rule, never a numerical acceptance test.
+                if !x.real_on_domain() {
+                    return Err("hyperbolic functions require a supported real argument".into());
+                }
+                let positive = self.function("exp", x)?;
+                let negative = self.function("exp", &x.neg())?;
+                let negative = if name == "sinh" { negative.neg() } else { negative };
+                let sum = self.add(&positive, &negative)?;
+                return self.div(&sum, &Value::integer(2));
+            }
             "asin" => {
                 if !x.real_on_domain() {
                     return Err("arcsine requires a real argument".into());
@@ -1830,7 +1843,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
         return Err("math input exceeds 4096 bytes".into());
     }
     let mut source = source.to_owned();
-    for name in ["sin", "cos", "tan", "sec", "csc", "cot", "ln", "log"] {
+    for name in ["sinh", "cosh", "sin", "cos", "tan", "sec", "csc", "cot", "ln", "log"] {
         source = source.replace(&format!("\\operatorname{{{name}}}"), &format!(" {name} "));
         source = source.replace(&format!("\\mathrm{{{name}}}"), &format!(" {name} "));
         source = source.replace(&format!("{{{name}}}"), &format!(" {name} "));
@@ -1915,7 +1928,7 @@ fn lex(source: &str, context: Context) -> Result<Vec<Token>> {
             let word: String = chars[start..at].iter().collect();
             if matches!(
                 word.as_str(),
-                "pi" | "sin"
+                "pi" | "sinh" | "cosh" | "sin"
                     | "cos"
                     | "tan"
                     | "sec"
@@ -2200,7 +2213,7 @@ impl Parser {
             Token::Word(n) | Token::Command(n)
                 if matches!(
                     n.as_str(),
-                    "sin"
+                    "sinh" | "cosh" | "sin"
                         | "cos"
                         | "tan"
                         | "sec"
@@ -2817,6 +2830,38 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn hyperbolic_exact_definitions_preserve_parity_and_domains() {
+        use super::{compare, compare_up_to_constant, Context};
+        let c = Context::default();
+        for (a, b) in [
+            (r"\cosh(2x+1)/2", "cosh(2*x+1)/2"),
+            ("sinh(-3*x+2)", "-sinh(3*x-2)"),
+            ("cosh(-3*x+2)", "cosh(3*x-2)"),
+            ("sinh(0)", "0"), ("cosh(0)", "1"),
+            ("cosh(x)", "(exp(x)+exp(-x))/2"),
+            ("sinh(x)", "(exp(x)-exp(-x))/2"),
+            ("cosh(x)^2-sinh(x)^2", "1"),
+            ("-4*(cosh(-1)-cosh(2))/3", "4*(cosh(2)-cosh(1))/3"),
+            (r"\operatorname{cosh}(x)", r"\mathrm{cosh}(x)"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(true), "{a} vs {b}");
+        }
+        for (a, b) in [
+            ("cosh(2*x+1)/2", "cosh(2*x+1)"),
+            ("sinh(-x)", "sinh(x)"),
+            ("cosh(x)", "sinh(x)"),
+            ("cosh(x+1)", "cosh(x-1)"),
+            ("cosh(0)", "0"),
+        ] {
+            assert_eq!(compare(a, b, c), Ok(false), "{a} vs {b}");
+        }
+        assert_eq!(compare_up_to_constant("cosh(2*x+1)/2+5", "cosh(2*x+1)/2", c), Ok(true));
+        assert_eq!(compare_up_to_constant("cosh(2*x+1)/2+x", "cosh(2*x+1)/2", c), Ok(false));
+        assert_ne!(compare("cosh(x)*x/x", "cosh(x)", c), Ok(true));
+        assert_ne!(compare("sinh(ln(x))", "(x-1/x)/2", c), Ok(true));
+        assert!(compare("cosh(i*x)", "cos(x)", c).is_err());
+    }
     #[test]
     fn quarter_turn_trig_translations_preserve_signs_and_domains() {
         use super::{compare, Context};
