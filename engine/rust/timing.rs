@@ -265,6 +265,20 @@ fn working_after(snapshot:&EntitySnapshot,item:u64,until:DateTime<Utc>,at:DateTi
 
 /// Cut off working time at admission while keeping the transaction clock current.
 pub fn elapsed_until(snapshot:&EntitySnapshot,item:u64,at:DateTime<Utc>,until:DateTime<Utc>)->Result<f64> {
+    let periods=snapshot.refs(item,"task-item/working-periods")?;
+    if !periods.is_empty(){
+        elapsed(snapshot,item,at)?; // Validate the observed intervals and state.
+        let mut total=0.;let mut first=None;
+        for period in periods {
+            let e=snapshot.entity(period)?;
+            let start=parse_instant(e.get("working-period/started-at").ok_or("working period needs a start")?)?;
+            let end=e.get("working-period/ended-at").map(parse_instant).transpose()?.unwrap_or(at);
+            first=Some(first.map_or(start,|before:DateTime<Utc>|before.min(start)));
+            total+=(end.min(until)-start).num_milliseconds().max(0) as f64/1000.;
+        }
+        if until>at||first.is_some_and(|start|until<start){return Err("invalid submission instant".into());}
+        return Ok(total);
+    }
     if until>at || until<events_first(snapshot,item)? {return Err("invalid submission instant".into());}
     Ok((elapsed(snapshot,item,at)?-working_after(snapshot,item,until,at)?).max(0.))
 }

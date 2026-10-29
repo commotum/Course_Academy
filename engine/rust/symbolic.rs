@@ -13,7 +13,10 @@ use std::collections::{BTreeMap, BTreeSet};
 #[path = "equation_answers.rs"]
 mod equation_answers;
 
-const MAX_TERMS: usize = 128;
+// Two ordinary binomial powers can exceed 128 expanded monomials,
+// including common exponent-summing errors in polynomial LCM practice.
+// Keep a finite term bound alongside the independent work/bit/depth limits.
+const MAX_TERMS: usize = 256;
 const MAX_POWER: u32 = 64;
 const MAX_WORK: usize = 100_000;
 const MAX_BITS: u64 = 16_384;
@@ -2830,6 +2833,18 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn two_binomial_powers_grade_with_bounded_expansion() {
+        use super::{compare, supports, Context};
+        let c = Context::default();
+        // The summed-exponent misconception expands to 144 monomials.
+        assert_eq!(compare("72(x-2)^11(y+3)^11", "72(x-2)^7(y+3)^8", c), Ok(false));
+        assert_eq!(compare("72(x-2)^11(y+3)^11", "72(y+3)^11(x-2)^11", c), Ok(true));
+        // Expansions beyond the new term bound remain unsupported.
+        assert!(!supports("(x+1)^16(y+1)^16", c));
+        assert!(!supports("(x+y+z)^64", c));
+    }
+
     #[test]
     fn hyperbolic_exact_definitions_preserve_parity_and_domains() {
         use super::{compare, compare_up_to_constant, Context};
