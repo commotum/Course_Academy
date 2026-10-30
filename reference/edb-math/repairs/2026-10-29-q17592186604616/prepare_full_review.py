@@ -17,11 +17,12 @@ for q in qs:
  for f in q.get(':question/answer-fields',[]):
   choices=[{'id':a[':db/id'],'value':a[':answer/value'],'type':a[':answer/type'][':db/ident'].split('/')[-1]}for a in f[':answer-field/choices']];right=f.get(':answer-field/correct',{}).get(':db/id');assert right is not None
   fields.append({'id':f[':db/id'],'key':f[':answer-field/key'],'type':f[':answer-field/type'][':db/ident'].split('/')[-1],'choices':choices,'correctAnswer':next(a for a in choices if a['id']==right)})
- if any(f['type']=='blank'for f in fields):controls.append({'entity':q[':db/id'],'problem':q[':question/problem'],'fields':fields,'repaired':(q[':db/id'],':question/problem')in changes,'expected_tables':q[':question/problem'].count('<table')})
+ controls.append({'entity':q[':db/id'],'problem':q[':question/problem'],'fields':fields,'repaired':(q[':db/id'],':question/problem')in changes,'expected_tables':q[':question/problem'].count('<table')})
  for a in[':question/problem',':question/worked-solution']:
   assert q.get(a),(q[':db/id'],'Incomplete question after repair',a)
   render.append({'entity':q[':db/id'],'attribute':a[1:],'value':q[a],'fields':fields})
  for f in q.get(':question/answer-fields',[]):
+  if f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox':render.append({'entity':f[':db/id'],'attribute':'answer-field/key','value':f[':answer-field/key']})
   for a in f[':answer-field/choices']:render.append({'entity':a[':db/id'],'attribute':'answer/value','value':a[':answer/value'],'bare_math':a[':answer/type'][':db/ident']==':answer.type/math'})
  rec=copy.deepcopy(q);checks=[]
  for i,f in enumerate(rec.get(':question/answer-fields',[])):

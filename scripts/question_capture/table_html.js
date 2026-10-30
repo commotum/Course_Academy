@@ -1,5 +1,44 @@
 // Embedded verbatim in both browser extractors; checked by regression tests.
 function sourceHTMLTable(table, renderLeaf, reportError) {
+  function canonicalMatrixLayout(){
+    const rows=t=>[...t.querySelectorAll('tr')].filter(r=>r.closest('table')===t),cells=r=>[...r.children].filter(c=>['td','th'].includes(c.localName));
+    const controls='input,select,textarea,.freeResponseTextbox,.matheditor-wrapper-answer,[contenteditable="true"]';
+    const empty=c=>!c.textContent.trim()&&!c.querySelector(controls);
+    const edge=(c,side)=>{const value=c.style.getPropertyValue('border-'+side)||c.style.border;return !!value&&!/^(?:hidden|none|0(?:px)?)(?:\s|$)/.test(value)};
+    function grid(t,label=false){const rr=rows(t),out=[],labels=[];const spanning=rr.length&&cells(rr[0])[0]?.getAttribute('rowspan')===String(rr.length);
+      for(const [i,row]of rr.entries()){const cc=cells(row);if(label&&(!spanning||i===0))labels.push(cc.shift());
+        if(cc.length<3||!empty(cc[0])||!empty(cc.at(-1))||!edge(cc[0],'left')||!edge(cc.at(-1),'right'))return null;
+        const entries=cc.slice(1,-1);if(!entries.every(empty))out.push(entries);
+      }return out.length&&new Set(out.map(r=>r.length)).size===1&&!out.some(r=>r.some(empty))?{rows:out,labels}:null;
+    }
+    const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+    const entry=c=>renderLeaf(c).trim().replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$/g,m=>m.startsWith('$$')||m.startsWith('\\[')||m.startsWith('\\(')?m.slice(2,-2):m.slice(1,-1)).trim();
+    const field=value=>/^\{\{(?:answer-field:)?[^{}]+\}\}$/.test(value)?escape(value):'$'+escape(value)+'$';
+    const body=(rr,label)=>'<table aria-label="'+label+'"><tbody>\n'+rr.map(r=>'<tr>'+r.map(c=>'<td>'+field(entry(c))+'</td>').join('')+'</tr>').join('\n')+'\n</tbody></table>';
+    const matrix=rr=>'<div class="matrix-answer-brackets">\n'+body(rr,'Answer matrix')+'\n</div>';
+    const equation=parts=>'\n\n<div class="matrix-answer">\n'+parts.join('\n')+'\n</div>\n\n';
+    const label=value=>'<span class="matrix-answer-label">$'+escape(value)+'$</span>';
+    const nested=[...table.querySelectorAll('table')].filter(t=>t.parentElement.closest('table')===table),outer=rows(table);
+    if(nested.length===3&&outer.length===1){const parsed=nested.map(t=>grid(t));if(parsed.some(p=>!p))return null;
+      const outside=cells(outer[0]).filter(c=>!c.querySelector('table')&&!empty(c));
+      if(outside.length!==1||outside[0].textContent.trim()!=='=')return null;
+      return equation([matrix(parsed[0].rows),matrix(parsed[1].rows),label('='),matrix(parsed[2].rows)]);
+    }
+    if(nested.length)return null;
+    if(outer.length>=2){const first=cells(outer[0]);if(first[0]?.getAttribute('rowspan')===String(outer.length)&&first[0].textContent.trim()==='{'){
+      const rr=outer.map((r,i)=>i===0?cells(r).slice(1):cells(r));
+      if(rr.every(r=>r.length===3&&r[1].textContent.trim()==='='))return equation(['<div class="matrix-system" role="group" aria-label="System of equations">\n'+body(rr,'Equation rows')+'\n</div>']);
+    }}
+    const parsed=grid(table,true);if(parsed){const labels=parsed.labels.filter(c=>!empty(c));
+      if(labels.length===1&&labels[0].textContent.includes('='))return equation([label(entry(labels[0])),matrix(parsed.rows)]);
+    }
+    return null;
+  }
+  const matrixLayout=canonicalMatrixLayout();if(matrixLayout!==null){
+    const widgets=table.querySelectorAll('.freeResponseTextbox,.matheditor-wrapper-answer,.selectList').length;
+    if([...matrixLayout.matchAll(/\{\{(?:answer-field:)?[^{}]+\}\}/g)].length<widgets)reportError('Matrix layout lost source controls; preserve widget identities before rendering');
+    return matrixLayout;
+  }
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
   const safeText=value=>{const math=[];let prefix='CATABLETEXT';while(String(value).includes(prefix))prefix+='X';let text=String(value).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$/g,m=>{math.push(m);return prefix+(math.length-1)+'END'});return esc(text).replace(/(?<!\\)\$/g,'\\$').replace(new RegExp(prefix+'(\\d+)END','g'),(_,i)=>math[Number(i)])};
   const props=node=>Object.fromEntries((node.getAttribute('style')||'').split(';').filter(x=>x.includes(':')).map(x=>{const i=x.indexOf(':');return[x.slice(0,i).trim().toLowerCase(),x.slice(i+1).trim()]}));

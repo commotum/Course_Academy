@@ -45,7 +45,7 @@ def grids(html):
  return[tuple(tuple(str(c)for c in row)for row in m['matrix'].tolist())for t in tex for m in matrices(t)],errors
 checks=[];review=[];missing=[]
 for mid,q in targets.items():
- current=[tuple(tuple(str(c)for c in row)for row in m['matrix'].tolist())for m in matrices(q[':question/problem'])];options=sources[mid,'question/problem'];matches=[];mismatches=[]
+ visible=q[':question/problem']+'\n'+''.join(f[':answer-field/key']for f in sorted(q.get(':question/answer-fields',[]),key=lambda f:f[':answer-field/key'])if f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox');current=[tuple(tuple(str(c)for c in row)for row in m['matrix'].tolist())for m in matrices(visible)];options=sources[mid,'question/problem'];matches=[];mismatches=[]
  for src in options:
   sg,errors=grids(src['html'])
   if not errors and sg==current:matches.append(src['path'])

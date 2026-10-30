@@ -30,6 +30,7 @@ def source_matrix_layout(table,render_leaf):
         spanning=bool(rr and cells(rr[0])and cells(rr[0])[0].get('rowspan')==str(len(rr)))
         for i,row in enumerate(rr):
             cc=cells(row)
+            if not cc:return None
             if has_label and(not spanning or i==0):labels.append(cc.pop(0))
             if len(cc)<3 or not empty(cc[0])or not empty(cc[-1])or not edge(cc[0],'left')or not edge(cc[-1],'right'):return None
             entries=cc[1:-1]
@@ -121,7 +122,11 @@ def attrs(node,last_rows):
 def source_table_html(table,render_leaf,skip=lambda node:False):
     """Reuse the caller's math/widget/asset renderer, retaining actual cell roles."""
     layout=source_matrix_layout(table,render_leaf)
-    if layout is not None:return layout
+    if layout is not None:
+        widgets=table.select('.freeResponseTextbox,.matheditor-wrapper-answer,.selectList')
+        if len(re.findall(r'\{\{(?:answer-field:)?[^{}]+\}\}',layout))<len(widgets):
+            raise ValueError('Matrix layout lost source controls; preserve widget identities before rendering')
+        return layout
     last_rows={id(rows[-1])for t in [table]+table.find_all('table')if(rows:=[r for r in t.find_all('tr')if r.find_parent('table')is t])}
     def walk(node):
         if isinstance(node,Comment):return ''
