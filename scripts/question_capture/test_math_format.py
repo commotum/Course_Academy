@@ -91,6 +91,20 @@ class MathContentTests(unittest.TestCase):
         self.assertEqual(result, chain.replace(inner, r'\left' + inner + r'\right.'))
         validate_tex(result)
 
+    def test_function_parentheses_around_an_existing_matrix_stretch(self):
+        from math_format import scalable_table_fences, validate_matrix_layouts
+        for env in ['bmatrix', 'pmatrix', 'vmatrix', 'Bmatrix', 'Vmatrix', 'cases']:
+            matrix = r'\begin{' + env + r'}1\\2\\3\end{' + env + '}'
+            source = 'T(' + matrix + ')'
+            expected = r'T\left(' + matrix + r'\right)'
+            with self.subTest(env=env):
+                self.assertEqual(scalable_table_fences(source), expected)
+                self.assertEqual(normalize_tex(source), expected)
+                with self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+                    validate_matrix_layouts('$' + source + '$')
+                validate_matrix_layouts('$' + expected + '$')
+                validate_tex(expected)
+
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
         guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'

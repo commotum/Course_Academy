@@ -769,7 +769,8 @@ def scalable_table_fences(text, *, environments=None):
     sizes and optional macro arguments, whose brackets are not visible fences.
     """
     if r'\begin{' not in text: return text
-    environments = environments or {'array', 'aligned', 'alignedat', 'gathered', 'matrix'}
+    environments = environments or {'array', 'aligned', 'alignedat', 'gathered', 'matrix',
+                                    'bmatrix', 'pmatrix', 'vmatrix', 'Bmatrix', 'Vmatrix', 'cases'}
     groups = [('[', r'\lbrack', ']', r'\rbrack'),
               ('(', r'\lparen', ')', r'\rparen'),
               (r'\{', r'\lbrace', r'\}', r'\rbrace'),
