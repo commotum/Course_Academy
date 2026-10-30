@@ -1,0 +1,27 @@
+# Position-vector topic LaTeX audit
+
+Read-only audit of topic **17592186048780**, MA **1106**, at math EDB basis **11863**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. No database or application-source changes were made.
+
+The audit covered all **138 linked practice questions**, **4 canonical examples**, **3 tutorials**, and all **14 steps across 3 topic-scoped activities**. The four KP pools contain **40, 42, 29, and 27** practice questions. No currently linked question is retired. Existing generator-produced items are included through their pool membership; no new questions were generated. Two prerequisite topic titles encountered through KP metadata were excluded.
+
+**All 756 in-scope visible fields passed the strict actual-player renderer**, including 748 math-bearing fields: 142 prompts, 141 worked solutions, 462 authored answer values, 3 tutorial bodies, 3 tutorial titles, 4 KP titles, and the topic title. There are 186 answer-field entities and no feedback fields. Undefined commands, raw display delimiters, matrix structure, and fence geometry were checked. Syntax success did not establish notation correctness.
+
+## Findings
+
+1. **Malformed arrow/bar notation in 11 fields, with 14 occurrences.** The five old choices for `q-12212` (answer entities **17592186094250–17592186094254**), all five choices for `q-42659` (**17592186095365–17592186095369**), and the `q-42659` prompt (**17592186097240**) retain pseudo-TeX such as `OR^(→)` and `PQ^(―)`. MathJax accepts these strings but displays a raised opening parenthesis followed by an arrow or bar and closing parenthesis. Replace them with `\overrightarrow{OR}` and `\overline{PQ}`. The original source MathML contains actual mover accents. See [the actual-player screenshot](visual/pseudo-tex-question-42659.png) and [the underlying source-MathML preview](visual/source-question-42659-mathml.png).
+
+2. **Confirmed vector-font loss, plus a broader consistency list.** Original MA 1106 HTML proves that vector letters were bold in the prompts of `q-19370`, `q-42670`, `q-12212`, and `q-42659`; the source ratio-question choices and the aligned displays in canonical examples **17592186096451** (`e-4287`) and **17592186096452** (`e-4288`) also use bold vectors. Those source-confirmed differences cover **21 EDB fields**. In the canonical examples, prose and inline formulas retain `\mathbf`, while reconstructed displays switch to plain letters. Restore vector font consistently while retaining ordinary scalar `\lambda`, `\mu`, and point labels. [Canonical screenshot](visual/canonical-vector-fonts.png).
+
+   A broader inventory identifies **298 fields** with the same plain-vector convention: **102 prompts, 103 solutions** (including those 2 canonical solutions), and **93 answer values**. This is a consistency/source-fidelity candidate list, **not 298 individually source-verified import defects**. The remaining 277 fields were not individually compared with their original source. Plain letters can be a valid vector convention when used consistently. Exact entities and values are listed in [findings.json](findings.json).
+
+3. **Adjacent answer-field completeness issues.** Question **17592186097240** (`q-42659`) has neither a worked solution nor a correct-answer link on answer field **17592186095364**. The ratio `PR:RQ=1:2` gives `\overrightarrow{OR}=\frac23\mathbf p+\frac13\mathbf q`, corresponding to existing choice **17592186095366**. Question **17592186097046** (`q-12212`) has two fields with key `selection`: old **17592186094249** is unkeyed and retains pseudo-TeX choices; newer **17592186364894** is keyed. Complete the former question and reconcile the duplicate fields in a separately authorized repair. These are content-completeness observations, not rendering failures.
+
+## Review evidence and limits
+
+The three tutorials, all four canonical examples, all pool prompts/solutions, choice values, and expected answer values were examined for vector direction/sign, ratios, grouping, dropped terms, subscript placement, delimiters, and matrix/fence problems. No additional concrete algebra, grouping, hat, or fence defect was identified. The earlier `\overset{\to -}` corruption is absent. Repaired tutorial arrows and representative generated signed-fraction examples were also visually inspected: [tutorial](visual/tutorial-repaired-arrows.png), [generated examples](visual/generated-signed-fractions.png). No source-inherited mathematical claim is classified as a defect here.
+
+The strict render covers every captured field; visual inspection and original-source comparison are representative, not exhaustive screenshot-by-screenshot or source-by-source comparisons. Six screenshots and original source HTML fragments are retained. The source preview uses the original underlying MathML, with explicit bold styling for the browser preview; it is not a screenshot of the original MA application renderer.
+
+Learner-entered response history was excluded: no reverse `task-item/responses` pull was used. The 462 answer values are attached authored choices or canonical correct values; every nonradio field has at most one choice. The 59 questions lacking a Math Academy ID were not automatically classified as generated.
+
+Snapshots and reproducibility evidence: [field inventory](field-inventory.json), [all fields](fields.json), [strict render results](strict-render-results.json), [source evidence](source-evidence.json), [machine-readable findings](findings.json). Raw EDB query, input, and result files are retained beside the JSON snapshots.

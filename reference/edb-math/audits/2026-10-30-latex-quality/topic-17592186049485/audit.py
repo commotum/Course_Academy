@@ -26,9 +26,11 @@ if extra_ids:
 snapshot['questions']=list(questions.values())
 (HERE/'snapshot.json').write_text(json.dumps(jsonable(snapshot),indent=2,ensure_ascii=False)+'\n')
 fields={}
+math_answers=set()
 def walk(obj,path='snapshot'):
  if isinstance(obj,dict):
   eid=obj.get(':db/id')
+  if str(obj.get(':answer/type',{}).get(':db/ident'))==':answer.type/math':math_answers.add(eid)
   for k,v in obj.items():
    if isinstance(v,str):
     key=(eid,k,v);fields.setdefault(key,{'entity':eid,'attribute':k[1:],'value':v,'paths':[]})['paths'].append(path)
@@ -38,7 +40,7 @@ def walk(obj,path='snapshot'):
 walk(snapshot)
 inventory=list(fields.values())
 for f in inventory:
- f['bare_math']=f['attribute']=='answer/value' and any(a.get(':answer/type',{}).get(':db/ident')==':answer.type/math' and a.get(':answer/value')==f['value'] for q in questions.values() for af in q.get(':question/answer-fields',[]) for a in [*af.get(':answer-field/choices',[]),*af.get(':answer-field/correct',[])])
+ f['bare_math']=f['attribute']=='answer/value' and f['entity'] in math_answers
  f['has_math']=f['bare_math'] or bool(re.search(r'\$|\\\(|\\\[',f['value']))
 (HERE/'field-inventory.json').write_text(json.dumps(jsonable(inventory),indent=2,ensure_ascii=False)+'\n')
 render=[f for f in inventory if f['has_math'] or f['attribute'] in ('tutorial/content','question/problem','question/worked-solution','answer/value','answer/feedback')]
