@@ -41,7 +41,7 @@ export function equationGroup(tex) {
   if (count < 2 || count > 6 || equations.slice(0, count).some(part => !part)) return null;
   const names = equations.slice(0, count).map(part => part[1].replace(/[{}\s]/g, ''));
   if (new Set(names).size !== names.length) return null;
-  if (count !== parts.length && !/^(?!.*=)[\s\S]*(?:\\(?:leq?|geq?|in)\b|[<>])[\s\S]+$/.test(parts.at(-1))) return null;
+  if (count !== parts.length && !/^(?!.*=)[\s\S]*(?:\\(?:leq?|geq?|in)\b|[<>≤≥∈])[\s\S]+$/.test(parts.at(-1))) return null;
   return parts.map((part, i) => part + (separators[i] || (i === parts.length - 1 && trailing ? trailing[0].trim() : '')));
 }
 

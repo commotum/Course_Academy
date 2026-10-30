@@ -12,6 +12,7 @@ const yes = [
 ];
 for (const body of yes) assert.ok(equationGroup(display(body)), body);
 assert.ok(equationGroup(display(String.raw`\displaystyle x=2t\quad y=t^2\qquad -2\le t\le2`)));
+assert.ok(equationGroup(display('x=t^2-4t, y=t^2, t ∈ (-∞,∞),')));
 const no = [
   '$x=1,y=2$', String.raw`\(x=1,y=2\)`,
   display(String.raw`\begin{aligned}x&=t\\y&=t^2\end{aligned}`),
