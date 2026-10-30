@@ -10,9 +10,9 @@ from question_capture.math_format import MATH
 S=json.loads((H/'proposed-snapshot.json').read_text());topics={q:t for t,k,q in S['links']};checks=[];review=[]
 def ops(t):
  out=[]
- for m in MATH.finditer(t):
-  v=m[0];edge=2 if v.startswith('$$')else 1;v=v[edge:-edge];v=re.sub(r'(?:\\[,;! ]|[?,.])+$','',v)
-  for p in re.split(r'\band\b|\\qquad\s*,?',v):
+ for v in ([m[0]for m in MATH.finditer(t)]or[t]):
+  edge=2 if v.startswith('$$')else 1 if v.startswith('$')else 0;v=v[edge:-edge]if edge else v;v=re.sub(r'(?:\\[,;! ]|[?,.])+$','',v)
+  for p in re.split(r'\band\b|,\s*\\,|,|\\qquad\s*,?',v):
    if re.search(r'R.*?(?::=|↔|\\leftrightarrow)',p):out.append(p.rstrip('?,.'))
  return out
 for q in S['questions']:
@@ -34,7 +34,7 @@ for q in S['questions']:
     ok=(c[':answer/value']==str(bool(selected)).lower())if typ==':answer-field.type/checkbox'else set(re.findall(r'\b[A-C]\b',c[':answer/value']))==set(selected)
     if ok:good.append(c[':db/id'])
    reason='Apply each specified operation in order to every candidate; compare with I.'
-  elif 'Find the row operations'in prompt:
+  elif 'Find the row operation'in prompt:
    a=ms[0]['matrix']
    for c in f[':answer-field/choices']:
     b=a;oo=ops(c[':answer/value'])
@@ -58,14 +58,14 @@ for q in S['questions']:
       if expr(v)==inv:good.append(c[':db/id'])
      except Exception:pass
     reason='Compute A^-1 exactly, including external scalar factors.'
-   elif 'row operations corresponding'in prompt.lower():
+   elif a.cols==a.rows or 'corresponding row operations'in prompt.lower()or'row operations corresponding'in prompt.lower():
     # Each listed sequence must reproduce the successive displayed matrices.
-    target=[m['matrix']for m in ms]
+    targets=[(u['matrix'],v['matrix'])for u,v in zip(ms,ms[1:])if operation(prompt[u['end']:v['start']],u['matrix'])[0]is None]
     for c in f[':answer-field/choices']:
-     b=target[0];oo=ops(c[':answer/value']);valid=len(oo)==len(target)-1
-     for j,op in enumerate(oo):
-      b,_=operation(op,b)
-      if b is None or j+1>=len(target)or b!=target[j+1]:valid=False;break
+     oo=ops(c[':answer/value']);valid=len(oo)==len(targets)
+     for op,(before,after)in zip(oo,targets):
+      b,_=operation(op,before)
+      if b is None or b!=after:valid=False;break
      if valid:good.append(c[':db/id'])
     reason='Compare every offered row-operation sequence with each required intermediate.'
   if reason:

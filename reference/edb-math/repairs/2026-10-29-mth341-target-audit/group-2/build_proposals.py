@@ -29,6 +29,12 @@ edit_matrix(17592186269210,lambda a:a.shape==(4,8)and a[3,3]==0,lambda a:changed
 edit_matrix(17592186269210,lambda a:a.shape==(4,8)and a[3,5]==3,lambda a:changed(a,3,5,0),'R1 := R1 + 2R3 changes only row 1; the final row of the augmented right block remains (0,0,0,1). Both inverse products equal I.')
 edit_matrix(17592186402002,lambda a:a.shape==(2,2)and a[1,1]==1 and a[0,0]==-1,lambda a:changed(a,1,1,-1),'The final augmented right block and inverse formula give D^-1=[[-1,1],[2,-1]]. The printed conclusion had +1 in entry (2,2); both inverse products verify -1.')
 edit_matrix(17592186660326,lambda a:a.shape==(4,8)and a[3,5]==3,lambda a:changed(a,3,5,0),'R3 := R3 - 5R2 changes only row 3; row 4 remains (0,0,0,1 | 0,0,0,1). Both inverse products verify the existing correct inverse and -34 key.')
+# The archived radio bank contains equivalent evaluated values because M43=0.
+e=17592186370926
+prompt=current[(e,':question/problem')]
+new='Which expression is the unsimplified cofactor expansion along the $3$rd column? Retain a term for each nonzero entry of that column, with the sign supplied by $(-1)^{i+j}$, even if a minor has determinant $0$.\n\n'+prompt.replace('=\n$$','\n$$')
+setv(e,'question/problem',new,'Disambiguate three numerically equivalent choices by asking for the unsimplified source cofactor expansion with both nonzero-entry terms and their cofactor signs; preserve the existing bank and correct identity.')
+evidence.append({'question':e,'numerically_equivalent_answer_ids':[17592186370929,17592186370930,17592186370932],'M43':0,'M23':12,'unchanged_correct_answer':17592186370930,'proof':'Column 3 has entries 0,sqrt(2),0,sqrt(3). Both nonzero terms have negative cofactor signs. Only the keyed option retains both such terms and signs; all three evaluate to -12 sqrt(2) because M43=0.'})
 # Normalize operator semantics and repair the aligned optional-argument trap.
 for key,value in list(current.items()):
  e,attr=key

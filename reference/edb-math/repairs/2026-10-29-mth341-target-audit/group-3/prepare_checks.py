@@ -8,7 +8,10 @@ def patch(o):
  for(e,a),v in changes.items():
   if o.get(':db/id')==e:o[a]={':db/id':v}if a==':answer-field/correct'else v
  return o
-S=patch(S);render=[];native=[];controls=[]
+S=patch(S)
+for q in S['questions']:
+ if q[':db/id']==17592186120218:q[':question/answer-fields']=[f for f in q[':question/answer-fields']if f[':db/id']!=17592186117469]
+render=[];native=[];controls=[]
 for q in S['questions']:
  fields=[]
  for f in q.get(':question/answer-fields',[]):

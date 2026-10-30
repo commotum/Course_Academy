@@ -5,6 +5,7 @@ from sympy.parsing.sympy_parser import parse_expr,standard_transformations,impli
 H=Path(__file__).resolve().parent;S=json.loads((H/'current.json').read_text());qs=json.loads((H/'proposed-questions.json').read_text());owners={q:k for t,k,q in S['links']};checks=[];fail=[]
 syms={n:sp.Symbol(n)for n in'xyztspabc dijk'.replace(' ','')};x,y,z=map(syms.get,'xyz');V=sp.Matrix([x,y,z])
 def plain(t):
+ t=t.replace(r'\mathbf0','0')
  t=re.sub(r'\\(?:hspace|bbox)\[[^\]]*\]|\\hspace\{[^{}]*\}|\\color(?:\[[^\]]*\])?\{[^{}]*\}','',t);t=re.sub(r'\\(?:mathbf|mathbb|mathrm|mathit|displaystyle|textstyle|left|right|quad|qquad)\b','',t);t=re.sub(r'(?<!\\)\\[,;!: ]','',t);return t.replace('−','-').replace(r'\langle','⟨').replace(r'\rangle','⟩').replace(r'\cdot','*').replace('$','').strip().rstrip('.,?')
 def scalar(t):
  t=plain(t)
@@ -120,6 +121,16 @@ for q in qs:
    if vals:
     value=vals['selection']if'selection'in vals else response(q,vals);an,ac=plane_from_answer(value);assert parallel(n,an),(n,an,value);assert sp.simplify(an.dot(base)+ac)==0
    result.update(point=list(base),normal=list(n),constant=constant,proof='Correct nonzero normal from given vector/line or cross product; answer contains the required point.')
+  if not vals:
+   if kp==17592186119830:
+    final=re.findall(r'\$([^$]*=[^$]*)\$',sol)[-1];assert sp.simplify(scalar(final.rsplit('=',1)[1])-expected)==0
+   elif kp==17592186119934:
+    sv=vecs(sol);assert parallel(sv[-1][2],n)
+   elif kp in[17592186119933,17592186119935,17592186119936]:
+    sv=vecs(sol);ap,ad1,ad2=[v[2]for v in sv[-3:]];assert ad1.cross(ad2)!=sp.zeros(3,1)and n.dot(ad1)==0 and n.dot(ad2)==0 and sp.simplify(n.dot(ap-base))==0
+   else:
+    blocks=re.findall(r'\$\$([\s\S]*?)\$\$',sol);last=blocks[-1];last=last.split(r'\end{aligned}')[0].split(r'\\')[-1].replace('&','').strip();an,ac=plane_from_answer(last);assert parallel(n,an);idx=next(i for i in range(3)if n[i]!=0);assert sp.simplify(ac/an[idx]-constant/n[idx])==0
+   result['canonical_solution_verified']=True
   choice_checks=[]
   for f in q.get(':question/answer-fields',[]):
    if f[':answer-field/type'][':db/ident']not in[':answer-field.type/radio',':answer-field.type/select']:continue

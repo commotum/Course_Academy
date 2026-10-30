@@ -19,6 +19,7 @@ completions={
 17592186204223:([17592186200004],r'Use distributivity, $\mathbf b\times\mathbf b=\mathbf0$, and anticommutativity:'+D(r'\begin{aligned}(5\mathbf a-3\mathbf b)\times(6\mathbf b)&=30(\mathbf a\times\mathbf b)-18(\mathbf b\times\mathbf b)\\&=-30(\mathbf b\times\mathbf a)\\&=-30\langle1,-2,3\rangle\\&=\langle-30,60,-90\\rangle.\end{aligned}'),{'calculation':'-30*(1,-2,3)=(-30,60,-90)'})
 }
 for eid,(rights,solution,proof)in completions.items():
+ if eid==17592186120218:continue # Old duplicate ownership is retracted by integrated parent repair.
  q=qs[eid];missing=[f for f in q[':question/answer-fields']if not f.get(':answer-field/correct')];assert len(rights)==len(missing),(eid,len(missing))
  for f,right in zip(missing,rights):
   assert right in[a[':db/id']for a in f[':answer-field/choices']];changes.append({'entity':f[':db/id'],'attribute':'answer-field/correct','before':None,'after':right,'reason':'Complete missing correct link using independently verified existing owned choice; preserve identities and bank.'})

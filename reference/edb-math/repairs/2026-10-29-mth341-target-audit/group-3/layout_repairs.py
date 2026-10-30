@@ -35,6 +35,12 @@ q=next(q for q in S['questions']if q[':db/id']==17592186660905)
 for attr in['question/problem','question/worked-solution']:
  before=q[':'+attr];cur=changes.get((q[':db/id'],attr),{}).get('after',before)
  for a,b in [('⟨1,5⟩','⟨1,5,0⟩'),('⟨-2,4⟩','⟨-2,4,0⟩'),('⟨2,10⟩','⟨2,10,0⟩'),('⟨6,-12⟩','⟨6,-12,0⟩'),('⟨8,\\,-2⟩','⟨8,\\,-2,0⟩')]:cur=cur.replace(a,b)
+ cur=re.sub(r'⟨([^⟨⟩]+)⟩',lambda m:'⟨'+m[1]+(',0'if m[1].count(',')==1 and '$'not in m[1]else'')+'⟩',cur)
  if attr=='question/problem':cur=cur.replace('{{field-2}}$⟩$','{{field-2}}$,0⟩$')
  add(q[':db/id'],attr,before,cur,'Independent mathematical correction: cross-product outputs are three-dimensional; append a fixed zero third component while preserving the two existing response fields and canonical scalar answers.')
+for q in S['questions']:
+ key=(q[':db/id'],'question/worked-solution');before=q.get(':question/worked-solution')
+ if before:
+  cur=changes.get(key,{}).get('after',before)
+  if 'outside the ellipse' in cur: add(q[':db/id'],'question/worked-solution',before,cur.replace("let's pick any point outside the region","let's pick any point outside the ellipse"),'Correct source explanatory wording: the test point belongs to the shaded exterior region and lies outside the ellipse.')
 (H/'proposals.json').write_text(json.dumps(list(changes.values()),indent=2)+'\n');(H/'layout-and-math-evidence.json').write_text(json.dumps(proof,indent=2)+'\n');print('Combined',len(changes),'proposals')

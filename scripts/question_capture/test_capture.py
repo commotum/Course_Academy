@@ -28,6 +28,15 @@ REVIEW_FIXTURE = ROOT/'reference/mathacademy/review-13925710'
 
 
 class PolicyTests(unittest.TestCase):
+    def test_scalar_choices_do_not_match_singleton_set_choices(self):
+        # A prior formatting repair erased visible set fences while matching
+        # whole banks, turning scalar distractors into duplicate set options.
+        for scalar in ('0', '1', 'n'):
+            self.assertEqual(normalize(scalar), normalize('{' + scalar + '}'))
+            self.assertNotEqual(normalize(scalar), normalize(r'\{\mathbf{' + scalar + r'}\}'))
+            self.assertNotEqual(normalize(r'\mathbf{' + scalar + '}'),
+                                normalize(r'\{\mathbf{' + scalar + r'}\}'))
+
     def test_explicit_multiplication_between_functions_preserves_scope(self):
         intended=r'\frac{\tan(t)}{t}+\ln(t)\sec(t)^2'
         observed=r'\frac{\tan\left(t\right)}{t}+\ln\left(t\right)\cdot\sec\left(t\right)^2'
