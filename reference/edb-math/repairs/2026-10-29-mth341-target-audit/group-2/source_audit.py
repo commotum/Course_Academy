@@ -14,7 +14,7 @@ for t in S['topics']:
   if item.get('step_type')=='tutorial'and str(item.get('content_id'))in tutorials:add('tutorial:'+str(item['content_id']),'tutorial/content',node,p)
   mid='e-'+str(item['content_id'])if item.get('step_type')=='example'else'q-'+str(item['question_id'])if item.get('question_id')else None
   if mid not in targets:continue
-  add(mid,'question/problem',node.select_one('.exampleQuestion,.questionText,.questionWidget-text'),p);add(mid,'question/worked-solution',node.select_one('.exampleSolution,.questionExplanation,.questionWidget-explanation'),p)
+  add(mid,'question/problem',node.select_one('.exampleQuestion,.questionText,.questionWidget-text'),p);add(mid,'question/worked-solution',node.select_one('.exampleSolution,.exampleExplanation,.questionExplanation,.questionWidget-explanation'),p)
 for line in(R/'.local/edb/mathml-tables-work/source-paths.txt').read_text().splitlines():
  p=Path(line);m=re.search(r'(q-\d+)|example-(\d+)',p.name)
  if not m:continue
@@ -24,6 +24,6 @@ for line in(R/'.local/edb/mathml-tables-work/source-paths.txt').read_text().spli
  except Exception:continue
  html=d.get('html')or d.get('raw_html')
  if not html:continue
- s=BeautifulSoup(html,'html.parser');add(mid,'question/problem',s.select_one('.exampleQuestion,.questionText,.questionWidget-text'),p);add(mid,'question/worked-solution',s.select_one('.exampleSolution,.questionExplanation,.questionWidget-explanation'),p)
+ s=BeautifulSoup(html,'html.parser');add(mid,'question/problem',s.select_one('.exampleQuestion,.questionText,.questionWidget-text'),p);add(mid,'question/worked-solution',s.select_one('.exampleSolution,.exampleExplanation,.questionExplanation,.questionWidget-explanation'),p)
 (H/'source-inventory.json').write_text(json.dumps([{'identity':mid,'attribute':a,**r}for(mid,a),ss in sources.items()for r in ss],indent=2)+'\n')
 print('Sources',len(sources),'identities',len(set(mid for mid,a in sources)),'missing',[(q[':db/id'],mid)for mid,q in targets.items()if not sources[mid,'question/problem']])

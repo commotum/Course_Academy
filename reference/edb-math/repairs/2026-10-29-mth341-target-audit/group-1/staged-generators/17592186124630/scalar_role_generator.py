@@ -22,13 +22,17 @@ CORRECTIONS = {
         '9d9fdfe6-8dc9-510f-9c18-69a49e29297b': 'n',
     },
 }
+REQUESTED_FORM = 'Use only expressions that refer directly to $A$; powers and inverses of $A$ are outside the requested form.'
+FORM_RESTRICTIONS = {'q-141343', 'q-142357', 'q-141345'}
 def replay(source_id):
-    if source_id not in CORRECTIONS:
+    if source_id not in CORRECTIONS and source_id not in FORM_RESTRICTIONS:
         return _original_replay(source_id)
     q = copy.deepcopy(original.SOURCES[source_id])
+    if source_id in FORM_RESTRICTIONS:
+        q[':question/problem'] += '\n\n' + REQUESTED_FORM
     for f in q[':question/answer-fields']:
         for a in f[':answer-field/choices']:
-            if a[':answer/id'] in CORRECTIONS[source_id]:
+            if a[':answer/id'] in CORRECTIONS.get(source_id, {}):
                 a[':answer/value'] = CORRECTIONS[source_id][a[':answer/id']]
     content = {k: q[k] for k in [':question/problem', ':question/worked-solution', ':question/answer-fields']}
     digest = hashlib.sha256(json.dumps(content, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
@@ -52,8 +56,13 @@ def replay(source_id):
     result['question'] = {':question/id': str(qid), ':question/problem': q[':question/problem'],
                           ':question/worked-solution': q[':question/worked-solution'],
                           ':question/difficulty': ':question.difficulty/easy', ':question/answer-fields': fields}
-    result['generation']['version'] += '+source-scalar-roles.1'
-    result['generation']['source_role_corrections'] = CORRECTIONS[source_id]
+    result['generation']['version'] += '+source-scalar-roles.2'
+    result['generation']['authorship'] = 'Locally authored source-error repair; not a verbatim Math Academy capture'
+    result['generation']['source_input_preserved'] = True
+    result['generation']['repair_evidence'] = 'scalar-role-evidence.json'
+    result['generation']['source_role_corrections'] = CORRECTIONS.get(source_id, {})
+    if source_id in FORM_RESTRICTIONS:
+        result['generation']['requested_form_restriction'] = REQUESTED_FORM
     result['generation']['content_identity'] = 'Final problem, solution, corrected banks, and source answer roles'
     return result
 original.replay = replay

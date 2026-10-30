@@ -21,7 +21,7 @@ for q in S['questions']:
     lhs=row.rsplit('=',1)[0].strip()
     try:v=expr(lhs)
     except Exception:continue
-    if not v.free_symbols:continue
+    if not v.free_symbols or v==l:continue
     ratio=sp.cancel(v/poly);record(q,'characteristic equation intermediate equivalent zero set',ratio!=0 and not ratio.free_symbols,expression=lhs,ratio=str(ratio))
  elif tid==17592186050944:
   rs=equations(q[':question/problem']);x,y=symbols['x'],symbols['y'];a=sp.Matrix([[sp.expand(r).coeff(x),sp.expand(r).coeff(y)]for r in rs]);b=sp.Matrix([-sp.expand(r).subs({x:0,y:0})for r in rs]);expected=a.inv()*b

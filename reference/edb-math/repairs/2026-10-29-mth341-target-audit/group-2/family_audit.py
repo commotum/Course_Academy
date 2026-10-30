@@ -15,7 +15,7 @@ def operation(t,a):
  if swap:b=a.copy();b.row_swap(int(swap[1])-1,int(swap[2])-1);return b,swap[0]
  m=re.search(r'R_(\d+)\s*&?\s*:=([^&]*?)(?:\\\\|$)',t)
  if not m:return None,None
- rhs=m[2].strip();rhs=re.split(r'[,;]|\\end',rhs)[0];names='xyab';rhs=re.sub(r'R_(\d+)',lambda mm:names[int(mm[1])-1],rhs)
+ rhs=m[2].strip();rhs=re.split(r'[,;:$]|\\end',rhs)[0];names='xyab';rhs=re.sub(r'R_(\d+)',lambda mm:names[int(mm[1])-1],rhs)
  try:v=scalar(rhs)
  except Exception:return None,None
  b=a.copy();row=sp.zeros(1,a.cols)

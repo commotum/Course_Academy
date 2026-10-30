@@ -4,7 +4,7 @@
     "attribute": "question/worked-solution",
     "before": "The correct answer is as follows:\n\n*$W$ is **not** a vector space (with respect to polynomials addition and multiplication of a polynomial by a real number) because **$W$ does not contain the zero element.*** \n\nIndeed, the zero polynomial has degree $0$, which is less than $5.$\n\nOn the other hand: \n\n- Addition of polynomials is associative. $\\,\u2713$\n\n- Addition of polynomials is commutative. $\\,\u2713$\n\n- Addition and scalar multiplication of polynomials satisfy the distributive laws. $\\,\u2713$\n\n- For any polynomial $p(x)$ of degree $5$ (or greater), the corresponding negative polynomial $-p(x)$ has the same degree. $\\,\u2713$",
     "after": "The correct answer is as follows:\n\n*$W$ is **not** a vector space (with respect to polynomials addition and multiplication of a polynomial by a real number) because **$W$ does not contain the zero element.*** \n\nIndeed, the zero polynomial is not a polynomial of degree $5$ or greater. Its degree is undefined (or is assigned $-\\infty$ by convention).\n\nOn the other hand: \n\n- Addition of polynomials is associative. $\\hspace{0.222em}{\\color{green}\u2713}$\n\n- Addition of polynomials is commutative. $\\hspace{0.222em}{\\color{green}\u2713}$\n\n- Addition and scalar multiplication of polynomials satisfy the distributive laws. $\\hspace{0.222em}{\\color{green}\u2713}$\n\n- For any polynomial $p(x)$ of degree $5$ (or greater), the corresponding negative polynomial $-p(x)$ has the same degree. $\\hspace{0.222em}{\\color{green}\u2713}$",
-    "reason": "source-teaching-highlights,source-equivalent-notation,visible-set-fences-and-renderer-guards,authored-mathematical-correction-zero-polynomial-degree",
+    "reason": "source-teaching-highlights,source-equivalent-notation,visible-set-fences-and-renderer-guards,authored-mathematical-correction-zero-polynomial-degree,source-operator-role",
     "evidence": [
       {
         "math_index": 4,
@@ -60,6 +60,181 @@
       {
         "identity": "q-35558",
         "proof": "The zero polynomial has no finite degree. The conclusion 0\u2209W is correct, but degree 0 incorrectly classifies the zero polynomial as a nonzero constant."
+      },
+      {
+        "identity": "q-35558",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      }
+    ]
+  },
+  {
+    "entity": 17592186272108,
+    "attribute": "question/worked-solution",
+    "before": "Let's denote the vectors of $U$ as ${u}_{1},\\,{u}_{2}.$ To extend the given set to an orthogonal basis of ${R}^{3}$, we need to find a third vector $x=\\begin{bmatrix}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{bmatrix}$ such that\n\n$$\n\\left\\{\\begin{aligned}{u}_{1}\\cdot x &=0 \\\\ {u}_{2}\\cdot x &=0\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}{x}_{1}-3{x}_{2}+2{x}_{3} &=0 \\\\ 2{x}_{1}+2{x}_{2}+2{x}_{3} &=0.\\end{aligned}\\right.\n$$\n\nNow, we consider the augmented matrix $M$ of the system above and reduce it to its row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & -3 & 2 & 0 \\\\ 2 & 2 & 2 & 0\\end{array}\\right] & {R}_{1} & :={R}_{2}-2{R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & -3 & 2 & 0 \\\\ 0 & 8 & -2 & 0\\end{array}\\right]\\end{aligned}\n$$\n\nIn the reduced matrix above, there are two pivot columns ($1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we get ${x}_{2}=\\frac{1}{4}{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n\\begin{aligned}{x}_{1}-3(\\frac{1}{4}{x}_{3})+2{x}_{3}=0\\,\u27f9\\,{x}_{1}=-\\frac{5}{4}{x}_{3}.\\end{aligned}\n$$\n\nSo, the general solution is\n\n$$\n\\begin{bmatrix}-\\frac{5}{4}{x}_{3} \\\\ \\frac{1}{4}{x}_{3} \\\\ {x}_{3}\\end{bmatrix},\\,{x}_{3}\\in R.\n$$\n\nSetting ${x}_{3}=4,$ we obtain the vector \n\n$$\nx=\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}.\n$$\n\nTherefore, an orthogonal basis of ${R}^{3}$ is\n\n$$\n{\\begin{bmatrix}1 \\\\ -3 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}}.\n$$\n\nFinally, $$\n\\displaystyle \\frac{{x}_{1}}{{x}_{2}}=\\frac{-5}{1}=-5.\n$$",
+    "after": "Let's denote the vectors of $U$ as ${\\mathbf{u}}_{1},\\hspace{0.167em}{\\mathbf{u}}_{2}.$ To extend the given set to an orthogonal basis of ${\\mathbb{R}}^{3}$, we need to find a third vector $\\mathbf{x}=\\begin{bmatrix}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{bmatrix}$ such that\n\n$$\n\\left\\{\\begin{aligned}{\\mathbf{u}}_{1}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{2}\\cdot \\mathbf{x} &=0\\end{aligned}\\right.\\hspace{2em}\u27f9\\hspace{2em}\\left\\{\\begin{aligned}{x}_{1}-3{x}_{2}+2{x}_{3} &=0 \\\\ 2{x}_{1}+2{x}_{2}+2{x}_{3} &=0.\\end{aligned}\\right.\n$$\n\nNow, we consider the augmented matrix $M$ of the system above and reduce it to its row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & -3 & 2 & 0 \\\\ 2 & 2 & 2 & 0\\end{array}\\right] & {R}_{2} & :={R}_{2}-2{R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & -3 & 2 & 0 \\\\ 0 & 8 & -2 & 0\\end{array}\\right]\\end{aligned}\n$$\n\nIn the reduced matrix above, there are two pivot columns ($1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we get ${x}_{2}=\\frac{1}{4}{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n\\begin{aligned}{x}_{1}-3(\\frac{1}{4}{x}_{3})+2{x}_{3}=0\\,\u27f9\\,{x}_{1}=-\\frac{5}{4}{x}_{3}.\\end{aligned}\n$$\n\nSo, the general solution is\n\n$$\n\\begin{bmatrix}-\\frac{5}{4}{x}_{3} \\\\ \\frac{1}{4}{x}_{3} \\\\ {x}_{3}\\end{bmatrix},\\hspace{2em}{x}_{3}\\in \\mathbb{R}.\n$$\n\nSetting ${x}_{3}=4,$ we obtain the vector \n\n$$\n\\mathbf{x}=\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}.\n$$\n\nTherefore, an orthogonal basis of ${\\mathbb{R}}^{3}$ is\n\n$$\n\\left\\{\\begin{bmatrix}1 \\\\ -3 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}\\right\\}.\n$$\n\nFinally, $$\n\\displaystyle \\frac{{x}_{1}}{{x}_{2}}=\\frac{-5}{1}=-5.\n$$",
+    "reason": "real-number-domain-font,source-vector-notation,visible-set-braces,source-equivalent-notation,visible-set-fences-and-renderer-guards,source-operator-role,authored-mathematical-correction-row-annotation",
+    "evidence": [
+      {
+        "math_index": 1,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "{u}_{1},\\,{u}_{2}.",
+        "after_math": "{\\mathbf{u}}_{1},\\hspace{0.167em}{\\mathbf{u}}_{2}.",
+        "features": [
+          "source-vector-notation"
+        ]
+      },
+      {
+        "math_index": 2,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "{R}^{3}",
+        "after_math": "{\\mathbb{R}}^{3}",
+        "features": [
+          "real-number-domain-font"
+        ]
+      },
+      {
+        "math_index": 3,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "x=\\begin{bmatrix}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{bmatrix}",
+        "after_math": "\\mathbf{x}=\\begin{bmatrix}{x}_{1} \\\\ {x}_{2} \\\\ {x}_{3}\\end{bmatrix}",
+        "features": [
+          "source-vector-notation"
+        ]
+      },
+      {
+        "math_index": 4,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "\n\\left\\{\\begin{aligned}{u}_{1}\\cdot x &=0 \\\\ {u}_{2}\\cdot x &=0\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}{x}_{1}-3{x}_{2}+2{x}_{3} &=0 \\\\ 2{x}_{1}+2{x}_{2}+2{x}_{3} &=0.\\end{aligned}\\right.\n",
+        "after_math": "\\left\\{\\begin{aligned}{\\mathbf{u}}_{1}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{2}\\cdot \\mathbf{x} &=0\\end{aligned}\\right.\\hspace{2em}\u27f9\\hspace{2em}\\left\\{\\begin{aligned}{x}_{1}-3{x}_{2}+2{x}_{3} &=0 \\\\ 2{x}_{1}+2{x}_{2}+2{x}_{3} &=0.\\end{aligned}\\right.",
+        "features": [
+          "source-vector-notation"
+        ]
+      },
+      {
+        "math_index": 12,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "\n\\begin{bmatrix}-\\frac{5}{4}{x}_{3} \\\\ \\frac{1}{4}{x}_{3} \\\\ {x}_{3}\\end{bmatrix},\\,{x}_{3}\\in R.\n",
+        "after_math": "\\begin{bmatrix}-\\frac{5}{4}{x}_{3} \\\\ \\frac{1}{4}{x}_{3} \\\\ {x}_{3}\\end{bmatrix},\\hspace{2em}{x}_{3}\\in \\mathbb{R}.",
+        "features": [
+          "real-number-domain-font"
+        ]
+      },
+      {
+        "math_index": 14,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "\nx=\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}.\n",
+        "after_math": "\\mathbf{x}=\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}.",
+        "features": [
+          "source-vector-notation"
+        ]
+      },
+      {
+        "math_index": 15,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "{R}^{3}",
+        "after_math": "{\\mathbb{R}}^{3}",
+        "features": [
+          "real-number-domain-font"
+        ]
+      },
+      {
+        "math_index": 16,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+        "before_math": "\n{\\begin{bmatrix}1 \\\\ -3 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}}.\n",
+        "after_math": "\\left\\{\\begin{bmatrix}1 \\\\ -3 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 1 \\\\ 4\\end{bmatrix}\\right\\}.",
+        "features": [
+          "visible-set-braces"
+        ]
+      }
+    ],
+    "confidence": "high",
+    "additional_evidence": [
+      {
+        "identity": "q-140485",
+        "formula_edits": []
+      },
+      {
+        "identity": "q-140485",
+        "source_paths": [
+          "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/history-q-140485.json",
+          "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14065835/q-140485-after.json"
+        ],
+        "review": "Restore visible mathematical set delimiters; retain first aligned augmented-matrix label; rblack is an invalid CSS source typo corrected to black."
+      },
+      {
+        "identity": "q-140485",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      },
+      {
+        "identity": "q-140485",
+        "before_annotations": [
+          "{R}_{1} & :={R}_{2}-2{R}_{1}"
+        ],
+        "after_annotations": [
+          "{R}_{2} & :={R}_{2}-2{R}_{1}"
+        ],
+        "proof_path": "row-operation-before.json",
+        "verification_path": "row-operation-verification.json",
+        "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
+      }
+    ]
+  },
+  {
+    "entity": 17592186345149,
+    "attribute": "question/worked-solution",
+    "before": "First, we reduce the matrix $H$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}H & =\\begin{bmatrix}2 & 2 & 12 & 2 \\\\ 0 & 1 & 1 & 0 \\\\ 1 & 1 & 9 & 2\\end{bmatrix} & {R}_{1} & :=\\frac{1}{2}{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 1 & 1 & 9 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 1\\end{bmatrix} & {R}_{3} & :=\\frac{1}{3}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 1 & \\frac{1}{3}\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\\text{Col}(H)$ is $\\{{h}_{1},{h}_{2},{h}_{3}\\}.$ \n\nTherefore, we conclude that $B=\\{{h}_{1},{h}_{2}\\}$ is not a basis of $\\text{Col}(H).$",
+    "after": "First, we reduce the matrix $H$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}H & =\\begin{bmatrix}2 & 2 & 12 & 2 \\\\ 0 & 1 & 1 & 0 \\\\ 1 & 1 & 9 & 2\\end{bmatrix} & {R}_{1} & :=\\frac{1}{2}{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 1 & 1 & 9 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 3 & 1\\end{bmatrix} & {R}_{3} & :=\\frac{1}{3}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 1 & 6 & 1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 1 & \\frac{1}{3}\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\\text{Col}(H)$ is $\\{{\\mathbf{h}}_{1},{\\mathbf{h}}_{2},{\\mathbf{h}}_{3}\\}.$ \n\nTherefore, we conclude that $\\mathcal{B}=\\{{\\mathbf{h}}_{1},{\\mathbf{h}}_{2}\\}$ is not a basis of $\\text{Col}(H).$",
+    "reason": "source-basis-notation,source-vector-notation,source-equivalent-notation,visible-set-fences-and-renderer-guards,source-operator-role,authored-mathematical-correction-row-annotation",
+    "evidence": [
+      {
+        "math_index": 6,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/history-q-75977.json",
+        "before_math": "\\{{h}_{1},{h}_{2},{h}_{3}\\}.",
+        "after_math": "\\{{\\mathbf{h}}_{1},{\\mathbf{h}}_{2},{\\mathbf{h}}_{3}\\}.",
+        "features": [
+          "source-vector-notation"
+        ]
+      },
+      {
+        "math_index": 7,
+        "source_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/history-q-75977.json",
+        "before_math": "B=\\{{h}_{1},{h}_{2}\\}",
+        "after_math": "\\mathcal{B}=\\{{\\mathbf{h}}_{1},{\\mathbf{h}}_{2}\\}",
+        "features": [
+          "source-vector-notation",
+          "source-basis-notation"
+        ]
+      }
+    ],
+    "confidence": "high",
+    "additional_evidence": [
+      {
+        "identity": "q-75977",
+        "formula_edits": []
+      },
+      {
+        "identity": "q-75977",
+        "source_paths": [
+          "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/history-q-75977.json",
+          "/home/jake/Developer/Course_Academy/reference/mathacademy/question-capture-workers/linear/14066433/q-75977-after.json"
+        ],
+        "review": "Restore visible mathematical set delimiters; retain first aligned augmented-matrix label; rblack is an invalid CSS source typo corrected to black."
+      },
+      {
+        "identity": "q-75977",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      },
+      {
+        "identity": "q-75977",
+        "before_annotations": [
+          "{R}_{3} & :={R}_{3}+(-1){R}_{2}"
+        ],
+        "after_annotations": [
+          "{R}_{3} & :={R}_{3}+(-1){R}_{1}"
+        ],
+        "proof_path": "row-operation-before.json",
+        "verification_path": "row-operation-verification.json",
+        "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
       }
     ]
   },
@@ -67,8 +242,8 @@
     "entity": 17592186351545,
     "attribute": "question/worked-solution",
     "before": "Let's denote the vectors of $U$ as ${u}_{1},\\,{u}_{2},\\,{u}_{3}.$ To extend the given set to an orthogonal basis of ${R}^{4}$, we need to find a fourth vector $x$ such that\n\n$$\n\\left\\{\\begin{aligned}{u}_{1}\\cdot x &=0 \\\\ {u}_{2}\\cdot x &=0 \\\\ {u}_{3}\\cdot x &=0\\end{aligned}\\right.\\,\u27f9\\,\\left\\{\\begin{aligned}-2{x}_{1}+2{x}_{3} &=0 \\\\ -2{x}_{1}+2{x}_{2}-2{x}_{3}+2{x}_{4} &=0 \\\\ 2{x}_{1}+{x}_{2}+2{x}_{3}+3{x}_{4} &=0.\\end{aligned}\\right.\n$$\n\nNow, we consider the augmented matrix $M$ of the system above and reduce it to its row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ -2 & 2 & -2 & 2 & 0 \\\\ 2 & 1 & 2 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{2}:={R}_{2}-{R}_{1} \\\\ {R}_{3}:={R}_{3}+\\frac{3}{2}{R}_{1}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 1 & 4 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{3}:={R}_{3}-\\frac{1}{2}{R}_{2}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 0 & 6 & 2 & 0\\end{array}\\right].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are three pivot columns ($1$st, $2$nd and $3$rd). Thus, ${x}_{4}$ is a free variable. From the third and first equation, we get ${x}_{3}=-\\frac{1}{3}{x}_{4}$ and ${x}_{1}={x}_{3}=-\\frac{1}{3}{x}_{4}$, respectively. Substituting this into the second equation, we obtain\n\n$$\n\\begin{aligned}2{x}_{2}-4(-\\frac{1}{3}{x}_{4})+2{x}_{4}=0\\,\u27f9\\,{x}_{2}=-\\frac{5}{3}{x}_{4}.\\end{aligned}\n$$\n\nSo, the general solution is\n\n$$\n\\begin{bmatrix}-\\frac{1}{3}{x}_{4} \\\\ -\\frac{5}{3}{x}_{4} \\\\ -\\frac{1}{3}{x}_{4} \\\\ {x}_{4}\\end{bmatrix},\\,{x}_{4}\\in R.\n$$\n\nSetting ${x}_{4}=3$, we obtain the vector \n\n$$\nx=\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}.\n$$\n\nTherefore, an orthogonal basis of ${R}^{4}$ is\n\n$$\n{\\begin{bmatrix}-2 \\\\ 0 \\\\ 2 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-2 \\\\ 2 \\\\ -2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}3 \\\\ 2 \\\\ 3 \\\\ 4\\end{bmatrix},\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}}.\n$$\n\nFinally, $$\n\\displaystyle \\,\\frac{{x}_{1}}{{x}_{4}}=\\frac{-1}{3}=-\\frac{1}{3}.\n$$",
-    "after": "Let's denote the vectors of $U$ as ${\\mathbf{u}}_{1},\\hspace{0.167em}{\\mathbf{u}}_{2},\\hspace{0.167em}{\\mathbf{u}}_{3}.$ To extend the given set to an orthogonal basis of ${\\mathbb{R}}^{4}$, we need to find a fourth vector $\\mathbf{x}$ such that\n\n$$\n\\left\\{\\begin{aligned}{\\mathbf{u}}_{1}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{2}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{3}\\cdot \\mathbf{x} &=0\\end{aligned}\\right.\\hspace{2em}\u27f9\\hspace{2em}\\left\\{\\begin{aligned}-2{x}_{1}+2{x}_{3} &=0 \\\\ -2{x}_{1}+2{x}_{2}-2{x}_{3}+2{x}_{4} &=0 \\\\ 2{x}_{1}+{x}_{2}+2{x}_{3}+3{x}_{4} &=0.\\end{aligned}\\right.\n$$\n\nNow, we consider the augmented matrix $M$ of the system above and reduce it to its row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ -2 & 2 & -2 & 2 & 0 \\\\ 2 & 1 & 2 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{2}:={R}_{2}-{R}_{1} \\\\ {R}_{3}:={R}_{3}+\\frac{3}{2}{R}_{1}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 1 & 4 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{3}:={R}_{3}-\\frac{1}{2}{R}_{2}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 0 & 6 & 2 & 0\\end{array}\\right].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are three pivot columns ($1$st, $2$nd and $3$rd). Thus, ${x}_{4}$ is a free variable. From the third and first equation, we get ${x}_{3}=-\\frac{1}{3}{x}_{4}$ and ${x}_{1}={x}_{3}=-\\frac{1}{3}{x}_{4}$, respectively. Substituting this into the second equation, we obtain\n\n$$\n\\begin{aligned}2{x}_{2}-4(-\\frac{1}{3}{x}_{4})+2{x}_{4}=0\\,\u27f9\\,{x}_{2}=-\\frac{5}{3}{x}_{4}.\\end{aligned}\n$$\n\nSo, the general solution is\n\n$$\n\\begin{bmatrix}-\\frac{1}{3}{x}_{4} \\\\ -\\frac{5}{3}{x}_{4} \\\\ -\\frac{1}{3}{x}_{4} \\\\ {x}_{4}\\end{bmatrix},\\hspace{2em}{x}_{4}\\in \\mathbb{R}.\n$$\n\nSetting ${x}_{4}=3$, we obtain the vector \n\n$$\n\\mathbf{x}=\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}.\n$$\n\nTherefore, an orthogonal basis of ${\\mathbb{R}}^{4}$ is\n\n$$\n\\left\\{\\begin{bmatrix}-2 \\\\ 0 \\\\ 2 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-2 \\\\ 2 \\\\ -2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 1 \\\\ 2 \\\\ 3\\end{bmatrix},\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}\\right\\}.\n$$\n\nFinally, $$\n\\displaystyle \\,\\frac{{x}_{1}}{{x}_{4}}=\\frac{-1}{3}=-\\frac{1}{3}.\n$$",
-    "reason": "real-number-domain-font,source-vector-notation,visible-set-braces,source-equivalent-notation,visible-set-fences-and-renderer-guards,authored-mathematical-correction-basis-vector",
+    "after": "Let's denote the vectors of $U$ as ${\\mathbf{u}}_{1},\\hspace{0.167em}{\\mathbf{u}}_{2},\\hspace{0.167em}{\\mathbf{u}}_{3}.$ To extend the given set to an orthogonal basis of ${\\mathbb{R}}^{4}$, we need to find a fourth vector $\\mathbf{x}$ such that\n\n$$\n\\left\\{\\begin{aligned}{\\mathbf{u}}_{1}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{2}\\cdot \\mathbf{x} &=0 \\\\ {\\mathbf{u}}_{3}\\cdot \\mathbf{x} &=0\\end{aligned}\\right.\\hspace{2em}\u27f9\\hspace{2em}\\left\\{\\begin{aligned}-2{x}_{1}+2{x}_{3} &=0 \\\\ -2{x}_{1}+2{x}_{2}-2{x}_{3}+2{x}_{4} &=0 \\\\ 2{x}_{1}+{x}_{2}+2{x}_{3}+3{x}_{4} &=0.\\end{aligned}\\right.\n$$\n\nNow, we consider the augmented matrix $M$ of the system above and reduce it to its row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ -2 & 2 & -2 & 2 & 0 \\\\ 2 & 1 & 2 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{2}:={R}_{2}-{R}_{1} \\\\ {R}_{3}:={R}_{3}+{R}_{1}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 1 & 4 & 3 & 0\\end{array}\\right] &  & \\begin{aligned}{R}_{3}:={R}_{3}-\\frac{1}{2}{R}_{2}\\end{aligned} \\\\  & \u223c\\left[\\begin{array}{cccc|c}-2 & 0 & 2 & 0 & 0 \\\\ 0 & 2 & -4 & 2 & 0 \\\\ 0 & 0 & 6 & 2 & 0\\end{array}\\right].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are three pivot columns ($1$st, $2$nd and $3$rd). Thus, ${x}_{4}$ is a free variable. From the third and first equation, we get ${x}_{3}=-\\frac{1}{3}{x}_{4}$ and ${x}_{1}={x}_{3}=-\\frac{1}{3}{x}_{4}$, respectively. Substituting this into the second equation, we obtain\n\n$$\n\\begin{aligned}2{x}_{2}-4(-\\frac{1}{3}{x}_{4})+2{x}_{4}=0\\,\u27f9\\,{x}_{2}=-\\frac{5}{3}{x}_{4}.\\end{aligned}\n$$\n\nSo, the general solution is\n\n$$\n\\begin{bmatrix}-\\frac{1}{3}{x}_{4} \\\\ -\\frac{5}{3}{x}_{4} \\\\ -\\frac{1}{3}{x}_{4} \\\\ {x}_{4}\\end{bmatrix},\\hspace{2em}{x}_{4}\\in \\mathbb{R}.\n$$\n\nSetting ${x}_{4}=3$, we obtain the vector \n\n$$\n\\mathbf{x}=\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}.\n$$\n\nTherefore, an orthogonal basis of ${\\mathbb{R}}^{4}$ is\n\n$$\n\\left\\{\\begin{bmatrix}-2 \\\\ 0 \\\\ 2 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-2 \\\\ 2 \\\\ -2 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 1 \\\\ 2 \\\\ 3\\end{bmatrix},\\begin{bmatrix}-1 \\\\ -5 \\\\ -1 \\\\ 3\\end{bmatrix}\\right\\}.\n$$\n\nFinally, $$\n\\displaystyle \\,\\frac{{x}_{1}}{{x}_{4}}=\\frac{-1}{3}=-\\frac{1}{3}.\n$$",
+    "reason": "real-number-domain-font,source-vector-notation,visible-set-braces,source-equivalent-notation,visible-set-fences-and-renderer-guards,authored-mathematical-correction-basis-vector,source-operator-role,authored-mathematical-correction-row-annotation",
     "evidence": [
       {
         "math_index": 1,
@@ -160,6 +335,22 @@
       {
         "identity": "q-83749",
         "proof": "Final basis must retain the given third vector (2,1,2,3), not (3,2,3,4). The added vector (\u22121,\u22125,\u22121,3) has zero dot product with all three actual givens; those four vectors are nonzero and orthogonal, hence a basis."
+      },
+      {
+        "identity": "q-83749",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      },
+      {
+        "identity": "q-83749",
+        "before_annotations": [
+          "{R}_{3}:={R}_{3}+\\frac{3}{2}{R}_{1}"
+        ],
+        "after_annotations": [
+          "{R}_{3}:={R}_{3}+{R}_{1}"
+        ],
+        "proof_path": "row-operation-before.json",
+        "verification_path": "row-operation-verification.json",
+        "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
       }
     ]
   },
@@ -167,8 +358,8 @@
     "entity": 17592186125167,
     "attribute": "question/problem",
     "before": "Consider the following sentence:\n\n> *If $A$ is a $n \\times n$ matrix and $det(A) \\ne 0$, then $\\underline{\\phantom{xxxxxx}}$.*\n\nWhich of the following can be placed into the blank space to make a true statement?\n\n1. $A$ has no inverse\n2. $Null(A)$ has no basis\n3. $A$ has $n$ pivot columns",
-    "after": "Consider the following sentence:\n\n> *If $A$ is a $n \\times n$ matrix and $det(A) \\ne 0$, then $\\underline{\\phantom{xxxxxx}}$.*\n\nWhich of the following can be placed into the blank space to make a true statement?\n\n1. $A$ has no inverse\n2. $\\operatorname{Null}(A)$ has the empty set as a basis\n3. $A$ has $n$ pivot columns",
-    "reason": "authored-mathematical-correction-empty-basis,source-equivalent-notation,visible-set-fences-and-renderer-guards",
+    "after": "Consider the following sentence:\n\n> *If $A$ is a $n \\times n$ matrix and $\\det(A) \\ne 0$, then $\\underline{\\phantom{xxxxxx}}$.*\n\nWhich of the following can be placed into the blank space to make a true statement?\n\n1. $A$ has no inverse\n2. $\\operatorname{Null}(A)$ has the empty set as a basis\n3. $A$ has $n$ pivot columns",
+    "reason": "authored-mathematical-correction-empty-basis,source-equivalent-notation,visible-set-fences-and-renderer-guards,source-operator-role",
     "evidence": {
       "source_defect": "Original has no basis is false; missing III-only answer. Clarify true empty-basis statement to preserve every answer value and all identities.",
       "truths": [
@@ -196,6 +387,10 @@
           "/home/jake/Developer/MA/DATA/Lessons/1869/Source/1869.html"
         ],
         "review": "Restore visible mathematical set delimiters; retain first aligned augmented-matrix label; rblack is an invalid CSS source typo corrected to black."
+      },
+      {
+        "identity": "q-47586",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
       }
     ]
   },
@@ -204,7 +399,7 @@
     "attribute": "tutorial/content",
     "before": "In the previous example, we computed a basis of $\\textrm{Col}(A),$ where \n\n$$\nA={\\left[ \\begin{array}{ccc}1 & 2 & - 1 \\\\ 3 & 2 & 5\\end{array} \\right]}.\n$$\n\nThe basis that we found previously was\n\n$$\n\\mathcal{B} = \\Bigg\\{ \n\t\t\\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\color{black}\\mathbf{a}_1}, \n\t\t\\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\color{black}\\mathbf{a}_2} \n\t\\Bigg\\}.\n$$\n\nTherefore, we can write\n\n$$\n\\textrm{Col}(A) = \\textrm{Span}\\,\\mathcal B\n= \\textrm{Span}\\{\\mathbf a_1, \\mathbf a_2\\}\n\n= \n\\textrm{Span} \\Bigg\\{ \n\t\t{\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}, \n\t\t{\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}\n\t\\Bigg\\}.\n$$\n\nThe vector $\\mathbf{a}_3$ was not included in the basis because the $3$rd column of $A$ was not a pivot column. This means that $\\mathbf{a}_3$ can be written as a linear combination of $\\mathbf{a}_1$ and $\\mathbf{a}_2.$\n\nNow, what if we want to find the exact linear combination of $\\mathbf{a}_1$ and $\\mathbf{a}_2$ that yields $\\mathbf{a}_3?$ That is to say, we want to find $x_1, x_2 \\in \\mathbb{R}$ such that \n\n$$\n{\\color{black}x_1} \\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\mathbf{a}_1} + {\\color{rblack}x_2} \\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\mathbf{a}_2} = \\underbrace{ {\\left[ \\begin{array}{c}- 1 \\\\ 5\\end{array} \\right]}}_{\\mathbf{a}_3}.\n$$\n\nThis is equivalent to a system with the augmented matrix\n$$\n\\left[\n\t{\\begin{array}{cc|c}1 & 2 & - 1 \\\\ 3 & 2 & 5\\end{array}}\n\t\\right].\n$$\n\nIf we reduced this matrix to the *reduced* row echelon form, we get\n\n$$\n\\left[\n\t{\\begin{array}{cc|c}\\bbox[3pt,lightgray]{ {\\color{blue}1}} & 0 & {\\color{red}3} \\\\ 0 & \\bbox[3pt,lightgray]{ {\\color{blue}1}} & {\\color{red}- 2}\\end{array}}\n\t\\right].\n$$\n\nFinally, the third column of the *reduced* matrix tells us that $x_1=3$ and $x_2=-2,$ meaning that\n$$\n\\underbrace{ {\\left[ \\begin{array}{c}- 1 \\\\ 5\\end{array} \\right]}}_{\\mathbf{a}_3} = {\\color{red}3}\\cdot \\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\mathbf{a}_1} + ({\\color{red}-2})\\cdot \\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\mathbf{a}_2}.\n$$\n\nIn general, if the $n$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express $\\mathbf{a}_n$ as a linear combination of all the other columns in the original matrix. \n\n**Watch out!** The matrix must be written in *reduced* row echelon form (with $1$'s for pivots and $0$'s above and below the pivots), not just in a row echelon form.",
     "after": "In the previous example, we computed a basis of $\\textrm{Col}(A),$ where \n\n$$\nA={\\left[ \\begin{array}{ccc}1 & 2 & - 1 \\\\ 3 & 2 & 5\\end{array} \\right]}.\n$$\n\nThe basis that we found previously was\n\n$$\n\\mathcal{B} = \\Bigg\\{ \n\t\t\\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\color{black}\\mathbf{a}_1}, \n\t\t\\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\color{black}\\mathbf{a}_2} \n\t\\Bigg\\}.\n$$\n\nTherefore, we can write\n\n$$\n\\textrm{Col}(A) = \\textrm{Span}\\,\\mathcal B\n= \\textrm{Span}\\{\\mathbf a_1, \\mathbf a_2\\}\n\n= \n\\textrm{Span} \\Bigg\\{ \n\t\t{\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}, \n\t\t{\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}\n\t\\Bigg\\}.\n$$\n\nThe vector $\\mathbf{a}_3$ was not included in the basis because the $3$rd column of $A$ was not a pivot column. This means that $\\mathbf{a}_3$ can be written as a linear combination of $\\mathbf{a}_1$ and $\\mathbf{a}_2.$\n\nNow, what if we want to find the exact linear combination of $\\mathbf{a}_1$ and $\\mathbf{a}_2$ that yields $\\mathbf{a}_3?$ That is to say, we want to find $x_1, x_2 \\in \\mathbb{R}$ such that \n\n$$\n{\\color{black}x_1} \\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\mathbf{a}_1} + {\\color{black}x_2} \\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\mathbf{a}_2} = \\underbrace{ {\\left[ \\begin{array}{c}- 1 \\\\ 5\\end{array} \\right]}}_{\\mathbf{a}_3}.\n$$\n\nThis is equivalent to a system with the augmented matrix\n$$\n\\left[\n\t{\\begin{array}{cc|c}1 & 2 & - 1 \\\\ 3 & 2 & 5\\end{array}}\n\t\\right].\n$$\n\nIf we reduced this matrix to the *reduced* row echelon form, we get\n\n$$\n\\left[\n\t{\\begin{array}{cc|c}\\bbox[3pt,lightgray]{ {\\color{blue}1}} & 0 & {\\color{red}3} \\\\ 0 & \\bbox[3pt,lightgray]{ {\\color{blue}1}} & {\\color{red}- 2}\\end{array}}\n\t\\right].\n$$\n\nFinally, the third column of the *reduced* matrix tells us that $x_1=3$ and $x_2=-2,$ meaning that\n$$\n\\underbrace{ {\\left[ \\begin{array}{c}- 1 \\\\ 5\\end{array} \\right]}}_{\\mathbf{a}_3} = {\\color{red}3}\\cdot \\underbrace{ {\\left[ \\begin{array}{c}1 \\\\ 3\\end{array} \\right]}}_{\\mathbf{a}_1} + ({\\color{red}-2})\\cdot \\underbrace{ {\\left[ \\begin{array}{c}2 \\\\ 2\\end{array} \\right]}}_{\\mathbf{a}_2}.\n$$\n\nIn general, if the $n$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express $\\mathbf{a}_n$ as a linear combination of the pivot columns of the original matrix. \n\n**Watch out!** The matrix must be written in *reduced* row echelon form (with $1$'s for pivots and $0$'s above and below the pivots), not just in a row echelon form.",
-    "reason": "visible-set-fences-and-renderer-guards,authored-mathematical-correction-theorem-conditions",
+    "reason": "visible-set-fences-and-renderer-guards,authored-mathematical-correction-theorem-conditions,source-operator-role",
     "evidence": {
       "identity": "tutorial:3966",
       "source_paths": [
@@ -217,6 +412,10 @@
         "proof": "For pivot columns p\u2081,\u2026,p\u1d63, a nonpivot column a\u2c7c equals the sum of its r pivot-row RREF entries times original columns a_{p\u1d62}; nonpivot columns are not the coefficient basis. A 2\u00d74 rank-two matrix has two coefficients although three other columns exist.",
         "source_identity": "tutorial:3966",
         "authorship": "Authored correction of original mathematical wording"
+      },
+      {
+        "identity": "tutorial:3966",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
       }
     ]
   },
@@ -225,12 +424,18 @@
     "attribute": "question/worked-solution",
     "before": "To find $\\text{dim}(\\text{Null}(F))$, we reduce $F$ to row echelon form, as follows:\n\n$$\n\\begin{aligned}F & =\\begin{bmatrix}3 & 6 & 0 & -3 & -9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & -10 & 4 & -2 & 14 \\\\ 4 & 3 & 2 & -5 & -5\\end{bmatrix} & {R}_{4} & :={R}_{4}+\\left(-\\frac{4}{3}\\right){R}_{1} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & 9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & -10 & 4 & -2 & 14 \\\\ 0 & -5 & 2 & -1 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & 9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & -5 & 2 & -1 & 7\\end{bmatrix} & {R}_{4} & :={R}_{4}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & 9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nThe reduced matrix has $2$ pivot columns and $3$ non-pivot columns (namely, the $3$rd, $4$th and $5$th columns). \n\nTherefore,\n\n$$\n\\text{dim}(\\text{Null}(F))=3.\n$$",
     "after": "To find $\\text{dim}(\\text{Null}(F))$, we reduce $F$ to row echelon form, as follows:\n\n$$\n\\begin{aligned}F & =\\begin{bmatrix}3 & 6 & 0 & -3 & -9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & -10 & 4 & -2 & 14 \\\\ 4 & 3 & 2 & -5 & -5\\end{bmatrix} & {R}_{4} & :={R}_{4}+\\left(-\\frac{4}{3}\\right){R}_{1} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & -9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & -10 & 4 & -2 & 14 \\\\ 0 & -5 & 2 & -1 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & -9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & -5 & 2 & -1 & 7\\end{bmatrix} & {R}_{4} & :={R}_{4}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 6 & 0 & -3 & -9 \\\\ 0 & 5 & -2 & 1 & -7 \\\\ 0 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nThe reduced matrix has $2$ pivot columns and $3$ non-pivot columns (namely, the $3$rd, $4$th and $5$th columns). \n\nTherefore,\n\n$$\n\\text{dim}(\\text{Null}(F))=3.\n$$",
-    "reason": "authored-mathematical-correction-row-sign",
+    "reason": "authored-mathematical-correction-row-sign,source-operator-role",
     "evidence": {
       "identity": "q-35346",
       "derivation": "Only R4 and then R3 and R4 change. R1 remains (3,6,0,\u22123,\u22129) throughout. R4\u22124/3 R1=(0,\u22125,2,\u22121,7); the remaining nonzero rows have rank 2 and nullity 5\u22122=3.",
       "source_paths": []
-    }
+    },
+    "additional_evidence": [
+      {
+        "identity": "q-35346",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      }
+    ]
   },
   {
     "entity": 17592186121335,
@@ -282,11 +487,153 @@
     "attribute": "tutorial/content",
     "before": "A set of vectors ${U}=\\{\\mathbf{u}_1, \\cdots, \\mathbf{u}_p \\}$ is an **orthonormal set** if it is an orthogonal set of *unit* vectors. Remember that $\\mathbf u_i$ is a unit vector if $\\Vert \\mathbf u_i \\Vert = 1,$ or equivalently, $\\mathbf u_i \\cdot \\mathbf u_i = 1.$\n\nAn orthonormal set that is also a basis, like the standard basis, is called an **orthonormal basis**. For instance, the standard basis $\\{\\mathbf{e}_1, \\mathbf{e}_2, \\mathbf{e}_3\\}$ of $\\mathbb R^3$ is an orthonormal basis because the vectors are orthogonal to each other and each vector in the set is a unit vector.\n\nThere are two more things to note about orthogonal sets:\n\n- Any orthogonal set of non-zero vectors is linearly independent.\n\n- An orthogonal set in $\\Bbb R^n$ cannot contain more than $n$ vectors. More precisely, if $V = \\{\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_p\\}$ is an orthogonal set of non-zero vectors and $\\mathbf{v}_i\\in\\mathbb{R}^n,$ then we must have that $p\\leq n.$\n\n**Note:** To remember that an orthogonal set of non-zero vectors in $\\Bbb R^n$ cannot contain more than $n$ vectors, you can use the following intuitive mnemonic. There are only $n$ dimensions in $\\Bbb R^n,$ and each non-zero orthogonal vector has a $1$-dimensional span, meaning that it \"takes up\" $1$ dimension of $\\Bbb R^n.$ So, you can't \"fit\" more than $n$ orthogonal vectors in $\\Bbb R^n.$",
     "after": "A set of vectors ${U}=\\{\\mathbf{u}_1, \\cdots, \\mathbf{u}_p \\}$ is an **orthonormal set** if it is an orthogonal set of *unit* vectors. Remember that $\\mathbf u_i$ is a unit vector if $\\Vert \\mathbf u_i \\Vert = 1,$ or equivalently, $\\mathbf u_i \\cdot \\mathbf u_i = 1.$\n\nAn orthonormal set that is also a basis, like the standard basis, is called an **orthonormal basis**. For instance, the standard basis $\\{\\mathbf{e}_1, \\mathbf{e}_2, \\mathbf{e}_3\\}$ of $\\mathbb R^3$ is an orthonormal basis because the vectors are orthogonal to each other and each vector in the set is a unit vector.\n\nThere are two more things to note about orthogonal sets:\n\n- Any orthogonal set of non-zero vectors is linearly independent.\n\n- An orthogonal set of non-zero vectors in $\\Bbb R^n$ cannot contain more than $n$ vectors. More precisely, if $V = \\{\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_p\\}$ is an orthogonal set of non-zero vectors and $\\mathbf{v}_i\\in\\mathbb{R}^n,$ then we must have that $p\\leq n.$\n\n**Note:** To remember that an orthogonal set of non-zero vectors in $\\Bbb R^n$ cannot contain more than $n$ vectors, you can use the following intuitive mnemonic. There are only $n$ dimensions in $\\Bbb R^n,$ and each non-zero orthogonal vector has a $1$-dimensional span, meaning that it \"takes up\" $1$ dimension of $\\Bbb R^n.$ So, you can't \"fit\" more than $n$ orthogonal vectors in $\\Bbb R^n.$",
-    "reason": "authored-mathematical-correction-theorem-conditions",
+    "reason": "authored-mathematical-correction-theorem-conditions,source-operator-role",
     "evidence": {
       "proof": "The definition permits the zero vector, as existing question q-39396 illustrates. Without the nonzero condition {e\u2081,\u2026,e\u2099,0} is an orthogonal set of n+1 vectors. Nonzero orthogonal vectors are independent, giving the n bound.",
       "source_identity": "tutorial:4353",
       "authorship": "Authored correction of original mathematical wording"
+    },
+    "additional_evidence": [
+      {
+        "identity": "tutorial:4353",
+        "proof": "det is the determinant function, and Null/Col denote the named null/column spaces; use upright operator commands, preserving every argument and value."
+      }
+    ]
+  },
+  {
+    "entity": 17592186124791,
+    "attribute": "question/problem",
+    "before": "$$\nA\\text{ is }\\text{invertible}\\quad\\Longleftrightarrow\\quad\\left\\{\\begin{aligned}\\operatorname{Col}(A) &=\\mathbb{R}^{n} \\\\ \\underline{\\phantom{\\dim(\\operatorname{Col}(A))}} &=n=\\operatorname{rank}(A) \\\\ \\operatorname{Null}(A) &=\\{0\\} \\\\ \\dim(\\operatorname{Null}(A)) &=0=\\operatorname{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?",
+    "after": "$$\nA\\text{ is }\\text{invertible}\\quad\\Longleftrightarrow\\quad\\left\\{\\begin{aligned}\\operatorname{Col}(A) &=\\mathbb{R}^{n} \\\\ \\underline{\\phantom{\\dim(\\operatorname{Col}(A))}} &=n=\\operatorname{rank}(A) \\\\ \\operatorname{Null}(A) &=\\{0\\} \\\\ \\dim(\\operatorname{Null}(A)) &=0=\\operatorname{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?\n\nUse only expressions that refer directly to $A$; powers and inverses of $A$ are outside the requested form.",
+    "reason": "authored-mathematical-correction-ambiguous-theorem-slot",
+    "evidence": {
+      "identity": "q-141343",
+      "authorship": "Authored requested-form condition resolving original mathematical ambiguity",
+      "proof": "For invertible A, dim Col(A\u207b\u00b9)=n as well as dim Col(A)=n, so both original choices are mathematically true. The explicit form condition excludes inverse expressions while preserving the intended dimension-of-A slot.",
+      "bank_and_correct_link_preserved": true
+    }
+  },
+  {
+    "entity": 17592186272337,
+    "attribute": "question/problem",
+    "before": "$$\nA\\text{\u00a0is invertible}\\,\u21d4\\,\\left\\{\\begin{aligned}\\bbox[3pt,white,border: 2px solid Gainsboro]{\\phantom{WW}} &={R}^{n} \\\\ \\text{dim(Col}(A)) &=n=\\text{rank}(A) \\\\ \\text{Null}(A) &=\\{0\\} \\\\ \\text{dim(Null}(A)) &=0=\\text{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?",
+    "after": "$$\nA\\text{\u00a0is invertible}\\,\u21d4\\,\\left\\{\\begin{aligned}\\bbox[3pt,white,border: 2px solid Gainsboro]{\\phantom{WW}} &={R}^{n} \\\\ \\text{dim(Col}(A)) &=n=\\text{rank}(A) \\\\ \\text{Null}(A) &=\\{0\\} \\\\ \\text{dim(Null}(A)) &=0=\\text{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?\n\nUse only expressions that refer directly to $A$; powers and inverses of $A$ are outside the requested form.",
+    "reason": "authored-mathematical-correction-ambiguous-theorem-slot",
+    "evidence": {
+      "identity": "q-142357",
+      "authorship": "Authored requested-form condition resolving original mathematical ambiguity",
+      "proof": "For invertible A and positive integer n, A\u207f and A\u207b\u00b9 are also invertible; all three Col(A), Col(A\u207f), Col(A\u207b\u00b9) equal R\u207f. Restricting the requested form to A itself makes only Col(A) admissible.",
+      "bank_and_correct_link_preserved": true
+    }
+  },
+  {
+    "entity": 17592186446376,
+    "attribute": "question/problem",
+    "before": "$$\nA\\text{\u00a0is invertible}\\,\u21d4\\,\\left\\{\\begin{aligned}\\text{Col}(A) &={R}^{n} \\\\ \\text{dim(Col}(A)) &=n=\\text{rank}(A) \\\\ \\bbox[3pt,white,border: 2px solid Gainsboro]{\\phantom{WW}} &=\\{0\\} \\\\ \\text{dim(Null}(A)) &=0=\\text{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?",
+    "after": "$$\nA\\text{\u00a0is invertible}\\,\u21d4\\,\\left\\{\\begin{aligned}\\text{Col}(A) &={R}^{n} \\\\ \\text{dim(Col}(A)) &=n=\\text{rank}(A) \\\\ \\bbox[3pt,white,border: 2px solid Gainsboro]{\\phantom{WW}} &=\\{0\\} \\\\ \\text{dim(Null}(A)) &=0=\\text{nullity}(A)\\end{aligned}\\right.\n$$\n\nConsider the equivalence above, where $A$ is an $n\\,\\times \\,n$ matrix. Which of the following should be placed into the blank space to make a true statement?\n\nUse only expressions that refer directly to $A$; powers and inverses of $A$ are outside the requested form.",
+    "reason": "authored-mathematical-correction-ambiguous-theorem-slot",
+    "evidence": {
+      "identity": "q-141345",
+      "authorship": "Authored requested-form condition resolving original mathematical ambiguity",
+      "proof": "For invertible A, both Null(A) and Null(A\u207b\u00b9) equal {0}. Restrict the requested form to A itself to retain the intended Null(A) answer without changing any bank/history.",
+      "bank_and_correct_link_preserved": true
+    }
+  },
+  {
+    "entity": 17592186435358,
+    "attribute": "question/worked-solution",
+    "before": "First, we reduce the matrix $W$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}W & =\\begin{bmatrix}3 & -9 & 6 \\\\ -5 & 15 & 10\\end{bmatrix} & {R}_{1} & :=\\frac{1}{3}{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ -5 & 15 & 10\\end{bmatrix} & {R}_{2} & :={R}_{2}+5{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ 0 & 0 & 20\\end{bmatrix} & {R}_{2} & :=\\frac{1}{20}{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ 0 & 0 & 1\\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\\text{Col}(W)$ is $\\{{w}_{1},{w}_{3}\\},$ that is to say,\n\n$$\nB=\\left\\{\\begin{bmatrix}3 \\\\ -5\\end{bmatrix},\\begin{bmatrix}6 \\\\ 10\\end{bmatrix}\\right\\}.\n$$\n\nNow, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${w}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have\n\n$$\n\\underbrace{\\begin{bmatrix}-9 \\\\ 15\\end{bmatrix}}_{{w}_{2}}=\\underbrace{(-3)}_{{x}_{1}}\\cdot \\underbrace{\\begin{bmatrix}3 \\\\ -5\\end{bmatrix}}_{{w}_{1}}+\\underbrace{(0)}_{{x}_{3}}\\cdot \\underbrace{\\begin{bmatrix}6 \\\\ 10\\end{bmatrix}}_{{w}_{3}}.\n$$\n\nThis gives us ${x}_{1}\\cdot {x}_{3}=(-3)\\cdot 0=0.$",
+    "after": "First, we reduce the matrix $W$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}W & =\\begin{bmatrix}3 & -9 & 6 \\\\ -5 & 15 & 10\\end{bmatrix} & {R}_{1} & :=\\frac{1}{3}{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ -5 & 15 & 10\\end{bmatrix} & {R}_{2} & :={R}_{2}+5{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ 0 & 0 & 20\\end{bmatrix} & {R}_{2} & :=\\frac{1}{20}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 \\\\ 0 & 0 & 1\\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\\text{Col}(W)$ is $\\{{w}_{1},{w}_{3}\\},$ that is to say,\n\n$$\nB=\\left\\{\\begin{bmatrix}3 \\\\ -5\\end{bmatrix},\\begin{bmatrix}6 \\\\ 10\\end{bmatrix}\\right\\}.\n$$\n\nNow, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${w}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have\n\n$$\n\\underbrace{\\begin{bmatrix}-9 \\\\ 15\\end{bmatrix}}_{{w}_{2}}=\\underbrace{(-3)}_{{x}_{1}}\\cdot \\underbrace{\\begin{bmatrix}3 \\\\ -5\\end{bmatrix}}_{{w}_{1}}+\\underbrace{(0)}_{{x}_{3}}\\cdot \\underbrace{\\begin{bmatrix}6 \\\\ 10\\end{bmatrix}}_{{w}_{3}}.\n$$\n\nThis gives us ${x}_{1}\\cdot {x}_{3}=(-3)\\cdot 0=0.$",
+    "reason": "authored-mathematical-correction-row-annotation",
+    "evidence": {
+      "identity": "q-111501",
+      "before_annotations": [
+        "{R}_{2} & :=\\frac{1}{20}{R}_{1}"
+      ],
+      "after_annotations": [
+        "{R}_{2} & :=\\frac{1}{20}{R}_{2}"
+      ],
+      "proof_path": "row-operation-before.json",
+      "verification_path": "row-operation-verification.json",
+      "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
+    }
+  },
+  {
+    "entity": 17592186442802,
+    "attribute": "question/worked-solution",
+    "before": "First, we reduce the matrix $H$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}H & =\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 2 & -6 & 0 & -6 \\\\ -7 & 18 & -3 & 13\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & -2 & -2 & -6 \\\\ -7 & 18 & -3 & 13\\end{bmatrix} & {R}_{3} & :={R}_{3}+7{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & -2 & -2 & -6 \\\\ 0 & 4 & 4 & 13\\end{bmatrix} & {R}_{3} & :=\\left(-\\frac{1}{2}\\right){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 4 & 4 & 13\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 1\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $4$th columns. So, a basis of $\\text{Col}(H)$ is $\\{{h}_{1},{h}_{2},{h}_{4}\\}.$ \n\nTherefore, we conclude that $B=\\{{h}_{1},{h}_{3}\\}$ is not a basis of $\\text{Col}(H).$",
+    "after": "First, we reduce the matrix $H$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}H & =\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 2 & -6 & 0 & -6 \\\\ -7 & 18 & -3 & 13\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & -2 & -2 & -6 \\\\ -7 & 18 & -3 & 13\\end{bmatrix} & {R}_{3} & :={R}_{3}+7{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & -2 & -2 & -6 \\\\ 0 & 4 & 4 & 13\\end{bmatrix} & {R}_{2} & :=\\left(-\\frac{1}{2}\\right){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 4 & 4 & 13\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 0 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 1\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $4$th columns. So, a basis of $\\text{Col}(H)$ is $\\{{h}_{1},{h}_{2},{h}_{4}\\}.$ \n\nTherefore, we conclude that $B=\\{{h}_{1},{h}_{3}\\}$ is not a basis of $\\text{Col}(H).$",
+    "reason": "authored-mathematical-correction-row-annotation",
+    "evidence": {
+      "identity": "q-111511",
+      "before_annotations": [
+        "{R}_{3} & :=\\left(-\\frac{1}{2}\\right){R}_{3}"
+      ],
+      "after_annotations": [
+        "{R}_{2} & :=\\left(-\\frac{1}{2}\\right){R}_{2}"
+      ],
+      "proof_path": "row-operation-before.json",
+      "verification_path": "row-operation-verification.json",
+      "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
+    }
+  },
+  {
+    "entity": 17592186615396,
+    "attribute": "question/worked-solution",
+    "before": "First, we reduce the matrix $P$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}P & =\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 2 & 3 & -3 & 1 \\\\ -5 & -3 & 13 & -7\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 3 & 3 & -3 \\\\ -5 & -3 & 13 & -7\\end{bmatrix} & {R}_{3} & :={R}_{3}+5{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & -3 & -2 & 3\\end{bmatrix} & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & -3 & -2 & 3\\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\\text{Col}(P)$ is $\\{{p}_{1},{p}_{2},{p}_{3}\\}.$ \n\nTherefore, we conclude that $B=\\{{p}_{1},{p}_{2}\\}$ is not a basis of $\\text{Col}(P).$",
+    "after": "First, we reduce the matrix $P$ to reduced row echelon form (RREF):\n\n$$\n\\begin{aligned}P & =\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 2 & 3 & -3 & 1 \\\\ -5 & -3 & 13 & -7\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 3 & 3 & -3 \\\\ -5 & -3 & 13 & -7\\end{bmatrix} & {R}_{3} & :={R}_{3}+5{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & -3 & -2 & 3\\end{bmatrix} & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & -3 & -2 & 3\\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nFrom the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\\text{Col}(P)$ is $\\{{p}_{1},{p}_{2},{p}_{3}\\}.$ \n\nTherefore, we conclude that $B=\\{{p}_{1},{p}_{2}\\}$ is not a basis of $\\text{Col}(P).$",
+    "reason": "authored-mathematical-correction-row-annotation",
+    "evidence": {
+      "identity": "q-111513",
+      "before_annotations": [
+        "{R}_{2} & :={R}_{2}+(-2){R}_{2}",
+        "{R}_{3} & :={R}_{3}+5{R}_{2}"
+      ],
+      "after_annotations": [
+        "{R}_{2} & :={R}_{2}+(-2){R}_{1}",
+        "{R}_{3} & :={R}_{3}+5{R}_{1}"
+      ],
+      "proof_path": "row-operation-before.json",
+      "verification_path": "row-operation-verification.json",
+      "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
+    }
+  },
+  {
+    "entity": 17592186653551,
+    "attribute": "question/worked-solution",
+    "before": "In order to find a basis of $\\text{Col}(D),$ we reduce the matrix $D$ to row echelon form:\n\n$$\n\\begin{aligned}D & =\\begin{bmatrix}1 & 2 & 5 \\\\ 3 & 6 & 15 \\\\ 5 & 11 & 28\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 0 & 0 & 0 \\\\ 5 & 11 & 28\\end{bmatrix} & {R}_{2} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 5 & 11 & 28 \\\\ 0 & 0 & 0\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 0 & 1 & 3 \\\\ 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nThe pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.\n\nRemember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. \n\nThe $1$st and $2$nd columns from the original matrix are ${d}_{1}$ and ${d}_{2}.$ So, a basis of $\\text{Col}(D)$ is $\\{{d}_{1},{d}_{2}\\},$ that is to say, \n\n$$\nB=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ 5\\end{bmatrix},\\begin{bmatrix}2 \\\\ 6 \\\\ 11\\end{bmatrix}\\right\\}.\n$$",
+    "after": "In order to find a basis of $\\text{Col}(D),$ we reduce the matrix $D$ to row echelon form:\n\n$$\n\\begin{aligned}D & =\\begin{bmatrix}1 & 2 & 5 \\\\ 3 & 6 & 15 \\\\ 5 & 11 & 28\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 0 & 0 & 0 \\\\ 5 & 11 & 28\\end{bmatrix} & {R}_{2} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 5 & 11 & 28 \\\\ 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-5){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 5 \\\\ 0 & 1 & 3 \\\\ 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nThe pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.\n\nRemember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. \n\nThe $1$st and $2$nd columns from the original matrix are ${d}_{1}$ and ${d}_{2}.$ So, a basis of $\\text{Col}(D)$ is $\\{{d}_{1},{d}_{2}\\},$ that is to say, \n\n$$\nB=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ 5\\end{bmatrix},\\begin{bmatrix}2 \\\\ 6 \\\\ 11\\end{bmatrix}\\right\\}.\n$$",
+    "reason": "authored-mathematical-correction-row-annotation",
+    "evidence": {
+      "identity": "q-111194",
+      "before_annotations": [
+        "{R}_{3} & :={R}_{3}+(-5){R}_{2}"
+      ],
+      "after_annotations": [
+        "{R}_{2} & :={R}_{2}+(-5){R}_{1}"
+      ],
+      "proof_path": "row-operation-before.json",
+      "verification_path": "row-operation-verification.json",
+      "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
+    }
+  },
+  {
+    "entity": 17592186271988,
+    "attribute": "question/worked-solution",
+    "before": "Recall that by definition, $\\text{nullity}(W)=\\text{dim}(\\text{Null}(W)).$\n\nTo find $\\text{dim}(\\text{Null}(W))$, we reduce $W$ to row echelon form, as follows: \n\n$$\n\\begin{aligned}W & =\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ -3 & 12 & 4 & 9 \\\\ 5 & -20 & 10 & 8\\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ 0 & 0 & 10 & 18 \\\\ 5 & -20 & 10 & 8\\end{bmatrix} & {R}_{3} & :={R}_{3}(-5){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ 0 & 0 & 10 & 18 \\\\ 0 & 0 & 0 & -7\\end{bmatrix}\\end{aligned}\n$$\n\nThe reduced matrix has $3$ pivot columns and  $1$\n non-pivot column (the $2$nd). \n\nTherefore,\n\n$$\n\\text{nullity}(W)=\\text{dim}(\\text{Null}(W))=1.\n$$",
+    "after": "Recall that by definition, $\\text{nullity}(W)=\\text{dim}(\\text{Null}(W)).$\n\nTo find $\\text{dim}(\\text{Null}(W))$, we reduce $W$ to row echelon form, as follows: \n\n$$\n\\begin{aligned}W & =\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ -3 & 12 & 4 & 9 \\\\ 5 & -20 & 10 & 8\\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ 0 & 0 & 10 & 18 \\\\ 5 & -20 & 10 & 8\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-5){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -4 & 2 & 3 \\\\ 0 & 0 & 10 & 18 \\\\ 0 & 0 & 0 & -7\\end{bmatrix}\\end{aligned}\n$$\n\nThe reduced matrix has $3$ pivot columns and  $1$\n non-pivot column (the $2$nd). \n\nTherefore,\n\n$$\n\\text{nullity}(W)=\\text{dim}(\\text{Null}(W))=1.\n$$",
+    "reason": "authored-mathematical-correction-row-annotation",
+    "evidence": {
+      "identity": "q-139975",
+      "before_annotations": [
+        "{R}_{3} & :={R}_{3}(-5){R}_{1}"
+      ],
+      "after_annotations": [
+        "{R}_{3} & :={R}_{3}+(-5){R}_{1}"
+      ],
+      "proof_path": "row-operation-before.json",
+      "verification_path": "row-operation-verification.json",
+      "proof": "Exact rational arithmetic on each displayed consecutive matrix proves the revised annotated row operation(s). Matrix values, solution conclusions, choices and keys are unchanged."
     }
   }
 ]

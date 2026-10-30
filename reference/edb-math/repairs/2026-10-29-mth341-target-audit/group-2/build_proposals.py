@@ -29,6 +29,10 @@ edit_matrix(17592186269210,lambda a:a.shape==(4,8)and a[3,3]==0,lambda a:changed
 edit_matrix(17592186269210,lambda a:a.shape==(4,8)and a[3,5]==3,lambda a:changed(a,3,5,0),'R1 := R1 + 2R3 changes only row 1; the final row of the augmented right block remains (0,0,0,1). Both inverse products equal I.')
 edit_matrix(17592186402002,lambda a:a.shape==(2,2)and a[1,1]==1 and a[0,0]==-1,lambda a:changed(a,1,1,-1),'The final augmented right block and inverse formula give D^-1=[[-1,1],[2,-1]]. The printed conclusion had +1 in entry (2,2); both inverse products verify -1.')
 edit_matrix(17592186660326,lambda a:a.shape==(4,8)and a[3,5]==3,lambda a:changed(a,3,5,0),'R3 := R3 - 5R2 changes only row 3; row 4 remains (0,0,0,1 | 0,0,0,1). Both inverse products verify the existing correct inverse and -34 key.')
+e=17592186442272
+old=current[(e,':question/worked-solution')];wrong=r'+(5+\lambda )';right=r'-(5+\lambda )';assert old.count(wrong)==1
+setv(e,'question/worked-solution',old.replace(wrong,right),'Correct the third cofactor contribution: a13=-1 multiplies minor determinant 5+lambda, so this term is -(5+lambda). The previous + sign made the expanded line disagree with the determinant and the subsequent polynomial.')
+evidence.append({'question':e,'before_term':wrong,'after_term':right,'proof':'The first-row terms are (3-lambda)*(lambda^2+5lambda), +(-5-lambda), and -(5+lambda). Their sum is -lambda^3-2lambda^2+13lambda-10, agreeing with det(A-lambda I), the next line, and the existing eigenvalue key {-5,1,2}.'})
 # The archived radio bank contains equivalent evaluated values because M43=0.
 e=17592186370926
 prompt=current[(e,':question/problem')]
@@ -61,6 +65,7 @@ for key,value in list(current.items()):
  bare=attr==':answer/value'and objects[e].get(':answer/type',{}).get(':db/ident')==':answer.type/math'
  new=mathfix(re.match(r'[\s\S]*',new))if bare else MATH.sub(mathfix,new)
  if attr==':answer/value'and not bare and new.startswith('det\\begin')and'$'not in new:new='$\\'+new+'$'
+ if attr==':question/worked-solution'and e in{q for t,k,q in S['links']if t==17592186050376}:new=new.replace('$x=',r'$\lambda =')
  if e==17592186115851 and attr==':question/problem':new=new.replace('$2 \\cdot 2$','$2\\times2$')
  if new!=value:setv(e,attr[1:],new,'Preserve proper determinant-operator typesetting and protect the initial literal bracket in aligned; remove invisible capture BOM characters where present.')
 proposals=[]
