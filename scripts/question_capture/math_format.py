@@ -761,6 +761,65 @@ def _matrix_layouts(text):
     raise ValueError('Excessive matrix nesting')
 
 
+def _scalable_composite_fences(text, environments):
+    """Size balanced expression fences containing tables in the same TeX scope.
+
+    A table may be one operand in a matrix sum, or appear inside a formatting
+    group. Tables in subscripts and teaching labels do not enlarge unrelated
+    proposition parentheses. Alignment cells are independent fence scopes.
+    """
+    tokens = re.compile(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|[{}()\[\]&.]')
+    opening = {'(': 'paren', '[': 'bracket', r'\{': 'brace', r'\lparen': 'paren',
+               r'\lbrack': 'bracket', r'\lbrace': 'brace', r'\langle': 'angle'}
+    closing = {')': 'paren', ']': 'bracket', r'\}': 'brace', r'\rparen': 'paren',
+               r'\rbrack': 'bracket', r'\rbrace': 'brace', r'\rangle': 'angle'}
+    sizing = re.compile(r'\\(left|right|big|Big|bigg|Bigg)[lrm]?\s*$')
+    optional = re.compile(r'\\(?:sqrt|xrightarrow|xleftarrow|xleftrightarrow|'
+                          r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
+    annotation = re.compile(r'(?<!\\)[_^]\s*$|\\(?:underset|overset|stackrel|substack|text|textrm|operatorname)\s*$')
+    groups, frames, stacks, edits = [], [], {}, []
+    def scope():
+        return (tuple(g[0] for g in groups), tuple((f[0], f[1], f[3]) for f in frames))
+    for token in tokens.finditer(text):
+        value = token[0]; env = ENV.fullmatch(value)
+        if env:
+            if env[1] == 'begin':
+                if env[2] in environments:
+                    group_path, frame_path = scope()
+                    for (old_groups, old_frames), entries in stacks.items():
+                        if old_frames == frame_path and group_path[:len(old_groups)] == old_groups \
+                                and not any(role for _, role in groups[len(old_groups):]):
+                            for entry in entries: entry['table'] = True
+                frames.append([env[2], token.start(), tuple(g[0] for g in groups), 0])
+            elif frames and frames[-1][0] == env[2]: frames.pop()
+            continue
+        if value == '{':
+            groups.append((token.start(), bool(annotation.search(text[:token.start()])))); continue
+        if value == '}':
+            if groups: groups.pop()
+            continue
+        if value in ('&', r'\\'):
+            if frames and tuple(g[0] for g in groups) == frames[-1][2]: frames[-1][3] += 1
+            continue
+        key = scope(); stack = stacks.setdefault(key, [])
+        size = sizing.search(text[:token.start()]); explicit = bool(size)
+        if value == '.' and size:
+            if size[1] == 'left': stack.append({'kind': '*', 'explicit': True, 'table': False})
+            elif size[1] == 'right' and stack and stack[-1]['explicit']: stack.pop()
+            continue
+        if value in opening:
+            stack.append({'kind': opening[value], 'start': token.start(), 'explicit': explicit,
+                          'optional': value == '[' and bool(optional.search(text[:token.start()])), 'table': False})
+        elif value in closing and stack:
+            entry = stack[-1]
+            if entry['kind'] != closing[value] and not (entry['kind'] == '*' and size and size[1] == 'right'): continue
+            stack.pop()
+            if entry['table'] and not entry['explicit'] and not explicit and not entry.get('optional'):
+                edits.extend([(entry['start'], r'\left'), (token.start(), r'\right')])
+    for position, command in sorted(edits, reverse=True): text = text[:position] + command + text[position:]
+    return text
+
+
 def scalable_table_fences(text, *, environments=None):
     r"""Stretch existing table fences without changing cells or rules.
 
@@ -815,7 +874,7 @@ def scalable_table_fences(text, *, environments=None):
         changes.extend([(left.start(1), r'\left'), (span[2] + right.start(1), r'\right')])
     for position, command in sorted(changes, reverse=True):
         text = text[:position] + command + text[position:]
-    return text
+    return _scalable_composite_fences(text, environments)
 
 
 def scalable_array_fences(text):

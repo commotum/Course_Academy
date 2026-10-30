@@ -105,6 +105,27 @@ class MathContentTests(unittest.TestCase):
                 validate_matrix_layouts('$' + expected + '$')
                 validate_tex(expected)
 
+    def test_composite_matrix_expressions_and_transparent_groups_stretch(self):
+        from math_format import scalable_table_fences
+        matrix = r'\begin{bmatrix}1\\2\end{bmatrix}'
+        for source, expected in [
+                ('T(' + matrix + '-2' + matrix + ')', r'T\left(' + matrix + '-2' + matrix + r'\right)'),
+                ('({' + matrix + '})', r'\left({' + matrix + r'}\right)'),
+                ('(' + matrix + '+' + matrix + ')', r'\left(' + matrix + '+' + matrix + r'\right)')]:
+            with self.subTest(source=source):
+                result = scalable_table_fences(source)
+                self.assertEqual(result, expected)
+                self.assertEqual(scalable_table_fences(result), result)
+                validate_tex(result)
+
+    def test_composite_fences_respect_alignment_cells_and_annotation_groups(self):
+        from math_format import scalable_table_fences
+        label = r'\begin{array}{c}\uparrow\\\text{I}\end{array}'
+        for source in [r'(\underset{' + label + r'}{x}>5)',
+                       r'(x_{' + label + r'}>5)',
+                       r'\begin{aligned}T(&\begin{bmatrix}1\\2\end{bmatrix})\end{aligned}']:
+            with self.subTest(source=source): self.assertEqual(scalable_table_fences(source), source)
+
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
         guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'
