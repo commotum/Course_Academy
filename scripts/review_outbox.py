@@ -16,13 +16,17 @@ from pathlib import Path
 class ReviewOutbox:
     ACTIONS = {'answer', 'continue', 'pause', 'resume', 'skip'}
 
-    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None):
+    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None, *, learner=None):
         self.directory = Path(directory)
         self.grader, self.writer, self.save = grader, writer, save
         self.stop, self.refresh = stop, refresh
         self.lock = threading.RLock()
         self.wake = threading.Event()
         self.active = None
+        self.learner = learner
+
+    def owns(self, state):
+        return self.learner is None or state['view'].get('learner', {}).get('id') == self.learner
 
     def path(self, task):
         if type(task) is not int or task <= 0:
@@ -203,6 +207,8 @@ class ReviewOutbox:
             candidates = []
             for path in self.directory.glob('*.json'):
                 state = self.load(path)
+                if not self.owns(state):
+                    continue
                 pending = self.pending(state)
                 if pending and not state.get('error') and state.get('retryAt', 0) <= time.time():
                     candidates.append((pending[0]['receivedAt'], path, pending[0]))
@@ -258,7 +264,7 @@ class ReviewOutbox:
             # Admit that pause through the outbox first so its logical clock and
             # the database cannot diverge when another tab changes activities.
             with self.lock:
-                active = [self.load(p) for p in self.directory.glob('*.json')]
+                active = [state for p in self.directory.glob('*.json') if self.owns(state := self.load(p))]
                 for state in active:
                     if state['view']['status'] == 'started':
                         self.request({'action':'pause','taskId':state['view']['taskId'],'requestId':str(uuid.uuid4())})
@@ -266,7 +272,7 @@ class ReviewOutbox:
         self.wake.set()
         while time.monotonic() < deadline:
             with self.lock:
-                states = [self.load(p) for p in self.directory.glob('*.json')]
+                states = [state for p in self.directory.glob('*.json') if self.owns(state := self.load(p))]
                 if any(s.get('error') for s in states):
                     raise ValueError('A review save needs attention before starting another activity')
                 if not any(self.pending(s) for s in states):

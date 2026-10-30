@@ -66,7 +66,7 @@ studied through an explicit request. Quizzes and required follow-up practice for
 assessment misses remain visible regardless of their topics' layers.
 
 Study interactions are acknowledged after an atomic, fsynced local journal save
-in `.local/learning/requests/<database>/study-outbox`, then replayed to EDB in
+in `.local/learning/requests/<database>/study-outbox/<learner>`, then replayed to EDB in
 order. The resident study projection runs the same grading and progression
 rules as durable persistence; pending task, activity, and statistics reads include
 accepted local work. The UI does not wait for the EDB writer or show routine

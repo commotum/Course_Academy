@@ -14,6 +14,23 @@ from test_review_outbox import Grader
 
 
 class OutboxUpgradeTests(unittest.TestCase):
+    def test_learner_namespaces_and_legacy_recovery_do_not_cross_profiles(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'review-outbox'
+            writer, stop = Mock(), threading.Event()
+            old = ReviewOutbox(root, Grader(), writer, save_json, stop)
+            old.request({'action': 'pause', 'taskId': 1, 'requestId': 'old-pause-001'}, 2000)
+            state = old.load(old.path(1))
+            state['view']['learner'] = {'id': 'learner-one'}
+            save_json(old.path(1), state)
+            one = CompatibleStudyOutbox(root, Grader(), writer, save_json, stop, learner='learner-one')
+            two = CompatibleStudyOutbox(root, Grader(), writer, save_json, stop, learner='learner-two')
+            self.assertNotEqual(one.study.state_path, two.study.state_path)
+            self.assertEqual(one.status()['pending'], 1)
+            self.assertEqual(two.status()['pending'], 0)
+            self.assertFalse(two.legacy.run_one())
+            writer.request.assert_not_called()
+
     def test_pending_legacy_answer_recovers_and_saved_receipt_remains_exact(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / 'review-outbox'

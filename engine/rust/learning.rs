@@ -2977,7 +2977,83 @@ pub(crate) fn learning_runtime(
             loaded.engine.seed(&loaded.learner, &topic, state)?;
         }
     }
+    let seeded=loaded.engine.states.get(&loaded.learner).into_iter().flat_map(|states|states.values())
+        .fold(f64::NEG_INFINITY,|latest,state|latest.max(state.memory_at)
+            .max(state.last_direct_at.unwrap_or(f64::NEG_INFINITY)));
+    let latest=logical_learning_clock(s,learner,seeded)?;
+    if latest.is_finite(){loaded.engine.latest.insert(loaded.learner.clone(),latest);}
+    else{loaded.engine.latest.remove(&loaded.learner);}
     Ok(loaded)
+}
+
+// Delayed transaction publication must not make the next acknowledged answer
+// appear to predate the learner's previous work. Keep progress anchors intact;
+// tasks with explicit clocks contribute their logical intervals/finish instead
+// of save-time status assertions. Legacy tasks retain their original history.
+fn logical_learning_clock(s:&EntitySnapshot,learner:u64,mut latest:f64)->Result<f64>{
+    let mut legacy=BTreeSet::new();
+    for task in s.refs(learner,"learner/activity")? {
+        let members=s.refs(task,"learner-task/items")?;
+        let mut logical=false;
+        for item in &members {
+            for period in s.refs(*item,"task-item/working-periods")? {
+                logical=true;
+                let record=s.entity(period)?;
+                latest=latest.max(crate::schema::instant_days(record.get("working-period/started-at")
+                    .ok_or("working period needs a start")?)?);
+                if let Some(value)=record.get("working-period/ended-at"){
+                    latest=latest.max(crate::schema::instant_days(value)?);
+                }
+            }
+        }
+        if logical {
+            if let Some(finished)=s.entity(task)?.get("learner-task/finished-at") {
+                latest=latest.max(crate::schema::instant_days(finished)?);
+            }
+        }else{
+            legacy.insert(task);
+            legacy.extend(members);
+        }
+    }
+    for event in &s.status_history {
+        if !legacy.contains(&event.entity){continue;}
+        // Queue offers are eligibility bookkeeping, rather than observations.
+        if event.attribute=="learner-task/status" && matches!(s.ident(&event.value)?.as_str(),
+            "learner-task.status/locked"|"learner-task.status/unlocked") {continue;}
+        latest=latest.max(crate::schema::instant_days(&event.at)?);
+    }
+    Ok(latest)
+}
+
+#[cfg(test)]
+mod logical_clock_tests {
+    use super::*;
+    #[test]
+    fn saved_status_times_do_not_override_logical_observations_or_progress_anchors(){
+        let mut s=EntitySnapshot::from_json(&json!({"basis_t":3,"entities":{
+            "1":{"learner/id":"test","learner/activity":[2,5]},
+            "2":{"learner-task/id":"saved","learner-task/status":11,"learner-task/items":[3],"learner-task/finished-at":{"$instant":25000}},
+            "3":{"task-item/id":"answer","task-item/status":12,"task-item/working-periods":[4]},
+            "4":{"working-period/id":"logical","working-period/started-at":{"$instant":10000},"working-period/ended-at":{"$instant":20000}},
+            "5":{"learner-task/id":"offered","learner-task/status":13},
+            "10":{"db/ident":"learner-task.status/started"},
+            "11":{"db/ident":"learner-task.status/completed"},
+            "12":{"db/ident":"task-item.status/correct"},
+            "13":{"db/ident":"learner-task.status/unlocked"}
+        },"status_history":[
+            {"entity":2,"attribute":"learner-task/status","value":10,"t":1,"at":{"$instant":120000}},
+            {"entity":2,"attribute":"learner-task/status","value":11,"t":2,"at":{"$instant":130000}},
+            {"entity":3,"attribute":"task-item/status","value":12,"t":2,"at":{"$instant":130000}},
+            {"entity":5,"attribute":"learner-task/status","value":13,"t":3,"at":{"$instant":140000}}
+        ]})).unwrap();
+        let days=|seconds:f64|seconds/86400.;
+        assert_eq!(logical_learning_clock(&s,1,f64::NEG_INFINITY).unwrap(),days(25.));
+        assert_eq!(logical_learning_clock(&s,1,days(35.)).unwrap(),days(35.));
+        // A task without explicit periods still establishes its real clock.
+        s.entities.get_mut(&5).unwrap().insert("learner-task/status".into(),json!(10));
+        s.status_history.last_mut().unwrap().value=json!(10);
+        assert_eq!(logical_learning_clock(&s,1,days(35.)).unwrap(),days(140.));
+    }
 }
 
 /// Native EDN forms to include in the same guarded transaction as the answer or

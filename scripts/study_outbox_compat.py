@@ -9,15 +9,22 @@ import threading
 
 
 class CompatibleStudyOutbox:
-    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None):
-        self.study = StudyOutbox(directory.parent / 'study-outbox', grader, writer, save, stop, refresh)
-        self.legacy = ReviewOutbox(directory, grader, writer, save, stop, refresh)
+    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None, *, learner=None):
+        study_directory = directory.parent / 'study-outbox'
+        if learner is not None:
+            if not learner or not all(c.isascii() and (c.isalnum() or c == '-') for c in learner):
+                raise ValueError('Invalid learner journal namespace')
+            study_directory /= learner
+        self.study = StudyOutbox(study_directory, grader, writer, save, stop, refresh)
+        self.legacy = ReviewOutbox(directory, grader, writer, save, stop, refresh, learner=learner)
         self.stop = stop
         self.index_lock = threading.RLock()
         self.legacy_pending = set()
         self.legacy_receipts = set()
         for path in self.legacy.directory.glob('*.json'):
             state = self.legacy.load(path)
+            if not self.legacy.owns(state):
+                continue
             task = state['view']['taskId']
             self.legacy_receipts.update((task, op['requestId']) for op in state['operations'])
             if self.legacy.pending(state) or state.get('error'):
@@ -62,7 +69,9 @@ class CompatibleStudyOutbox:
 
     def overlay_view(self, action, body):
         if action == 'task':
-            return self.task_view(body['taskId'])
+            for state in self.legacy_states():
+                if state['view'].get('taskId') == body['taskId'] and (self.legacy.pending(state) or state.get('error')):
+                    return self.legacy.task_view(body['taskId'])
         return self.study.overlay_view(action, body)
 
     def resolve_ids(self, body):

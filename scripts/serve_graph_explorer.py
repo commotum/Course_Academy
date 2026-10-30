@@ -386,7 +386,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     def progress_saved():
         read_cache.invalidate()
         inventory_refresh.set()
-    review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved) if learning_worker else None
+    review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved, learner=learner) if learning_worker else None
     candidate_reader = None
 
     def inventory_hook():
@@ -527,7 +527,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         value = (review_outbox.retry if action == 'review-save-retry' else review_outbox.status)(body['taskId'])
                         self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         return
-                    value = review_outbox.overlay_view(action, body)
+                    value = review_outbox.overlay_view(action, body) if action in READ_ACTIONS else None
                     if value is not None:
                         self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         return

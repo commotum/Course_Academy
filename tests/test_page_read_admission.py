@@ -127,7 +127,7 @@ class PageReadAdmission(unittest.TestCase):
             workers['learning-worker'].request.assert_not_called()
             workers['scheduler-worker'].request.assert_not_called()
             workers['review-save-worker'].request.assert_not_called()
-            self.assertTrue((Path(directory)/'study-outbox/study.json').exists())
+            self.assertTrue((Path(directory)/'study-outbox/learner/study.json').exists())
 
     def test_forecast_get_uses_only_the_read_only_page_reader(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -308,6 +308,32 @@ class PageReadAdmission(unittest.TestCase):
                 self.assertEqual(replies[0][1]["saveState"]["status"], "pending")
                 self.assertTrue(cls.inventory_refresh.is_set())
                 self.assertEqual(workers.return_value.request.call_count, 1)
+
+    def test_queue_prepares_locally_even_with_pending_work_and_held_writer_lock(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
+                def project(body):
+                    self.assertEqual(body['action'], 'study-project')
+                    self.assertEqual(body['operation']['action'], 'queue')
+                    return {'ok': True, 'data': {'view': {'activities': []}, 'views': {},
+                                                'overlay': {}, 'operation': body['operation']}}
+                workers.return_value.request.side_effect = project
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            def queue(key):
+                request = cls.__new__(cls)
+                replies = []
+                request.send_bytes = lambda status, body, ctype: replies.append((status, json.loads(body)))
+                request.learning_request({'action': 'queue', 'requestId': key})
+                return replies[0]
+            with (Path(directory) / 'api.lock').open('a') as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX)
+                with ThreadPoolExecutor() as executor:
+                    self.assertEqual(executor.submit(queue, 'queue-test-0001').result(timeout=1)[0], 200)
+                    status, response = executor.submit(queue, 'queue-test-0002').result(timeout=1)
+                    self.assertEqual(status, 200)
+                    self.assertEqual(response['saveState']['pending'], 2)
+            self.assertEqual(workers.return_value.request.call_count, 2)
 
     def test_lists_and_mode_read_finish_while_writer_lock_is_held(self):
         with tempfile.TemporaryDirectory() as directory:

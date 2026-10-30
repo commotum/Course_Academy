@@ -2727,6 +2727,19 @@ fn study_projection_lesson_backlog_replays_exact_route_and_logical_clocks() -> R
     assert_eq!(durable["elapsedSeconds"],final_view["elapsedSeconds"]);
     assert!(items(&saved,task)?.iter().all(|i|*i<4_000_000_000_000_000));
     assert_eq!(items(&saved,task)?.len(),final_view["progress"]["presented"].as_u64().unwrap() as usize);
+    // Once the backlog drains, canonicalize the resident projection in place.
+    // The next request still sees its accepted work before a fresh base arrives.
+    let mut aliases=serde_json::Map::new();
+    for op in &queued {
+        for (local,key) in op["_queuedStudy"]["locals"].as_object().unwrap(){
+            let a=key["attribute"].as_str().unwrap();
+            let actual=saved.entities.with_attribute(a).into_iter().find(|id|saved.entities[id].get(a)==Some(&key["value"])).unwrap();
+            aliases.insert(local.clone(),json!(actual));
+        }
+    }
+    let (reopened,_)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":{"action":"study-topic","topicId":topic,"requestId":"local-reopen-0001"},"overlay":null,"aliases":aliases,"committedBasis":saved.basis_t,"receivedAt":f.now+2_000_000}))?;
+    assert_eq!(reopened["view"]["taskId"],task);
+    assert_eq!(reopened["view"]["status"],"completed");
     Ok(())
 }
 

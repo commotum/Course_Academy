@@ -95,6 +95,10 @@ const result={passed:true,timings,completionBeforeAnyDatabaseSave:true,reloadRet
 # the generalized study outbox upgrade. New study interactions have a separate
 # native-projection browser regression.
 class LegacyReviewFixture(ReviewOutbox):
+    def __init__(self, *args, learner=None, **kwargs):
+        # This isolated journal contains one native fixture learner; the HTTP
+        # handler uses a dummy learner name rather than a live profile identity.
+        super().__init__(*args, **kwargs)
     def overlay_view(self, action, body):
         return self.task_view(body['taskId']) if action == 'task' else None
     def resolve_ids(self, body): return body
