@@ -7,11 +7,20 @@ spec=importlib.util.spec_from_file_location('converter',ROOT/'reference/mathacad
 conv.old.CAPTURE.MATHML_TEX_OPERATOR_NAMES.update({'sech','csch'})
 FENCE={'239B':'(','239C':'(','239D':'(','239E':')','239F':')','23A0':')','23A1':'[','23A2':'[','23A3':'[','23A4':']','23A5':']','23A6':']','23A7':'{','23A8':'{','23A9':'{','23AA':'{','23AB':'}','23AC':'}','23AD':'}','23B7':'√','E001':'√'}
 def glyphs(n):
+ # MathJax builds a stretched arrow from an arrowhead and a clipped minus
+ # glyph. They are drawing pieces of ONE mo, not two mathematical tokens.
+ if stretched_right_arrow(n):return '→'
  parts=[FENCE.get(x['data-c'],chr(int(x['data-c'],16))) for x in n.find_all(['path','use'],attrs={'data-c':True})]
  if not parts:parts=[x.get_text() for x in n.find_all('text')]
  if parts and all(0xE150<=ord(c)<=0xE156 for c in parts):return '⏟' if n.parent.get('data-mml-node')=='munder' else '⏞'
  if len(parts)>1 and len(set(parts))==1 and parts[0] in '()[]{}|‖':parts=parts[:1]
  return ''.join(parts)
+def stretched_right_arrow(n):
+ if n.get('data-mml-node')!='mo':return False
+ pieces=n.find_all(['path','use'],attrs={'data-c':True})
+ return (len(pieces)==2 and [p['data-c'].upper() for p in pieces]==['2192','2212']
+         and pieces[0].parent is n and pieces[1].parent.name=='svg'
+         and pieces[1].parent.parent is n and pieces[1].parent.has_attr('viewbox'))
 def children(n):
  out=[]
  for child in n.children:
@@ -42,6 +51,7 @@ def node(n,soup):
    elif name=='mi' and len(text)==1 and text.isalpha() and text not in 'ℝℕℚℤℂ':m['mathvariant']='normal'
   if name=='mo' and text in conv.old.CAPTURE.MATHML_TEX_OPERATOR_NAMES:m.name='mi'
   m.string=text
+  if stretched_right_arrow(n):m['stretchy']='true'
  elif name=='mspace':m=soup.new_tag('mspace')
  elif name=='mphantom':m=soup.new_tag('mphantom')
  else:

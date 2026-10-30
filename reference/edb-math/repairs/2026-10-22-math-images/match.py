@@ -15,6 +15,12 @@ JS=r'''html=>{
  function go(n){
   const k=n.getAttribute('data-mml-node');
   if(leaves.has(k)){
+   // A clipped minus path extends one arrow operator. Preserve that fact
+   // instead of accepting an overset containing two separate operators.
+   const pieces=[...n.querySelectorAll('path[data-c],use[data-c]')];
+   if(k==='mo'&&pieces.length===2&&pieces[0].getAttribute('data-c')==='2192'&&pieces[1].getAttribute('data-c')==='2212'&&
+      pieces[0].parentElement===n&&pieces[1].parentElement.localName==='svg'&&pieces[1].parentElement.parentElement===n&&pieces[1].parentElement.hasAttribute('viewBox'))
+     return ['2192:'+color(n)];
    const vals=[...n.querySelectorAll('path[data-c],use[data-c]')].filter(x=>!x.closest('defs')).map(x=>[(stretchy[x.getAttribute('data-c')]||x.getAttribute('data-c')).toUpperCase(),color(x)]);
    if(!vals.length){for(const t of n.querySelectorAll('text'))for(const c of t.textContent)vals.push([c.codePointAt(0).toString(16).toUpperCase(),color(t)])}
    if(vals.length&&vals.every(([c])=>parseInt(c,16)>=0xE150&&parseInt(c,16)<=0xE156))return [(n.parentElement.getAttribute('data-mml-node')==='munder'?'23DF':'23DE')+':'+color(n)];

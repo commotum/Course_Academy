@@ -153,6 +153,7 @@ def core(n):
  if name=='mroot' and len(cs)==2:return '\\sqrt['+tex(cs[1])+']{'+tex(cs[0])+'}'
  if name in ('mover','munder','munderover') and len(cs)==(3 if name=='munderover' else 2):
   base=tex(cs[0]);dec=cs[1].get_text().strip()
+  if name=='mover' and cs[1].name=='mo' and dec=='→' and cs[1].get('stretchy')=='true':return '\\overrightarrow{'+base+'}'
   accents={'¯':'overline','‾':'overline','―':'overline','^':'hat','ˆ':'hat','→':'vec','˙':'dot','.':'dot','~':'tilde','˜':'tilde','⏞':'overbrace','⏟':'underbrace'}
   if name=='munder' and dec=='⏟':return '\\underbrace{'+base+'}'
   if name=='mover' and (n.get('accent')=='true' or dec in ('⏞','⏟','^','ˆ','¯','‾','―','→')) and dec in accents:return '\\'+accents[dec]+'{'+base+'}'
