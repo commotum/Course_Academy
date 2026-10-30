@@ -803,10 +803,11 @@ def scalable_table_fences(text, *, environments=None):
         # not a visible delimiter; named/escaped fence tokens are matched whole.
         if left[1] in '[(' and prefix.endswith('\\'): continue
         if sized.search(prefix) or optional.search(prefix): continue
-        # A terminal condition table may have only its visible opening brace.
-        # Give that existing brace an invisible matching right delimiter.
-        if not right and left[1] in (r'\{', r'\lbrace') and re.fullmatch(
-                spacing + r'(?:\${1,2}|\\\]|\\\))?\s*', text[span[2]:]):
+        # A condition table may have only its visible opening brace, including
+        # before an implication, a second function, or an outer alignment end.
+        # Close its local scope invisibly; never consume an outer right fence.
+        if left[1] in (r'\{', r'\lbrace') and (not right or families[right[1]] != 2) \
+                and not re.match(spacing + r'\\right(?![A-Za-z])', text[span[2]:]):
             changes.extend([(left.start(1), r'\left'), (span[2], r'\right.')])
             continue
         if not right or families[left[1]] != families[right[1]]: continue

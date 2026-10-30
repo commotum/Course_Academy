@@ -217,6 +217,11 @@ def validate_question(q):
         kind = enum(field.get(':answer-field/type'))
         if kind not in {':answer-field.type/' + x for x in ('radio', 'select', 'blank', 'checkbox')}:
             raise ValueError('Generated practice requires automatically gradable fields')
+        if kind == ':answer-field.type/checkbox':
+            # Checkbox keys are rendered option statements, not blank markers.
+            validate_math_boundaries(key, strict=True)
+            validate_matrix_layouts(key)
+            validate_math_structure(key)
         choices = field.get(':answer-field/choices', [])
         typed_values, ids = set(), set()
         for a in choices:

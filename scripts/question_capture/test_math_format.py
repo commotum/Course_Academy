@@ -85,6 +85,11 @@ class MathContentTests(unittest.TestCase):
                     validate_matrix_layouts('$' + source + '$')
                 validate_matrix_layouts('$' + expected + '$')
                 validate_tex(expected)
+        inner = r'\{\begin{aligned}x&=1\\y&=2\end{aligned}'
+        chain = r'\begin{aligned}' + inner + r'\,\Rightarrow\,' + inner + r'\end{aligned}'
+        result = scalable_table_fences(chain)
+        self.assertEqual(result, chain.replace(inner, r'\left' + inner + r'\right.'))
+        validate_tex(result)
 
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'

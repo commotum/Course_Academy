@@ -569,6 +569,15 @@ class NonemptyCheckboxPublicationTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'at least one correct selectable option'):
                     validate_question(self.checkbox_question([False] * size))
 
+    def test_checkbox_display_label_requires_scalable_system_brace(self):
+        q = self.checkbox_question([True])
+        bad = r'\{\begin{aligned}x&=1\\y&=2\end{aligned}'
+        q[':question/answer-fields'][0][':answer-field/key'] = '$' + bad + '$'
+        with self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+            validate_question(q)
+        q[':question/answer-fields'][0][':answer-field/key'] = '$' + r'\left' + bad + r'\right.' + '$'
+        validate_question(q)
+
     def test_nonempty_checkbox_subsets_are_publishable_in_both_pull_shapes(self):
         for mask in ([True], [False, True, False], [True, True, True]):
             q = self.checkbox_question(mask)
