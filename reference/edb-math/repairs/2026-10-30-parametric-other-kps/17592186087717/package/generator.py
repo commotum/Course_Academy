@@ -23,7 +23,7 @@ DATA = json.loads((ROOT/'source_data.json').read_text())
 KP = {'db_id':17592186087717, 'id':'bbf50e27-a8c3-52e7-be21-5d7ed61e5512',
       'title':'Filling a Table of Values for a Parametric Curve'}
 NS = uuid.UUID(KP['id'])
-VERSION = 'parametric-table-2'
+VERSION = 'parametric-table-3'
 BANDS = ('easy','moderate','hard')
 
 def tex(v):
@@ -107,16 +107,20 @@ def function(profile,rng,axis):
 
 
 def table(times, forms, targets, values, combination, completed=False):
-    rows=['| **$t$** | '+' | '.join('$'+str(t)+'$' for t in times)+' |',
-          '| --- | '+' | '.join('---' for t in times)+' |']
-    for axis in ('x','y'):
-        cells=[]
-        for i in range(len(times)):
-            names=[name for name,loc in targets.items() if tuple(loc)==(axis,i)]
-            cells.append(('$'+names[0]+'$' if combination else '{{'+names[0]+'}}')
-                         if names and not completed else '$'+tex(values[axis][i])+'$')
-        rows.append('| $'+axis+'$ | '+' | '.join(cells)+' |')
-    return '\n'.join(rows)
+    panels=[]
+    for start in range(0,len(times),3):
+        stop=min(start+3,len(times))
+        rows=['| **$t$** | '+' | '.join('$'+str(t)+'$' for t in times[start:stop])+' |',
+              '| --- | '+' | '.join('---' for t in times[start:stop])+' |']
+        for axis in ('x','y'):
+            cells=[]
+            for i in range(start,stop):
+                names=[name for name,loc in targets.items() if tuple(loc)==(axis,i)]
+                cells.append(('$'+names[0]+'$' if combination else '{{'+names[0]+'}}')
+                             if names and not completed else '$'+tex(values[axis][i])+'$')
+            rows.append('| $'+axis+'$ | '+' | '.join(cells)+' |')
+        panels.append('\n'.join(rows))
+    return '\n\n'.join(panels)
 
 
 def combination_tex(signs):

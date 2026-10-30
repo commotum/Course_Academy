@@ -9,7 +9,7 @@ import argparse, hashlib, json, random, uuid
 from fractions import Fraction as F
 from math_format import normalize_prose, normalize_tex, validate_generated_record
 
-VERSION = '2.0.1'
+VERSION = '2.0.2'
 KP = {'db_id':17592186087736,'id':'cddc940d-2185-569c-a62b-b507e95d3c35',
       'title':'Determining the Range of a Parametric Equation Defined in Terms of Trigonometric Functions'}
 SUPPORT = {'easy':['cbb8764c-a924-5241-b809-c578415b87f2','b4154359-18f0-56b5-8f88-83b3d5f9fa49','39f52df2-f7c2-52ca-a128-fe39a8ac5d3e'],
@@ -80,7 +80,7 @@ def build(level,a,b,h,k,domain=(0,4,True,False),functions=('cos','sin'),family=N
     if set(functions)!={'cos','sin'}:raise ValueError('One sine and one cosine required')
     xr,xsolution,xpath=coordinate(a,h,functions[0],domain,'x')
     yr,ysolution,ypath=coordinate(b,k,functions[1],domain,'y')
-    prompt='Given that a curve is defined parametrically as\n\n$$\n'+r'\begin{gathered}'+'\n'+'x='+formula(a,h,functions[0])+r',\qquad y='+formula(b,k,functions[1])+r',\\'+'\n'+angle(start)+cmp(left)+r'\theta'+cmp(right)+angle(end)+',\n'+r'\end{gathered}'+'\n$$\n\nwhat are the ranges of $x$ and $y$?'
+    prompt='Given that a curve is defined parametrically as\n\n$$\nx='+formula(a,h,functions[0])+'\n$$\n\n$$\ny='+formula(b,k,functions[1])+'\n$$\n\n$$\n'+angle(start)+cmp(left)+r'\theta'+cmp(right)+angle(end)+'\n$$\n\nwhat are the ranges of $x$ and $y$?'
     vals=[]
     if level=='hard':
         prompt+=' Use $<$ or $\\le$ in the comparison blanks.'

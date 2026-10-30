@@ -360,6 +360,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
     validate_matrix_prompt(accepted, kp_id)
     from generate.parametric_plot_policy import validate_delivery_batch as validate_parametric_plots
     validate_parametric_plots(accepted, kp_id, math_root, assets_directory)
+    from generate.parametric_layout_policy import validate_delivery_batch as validate_parametric_layout
+    validate_parametric_layout(accepted, kp_id)
     return accepted, duplicate_count
 
 
