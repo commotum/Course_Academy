@@ -42,7 +42,9 @@ def check(items):
                   for(const f of fields){let node=render(f.bare_math?'$'+f.value+'$':f.value,'prose',f.fields||[]);content.append(node);}
                   await MathJax.typesetPromise([content]);
                   const fenceGeometry=n=>{
-                    const glyphs=new Set(['28','29','5B','5D','7B','7D','7C','2016','2223','27E8','27E9']);
+                    const glyphs=new Set(['28','29','5B','5D','7B','7D','7C','2016','2223','27E8','27E9',
+                      '23A1','23A2','23A3','23A4','23A5','23A6','23A7','23A8','23A9','23AA',
+                      '23AB','23AC','23AD','23AE','23D0']);
                     const isFence=e=>e?.getAttribute('data-mml-node')==='mo'&&(
                       ['4','5','OPEN','CLOSE'].includes(e.getAttribute('data-mjx-texclass'))||
                       [...e.querySelectorAll('[data-c]')].some(p=>glyphs.has(p.getAttribute('data-c'))));

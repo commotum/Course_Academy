@@ -768,6 +768,7 @@ def scalable_array_fences(text):
     bmatrix would discard augmentation rules. Respect deliberate delimiter
     sizes and optional macro arguments, whose brackets are not visible fences.
     """
+    if r'\begin{array}' not in text: return text
     groups = [('[', r'\lbrack', ']', r'\rbrack'),
               ('(', r'\lparen', ')', r'\rparen'),
               (r'\{', r'\lbrace', r'\}', r'\rbrace'),
