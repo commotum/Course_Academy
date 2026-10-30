@@ -53,9 +53,16 @@ def check(items):
                       for(let level=0;level<8&&child.parentElement;level++,child=child.parentElement){
                         const siblings=[...child.parentElement.children].filter(e=>e.getAttribute('data-mml-node')!=='mspace'&&
                           !(e.getAttribute('data-mml-node')==='mstyle'&&e.getBoundingClientRect().height<0.1));
-                        const i=siblings.indexOf(child),fences=[siblings[i-1],siblings[i+1]].filter(isFence);
+                        const i=siblings.indexOf(child);
+                        const oriented=(e,left)=>isFence(e)&&[...e.querySelectorAll('[data-c]')].some(p=>
+                          (left?['28','5B','7B','7C','2016','2223','27E8','23A1','23A2','23A3','23A7','23A8','23A9','23AA','23D0']:
+                            ['29','5D','7D','7C','2016','2223','27E9','23A4','23A5','23A6','23AB','23AC','23AD','23AA','23D0']).includes(p.getAttribute('data-c')));
+                        const fences=[oriented(siblings[i-1],true)&&siblings[i-1],oriented(siblings[i+1],false)&&siblings[i+1]].filter(Boolean);
                         if(fences.length)measurements.push({table_height:child.getBoundingClientRect().height,
                           matrix_body_height:t.getBoundingClientRect().height,scope_level:level,
+                          scope_node:child.getAttribute('data-mml-node'),
+                          scope_children:[...child.children].map(e=>e.getAttribute('data-mml-node')),
+                          fence_glyphs:fences.map(e=>[...e.querySelectorAll('[data-c]')].map(p=>p.getAttribute('data-c'))),
                           fence_heights:fences.map(e=>e.getBoundingClientRect().height)});
                         if(!['mrow','mstyle','TeXAtom'].includes(child.parentElement.getAttribute('data-mml-node')))break;
                       }

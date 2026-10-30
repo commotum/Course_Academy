@@ -6,7 +6,11 @@ from question_capture.math_format import MATH,scalable_table_fences,_matrix_layo
 meta={int(k):v for k,v in json.loads((W/'metadata.json').read_text()).items()};names={e:v['db/ident']for e,v in meta.items()if'db/ident'in v};parents={int(k):v for k,v in json.loads((W/'parents.json').read_text()).items()}
 values=json.loads((W/'array-values.json').read_text());props=[];review=[];excluded=[];shapes=collections.Counter();bare_types=collections.Counter()
 visible={'question/problem','question/worked-solution','tutorial/content','answer/value','answer/feedback','answer-field/feedback','answer-field/display-key','multistep/context','multistep/content','assigned-problem/instructions','activity/description','step/content'}
-strip=lambda x:re.sub(r'\\(?:left|right)(?![A-Za-z])','',re.sub(r'\\(?:left|right)\.','',x))
+def strip(x):
+ x=re.sub(r'\\(?:left|right)(?![A-Za-z])','',re.sub(r'\\(?:left|right)\.','',x))
+ x=x.replace('∣','|').replace('‖',r'\|').replace('∥',r'\|')
+ return re.sub(r'\\(langle|rangle)\s*',lambda m:'⟨'if m[1]=='langle'else'⟩',x)
+
 def core(text):return _matrix_layouts(text)
 def normalize(text):return scalable_table_fences(core(text))
 for d in values:
