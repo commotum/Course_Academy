@@ -2679,3 +2679,79 @@ fn ordinary_pause_and_resume_preserve_an_asynchronously_started_review_clock() -
     assert_eq!(status(&final_state,item,"task-item/status")?,"paused");
     Ok(())
 }
+
+/// Admit an entire normal lesson before letting any transaction reach EDB,
+/// then replay it against delayed durable state. This checks actual grading,
+/// fresh-question routing, identities, FIRe/XP and working clocks together.
+#[test]
+fn study_projection_lesson_backlog_replays_exact_route_and_logical_clocks() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let s=f.snapshot()?;
+    let old=s.refs(f.learner,"learner/activity")?[0];
+    let activity=s.reference(old,"learner-task/activity")?;
+    let topic=s.reference(activity,"activity/scope")?;
+    f.tx(vec![json!([kw("db/retract"),f.learner,kw("learner/activity"),old])],f.now+100)?;
+    let base=f.snapshot()?;
+    let db=f.db.database_value();
+    let mut projection=None;let mut overlay=Json::Null;let mut queued=vec![];
+    let mut body=json!({"action":"study-topic","topicId":topic,"requestId":"local-start-0001"});
+    let mut final_view=Json::Null;
+    for turn in 0..16 {
+        let (data,next)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":body,"overlay":overlay,"receivedAt":f.now+1000+turn*1000}))?;
+        projection=Some(next);overlay=data["overlay"].clone();queued.push(data["operation"].clone());
+        final_view=data["view"].clone();
+        if final_view["status"]=="completed"{break;}
+        let step=&final_view["step"];
+        body=if step["kind"]=="question" && step["status"]=="started" {
+            json!({"action":"answer","taskId":final_view["taskId"],"itemId":step["itemId"],"responses":[{"fieldId":step["fields"][0]["id"],"value":"2"}],"requestId":format!("local-answer-{turn:04}")})
+        }else{json!({"action":"continue","taskId":final_view["taskId"],"itemId":step["itemId"],"requestId":format!("local-next-{turn:04}")})};
+    }
+    assert_eq!(final_view["status"],"completed");
+    for (n,operation) in queued.iter().enumerate(){
+        let s=f.snapshot()?;
+        let op=study_interaction::bind(&s,operation)?;
+        let at=DateTime::from_timestamp_millis(f.now+30_000+n as i64*100).unwrap();
+        let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,at)?;
+        study_interaction::prepare(&s,&f.db.database_value(),f.learner,&op,&mut forms,&mut result,at)?;
+        f.tx(forms,at.timestamp_millis())?;
+    }
+    let saved=f.snapshot()?;
+    let task=saved.refs(f.learner,"learner/activity")?.into_iter().find(|t|saved.reference(*t,"learner-task/activity").ok()==Some(activity)).unwrap();
+    let durable=task_json(&saved,f.learner,task)?;
+    assert_eq!(durable["status"],final_view["status"]);
+    assert_eq!(durable["xp"],final_view["xp"]);
+    assert_eq!(durable["elapsedSeconds"],final_view["elapsedSeconds"]);
+    assert!(items(&saved,task)?.iter().all(|i|*i<4_000_000_000_000_000));
+    assert_eq!(items(&saved,task)?.len(),final_view["progress"]["presented"].as_u64().unwrap() as usize);
+    Ok(())
+}
+
+#[test]
+fn study_projection_reducer_matches_edb_for_status_cas_upserts_and_retractions() -> Result<()> {
+    let mut f=Fixture::new(true)?;
+    let (task,s)=f.start("review")?;
+    let item=items(&s,task)?[0];
+    let at=DateTime::from_timestamp_millis(f.now+1200).unwrap();
+    let body=json!({"taskId":task,"itemId":item});
+    let (mut forms,_)=mutate(&s,f.learner,"pause",&body,at)?;
+    study_interaction::clocks(&s,&f.db.database_value(),&mut forms,at)?;
+    let (local,ids)=study_interaction::apply(&s,&f.db.database_value(),&forms,at)?;
+    let mut functions=TxFunctions::new();
+    preview_answer_fields::register_answer_field_predicates(&mut functions);
+    preview_progress::register_progress_predicates(&mut functions);
+    let report=f.db.with_forms(&edb_core::edn_transaction::read_edn_transaction(&schema::edn(&json!(forms))?)?,&functions,at.timestamp_millis(),engine_source())?;
+    let durable=snapshot(&report.db_after.database_value())?;
+    for (eid,record) in &s.entities {
+        let mut expected=local.entity(*eid)?.clone();
+        for (name,id) in &ids {
+            let durable_id=report.tempids[name];
+            for (attr,value) in &mut expected {
+                if attr=="task-item/working-periods" {for v in value.as_array_mut().unwrap(){if *v==json!(id){*v=json!(durable_id);}}}
+            }
+        }
+        let _=record;
+        assert_eq!(&expected,durable.entity(*eid)?,"Entity {eid}");
+    }
+    assert!(study_interaction::apply(&local,&f.db.database_value(),&forms,at).is_err(),"CAS sees db-before rather than sequential writes");
+    Ok(())
+}

@@ -35,7 +35,7 @@ import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
-from review_outbox import ReviewOutbox
+from study_outbox_compat import CompatibleStudyOutbox
 from read_cache import ReadCache
 from graph_preferences import read_preferences, update_preferences
 
@@ -289,7 +289,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     libraries = {}
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
-    sources = (source, ROOT / "scripts/review_interaction.rs", ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
+    sources = (source, ROOT / "scripts/review_interaction.rs", ROOT / "scripts/study_interaction.rs", ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
                ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs", ROOT / "scripts/forecast_reader.rs", ROOT / "scripts/quiz_labels.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
@@ -383,7 +383,10 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()
     inventory_refresh.set()
-    review_outbox = ReviewOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, inventory_refresh.set) if learning_worker else None
+    def progress_saved():
+        read_cache.invalidate()
+        inventory_refresh.set()
+    review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved) if learning_worker else None
     candidate_reader = None
 
     def inventory_hook():
@@ -523,21 +526,20 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         value = (review_outbox.retry if action == 'review-save-retry' else review_outbox.status)(body['taskId'])
                         self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         return
-                    if action == 'task':
-                        value = review_outbox.task_view(body['taskId'])
-                        if value is not None:
-                            self.send_bytes(200, json.dumps(value).encode(), "application/json")
-                            return
+                    value = review_outbox.overlay_view(action, body)
+                    if value is not None:
+                        self.send_bytes(200, json.dumps(value).encode(), "application/json")
+                        return
                     value = review_outbox.request(body, received)
                     if value is not None:
                         if '_error' in value:
                             self.send_bytes(409, json.dumps({'error': value['_error'], 'code': value['_code']}).encode(), "application/json")
                         else:
+                            read_cache.invalidate()
                             self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         print(f"Learning immediate {action}: {(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
                         return
-                    if action in {'start', 'study-topic', 'review-topic', 'profile-settings', 'assignment-focus'}:
-                        review_outbox.drain(pause_active=True)
+                    body = review_outbox.resolve_ids(body)
 
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
@@ -581,6 +583,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     finished = time.monotonic()
                     refresh_inventory = response.get('ok') and (focus_change or body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
+                    if review_outbox and not developer_mode(mode_path):
+                        response['data'] = review_outbox.decorate(response['data'])
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
                     if response['data'].get('type') == 'review' and body.get('action') in {'start','review-topic','resume','task'}:
                         # Refresh a long-idle feedback peer while the learner

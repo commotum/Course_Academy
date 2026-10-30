@@ -24,7 +24,7 @@ controllers = source[source.index('const $'):source.index("$('retryButton').addE
 html = '''<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/ui/learning.css"><link rel="stylesheet" href="/ui/navigation.css"><script src="/ui/vendor/dompurify/purify.min.js"></script></head><body>
 <main id="main"></main><div id="learnerName"></div><a id="courseLink"></a><div id="errorBanner" hidden><span id="errorText"></span><button id="retryButton">Retry</button></div><div id="announcement"></div>
 <script type="module">
-import {marked} from '/ui/vendor/marked/marked.esm.js';import {decorateSourceTables} from '/ui/content-tables.js';import {protectMath} from '/ui/math-protection.js';import {romanLists} from '/ui/prose-lists.js';
+import {marked} from '/ui/vendor/marked/marked.esm.js';import {decorateEquationGroups} from '/ui/equation-groups.js';import {decorateSourceTables} from '/ui/content-tables.js';import {protectMath} from '/ui/math-protection.js';import {romanLists} from '/ui/prose-lists.js';
 import {loadMathInputs,inlinePrompt,mountInlineFields,blankInput,checkboxControl,choiceIndicator,fieldFeedback,richSelect,freeInput,questionFeedback,feedbackHeading,responsesComplete} from '/ui/question-fields.js';
 const isDeveloperMode=()=>false,attachStepMenu=()=>{},createStudySidebar=()=>document.createElement('aside');
 ''' + controllers + '''
@@ -62,7 +62,7 @@ browser_code = r'''
 const fs=require('fs'),assert=require('assert/strict');
 const {chromium}=require('/home/jake/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 (async()=>{const browser=await chromium.launch({headless:true,executablePath:'/home/jake/.cache/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-linux64/chrome-headless-shell',args:['--disable-dev-shm-usage']});try{
-const page=await browser.newPage({viewport:{width:1200,height:950}});const errors=[];page.on('pageerror',e=>errors.push(String(e)));page.setDefaultTimeout(15000);
+const page=await browser.newPage({viewport:{width:1200,height:950}});const errors=[];page.on('pageerror',e=>{errors.push(String(e));console.error('Browser error:',String(e));});page.setDefaultTimeout(15000);
 await page.goto(ORIGIN+'/fixture');await page.waitForFunction(()=>window.ready);
 await page.request.get(ORIGIN+'/test/hold');
 const timings=[];
@@ -82,8 +82,9 @@ assert.equal(await page.locator('#reviewSaveStatus').isVisible(),false);
 await page.screenshot({path:OUTPUT+'/review-before-background-save.png',fullPage:true});
 await page.reload();await page.waitForFunction(()=>window.ready);assert.equal((await page.evaluate(()=>currentState())).status,'completed');
 const reloadState=await (await page.request.get(ORIGIN+'/test/state')).json();assert.equal(reloadState.pending,6);assert.equal(reloadState.writes,1);
-await page.request.get(ORIGIN+'/test/release');await page.waitForFunction(async()=>{const state=await(await fetch('/test/state')).json();return state.pending===0;});
-const after=await (await page.request.get(ORIGIN+'/test/state')).json();assert.equal(after.pending,0);assert.equal(after.writes,6);
+await page.request.get(ORIGIN+'/test/release');
+let after;for(let n=0;n<300;n++){after=await(await page.request.get(ORIGIN+'/test/state')).json();if(after.pending===0)break;await new Promise(resolve=>setTimeout(resolve,50));}
+assert.equal(after.pending,0);assert.equal(after.writes,6);
 assert.deepEqual(after.actions,['answer','continue','answer','continue','answer','continue']);assert.deepEqual(errors,[]);
 const result={passed:true,timings,completionBeforeAnyDatabaseSave:true,reloadRetainedQueuedAnswers:true,orderedWrites:after.actions,javascriptErrors:errors};fs.writeFileSync(OUTPUT+'/browser-verification.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

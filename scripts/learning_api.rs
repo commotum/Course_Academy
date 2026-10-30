@@ -380,7 +380,7 @@ impl Application {
 
     fn handle(&mut self, mut body: Json) -> Result<Json> {
         let started = Instant::now();
-        if body["action"] != "study-project" { self.adopt(self.conn.sync()?)?; }
+        if !matches!(body["action"].as_str(),Some("study-project"|"study-read")) || body["overlay"].is_null() { self.adopt(self.conn.sync()?)?; }
         trace("sync", started);
         let focused = body.as_object_mut().and_then(|body| body.remove("_focusedMode"))
             .map(|value| value.as_bool().ok_or("Focused mode must be a boolean"))
@@ -2703,6 +2703,7 @@ impl Application {
         let action = body["action"].as_str().ok_or("Action required")?;
         if body["action"] == "persist-review" { return review_interaction::persist(self,body); }
         if action == "study-project" { return study_interaction::project(self,body); }
+        if action == "study-read" { return study_interaction::read(self,body); }
         if action == "persist-study" { return study_interaction::persist(self,body); }
         let s = &self.snapshot;
         let learner = &self.learner;

@@ -15,6 +15,57 @@ from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_task_and_profile_reads_do_not_share_the_blocked_write_worker(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            workers = {}
+            def make_worker(command, env, name):
+                worker = Mock()
+                worker.request.return_value = {'ok': True, 'data': {'name': name}}
+                workers[name] = worker
+                return worker
+            with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker', side_effect=make_worker):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            workers['learning-worker'].request.side_effect = AssertionError('Read entered write lane')
+            with (Path(directory) / 'api.lock').open('a') as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX)
+                with ThreadPoolExecutor() as executor:
+                    for action in ['task', 'profile', 'learner', 'assignment', 'activity-history-detail']:
+                        request = cls.__new__(cls)
+                        replies = []
+                        request.send_bytes = lambda status, body, ctype: replies.append(json.loads(body))
+                        executor.submit(request.learning_request, {'action': action, 'taskId': 1}).result(timeout=1)
+                        self.assertEqual(replies, [{'name': 'study-read-worker'}])
+            workers['learning-worker'].request.assert_not_called()
+
+    def test_activity_cache_returns_while_its_refresh_is_blocked(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
+                workers.return_value.request.return_value = {'ok': True, 'data': {'activities': []}}
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+            def read():
+                request = cls.__new__(cls)
+                replies = []
+                request.send_bytes = lambda status, body, ctype: replies.append(status)
+                request.learning_request({'action': 'activity-history'})
+                return replies
+            self.assertEqual(read(), [200])
+            cls.read_cache.invalidate()
+            entered, release = threading.Event(), threading.Event()
+            def blocked(_body):
+                entered.set()
+                release.wait(3)
+                return {'ok': True, 'data': {'activities': [1]}}
+            workers.return_value.request.side_effect = blocked
+            try:
+                with ThreadPoolExecutor() as executor:
+                    self.assertEqual(executor.submit(read).result(timeout=.5), [200])
+                    self.assertTrue(entered.wait(.5))
+                    self.assertEqual(executor.submit(read).result(timeout=.5), [200])
+            finally:
+                release.set()
+
     def test_xp_read_finishes_while_forecast_worker_is_busy(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}

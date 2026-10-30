@@ -74,8 +74,45 @@ let typesetting = Promise.resolve();
 let mathLoader = null;
 const drafts = new Map();
 const manuallyPausedTasks = new Set();
+const studyIdAliases = new Map();
 let timerPausePending = false;
 let answerResume = null;
+function studyId(id) {
+  const seen = new Set();
+  while (studyIdAliases.has(String(id)) && !seen.has(String(id))) {
+    seen.add(String(id)); id = studyIdAliases.get(String(id));
+  }
+  return id;
+}
+function reconcileStudyIds(data) {
+  // Provisional IDs remain stable throughout admission. Once the whole stream
+  // is committed, migrate local-only UI state to the database entity IDs.
+  if (data?.saveState?.status !== 'saved' || !data.idAliases) return;
+  for (const [local, durable] of Object.entries(data.idAliases)) {
+    if (Number.isSafeInteger(durable) && durable > 0 && local !== String(durable)) studyIdAliases.set(local, durable);
+  }
+  for (const [local, durable] of studyIdAliases) {
+    if (manuallyPausedTasks.delete(local)) manuallyPausedTasks.add(String(studyId(durable)));
+    try {
+      for (const key of [manualPauseKey, pausedDraftKey]) {
+        const saved = sessionStorage.getItem(key(local));
+        if (saved != null) { sessionStorage.setItem(key(studyId(durable)), saved); sessionStorage.removeItem(key(local)); }
+      }
+    } catch { /* Preserve the in-page draft when storage is unavailable. */ }
+  }
+  for (const [item, responses] of drafts) {
+    const resolved = studyId(item);
+    if (resolved !== item) { drafts.set(resolved, responses); drafts.delete(item); }
+  }
+  if (task?.taskId != null) {
+    task.taskId = studyId(task.taskId);
+    if (task.step?.itemId != null) task.step.itemId = studyId(task.step.itemId);
+  }
+  if (answerResume) {
+    answerResume.taskId = studyId(answerResume.taskId);
+    answerResume.itemId = studyId(answerResume.itemId);
+  }
+}
 function manualPauseKey(id) { return 'course-academy.manual-pause.' + String(id); }
 function pausedDraftKey(id) { return 'course-academy.paused-draft.' + String(id); }
 function isManuallyPaused(id) {
@@ -97,7 +134,7 @@ function restorePausedDraft(data) {
   if (!isManuallyPaused(data.taskId)) return;
   try {
     const saved = JSON.parse(sessionStorage.getItem(pausedDraftKey(data.taskId)) || 'null');
-    if (saved?.itemId === data.step?.itemId && Array.isArray(saved.responses)) {
+    if (saved && studyId(saved.itemId) === data.step?.itemId && Array.isArray(saved.responses)) {
       drafts.set(saved.itemId, saved.responses.filter(response => data.step.fields?.some(field => field.id === response.fieldId)));
     }
   } catch { /* Ignore an unavailable or malformed local draft. */ }
@@ -222,6 +259,7 @@ async function api(path, body, options = {}) {
     error.code = result.code; error.status = response.status;
     throw error;
   }
+  reconcileStudyIds(result.task || result);
   return result;
 }
 function setBusy(value) {
@@ -732,7 +770,7 @@ async function openTask(id) {
     if ((data.task || data).expired) {
       data = await api('/api/expire', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
     }
-    if (!document.hidden && ['paused', 'locked', 'unlocked'].includes(short((data.task || data).status)) && !isManuallyPaused(id)) {
+    if (!document.hidden && ['paused', 'locked', 'unlocked'].includes(short((data.task || data).status)) && !isManuallyPaused((data.task || data).taskId)) {
       try { data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() }); }
       catch (error) {
         if (error.code !== 'assessment-expired') throw error;
@@ -742,7 +780,7 @@ async function openTask(id) {
     }
     task = data.task || data;
     restorePausedDraft(task);
-    history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(id));
+    history.replaceState(null, '', '/learn?taskId=' + encodeURIComponent(task.taskId));
     await renderTask(task);
   } catch (error) { if (revision === settingsRevision) showError(error, () => openTask(id)); }
   finally { if (revision === settingsRevision) { setBusy(false); void syncAfterVisibility(); } }
@@ -1162,7 +1200,8 @@ async function renderTask(data) {
   if (modeChanging) return;
   if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
   const revision = settingsRevision;
-  if (needsMathInputs([data.step, ...(data.history || []).map(entry => entry.step)])) await loadMathInputs();
+  const seen = rememberTaskStep(data);
+  if (needsMathInputs(seen.map(entry => entry.step))) await loadMathInputs();
   if (modeChanging || task !== data || revision !== settingsRevision || isDeveloperMode()) return;
   updateHeader(data);
   const status = short(data.status);
@@ -1170,7 +1209,6 @@ async function renderTask(data) {
   assessmentClock = data.type === 'assessment' && !terminal(status) && Number.isFinite(data.remainingSeconds)
     ? { at: Date.now(), remaining: data.remainingSeconds } : null;
   document.title = `${data.type === 'assessment' ? 'Assessment' : data.type === 'review' ? 'Review' : 'Lesson'}${data.title ? ' · ' + data.title : ''} · Course Academy`;
-  const seen = rememberTaskStep(data);
   const number = data.progress?.stepNumber ?? data.step?.stepNumber;
   const total = data.progress?.totalSteps ?? data.step?.totalSteps;
   const view = lessonShell(data, { number, total, complete: terminal(status) });

@@ -16,25 +16,25 @@ fn attr<'a>(db: &'a DatabaseValue, name: &str) -> Result<&'a edb_core::Attribute
     let id=db.schema().resolve_ident(&Keyword::new(ns,n)).ok_or("Unknown study attribute")?;
     Ok(db.schema().attribute(id)?)
 }
-fn ident(v:&Json)->Result<&str>{v.get("$keyword").and_then(Json::as_str).or_else(||v.as_str()).ok_or("Expected keyword")}
+fn ident(v:&Json)->Result<&str>{v.get("$keyword").and_then(Json::as_str).or_else(||v.as_str()).ok_or("Expected keyword".into())}
 fn resolve(s:&EntitySnapshot, ids:&BTreeMap<String,u64>, v:&Json)->Result<u64>{
     if let Some(id)=v.as_u64(){return Ok(id)}
     if let Some(name)=v.as_str(){return ids.get(name).copied().ok_or_else(||format!("Unresolved local entity {name}").into())}
     let name=ident(v)?;
-    s.entities.iter().find_map(|(id,e)|e.get("db/ident").filter(|v|s.ident(v).ok().as_deref()==Some(name)).map(|_|*id)).ok_or_else(||format!("Unknown local ident {name}").into())
+    s.entities.with_attribute("db/ident").into_iter().find(|id|s.entities[id].get("db/ident").is_some_and(|v|s.ident(v).ok().as_deref()==Some(name))).ok_or_else(||format!("Unknown local ident {name}").into())
 }
 fn canonical(s:&EntitySnapshot,db:&DatabaseValue,ids:&BTreeMap<String,u64>,a:&str,v:&Json)->Result<Json>{
     if attr(db,a)?.value_type==ValueType::Ref {Ok(json!(resolve(s,ids,v)?))}else{Ok(v.clone())}
 }
 fn collect_ids(s:&EntitySnapshot, forms:&[Json])->Result<BTreeMap<String,u64>>{
     let mut ids=BTreeMap::new();
-    let mut next=s.entities.keys().filter(|id|**id>=LOCAL_ID).max().copied().unwrap_or(LOCAL_ID)+1;
+    let mut next=LOCAL_ID.checked_add(s.basis_t.checked_mul(65536).ok_or("Study basis exhausted")?).ok_or("Study basis exhausted")?;
     for form in forms {
         if let Some(name)=form.get("db/id").and_then(Json::as_str){
             if !ids.contains_key(name){
                 // Unique identities upsert in EDB. Mirror that for resumed clocks
                 // and progress maps rather than creating duplicate local records.
-                let existing=form.as_object().unwrap().iter().filter(|(a,_)|a.ends_with("/id")).find_map(|(a,v)|s.entities.iter().find_map(|(id,e)|(e.get(a)==Some(v)).then_some(*id)));
+                let existing=form.as_object().unwrap().iter().filter(|(a,_)|a.ends_with("/id")).find_map(|(a,v)|s.entities.with_attribute(a).into_iter().find(|id|s.entities[id].get(a)==Some(v)));
                 ids.insert(name.into(),existing.unwrap_or_else(||{let id=next;next+=1;id}));
             }
         }
@@ -98,7 +98,7 @@ fn apply_in_place(s:&mut EntitySnapshot,db:&DatabaseValue,forms:&[Json],at:DateT
     s.status_history.extend(history);
     Ok(ids)
 }
-fn apply(s:&EntitySnapshot,db:&DatabaseValue,forms:&[Json],at:DateTime<Utc>)->Result<(EntitySnapshot,BTreeMap<String,u64>)>{
+pub(super) fn apply(s:&EntitySnapshot,db:&DatabaseValue,forms:&[Json],at:DateTime<Utc>)->Result<(EntitySnapshot,BTreeMap<String,u64>)>{
     let mut out=s.clone();
     let ids=apply_in_place(&mut out,db,forms,at)?;
     Ok((out,ids))
@@ -126,7 +126,7 @@ fn delta(s:&EntitySnapshot,touched:&BTreeSet<u64>)->Json{
 fn identity(s:&EntitySnapshot,id:u64)->Result<Json>{
     let e=s.entity(id)?;
     for a in ["learner-task/id","task-item/id","activity/id","answer/id","working-period/id","progress/id","step/id"]{if let Some(v)=e.get(a){return Ok(json!({"attribute":a,"value":v}));}}
-    Err("Provisional study reference has no stable identity".into())
+    Err(format!("Provisional study reference {id} has no stable identity: {}",json!(e)).into())
 }
 fn lookup(s:&EntitySnapshot,key:&Json)->Result<u64>{
     let a=key["attribute"].as_str().ok_or("Stable study identity required")?;
@@ -158,7 +158,7 @@ fn reuse_ids(forms:&mut[Json],ids:&Json){
 }
 /// Convert status transitions to explicit logical work intervals. Their times
 /// survive delayed EDB transactions and restarts, including starts and switches.
-fn clocks(s:&EntitySnapshot,db:&DatabaseValue,forms:&mut Vec<Json>,at:DateTime<Utc>)->Result<()> {
+pub(super) fn clocks(s:&EntitySnapshot,db:&DatabaseValue,forms:&mut Vec<Json>,at:DateTime<Utc>)->Result<()> {
     let ids=collect_ids(s,forms)?;
     let transitions=forms.iter().filter_map(|f|{
         if let Some(e)=f.as_object(){Some((e.get("db/id")?.clone(),e.get("task-item/status")?.clone()))}
@@ -189,24 +189,29 @@ fn clocks(s:&EntitySnapshot,db:&DatabaseValue,forms:&mut Vec<Json>,at:DateTime<U
 }
 
 pub(super) fn project(app:&mut Application,body:&Json)->Result<Json>{
+    let (response,projection)=project_value(&app.snapshot,&app.conn.db(),app.learner_eid,app.study_projection.take(),body)?;
+    app.study_projection=Some(projection);
+    Ok(response)
+}
+pub(super) fn project_value(base:&EntitySnapshot,db:&DatabaseValue,learner:u64,prior:Option<Projection>,body:&Json)->Result<(Json,Projection)>{
     let fingerprint=course_academy_engine::core::fingerprint(&body["overlay"]);
-    let mut projection=match app.study_projection.take() {
+    let mut projection=match prior {
         Some(p) if p.fingerprint==fingerprint => p,
-        _ => Projection{snapshot:overlay(&app.snapshot,&body["overlay"])?,touched:body["overlay"]["entities"].as_object().map(|m|m.keys().filter_map(|k|k.parse().ok()).collect()).unwrap_or_default(),fingerprint},
+        _ => Projection{snapshot:overlay(base,&body["overlay"])?,touched:body["overlay"]["entities"].as_object().map(|m|m.keys().filter_map(|k|k.parse().ok()).collect()).unwrap_or_default(),fingerprint},
     };
     let s=&mut projection.snapshot;
     if let Some(focused)=body["operation"]["_focusedMode"].as_bool(){s.focused_mode=focused;}
     let op=&body["operation"];let action=op["action"].as_str().ok_or("Action required")?;
     let millis=body["receivedAt"].as_i64().ok_or("Study receipt instant required")?;
     let at=DateTime::from_timestamp_millis(millis).ok_or("Invalid receipt instant")?;
-    let (mut forms,result)=mutate(&s,app.learner_eid,action,op,at)?;
-    clocks(&s,&app.conn.db(),&mut forms,at)?;
+    let (mut forms,result)=mutate(&s,learner,action,op,at)?;
+    clocks(&s,db,&mut forms,at)?;
     // Resolve the pre-operation synthetic references before applying new data.
     let mut refs=serde_json::Map::new();
     for key in ["taskId","itemId","activityId","questionId"]{if let Some(id)=op[key].as_u64().filter(|id|*id>=LOCAL_ID){refs.insert(key.into(),identity(s,id)?);}}
-    let ids=apply_in_place(s,&app.conn.db(),&forms,at)?;
+    let ids=apply_in_place(s,db,&forms,at)?;
     let after=&projection.snapshot;
-    let output=view(after,app.learner_eid,action,&result)?;
+    let output=view(after,learner,action,&result)?;
     let mut clock_forms=vec![];
     for f in &forms{
         let clock=f.as_object().is_some_and(|e|e.contains_key("working-period/id"))||f.get(2).and_then(|v|ident(v).ok()).is_some_and(|a|matches!(a,"task-item/working-periods"|"working-period/ended-at"|"task-item/elapsed-seconds"|"learner-task/elapsed-seconds"|"task-item/working-ended-at"));
@@ -216,7 +221,7 @@ pub(super) fn project(app:&mut Application,body:&Json)->Result<Json>{
     let mut clock_refs=serde_json::Map::new();
     for f in &clock_forms{if let Some(id)=f.get(1).and_then(Json::as_u64).filter(|id|*id>=LOCAL_ID){clock_refs.insert(id.to_string(),identity(after,id)?);}}
     let mut operation=op.clone();operation["_deferQueue"]=json!(true);
-    operation["_queuedStudy"]=json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"expected":promise(&output),"at":millis});
+    operation["_queuedStudy"]=json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"locals":ids.values().map(|id|Ok((id.to_string(),identity(after,*id)?))).collect::<Result<BTreeMap<_,_>>>()?,"expected":promise(&output),"at":millis});
     let mut changed_tasks=BTreeSet::new();
     for form in &forms {
         let target=form.get("db/id").or_else(||form.get(1));
@@ -231,13 +236,12 @@ pub(super) fn project(app:&mut Application,body:&Json)->Result<Json>{
     if let Some(task)=task(after,&result)?{changed_tasks.insert(task);}
     let mut views=serde_json::Map::new();
     for t in changed_tasks {
-        if let Ok(v)=task_json(after,app.learner_eid,t){views.insert(t.to_string(),v);}
+        if let Ok(v)=task_json(after,learner,t){views.insert(t.to_string(),v);}
     }
     let overlay=delta(after,&projection.touched);
     projection.fingerprint=course_academy_engine::core::fingerprint(&overlay);
     let response=json!({"view":output,"views":views,"overlay":overlay,"operation":operation});
-    app.study_projection=Some(projection);
-    Ok(response)
+    Ok((response,projection))
 }
 
 /// Recompute read-dependent credit at the current durable basis; retain the
@@ -260,9 +264,40 @@ pub(super) fn prepare(s:&EntitySnapshot,db:&DatabaseValue,l:u64,body:&Json,forms
     if actual!=queued["expected"]{return Err("Study content or outcome changed before saving; accepted work retained".into());}
     Ok(())
 }
-pub(super) fn persist(app:&mut Application,body:&Json)->Result<Json>{
-    let mut op=body["operation"].clone();
+pub(super) fn bind(s:&EntitySnapshot,operation:&Json)->Result<Json>{
+    let mut op=operation.clone();
     let refs=op["_queuedStudy"]["refs"].as_object().ok_or("Queued study references required")?.clone();
-    for (key,value) in refs{op[key]=json!(lookup(&app.snapshot,&value)?);}
-    app.process(&op)
+    for (key,value) in refs{op[key]=json!(lookup(s,&value)?);}
+    Ok(op)
+}
+pub(super) fn persist(app:&mut Application,body:&Json)->Result<Json>{
+    let op=bind(&app.snapshot,&body["operation"])?;
+    let value=app.process(&op)?;
+    let mut aliases=serde_json::Map::new();
+    for (local,key) in op["_queuedStudy"]["locals"].as_object().ok_or("Queued study identities required")? {
+        aliases.insert(local.clone(),json!(lookup(&app.snapshot,key)?));
+    }
+    Ok(json!({"view":value,"aliases":aliases}))
+}
+
+pub(super) fn read(app:&mut Application,body:&Json)->Result<Json>{
+    let fingerprint=course_academy_engine::core::fingerprint(&body["overlay"]);
+    if app.study_projection.as_ref().is_none_or(|p|p.fingerprint!=fingerprint){
+        app.study_projection=Some(Projection{snapshot:overlay(&app.snapshot,&body["overlay"])?,touched:BTreeSet::new(),fingerprint});
+    }
+    let s=&app.study_projection.as_ref().unwrap().snapshot;
+    let l=app.learner_eid;let op=&body["operation"];
+    match op["action"].as_str().ok_or("Study read action required")? {
+        "home"|"queue"=>home(s,l),
+        "task"=>{let t=required(op,"taskId")?;owned(s,l,t)?;task_json(s,l,t)},
+        "profile"=>profile_json(s,l),
+        "learner"=>Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)})),
+        "assignments"=>assignment_reader::list(s,l),
+        "assignment"=>assignment_reader::detail(s,l,op["assignmentId"].as_str().ok_or("Assignment required")?),
+        "activity-history"=>activity_history::list(s,l,op),
+        "activity-history-detail"=>activity_history::detail(s,l,required(op,"taskId")?),
+        "study-stats"=>study_stats::summary(s,l,op,Utc::now()),
+        "topic-study-availability"=>Ok(topic_study_availability(s,l,required(op,"topicId")?,Utc::now())),
+        _=>Err("Unsupported local study read".into()),
+    }
 }

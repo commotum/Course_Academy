@@ -94,7 +94,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      showReviewSaveState, updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, leaveTask, toggleLessonPause, retry: () => retryOperation?.(),
+      reconcileStudyIds, setManualPause, setDraft: (id, responses) => drafts.set(id, responses), showReviewSaveState, updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, leaveTask, toggleLessonPause, retry: () => retryOperation?.(),
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -934,4 +934,20 @@ test('normal durable progress sync stays invisible and genuine failures remain a
   f.h.showReviewSaveState({ status: 'saved' }, 123);
   assert.equal(status.hidden, true);
   assert.equal(f.events.filter(event => event.type === 'course-academy:review-saved').length, 2);
+});
+
+test('committed provisional IDs preserve a manual pause and its answer draft when reopening an old route', async () => {
+  const f = fixture();
+  const localTask = 4_000_000_000_000_001, localItem = 4_000_000_000_000_002;
+  const step = question(localItem);
+  await f.h.render(activity(localItem, 1, { taskId: localTask, status: 'paused', step }));
+  f.h.setDraft(localItem, [{ fieldId: 30, choiceId: 42 }]);
+  f.h.setManualPause(localTask, true);
+  f.server = activity(51, 1, { taskId: 321, status: 'paused', step: question(51),
+    saveState: { status: 'saved' }, idAliases: { [localTask]: 321, [localItem]: 51 } });
+  await f.h.openTask(localTask);
+  assert.deepEqual(f.calls.map(call => call.path), ['/api/task?taskId=' + localTask]);
+  assert.equal(f.storage.get('course-academy.manual-pause.321'), 'true');
+  assert.equal(f.h.view.pause.textContent, 'Resume');
+  assert.equal(f.h.view.current.querySelectorAll('input').find(input => input.value === '42').checked, true);
 });

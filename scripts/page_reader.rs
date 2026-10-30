@@ -252,6 +252,65 @@ pub(super) fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(Entity
     Ok((snapshot,learner))
 }
 
+// A repair to an unrelated question must not reload every owned task and its
+// clock history. Reuse only when the exact captured suffix proves that neither
+// this projection's records nor its global membership selectors changed.
+fn capture_unchanged(
+    db: &DatabaseValue, previous: &SnapshotReference, current: &SnapshotReference,
+    snapshot: &EntitySnapshot, assignments: bool,
+) -> Result<bool> {
+    let old = previous.key();
+    let new = current.key();
+    if old.lineage_id() != new.lineage_id() || old.generation() != new.generation()
+        || old.eidx_frontier() > new.eidx_frontier()
+        || old.basis_t() >= new.basis_t() || new.basis_t() - old.basis_t() > 256 {
+        // Physical publications at a stable basis can consolidate history.
+        return Ok(false);
+    }
+    for name in ["task-item/status", "learner-task/status"] {
+        if db.schema().attribute(attribute(db, name)?)?.no_history {
+            return Ok(false);
+        }
+    }
+    let mut expected = old.basis_t() + 1;
+    for tx in db.log_value()?.tx_range(
+        Some(TimePoint::T(expected)), Some(TimePoint::T(new.basis_t() + 1)),
+    )? {
+        let tx = tx?;
+        if tx.t != expected { return Ok(false); }
+        expected += 1;
+        for datom in tx.data {
+            let name = db.schema().attribute(datom.attribute)?.ident.qualified_name();
+            if projection_change_matters(snapshot, assignments, datom.entity, &name) {
+                return Ok(false);
+            }
+        }
+    }
+    Ok(expected == new.basis_t() + 1)
+}
+
+fn projection_change_matters(snapshot: &EntitySnapshot, assignments: bool, entity: u64, name: &str) -> bool {
+    if name == "db/txInstant" { return false; }
+    name.starts_with("db/") || name.starts_with("db.")
+        || name == "knowledge-point/canonical-example"
+        || (assignments && name == "course-group/id")
+        || snapshot.entities.contains_key(&entity)
+}
+
+fn reuse_capture(
+    db: &DatabaseValue, current: &SnapshotReference,
+    cached: &mut Option<(SnapshotReference, EntitySnapshot, u64)>, assignments: bool,
+) -> bool {
+    let Some((previous, snapshot, _)) = cached else { return false; };
+    if previous == current { return true; }
+    if !capture_unchanged(db, previous, current, snapshot, assignments).unwrap_or(false) {
+        return false;
+    }
+    snapshot.basis_t = db.basis_t();
+    *previous = current.clone();
+    true
+}
+
 pub(super) fn serve(database: String, learner: String) -> Result<bool> {
     let conn = Connection::connect_configured_with_cache_limits(
         postgres_config_from_env()?,
@@ -285,17 +344,23 @@ pub(super) fn serve(database: String, learner: String) -> Result<bool> {
                 return forecast_reader::read(&forecast_cache.as_ref().unwrap().1,&body,Utc::now());
             }
             if stats {
-                if stats_cache.as_ref().is_none_or(|(old,_,_)|*old!=reference) {
+                if !reuse_capture(&db, &reference, &mut stats_cache, false) {
                     let (s,learner)=capture_stats(&db,&learner)?;
                     stats_cache=Some((reference,s,learner));
                 }
                 let (_,s,learner)=stats_cache.as_ref().unwrap();
                 return study_stats::summary(s,*learner,&body,Utc::now());
             }
-            if cache
-                .get(&assignments)
-                .is_none_or(|(old, _, _)| *old != reference)
-            {
+            let unchanged = cache.get_mut(&assignments).is_some_and(|(previous, snapshot, _)| {
+                if *previous == reference { return true; }
+                if !capture_unchanged(&db, previous, &reference, snapshot, assignments).unwrap_or(false) {
+                    return false;
+                }
+                snapshot.basis_t = db.basis_t();
+                *previous = reference.clone();
+                true
+            });
+            if !unchanged {
                 let (s, learner) = capture(&db, &learner, assignments)?;
                 cache.insert(assignments, (reference, s, learner));
             }
@@ -318,6 +383,36 @@ pub(super) fn serve(database: String, learner: String) -> Result<bool> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn page_cache_tracks_owned_evidence_links_and_global_selectors() -> Result<()> {
+        let s = EntitySnapshot::from_json(&json!({"basis_t":7,"entities":{
+            "1":{"learner/id":"mine","learner/activity":[2]},
+            "2":{"learner-task/items":[3]},
+            "3":{"task-item/content":4},
+            "4":{"question/id":{"$uuid":"owned-question"}}
+        }}))?;
+        for (entity, name) in [
+            (1,"learner/activity"), (1,"learner/daily-xp-goal"),
+            (2,"learner-task/status"), (2,"learner-task/finished-at"),
+            (3,"task-item/status"), (3,"task-item/working-periods"),
+            (4,"question/retired"), (999,"knowledge-point/canonical-example"),
+            (999,"db/ident"), (999,"db/noHistory"),
+        ] {
+            assert!(projection_change_matters(&s, false, entity, name), "{entity} {name}");
+        }
+        for (entity, name) in [
+            (999,"question/problem"), (999,"answer/value"),
+            (999,"question/worked-solution"), (999,"learner-task/status"),
+            (2,"db/txInstant"),
+        ] {
+            assert!(!projection_change_matters(&s, false, entity, name), "{entity} {name}");
+        }
+        assert!(projection_change_matters(&s, true, 999, "course-group/id"));
+        assert!(!projection_change_matters(&s, false, 999, "course-group/id"));
+        Ok(())
+    }
+
     #[test]
     #[ignore = "read-only comparison against configured database"]
     fn page_projection_matches_full_database() -> Result<()> {
