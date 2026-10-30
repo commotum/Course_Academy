@@ -1,0 +1,1320 @@
+
+TOPIC {'entity': 17592186049009, 'title': 'Finding a Basis of the Column Space of a Matrix', 'ma_id': 2623, 'questions': 54, 'kp_ids': [17592186152155, 17592186152156, 17592186152157]}
+
+QUESTION 17592186151943 e-6254
+Consider the matrix $A={\left[ \begin{array}{ccc}1 & 2 & - 1 \\ 3 & 2 & 5\end{array} \right]}.$ Find a basis $\mathcal B$ of $\textrm{Col}(A).$
+SOLUTION
+In order to find a basis of $\textrm{Col}(A),$ we need reduce the matrix $A$ to row echelon form:
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 2 & -1 \\ 3 & 2 & 5\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & -1 \\ 0 & -4 & 8\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are $\mathbf{a}_1$ and $\mathbf{a}_2.$ So, a basis of $\textrm{Col}(A)$ is $\{ \mathbf{a}_1, \mathbf{a}_2 \},$ that is to say, 
+
+$$
+\mathcal{B} = \Bigg\{ 
+		\underbrace{ {\left[ \begin{array}{c}1 \\ 3\end{array} \right]}}_{\color{black}\mathbf{a}_1}, 
+		\underbrace{ {\left[ \begin{array}{c}2 \\ 2\end{array} \right]}}_{\color{black}\mathbf{a}_2} 
+	\Bigg\}.
+$$
+
+QUESTION 17592186151944 e-6255
+The matrix $A$ is given below. Let $\mathbf{a}_1$, $\mathbf{a}_2$, and $\mathbf{a}_3$ be the respective columns of $A.$ Determine if $\mathcal{B}={ { {\mathbf{a}}_{1} , {\mathbf{a}}_{2}}}$ is a basis of $\textrm{Col}(A).$ 
+If that is the case, find $x_1 \cdot x_2$, where $\mathbf{a}_3=x_1\mathbf{a}_1+x_2\mathbf{a}_2.$
+
+$$
+A= 
+{\left[ \begin{array}{ccc}1 & 2 & 9 \\ 3 & 1 & 17\end{array} \right]}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 2 & 9 \\ 3 & 1 & 17\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & 9 \\ 0 & -5 & -10\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{5}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & 9 \\ 0 & 1 & 2\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 5 \\ 0 & 1 & 2\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\textrm{Col}(A)$ is $\{\mathbf{a}_1,\mathbf{a}_2 \},$ that is to say,
+
+$$
+\mathcal{B}=\left\{ {\left[ \begin{array}{c}1 \\ 3\end{array} \right]}, {\left[ \begin{array}{c}2 \\ 1\end{array} \right]}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express $\mathbf{a}_3$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{ {\left[ \begin{array}{c}9 \\ 17\end{array} \right]}}_{\mathbf{a}_3} = \underbrace{(5)}_{x_1}\cdot \underbrace{ {\left[ \begin{array}{c}1 \\ 3\end{array} \right]}}_{\mathbf{a}_1} + \underbrace{(2)}_{x_2}\cdot \underbrace{ {\left[ \begin{array}{c}2 \\ 1\end{array} \right]}}_{\mathbf{a}_2}.
+$$
+
+This gives us $x_1 \cdot x_2 = 5 \cdot 2=10.$
+
+QUESTION 17592186151945 e-6272
+The matrix $A$ is given below. Let $\mathbf{a}_1$, $\mathbf{a}_2$,  $\mathbf{a}_3$, and $\mathbf{a}_4$ be the respective columns of $A.$ Determine if $\mathcal{B}={ { {\mathbf{a}}_{1} , {\mathbf{a}}_{2}}}$ is a basis of $\textrm{Col}(A).$ If that is the case, find $x_1 \cdot x_2$, where $\mathbf{a}_4=x_1\mathbf{a}_1+x_2\mathbf{a}_2.$
+
+$$
+A= 
+{\left[ \begin{array}{cccc}2 & 0 & - 4 & 4 \\ 0 & 1 & - 6 & - 3 \\ 1 & 2 & - 14 & - 4\end{array} \right]}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}A & =\begin{bmatrix}2 & 0 & -4 & 4 \\ 0 & 1 & -6 & -3 \\ 1 & 2 & -14 & -4\end{bmatrix} & {R}_{1} & :=\frac{1}{2}{R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -2 & 2 \\ 0 & 1 & -6 & -3 \\ 1 & 2 & -14 & -4\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -2 & 2 \\ 0 & 1 & -6 & -3 \\ 0 & 2 & -12 & -6\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 & 2 \\ 0 & 1 & -6 & -3 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\textrm{Col}(A)$ is $\{\mathbf{a}_1,\mathbf{a}_2 \},$ that is to say,
+$$
+\mathcal{B}=\left\{ {\left[ \begin{array}{c}2 \\ 0 \\ 1\end{array} \right]}, {\left[ \begin{array}{c}0 \\ 1 \\ 2\end{array} \right]}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express $\mathbf{a}_4$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{ {\left[ \begin{array}{c}4 \\ - 3 \\ - 4\end{array} \right]}}_{\mathbf{a}_4} = \underbrace{\left(2\right)}_{x_1}\cdot \underbrace{ {\left[ \begin{array}{c}2 \\ 0 \\ 1\end{array} \right]}}_{\mathbf{a}_1} + \underbrace{(-3)}_{x_2}\cdot \underbrace{ {\left[ \begin{array}{c}0 \\ 1 \\ 2\end{array} \right]}}_{\mathbf{a}_2}.
+$$
+
+This gives us $x_1 \cdot x_2 = 2 \cdot (-3) = -6.$
+
+QUESTION 17592186152579 q-34462
+The matrix $A$ is given below. Let ${a}_{1}$, ${a}_{2}$, and ${a}_{3}$ be the respective columns of $A.$ Determine if $B=\text{{}{a}_{1},{a}_{2}\text{}}$ is a basis of $\text{Col}(A).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${a}_{3}={x}_{1}{a}_{1}+{x}_{2}{a}_{2}.$ 
+
+$$
+A=\begin{bmatrix}1 & 0 & -1 \\ 0 & -2 & -6\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 0 & -1 \\ 0 & -2 & -6\end{bmatrix} & {R}_{2} & :=-\frac{1}{2}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -1 \\ 0 & 1 & 3\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(A)$ is $\{{a}_{1},{a}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0\end{bmatrix},\begin{bmatrix}0 \\ -2\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${a}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-1 \\ -6\end{bmatrix}}_{{a}_{3}}=\underbrace{(-1)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 0\end{bmatrix}}_{{a}_{1}}+\underbrace{(3)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}0 \\ -2\end{bmatrix}}_{{a}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=(-1)\cdot 3=-3.$
+FIELD 17592186149981 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186149986}
+[(17592186149982, '1'), (17592186149983, '\\frac{3}{5}'), (17592186149984, '3'), (17592186149986, '-3'), (17592186423615, '$\\text{{}{a}_{1},{a}_{2}\\text{}}$ is not a basis of $\\text{Col}(A)$')]
+
+QUESTION 17592186152580 q-34510
+The matrix $A$ is given below. Let ${a}_{1}$, ${a}_{2}$, and ${a}_{3}$ are the respective columns of $A.$ Determine if $B=\text{{}{a}_{1},{a}_{3}\text{}}$ is a basis of $\text{Col}(A).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${a}_{2}={x}_{1}{a}_{1}+{x}_{3}{a}_{3}.$ 
+
+$$
+A=\begin{bmatrix}1 & 3 & 4 \\ -2 & -6 & 5\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 3 & 4 \\ -2 & -6 & 5\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\begin{bmatrix}1 & 3 & 4 \\ 0 & 0 & 13\end{bmatrix} & {R}_{2} & :=\frac{1}{13}{R}_{2} \\  & ∼\begin{bmatrix}1 & 3 & 4 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-4){R}_{2} \\  & ∼\begin{bmatrix}1 & 3 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(A)$ is $\{{a}_{1},{a}_{3}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ -2\end{bmatrix},\begin{bmatrix}4 \\ 5\end{bmatrix}\right\}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${a}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}3 \\ -6\end{bmatrix}}_{{a}_{2}}=\underbrace{(3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -2\end{bmatrix}}_{{a}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}4 \\ 5\end{bmatrix}}_{{a}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=3\cdot 0=0.$
+FIELD 17592186149987 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186149992}
+[(17592186149988, '\\frac{5}{4}'), (17592186149989, '9'), (17592186149991, '-2'), (17592186149992, '0'), (17592186442769, '$\\text{{}{a}_{1},{a}_{3}\\text{}}$ is not a basis of $\\text{Col}(A)$')]
+
+QUESTION 17592186152581 q-34524
+Consider the matrix
+$A = \begin{bmatrix}2 & -6 & 0 \\ 1 & -1 & 1 \\ 3 & 1 & 5\end{bmatrix}$. Find a basis $B$ of $Col(A)$.
+SOLUTION
+MISSING
+FIELD 17592186149993 :answer-field.type/radio KEY selection CORRECT None
+[(17592186149994, 'B = {\\begin{bmatrix}2 \\\\ 1 \\\\ 3\\end{bmatrix}, \\begin{bmatrix}-6 \\\\ -1 \\\\ 1\\end{bmatrix}, \\begin{bmatrix}0 \\\\ 1 \\\\ 5\\end{bmatrix}}'), (17592186149995, 'B = {\\begin{bmatrix}2 \\\\ 1 \\\\ 3\\end{bmatrix}}'), (17592186149996, 'B = {\\begin{bmatrix}2 \\\\ 1 \\\\ 3\\end{bmatrix}, \\begin{bmatrix}-6 \\\\ -1 \\\\ 1\\end{bmatrix}}'), (17592186149997, 'B = {\\begin{bmatrix}0 \\\\ 1 \\\\ 5\\end{bmatrix}}'), (17592186149998, 'B = {\\begin{bmatrix}-6 \\\\ -1 \\\\ 1\\end{bmatrix}}')]
+
+QUESTION 17592186152582 q-34530
+The matrix $A$ is given below. Let ${a}_{1}$, ${a}_{2}$,  ${a}_{3}$ and ${a}_{4}$ be the respective columns of $A.$
+Determine if $B=\text{{}{a}_{1},{a}_{2}\text{}}$ is a basis of $\text{Col}(A).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${a}_{4}={x}_{1}{a}_{1}+{x}_{2}{a}_{2}.$ 
+
+$$
+A=\begin{bmatrix}1 & 2 & -1 & 0 \\ 0 & 4 & -4 & 4 \\ 3 & 5 & -2 & -1\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 2 & -1 & 0 \\ 0 & 4 & -4 & 4 \\ 3 & 5 & -2 & -1\end{bmatrix} & {R}_{3} & :={R}_{3}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 0 \\ 0 & 4 & -4 & 4 \\ 0 & -1 & 1 & -1\end{bmatrix} & {R}_{2} & :=\frac{1}{4}{R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 0 \\ 0 & 1 & -1 & 1 \\ 0 & -1 & 1 & -1\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 0 \\ 0 & 1 & -1 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 1 & -2 \\ 0 & 1 & -1 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(A)$ is $\{{a}_{1},{a}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0 \\ 3\end{bmatrix},\begin{bmatrix}2 \\ 4 \\ 5\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${a}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}0 \\ 4 \\ -1\end{bmatrix}}_{{a}_{4}}=\underbrace{(-2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 0 \\ 3\end{bmatrix}}_{{a}_{1}}+\underbrace{(1)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}2 \\ 4 \\ 5\end{bmatrix}}_{{a}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=(-2)\cdot 1=-2.$
+FIELD 17592186318593 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186317817}
+[(17592186317783, '$\\text{{}{a}_{1},{a}_{2}\\text{}}$ is not a basis of $\\text{Col}(A)$'), (17592186317817, '-2'), (17592186317819, '-11'), (17592186318151, '-13'), (17592186318329, '11')]
+
+QUESTION 17592186152583 q-35676
+Given the matrix
+$A = \begin{bmatrix}0 & 0 & 0 \\ 0 & 0 & 3 \\ 1 & 0 & 2\end{bmatrix}$. Find a basis $B$ of $Col(A)$.
+SOLUTION
+MISSING
+FIELD 17592186150005 :answer-field.type/radio KEY selection CORRECT None
+[(17592186150006, 'B = {\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}}'), (17592186150007, 'B = {\\begin{bmatrix}2 \\\\ 3 \\\\ 0\\end{bmatrix}}'), (17592186150008, 'B = {\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}, \\begin{bmatrix}0 \\\\ 0 \\\\ 0\\end{bmatrix}}'), (17592186150009, 'B = {\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}, \\begin{bmatrix}0 \\\\ 3 \\\\ 2\\end{bmatrix}, \\begin{bmatrix}0 \\\\ 0 \\\\ 0\\end{bmatrix}}'), (17592186150010, 'B = {\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}, \\begin{bmatrix}0 \\\\ 3 \\\\ 2\\end{bmatrix}}')]
+
+QUESTION 17592186152721 q-75603
+The matrix $A$ is given below. Let $a_{1}$, $a_{2}$, $a_{3}$ and $a_{4}$ be the respective columns of $A$.
+Determine if $B = {a_{1}, a_{2}}$ is a basis of $Col(A)$.
+If that is the case, find $x_{1} \cdot x_{2}$, where $a_{4} = x_{1}a_{1} + x_{2}a_{2}$.
+
+$$
+\displaystyle A = \begin{bmatrix}1 & 0 & 2 & 1 \\ 0 & 5 & 10 & 5 \\ 1 & 0 & 2 & 2\end{bmatrix}
+$$
+SOLUTION
+MISSING
+FIELD 17592186150833 :answer-field.type/radio KEY selection CORRECT None
+[(17592186150834, '-6'), (17592186150835, '-8'), (17592186150836, '${a_{1}, a_{2}}$ is not a basis of $Col(A)$'), (17592186150837, '15'), (17592186150838, '4')]
+
+QUESTION 17592186247215 q-111178
+Given the matrix 
+$G=\begin{bmatrix}0 & 0 & -5 \\ 5 & 2 & 0 \\ 0 & 0 & 0\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(G).$
+SOLUTION
+In order to find a basis of $\text{Col}(G),$ we reduce the matrix $G$ to row echelon form:
+
+$$
+\begin{aligned}G & =\begin{bmatrix}0 & 0 & -5 \\ 5 & 2 & 0 \\ 0 & 0 & 0\end{bmatrix} & {R}_{1} & ↔{R}_{2} \\  & ∼\begin{bmatrix}5 & 2 & 0 \\ 0 & 0 & -5 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $3$rd columns are pivot columns, while the $2$nd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $3$rd columns from the original matrix are ${g}_{1}$ and ${g}_{3}.$ So, a basis of $\text{Col}(G)$ is ${{g}_{1},{g}_{3}},$ that is to say, 
+
+$$
+B={\begin{bmatrix}0 \\ 5 \\ 0\end{bmatrix},\begin{bmatrix}-5 \\ 0 \\ 0\end{bmatrix}}.
+$$
+FIELD 17592186246799 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186244874}
+[(17592186244422, 'B={\\begin{bmatrix}0 \\\\ 5 \\\\ 0\\end{bmatrix}}'), (17592186244609, 'B={\\begin{bmatrix}-5 \\\\ 0 \\\\ 0\\end{bmatrix}}'), (17592186244874, 'B={\\begin{bmatrix}0 \\\\ 5 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 0 \\\\ 0\\end{bmatrix}}'), (17592186245727, 'B={\\begin{bmatrix}0 \\\\ 5 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 2 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 0 \\\\ 0\\end{bmatrix}}'), (17592186246211, 'B={\\begin{bmatrix}0 \\\\ 5 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 2 \\\\ 0\\end{bmatrix}}')]
+
+QUESTION 17592186247216 q-111181
+Given the matrix 
+$F=\begin{bmatrix}1 & 6 & 2 \\ 0 & -3 & 0 \\ 2 & 12 & 4\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(F).$
+SOLUTION
+In order to find a basis of $\text{Col}(F),$ we reduce the matrix $F$ to row echelon form:
+
+$$
+\begin{aligned}F & =\begin{bmatrix}1 & 6 & 2 \\ 0 & -3 & 0 \\ 2 & 12 & 4\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 6 & 2 \\ 0 & -3 & 0 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${f}_{1}$ and ${f}_{2}.$ So, a basis of $\text{Col}(V)$ is ${{f}_{1},{f}_{2}},$ that is to say, 
+
+$$
+B={\begin{bmatrix}1 \\ 0 \\ 2\end{bmatrix},\begin{bmatrix}6 \\ -3 \\ 12\end{bmatrix}}.
+$$
+FIELD 17592186246947 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186244380}
+[(17592186244372, 'B={\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}6 \\\\ -3 \\\\ 12\\end{bmatrix},\\begin{bmatrix}2 \\\\ 0 \\\\ 4\\end{bmatrix}}'), (17592186244380, 'B={\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}6 \\\\ -3 \\\\ 12\\end{bmatrix}}'), (17592186244806, 'B={\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix}}'), (17592186245488, 'B={\\begin{bmatrix}6 \\\\ -3 \\\\ 12\\end{bmatrix}}'), (17592186245599, 'B={\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 0 \\\\ 4\\end{bmatrix}}')]
+
+QUESTION 17592186247221 q-111468
+The matrix $D$ is given below. Let ${d}_{1}$, ${d}_{2}$, and ${d}_{3}$ be the respective columns of $D.$ Determine if $B=\text{{}{d}_{1},{d}_{3}\text{}}$ is a basis of $\text{Col}(D).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${d}_{2}={x}_{1}{d}_{1}+{x}_{3}{d}_{3}.$ 
+
+$$
+D=\begin{bmatrix}1 & -6 & 2 \\ -4 & 24 & 8\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $A$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}D & =\begin{bmatrix}1 & -6 & 2 \\ -4 & 24 & 8\end{bmatrix} & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼\begin{bmatrix}1 & -6 & 2 \\ 0 & 0 & 16\end{bmatrix} & {R}_{2} & :=\frac{1}{16}{R}_{2} \\  & ∼\begin{bmatrix}1 & -6 & 2 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & -6 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(D)$ is $\{{d}_{1},{d}_{3}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ -4\end{bmatrix},\begin{bmatrix}2 \\ 8\end{bmatrix}\right\}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${d}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-6 \\ 24\end{bmatrix}}_{{d}_{2}}=\underbrace{(-6)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -4\end{bmatrix}}_{{d}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}2 \\ 8\end{bmatrix}}_{{d}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=-6\cdot 0=0.$
+FIELD 17592186246589 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186246409}
+[(17592186244517, '6'), (17592186244591, '3'), (17592186245047, '-2'), (17592186245097, '$\\text{{}{d}_{1},{d}_{3}\\text{}}$ is not a basis of $\\text{Col}(D)$'), (17592186246409, '0')]
+
+QUESTION 17592186247222 q-111502
+The matrix $T$ is given below. Let ${t}_{1}$, ${t}_{2}$, and ${t}_{3}$ be the respective columns of $T.$ Determine if $B=\text{{}{t}_{1},{t}_{2}\text{}}$ is a basis of $\text{Col}(T).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${t}_{3}={x}_{1}{t}_{1}+{x}_{2}{t}_{2}.$
+
+$$
+T=\begin{bmatrix}1 & 2 & 8 \\ 3 & 8 & 30\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $T$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}T & =\begin{bmatrix}1 & 2 & 8 \\ 3 & 8 & 30\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & 8 \\ 0 & 2 & 6\end{bmatrix} & {R}_{2} & :=\frac{1}{2}{R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & 8 \\ 0 & 1 & 3\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 2 \\ 0 & 1 & 3\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(T)$ is ${{t}_{1},{t}_{2}},$ that is to say,
+
+$$
+B={\begin{bmatrix}1 \\ 3\end{bmatrix},\begin{bmatrix}2 \\ 8\end{bmatrix}}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${t}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}8 \\ 30\end{bmatrix}}_{{t}_{3}}=\underbrace{(2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 3\end{bmatrix}}_{{t}_{1}}+\underbrace{(3)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}2 \\ 8\end{bmatrix}}_{{t}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=2\cdot 3=6.$
+FIELD 17592186246888 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186246289}
+[(17592186244801, '3'), (17592186245466, '$\\text{{}{t}_{1},{t}_{2}\\text{}}$ is not a basis of $\\text{Col}(T)$'), (17592186245662, '-3'), (17592186246289, '6'), (17592186246414, '5')]
+
+QUESTION 17592186247223 q-111503
+The matrix $T$ is given below. Let ${t}_{1}$, ${t}_{2}$, and ${t}_{3}$ be the respective columns of $T.$
+Determine if $B=\text{{}{t}_{1},{t}_{3}\text{}}$ is a basis of $\text{Col}(T).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${t}_{2}={x}_{1}{t}_{1}+{x}_{3}{t}_{3}.$
+
+$$
+T=\begin{bmatrix}-2 & -2 & 4 \\ 3 & 4 & -6\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $T$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}T & =\begin{bmatrix}-2 & -2 & 4 \\ 3 & 4 & -6\end{bmatrix} & {R}_{1} & :=\left(-\frac{1}{2}\right){R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -2 \\ 3 & 4 & -6\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -2 \\ 0 & 1 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 \\ 0 & 1 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(T)$ is ${{t}_{1},{t}_{2}}.$
+
+Therefore, we conclude that $\text{{}{t}_{1},{t}_{3}\text{}}$ is not a basis of $\text{Col}(T).$
+FIELD 17592186246667 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186245286}
+[(17592186244621, '0'), (17592186244817, '3'), (17592186244921, '1'), (17592186245286, '$\\text{{}{t}_{1},{t}_{3}\\text{}}$ is not a basis of $\\text{Col}(T)$'), (17592186245472, '2')]
+
+QUESTION 17592186247225 q-111508
+The matrix $T$ is given below. Let ${t}_{1}$, ${t}_{2}$, and ${t}_{3}$ be the respective columns of $T.$
+Determine if $B=\text{{}{t}_{1},{t}_{2}\text{}}$ is a basis of $\text{Col}(T).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${t}_{3}={x}_{1}{t}_{1}+{x}_{2}{t}_{2}.$
+
+$$
+T=\begin{bmatrix}-1 & 3 & 4 \\ 2 & -6 & 4\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $T$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}T & =\begin{bmatrix}-1 & 3 & 4 \\ 2 & -6 & 4\end{bmatrix} & {R}_{1} & :=(-1){R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & -4 \\ 2 & -6 & 4\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & -4 \\ 0 & 0 & 12\end{bmatrix} & {R}_{2} & :=\frac{1}{12}{R}_{2} \\  & ∼\begin{bmatrix}1 & -3 & -4 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(T)$ is ${{t}_{1},{t}_{3}}.$
+
+Therefore, we conclude that $\text{{}{t}_{1},{t}_{2}\text{}}$ is not a basis of $\text{Col}(T).$
+FIELD 17592186246656 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186246377}
+[(17592186244544, '-6'), (17592186245068, '-1'), (17592186245591, '0'), (17592186245731, '4'), (17592186246377, '$\\text{{}{t}_{1},{t}_{2}\\text{}}$ is not a basis of $\\text{Col}(T)$')]
+
+QUESTION 17592186247227 q-111514
+The matrix $C$ is given below. Let ${c}_{1}$, ${c}_{2}$,  ${c}_{3}$, and ${c}_{4}$ be the respective columns of $C.$ Determine if $B=\text{{}{c}_{1},{c}_{2}\text{}}$ is a basis of $\text{Col}(C).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${c}_{4}={x}_{1}{c}_{1}+{x}_{2}{c}_{2}.$
+
+$$
+C=\begin{bmatrix}1 & 0 & 1 & 4 \\ 1 & -4 & -3 & -8 \\ 3 & -4 & -1 & 0\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $C$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}C & =\begin{bmatrix}1 & 0 & 1 & 4 \\ 1 & -4 & -3 & -8 \\ 3 & -4 & -1 & 0\end{bmatrix} & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 4 \\ 0 & -4 & -4 & -12 \\ 3 & -4 & -1 & 0\end{bmatrix} & {R}_{3} & :={R}_{3}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 4 \\ 0 & -4 & -4 & -12 \\ 0 & -4 & -4 & -12\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{4}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 4 \\ 0 & 1 & 1 & 3 \\ 0 & -4 & -4 & -12\end{bmatrix} & {R}_{3} & :={R}_{3}+4{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 4 \\ 0 & 1 & 1 & 3 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(C)$ is $\{{c}_{1},{c}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 1 \\ 3\end{bmatrix},\begin{bmatrix}0 \\ -4 \\ -4\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${c}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}4 \\ -8 \\ 0\end{bmatrix}}_{{c}_{4}}=\underbrace{(4)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 1 \\ 3\end{bmatrix}}_{{c}_{1}}+\underbrace{(3)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}0 \\ -4 \\ -4\end{bmatrix}}_{{c}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=4\cdot 3=12.$
+FIELD 17592186246971 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186245769}
+[(17592186244599, '-2'), (17592186244823, '6'), (17592186245584, '5'), (17592186245769, '12'), (17592186246379, '$\\text{{}{c}_{1},{c}_{2}\\text{}}$ is not a basis of $\\text{Col}(C)$')]
+
+QUESTION 17592186247228 q-111516
+The matrix $R$ is given below. Let ${r}_{1}$, ${r}_{2}$,  ${r}_{3}$ and ${r}_{4}$ be the respective columns of $R.$
+Determine if 
+$B=\text{{}{r}_{1},{r}_{2},{r}_{3}\text{}}$ is a basis of $\text{Col}(R).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}\cdot {x}_{3}$, where ${r}_{4}={x}_{1}{r}_{1}+{x}_{2}{r}_{2}+{x}_{3}{r}_{3}.$ 
+
+$$
+R=\begin{bmatrix}1 & 0 & 1 & 1 \\ 3 & -2 & 1 & -3 \\ 12 & -6 & 6 & -6\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $R$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}R & =\begin{bmatrix}1 & 0 & 1 & 1 \\ 3 & -2 & 1 & -3 \\ 12 & -6 & 6 & -6\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 1 \\ 0 & -2 & -2 & -6 \\ 12 & -6 & 6 & -6\end{bmatrix} & {R}_{3} & :={R}_{3}+(-12){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 1 \\ 0 & -2 & -2 & -6 \\ 0 & -6 & -6 & -18\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{2}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 1 \\ 0 & 1 & 1 & 3 \\ 0 & -6 & -6 & -18\end{bmatrix} & {R}_{3} & :={R}_{3}+6{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 1 & 1 \\ 0 & 1 & 1 & 3 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(R)$ is $\{{r}_{1},{r}_{2}\}.$ 
+
+Therefore, we conclude that $B=\{{r}_{1},{r}_{2},{r}_{3}\}$ is not a basis of $\text{Col}(R).$
+FIELD 17592186246715 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442772}
+[(17592186244311, '1'), (17592186244593, '12'), (17592186245357, '-3'), (17592186246312, '6'), (17592186442772, '$\\{{r}_{1},{r}_{2},{r}_{3}\\}$ is not a basis of $\\text{Col}(R)$')]
+
+QUESTION 17592186247232 q-111807
+The matrix $R$ is given below. Let ${r}_{1}$, ${r}_{2}$,  ${r}_{3}$ and ${r}_{4}$ be the respective columns of $R.$
+Determine if $B=\text{{}{r}_{1},{r}_{2},{r}_{3}\text{}}$ is a basis of $\text{Col}(R).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}\cdot {x}_{3}$, where ${r}_{4}={x}_{1}{r}_{1}+{x}_{2}{r}_{2}+{x}_{3}{r}_{3}.$ 
+
+$$
+R=\begin{bmatrix}1 & 1 & -3 & -2 \\ 3 & 5 & -7 & -8 \\ 4 & 6 & -10 & -10\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $R$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}R & =\begin{bmatrix}1 & 1 & -3 & -2 \\ 3 & 5 & -7 & -8 \\ 4 & 6 & -10 & -10\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -3 & -2 \\ 0 & 2 & 2 & -2 \\ 4 & 6 & -10 & -10\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -3 & -2 \\ 0 & 2 & 2 & -2 \\ 0 & 2 & 2 & -2\end{bmatrix} & {R}_{2} & :=\left(\frac{1}{2}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 1 & -3 & -2 \\ 0 & 1 & 1 & -1 \\ 0 & 2 & 2 & -2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 1 & -3 & -2 \\ 0 & 1 & 1 & -1 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(R)$ is $\{{r}_{1},{r}_{2}\}.$ 
+
+Therefore, we conclude that $B=\{{r}_{1},{r}_{2},{r}_{3}\}$ is not a basis of $\text{Col}(R).$
+FIELD 17592186246749 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186500042}
+[(17592186244350, '0'), (17592186245447, '10'), (17592186245522, '-15'), (17592186245632, '3'), (17592186500042, '$\\{{r}_{1},{r}_{2},{r}_{3}\\}$ is not a basis of $\\text{Col}(R)$')]
+
+QUESTION 17592186247233 q-111809
+The matrix $S$ is given below. Let ${s}_{1}$, ${s}_{2}$,  ${s}_{3}$ and ${s}_{4}$ be the respective columns of $S.$
+Determine if $B=\text{{}{s}_{1},{s}_{2},{s}_{3}\text{}}$ is a basis of $\text{Col}(S).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}\cdot {x}_{3}$, where ${s}_{4}={x}_{1}{s}_{1}+{x}_{2}{s}_{2}+{x}_{3}{s}_{3}.$ 
+
+$$
+S=\begin{bmatrix}1 & -1 & -5 & 5 \\ -2 & -1 & 10 & -1 \\ -1 & -2 & 5 & 4\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $S$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}S & =\begin{bmatrix}1 & -1 & -5 & 5 \\ -2 & -1 & 10 & -1 \\ -1 & -2 & 5 & 4\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\begin{bmatrix}1 & -1 & -5 & 5 \\ 0 & -3 & 0 & 9 \\ -1 & -2 & 5 & 4\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{1} \\  & ∼\begin{bmatrix}1 & -1 & -5 & 5 \\ 0 & -3 & 0 & 9 \\ 0 & -3 & 0 & 9\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{3}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & -1 & -5 & 5 \\ 0 & 1 & 0 & -3 \\ 0 & -3 & 0 & 9\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{2} \\  & ∼\begin{bmatrix}1 & -1 & -5 & 5 \\ 0 & 1 & 0 & -3 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(S)$ is $\{{s}_{1},{s}_{2}\}.$ 
+
+Therefore, we conclude that $B=\{{s}_{1},{s}_{2},{s}_{3}\}$ is not a basis of $\text{Col}(S).$
+FIELD 17592186246634 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442776}
+[(17592186244349, '5'), (17592186244423, '2'), (17592186245181, '10'), (17592186246518, '4'), (17592186442776, '$\\{{s}_{1},{s}_{2},{s}_{3}\\}$ is not a basis of $\\text{Col}(S)$')]
+
+QUESTION 17592186318978 q-34513
+Given the matrix 
+$G=\begin{bmatrix}3 & -4 \\ 2 & -\frac{8}{3}\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(G).$
+SOLUTION
+In order to find a basis of $\text{Col}(G),$ we reduce the matrix $G$ to row echelon form:
+
+$$
+\begin{aligned}G & =\begin{bmatrix}3 & -4 \\ 2 & -\frac{8}{3}\end{bmatrix} & {R}_{1} & :=\frac{1}{3}{R}_{1} \\  & ∼\begin{bmatrix}1 & -\frac{4}{3} \\ 2 & -\frac{8}{3}\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1}^{′} \\  & ∼\begin{bmatrix}1 & -\frac{4}{3} \\ 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, only the $1$st column is a pivot column, while the $2$nd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st column from the original matrix is ${g}_{1}.$ So, a basis of $\text{Col}(G)$ is ${{g}_{1}},$ that is to say, 
+
+$$
+B={\begin{bmatrix}3 \\ 2\end{bmatrix}}.
+$$
+FIELD 17592186318652 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186317843}
+[(17592186317843, 'B={\\begin{bmatrix}3 \\\\ 2\\end{bmatrix}}'), (17592186317900, 'B={\\begin{bmatrix}3 \\\\ 2\\end{bmatrix},\\begin{bmatrix}-4 \\\\ -\\frac{8}{3}\\end{bmatrix}}'), (17592186318132, 'B={\\begin{bmatrix}4 \\\\ -\\frac{8}{3}\\end{bmatrix}}'), (17592186318227, 'B={\\begin{bmatrix}3 \\\\ -2\\end{bmatrix}}'), (17592186318397, 'B={\\begin{bmatrix}1 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-\\frac{4}{3} \\\\ 0\\end{bmatrix}}')]
+
+QUESTION 17592186318982 q-34514
+Given the matrix 
+$F=\begin{bmatrix}-1 & 3 \\ 7 & -2\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(F).$
+SOLUTION
+In order to find a basis of $\text{Col}(F),$ we reduce the matrix $F$ to row echelon form:
+
+$$
+\begin{aligned}F & =\begin{bmatrix}-1 & 3 \\ 7 & -2\end{bmatrix} & {R}_{2}:={R}_{2}+7{R}_{1} \\  & ∼\begin{bmatrix}-1 & 3 \\ 0 & 19\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$rd columns from the original matrix are ${f}_{1}$ and ${f}_{2}.$ So, a basis of $\text{Col}(F)$ is $\{{f}_{1},{f}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}-1 \\ 7\end{bmatrix},\begin{bmatrix}3 \\ -2\end{bmatrix}\right\}.
+$$
+FIELD 17592186318917 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186423602}
+[(17592186423601, 'B=\\left\\{\\begin{bmatrix}-1 \\\\ 7\\end{bmatrix},\\begin{bmatrix}0 \\\\ 0\\end{bmatrix}\\right\\}'), (17592186423602, 'B=\\left\\{\\begin{bmatrix}-1 \\\\ 7\\end{bmatrix},\\begin{bmatrix}3 \\\\ -2\\end{bmatrix}\\right\\}'), (17592186423603, 'B=\\left\\{\\begin{bmatrix}-3 \\\\ 2\\end{bmatrix}\\right\\}'), (17592186423607, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0\\end{bmatrix},\\begin{bmatrix}3 \\\\ -2\\end{bmatrix}\\right\\}'), (17592186423616, 'B=\\left\\{\\begin{bmatrix}-1 \\\\ 7\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186345025 q-75073
+Consider the matrix 
+$$
+\displaystyle W=\begin{bmatrix}2 & -3 & 2 \\ -6 & 9 & -2 \\ 8 & -12 & 10\end{bmatrix}.
+$$ 
+Find a basis $B$ of  $\text{Col}(W).$
+SOLUTION
+In order to find a basis of $\text{Col}(W),$ we reduce the matrix $W$ to row echelon form:
+
+$$
+\begin{aligned}W & =\begin{bmatrix}2 & -3 & 2 \\ -6 & 9 & -2 \\ 8 & -12 & 10\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\begin{bmatrix}2 & -3 & 2 \\ 0 & 0 & 4 \\ 8 & -12 & 10\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{1} \\  & ∼\begin{bmatrix}2 & -3 & 2 \\ 0 & 0 & 4 \\ 0 & 0 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+\left(-\frac{1}{2}\right){R}_{2} \\  & ∼\begin{bmatrix}2 & -3 & 2 \\ 0 & 0 & 4 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $3$rd columns are pivot columns, while the $2$nd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $3$rd columns from the original matrix are ${w}_{1}$ and ${w}_{3}.$ So, a basis of $\text{Col}(W)$ is $\{{w}_{1},{w}_{3}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}2 \\ -6 \\ 8\end{bmatrix},\begin{bmatrix}2 \\ -2 \\ 10\end{bmatrix}\right\}.
+$$
+FIELD 17592186344840 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442773}
+[(17592186442767, 'B=\\left\\{\\begin{bmatrix}2 \\\\ -6 \\\\ 8\\end{bmatrix}\\right\\}'), (17592186442768, 'B=\\left\\{\\begin{bmatrix}2 \\\\ -6 \\\\ 8\\end{bmatrix},\\begin{bmatrix}-3 \\\\ 9 \\\\ -12\\end{bmatrix},\\begin{bmatrix}2 \\\\ -2 \\\\ 10\\end{bmatrix}\\right\\}'), (17592186442771, 'B=\\left\\{\\begin{bmatrix}-3 \\\\ 9 \\\\ -12\\end{bmatrix}\\right\\}'), (17592186442773, 'B=\\left\\{\\begin{bmatrix}2 \\\\ -6 \\\\ 8\\end{bmatrix},\\begin{bmatrix}2 \\\\ -2 \\\\ 10\\end{bmatrix}\\right\\}'), (17592186442781, 'B=\\left\\{\\begin{bmatrix}2 \\\\ -2 \\\\ 10\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186345026 q-75083
+The matrix $U$ is given below. Let ${u}_{1}$, ${u}_{2}$, and ${u}_{3}$ be the respective columns of $U.$
+Determine if $B=\text{{}{u}_{1},{u}_{3}\text{}}$ is a basis of $\text{Col}(U).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${u}_{2}={x}_{1}{u}_{1}+{x}_{3}{u}_{3}.$
+
+$$
+U=\begin{bmatrix}1 & -2 & -3 \\ -4 & 8 & 8\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $U$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}U & =\begin{bmatrix}1 & -2 & -3 \\ -4 & 8 & 8\end{bmatrix} & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & -3 \\ 0 & 0 & -4\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{4}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & -3 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+3{R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(U)$ is ${{u}_{1},{u}_{3}},$ that is to say,
+
+$$
+B={\begin{bmatrix}1 \\ -4\end{bmatrix},\begin{bmatrix}-3 \\ 8\end{bmatrix}}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${u}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-2 \\ 8\end{bmatrix}}_{{u}_{2}}=\underbrace{(-2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -4\end{bmatrix}}_{{u}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}-3 \\ 8\end{bmatrix}}_{{u}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=(-2)\cdot 0=0.$
+FIELD 17592186344862 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186342499}
+[(17592186342499, '0'), (17592186342579, '$\\text{{}{u}_{1},{u}_{3}\\text{}}$ is not a basis of $\\text{Col}(U)$'), (17592186342681, '-2'), (17592186342995, '-4'), (17592186344031, '\\frac{1}{4}')]
+
+QUESTION 17592186345138 q-75944
+The matrix $D$ is given below. Let ${d}_{1}$, ${d}_{2}$, and ${d}_{3}$ be the respective columns of $D.$ Determine if $B=\text{{}{d}_{1},{d}_{2}\text{}}$ is a basis of $\text{Col}(D).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${d}_{3}={x}_{1}{d}_{1}+{x}_{2}{d}_{2}.$
+
+$$
+D=\begin{bmatrix}1 & -1 & 1 \\ -1 & -7 & -17\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $D$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}D & =\begin{bmatrix}1 & -1 & 1 \\ -1 & -7 & -17\end{bmatrix} & {R}_{2} & :={R}_{2}+{R}_{1} \\  & ∼\begin{bmatrix}1 & -1 & 1 \\ 0 & -8 & -16\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{8}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & -1 & 1 \\ 0 & 1 & 2\end{bmatrix} & {R}_{1} & :={R}_{1}+{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 3 \\ 0 & 1 & 2\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(D)$ is ${{d}_{1},{d}_{2}},$ that is to say,
+
+$$
+B={\begin{bmatrix}1 \\ -1\end{bmatrix},\begin{bmatrix}-1 \\ -7\end{bmatrix}}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${d}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}1 \\ -17\end{bmatrix}}_{{d}_{3}}=\underbrace{(3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -1\end{bmatrix}}_{{d}_{1}}+\underbrace{(2)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}-1 \\ -7\end{bmatrix}}_{{d}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=3\cdot 2=6.$
+FIELD 17592186344622 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186343134}
+[(17592186343134, '6'), (17592186343370, '5'), (17592186343431, '9'), (17592186343761, '0'), (17592186343961, '$\\text{{}{d}_{1},{d}_{2}\\text{}}$ is not a basis of $\\text{Col}(D)$')]
+
+QUESTION 17592186345139 q-75946
+The matrix $P$ is given below. Let ${p}_{1}$, ${p}_{2}$, and ${p}_{3}$ be the respective columns of $P.$
+Determine if $B=\text{{}{p}_{1},{p}_{2}\text{}}$ is a basis of $\text{Col}(P).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${p}_{3}={x}_{1}{p}_{1}+{x}_{2}{p}_{2}.$
+
+$$
+P=\begin{bmatrix}1 & 3 & 1 \\ 0 & 2 & 2\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $P$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}P & =\begin{bmatrix}1 & 3 & 1 \\ 0 & 2 & 2\end{bmatrix} & {R}_{2} & :=\frac{1}{2}{R}_{2} \\  & ∼\begin{bmatrix}1 & 3 & 1 \\ 0 & 1 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-3){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 \\ 0 & 1 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(P)$ is $\{{p}_{1},{p}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0\end{bmatrix},\begin{bmatrix}3 \\ 2\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${p}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}1 \\ 2\end{bmatrix}}_{{p}_{3}}=\underbrace{(-2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 0\end{bmatrix}}_{{p}_{1}}+\underbrace{(1)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}3 \\ 2\end{bmatrix}}_{{p}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=(-2)\cdot 1=-2.$
+FIELD 17592186344578 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186342753}
+[(17592186342260, '3'), (17592186342315, '2'), (17592186342753, '-2'), (17592186343193, '-1'), (17592186343355, '$\\text{{}{p}_{1},{p}_{2}\\text{}}$ is not a basis of $\\text{Col}(P)$')]
+
+QUESTION 17592186345143 q-75956
+The matrix $W$ is given below. Let ${w}_{1}$, ${w}_{2}$, and ${w}_{3}$ be the respective columns of $W.$
+Determine if $B=\text{{}{w}_{1},{w}_{3}\text{}}$ is a basis of $\text{Col}(W).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${w}_{2}={x}_{1}{w}_{1}+{x}_{3}{w}_{3}.$
+
+$$
+W=\begin{bmatrix}2 & -6 & 4 \\ 4 & -12 & 9\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $W$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}W & =\begin{bmatrix}2 & -6 & 4 \\ 4 & -12 & 9\end{bmatrix} & {R}_{1} & :=\frac{1}{2}{R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 2 \\ 4 & -12 & 9\end{bmatrix} & {R}_{2} & :={R}_{2}+(-4){R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 2 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & -3 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(W)$ is $\{{w}_{1},{w}_{3}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}2 \\ 4\end{bmatrix},\begin{bmatrix}4 \\ 9\end{bmatrix}\right\}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${w}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-6 \\ -12\end{bmatrix}}_{{w}_{2}}=\underbrace{(-3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}2 \\ 4\end{bmatrix}}_{{w}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}4 \\ 9\end{bmatrix}}_{{w}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=(-3)\cdot 0=0.$
+FIELD 17592186344764 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186342937}
+[(17592186342666, '2'), (17592186342937, '0'), (17592186342999, '$\\text{{}{w}_{1},{w}_{3}\\text{}}$ is not a basis of $\\text{Col}(W)$'), (17592186343499, '6'), (17592186343808, '3')]
+
+QUESTION 17592186345149 q-75977
+The matrix $H$ is given below. Let ${h}_{1}$, ${h}_{2}$,  ${h}_{3}$ and ${h}_{4}$ be the respective columns of $H.$
+Determine if $B=\text{{}{h}_{1},{h}_{2}\text{}}$ is a basis of $\text{Col}(H).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${h}_{4}={x}_{1}{h}_{1}+{x}_{2}{h}_{2}.$ 
+
+$$
+H=\begin{bmatrix}2 & 2 & 12 & 2 \\ 0 & 1 & 1 & 0 \\ 1 & 1 & 9 & 2\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $H$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}H & =\begin{bmatrix}2 & 2 & 12 & 2 \\ 0 & 1 & 1 & 0 \\ 1 & 1 & 9 & 2\end{bmatrix} & {R}_{1} & :=\frac{1}{2}{R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & 6 & 1 \\ 0 & 1 & 1 & 0 \\ 1 & 1 & 9 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 1 & 6 & 1 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 3 & 1\end{bmatrix} & {R}_{3} & :=\frac{1}{3}{R}_{3} \\  & ∼\begin{bmatrix}1 & 1 & 6 & 1 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & \frac{1}{3}\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{2},{h}_{3}\}.$ 
+
+Therefore, we conclude that $B=\{{h}_{1},{h}_{2}\}$ is not a basis of $\text{Col}(H).$
+FIELD 17592186344768 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442780}
+[(17592186342955, '0'), (17592186343140, '-6'), (17592186343551, '4'), (17592186344239, '-2'), (17592186442780, '$\\{{h}_{1},{h}_{2}\\}$ is not a basis of $\\text{Col}(H)$')]
+
+QUESTION 17592186345151 q-75980
+The matrix $V$ is given below. Let ${v}_{1}$, ${v}_{2}$,  ${v}_{3}$ and ${v}_{4}$ be the respective columns of $V.$
+Determine if $B=\text{{}{v}_{1},{v}_{3}\text{}}$ is a basis of $\text{Col}(V).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${v}_{2}={x}_{1}{v}_{1}+{x}_{3}{v}_{3}.$ 
+
+$$
+V=\begin{bmatrix}-3 & 0 & -6 & -3 \\ 0 & 10 & 20 & 10 \\ 2 & 0 & 4 & 4\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $V$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}V & =\begin{bmatrix}-3 & 0 & -6 & -3 \\ 0 & 10 & 20 & 10 \\ 2 & 0 & 4 & 4\end{bmatrix} & {R}_{1} & :=\left(-\frac{1}{3}\right){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 2 & 1 \\ 0 & 10 & 20 & 10 \\ 2 & 0 & 4 & 4\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 2 & 1 \\ 0 & 10 & 20 & 10 \\ 0 & 0 & 0 & 2\end{bmatrix} & {R}_{2} & :=\frac{1}{10}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 2 & 1 \\ 0 & 1 & 2 & 1 \\ 0 & 0 & 0 & 2\end{bmatrix} & {R}_{3} & :=\frac{1}{2}{R}_{3} \\  & ∼\begin{bmatrix}1 & 0 & 2 & 1 \\ 0 & 1 & 2 & 1 \\ 0 & 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $4$th columns. So, a basis of $\text{Col}(V)$ is $\{{v}_{1},{v}_{2},{v}_{4}\}.$ 
+
+Therefore, we conclude that $B=\{{v}_{1},{v}_{3}\}$ is not a basis of $\text{Col}(V).$
+FIELD 17592186344794 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186423617}
+[(17592186342662, '0'), (17592186343032, '8'), (17592186343142, '-12'), (17592186344469, '\\frac{3}{2}'), (17592186423617, '$\\{{v}_{1},{v}_{3}\\}$ is not a basis of $\\text{Col}(V)$')]
+
+QUESTION 17592186423620 q-75070
+Given the matrix 
+$V=\begin{bmatrix}1 & 0 & 5 \\ 0 & 0 & 0 \\ 0 & 1 & 4\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(V).$
+SOLUTION
+In order to find a basis of $\text{Col}(V),$ we reduce the matrix $V$ to row echelon form:
+
+$$
+\begin{aligned}V & =\begin{bmatrix}1 & 0 & 5 \\ 0 & 0 & 0 \\ 0 & 1 & 4\end{bmatrix} & {R}_{2} & ↔{R}_{3} \\  & ∼\begin{bmatrix}1 & 0 & 5 \\ 0 & 1 & 4 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${v}_{1}$ and ${v}_{2}.$ So, a basis of $\text{Col}(V)$ is $\{{v}_{1},{v}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0 \\ 0\end{bmatrix},\begin{bmatrix}0 \\ 0 \\ 1\end{bmatrix}\right\}.
+$$
+FIELD 17592186423618 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186423610}
+[(17592186423608, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix},\\begin{bmatrix}5 \\\\ 0 \\\\ 4\\end{bmatrix}\\right\\}'), (17592186423609, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}\\right\\}'), (17592186423610, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}\\right\\}'), (17592186423613, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix}\\right\\}'), (17592186423614, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186423621 q-75982
+The matrix $F$ is given below. Let ${f}_{1}$, ${f}_{2}$,  ${f}_{3}$ and ${f}_{4}$ be the respective columns of $F.$
+Determine if $B=\text{{}{f}_{1},{f}_{2},{f}_{3}\text{}}$ is a basis of $\text{Col}(F).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}\cdot {x}_{3}$, where ${f}_{4}={x}_{1}{f}_{1}+{x}_{2}{f}_{2}+{x}_{3}{f}_{3}.$ 
+
+$$
+F=\begin{bmatrix}-4 & -4 & -24 & -4 \\ 0 & 1 & 1 & 0 \\ -1 & -1 & -6 & -1\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $F$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}F & =\begin{bmatrix}-4 & -4 & -24 & -4 \\ 0 & 1 & 1 & 0 \\ -1 & -1 & -6 & -1\end{bmatrix} & {R}_{1} & :=\left(-\frac{1}{4}\right){R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & 6 & 1 \\ 0 & 1 & 1 & 0 \\ -1 & -1 & -6 & -1\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & 6 & 1 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 5 & 1 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(F)$ is $\{{f}_{1},{f}_{2}\}.$ 
+
+Therefore, we conclude that $B=\{{f}_{1},{f}_{2},{f}_{3}\}$ is not a basis of $\text{Col}(F).$
+FIELD 17592186423619 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186423604}
+[(17592186423604, '$\\{{f}_{1},{f}_{2},{f}_{3}\\}$ is not a basis of $\\text{Col}(F)$'), (17592186423605, '-3'), (17592186423606, '\\frac{2}{5}'), (17592186423611, '5'), (17592186423612, '7')]
+
+QUESTION 17592186435356 q-75086
+The matrix $Q$ is given below. Let ${q}_{1}$, ${q}_{2}$, and ${q}_{3}$ be the respective columns of $Q.$ Determine if $B=\text{{}{q}_{1},{q}_{2}\text{}}$ is a basis of $\text{Col}(Q).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${q}_{3}={x}_{1}{q}_{1}+{x}_{2}{q}_{2}.$
+
+$$
+Q=\begin{bmatrix}1 & 2 & 8 \\ -3 & 2 & 0\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $Q$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}Q & =\begin{bmatrix}1 & 2 & 8 \\ -3 & 2 & 0\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & 8 \\ 0 & 8 & 24\end{bmatrix} & {R}_{2} & :=\frac{1}{8}{R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & 8 \\ 0 & 1 & 3\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 2 \\ 0 & 1 & 3\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(Q)$ is $\{{q}_{1},{q}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ -3\end{bmatrix},\begin{bmatrix}2 \\ 2\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${q}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}8 \\ 0\end{bmatrix}}_{{q}_{3}}=\underbrace{(2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -3\end{bmatrix}}_{{q}_{1}}+\underbrace{(3)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}2 \\ 2\end{bmatrix}}_{{q}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=2\cdot 3=6.$
+FIELD 17592186435355 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186435349}
+[(17592186435339, '$\\text{{}{q}_{1},{q}_{2}\\text{}}$ is not a basis of $\\text{Col}(Q)$'), (17592186435343, '0'), (17592186435345, '2'), (17592186435346, '5'), (17592186435349, '6')]
+
+QUESTION 17592186435357 q-75090
+The matrix $Q$ is given below. Let ${q}_{1}$, ${q}_{2}$,  ${q}_{3}$, and ${q}_{4}$ be the respective columns of $Q.$ Determine if $B=\text{{}{q}_{1},{q}_{2}\text{}}$ is a basis of $\text{Col}(Q).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${q}_{4}={x}_{1}{q}_{1}+{x}_{2}{q}_{2}.$
+
+$$
+Q=\begin{bmatrix}4 & 1 & -2 & 4 \\ 0 & 4 & 2 & 4 \\ 0 & 2 & 1 & 2\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $Q$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}Q & =\begin{bmatrix}4 & 1 & -2 & 4 \\ 0 & 4 & 2 & 4 \\ 0 & 2 & 1 & 2\end{bmatrix} & {R}_{2} & :=\frac{1}{4}{R}_{2} \\  & ∼\begin{bmatrix}4 & 1 & -2 & 4 \\ 0 & 1 & \frac{1}{2} & 1 \\ 0 & 2 & 1 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{2} \\  & ∼\begin{bmatrix}4 & 1 & -2 & 4 \\ 0 & 1 & \frac{1}{2} & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\  & ∼\begin{bmatrix}4 & 0 & -\frac{5}{2} & 3 \\ 0 & 1 & \frac{1}{2} & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :=\frac{1}{4}{R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -\frac{5}{8} & \frac{3}{4} \\ 0 & 1 & \frac{1}{2} & 1 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(Q)$ is $\{{q}_{1},{q}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}4 \\ 0 \\ 0\end{bmatrix},\begin{bmatrix}1 \\ 4 \\ 2\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${q}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}4 \\ 4 \\ 2\end{bmatrix}}_{{q}_{4}}=\underbrace{\left(\frac{3}{4}\right)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}4 \\ 0 \\ 0\end{bmatrix}}_{{q}_{1}}+\underbrace{(1)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}1 \\ 4 \\ 2\end{bmatrix}}_{{q}_{2}}.
+$$
+
+This gives us $$
+\displaystyle {x}_{1}\cdot {x}_{2}=\frac{3}{4}\cdot 1=\frac{3}{4}.
+$$
+FIELD 17592186435354 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186435348}
+[(17592186435338, '2'), (17592186435340, '1'), (17592186435344, '$\\text{{}{q}_{1},{q}_{2}\\text{}}$ is not a basis of $\\text{Col}(Q)$'), (17592186435348, '\\frac{3}{4}'), (17592186435351, '-\\frac{5}{2}')]
+
+QUESTION 17592186435358 q-111501
+The matrix $W$ is given below. Let ${w}_{1}$, ${w}_{2}$, and ${w}_{3}$ be the respective columns of $W.$
+Determine if $B=\text{{}{w}_{1},{w}_{3}\text{}}$ is a basis of $\text{Col}(W).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${w}_{2}={x}_{1}{w}_{1}+{x}_{3}{w}_{3}.$
+
+$$
+W=\begin{bmatrix}3 & -9 & 6 \\ -5 & 15 & 10\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $W$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}W & =\begin{bmatrix}3 & -9 & 6 \\ -5 & 15 & 10\end{bmatrix} & {R}_{1} & :=\frac{1}{3}{R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 2 \\ -5 & 15 & 10\end{bmatrix} & {R}_{2} & :={R}_{2}+5{R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 2 \\ 0 & 0 & 20\end{bmatrix} & {R}_{2} & :=\frac{1}{20}{R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 2 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & -3 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(W)$ is $\{{w}_{1},{w}_{3}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}3 \\ -5\end{bmatrix},\begin{bmatrix}6 \\ 10\end{bmatrix}\right\}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${w}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-9 \\ 15\end{bmatrix}}_{{w}_{2}}=\underbrace{(-3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}3 \\ -5\end{bmatrix}}_{{w}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}6 \\ 10\end{bmatrix}}_{{w}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=(-3)\cdot 0=0.$
+FIELD 17592186435353 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186435341}
+[(17592186435341, '0'), (17592186435342, '-3'), (17592186435347, '6'), (17592186435350, '2'), (17592186435352, '$\\text{{}{w}_{1},{w}_{3}\\text{}}$ is not a basis of $\\text{Col}(W)$')]
+
+QUESTION 17592186442799 q-35693
+Consider the matrix 
+$D=\begin{bmatrix}0 & 0 & 0 \\ 1 & 2 & 1 \\ 1 & 3 & 0\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(D).$
+SOLUTION
+In order to find a basis of $\text{Col}(D),$ we reduce the matrix $D$ to row echelon form:
+
+$$
+\begin{aligned}A & =\begin{bmatrix}0 & 0 & 0 \\ 1 & 2 & 1 \\ 1 & 3 & 0\end{bmatrix} & {R}_{1} & ↔{R}_{3} \\  & ∼\begin{bmatrix}1 & 3 & 0 \\ 1 & 2 & 1 \\ 0 & 0 & 0\end{bmatrix} & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\  & ∼\begin{bmatrix}1 & 3 & 0 \\ 0 & -1 & 1 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${d}_{1}$ and ${d}_{2}.$ So, a basis of $\text{Col}(D)$ is $\{{d}_{1},{d}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}0 \\ 1 \\ 1\end{bmatrix},\begin{bmatrix}0 \\ 2 \\ 3\end{bmatrix}\right\}.
+$$
+FIELD 17592186442797 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442788}
+[(17592186442777, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 2 \\\\ 3\\end{bmatrix}\\right\\}'), (17592186442787, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ 1\\end{bmatrix}\\right\\}'), (17592186442788, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ 1\\end{bmatrix},\\begin{bmatrix}0 \\\\ 2 \\\\ 3\\end{bmatrix}\\right\\}'), (17592186442789, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ 1\\end{bmatrix},\\begin{bmatrix}0 \\\\ 2 \\\\ 3\\end{bmatrix},\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}\\right\\}'), (17592186442791, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ -1\\end{bmatrix},\\begin{bmatrix}-1 \\\\ 0 \\\\ 1\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186442800 q-75072
+Consider the matrix 
+$T=\begin{bmatrix}1 & -3 & 0 \\ 2 & -1 & 10 \\ 4 & -10 & 2\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(T).$
+SOLUTION
+In order to find a basis of $\text{Col}(T),$ we reduce the matrix $T$ to row echelon form:
+
+$$
+\begin{aligned}T & =\begin{bmatrix}1 & -3 & 0 \\ 2 & -1 & 10 \\ 4 & -10 & 2\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 0 \\ 0 & 5 & 10 \\ 4 & -10 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{1} \\  & ∼\begin{bmatrix}1 & -3 & 0 \\ 0 & 5 & 10 \\ 0 & 2 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+\left(-\frac{2}{5}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & -3 & 0 \\ 0 & 5 & 10 \\ 0 & 0 & -2\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st, $2$nd and $3$rd columns are pivot columns.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st, $2$nd and $3$rd columns from the original matrix are ${t}_{1},$ ${t}_{2}$ and ${t}_{3}.$ So, a basis of $\text{Col}(T)$ is $\{{t}_{1},{t}_{2},{t}_{3}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 2 \\ 4\end{bmatrix},\begin{bmatrix}-3 \\ -1 \\ -10\end{bmatrix},\begin{bmatrix}0 \\ 10 \\ 2\end{bmatrix}\right\}.
+$$
+FIELD 17592186442796 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442775}
+[(17592186442775, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix},\\begin{bmatrix}-3 \\\\ -1 \\\\ -10\\end{bmatrix},\\begin{bmatrix}0 \\\\ 10 \\\\ 2\\end{bmatrix}\\right\\}'), (17592186442785, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 10 \\\\ 2\\end{bmatrix}\\right\\}'), (17592186442786, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix},\\begin{bmatrix}-3 \\\\ -1 \\\\ -10\\end{bmatrix}\\right\\}'), (17592186442793, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix}\\right\\}'), (17592186442794, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix},\\begin{bmatrix}0 \\\\ 10 \\\\ 2\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186442801 q-111202
+Consider the matrix 
+$T=\begin{bmatrix}1 & -1 & 2 \\ 3 & -7 & 2 \\ -9 & 17 & -10\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(T).$
+SOLUTION
+In order to find a basis of $\text{Col}(T),$ we reduce the matrix $T$ to row echelon form:
+
+$$
+\begin{aligned}T & =\begin{bmatrix}1 & -1 & 2 \\ 3 & -7 & 2 \\ -9 & 17 & -10\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & -1 & 2 \\ 0 & -4 & -4 \\ -9 & 17 & -10\end{bmatrix} & {R}_{3} & :={R}_{3}+9{R}_{1} \\  & ∼\begin{bmatrix}1 & -1 & 2 \\ 0 & -4 & -4 \\ 0 & 8 & 8\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\  & ∼\begin{bmatrix}1 & -1 & 2 \\ 0 & -4 & -4 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${t}_{1}$ and ${t}_{2}.$ So, a basis of $\text{Col}(T)$ is $\{{t}_{1},{t}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 3 \\ -9\end{bmatrix},\begin{bmatrix}-1 \\ -7 \\ 17\end{bmatrix}\right\}.
+$$
+FIELD 17592186442798 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442774}
+[(17592186442766, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ -9\\end{bmatrix}\\right\\}'), (17592186442774, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ -9\\end{bmatrix},\\begin{bmatrix}-1 \\\\ -7 \\\\ 17\\end{bmatrix}\\right\\}'), (17592186442779, 'B=\\left\\{\\begin{bmatrix}-1 \\\\ -7 \\\\ 17\\end{bmatrix}\\right\\}'), (17592186442782, 'B=\\left\\{\\begin{bmatrix}2 \\\\ 2 \\\\ -10\\end{bmatrix}\\right\\}'), (17592186442790, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ -9\\end{bmatrix},\\begin{bmatrix}-1 \\\\ -7 \\\\ 17\\end{bmatrix},\\begin{bmatrix}2 \\\\ 2 \\\\ -10\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186442802 q-111511
+The matrix $H$ is given below. Let ${h}_{1}$, ${h}_{2}$,  ${h}_{3}$ and ${h}_{4}$ be the respective columns of $H.$
+Determine if $B=\text{{}{h}_{1},{h}_{3}\text{}}$ is a basis of $\text{Col}(H).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${h}_{4}={x}_{1}{h}_{1}+{x}_{3}{h}_{3}.$ 
+
+$$
+H=\begin{bmatrix}1 & -2 & 1 & 0 \\ 2 & -6 & 0 & -6 \\ -7 & 18 & -3 & 13\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $H$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}H & =\begin{bmatrix}1 & -2 & 1 & 0 \\ 2 & -6 & 0 & -6 \\ -7 & 18 & -3 & 13\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & 1 & 0 \\ 0 & -2 & -2 & -6 \\ -7 & 18 & -3 & 13\end{bmatrix} & {R}_{3} & :={R}_{3}+7{R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & 1 & 0 \\ 0 & -2 & -2 & -6 \\ 0 & 4 & 4 & 13\end{bmatrix} & {R}_{3} & :=\left(-\frac{1}{2}\right){R}_{3} \\  & ∼\begin{bmatrix}1 & -2 & 1 & 0 \\ 0 & 1 & 1 & 3 \\ 0 & 4 & 4 & 13\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & 1 & 0 \\ 0 & 1 & 1 & 3 \\ 0 & 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $4$th columns. So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{2},{h}_{4}\}.$ 
+
+Therefore, we conclude that $B=\{{h}_{1},{h}_{3}\}$ is not a basis of $\text{Col}(H).$
+FIELD 17592186442795 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186442770}
+[(17592186442770, '$B=\\{{h}_{1},{h}_{3}\\}$ is not a basis of $\\text{Col}(H)$'), (17592186442778, '3'), (17592186442783, '0'), (17592186442784, '4'), (17592186442792, '5')]
+
+QUESTION 17592186484219 q-75951
+The matrix $Q$ is given below. Let ${q}_{1}$, ${q}_{2}$, and ${q}_{3}$ be the respective columns of $Q.$
+Determine if $B=\text{{}{q}_{1},{q}_{2}\text{}}$ is a basis of $\text{Col}(Q).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${q}_{3}={x}_{1}{q}_{1}+{x}_{2}{q}_{2}.$
+
+$$
+Q=\begin{bmatrix}1 & 0 & 2 \\ 2 & 2 & 8\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $Q$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}Q & =\begin{bmatrix}1 & 0 & 2 \\ 2 & 2 & 8\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 2 \\ 0 & 2 & 4\end{bmatrix} & {R}_{2} & :=\frac{1}{2}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 2 \\ 0 & 1 & 2\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(Q)$ is $\{{q}_{1},{q}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 2\end{bmatrix},\begin{bmatrix}0 \\ 2\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${q}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}2 \\ 8\end{bmatrix}}_{{q}_{3}}=\underbrace{(2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 2\end{bmatrix}}_{{q}_{1}}+\underbrace{(2)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}0 \\ 2\end{bmatrix}}_{{q}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=2\cdot 2=4.$
+FIELD 17592186484128 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186483598}
+[(17592186483598, '4'), (17592186483708, '-4'), (17592186483826, '0'), (17592186483920, '1'), (17592186483931, '$\\text{{}{q}_{1},{q}_{2}\\text{}}$ is not a basis of $\\text{Col}(Q)$')]
+
+QUESTION 17592186484246 q-75089
+The matrix $P$ is given below. Let ${p}_{1}$, ${p}_{2}$,  ${p}_{3}$ and ${p}_{4}$ be the respective columns of $P.$ Determine if $B=\text{{}{p}_{1},{p}_{2}\text{}}$ is a basis of $\text{Col}(P).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${p}_{4}={x}_{1}{p}_{1}+{x}_{2}{p}_{2}.$
+
+$$
+P=\begin{bmatrix}1 & 2 & -1 & 6 \\ 2 & 0 & -4 & 4 \\ 0 & 1 & \frac{1}{2} & 2\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $P$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}P & =\begin{bmatrix}1 & 2 & -1 & 6 \\ 2 & 0 & -4 & 4 \\ 0 & 1 & \frac{1}{2} & 2\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 6 \\ 0 & -4 & -2 & -8 \\ 0 & 1 & \frac{1}{2} & 2\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{4}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 6 \\ 0 & 1 & \frac{1}{2} & 2 \\ 0 & 1 & \frac{1}{2} & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & -1 & 6 \\ 0 & 1 & \frac{1}{2} & 2 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 & 2 \\ 0 & 1 & \frac{1}{2} & 2 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(P)$ is $\{{p}_{1},{p}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 2 \\ 0\end{bmatrix},\begin{bmatrix}2 \\ 0 \\ 1\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${p}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}6 \\ 4 \\ 2\end{bmatrix}}_{{p}_{4}}=\underbrace{(2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 2 \\ 0\end{bmatrix}}_{{p}_{1}}+\underbrace{(2)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}2 \\ 0 \\ 1\end{bmatrix}}_{{p}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=2\cdot 2=4.$
+FIELD 17592186484100 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186483631}
+[(17592186483631, '4'), (17592186483633, '-2'), (17592186483799, '2'), (17592186483836, '$\\text{{}{p}_{1},{p}_{2}\\text{}}$ is not a basis of $\\text{Col}(P)$'), (17592186484014, '-\\frac{1}{4}')]
+
+QUESTION 17592186484287 q-111504
+The matrix $H$ is given below. Let ${h}_{1}$, ${h}_{2}$, and ${h}_{3}$ be the respective columns of $H.$
+Determine if $B=\text{{}{h}_{1},{h}_{3}\text{}}$ is a basis of $\text{Col}(H).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${h}_{2}={x}_{1}{h}_{1}+{x}_{3}{h}_{3}.$
+
+$$
+H=\begin{bmatrix}4 & 4 & -8 \\ -3 & 2 & 6\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $H$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}H & =\begin{bmatrix}4 & 4 & -8 \\ -3 & 2 & 6\end{bmatrix} & {R}_{1} & :=\frac{1}{4}{R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -2 \\ -3 & 2 & 6\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\begin{bmatrix}1 & 1 & -2 \\ 0 & 5 & 0\end{bmatrix} & {R}_{2} & :=\frac{1}{5}{R}_{2} \\  & ∼\begin{bmatrix}1 & 1 & -2 \\ 0 & 1 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 \\ 0 & 1 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{2}\}.$
+
+Therefore, we conclude that $\text{{}{h}_{1},{h}_{3}\text{}}$ is not a basis of $\text{Col}(H).$
+FIELD 17592186484124 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186483926}
+[(17592186483660, '0'), (17592186483666, '8'), (17592186483686, '-5'), (17592186483762, '3'), (17592186483926, '$\\text{{}{h}_{1},{h}_{3}\\text{}}$ is not a basis of $\\text{Col}(H)$')]
+
+QUESTION 17592186500329 q-111515
+The matrix $V$ is given below. Let ${v}_{1}$, ${v}_{2}$,  ${v}_{3}$, and ${v}_{4}$ be the respective columns of $V.$ Determine if $B=\text{{}{v}_{1},{v}_{2}\text{}}$ is a basis of $\text{Col}(V).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${v}_{4}={x}_{1}{v}_{1}+{x}_{2}{v}_{2}.$
+
+$$
+V=\begin{bmatrix}1 & 0 & -1 & 3 \\ 1 & -2 & -3 & -3 \\ -2 & 6 & 8 & 12\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $V$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}V & =\begin{bmatrix}1 & 0 & -1 & 3 \\ 1 & -2 & -3 & -3 \\ -2 & 6 & 8 & 12\end{bmatrix} & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -1 & 3 \\ 0 & -2 & -2 & -6 \\ -2 & 6 & 8 & 12\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -1 & 3 \\ 0 & -2 & -2 & -6 \\ 0 & 6 & 6 & 18\end{bmatrix} & {R}_{2} & :=\left(-\frac{1}{2}\right){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -1 & 3 \\ 0 & 1 & 1 & 3 \\ 0 & 6 & 6 & 18\end{bmatrix} & {R}_{3} & :={R}_{3}+(-6){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -1 & 3 \\ 0 & 1 & 1 & 3 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(V)$ is $\{{v}_{1},{v}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 1 \\ -2\end{bmatrix},\begin{bmatrix}0 \\ -2 \\ 6\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${v}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}3 \\ -3 \\ 12\end{bmatrix}}_{{v}_{4}}=\underbrace{(3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 1 \\ -2\end{bmatrix}}_{{v}_{1}}+\underbrace{(3)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}0 \\ -2 \\ 6\end{bmatrix}}_{{v}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=3\cdot 3=9.$
+FIELD 17592186500279 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186499910}
+[(17592186499660, '4'), (17592186499804, '-6'), (17592186499825, '$\\{{v}_{1},{v}_{2}\\}$ is not a basis of $\\text{Col}(V)$'), (17592186499910, '9'), (17592186499991, '5')]
+
+QUESTION 17592186536836 q-75983
+The matrix $Q$ is given below. Let ${q}_{1}$, ${q}_{2}$,  ${q}_{3}$ and ${q}_{4}$ be the respective columns of $Q.$
+Determine if $B=\text{{}{q}_{1},{q}_{4}\text{}}$ is a basis of $\text{Col}(Q).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{4}$, where ${q}_{3}={x}_{1}{q}_{1}+{x}_{4}{q}_{4}.$ 
+
+$$
+Q=\begin{bmatrix}-5 & 0 & -30 & -15 \\ 0 & 3 & 6 & 3 \\ 4 & 0 & 24 & 14\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $Q$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}Q & =\begin{bmatrix}-5 & 0 & -30 & -15 \\ 0 & 3 & 6 & 3 \\ 4 & 0 & 24 & 14\end{bmatrix} & {R}_{1} & :=\left(-\frac{1}{5}\right){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 6 & 3 \\ 0 & 3 & 6 & 3 \\ 4 & 0 & 24 & 14\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & 6 & 3 \\ 0 & 3 & 6 & 3 \\ 0 & 0 & 0 & 2\end{bmatrix} & {R}_{2} & :=\frac{1}{3}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 6 & 3 \\ 0 & 1 & 2 & 1 \\ 0 & 0 & 0 & 2\end{bmatrix} & {R}_{3} & :=\frac{1}{2}{R}_{3} \\  & ∼\begin{bmatrix}1 & 0 & 6 & 3 \\ 0 & 1 & 2 & 1 \\ 0 & 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $4$th columns. So, a basis of $\text{Col}(Q)$ is $\{{q}_{1},{q}_{2},{q}_{4}\}.$ 
+
+So, we conclude that $B=\{{q}_{1},{q}_{4}\}$ is not a basis of $\text{Col}(Q).$
+FIELD 17592186536714 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186536376}
+[(17592186536306, '-6'), (17592186536326, '12'), (17592186536376, '$\\{{q}_{1},{q}_{4}\\}$ is not a basis of $\\text{Col}(Q)$'), (17592186536383, '-8'), (17592186536511, '9')]
+
+QUESTION 17592186615392 q-34468
+The matrix $U$ is given below. Let ${u}_{1}$, ${u}_{2}$, and ${u}_{3}$ be the respective columns of $U.$ Determine if $B=\text{{}{u}_{1},{u}_{2}\text{}}$ is a basis of $\text{Col}(U).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${u}_{3}={x}_{1}{u}_{1}+{x}_{2}{u}_{2}.$
+
+$$
+U=\begin{bmatrix}1 & -2 & 0 \\ -5 & 7 & -3\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $U$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}U & =\begin{bmatrix}1 & -2 & 0 \\ -5 & 7 & -3\end{bmatrix} & {R}_{2} & :={R}_{2}+5{R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & 0 \\ 0 & -3 & -3\end{bmatrix} & {R}_{2} & :=-\frac{1}{3}{R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & 0 \\ 0 & 1 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+2{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & 2 \\ 0 & 1 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(U)$ is $\{{u}_{1},{u}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ -5\end{bmatrix},\begin{bmatrix}-2 \\ 7\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${u}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}0 \\ -3\end{bmatrix}}_{{u}_{3}}=\underbrace{(2)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -5\end{bmatrix}}_{{u}_{1}}+\underbrace{(1)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}-2 \\ 7\end{bmatrix}}_{{u}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=2\cdot 1=2.$
+FIELD 17592186615327 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186615048}
+[(17592186614812, '3'), (17592186614910, '\\frac{2}{5}'), (17592186615048, '2'), (17592186615053, '1'), (17592186615173, '$\\text{{}{u}_{1},{u}_{2}\\text{}}$ is not a basis of $\\text{Col}(U)$')]
+
+QUESTION 17592186615396 q-111513
+The matrix $P$ is given below. Let ${p}_{1}$, ${p}_{2}$,  ${p}_{3}$ and ${p}_{4}$ be the respective columns of $P.$
+Determine if $B=\text{{}{p}_{1},{p}_{2}\text{}}$ is a basis of $\text{Col}(P).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${p}_{4}={x}_{1}{p}_{1}+{x}_{2}{p}_{2}.$ 
+
+$$
+P=\begin{bmatrix}1 & 0 & -3 & 2 \\ 2 & 3 & -3 & 1 \\ -5 & -3 & 13 & -7\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $P$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}P & =\begin{bmatrix}1 & 0 & -3 & 2 \\ 2 & 3 & -3 & 1 \\ -5 & -3 & 13 & -7\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -3 & 2 \\ 0 & 3 & 3 & -3 \\ -5 & -3 & 13 & -7\end{bmatrix} & {R}_{3} & :={R}_{3}+5{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -3 & 2 \\ 0 & 3 & 3 & -3 \\ 0 & -3 & -2 & 3\end{bmatrix} & {R}_{2} & :=\frac{1}{3}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -3 & 2 \\ 0 & 1 & 1 & -1 \\ 0 & -3 & -2 & 3\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -3 & 2 \\ 0 & 1 & 1 & -1 \\ 0 & 0 & 1 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st, $2$nd, and $3$rd columns. So, a basis of $\text{Col}(P)$ is $\{{p}_{1},{p}_{2},{p}_{3}\}.$ 
+
+Therefore, we conclude that $B=\{{p}_{1},{p}_{2}\}$ is not a basis of $\text{Col}(P).$
+FIELD 17592186615317 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186614785}
+[(17592186614764, '0'), (17592186614785, '$B=\\{{p}_{1},{p}_{2}\\}$ is not a basis of $\\text{Col}(P)$'), (17592186614827, '2'), (17592186615083, '3'), (17592186615136, '4')]
+
+QUESTION 17592186615406 q-111506
+The matrix $H$ is given below. Let ${h}_{1}$, ${h}_{2}$, and ${h}_{3}$ be the respective columns of $H.$
+Determine if $B=\text{{}{h}_{1},{h}_{2}\text{}}$ is a basis of $\text{Col}(H).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${h}_{3}={x}_{1}{h}_{1}+{x}_{2}{h}_{2}.$
+
+$$
+H=\begin{bmatrix}-2 & 4 & 10 \\ 3 & -6 & 20\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $H$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}H & =\begin{bmatrix}-2 & 4 & 10 \\ 3 & -6 & 20\end{bmatrix} & {R}_{1} & :=-\frac{1}{2}{R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & -5 \\ 3 & -6 & 20\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & -2 & -5 \\ 0 & 0 & 35\end{bmatrix} & {R}_{2} & :=\frac{1}{35}{R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & -5 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+5{R}_{2} \\  & ∼\begin{bmatrix}1 & -2 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{3}\}.$
+
+Therefore, we conclude that $\text{{}{h}_{1},{h}_{2}\text{}}$ is not a basis of $\text{Col}(H).$
+FIELD 17592186615298 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186615144}
+[(17592186614730, '3'), (17592186614844, '5'), (17592186614878, '0'), (17592186615144, '$\\text{{}{h}_{1},{h}_{2}\\text{}}$ is not a basis of $\\text{Col}(H)$'), (17592186615191, '10')]
+
+QUESTION 17592186615407 q-75091
+The matrix $C$ is given below. Let ${c}_{1}$, ${c}_{2}$,  ${c}_{3}$, and ${c}_{4}$ be the respective columns of $C.$ Determine if $B=\text{{}{c}_{1},{c}_{2}\text{}}$ is a basis of $\text{Col}(C).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${c}_{4}={x}_{1}{c}_{1}+{x}_{2}{c}_{2}.$
+
+$$
+C=\begin{bmatrix}1 & 0 & -2 & -3 \\ 0 & 2 & -6 & 4 \\ 2 & 1 & -7 & -4\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $C$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}C & =\begin{bmatrix}1 & 0 & -2 & -3 \\ 0 & 2 & -6 & 4 \\ 2 & 1 & -7 & -4\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & -2 & -3 \\ 0 & 2 & -6 & 4 \\ 0 & 1 & -3 & 2\end{bmatrix} & {R}_{2} & :=\frac{1}{2}{R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 & -3 \\ 0 & 1 & -3 & 2 \\ 0 & 1 & -3 & 2\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 0 & -2 & -3 \\ 0 & 1 & -3 & 2 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(C)$ is $\{{c}_{1},{c}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0 \\ 2\end{bmatrix},\begin{bmatrix}0 \\ 2 \\ 1\end{bmatrix}\right\}.
+$$
+
+Now, since the $4$th column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${c}_{4}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-3 \\ 4 \\ -4\end{bmatrix}}_{{c}_{4}}=\underbrace{(-3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ 0 \\ 2\end{bmatrix}}_{{c}_{1}}+\underbrace{(2)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}0 \\ 2 \\ 1\end{bmatrix}}_{{c}_{2}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{2}=(-3)\cdot 2=-6.$
+FIELD 17592186615263 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186615114}
+[(17592186614734, '$\\text{{}{c}_{1},{c}_{2}\\text{}}$ is not a basis of $\\text{Col}(C)$'), (17592186614838, '-5'), (17592186615016, '2'), (17592186615056, '-3'), (17592186615114, '-6')]
+
+QUESTION 17592186615410 q-111191
+Consider the matrix 
+$H=\begin{bmatrix}1 & 5 & -3 \\ 2 & 11 & -9 \\ 4 & 21 & -15\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(H).$
+SOLUTION
+In order to find a basis of $\text{Col}(H),$ we reduce the matrix $H$ to row echelon form:
+
+$$
+\begin{aligned}H & =\begin{bmatrix}1 & 5 & -3 \\ 2 & 11 & -9 \\ 4 & 21 & -15\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 5 & -3 \\ 0 & 1 & -3 \\ 4 & 21 & -15\end{bmatrix} & {R}_{3} & :={R}_{3}+(-4){R}_{1} \\  & ∼\begin{bmatrix}1 & 5 & -3 \\ 0 & 1 & -3 \\ 0 & 1 & -3\end{bmatrix} & {R}_{3} & :={R}_{3}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 5 & -3 \\ 0 & 1 & -3 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${h}_{1}$ and ${h}_{2}.$ So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 2 \\ 4\end{bmatrix},\begin{bmatrix}5 \\ 11 \\ 21\end{bmatrix}\right\}.
+$$
+FIELD 17592186615333 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186615055}
+[(17592186614757, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix}\\right\\}'), (17592186614798, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix},\\begin{bmatrix}5 \\\\ 11 \\\\ 21\\end{bmatrix},\\begin{bmatrix}-3 \\\\ -9 \\\\ -15\\end{bmatrix}\\right\\}'), (17592186614852, 'B=\\left\\{\\begin{bmatrix}-3 \\\\ -9 \\\\ -15\\end{bmatrix}\\right\\}'), (17592186615004, 'B=\\left\\{\\begin{bmatrix}5 \\\\ 11 \\\\ 21\\end{bmatrix}\\right\\}'), (17592186615055, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ 4\\end{bmatrix},\\begin{bmatrix}5 \\\\ 11 \\\\ 21\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186615440 q-111186
+Given the matrix 
+$Z=\begin{bmatrix}1 & -5 & 8 \\ 0 & 10 & 6 \\ -3 & 15 & -24\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(Z).$
+SOLUTION
+In order to find a basis of $\text{Col}(Z),$ we reduce the matrix $Z$ to row echelon form:
+
+$$
+\begin{aligned}Z & =\begin{bmatrix}1 & -5 & 8 \\ 0 & 10 & 6 \\ -3 & 15 & -24\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{1} \\  & ∼\begin{bmatrix}1 & -5 & 8 \\ 0 & 10 & 6 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${z}_{1},$ and ${z}_{2}.$ So, a basis of $\text{Col}(Z)$ is $\{{z}_{1},{z}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0 \\ -3\end{bmatrix},\begin{bmatrix}-5 \\ 10 \\ 15\end{bmatrix}\right\}.
+$$
+FIELD 17592186615323 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186614899}
+[(17592186614746, 'B=\\left\\{\\begin{bmatrix}8 \\\\ 6 \\\\ -24\\end{bmatrix}\\right\\}'), (17592186614806, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ -3\\end{bmatrix}\\right\\}'), (17592186614898, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ -3\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 10 \\\\ 15\\end{bmatrix},\\begin{bmatrix}8 \\\\ 6 \\\\ -24\\end{bmatrix}\\right\\}'), (17592186614899, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ -3\\end{bmatrix},\\begin{bmatrix}-5 \\\\ 10 \\\\ 15\\end{bmatrix}\\right\\}'), (17592186615159, 'B=\\left\\{\\begin{bmatrix}-5 \\\\ 10 \\\\ 15\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186626698 q-75959
+The matrix $P$ is given below. Let ${p}_{1}$, ${p}_{2}$, and ${p}_{3}$ be the respective columns of $P.$
+Determine if $B=\text{{}{p}_{1},{p}_{3}\text{}}$ is a basis of $\text{Col}(P).$ 
+If that is the case, find ${x}_{1}\cdot {x}_{3}$, where ${p}_{2}={x}_{1}{p}_{1}+{x}_{3}{p}_{3}.$
+
+$$
+P=\begin{bmatrix}1 & 3 & 1 \\ -2 & -6 & 2\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $P$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}P & =\begin{bmatrix}1 & 3 & 1 \\ -2 & -6 & 2\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\begin{bmatrix}1 & 3 & 1 \\ 0 & 0 & 4\end{bmatrix} & {R}_{2} & :=\frac{1}{4}{R}_{2} \\  & ∼\begin{bmatrix}1 & 3 & 1 \\ 0 & 0 & 1\end{bmatrix} & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\  & ∼\begin{bmatrix}1 & 3 & 0 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $3$rd columns. So, a basis of $\text{Col}(P)$ is $\{{p}_{1},{p}_{3}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}1 \\ -2\end{bmatrix},\begin{bmatrix}1 \\ 2\end{bmatrix}\right\}.
+$$
+
+Now, since the $2$nd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${p}_{2}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}3 \\ -6\end{bmatrix}}_{{p}_{2}}=\underbrace{(3)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}1 \\ -2\end{bmatrix}}_{{p}_{1}}+\underbrace{(0)}_{{x}_{3}}\cdot \underbrace{\begin{bmatrix}1 \\ 2\end{bmatrix}}_{{p}_{3}}.
+$$
+
+This gives us ${x}_{1}\cdot {x}_{3}=3\cdot 0=0.$
+FIELD 17592186626602 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186626287}
+[(17592186626095, '1'), (17592186626167, '4'), (17592186626253, '$\\text{{}{p}_{1},{p}_{3}\\text{}}$ is not a basis of $\\text{Col}(P)$'), (17592186626282, '3'), (17592186626287, '0')]
+
+QUESTION 17592186626715 q-35683
+The matrix $F$ is given below. Let ${f}_{1}$, ${f}_{2}$,  ${f}_{3}$, and ${f}_{4}$ be the respective columns of $F.$ Determine if $B=\text{{}{f}_{1},{f}_{2}\text{}}$ is a basis of $\text{Col}(F).$ If that is the case, find ${x}_{1}\cdot {x}_{2}$, where ${f}_{3}={x}_{1}{f}_{1}+{x}_{2}{f}_{2}.$
+
+$$
+F=\begin{bmatrix}2 & 3 & -2 & 0 \\ 0 & 6 & -6 & 6 \\ 0 & -1 & 1 & -1\end{bmatrix}
+$$
+SOLUTION
+First, we reduce the matrix $F$ to reduced row echelon form (RREF):
+
+$$
+\begin{aligned}F & =\begin{bmatrix}2 & 3 & -2 & 0 \\ 0 & 6 & -6 & 6 \\ 0 & -1 & 1 & -1\end{bmatrix} & {R}_{2} & :=\frac{1}{6}{R}_{2} \\  & ∼\begin{bmatrix}2 & 3 & -2 & 0 \\ 0 & 1 & -1 & 1 \\ 0 & -1 & 1 & -1\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{2} \\  & ∼\begin{bmatrix}2 & 3 & -2 & 0 \\ 0 & 1 & -1 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :={R}_{1}+(-3){R}_{2} \\  & ∼\begin{bmatrix}2 & 0 & 1 & -3 \\ 0 & 1 & -1 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} & {R}_{1} & :=\frac{1}{2}{R}_{1} \\  & ∼\begin{bmatrix}1 & 0 & \frac{1}{2} & -\frac{3}{2} \\ 0 & 1 & -1 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+From the matrix above, we see that the pivot columns are the $1$st and $2$nd columns. So, a basis of $\text{Col}(F)$ is $\{{f}_{1},{f}_{2}\},$ that is to say,
+
+$$
+B=\left\{\begin{bmatrix}2 \\ 0 \\ 0\end{bmatrix},\begin{bmatrix}3 \\ 6 \\ -1\end{bmatrix}\right\}.
+$$
+
+Now, since the $3$rd column of the reduced matrix is a non-pivot column, then the entries in that column tell us the coefficients needed to express ${f}_{3}$ as a linear combination of all the other columns in the original matrix. So, we have
+
+$$
+\underbrace{\begin{bmatrix}-2 \\ -6 \\ 1\end{bmatrix}}_{{f}_{3}}=\underbrace{\left(\frac{1}{2}\right)}_{{x}_{1}}\cdot \underbrace{\begin{bmatrix}2 \\ 0 \\ 0\end{bmatrix}}_{{f}_{1}}+\underbrace{(-1)}_{{x}_{2}}\cdot \underbrace{\begin{bmatrix}3 \\ 6 \\ -1\end{bmatrix}}_{{f}_{2}}.
+$$
+
+This gives us $$
+\displaystyle {x}_{1}\cdot {x}_{2}=\frac{1}{2}\cdot (-1)=-\frac{1}{2}.
+$$
+FIELD 17592186626598 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186626349}
+[(17592186626348, '-\\frac{3}{2}'), (17592186626349, '-\\frac{1}{2}'), (17592186626448, '$\\text{{}{f}_{1},{f}_{2}\\text{}}$ is not a basis of $\\text{Col}(F)$'), (17592186626464, '1'), (17592186626491, '-1')]
+
+QUESTION 17592186626778 q-75071
+Given the matrix 
+$Z=\begin{bmatrix}1 & 2 & 4 \\ 0 & 1 & 5 \\ 2 & 4 & 9\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(Z).$
+SOLUTION
+In order to find a basis of $\text{Col}(Z),$ we reduce the matrix $Z$ to row echelon form:
+
+$$
+\begin{aligned}Z & =\begin{bmatrix}1 & 2 & 4 \\ 0 & 1 & 5 \\ 2 & 4 & 9\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & 4 \\ 0 & 1 & 5 \\ 0 & 0 & 1\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st, $2$nd and $3$rd columns are pivot columns.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st, $2$nd and $3$rd columns from the original matrix are ${z}_{1},$ ${z}_{2},$ and ${z}_{3}.$ So, a basis of $\text{Col}(Z)$ is $\{{z}_{1},{z}_{2},{z}_{3}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 0 \\ 2\end{bmatrix},\begin{bmatrix}2 \\ 1 \\ 4\end{bmatrix},\begin{bmatrix}4 \\ 5 \\ 9\end{bmatrix}\right\}.
+$$
+FIELD 17592186626642 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186626382}
+[(17592186626234, 'B=\\left\\{\\begin{bmatrix}4 \\\\ 5 \\\\ 9\\end{bmatrix}\\right\\}'), (17592186626323, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}4 \\\\ 5 \\\\ 9\\end{bmatrix}\\right\\}'), (17592186626382, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 1 \\\\ 4\\end{bmatrix},\\begin{bmatrix}4 \\\\ 5 \\\\ 9\\end{bmatrix}\\right\\}'), (17592186626476, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix},\\begin{bmatrix}2 \\\\ 1 \\\\ 4\\end{bmatrix}\\right\\}'), (17592186626539, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 2\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186653551 q-111194
+Consider the matrix 
+$D=\begin{bmatrix}1 & 2 & 5 \\ 3 & 6 & 15 \\ 5 & 11 & 28\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(D).$
+SOLUTION
+In order to find a basis of $\text{Col}(D),$ we reduce the matrix $D$ to row echelon form:
+
+$$
+\begin{aligned}D & =\begin{bmatrix}1 & 2 & 5 \\ 3 & 6 & 15 \\ 5 & 11 & 28\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\begin{bmatrix}1 & 2 & 5 \\ 0 & 0 & 0 \\ 5 & 11 & 28\end{bmatrix} & {R}_{2} & ↔{R}_{3} \\  & ∼\begin{bmatrix}1 & 2 & 5 \\ 5 & 11 & 28 \\ 0 & 0 & 0\end{bmatrix} & {R}_{3} & :={R}_{3}+(-5){R}_{2} \\  & ∼\begin{bmatrix}1 & 2 & 5 \\ 0 & 1 & 3 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${d}_{1}$ and ${d}_{2}.$ So, a basis of $\text{Col}(D)$ is $\{{d}_{1},{d}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}1 \\ 3 \\ 5\end{bmatrix},\begin{bmatrix}2 \\ 6 \\ 11\end{bmatrix}\right\}.
+$$
+FIELD 17592186653462 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186653426}
+[(17592186653141, 'B=\\left\\{\\begin{bmatrix}5 \\\\ 15 \\\\ 28\\end{bmatrix}\\right\\}'), (17592186653181, 'B=\\left\\{\\begin{bmatrix}2 \\\\ 6 \\\\ 11\\end{bmatrix}\\right\\}'), (17592186653288, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ 5\\end{bmatrix}\\right\\}'), (17592186653339, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ 5\\end{bmatrix},\\begin{bmatrix}2 \\\\ 6 \\\\ 11\\end{bmatrix},\\begin{bmatrix}5 \\\\ 15 \\\\ 28\\end{bmatrix}\\right\\}'), (17592186653426, 'B=\\left\\{\\begin{bmatrix}1 \\\\ 3 \\\\ 5\\end{bmatrix},\\begin{bmatrix}2 \\\\ 6 \\\\ 11\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186666079 q-111180
+Given the matrix 
+$V=\begin{bmatrix}0 & 0 & 0 \\ 0 & -3 & 0 \\ 1 & 0 & 10\end{bmatrix}.$ Find a basis $B$ of $\text{Col}(V).$
+SOLUTION
+In order to find a basis of $\text{Col}(V),$ we reduce the matrix $V$ to row echelon form:
+
+$$
+\begin{aligned}V & =\begin{bmatrix}0 & 0 & 0 \\ 0 & -3 & 0 \\ 1 & 0 & 10\end{bmatrix} & {R}_{1} & ↔{R}_{3} \\  & ∼\begin{bmatrix}1 & 0 & 10 \\ 0 & -3 & 0 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $2$nd columns are pivot columns, while the $3$rd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $2$nd columns from the original matrix are ${v}_{1}$ and ${v}_{2}.$ So, a basis of $\text{Col}(V)$ is $\{{v}_{1},{v}_{2}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}0 \\ 0 \\ 1\end{bmatrix},\begin{bmatrix}0 \\ -3 \\ 0\end{bmatrix}\right\}.
+$$
+FIELD 17592186666052 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186665531}
+[(17592186665531, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix},\\begin{bmatrix}0 \\\\ -3 \\\\ 0\\end{bmatrix}\\right\\}'), (17592186665544, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0 \\\\ 10\\end{bmatrix}\\right\\}'), (17592186665672, 'B=\\left\\{\\begin{bmatrix}0 \\\\ -3 \\\\ 0\\end{bmatrix}\\right\\}'), (17592186665696, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix},\\begin{bmatrix}0 \\\\ -3 \\\\ 0\\end{bmatrix},\\begin{bmatrix}0 \\\\ 0 \\\\ 10\\end{bmatrix}\\right\\}'), (17592186665714, 'B=\\left\\{\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix},\\begin{bmatrix}0 \\\\ 0 \\\\ 10\\end{bmatrix}\\right\\}')]
+
+QUESTION 17592186666147 q-34527
+Consider the matrix 
+$$
+\displaystyle H=\begin{bmatrix}3 & -2 & 1 \\ -6 & 4 & -1 \\ 9 & -6 & 1\end{bmatrix}.
+$$ 
+Find a basis $B$ of $\text{Col}(H).$
+SOLUTION
+In order to find a basis of $\text{Col}(H),$ we reduce the matrix $H$ to row echelon form:
+
+$$
+\begin{aligned}H & =\begin{bmatrix}3 & -2 & 1 \\ -6 & 4 & -1 \\ 9 & -6 & 1\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\begin{bmatrix}3 & -2 & 1 \\ 0 & 0 & 1 \\ 9 & -6 & 1\end{bmatrix} & {R}_{3} & :={R}_{3}+(-3){R}_{1} \\  & ∼\begin{bmatrix}3 & -2 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & -2\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\  & ∼\begin{bmatrix}3 & -2 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0\end{bmatrix}\end{aligned}
+$$
+
+The pivot columns correspond to linearly independent vectors, while the non-pivot columns correspond to linearly dependent vectors that can be removed. Here, the $1$st and $3$rd columns are pivot columns, while the $2$nd column is a non-pivot column.
+
+Remember that we need to pick the pivot columns from the *original matrix*, not from the reduced one. 
+
+The $1$st and $3$rd columns from the original matrix are ${h}_{1}$ and ${h}_{3}.$ So, a basis of $\text{Col}(H)$ is $\{{h}_{1},{h}_{3}\},$ that is to say, 
+
+$$
+B=\left\{\begin{bmatrix}3 \\ -6 \\ 9\end{bmatrix},\begin{bmatrix}1 \\ -1 \\ 1\end{bmatrix}\right\}.
+$$
+FIELD 17592186666024 :answer-field.type/radio KEY selection CORRECT {':db/id': 17592186665596}
+[(17592186665513, 'B=\\left\\{\\begin{bmatrix}3 \\\\ -6 \\\\ 9\\end{bmatrix},\\begin{bmatrix}-3 \\\\ 6 \\\\ -9\\end{bmatrix}\\right\\}'), (17592186665596, 'B=\\left\\{\\begin{bmatrix}3 \\\\ -6 \\\\ 9\\end{bmatrix},\\begin{bmatrix}1 \\\\ -1 \\\\ 1\\end{bmatrix}\\right\\}'), (17592186665608, 'B=\\left\\{\\begin{bmatrix}3 \\\\ -6 \\\\ 9\\end{bmatrix}\\right\\}'), (17592186665654, 'B=\\left\\{\\begin{bmatrix}3 \\\\ -6 \\\\ 9\\end{bmatrix},\\begin{bmatrix}-2 \\\\ 4 \\\\ -6\\end{bmatrix},\\begin{bmatrix}1 \\\\ -1 \\\\ 1\\end{bmatrix}\\right\\}'), (17592186665858, 'B=\\left\\{\\begin{bmatrix}3 \\\\ 0 \\\\ 0\\end{bmatrix},\\begin{bmatrix}-2 \\\\ 0 \\\\ 0\\end{bmatrix}\\right\\}')]

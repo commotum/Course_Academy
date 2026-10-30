@@ -1,6 +1,6 @@
 import copy,json,unittest
 from pathlib import Path
-from generate.matrix_product_prompt_policy import KP,validate_delivery_batch
+from generate.matrix_product_prompt_policy import KP,SUPPLIED_ENTRIES_KP,validate_delivery_batch
 from scripts.generator_publish import prepare_records
 ROOT=Path(__file__).resolve().parents[1]
 H=ROOT/'reference/edb-math/repairs/2026-10-27-matrix-product-recognition'
@@ -36,5 +36,28 @@ class MatrixPromptPolicyTests(unittest.TestCase):
         validate_delivery_batch([r],KP)
 
     def test_other_kps_are_unaffected(self):validate_delivery_batch([{}],KP+1)
+
+class SuppliedMatrixEntriesTests(unittest.TestCase):
+    def setUp(self):
+        self.h=ROOT/'reference/edb-math/repairs/2026-10-29-matrix-supplied-entries'
+        self.records=json.loads((self.h/'fresh-samples.json').read_text())
+
+    def test_source_style_numerical_cells_pass(self):
+        validate_delivery_batch(self.records,SUPPLIED_ENTRIES_KP)
+
+    def test_original_asterisk_layout_fails(self):
+        q=next(q for q in json.loads((self.h/'before.json').read_text())[':knowledge-point/questions'] if q[':db/id']==17592186717716)
+        with self.assertRaisesRegex(ValueError,'actual unrequested entries'):
+            validate_delivery_batch([{'question':q}],SUPPLIED_ENTRIES_KP)
+
+    def test_asterisk_without_legend_fails(self):
+        for marker in (r'$\ast$',r'$\star$','*'):
+            with self.subTest(marker=marker),self.assertRaises(ValueError):
+                validate_delivery_batch([{'question':{':question/problem':'<td>'+marker+'</td>'}}],SUPPLIED_ENTRIES_KP)
+
+    def test_publisher_rejects_marker_even_without_metadata(self):
+        r=copy.deepcopy(self.records[0]);r.pop('generation');r['question'][':question/problem']+='<td>$\\ast$</td>'
+        with self.assertRaisesRegex(ValueError,'actual unrequested entries'):
+            prepare_records([r],SUPPLIED_ENTRIES_KP,r['knowledge_point']['id'],set(),ROOT,ROOT,localizer=lambda r,*args:r)
 
 if __name__=='__main__':unittest.main()
