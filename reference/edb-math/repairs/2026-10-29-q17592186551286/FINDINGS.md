@@ -14,3 +14,5 @@ Changing only those two delimiter pairs to `\left[...\right]` repairs the visibl
 4. The shared `validate_matrix_layouts` guard only checks the `aligned`/`matrix` conversion function. It currently accepts this exact defective solution. `normalize_tex` already knows how to make these array fences scalable, but that separate normalization was not applied by the reviewed repair/validation path. Syntax success was therefore mistaken for sufficient visual-layout coverage.
 
 No database changes were made during this investigation. `preview.json` contains the narrow candidate change; `before.png`, `after.png` and `render-proof.json` reproduce the failure and correction without changing UI code. Future validation needs explicit fixed-fence/array geometry coverage in addition to syntax checks.
+
+The paragraphs above describe the initial diagnostic state. The authorized repair subsequently committed at T11477, followed by database-wide repairs and generator prevention. See the [completed repair report](../2026-10-29-array-fences/REPORT.md) for final counts and verification.
