@@ -1,0 +1,293 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119808,
+      "id": "aaefbc53-9df9-54a0-a969-66e062553d5c",
+      "title": "Determining Whether a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "f638ce1b-3996-59e3-933e-a519cddc460b",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "The vectors $\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}$ and $\\mathbf{b}$ are given below. Determine whether $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$. In the affirmative case, find $x_{1}\\cdot x_{2}\\cdot x_{3}$ from the decomposition $\\mathbf{b}=x_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}$.\n\n<div class=\"matrix-operands\">\n<div>$\\mathbf{a}_{1}=\\begin{bmatrix}2 \\\\ 0 \\\\ 4\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{2}=\\begin{bmatrix}1 \\\\ -1 \\\\ 0\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{3}=\\begin{bmatrix}-2 \\\\ 1 \\\\ -2\\end{bmatrix}$</div>\n<div>$\\mathbf{b}=\\begin{bmatrix}11 \\\\ -4 \\\\ 15\\end{bmatrix}$</div>\n</div>",
+      ":question/worked-solution": "By the definition of span, $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$ exactly when coefficients exist such that\n\n$$\nx_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}=\\mathbf{b}.\n$$\n\nEquating components gives\n\n$$\n\\left\\{\\begin{aligned}2x_{1}+x_{2}-2x_{3} &= 11 \\\\ -x_{2}+x_{3} &= -4 \\\\ 4x_{1}-2x_{3} &= 15\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix and use elementary row operations:\n\n$$\n\\left[\\begin{array}{ccc|c}2 & 1 & -2 & 11 \\\\ 0 & -1 & 1 & -4 \\\\ 4 & 0 & -2 & 15\\end{array}\\right]\n$$\n\n$$\nR_{3}\\leftarrow R_{3}-\\left(2\\right)R_{1}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}2 & 1 & -2 & 11 \\\\ 0 & -1 & 1 & -4 \\\\ 0 & -2 & 2 & -7\\end{array}\\right]\n$$\n\n$$\nR_{3}\\leftarrow R_{3}-\\left(2\\right)R_{2}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}2 & 1 & -2 & 11 \\\\ 0 & -1 & 1 & -4 \\\\ 0 & 0 & 0 & 1\\end{array}\\right]\n$$\n\nRow $3$ gives $0=1$, a contradiction. No coefficients satisfy every component, so $\\mathbf{b}\\notin \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3e52afaf-e208-5343-a4ed-6641d349cdb8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a313fbf3-8c2c-5b2b-80dd-a22f77bfc6f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{39}{4}"
+            },
+            {
+              ":answer/id": "14797d75-89a2-5846-b1b8-bbe228ee90ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{345}{2}"
+            },
+            {
+              ":answer/id": "b4ca9a18-1687-53d4-a8d3-6c522337c638",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{33}{4}"
+            },
+            {
+              ":answer/id": "a3fd39ce-16de-554e-829b-ccd661d7a317",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-154"
+            },
+            {
+              ":answer/id": "f3040ecb-a178-5aff-a3be-fa5646355fcf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathbf{b}\\notin\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f3040ecb-a178-5aff-a3be-fa5646355fcf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.1-source-notation",
+      "template": "hard-span-product",
+      "source_ids": [
+        "q-34117",
+        "q-34218",
+        "q-34639",
+        "q-34648"
+      ],
+      "source_replay": false,
+      "bank_recipes": [
+        "ignore unchecked components; x3=-1; rows=[1, 2]",
+        "ignore unchecked components; x1=-2; rows=[1, 2]",
+        "ignore unchecked components; x3=-2; rows=[0, 2]",
+        "ignore unchecked components; x1=-2; rows=[0, 1]",
+        "contradiction"
+      ],
+      "parameters": {
+        "A": [
+          [
+            "2",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "-1",
+            "1"
+          ],
+          [
+            "4",
+            "0",
+            "-2"
+          ]
+        ],
+        "b": [
+          "11",
+          "-4",
+          "15"
+        ]
+      },
+      "outcome": "nonmembership",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 0
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119808,
+      "id": "aaefbc53-9df9-54a0-a969-66e062553d5c",
+      "title": "Determining Whether a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "6783efc4-c3b9-5c39-b59f-5d03ff529747",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "The vectors $\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}$ and $\\mathbf{b}$ are given below. Determine whether $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$. In the affirmative case, find $x_{1}\\cdot x_{2}\\cdot x_{3}$ from the decomposition $\\mathbf{b}=x_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}$.\n\n<div class=\"matrix-operands\">\n<div>$\\mathbf{a}_{1}=\\begin{bmatrix}1 \\\\ 2 \\\\ 0\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{2}=\\begin{bmatrix}-3 \\\\ -8 \\\\ -2\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{3}=\\begin{bmatrix}0 \\\\ 0 \\\\ 1\\end{bmatrix}$</div>\n<div>$\\mathbf{b}=\\begin{bmatrix}-7 \\\\ -20 \\\\ -9\\end{bmatrix}$</div>\n</div>",
+      ":question/worked-solution": "By the definition of span, $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$ exactly when coefficients exist such that\n\n$$\nx_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}=\\mathbf{b}.\n$$\n\nEquating components gives\n\n$$\n\\left\\{\\begin{aligned}x_{1}-3x_{2} &= -7 \\\\ 2x_{1}-8x_{2} &= -20 \\\\ -2x_{2}+x_{3} &= -9\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix and use elementary row operations:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 0 & -7 \\\\ 2 & -8 & 0 & -20 \\\\ 0 & -2 & 1 & -9\\end{array}\\right]\n$$\n\n$$\nR_{2}\\leftarrow R_{2}-\\left(2\\right)R_{1}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 0 & -7 \\\\ 0 & -2 & 0 & -6 \\\\ 0 & -2 & 1 & -9\\end{array}\\right]\n$$\n\n$$\nR_{3}\\leftarrow R_{3}-\\left(1\\right)R_{2}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -3 & 0 & -7 \\\\ 0 & -2 & 0 & -6 \\\\ 0 & 0 & 1 & -3\\end{array}\\right]\n$$\n\nBack-substitution gives\n\n$$\n\\begin{aligned}x_{3} &= \\frac{-3}{1} = -3 \\\\ x_{2} &= \\frac{-6}{-2} = 3 \\\\ x_{1} &= \\frac{-7-\\left(-3\\right)\\left(3\\right)}{1} = 2\\end{aligned}\n$$\n\nAll component equations hold. Thus $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$ and the coefficients are unique. Finally,\n\n$$\nx_{1}\\cdot x_{2}\\cdot x_{3}=\\left(2\\right)\\cdot \\left(3\\right)\\cdot \\left(-3\\right)=-18.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2ce26d80-cc6b-5c95-86c9-6096111dd1d0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8c9f674f-e7c2-5c1d-bee1-aa33b1d75033",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathbf{b}\\notin\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}"
+            },
+            {
+              ":answer/id": "065e0f4e-bb95-553a-a9aa-4a055e16dfe7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-18"
+            },
+            {
+              ":answer/id": "bca1e2c3-e09e-59da-9593-b9dd1b9804de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-12"
+            },
+            {
+              ":answer/id": "df822829-aa2e-52cc-89b3-79e4ebc7474f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-24"
+            },
+            {
+              ":answer/id": "bd8f3bcf-abe9-5c34-abb3-1a3d32398e6e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-9"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "065e0f4e-bb95-553a-a9aa-4a055e16dfe7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.1-source-notation",
+      "template": "hard-span-product",
+      "source_ids": [
+        "q-34117",
+        "q-34218",
+        "q-34639",
+        "q-34648"
+      ],
+      "source_replay": false,
+      "bank_recipes": [
+        "false nonmembership",
+        "coefficient product",
+        "coefficient 2 recovered with -1 error",
+        "coefficient 2 recovered with +1 error",
+        "coefficient 1 recovered with -1 error"
+      ],
+      "parameters": {
+        "A": [
+          [
+            "1",
+            "-3",
+            "0"
+          ],
+          [
+            "2",
+            "-8",
+            "0"
+          ],
+          [
+            "0",
+            "-2",
+            "1"
+          ]
+        ],
+        "b": [
+          "-7",
+          "-20",
+          "-9"
+        ]
+      },
+      "outcome": "membership",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119808,
+      "id": "aaefbc53-9df9-54a0-a969-66e062553d5c",
+      "title": "Determining Whether a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "d761faf3-fa8e-5e66-80bc-bf4e47fdf293",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "The vectors $\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}$ and $\\mathbf{b}$ are given below. Determine whether $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$. In the affirmative case, find $x_{1}\\cdot x_{2}\\cdot x_{3}$ from the decomposition $\\mathbf{b}=x_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}$.\n\n<div class=\"matrix-operands\">\n<div>$\\mathbf{a}_{1}=\\begin{bmatrix}2 \\\\ 1 \\\\ -3\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{2}=\\begin{bmatrix}-4 \\\\ -3 \\\\ 8\\end{bmatrix}$</div>\n<div>$\\mathbf{a}_{3}=\\begin{bmatrix}-2 \\\\ 0 \\\\ 1\\end{bmatrix}$</div>\n<div>$\\mathbf{b}=\\begin{bmatrix}-7 \\\\ -8 \\\\ 20\\end{bmatrix}$</div>\n</div>",
+      ":question/worked-solution": "By the definition of span, $\\mathbf{b}\\in \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$ exactly when coefficients exist such that\n\n$$\nx_{1}\\mathbf{a}_{1}+x_{2}\\mathbf{a}_{2}+x_{3}\\mathbf{a}_{3}=\\mathbf{b}.\n$$\n\nEquating components gives\n\n$$\n\\left\\{\\begin{aligned}2x_{1}-4x_{2}-2x_{3} &= -7 \\\\ x_{1}-3x_{2} &= -8 \\\\ -3x_{1}+8x_{2}+x_{3} &= 20\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix and use elementary row operations:\n\n$$\n\\left[\\begin{array}{ccc|c}2 & -4 & -2 & -7 \\\\ 1 & -3 & 0 & -8 \\\\ -3 & 8 & 1 & 20\\end{array}\\right]\n$$\n\n$$\nR_{2}\\leftarrow R_{2}-\\left(\\frac{1}{2}\\right)R_{1}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}2 & -4 & -2 & -7 \\\\ 0 & -1 & 1 & -\\frac{9}{2} \\\\ -3 & 8 & 1 & 20\\end{array}\\right]\n$$\n\n$$\nR_{3}\\leftarrow R_{3}-\\left(-\\frac{3}{2}\\right)R_{1}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}2 & -4 & -2 & -7 \\\\ 0 & -1 & 1 & -\\frac{9}{2} \\\\ 0 & 2 & -2 & \\frac{19}{2}\\end{array}\\right]\n$$\n\n$$\nR_{3}\\leftarrow R_{3}-\\left(-2\\right)R_{2}\n$$\n\n$$\n\\left[\\begin{array}{ccc|c}2 & -4 & -2 & -7 \\\\ 0 & -1 & 1 & -\\frac{9}{2} \\\\ 0 & 0 & 0 & \\frac{1}{2}\\end{array}\\right]\n$$\n\nRow $3$ gives $0=\\frac{1}{2}$, a contradiction. No coefficients satisfy every component, so $\\mathbf{b}\\notin \\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a0e5fd43-17e6-5980-ae1a-48c3802d3036",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ad8de6f5-512b-57a5-b7cc-2dd965cc7a7f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathbf{b}\\notin\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3}\\}"
+            },
+            {
+              ":answer/id": "ce25a3af-419b-504d-89d0-62b86a78b84e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{315}{16}"
+            },
+            {
+              ":answer/id": "6b4030d6-0ec7-5d49-868f-4e01591f2584",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{187}{4}"
+            },
+            {
+              ":answer/id": "2ca116b0-1a5f-51ee-8bcb-689e679c9b14",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-55"
+            },
+            {
+              ":answer/id": "c070f507-d533-5ff9-a6a1-79c0f6dc3724",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-\\frac{70}{9}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ad8de6f5-512b-57a5-b7cc-2dd965cc7a7f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.1-source-notation",
+      "template": "hard-span-product",
+      "source_ids": [
+        "q-34117",
+        "q-34218",
+        "q-34639",
+        "q-34648"
+      ],
+      "source_replay": false,
+      "bank_recipes": [
+        "contradiction",
+        "ignore unchecked components; x2=1; rows=[0, 2]",
+        "ignore unchecked components; x3=1; rows=[0, 1]",
+        "ignore unchecked components; x2=-1; rows=[1, 2]",
+        "ignore unchecked components; x1=2; rows=[0, 1]"
+      ],
+      "parameters": {
+        "A": [
+          [
+            "2",
+            "-4",
+            "-2"
+          ],
+          [
+            "1",
+            "-3",
+            "0"
+          ],
+          [
+            "-3",
+            "8",
+            "1"
+          ]
+        ],
+        "b": [
+          "-7",
+          "-8",
+          "20"
+        ]
+      },
+      "outcome": "nonmembership",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 2
+    }
+  }
+]

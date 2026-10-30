@@ -1,0 +1,341 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "8d529bb6-184a-509e-aae1-4e0c4d21028a",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T(\\begin{bmatrix}u \\\\ v\\end{bmatrix})=\\begin{bmatrix}e^{5 u + 5 v} \\\\ \\ln{\\left(u v \\right)}\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x(u,v)=e^{5 u + 5 v}$ and $y(u,v)=\\ln{\\left(u v \\right)}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=5 e^{5 u + 5 v}&\\quad \\frac{\\partial x}{\\partial v}&=5 e^{5 u + 5 v}\\\\\\frac{\\partial y}{\\partial u}&=\\frac{1}{u}&\\quad \\frac{\\partial y}{\\partial v}&=\\frac{1}{v}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}5 e^{5 u + 5 v}&5 e^{5 u + 5 v}\\\\\\frac{1}{u}&\\frac{1}{v}\\end{vmatrix}\\\\&=\\left(5 e^{5 u + 5 v}\\right)\\cdot\\left(\\frac{1}{v}\\right)\\\\&\\quad{}-\\left(5 e^{5 u + 5 v}\\right)\\cdot\\left(\\frac{1}{u}\\right)\\\\&=\\frac{5 e^{5 u + 5 v}}{v}-\\frac{5 e^{5 u + 5 v}}{u}\\\\&=\\frac{\\left(5 u - 5 v\\right) e^{5 u + 5 v}}{u v}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6fb986ed-40f3-5c91-a23f-b69b3d29a42d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b28212b0-3cb7-5141-87d5-502f03db4103",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "840f2086-4052-5276-9523-f5fe010b3056",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{5 u + 5 v}"
+            },
+            {
+              ":answer/id": "17f91890-883a-50dc-acc7-4c590da3a94c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{e^{5 u + 5 v}}{u v}"
+            },
+            {
+              ":answer/id": "f9a13327-d0da-5675-92e8-437914b1cc1e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\left(5 u - 5 v\\right) e^{5 u + 5 v}}{u v}"
+            },
+            {
+              ":answer/id": "9f239f4a-60dd-543d-a558-69a3f8f48d10",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f9a13327-d0da-5675-92e8-437914b1cc1e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102977,
+      "template": "exp_log",
+      "parameters": {
+        "a": 5,
+        "b": 5
+      },
+      "parameter_fingerprint": "f8cd2e81e940b12c588b86eb99d9ccb10f558efeae716c12dc0daeb88a4fa741",
+      "content_fingerprint": "50ce8c09cab989af4cdfc9d83e3ed02b2e2a6aad161ddaec51d831b091c43ca8",
+      "bank_profile": "observed_exp_log",
+      "bank_origin": "observed expression replay",
+      "authored_extension": true,
+      "difficulty_origin": "observed",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [
+          "q-160403"
+        ],
+        "canonical_id": "e-6810"
+      },
+      "domain": "uv>0",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True))))",
+        "log(Mul(Symbol('u', real=True), Symbol('v', real=True)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(5), exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True)))))",
+        "Mul(Integer(5), exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True)))))",
+        "Pow(Symbol('u', real=True), Integer(-1))",
+        "Pow(Symbol('v', real=True), Integer(-1))"
+      ],
+      "determinant": "Mul(Pow(Symbol('u', real=True), Integer(-1)), Pow(Symbol('v', real=True), Integer(-1)), Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(-1), Integer(5), Symbol('v', real=True))), exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True)))))",
+      "answer_math": {
+        "9f239f4a-60dd-543d-a558-69a3f8f48d10": {
+          "expression": "Integer(0)",
+          "recipe": "zero"
+        },
+        "840f2086-4052-5276-9523-f5fe010b3056": {
+          "expression": "exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True))))",
+          "recipe": "first_output"
+        },
+        "b28212b0-3cb7-5141-87d5-502f03db4103": {
+          "expression": "Integer(1)",
+          "recipe": "one"
+        },
+        "f9a13327-d0da-5675-92e8-437914b1cc1e": {
+          "expression": "Mul(Pow(Symbol('u', real=True), Integer(-1)), Pow(Symbol('v', real=True), Integer(-1)), Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(-1), Integer(5), Symbol('v', real=True))), exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True)))))",
+          "recipe": "correct"
+        },
+        "17f91890-883a-50dc-acc7-4c590da3a94c": {
+          "expression": "Mul(Pow(Symbol('u', real=True), Integer(-1)), Pow(Symbol('v', real=True), Integer(-1)), exp(Add(Mul(Integer(5), Symbol('u', real=True)), Mul(Integer(5), Symbol('v', real=True)))))",
+          "recipe": "omit_linear_numerator"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "090b2dbf-09a2-549a-af56-47ed76ff5dbc",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T(\\begin{bmatrix}u \\\\ v\\end{bmatrix})=\\begin{bmatrix}u \\ln{\\left(v \\right)} \\\\ 5 u^{2} v^{2}\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x=u \\ln{\\left(v \\right)}$ and $y=5 u^{2} v^{2}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=\\ln{\\left(v \\right)}&\\quad \\frac{\\partial x}{\\partial v}&=\\frac{u}{v}\\\\\\frac{\\partial y}{\\partial u}&=10 u v^{2}&\\quad \\frac{\\partial y}{\\partial v}&=10 u^{2} v\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}\\ln{\\left(v \\right)}&\\frac{u}{v}\\\\10 u v^{2}&10 u^{2} v\\end{vmatrix}\\\\&=\\left(\\ln{\\left(v \\right)}\\right)\\cdot\\left(10 u^{2} v\\right)\\\\&\\quad{}-\\left(\\frac{u}{v}\\right)\\cdot\\left(10 u v^{2}\\right)\\\\&=10 u^{2} v \\left(\\ln{\\left(v \\right)} - 1\\right).\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a53a82d2-c0dd-5e6d-b1b0-bc10373a8146",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1a1923c2-b602-527a-8a03-89e0871b358b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} \\left(- v + \\ln{\\left(v \\right)}\\right)"
+            },
+            {
+              ":answer/id": "6af23998-5908-57d6-8aa3-8eea817b6124",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u v \\left(- v + \\ln{\\left(v \\right)}\\right)"
+            },
+            {
+              ":answer/id": "347df9f8-b277-53ff-aad4-e97abdc0751b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20 u^{2} \\left(- v + \\ln{\\left(v \\right)}\\right)"
+            },
+            {
+              ":answer/id": "cc909cfe-af08-5bda-861b-4006508bbc4f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20 u v \\left(\\ln{\\left(v \\right)} - 1\\right)"
+            },
+            {
+              ":answer/id": "537dc0ff-6c09-5176-98eb-3cd8631f2745",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10 u^{2} v \\left(\\ln{\\left(v \\right)} - 1\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "537dc0ff-6c09-5176-98eb-3cd8631f2745"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102978,
+      "template": "log_square",
+      "parameters": {
+        "a": 1,
+        "b": 5
+      },
+      "parameter_fingerprint": "82b5cbd4ab8d0633847ac9506c3ac699aeabccf3b403a2b5fc22a38b30f4a14c",
+      "content_fingerprint": "f96770a169ec4444a182418baf829604f061fbeee71dfb7522f789b37bc3f844",
+      "bank_profile": "observed_log_square",
+      "bank_origin": "observed expression replay",
+      "authored_extension": true,
+      "difficulty_origin": "observed",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [
+          "q-81263"
+        ],
+        "canonical_id": "e-6810"
+      },
+      "domain": "v>0",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Symbol('u', real=True), log(Symbol('v', real=True)))",
+        "Mul(Integer(5), Pow(Symbol('u', real=True), Integer(2)), Pow(Symbol('v', real=True), Integer(2)))"
+      ],
+      "partial_derivatives": [
+        "log(Symbol('v', real=True))",
+        "Mul(Symbol('u', real=True), Pow(Symbol('v', real=True), Integer(-1)))",
+        "Mul(Integer(10), Symbol('u', real=True), Pow(Symbol('v', real=True), Integer(2)))",
+        "Mul(Integer(10), Pow(Symbol('u', real=True), Integer(2)), Symbol('v', real=True))"
+      ],
+      "determinant": "Mul(Integer(10), Pow(Symbol('u', real=True), Integer(2)), Symbol('v', real=True), Add(log(Symbol('v', real=True)), Integer(-1)))",
+      "answer_math": {
+        "537dc0ff-6c09-5176-98eb-3cd8631f2745": {
+          "expression": "Mul(Integer(10), Pow(Symbol('u', real=True), Integer(2)), Symbol('v', real=True), Add(log(Symbol('v', real=True)), Integer(-1)))",
+          "recipe": "correct"
+        },
+        "cc909cfe-af08-5bda-861b-4006508bbc4f": {
+          "expression": "Mul(Integer(20), Symbol('u', real=True), Symbol('v', real=True), Add(log(Symbol('v', real=True)), Integer(-1)))",
+          "recipe": "power_coefficient_for_variable"
+        },
+        "1a1923c2-b602-527a-8a03-89e0871b358b": {
+          "expression": "Mul(Integer(10), Pow(Symbol('u', real=True), Integer(2)), Add(Mul(Integer(-1), Symbol('v', real=True)), log(Symbol('v', real=True))))",
+          "recipe": "lose_v_in_log_term"
+        },
+        "6af23998-5908-57d6-8aa3-8eea817b6124": {
+          "expression": "Mul(Integer(10), Symbol('u', real=True), Symbol('v', real=True), Add(Mul(Integer(-1), Symbol('v', real=True)), log(Symbol('v', real=True))))",
+          "recipe": "lose_u_and_v"
+        },
+        "347df9f8-b277-53ff-aad4-e97abdc0751b": {
+          "expression": "Mul(Integer(20), Pow(Symbol('u', real=True), Integer(2)), Add(Mul(Integer(-1), Symbol('v', real=True)), log(Symbol('v', real=True))))",
+          "recipe": "double_and_lose_v"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "42608d08-cb1c-57b8-8989-3f55b2de67d1",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T(\\begin{bmatrix}u \\\\ v\\end{bmatrix})=\\begin{bmatrix}\\cos{\\left(u + v \\right)} \\\\ 2 u + 4 v\\end{bmatrix}.$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x=\\cos{\\left(u + v \\right)}$ and $y=2 u + 4 v.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=- \\sin{\\left(u + v \\right)}&\\quad \\frac{\\partial x}{\\partial v}&=- \\sin{\\left(u + v \\right)}\\\\\\frac{\\partial y}{\\partial u}&=2&\\quad \\frac{\\partial y}{\\partial v}&=4\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}- \\sin{\\left(u + v \\right)}&- \\sin{\\left(u + v \\right)}\\\\2&4\\end{vmatrix}\\\\&=\\left(- \\sin{\\left(u + v \\right)}\\right)\\cdot\\left(4\\right)\\\\&\\quad{}-\\left(- \\sin{\\left(u + v \\right)}\\right)\\cdot\\left(2\\right)\\\\&=- 2 \\sin{\\left(u + v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7eec8585-0b40-53fd-ba22-7030e1411e02",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7bbe450f-3789-510f-8a4a-a0bb1d610da2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\cos{\\left(u - v \\right)}"
+            },
+            {
+              ":answer/id": "7322233c-6474-5f4f-830f-3ed122032fe2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\sin{\\left(u + v \\right)}"
+            },
+            {
+              ":answer/id": "301e74ca-3325-5f72-995b-bfc44b209428",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 \\sin{\\left(u + v \\right)}"
+            },
+            {
+              ":answer/id": "e88ba1a5-8e4c-5279-9679-1a7a19e1eeb0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sin{\\left(u - v \\right)}"
+            },
+            {
+              ":answer/id": "da9121eb-7495-597a-8885-3b12465d23c5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\cos{\\left(u + v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "301e74ca-3325-5f72-995b-bfc44b209428"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102979,
+      "template": "cos_linear",
+      "parameters": {
+        "a": 2,
+        "b": 4
+      },
+      "parameter_fingerprint": "e1af60237c4986de14c6d50bb00b81991af3388bfee8d812479d56a25b81700e",
+      "content_fingerprint": "85536fdedd16965e0ce15d9da15bd2c8ca8593852c673081ff6f0a4db63b788a",
+      "bank_profile": "observed_cos_linear",
+      "bank_origin": "observed expression replay",
+      "authored_extension": true,
+      "difficulty_origin": "observed",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [
+          "q-160405"
+        ],
+        "canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "cos(Add(Symbol('u', real=True), Symbol('v', real=True)))",
+        "Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(4), Symbol('v', real=True)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(-1), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+        "Mul(Integer(-1), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+        "Integer(2)",
+        "Integer(4)"
+      ],
+      "determinant": "Mul(Integer(-1), Integer(2), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+      "answer_math": {
+        "e88ba1a5-8e4c-5279-9679-1a7a19e1eeb0": {
+          "expression": "Mul(Integer(2), sin(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))",
+          "recipe": "coefficient_and_wrong_argument"
+        },
+        "da9121eb-7495-597a-8885-3b12465d23c5": {
+          "expression": "cos(Add(Symbol('u', real=True), Symbol('v', real=True)))",
+          "recipe": "undifferentiated_x"
+        },
+        "7bbe450f-3789-510f-8a4a-a0bb1d610da2": {
+          "expression": "Mul(Integer(-1), cos(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True)))))",
+          "recipe": "negative_cos_difference"
+        },
+        "7322233c-6474-5f4f-830f-3ed122032fe2": {
+          "expression": "Mul(Integer(-1), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+          "recipe": "omit_coefficient"
+        },
+        "301e74ca-3325-5f72-995b-bfc44b209428": {
+          "expression": "Mul(Integer(-1), Integer(2), sin(Add(Symbol('u', real=True), Symbol('v', real=True))))",
+          "recipe": "correct"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

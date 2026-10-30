@@ -1,0 +1,263 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119809,
+      "id": "a04b551f-3323-5b91-b01e-941912cc92be",
+      "title": "Determining Whether a Vector Lies on a Plane"
+    },
+    "question": {
+      ":question/id": "7ea99cdc-6dac-5769-8c82-7158db8b9a88",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Determine whether $\\mathbf{u}$ lies on the plane $\\Pi:\\mathbf{r}=s\\mathbf{b}+t\\mathbf{c}$, where $s,t\\in\\mathbb{R}$ and\n\n$$\n\\begin{aligned}\\mathbf{b}&=\\langle -6, -2, 3\\rangle \\\\ \\mathbf{c}&=\\langle -4, 1, 2\\rangle \\\\ \\mathbf{u}&=\\langle -22, 2, 11\\rangle\\end{aligned}\n$$\n\nIf it does, select the value of $s\\cdot t$ in $\\mathbf{u}=s\\mathbf{b}+t\\mathbf{c}$. Otherwise, select the statement that $\\mathbf{u}$ does not lie on $\\Pi$.",
+      ":question/worked-solution": "By definition, $\\mathbf{u}\\in\\Pi$ exactly when the same values of $s$ and $t$ satisfy all three coordinate equations. Expanding the vector equation gives\n\n$$\n\\left\\{\\begin{aligned}-6s-4t &=-22 \\\\ -2s+t &=2 \\\\ 3s+2t &=11\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}-6 & -4 & -22 \\\\ -2 & 1 & 2 \\\\ 3 & 2 & 11\\end{array}\\right]\n$$\n\nApply $R_2 \\leftarrow R_2-\\left(\\frac{1}{3}\\right)R_1$, then $R_3 \\leftarrow R_3-\\left(-\\frac{1}{2}\\right)R_1$:\n\n$$\n\\left[\\begin{array}{cc|c}-6 & -4 & -22 \\\\ 0 & \\frac{7}{3} & \\frac{28}{3} \\\\ 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe last row is $0=0$, so it adds no restriction. Back substitute in the two nonzero rows:\n\n$$\n\\begin{aligned}t&=\\frac{\\frac{28}{3}}{\\frac{7}{3}}=4 \\\\ s&=\\frac{-22-(-4)(4)}{-6}=1\\end{aligned}\n$$\n\nVerify every coordinate:\n\n$$\n\\begin{aligned}(1)(-6)+(4)(-4)&=-22=-22 \\\\ (1)(-2)+(4)(1)&=2=2 \\\\ (1)(3)+(4)(2)&=11=11\\end{aligned}\n$$\n\nAll three coordinates agree, so the vector lies on the plane. Therefore,\n\n$$\ns\\cdot t=(1)\\cdot(4)=4.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "39682793-14d7-501e-b638-268f3fe2c108",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$\\mathbf{u}$ does not lie on $\\Pi$",
+              ":answer/feedback": "The pair $s=1,t=4$ satisfies all three coordinates; the vector lies on the plane.",
+              ":answer/id": "047c2dca-5319-5fb0-8fb0-e2338440b36d"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{4}",
+              ":answer/feedback": "This uses $s/t$ instead of $s\\cdot t$.",
+              ":answer/id": "c3dd168a-6c63-5020-9fc8-3db954d9c740"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3",
+              ":answer/feedback": "This uses $s-t$ instead of $s\\cdot t$.",
+              ":answer/id": "3ee737eb-a663-58a8-8e7d-08f8b09bff79"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5",
+              ":answer/feedback": "This uses $s+t$ instead of $s\\cdot t$.",
+              ":answer/id": "9cfdc0b2-50a1-57c1-aa31-3a38589cf3b6"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4",
+              ":answer/feedback": "Correct. The common pair satisfies all three equations and gives $s\\cdot t=4$.",
+              ":answer/id": "36e8adbb-fc6e-5f73-bbf4-7c941ba91e7e"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "36e8adbb-fc6e-5f73-bbf4-7c941ba91e7e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": 1,
+      "template": "plane-membership",
+      "profile": "operations",
+      "parameters": {
+        "b": [
+          "-6",
+          "-2",
+          "3"
+        ],
+        "c": [
+          "-4",
+          "1",
+          "2"
+        ],
+        "u": [
+          "-22",
+          "2",
+          "11"
+        ]
+      },
+      "source_question_ids": [
+        17592186119620,
+        17592186120306,
+        17592186120304,
+        17592186713334,
+        17592186713321,
+        17592186713317
+      ],
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119809,
+      "id": "a04b551f-3323-5b91-b01e-941912cc92be",
+      "title": "Determining Whether a Vector Lies on a Plane"
+    },
+    "question": {
+      ":question/id": "10de0f8d-6558-506f-9635-a232cb4622a9",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Determine whether $\\mathbf{u}$ lies on the plane $\\Pi:\\mathbf{r}=s\\mathbf{b}+t\\mathbf{c}$, where $s,t\\in\\mathbb{R}$ and\n\n$$\n\\begin{aligned}\\mathbf{b}&=\\langle 1, -2, 1\\rangle \\\\ \\mathbf{c}&=\\langle -3, 6, 2\\rangle \\\\ \\mathbf{u}&=\\langle 7, -14, -8\\rangle\\end{aligned}\n$$\n\nIf it does, select the value of $s\\cdot t$ in $\\mathbf{u}=s\\mathbf{b}+t\\mathbf{c}$. Otherwise, select the statement that $\\mathbf{u}$ does not lie on $\\Pi$.",
+      ":question/worked-solution": "By definition, $\\mathbf{u}\\in\\Pi$ exactly when the same values of $s$ and $t$ satisfy all three coordinate equations. Expanding the vector equation gives\n\n$$\n\\left\\{\\begin{aligned}s-3t &=7 \\\\ -2s+6t &=-14 \\\\ s+2t &=-8\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}1 & -3 & 7 \\\\ -2 & 6 & -14 \\\\ 1 & 2 & -8\\end{array}\\right]\n$$\n\nApply $R_2 \\leftarrow R_2-(-2)R_1$, then $R_3 \\leftarrow R_3-(1)R_1$, then $R_2 \\leftrightarrow R_3$:\n\n$$\n\\left[\\begin{array}{cc|c}1 & -3 & 7 \\\\ 0 & 5 & -15 \\\\ 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe last row is $0=0$, so it adds no restriction. Back substitute in the two nonzero rows:\n\n$$\n\\begin{aligned}t&=\\frac{-15}{5}=-3 \\\\ s&=\\frac{7-(-3)(-3)}{1}=-2\\end{aligned}\n$$\n\nVerify every coordinate:\n\n$$\n\\begin{aligned}(-2)(1)+(-3)(-3)&=7=7 \\\\ (-2)(-2)+(-3)(6)&=-14=-14 \\\\ (-2)(1)+(-3)(2)&=-8=-8\\end{aligned}\n$$\n\nAll three coordinates agree, so the vector lies on the plane. Therefore,\n\n$$\ns\\cdot t=(-2)\\cdot(-3)=6.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cf0e991b-8c14-5635-9b74-68b870a30de8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-5",
+              ":answer/feedback": "This uses $s+t$ instead of $s\\cdot t$.",
+              ":answer/id": "0402d775-14d0-590c-9895-677ab1523e2e"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3",
+              ":answer/feedback": "This is $t$ alone; the question asks for $s\\cdot t$.",
+              ":answer/id": "ecd66a33-7950-592f-a1d6-63ac463d6cf4"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$\\mathbf{u}$ does not lie on $\\Pi$",
+              ":answer/feedback": "The pair $s=-2,t=-3$ satisfies all three coordinates; the vector lies on the plane.",
+              ":answer/id": "6804e023-8ed7-5c44-a29b-dbfb1743e5a2"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6",
+              ":answer/feedback": "Correct. The common pair satisfies all three equations and gives $s\\cdot t=6$.",
+              ":answer/id": "6aaf7d02-8f82-5fde-b3e7-f061225e94c2"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2",
+              ":answer/feedback": "This is $s$ alone; the question asks for $s\\cdot t$.",
+              ":answer/id": "ebea83d4-af3e-5a14-a047-f6edda4a8f9a"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6aaf7d02-8f82-5fde-b3e7-f061225e94c2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": 1,
+      "template": "plane-membership",
+      "profile": "coefficients",
+      "parameters": {
+        "b": [
+          "1",
+          "-2",
+          "1"
+        ],
+        "c": [
+          "-3",
+          "6",
+          "2"
+        ],
+        "u": [
+          "7",
+          "-14",
+          "-8"
+        ]
+      },
+      "source_question_ids": [
+        17592186119620,
+        17592186120306,
+        17592186120304,
+        17592186713334,
+        17592186713321,
+        17592186713317
+      ],
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119809,
+      "id": "a04b551f-3323-5b91-b01e-941912cc92be",
+      "title": "Determining Whether a Vector Lies on a Plane"
+    },
+    "question": {
+      ":question/id": "d75bacdd-3e27-5eee-82b0-34995a847569",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Determine whether $\\mathbf{u}$ lies on the plane $\\Pi:\\mathbf{r}=s\\mathbf{b}+t\\mathbf{c}$, where $s,t\\in\\mathbb{R}$ and\n\n$$\n\\begin{aligned}\\mathbf{b}&=\\langle 2, -1, 1\\rangle \\\\ \\mathbf{c}&=\\langle -2, 1, -2\\rangle \\\\ \\mathbf{u}&=\\langle 12, -7, 10\\rangle\\end{aligned}\n$$\n\nIf it does, select the value of $s\\cdot t$ in $\\mathbf{u}=s\\mathbf{b}+t\\mathbf{c}$. Otherwise, select the statement that $\\mathbf{u}$ does not lie on $\\Pi$.",
+      ":question/worked-solution": "By definition, $\\mathbf{u}\\in\\Pi$ exactly when the same values of $s$ and $t$ satisfy all three coordinate equations. Expanding the vector equation gives\n\n$$\n\\left\\{\\begin{aligned}2s-2t &=12 \\\\ -s+t &=-7 \\\\ s-2t &=10\\end{aligned}\\right.\n$$\n\nSet up the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}2 & -2 & 12 \\\\ -1 & 1 & -7 \\\\ 1 & -2 & 10\\end{array}\\right]\n$$\n\nApply $R_2 \\leftarrow R_2-\\left(-\\frac{1}{2}\\right)R_1$, then $R_3 \\leftarrow R_3-\\left(\\frac{1}{2}\\right)R_1$, then $R_2 \\leftrightarrow R_3$:\n\n$$\n\\left[\\begin{array}{cc|c}2 & -2 & 12 \\\\ 0 & -1 & 4 \\\\ 0 & 0 & -1\\end{array}\\right]\n$$\n\nThe last row gives $0=-1$, a contradiction. No pair satisfies all three equations. Thus $\\mathbf{u}$ does not lie on $\\Pi$. A product obtained from only two coordinates is not a valid answer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5f2ca0ac-60fd-5e7f-afce-f1744523aaec",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4",
+              ":answer/feedback": "Check all three coordinates before giving a product; the system has no common solution.",
+              ":answer/id": "21255bc1-452a-5c93-ad7c-03bab9a47744"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3",
+              ":answer/feedback": "Check all three coordinates before giving a product; the system has no common solution.",
+              ":answer/id": "9d2dc083-98ef-5945-a008-8844492b8c46"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1",
+              ":answer/feedback": "Check all three coordinates before giving a product; the system has no common solution.",
+              ":answer/id": "38f7f61e-dbad-5181-a390-7bba14bc4a54"
+            },
+            {
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-12",
+              ":answer/feedback": "Check all three coordinates before giving a product; the system has no common solution.",
+              ":answer/id": "8e1c2219-56a0-544b-9a26-6873e29a36d5"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$\\mathbf{u}$ does not lie on $\\Pi$",
+              ":answer/feedback": "Correct. The coordinate system is inconsistent.",
+              ":answer/id": "29c295d3-caed-5443-b0aa-cc7dc7d97aa3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "29c295d3-caed-5443-b0aa-cc7dc7d97aa3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": 1,
+      "template": "plane-membership",
+      "profile": "coefficients",
+      "parameters": {
+        "b": [
+          "2",
+          "-1",
+          "1"
+        ],
+        "c": [
+          "-2",
+          "1",
+          "-2"
+        ],
+        "u": [
+          "12",
+          "-7",
+          "10"
+        ]
+      },
+      "source_question_ids": [
+        17592186119620,
+        17592186120306,
+        17592186120304,
+        17592186713334,
+        17592186713321,
+        17592186713317
+      ],
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

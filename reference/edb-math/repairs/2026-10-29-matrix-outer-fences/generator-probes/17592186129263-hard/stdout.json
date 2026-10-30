@@ -1,0 +1,275 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "b27a378c-b07d-5bb0-9416-2900f68fcda5",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}\\ln{\\left(\\frac{u}{v} \\right)} \\\\ - v e^{- u + v}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}1 \\\\ 1\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=\\ln{\\left(\\frac{u}{v} \\right)}$ and $y=- v e^{- u + v}$. Holding the other variable constant, we obtain\n\nthe following derivatives. For the exponential component, the product rule uses $v$ and $e^{- u + v}$ as its factors; the derivative of the linear factor contributes the extra exponential term. The logarithm is differentiated directly by the chain rule, on its positive-argument domain.\n\n$$\n\\begin{aligned}x_u&=\\frac{1}{u}, & x_v&=- \\frac{1}{v}, \\\\ y_u&=v e^{- u + v}, & y_v&=- \\left(v + 1\\right) e^{- u + v}.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{1}{u} & - \\frac{1}{v} \\\\ v e^{- u + v} & - \\left(v + 1\\right) e^{- u + v}\\end{vmatrix} \\\\ &=\\left(\\frac{1}{u}\\right)\\left(- \\left(v + 1\\right) e^{- u + v}\\right) \\\\ &\\quad{}-\\left(- \\frac{1}{v}\\right)\\left(v e^{- u + v}\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(1,1)&=\\begin{vmatrix}1 & -1 \\\\ 1 & -2\\end{vmatrix} \\\\ &=\\left(1\\right)\\left(-2\\right) \\\\ &\\quad{}-\\left(-1\\right)\\left(1\\right) \\\\ &=-2-\\left(-1\\right) \\\\ &=-1.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f5d0aff2-7537-58be-84e4-44b3ba30a2fc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "00d51da1-29b2-589a-8b98-2160ec2eb1f5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "1ab2cdb2-d5c4-5665-b603-2908af6629f4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3"
+            },
+            {
+              ":answer/id": "b9eb6877-566d-559d-a94e-37a6e7835043",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 e^{2}"
+            },
+            {
+              ":answer/id": "cbf7d739-84f2-5be3-851b-72fa2ef4d588",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{-2}"
+            },
+            {
+              ":answer/id": "5b8caeb2-118c-5090-b04d-9cee5b747a94",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5b8caeb2-118c-5090-b04d-9cee5b747a94"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 16091273920057412499,
+      "template": "product_exp_log",
+      "parameters": {
+        "a": -1,
+        "b": 1,
+        "U": "1",
+        "V": "1",
+        "sx": -1,
+        "sy": 1,
+        "swap": true,
+        "prefactor": "v",
+        "log_sign": -1
+      },
+      "parameter_fingerprint": "bf434d97c8e67ef143f7c6fb7acc1a4c842e5239216513fa800a9662ab00c50c",
+      "bank_profile": [
+        "v_sign",
+        "add",
+        "omit_product_term",
+        "u_sign"
+      ],
+      "answer_recipes": {
+        "-1": "correct",
+        "e^{-2}": "v_sign",
+        "-3": "add",
+        "0": "omit_product_term",
+        "3 e^{2}": "u_sign"
+      },
+      "source_ids": [
+        "q-160394",
+        "q-160402",
+        "q-160382",
+        "39432fb3-3548-5922-a3b0-63857c6310e1"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "-1",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "593c4e88-c99e-52ac-97e8-255346efb195",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}- \\ln{\\left(u v \\right)} \\\\ u e^{- u + v}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}2 \\\\ 1\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=- \\ln{\\left(u v \\right)}$ and $y=u e^{- u + v}$. Holding the other variable constant, we obtain\n\nthe following derivatives. For the exponential component, the product rule uses $u$ and $e^{- u + v}$ as its factors; the derivative of the linear factor contributes the extra exponential term. The logarithm is differentiated directly by the chain rule, on its positive-argument domain.\n\n$$\n\\begin{aligned}x_u&=- \\frac{1}{u}, & x_v&=- \\frac{1}{v}, \\\\ y_u&=\\left(1 - u\\right) e^{- u + v}, & y_v&=u e^{- u + v}.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}- \\frac{1}{u} & - \\frac{1}{v} \\\\ \\left(1 - u\\right) e^{- u + v} & u e^{- u + v}\\end{vmatrix} \\\\ &=\\left(- \\frac{1}{u}\\right)\\left(u e^{- u + v}\\right) \\\\ &\\quad{}-\\left(- \\frac{1}{v}\\right)\\left(\\left(1 - u\\right) e^{- u + v}\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(2,1)&=\\begin{vmatrix}- \\frac{1}{2} & -1 \\\\ - \\frac{1}{e} & \\frac{2}{e}\\end{vmatrix} \\\\ &=\\left(- \\frac{1}{2}\\right)\\left(\\frac{2}{e}\\right) \\\\ &\\quad{}-\\left(-1\\right)\\left(- \\frac{1}{e}\\right) \\\\ &=- \\frac{1}{e}-\\left(e^{-1}\\right) \\\\ &=- \\frac{2}{e}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1549ee1f-df7d-53fe-9540-f221a7465718",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6ec23c75-774a-57a8-83dc-bd2b8324e335",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{2}{e}"
+            },
+            {
+              ":answer/id": "62fcce85-a0ec-5473-b52a-3841da221f08",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1 + 2 \\ln{\\left(2 \\right)}}{e}"
+            },
+            {
+              ":answer/id": "e66f9a76-ac4d-5bb7-a41d-419c89d1e7f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3}{e}"
+            },
+            {
+              ":answer/id": "f7f1105b-49ba-5e17-8224-f1520fd4ab54",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{-4 + e}{2 e}"
+            },
+            {
+              ":answer/id": "2e17f22d-cad7-57e6-96f8-3b998de30664",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 e^{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6ec23c75-774a-57a8-83dc-bd2b8324e335"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 10175067411146343764,
+      "template": "product_exp_log",
+      "parameters": {
+        "a": -1,
+        "b": 1,
+        "U": "2",
+        "V": "1",
+        "sx": 1,
+        "sy": -1,
+        "swap": true,
+        "prefactor": "u",
+        "log_sign": 1
+      },
+      "parameter_fingerprint": "3f7cadf90b6f58de0f596142ac4cc2d9a03c1dd479efe74f799c796d97521ef2",
+      "bank_profile": [
+        "undifferentiated_xu",
+        "u_sign",
+        "omit_product_term",
+        "trace"
+      ],
+      "answer_recipes": {
+        "- \\frac{2}{e}": "correct",
+        "- \\frac{1 + 2 \\ln{\\left(2 \\right)}}{e}": "undifferentiated_xu",
+        "2 e^{3}": "u_sign",
+        "- \\frac{3}{e}": "omit_product_term",
+        "- \\frac{-4 + e}{2 e}": "trace"
+      },
+      "source_ids": [
+        "q-160394",
+        "q-160402",
+        "q-160382",
+        "39432fb3-3548-5922-a3b0-63857c6310e1"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "-2*exp(-1)",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "4f2fcfaf-9303-5e56-bafa-d953ed50edc3",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}- \\ln{\\left(u v \\right)} \\\\ - u e^{u - v}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}-3 \\\\ -3\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=- \\ln{\\left(u v \\right)}$ and $y=- u e^{u - v}$. Holding the other variable constant, we obtain\n\nthe following derivatives. For the exponential component, the product rule uses $u$ and $e^{u - v}$ as its factors; the derivative of the linear factor contributes the extra exponential term. The logarithm is differentiated directly by the chain rule, on its positive-argument domain.\n\n$$\n\\begin{aligned}x_u&=- \\frac{1}{u}, & x_v&=- \\frac{1}{v}, \\\\ y_u&=- \\left(u + 1\\right) e^{u - v}, & y_v&=u e^{u - v}.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}- \\frac{1}{u} & - \\frac{1}{v} \\\\ - \\left(u + 1\\right) e^{u - v} & u e^{u - v}\\end{vmatrix} \\\\ &=\\left(- \\frac{1}{u}\\right)\\left(u e^{u - v}\\right) \\\\ &\\quad{}-\\left(- \\frac{1}{v}\\right)\\left(- \\left(u + 1\\right) e^{u - v}\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(-3,-3)&=\\begin{vmatrix}\\frac{1}{3} & \\frac{1}{3} \\\\ 2 & -3\\end{vmatrix} \\\\ &=\\left(\\frac{1}{3}\\right)\\left(-3\\right) \\\\ &\\quad{}-\\left(\\frac{1}{3}\\right)\\left(2\\right) \\\\ &=-1-\\left(\\frac{2}{3}\\right) \\\\ &=- \\frac{5}{3}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "85bd69de-0d2b-5bbf-879c-39f1939690b9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d29ccf89-4e3c-5331-b8ba-4ed43af5199e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{3}"
+            },
+            {
+              ":answer/id": "907dc12c-9f05-5c7a-92d1-3150befa0be6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\left(-1 + 9 \\ln{\\left(3 \\right)}\\right)}{3}"
+            },
+            {
+              ":answer/id": "c0d787a3-9af2-5219-8996-0420aeeff6b7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{1}{3}"
+            },
+            {
+              ":answer/id": "0a89f8ec-97a9-5151-a000-7a727c7a13b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{e^{6}}{3}"
+            },
+            {
+              ":answer/id": "71cca967-e6bb-5dc7-9d93-4bdfe26c00b3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{5}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "71cca967-e6bb-5dc7-9d93-4bdfe26c00b3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 10171674995053905743,
+      "template": "product_exp_log",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "U": "-3",
+        "V": "-3",
+        "sx": -1,
+        "sy": -1,
+        "swap": true,
+        "prefactor": "u",
+        "log_sign": 1
+      },
+      "parameter_fingerprint": "9b6d3460239d6c7d46be9d384d70b72effdd17851905ff3d1416b7d018bed1f1",
+      "bank_profile": [
+        "undifferentiated_xu",
+        "u_sign",
+        "undifferentiated_yv",
+        "log_v_sign"
+      ],
+      "answer_recipes": {
+        "- \\frac{5}{3}": "correct",
+        "\\frac{2 \\left(-1 + 9 \\ln{\\left(3 \\right)}\\right)}{3}": "undifferentiated_xu",
+        "\\frac{e^{6}}{3}": "u_sign",
+        "\\frac{1}{3}": "undifferentiated_yv",
+        "- \\frac{1}{3}": "log_v_sign"
+      },
+      "source_ids": [
+        "q-160394",
+        "q-160402",
+        "q-160382",
+        "39432fb3-3548-5922-a3b0-63857c6310e1"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "-5/3",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

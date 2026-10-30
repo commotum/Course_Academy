@@ -1,0 +1,290 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119930,
+      "id": "02e65c73-8c02-5403-8c5c-b1e81f81a7b6",
+      "title": "Calculating the Determinant of a Matrix With Many Zeros"
+    },
+    "question": {
+      ":question/id": "bc5ce97b-e6c7-5f2b-a375-4ab6613542af",
+      ":question/problem": "Find the determinant of the matrix\n\n$$\nA=\\begin{bmatrix}-2 & 2 & 0 & 0 \\\\ 0 & 2 & 0 & 3 \\\\ 0 & 0 & -1 & 3 \\\\ -1 & 0 & 3 & 0\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Write $D=\\det(A)$.\n\nExpand $D$ along column 1; only 2 nonzero entries contribute.\n\n$$\n\\begin{aligned}D &=(-2)(-1)^{1+1}\\begin{vmatrix}2 & 0 & 3 \\\\ 0 & -1 & 3 \\\\ 0 & 3 & 0\\end{vmatrix} \\\\ &\\quad +(-1)(-1)^{4+1}\\begin{vmatrix}2 & 0 & 0 \\\\ 2 & 0 & 3 \\\\ 0 & -1 & 3\\end{vmatrix}.\\end{aligned}\n$$\n\nWrite $D_{1}$ for the minor obtained by deleting row 1 and column 1, and $D_{2}$ for the minor obtained by deleting row 4 and column 1.\n\nExpand $D_{1}$ along row 3; only 1 nonzero entry contributes.\n\n$$\nD_{1}=(3)(-1)^{3+2}\\begin{vmatrix}2 & 3 \\\\ 0 & 3\\end{vmatrix}.\n$$\n\nWrite $D_{11}$ for the minor obtained by deleting row 3 and column 2.\n\nEvaluate the two by two determinant:\n\n$$\n\\begin{aligned}D_{11} &=\\begin{vmatrix}2 & 3 \\\\ 0 & 3\\end{vmatrix} \\\\ &=(2)(3)-(3)(0) \\\\ &=6.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D_{1} &=(3)(-1)^{3+2}(6) \\\\ &=-18.\\end{aligned}\n$$\n\nExpand $D_{2}$ along column 2; only 1 nonzero entry contributes.\n\n$$\nD_{2}=(-1)(-1)^{3+2}\\begin{vmatrix}2 & 0 \\\\ 2 & 3\\end{vmatrix}.\n$$\n\nWrite $D_{21}$ for the minor obtained by deleting row 3 and column 2.\n\nEvaluate the two by two determinant:\n\n$$\n\\begin{aligned}D_{21} &=\\begin{vmatrix}2 & 0 \\\\ 2 & 3\\end{vmatrix} \\\\ &=(2)(3)-(0)(2) \\\\ &=6.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D_{2} &=(-1)(-1)^{3+2}(6) \\\\ &=6.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D &=(-2)(-1)^{1+1}(-18)+(-1)(-1)^{4+1}(6) \\\\ &=42.\\end{aligned}\n$$\n\nTherefore, $\\det(A)=42$.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0a036b92-39cc-54b5-a5dd-81e72d8dc90e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3867dd32-ee29-5216-b562-f92b08fe0e58",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "7784c447-d6dd-5984-9417-080e36f2f7f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-30"
+            },
+            {
+              ":answer/id": "0e3d7370-467f-530c-b14f-850c129d6729",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-42"
+            },
+            {
+              ":answer/id": "d50c710d-9401-53f5-8654-233a046d6247",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "42"
+            },
+            {
+              ":answer/id": "18b38257-57f5-59cf-946f-792559354869",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d50c710d-9401-53f5-8654-233a046d6247"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "profile": "paired-repeat",
+      "matrix": [
+        [
+          "-2",
+          "2",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "2",
+          "0",
+          "3"
+        ],
+        [
+          "0",
+          "0",
+          "-1",
+          "3"
+        ],
+        [
+          "-1",
+          "0",
+          "3",
+          "0"
+        ]
+      ],
+      "source_question_ids": [
+        "bffca4e7-0bf9-53f7-83df-1f634b854d33",
+        "5cc1443c-03cd-5f86-bcfc-b9b7f4c6a565"
+      ],
+      "error_recipes": {
+        "3867dd32-ee29-5216-b562-f92b08fe0e58": "multiply original diagonal",
+        "7784c447-d6dd-5984-9417-080e36f2f7f6": "repeat entry factor and reverse sign",
+        "0e3d7370-467f-530c-b14f-850c129d6729": "reverse final sign",
+        "d50c710d-9401-53f5-8654-233a046d6247": "correct",
+        "18b38257-57f5-59cf-946f-792559354869": "repeat entry factor"
+      },
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 0,
+      "family": "cycle"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119930,
+      "id": "02e65c73-8c02-5403-8c5c-b1e81f81a7b6",
+      "title": "Calculating the Determinant of a Matrix With Many Zeros"
+    },
+    "question": {
+      ":question/id": "ce5bed91-506b-55f9-8158-87a1423d9838",
+      ":question/problem": "Find the determinant of the matrix\n\n$$\nA=\\begin{bmatrix}-3 & 1 & 0 & 0 \\\\ -2 & 0 & -2 & 0 \\\\ 0 & 0 & 1 & -2 \\\\ 0 & 2 & 0 & -2\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Write $D=\\det(A)$.\n\nExpand $D$ along row 4; only 2 nonzero entries contribute.\n\n$$\n\\begin{aligned}D &=(2)(-1)^{4+2}\\begin{vmatrix}-3 & 0 & 0 \\\\ -2 & -2 & 0 \\\\ 0 & 1 & -2\\end{vmatrix} \\\\ &\\quad +(-2)(-1)^{4+4}\\begin{vmatrix}-3 & 1 & 0 \\\\ -2 & 0 & -2 \\\\ 0 & 0 & 1\\end{vmatrix}.\\end{aligned}\n$$\n\nWrite $D_{1}$ for the minor obtained by deleting row 4 and column 2, and $D_{2}$ for the minor obtained by deleting row 4 and column 4.\n\nThe matrix in $D_{1}$ is triangular, so multiply its diagonal entries.\n\n$$\n\\begin{aligned}D_{1} &=\\begin{vmatrix}-3 & 0 & 0 \\\\ -2 & -2 & 0 \\\\ 0 & 1 & -2\\end{vmatrix} \\\\ &=(-3)\\cdot(-2)\\cdot(-2) \\\\ &=-12.\\end{aligned}\n$$\n\nExpand $D_{2}$ along column 2; only 1 nonzero entry contributes.\n\n$$\nD_{2}=(1)(-1)^{1+2}\\begin{vmatrix}-2 & -2 \\\\ 0 & 1\\end{vmatrix}.\n$$\n\nWrite $D_{21}$ for the minor obtained by deleting row 1 and column 2.\n\nEvaluate the two by two determinant:\n\n$$\n\\begin{aligned}D_{21} &=\\begin{vmatrix}-2 & -2 \\\\ 0 & 1\\end{vmatrix} \\\\ &=(-2)(1)-(-2)(0) \\\\ &=-2.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D_{2} &=(1)(-1)^{1+2}(-2) \\\\ &=2.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D &=(2)(-1)^{4+2}(-12)+(-2)(-1)^{4+4}(2) \\\\ &=-28.\\end{aligned}\n$$\n\nTherefore, $\\det(A)=-28$.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7c3b5357-4c45-5ab8-8024-bea56288660f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e548d65a-5551-56a4-9296-784e4dd507da",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28"
+            },
+            {
+              ":answer/id": "16665718-787c-5cbb-a416-54669dcfe149",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-28"
+            },
+            {
+              ":answer/id": "f0b95ca5-28fd-5fef-b389-c430aebcbf4c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "52"
+            },
+            {
+              ":answer/id": "7b77fb8c-75e6-57cb-8a64-160d381c15f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "d3fd8902-1375-53cd-87eb-55ddbeae996d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-52"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "16665718-787c-5cbb-a416-54669dcfe149"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "profile": "paired-repeat",
+      "matrix": [
+        [
+          "-3",
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "-2",
+          "0",
+          "-2",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "1",
+          "-2"
+        ],
+        [
+          "0",
+          "2",
+          "0",
+          "-2"
+        ]
+      ],
+      "source_question_ids": [
+        "bffca4e7-0bf9-53f7-83df-1f634b854d33",
+        "5cc1443c-03cd-5f86-bcfc-b9b7f4c6a565"
+      ],
+      "error_recipes": {
+        "e548d65a-5551-56a4-9296-784e4dd507da": "reverse final sign",
+        "16665718-787c-5cbb-a416-54669dcfe149": "correct",
+        "f0b95ca5-28fd-5fef-b389-c430aebcbf4c": "repeat entry factor and reverse sign",
+        "7b77fb8c-75e6-57cb-8a64-160d381c15f8": "multiply original diagonal",
+        "d3fd8902-1375-53cd-87eb-55ddbeae996d": "repeat entry factor"
+      },
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 1,
+      "family": "cycle"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119930,
+      "id": "02e65c73-8c02-5403-8c5c-b1e81f81a7b6",
+      "title": "Calculating the Determinant of a Matrix With Many Zeros"
+    },
+    "question": {
+      ":question/id": "1aa63e05-c0f0-57a6-a04d-fbb90bbb5533",
+      ":question/problem": "Find the determinant of the matrix\n\n$$\nA=\\begin{bmatrix}0 & -2 & 1 & 0 \\\\ -1 & 0 & -1 & 0 \\\\ 0 & 2 & 0 & -1 \\\\ 3 & 0 & 0 & 3\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Write $D=\\det(A)$.\n\nExpand $D$ along row 1; only 2 nonzero entries contribute.\n\n$$\n\\begin{aligned}D &=(-2)(-1)^{1+2}\\begin{vmatrix}-1 & -1 & 0 \\\\ 0 & 0 & -1 \\\\ 3 & 0 & 3\\end{vmatrix} \\\\ &\\quad +(1)(-1)^{1+3}\\begin{vmatrix}-1 & 0 & 0 \\\\ 0 & 2 & -1 \\\\ 3 & 0 & 3\\end{vmatrix}.\\end{aligned}\n$$\n\nWrite $D_{1}$ for the minor obtained by deleting row 1 and column 2, and $D_{2}$ for the minor obtained by deleting row 1 and column 3.\n\nExpand $D_{1}$ along column 2; only 1 nonzero entry contributes.\n\n$$\nD_{1}=(-1)(-1)^{1+2}\\begin{vmatrix}0 & -1 \\\\ 3 & 3\\end{vmatrix}.\n$$\n\nWrite $D_{11}$ for the minor obtained by deleting row 1 and column 2.\n\nEvaluate the two by two determinant:\n\n$$\n\\begin{aligned}D_{11} &=\\begin{vmatrix}0 & -1 \\\\ 3 & 3\\end{vmatrix} \\\\ &=(0)(3)-(-1)(3) \\\\ &=3.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D_{1} &=(-1)(-1)^{1+2}(3) \\\\ &=3.\\end{aligned}\n$$\n\nExpand $D_{2}$ along column 2; only 1 nonzero entry contributes.\n\n$$\nD_{2}=(2)(-1)^{2+2}\\begin{vmatrix}-1 & 0 \\\\ 3 & 3\\end{vmatrix}.\n$$\n\nWrite $D_{21}$ for the minor obtained by deleting row 2 and column 2.\n\nEvaluate the two by two determinant:\n\n$$\n\\begin{aligned}D_{21} &=\\begin{vmatrix}-1 & 0 \\\\ 3 & 3\\end{vmatrix} \\\\ &=(-1)(3)-(0)(3) \\\\ &=-3.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D_{2} &=(2)(-1)^{2+2}(-3) \\\\ &=-6.\\end{aligned}\n$$\n\nSubstituting these minor values,\n\n$$\n\\begin{aligned}D &=(-2)(-1)^{1+2}(3)+(1)(-1)^{1+3}(-6) \\\\ &=0.\\end{aligned}\n$$\n\nTherefore, $\\det(A)=0$.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8f8f6d9b-2cfc-5473-84a4-399b08654d13",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ff75effe-0445-5d33-a264-447125c4e593",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "c9c7a8d7-cb01-5e65-8e93-afbdeb51c37f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            },
+            {
+              ":answer/id": "cbb8a01c-c23a-54fb-9ef7-2c60e0b58650",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-3"
+            },
+            {
+              ":answer/id": "b1035fba-8d76-5def-9b9e-bb8d50a45b92",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-9"
+            },
+            {
+              ":answer/id": "cb9bd3e5-8893-5d50-91be-1de562b61ff5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-18"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ff75effe-0445-5d33-a264-447125c4e593"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "profile": "branches",
+      "matrix": [
+        [
+          "0",
+          "-2",
+          "1",
+          "0"
+        ],
+        [
+          "-1",
+          "0",
+          "-1",
+          "0"
+        ],
+        [
+          "0",
+          "2",
+          "0",
+          "-1"
+        ],
+        [
+          "3",
+          "0",
+          "0",
+          "3"
+        ]
+      ],
+      "source_question_ids": [
+        "bffca4e7-0bf9-53f7-83df-1f634b854d33",
+        "5cc1443c-03cd-5f86-bcfc-b9b7f4c6a565"
+      ],
+      "error_recipes": {
+        "ff75effe-0445-5d33-a264-447125c4e593": "correct",
+        "c9c7a8d7-cb01-5e65-8e93-afbdeb51c37f": "repeat entry factor and reverse final sign",
+        "cbb8a01c-c23a-54fb-9ef7-2c60e0b58650": "omit entry factor and reverse final sign",
+        "b1035fba-8d76-5def-9b9e-bb8d50a45b92": "omit entry factor",
+        "cb9bd3e5-8893-5d50-91be-1de562b61ff5": "repeat entry factor"
+      },
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 2,
+      "family": "cycle"
+    }
+  }
+]

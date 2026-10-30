@@ -1,0 +1,339 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129172,
+      "id": "8059a197-e9fb-5306-8eed-62c0cea88f33",
+      "title": "Evaluating a Double Integral Using the Additivity Over a Rectangular Domain"
+    },
+    "question": {
+      ":question/id": "a3d35fc0-2407-5362-a2a0-2a9451b363dd",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Evaluate $\\iint_R f(x,y)\\,\\mathrm{d}A$, where $R$ is the union of the following rectangles and\n\n$$\nf(x,y)=\\begin{cases}3 y&1<x<3,\\ 0<y<1\\\\x^{2} y&1<x<3,\\ 1<y<3.\\end{cases}\n$$\n\nSet $f=0$ on the region boundaries.",
+      ":question/worked-solution": "Match each formula to its coordinate rectangle:\n\n$$\n\\begin{aligned}R_1&=(1,3)\\times(0,1)\\\\R_2&=(1,3)\\times(1,3)\\end{aligned}\n$$\n\nThe interiors do not overlap, and the boundaries have area zero. Apply additivity:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\sum_{j=1}^{2} I_j,\\\\I_j&=\\iint_{R_j}f\\,\\mathrm{d}A.\\end{aligned}\n$$\n\nOn $R_1$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_1}(3 y)\\,\\mathrm{d}A\\\\&=\\left(\\int_{1}^{3}(1)\\,\\mathrm{d}x\\right)\\left(\\int_{0}^{1}(3 y)\\,\\mathrm{d}y\\right)\\\\&=\\left[x\\right]_{1}^{3}\\left[\\frac{3 y^{2}}{2}\\right]_{0}^{1}\\\\&=\\left(\\left(3\\right)-(\\left(1\\right))\\right)\\left(\\frac{3 \\left(1\\right)^{2}}{2}-\\left(\\frac{3 \\left(0\\right)^{2}}{2}\\right)\\right)\\\\&=\\left(2\\right)\\left(\\frac{3}{2}\\right)=3\\end{aligned}\n$$\n\nOn $R_2$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_2}(x^{2} y)\\,\\mathrm{d}A\\\\&=\\left(\\int_{1}^{3}(x^{2})\\,\\mathrm{d}x\\right)\\left(\\int_{1}^{3}(y)\\,\\mathrm{d}y\\right)\\\\&=\\left[\\frac{x^{3}}{3}\\right]_{1}^{3}\\left[\\frac{y^{2}}{2}\\right]_{1}^{3}\\\\&=\\left(\\frac{\\left(3\\right)^{3}}{3}-\\left(\\frac{\\left(1\\right)^{3}}{3}\\right)\\right)\\left(\\frac{\\left(3\\right)^{2}}{2}-\\left(\\frac{\\left(1\\right)^{2}}{2}\\right)\\right)\\\\&=\\left(\\frac{26}{3}\\right)\\left(4\\right)=\\frac{104}{3}\\end{aligned}\n$$\n\nAdd the signed contributions:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\left(3\\right)\\\\&\\quad+\\left(\\frac{104}{3}\\right)\\\\&=\\boxed{\\frac{113}{3}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5cbf983d-674b-5194-8a4a-e3f1bdb8dc1c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c74553c5-9d47-539d-885f-1c3fe4b5671f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{110}{3}"
+            },
+            {
+              ":answer/id": "cb1fc4d8-a09c-5d4f-bd52-b5d699b6deba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "a832416b-ed9c-5bf4-a47f-5e1bfc5366fb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{104}{3}"
+            },
+            {
+              ":answer/id": "77758579-bd22-5413-bc6c-d350dccd8fb2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{113}{3}"
+            },
+            {
+              ":answer/id": "4a8ba506-fa24-5b7c-8190-0fedcb0099f3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{217}{6}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "77758579-bd22-5413-bc6c-d350dccd8fb2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "axis": 1,
+      "swap": 0,
+      "family": "polynomial",
+      "coefficient": 3,
+      "template": "evaluated-polynomial",
+      "bounds": [
+        [
+          "1",
+          "3",
+          "0",
+          "1"
+        ],
+        [
+          "1",
+          "3",
+          "1",
+          "3"
+        ]
+      ],
+      "formulas": [
+        "3*y",
+        "x**2*y"
+      ],
+      "factors": [
+        [
+          "1",
+          "3*y"
+        ],
+        [
+          "x**2",
+          "y"
+        ]
+      ],
+      "contributions": [
+        "3",
+        "104/3"
+      ],
+      "sources": [
+        "a400e754-c19b-557c-be08-7c8b69cf6b10"
+      ],
+      "solution_final": "\\frac{113}{3}",
+      "conversions": [
+        "separate coordinate factors",
+        "evaluate displayed primitives at their own endpoints",
+        "expand products and add signed contributions"
+      ],
+      "error_recipes": [
+        "correct",
+        "omit y-factor in region 1",
+        "omit region 2",
+        "omit x-factor in region 1",
+        "omit region 1"
+      ],
+      "version": 1,
+      "lesson": "bc4e2a2c-afd3-57e1-ac95-737c568153b8",
+      "response": "five-choice math radio",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 0
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129172,
+      "id": "8059a197-e9fb-5306-8eed-62c0cea88f33",
+      "title": "Evaluating a Double Integral Using the Additivity Over a Rectangular Domain"
+    },
+    "question": {
+      ":question/id": "1c66be3f-e075-5b00-b8fe-eaf875553c0e",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Evaluate $\\iint_R f(x,y)\\,\\mathrm{d}A$, where $R$ is the union of the following rectangles and\n\n$$\nf(x,y)=\\begin{cases}\\frac{x}{y}&-1<x<0,\\ 1<y<3\\\\- 2 y&0<x<1,\\ 1<y<3.\\end{cases}\n$$\n\nSet $f=0$ on the region boundaries.",
+      ":question/worked-solution": "Match each formula to its coordinate rectangle:\n\n$$\n\\begin{aligned}R_1&=(-1,0)\\times(1,3)\\\\R_2&=(0,1)\\times(1,3)\\end{aligned}\n$$\n\nThe interiors do not overlap, and the boundaries have area zero. Apply additivity:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\sum_{j=1}^{2} I_j,\\\\I_j&=\\iint_{R_j}f\\,\\mathrm{d}A.\\end{aligned}\n$$\n\nOn $R_1$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_1}\\left(\\frac{x}{y}\\right)\\,\\mathrm{d}A\\\\&=\\left(\\int_{-1}^{0}(x)\\,\\mathrm{d}x\\right)\\left(\\int_{1}^{3}\\left(\\frac{1}{y}\\right)\\,\\mathrm{d}y\\right)\\\\&=\\left[\\frac{x^{2}}{2}\\right]_{-1}^{0}\\left[\\ln{\\left(y \\right)}\\right]_{1}^{3}\\\\&=\\left(\\frac{\\left(0\\right)^{2}}{2}-\\left(\\frac{\\left(-1\\right)^{2}}{2}\\right)\\right)\\left(\\ln{\\left(\\left(3\\right) \\right)}-(\\ln{\\left(\\left(1\\right) \\right)})\\right)\\\\&=\\left(- \\frac{1}{2}\\right)\\left(\\ln{\\left(3 \\right)}\\right)=- \\frac{\\ln{\\left(3 \\right)}}{2}\\end{aligned}\n$$\n\nOn $R_2$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_2}(- 2 y)\\,\\mathrm{d}A\\\\&=\\left(\\int_{0}^{1}(1)\\,\\mathrm{d}x\\right)\\left(\\int_{1}^{3}(- 2 y)\\,\\mathrm{d}y\\right)\\\\&=\\left[x\\right]_{0}^{1}\\left[- y^{2}\\right]_{1}^{3}\\\\&=\\left(\\left(1\\right)-(\\left(0\\right))\\right)\\left(- \\left(3\\right)^{2}-(- \\left(1\\right)^{2})\\right)\\\\&=\\left(1\\right)\\left(-8\\right)=-8\\end{aligned}\n$$\n\nAdd the signed contributions:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\left(- \\frac{\\ln{\\left(3 \\right)}}{2}\\right)\\\\&\\quad+\\left(-8\\right)\\\\&=\\boxed{-8 - \\frac{\\ln{\\left(3 \\right)}}{2}}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bec2a5fd-5972-5ed4-a723-989c0f8d10b5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "05de866e-9226-5fe5-9354-631773444d84",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-8 - \\frac{\\ln{\\left(3 \\right)}}{2}"
+            },
+            {
+              ":answer/id": "d1a5a308-c43c-545d-b67b-89d00617cd24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-8 + \\frac{\\ln{\\left(3 \\right)}}{2}"
+            },
+            {
+              ":answer/id": "cb8ec745-90fa-533e-86f8-69a187ab851e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-8 - \\ln{\\left(3 \\right)}"
+            },
+            {
+              ":answer/id": "17829301-ecaf-5381-8cf6-a2ecabc4a169",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 - \\frac{\\ln{\\left(3 \\right)}}{2}"
+            },
+            {
+              ":answer/id": "e45d5b0b-8193-5228-8b60-28eb01ee6358",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-16 - \\frac{\\ln{\\left(3 \\right)}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "05de866e-9226-5fe5-9354-631773444d84"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "axis": 0,
+      "swap": 1,
+      "family": "log",
+      "coefficient": -2,
+      "template": "evaluated-log",
+      "bounds": [
+        [
+          "-1",
+          "0",
+          "1",
+          "3"
+        ],
+        [
+          "0",
+          "1",
+          "1",
+          "3"
+        ]
+      ],
+      "formulas": [
+        "x/y",
+        "-2*y"
+      ],
+      "factors": [
+        [
+          "x",
+          "1/y"
+        ],
+        [
+          "1",
+          "-2*y"
+        ]
+      ],
+      "contributions": [
+        "-log(3)/2",
+        "-8"
+      ],
+      "sources": [
+        "0a2e8173-138d-5bc4-91f7-3a4a5e50d1c1",
+        "a0742461-2272-5e62-ba21-7595012d2476"
+      ],
+      "solution_final": "-8 - \\frac{\\ln{\\left(3 \\right)}}{2}",
+      "conversions": [
+        "separate coordinate factors",
+        "evaluate displayed primitives at their own endpoints",
+        "expand products and add signed contributions"
+      ],
+      "error_recipes": [
+        "correct",
+        "reverse contribution 1",
+        "omit x primitive denominator in region 1",
+        "omit y primitive denominator in region 2",
+        "reverse contribution 2"
+      ],
+      "version": 1,
+      "lesson": "bc4e2a2c-afd3-57e1-ac95-737c568153b8",
+      "response": "five-choice math radio",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129172,
+      "id": "8059a197-e9fb-5306-8eed-62c0cea88f33",
+      "title": "Evaluating a Double Integral Using the Additivity Over a Rectangular Domain"
+    },
+    "question": {
+      ":question/id": "29d50ee7-c21b-551d-b515-39d09a394229",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Evaluate $\\iint_R f(x,y)\\,\\mathrm{d}A$, where $R$ is the union of the following rectangles and\n\n$$\nf(x,y)=\\begin{cases}3&1<x<4,\\ 1<y<4\\\\\\frac{1}{4 \\sqrt{x} \\sqrt{y}}&4<x<9,\\ 1<y<4.\\end{cases}\n$$\n\nSet $f=0$ on the region boundaries.",
+      ":question/worked-solution": "Match each formula to its coordinate rectangle:\n\n$$\n\\begin{aligned}R_1&=(1,4)\\times(1,4)\\\\R_2&=(4,9)\\times(1,4)\\end{aligned}\n$$\n\nThe interiors do not overlap, and the boundaries have area zero. Apply additivity:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\sum_{j=1}^{2} I_j,\\\\I_j&=\\iint_{R_j}f\\,\\mathrm{d}A.\\end{aligned}\n$$\n\nOn $R_1$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_1}(3)\\,\\mathrm{d}A\\\\&=\\left(\\int_{1}^{4}(1)\\,\\mathrm{d}x\\right)\\left(\\int_{1}^{4}(3)\\,\\mathrm{d}y\\right)\\\\&=\\left[x\\right]_{1}^{4}\\left[3 y\\right]_{1}^{4}\\\\&=\\left(\\left(4\\right)-(\\left(1\\right))\\right)\\left(3 \\left(4\\right)-(3 \\left(1\\right))\\right)\\\\&=\\left(3\\right)\\left(9\\right)=27\\end{aligned}\n$$\n\nOn $R_2$, separate the coordinate factors:\n\n$$\n\\begin{aligned}&\\iint_{R_2}\\left(\\frac{1}{4 \\sqrt{x} \\sqrt{y}}\\right)\\,\\mathrm{d}A\\\\&=\\left(\\int_{4}^{9}\\left(\\frac{1}{2 \\sqrt{x}}\\right)\\,\\mathrm{d}x\\right)\\left(\\int_{1}^{4}\\left(\\frac{1}{2 \\sqrt{y}}\\right)\\,\\mathrm{d}y\\right)\\\\&=\\left[\\sqrt{x}\\right]_{4}^{9}\\left[\\sqrt{y}\\right]_{1}^{4}\\\\&=\\left(\\sqrt{\\left(9\\right)}-(\\sqrt{\\left(4\\right)})\\right)\\left(\\sqrt{\\left(4\\right)}-(\\sqrt{\\left(1\\right)})\\right)\\\\&=\\left(1\\right)\\left(1\\right)=1\\end{aligned}\n$$\n\nAdd the signed contributions:\n\n$$\n\\begin{aligned}\\iint_R f\\,\\mathrm{d}A&=\\left(27\\right)\\\\&\\quad+\\left(1\\right)\\\\&=\\boxed{28}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c17adc93-73ed-5d32-b801-01ec8e33e054",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c8fdb3ae-f1d3-5dfa-b255-3a6298f74ddc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "5d0e9259-b822-5e91-bdd8-d8feb55ade55",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30"
+            },
+            {
+              ":answer/id": "df8e2711-595a-5835-8e2a-be16d112caf5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "46"
+            },
+            {
+              ":answer/id": "a1e70e9b-d572-5143-bde0-86d93ff7ea2d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-26"
+            },
+            {
+              ":answer/id": "a69fe782-7a2d-50bf-b1a6-c26879679c4b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a69fe782-7a2d-50bf-b1a6-c26879679c4b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "axis": 1,
+      "swap": 0,
+      "family": "radical",
+      "coefficient": 3,
+      "template": "evaluated-radical",
+      "bounds": [
+        [
+          "1",
+          "4",
+          "1",
+          "4"
+        ],
+        [
+          "4",
+          "9",
+          "1",
+          "4"
+        ]
+      ],
+      "formulas": [
+        "3",
+        "1/(4*sqrt(x)*sqrt(y))"
+      ],
+      "factors": [
+        [
+          "1",
+          "3"
+        ],
+        [
+          "1/(2*sqrt(x))",
+          "1/(2*sqrt(y))"
+        ]
+      ],
+      "contributions": [
+        "27",
+        "1"
+      ],
+      "sources": [
+        "2a2e88a4-19f3-55df-8ef8-28fa3b7c0024"
+      ],
+      "solution_final": "28",
+      "conversions": [
+        "separate coordinate factors",
+        "evaluate displayed primitives at their own endpoints",
+        "expand products and add signed contributions"
+      ],
+      "error_recipes": [
+        "correct",
+        "add x endpoint values in region 1",
+        "omit y-factor in region 1",
+        "reverse contribution 1",
+        "add y endpoint values in region 2"
+      ],
+      "version": 1,
+      "lesson": "bc4e2a2c-afd3-57e1-ac95-737c568153b8",
+      "response": "five-choice math radio",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "index": 2
+    }
+  }
+]

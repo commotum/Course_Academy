@@ -2,7 +2,7 @@
 import concurrent.futures,json,os,subprocess,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];sys.path.insert(0,str(R/'scripts'));from generator_publish import validate_question
-items=json.loads((H/'affected-generators.json').read_text());D=H/'generator-probes';D.mkdir(exist_ok=True)
+items=json.loads((H/'all-affected-generators.json').read_text());D=H/'generator-probes';D.mkdir(exist_ok=True)
 def run(pair):
  g,band=pair;script=Path('/media/jake/SSD/EDB/math')/g['reference'];d=D/(str(g['kp'])+'-'+band);d.mkdir(exist_ok=True);env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':str(d.resolve()),'TMPDIR':str(d.resolve())};p=subprocess.run([sys.executable,str(script),'--difficulty',band,'--count','3','--seed','29102977','--format','json'],env=env,capture_output=True,text=True,timeout=100);(d/'stdout.json').write_text(p.stdout);(d/'stderr.txt').write_text(p.stderr)
  result={'kp':g['kp'],'reference':g['reference'],'band':band,'returncode':p.returncode,'errors':[]}

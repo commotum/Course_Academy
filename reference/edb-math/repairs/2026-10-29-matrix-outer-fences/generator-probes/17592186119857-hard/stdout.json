@@ -1,0 +1,330 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119857,
+      "id": "6f644bed-7adb-5907-87b4-99b1902e7850",
+      "title": "Finding a Basis of the Space Spanned by a Set of Vectors by Identifying Pivot Columns"
+    },
+    "question": {
+      ":question/id": "b443cc59-2388-5f48-b935-f42309ab30bf",
+      ":question/problem": "Consider the vectors\n\n$$\n\\begin{aligned}\\mathbf{a}_{1} &=\\begin{bmatrix}1 \\\\ 2 \\\\ -2 \\\\ -1\\end{bmatrix}\\qquad \\mathbf{a}_{2} &=\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ -2\\end{bmatrix} \\\\ \\mathbf{a}_{3} &=\\begin{bmatrix}-1 \\\\ -1 \\\\ 1 \\\\ -1\\end{bmatrix}\\qquad \\mathbf{a}_{4} &=\\begin{bmatrix}-1 \\\\ -4 \\\\ 4 \\\\ 5\\end{bmatrix}\\end{aligned}\n$$\n\nFind a basis $\\mathcal{B}$ of $S=\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3},\\mathbf{a}_{4}\\}$ by identifying pivot columns.",
+      ":question/worked-solution": "Place the vectors in the columns of a matrix:\n\n$$\nA=\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 2 & 1 & -1 & -4 \\\\ -2 & -1 & 1 & 4 \\\\ -1 & -2 & -1 & 5\\end{bmatrix}\n$$\n\nApply $R_{2}\\leftarrow R_{2}-2R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & -2 \\\\ -2 & -1 & 1 & 4 \\\\ -1 & -2 & -1 & 5\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+2R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & -1 & -1 & 2 \\\\ -1 & -2 & -1 & 5\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & -1 & -1 & 2 \\\\ 0 & -2 & -2 & 4\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & -2 & -2 & 4\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+2R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nThe leading nonzero entries are in columns $1, 2$. Select the corresponding columns from the **original matrix**, giving $\\mathcal{B}=\\{\\mathbf{a}_{1},\\;\\mathbf{a}_{2}\\}$:\n\n$$\n\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}.\n$$\n\nThese pivot columns are linearly independent and span the column space of $A$, which is $S$. The nonpivot columns can be removed without changing the span. Row operations locate the pivot indices; use the original vectors when writing the basis.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c75c7b1b-7699-5395-8aba-8b1b396b5ae8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1fcf1c9c-ffa0-5d60-b5ba-77ca24151c4c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "41f87c39-d1f7-5b75-b230-ec9d5514e2cf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}-1 \\\\ -4 \\\\ 4 \\\\ 5\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "0b182975-8ac2-58fd-8158-1f31837274db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 1 \\\\ 1 \\\\ -2\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "2f99ea09-f268-596b-8bf7-ed60adafe44a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-1 \\\\ -1 \\\\ 1 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}-1 \\\\ -4 \\\\ 4 \\\\ 5\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "41088678-9afb-588d-8a2f-72b4c783a886",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 2 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "41088678-9afb-588d-8a2f-72b4c783a886"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0-notation-v1",
+      "template": "hard-pivot-basis",
+      "profile": 0,
+      "source_question_ids": [
+        "c41cfbf0-e58f-58a2-ace1-4048059e3167"
+      ],
+      "parameters": {
+        "vectors": [
+          [
+            1,
+            2,
+            -2,
+            -1
+          ],
+          [
+            0,
+            1,
+            -1,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            -1
+          ],
+          [
+            -1,
+            -4,
+            4,
+            5
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2
+        ]
+      },
+      "choice_errors": [
+        "incomplete-span",
+        "incomplete-span",
+        "coordinate-copy",
+        "dependent-originals",
+        "correct"
+      ],
+      "row_operations": [
+        "R_{2}\\leftarrow R_{2}-2R_{1}",
+        "R_{3}\\leftarrow R_{3}+2R_{1}",
+        "R_{4}\\leftarrow R_{4}+R_{1}",
+        "R_{3}\\leftarrow R_{3}+R_{2}",
+        "R_{4}\\leftarrow R_{4}+2R_{2}"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 0
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119857,
+      "id": "6f644bed-7adb-5907-87b4-99b1902e7850",
+      "title": "Finding a Basis of the Space Spanned by a Set of Vectors by Identifying Pivot Columns"
+    },
+    "question": {
+      ":question/id": "6a6c68d7-b71f-54a4-9f33-1b4599e4951e",
+      ":question/problem": "Consider the vectors\n\n$$\n\\begin{aligned}\\mathbf{a}_{1} &=\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix}\\qquad \\mathbf{a}_{2} &=\\begin{bmatrix}-2 \\\\ -2 \\\\ 4 \\\\ 4\\end{bmatrix} \\\\ \\mathbf{a}_{3} &=\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix}\\qquad \\mathbf{a}_{4} &=\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\end{aligned}\n$$\n\nFind a basis $\\mathcal{B}$ of $S=\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3},\\mathbf{a}_{4}\\}$ by identifying pivot columns.",
+      ":question/worked-solution": "Place the vectors in the columns of a matrix:\n\n$$\nA=\\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 1 & -2 & -3 & -3 \\\\ -2 & 4 & 5 & 4 \\\\ -2 & 4 & 2 & 4\\end{bmatrix}\n$$\n\nApply $R_{2}\\leftarrow R_{2}-R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ -2 & 4 & 5 & 4 \\\\ -2 & 4 & 2 & 4\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+2R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ 0 & 0 & 1 & 0 \\\\ -2 & 4 & 2 & 4\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+2R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & -2 & 0\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & -2 & 0\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}-2R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 2\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+2R_{3}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & -2 & -2 & -2 \\\\ 0 & 0 & -1 & -1 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nThe leading nonzero entries are in columns $1, 3, 4$. Select the corresponding columns from the **original matrix**, giving $\\mathcal{B}=\\{\\mathbf{a}_{1},\\;\\mathbf{a}_{3},\\;\\mathbf{a}_{4}\\}$:\n\n$$\n\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\right\\}.\n$$\n\nThese pivot columns are linearly independent and span the column space of $A$, which is $S$. The nonpivot columns can be removed without changing the span. Row operations locate the pivot indices; use the original vectors when writing the basis.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b51c7877-abe5-5284-b230-57e4a9429b12",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2735e8e7-dc79-5a35-b89f-2856c33e8a7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "23433bdd-65a4-5017-8d3a-3192b8545b39",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "523092ea-9426-5b93-9413-4a31c2ac7384",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -2 \\\\ 4 \\\\ 4\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "c270566c-7331-5dd5-abb9-5c5d2f842ec9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 4 \\\\ -4\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "44889f1a-2122-5da3-b7ec-1b7cd2646de1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}-2 \\\\ -3 \\\\ 5 \\\\ 2\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ -3 \\\\ 4 \\\\ 4\\end{bmatrix}\\right\\}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2735e8e7-dc79-5a35-b89f-2856c33e8a7c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0-notation-v1",
+      "template": "hard-pivot-basis",
+      "profile": 1,
+      "source_question_ids": [
+        "c41cfbf0-e58f-58a2-ace1-4048059e3167"
+      ],
+      "parameters": {
+        "vectors": [
+          [
+            1,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            4,
+            4
+          ],
+          [
+            -2,
+            -3,
+            5,
+            2
+          ],
+          [
+            -2,
+            -3,
+            4,
+            4
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ]
+      },
+      "choice_errors": [
+        "correct",
+        "incomplete-span",
+        "dependent-originals",
+        "coordinate-copy",
+        "coordinate-copy"
+      ],
+      "row_operations": [
+        "R_{2}\\leftarrow R_{2}-R_{1}",
+        "R_{3}\\leftarrow R_{3}+2R_{1}",
+        "R_{4}\\leftarrow R_{4}+2R_{1}",
+        "R_{3}\\leftarrow R_{3}+R_{2}",
+        "R_{4}\\leftarrow R_{4}-2R_{2}",
+        "R_{4}\\leftarrow R_{4}+2R_{3}"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119857,
+      "id": "6f644bed-7adb-5907-87b4-99b1902e7850",
+      "title": "Finding a Basis of the Space Spanned by a Set of Vectors by Identifying Pivot Columns"
+    },
+    "question": {
+      ":question/id": "1c103463-2fb2-5209-b433-9d31aad02c40",
+      ":question/problem": "Consider the vectors\n\n$$\n\\begin{aligned}\\mathbf{a}_{1} &=\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -1\\end{bmatrix}\\qquad \\mathbf{a}_{2} &=\\begin{bmatrix}2 \\\\ 1 \\\\ -2 \\\\ 0\\end{bmatrix} \\\\ \\mathbf{a}_{3} &=\\begin{bmatrix}0 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix}\\qquad \\mathbf{a}_{4} &=\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\end{aligned}\n$$\n\nFind a basis $\\mathcal{B}$ of $S=\\operatorname{Span}\\{\\mathbf{a}_{1},\\mathbf{a}_{2},\\mathbf{a}_{3},\\mathbf{a}_{4}\\}$ by identifying pivot columns.",
+      ":question/worked-solution": "Place the vectors in the columns of a matrix:\n\n$$\nA=\\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 1 & 1 & 1 & 0 \\\\ -2 & -2 & -2 & -1 \\\\ -1 & 0 & -2 & -2\\end{bmatrix}\n$$\n\nApply $R_{2}\\leftarrow R_{2}-R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ -2 & -2 & -2 & -1 \\\\ -1 & 0 & -2 & -2\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+2R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ 0 & 2 & -2 & -1 \\\\ -1 & 0 & -2 & -2\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+R_{1}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ 0 & 2 & -2 & -1 \\\\ 0 & 2 & -2 & -2\\end{bmatrix}\n$$\n\nApply $R_{3}\\leftarrow R_{3}+2R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 2 & -2 & -2\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}+2R_{2}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & -2\\end{bmatrix}\n$$\n\nApply $R_{4}\\leftarrow R_{4}-2R_{3}$:\n\n$$\nA\\sim \\begin{bmatrix}1 & 2 & 0 & 0 \\\\ 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nThe leading nonzero entries are in columns $1, 2, 4$. Select the corresponding columns from the **original matrix**, giving $\\mathcal{B}=\\{\\mathbf{a}_{1},\\;\\mathbf{a}_{2},\\;\\mathbf{a}_{4}\\}$:\n\n$$\n\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ 1 \\\\ -2 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}.\n$$\n\nThese pivot columns are linearly independent and span the column space of $A$, which is $S$. The nonpivot columns can be removed without changing the span. Row operations locate the pivot indices; use the original vectors when writing the basis.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a9332666-3262-582e-ba5e-840b69ee9455",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0227f438-38fe-575a-bcda-2206a4bed9c2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}0 \\\\ 1 \\\\ -2 \\\\ -2\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "264a2d99-debd-5157-af99-401166936d09",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ -1 \\\\ 0 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ 0\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "e7131163-7183-5e83-a03b-bb0b9bfd7466",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ 1 \\\\ 2 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "ed7205da-eb51-59fc-b398-5f7b84c9a459",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ 1 \\\\ -2 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}1 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            },
+            {
+              ":answer/id": "d1d2f77c-ad1b-5ffa-8cd7-806fdba7fb87",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\mathcal{B}=\\left\\{\\begin{bmatrix}1 \\\\ 1 \\\\ -2 \\\\ -1\\end{bmatrix},\\;\\begin{bmatrix}2 \\\\ 1 \\\\ -2 \\\\ 0\\end{bmatrix},\\;\\begin{bmatrix}0 \\\\ 0 \\\\ -1 \\\\ -2\\end{bmatrix}\\right\\}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d1d2f77c-ad1b-5ffa-8cd7-806fdba7fb87"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0-notation-v1",
+      "template": "hard-pivot-basis",
+      "profile": 2,
+      "source_question_ids": [
+        "c41cfbf0-e58f-58a2-ace1-4048059e3167"
+      ],
+      "parameters": {
+        "vectors": [
+          [
+            1,
+            1,
+            -2,
+            -1
+          ],
+          [
+            2,
+            1,
+            -2,
+            0
+          ],
+          [
+            0,
+            1,
+            -2,
+            -2
+          ],
+          [
+            0,
+            0,
+            -1,
+            -2
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ]
+      },
+      "choice_errors": [
+        "incomplete-span",
+        "reduced-pivot-columns",
+        "coordinate-copy",
+        "coordinate-copy",
+        "correct"
+      ],
+      "row_operations": [
+        "R_{2}\\leftarrow R_{2}-R_{1}",
+        "R_{3}\\leftarrow R_{3}+2R_{1}",
+        "R_{4}\\leftarrow R_{4}+R_{1}",
+        "R_{3}\\leftarrow R_{3}+2R_{2}",
+        "R_{4}\\leftarrow R_{4}+2R_{2}",
+        "R_{4}\\leftarrow R_{4}-2R_{3}"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 2
+    }
+  }
+]

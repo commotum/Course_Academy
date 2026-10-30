@@ -1,0 +1,272 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "2f6b42db-b974-5908-a1af-23a832964bd3",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}- \\sin{\\left(2 u + v \\right)} \\\\ \\cos{\\left(u - v \\right)}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}0 \\\\ - \\frac{\\pi}{6}\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=- \\sin{\\left(2 u + v \\right)}$ and $y=\\cos{\\left(u - v \\right)}$. Holding the other variable constant, we obtain\n\n$$\n\\begin{aligned}x_u&=- 2 \\cos{\\left(2 u + v \\right)}, & x_v&=- \\cos{\\left(2 u + v \\right)}, \\\\ y_u&=- \\sin{\\left(u - v \\right)}, & y_v&=\\sin{\\left(u - v \\right)}.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}- 2 \\cos{\\left(2 u + v \\right)} & - \\cos{\\left(2 u + v \\right)} \\\\ - \\sin{\\left(u - v \\right)} & \\sin{\\left(u - v \\right)}\\end{vmatrix} \\\\ &=\\left(- 2 \\cos{\\left(2 u + v \\right)}\\right)\\left(\\sin{\\left(u - v \\right)}\\right) \\\\ &\\quad{}-\\left(- \\cos{\\left(2 u + v \\right)}\\right)\\left(- \\sin{\\left(u - v \\right)}\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(0,- \\frac{\\pi}{6})&=\\begin{vmatrix}- \\sqrt{3} & - \\frac{\\sqrt{3}}{2} \\\\ - \\frac{1}{2} & \\frac{1}{2}\\end{vmatrix} \\\\ &=\\left(- \\sqrt{3}\\right)\\left(\\frac{1}{2}\\right) \\\\ &\\quad{}-\\left(- \\frac{\\sqrt{3}}{2}\\right)\\left(- \\frac{1}{2}\\right) \\\\ &=- \\frac{\\sqrt{3}}{2}-\\left(\\frac{\\sqrt{3}}{4}\\right) \\\\ &=- \\frac{3 \\sqrt{3}}{4}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "404036e2-347a-55c8-9d89-e006d68e79bf",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c617d836-f2a1-51ed-ab9e-fac3d204699a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{3 \\sqrt{3}}{4}"
+            },
+            {
+              ":answer/id": "d7e315d2-cf7f-58d2-90da-5ede80036bd8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\sqrt{3}"
+            },
+            {
+              ":answer/id": "2b9dd1fb-7bc0-5e1d-b39b-de2cb96456f2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{-1 + \\sqrt{3}}{4}"
+            },
+            {
+              ":answer/id": "f3038c9a-1592-59e1-b44d-c12f3123b714",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3}{4}"
+            },
+            {
+              ":answer/id": "cd7335e4-6a8a-58ed-a7e2-e6c7fe688ed6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\sqrt{3}}{4}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c617d836-f2a1-51ed-ab9e-fac3d204699a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 10306493609319313504,
+      "template": "scaled_coupled_trig",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "U": "0",
+        "V": "-pi/6",
+        "sx": 1,
+        "sy": 1,
+        "swap": true,
+        "c": -2,
+        "d": -1
+      },
+      "parameter_fingerprint": "7471adcdb59570ebcc8f5fee9377fc02adcd42e0ea55a828bb2fedda431441d4",
+      "bank_profile": [
+        "undifferentiated_xu",
+        "point_swap",
+        "copy_yu_to_yv",
+        "copy_xu_to_xv"
+      ],
+      "answer_recipes": {
+        "- \\frac{3 \\sqrt{3}}{4}": "correct",
+        "- \\frac{-1 + \\sqrt{3}}{4}": "undifferentiated_xu",
+        "\\frac{3}{4}": "point_swap",
+        "\\frac{\\sqrt{3}}{4}": "copy_yu_to_yv",
+        "- \\sqrt{3}": "copy_xu_to_xv"
+      },
+      "source_ids": [
+        "q-160434"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "-3*sqrt(3)/4",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "3a197692-7996-58d8-95bb-bc54c4e71bbf",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}- \\left(- u - 2 v\\right)^{2} \\\\ \\left(2 u + v\\right)^{2}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}0 \\\\ -2\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=- \\left(- u - 2 v\\right)^{2}$ and $y=\\left(2 u + v\\right)^{2}$. Holding the other variable constant, we obtain\n\n$$\n\\begin{aligned}x_u&=- 2 u - 4 v, & x_v&=- 4 u - 8 v, \\\\ y_u&=8 u + 4 v, & y_v&=4 u + 2 v.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}- 2 u - 4 v & - 4 u - 8 v \\\\ 8 u + 4 v & 4 u + 2 v\\end{vmatrix} \\\\ &=\\left(- 2 u - 4 v\\right)\\left(4 u + 2 v\\right) \\\\ &\\quad{}-\\left(- 4 u - 8 v\\right)\\left(8 u + 4 v\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(0,-2)&=\\begin{vmatrix}8 & 16 \\\\ -8 & -4\\end{vmatrix} \\\\ &=\\left(8\\right)\\left(-4\\right) \\\\ &\\quad{}-\\left(16\\right)\\left(-8\\right) \\\\ &=-32-\\left(-128\\right) \\\\ &=96.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ddf852e7-0388-554d-b1af-1d3614aed72f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8af20427-5753-5632-b241-01a4ff0dbe5b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "192"
+            },
+            {
+              ":answer/id": "4bca0ca2-6ff2-58df-b587-836a82e6a8fe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "96"
+            },
+            {
+              ":answer/id": "1cb75222-50a5-53cf-8dfc-786f35a91fba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "32"
+            },
+            {
+              ":answer/id": "2be3e164-7fff-55f7-bc53-0549b64f470e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-160"
+            },
+            {
+              ":answer/id": "b9d29ee5-e5d1-5de3-8428-cbc309986867",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "128"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4bca0ca2-6ff2-58df-b587-836a82e6a8fe"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 2515620273448959266,
+      "template": "powers",
+      "parameters": {
+        "a": 2,
+        "b": 1,
+        "U": "0",
+        "V": "-2",
+        "sx": 1,
+        "sy": -1,
+        "swap": true,
+        "c": -1,
+        "d": -2,
+        "m": 2,
+        "n": 2
+      },
+      "parameter_fingerprint": "f2689fece55f52983c672f0aa113e94593c104f9d7ec7c4918c2b9666335222b",
+      "bank_profile": [
+        "undifferentiated_xu",
+        "omit_diagonal",
+        "add",
+        "copy_xu_to_xv"
+      ],
+      "answer_recipes": {
+        "96": "correct",
+        "192": "undifferentiated_xu",
+        "128": "omit_diagonal",
+        "-160": "add",
+        "32": "copy_xu_to_xv"
+      },
+      "source_ids": [
+        "e-6810",
+        "c7ba5e90-7bc1-589e-b4c1-61bc30c0d887"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "96",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129263,
+      "id": "ab643519-92a4-5ccf-b826-fb2a68b36534",
+      "title": "Evaluating a Jacobian Determinant"
+    },
+    "question": {
+      ":question/id": "d51ca6c7-05e1-5e90-b2bb-a665dd7edeba",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "For the transformation $\\mathbf{T}$ defined by\n\n$$\n\\mathbf{T}:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}- \\left(u + v\\right)^{3} \\\\ - \\left(- u + 2 v\\right)^{3}\\end{bmatrix},\n$$\n\ncompute the value of the Jacobian determinant at the input point\n\n$$\n\\begin{bmatrix}u \\\\ v\\end{bmatrix}=\\begin{bmatrix}1 \\\\ 2\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "For the ordered input variables $u,v$ and output variables $x,y$, the Jacobian determinant is\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}x_u & x_v \\\\ y_u & y_v\\end{vmatrix}=x_u y_v-x_v y_u.\n$$\n\nHere, $x=- \\left(u + v\\right)^{3}$ and $y=- \\left(- u + 2 v\\right)^{3}$. Holding the other variable constant, we obtain\n\n$$\n\\begin{aligned}x_u&=- 3 \\left(u + v\\right)^{2}, & x_v&=- 3 \\left(u + v\\right)^{2}, \\\\ y_u&=3 \\left(- u + 2 v\\right)^{2}, & y_v&=- 6 \\left(- u + 2 v\\right)^{2}.\\end{aligned}\n$$\n\nForm the determinant in this order:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}- 3 \\left(u + v\\right)^{2} & - 3 \\left(u + v\\right)^{2} \\\\ 3 \\left(- u + 2 v\\right)^{2} & - 6 \\left(- u + 2 v\\right)^{2}\\end{vmatrix} \\\\ &=\\left(- 3 \\left(u + v\\right)^{2}\\right)\\left(- 6 \\left(- u + 2 v\\right)^{2}\\right) \\\\ &\\quad{}-\\left(- 3 \\left(u + v\\right)^{2}\\right)\\left(3 \\left(- u + 2 v\\right)^{2}\\right).\\end{aligned}\n$$\n\nNow substitute the input point into the derivative entries and subtract the products:\n\n$$\n\\begin{aligned}J(1,2)&=\\begin{vmatrix}-27 & -27 \\\\ 27 & -54\\end{vmatrix} \\\\ &=\\left(-27\\right)\\left(-54\\right) \\\\ &\\quad{}-\\left(-27\\right)\\left(27\\right) \\\\ &=1458-\\left(-729\\right) \\\\ &=2187.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6b1cdb52-67e9-524c-ae61-5c2118ed06e1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "01d061f1-cdde-5eaa-8b4f-2168fe4364c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "729"
+            },
+            {
+              ":answer/id": "a7806edc-4d23-5a8e-8643-ce622e40ffd8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "7f116616-9089-586b-8a96-3d9b617ea21d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1458"
+            },
+            {
+              ":answer/id": "cfa19d9e-3ba3-59f5-b489-df534e21414d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2187"
+            },
+            {
+              ":answer/id": "a7834366-f5be-5997-92ff-19dddad30e40",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2187"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cfa19d9e-3ba3-59f5-b489-df534e21414d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "evaluated-jacobian-2",
+      "seed": 11874026293960675686,
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "U": "1",
+        "V": "2",
+        "sx": -1,
+        "sy": -1,
+        "swap": false,
+        "c": -1,
+        "d": 2,
+        "m": 3,
+        "n": 3
+      },
+      "parameter_fingerprint": "4999905fa89c1cd7deb60465751c8555edb0faea3a9e6990687e983689188510",
+      "bank_profile": [
+        "reverse",
+        "undifferentiated_yv",
+        "omit_outer_y",
+        "copy_yu_to_yv"
+      ],
+      "answer_recipes": {
+        "2187": "correct",
+        "-2187": "reverse",
+        "1458": "undifferentiated_yv",
+        "729": "omit_outer_y",
+        "0": "copy_yu_to_yv"
+      },
+      "source_ids": [
+        "e-6810",
+        "c7ba5e90-7bc1-589e-b4c1-61bc30c0d887"
+      ],
+      "source_basis": 10568,
+      "difficulty_origin": "authored_workload_progression",
+      "evaluated_value": "2187",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]
