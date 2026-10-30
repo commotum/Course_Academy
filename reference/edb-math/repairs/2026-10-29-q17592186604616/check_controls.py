@@ -5,6 +5,7 @@ from playwright.sync_api import sync_playwright
 H=Path(__file__).resolve().parent;R=H.parents[3]
 source=(R/'ui/learning.js').read_text();renderers=source[source.index('function markdown('):source.index('function loadMath(')]+source[source.index('function choiceOrder('):source.index('function collectResponses(')]
 s=(R/'tests/matrix-overflow-browser.cjs').read_text();fixture=re.search(r'const html=`([\s\S]+?)`;\nconst profile=',s)[1].replace('${renderers}',renderers).replace(r'\\n',r'\n')
+fixture=fixture.replace("img-src 'none'","img-src data:")
 fixture=fixture.replace('<script src="/ui/vendor/mathjax/tex-svg.js">','<script>MathJax.tex.packages=MathJax.tex.packages.filter(n=>n!=="noundefined");</script><script src="/ui/vendor/mathjax/tex-svg.js">')
 items=json.loads(Path(sys.argv[1]).read_text());output=Path(sys.argv[2]);checks=[]
 class Quiet(http.server.SimpleHTTPRequestHandler):
