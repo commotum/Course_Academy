@@ -2308,7 +2308,7 @@ fn mutate_with_selection(
                 topic
             ]));
         }
-        if body["_deferQueue"] != true {
+        if body["_deferQueuePreparation"] != true {
             let mut prospective = s.clone();
             prospective.entities.get_mut(&l).unwrap().insert("learner/queue".into(), json!(queue));
             // Direct callers retain atomic preparation. Local admission places
@@ -2346,7 +2346,7 @@ fn mutate_with_selection(
                 topic
             ]));
         }
-        if body["_deferQueue"] != true {
+        if body["_deferQueuePreparation"] != true {
             let mut prospective = s.clone();
             prospective.entities.get_mut(&l).unwrap().insert("learner/targets".into(), json!(targets));
             forms.extend(queue_forms(&prospective, l, at)?);

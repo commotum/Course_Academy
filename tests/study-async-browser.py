@@ -44,6 +44,7 @@ released = threading.Event()
 projected = []
 write_started = []
 write_finished = []
+home_reads = []
 last_view = None
 
 class Worker:
@@ -70,7 +71,9 @@ class Worker:
             write_finished.append(copy.deepcopy(body['operation']))
             return {'ok': True, 'data': {'view': copy.deepcopy(sequence[index]['data']['view']), 'aliases': {}}}
         if action == 'task': return {'ok': True, 'data': copy.deepcopy(last_view)}
-        if action == 'home': return {'ok': True, 'data': copy.deepcopy(fixture['initial'])}
+        if action == 'home':
+            home_reads.append(copy.deepcopy(body))
+            return {'ok': True, 'data': copy.deepcopy(fixture['initial'])}
         if action == 'study-read':
             operation = body['operation']
             if operation['action'] == 'task': return {'ok': True, 'data': copy.deepcopy(last_view)}
@@ -85,6 +88,8 @@ const {chromium}=require('/home/jake/.cache/codex-runtimes/codex-primary-runtime
 (async()=>{const browser=await chromium.launch({headless:true,executablePath:'/home/jake/.cache/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-linux64/chrome-headless-shell',args:['--disable-dev-shm-usage']});try{
 const page=await browser.newPage({viewport:{width:1200,height:950}});const errors=[];page.on('pageerror',e=>{errors.push(String(e));console.error('Browser error:',String(e));});page.setDefaultTimeout(15000);
 await page.goto(ORIGIN+'/fixture');await page.waitForFunction(()=>window.ready);
+const homeBefore=await(await page.request.get(ORIGIN+'/test/state')).json();await page.request.get(ORIGIN+'/api/home');
+const homeAfter=await(await page.request.get(ORIGIN+'/test/state')).json();assert.equal(homeBefore.homeReads,1);assert.equal(homeAfter.homeReads,homeBefore.homeReads);
 const timings=[];let reloadedAnswer=false;
 for(const entry of sequence){
  const operation=entry.input,expected=entry.data.view;
@@ -118,7 +123,7 @@ await page.reload();await page.waitForFunction(()=>window.ready);assert.equal((a
 const reload=await(await page.request.get(ORIGIN+'/test/state')).json();assert.equal(reload.pending,sequence.length);assert.equal(reload.finished,0);
 await page.request.get(ORIGIN+'/test/release');let after;for(let n=0;n<300;n++){after=await(await page.request.get(ORIGIN+'/test/state')).json();if(after.pending===0)break;await new Promise(resolve=>setTimeout(resolve,50));}
 assert.equal(after.pending,0);assert.equal(after.finished,sequence.length);assert.deepEqual(after.actions,sequence.map(entry=>entry.input.action));assert.deepEqual(errors,[]);
-const result={passed:true,fixtureProvenance:PROVENANCE,nativeProjectionResultsReplayed:true,timings,completionBeforeAnyDatabaseSave:true,reloadRetainedQueuedActions:true,reloadRetainedGradedAnswer:reloadedAnswer,orderedWrites:after.actions,javascriptErrors:errors};fs.writeFileSync(OUTPUT+'/browser-verification.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+const result={passed:true,fixtureProvenance:PROVENANCE,nativeProjectionResultsReplayed:true,cachedHomeUsesNoNativeRead:true,timings,completionBeforeAnyDatabaseSave:true,reloadRetainedQueuedActions:true,reloadRetainedGradedAnswer:reloadedAnswer,orderedWrites:after.actions,javascriptErrors:errors};fs.writeFileSync(OUTPUT+'/browser-verification.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
 '''
 
@@ -136,7 +141,7 @@ with tempfile.TemporaryDirectory(prefix='study-ui-test-') as tmp:
                 released.set(); self.send_bytes(200, b'{}', 'application/json'); return
             if self.path == '/test/state':
                 state=outbox.status()
-                self.send_bytes(200, json.dumps({'pending':state['pending'],'started':len(write_started),'finished':len(write_finished),'released':released.is_set(),'actions':[operation['action'] for operation in write_finished]}).encode(),'application/json');return
+                self.send_bytes(200, json.dumps({'pending':state['pending'],'started':len(write_started),'finished':len(write_finished),'released':released.is_set(),'homeReads':len(home_reads),'actions':[operation['action'] for operation in write_finished]}).encode(),'application/json');return
             super().do_GET()
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()

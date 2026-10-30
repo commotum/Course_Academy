@@ -60,28 +60,33 @@ class StudyOutbox:
             state = self.load()
             if isinstance(state.get('home'), dict):
                 return
-            rows = list(state['operations'])
+            rows = []
             directory = self.directory / 'receipts'
             if directory.exists():
                 with os.scandir(directory) as entries:
                     recent = heapq.nlargest(64, (entry for entry in entries if entry.is_file() and entry.name.endswith('.json')),
                                            key=lambda entry: entry.stat().st_mtime_ns)
-                for entry in recent:
+                for entry in sorted(recent, key=lambda item: item.stat().st_mtime_ns):
                     try:
-                        rows.append(json.loads(Path(entry.path).read_text()))
+                        receipt = json.loads(Path(entry.path).read_text())
+                        if isinstance(receipt, dict) and isinstance(receipt.get('input'), dict) and isinstance(receipt.get('response'), dict):
+                            rows.append(receipt)
                     except (OSError, ValueError):
                         continue  # A display cache can safely fall back to a read.
-            rows = list({row.get('requestId'): row for row in rows if row.get('requestId')}.values())
-            homes = [row for row in rows if row.get('input', {}).get('action') == 'queue'
+            # Receipt publication follows the ordered writer lane; pending
+            # admissions follow all receipts. HTTP arrival timestamps can differ
+            # from actor order when concurrent requests contend for admission.
+            rows.extend(state['operations'])
+            last = {row.get('requestId'): index for index, row in enumerate(rows)}
+            rows = [row for index, row in enumerate(rows) if row.get('requestId') and last[row['requestId']] == index]
+            homes = [index for index, row in enumerate(rows) if row.get('input', {}).get('action') == 'queue'
                      and isinstance(row.get('response', {}).get('activities'), list)]
             if not homes:
                 return
-            source = max(homes, key=lambda row: (row.get('receivedAt', 0), row['requestId']))
-            state['home'] = copy.deepcopy(source['response'])
+            source = homes[-1]
+            state['home'] = copy.deepcopy(rows[source]['response'])
             state['homeTasks'] = {}
-            ordered = sorted((row for row in rows if row.get('receivedAt', 0) >= source.get('receivedAt', 0)),
-                             key=lambda row: (row.get('receivedAt', 0), row['requestId']))
-            for row in ordered:
+            for row in rows[source:]:
                 if isinstance(row.get('response'), dict):
                     self.record_home_updates(state, row['response'], row['requestId'])
             self.save(self.state_path, state)
@@ -150,7 +155,11 @@ class StudyOutbox:
                 # read was running. Never replace it with that older fallback.
                 return self.home_view(state)
             state['home'] = copy.deepcopy(view)
-            if not self.pending(state) and view.get('basis', 0) >= state.get('committedBasis', 0):
+            fresh = not self.pending(state) and view.get('basis', 0) >= state.get('committedBasis', 0)
+            if not fresh and 'homeCourse' in state and state['homeCourse'] != view.get('course'):
+                state['home']['activities'] = []
+                state['home']['waitingActivities'] = []
+            if fresh:
                 state['homeLearner'] = copy.deepcopy(view.get('learner'))
                 if 'course' in view:
                     state['homeCourse'] = copy.deepcopy(view['course'])

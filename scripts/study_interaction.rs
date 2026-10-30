@@ -720,7 +720,7 @@ fn project_on(
         s.focused_mode = focused;
     }
     let mut admitted_operation = body["operation"].clone();
-    admitted_operation["_deferQueue"] = json!(true);
+    admitted_operation["_deferQueuePreparation"] = json!(true);
     let op = &admitted_operation;
     let action = op["action"].as_str().ok_or("Action required")?;
     let millis = body["receivedAt"]

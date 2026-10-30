@@ -242,6 +242,9 @@ class StudyOutboxTest(unittest.TestCase):
         self.assertTrue(home['learner']['selfDirected'])
         self.assertEqual(home['course']['id'], 'course-2')
         self.assertEqual(home['activities'], [])
+        stale = self.queue.remember_home(self.home())
+        self.assertEqual(stale['course']['id'], 'course-2')
+        self.assertEqual(stale['activities'], [])
 
     def test_accepted_background_queue_plan_populates_durable_home_cache(self):
         original = self.grader.request
@@ -258,6 +261,46 @@ class StudyOutboxTest(unittest.TestCase):
         home = self.queue.overlay_view('home', {'action': 'home'})
         self.assertEqual(home['activities'][0]['activityId'], 10)
         self.assertEqual(home['saveState']['pending'], 1)
+
+    def test_restart_restores_home_from_queue_receipt_and_replays_later_local_completion(self):
+        state = self.queue.load()
+        state['aliases'] = {'4000000000000001': 100}
+        state['committedBasis'] = 20
+        save_json(self.queue.state_path, state)
+        queue_receipt = {'requestId': 'old-queue-0001', 'receivedAt': 1000,
+                         'input': {'action': 'queue'}, 'response': self.home()}
+        completed = {'taskId': 4000000000000001, 'activityId': 10, 'type': 'lesson',
+                     'title': 'Local lesson', 'status': 'completed',
+                     'learner': {'dailyXpGoal': 250, 'selfDirected': False},
+                     'course': self.home()['course']}
+        completion_receipt = {'requestId': 'old-complete-0001', 'receivedAt': 500,
+                              'input': {'action': 'continue'}, 'response': completed}
+        paths = [self.queue.receipt_path(row['requestId']) for row in (queue_receipt, completion_receipt)]
+        for path, row in zip(paths, (queue_receipt, completion_receipt)):
+            save_json(path, row)
+        exact = [path.read_bytes() for path in paths]
+        self.queue = self.make()
+        restored = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(restored['activities'], [])
+        self.assertEqual(restored['learner']['dailyXpGoal'], 250)
+        self.assertEqual(restored['saveState']['status'], 'saved')
+        self.assertEqual([path.read_bytes() for path in paths], exact)
+        self.assertEqual(self.grader.calls, [])
+
+    def test_restart_prefers_latest_queue_and_pending_acknowledgements(self):
+        old_home = self.home()
+        new_home = self.home()
+        new_home['activities'] = [{'activityId': 20, 'taskId': 200, 'status': 'unlocked', 'title': 'New offer'}]
+        save_json(self.queue.receipt_path('older-queue-0001'), {'requestId': 'older-queue-0001', 'receivedAt': 1000,
+                  'input': {'action': 'queue'}, 'response': old_home})
+        state = self.queue.load()
+        state['operations'] = [{'requestId': 'pending-queue-0001', 'receivedAt': 3000,
+                                'input': {'action': 'queue'}, 'response': new_home, 'saved': False}]
+        save_json(self.queue.state_path, state)
+        self.queue = self.make()
+        restored = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(restored['activities'][0]['activityId'], 20)
+        self.assertEqual(restored['saveState']['pending'], 1)
 
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()

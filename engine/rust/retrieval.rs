@@ -331,15 +331,27 @@ pub fn ordinary_assessment_ready(
     }
     let h = history(s, learner)?;
     let eligible = assessment_topics(s, learner, at)?;
+    ordinary_assessment_ready_with_context(s,activity,&learning::unavailable_questions(s,learner)?,&h.assessed,&eligible)
+}
+
+/// Check saved quiz routes against one captured learner context. Home can have
+/// hundreds of old unstarted definitions; their questions differ, while their
+/// learner history, seen questions and eligible-topic set are identical.
+pub(crate) fn ordinary_assessment_ready_with_context(
+    s:&EntitySnapshot,activity:u64,seen:&BTreeSet<u64>,assessed:&BTreeSet<u64>,eligible:&BTreeSet<u64>,
+)->Result<bool>{
+    let steps=learning::lesson_steps(s,activity)?;
+    if steps.iter().any(|step|seen.contains(&step.content)
+        ||learning::validate_practice_question(s,step.content).is_err()) {return Ok(false);}
     let mut new = BTreeSet::new();
-    for step in learning::lesson_steps(s, activity)? {
+    for step in steps {
         let topic = s.topic_for_question(step.content)?;
         if !eligible.contains(&topic)
             || crate::assessment_sampling::band(s, step.content)?.is_none()
         {
             return Ok(false);
         }
-        if !h.assessed.contains(&topic) {
+        if !assessed.contains(&topic) {
             new.insert(topic);
         }
     }
@@ -1317,6 +1329,30 @@ mod tests {
         assert_eq!(status["newEligibleTopics"], 5);
         assert_eq!(status["ready"], false);
         assert_eq!(status["required"], false);
+    }
+
+    #[test]
+    fn shared_assessment_readiness_keeps_freshness_eligibility_and_new_topic_rules() {
+        let (mut s,at)=assessment_fixture();
+        let definition=assessment_definition(&s,1,at).unwrap().unwrap();
+        let steps:Vec<_>=(0..definition.questions.len()).map(|i|60000+i as u64).collect();
+        for (i,q) in definition.questions.iter().enumerate(){
+            let mut step=json!({"step/id":format!("readiness-{i}"),"step/content":q});
+            if let Some(next)=steps.get(i+1){step["step/next"]=json!(next);}
+            put(&mut s,steps[i],step);
+        }
+        put(&mut s,61000,json!({"activity/id":"readiness","activity/type":"activity.type/assessment",
+            "activity/steps":steps,"activity/first-step":steps[0]}));
+        let seen=learning::unavailable_questions(&s,1).unwrap();
+        let assessed=history(&s,1).unwrap().assessed;
+        let eligible=assessment_topics(&s,1,at).unwrap();
+        assert_eq!(ordinary_assessment_ready(&s,1,61000,at),Ok(true));
+        assert_eq!(ordinary_assessment_ready_with_context(&s,61000,&seen,&assessed,&eligible),Ok(true));
+        let mut seen_answer=seen.clone();seen_answer.insert(definition.questions[0]);
+        assert_eq!(ordinary_assessment_ready_with_context(&s,61000,&seen_answer,&assessed,&eligible),Ok(false));
+        let mut aged=eligible.clone();aged.remove(&s.topic_for_question(definition.questions[0]).unwrap());
+        assert_eq!(ordinary_assessment_ready_with_context(&s,61000,&seen,&assessed,&aged),Ok(false));
+        assert_eq!(ordinary_assessment_ready_with_context(&s,61000,&seen,&eligible,&eligible),Ok(false));
     }
 
     #[test]

@@ -310,11 +310,13 @@ pub fn ready(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>, per_kp: bool
 /// Inspectable cadence/fallback state, captured alongside durable inventory jobs.
 pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Value> {
     let h = scheduling::lifecycle(s, l)?;
-    let aged = crate::retrieval::assessment_topics(s, l, at)?.len();
+    let eligible_topics=crate::retrieval::assessment_topics(s,l,at)?;
+    let aged = eligible_topics.len();
     let pools = crate::retrieval::assessment_pools(s, l, at)?;
     let eligible = pools.len();
     let new_eligible = pools.keys().filter(|topic| !h.assessed.contains(topic)).count();
     let minimum_new = crate::retrieval::ASSESSMENT_MIN_NEW_TOPICS;
+    let seen=learning::unavailable_questions(s,l)?;
     let ready = s.refs(l, "learner/activity")?.into_iter().any(|task| {
         s.optional_ref(task, "learner-task/retake-of")
             .ok()
@@ -332,7 +334,8 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
                         && (matches!(
                             scheduling::state(s, task).ok().as_deref(),
                             Some("started" | "paused")
-                        ) || crate::retrieval::ordinary_assessment_ready(s, l, a, at).unwrap_or(false))
+                        ) || crate::retrieval::ordinary_assessment_ready_with_context(
+                            s,a,&seen,&h.assessed,&eligible_topics).unwrap_or(false))
                 })
     });
     Ok(
