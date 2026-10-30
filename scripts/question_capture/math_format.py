@@ -761,14 +761,15 @@ def _matrix_layouts(text):
     raise ValueError('Excessive matrix nesting')
 
 
-def scalable_array_fences(text):
-    r"""Stretch existing paired array fences without changing cells or rules.
+def scalable_table_fences(text, *, environments=None):
+    r"""Stretch existing table fences without changing cells or rules.
 
     Arrays need their explicit column specification, so replacing them with a
     bmatrix would discard augmentation rules. Respect deliberate delimiter
     sizes and optional macro arguments, whose brackets are not visible fences.
     """
-    if r'\begin{array}' not in text: return text
+    if r'\begin{' not in text: return text
+    environments = environments or {'array', 'aligned', 'alignedat', 'gathered', 'matrix'}
     groups = [('[', r'\lbrack', ']', r'\rbrack'),
               ('(', r'\lparen', ')', r'\rparen'),
               (r'\{', r'\lbrace', r'\}', r'\rbrace'),
@@ -791,7 +792,7 @@ def scalable_array_fences(text):
                           r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
     changes = []
     for token in ENV.finditer(text):
-        if token[1] != 'begin' or token[2] != 'array': continue
+        if token[1] != 'begin' or token[2] not in environments: continue
         span = environment(text, token.start())
         if not span: continue
         left = left_pattern.search(text[:token.start()])
@@ -815,6 +816,11 @@ def scalable_array_fences(text):
     return text
 
 
+def scalable_array_fences(text):
+    """Array-only entry point for callers examining explicit column rules."""
+    return scalable_table_fences(text, environments={'array'})
+
+
 def validate_matrix_layouts(value, *, bare_math=False):
     """Reject fenced equation alignments that need actual matrix spacing.
 
@@ -825,8 +831,8 @@ def validate_matrix_layouts(value, *, bare_math=False):
     spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
     if any(_matrix_layouts(span) != span for span in spans):
         raise ValueError('Fenced matrix needs a matrix environment; normalize its complete formula')
-    if any(scalable_array_fences(span) != span for span in spans):
-        raise ValueError('Fenced array needs scalable delimiters; normalize its complete formula')
+    if any(scalable_table_fences(span) != span for span in spans):
+        raise ValueError('Fenced table needs scalable delimiters; normalize its complete formula')
     return value
 
 
@@ -1038,7 +1044,7 @@ def normalize_tex(value):
     text = text.replace(r'\lbrack', '[').replace(r'\rbrack', ']')
     text = text.replace(r'\lbrace', r'\{').replace(r'\rbrace', r'\}')
     text = scalable_fraction_parentheses(_matrix_layouts(_legacy_commands(text)))
-    text = scalable_array_fences(text)
+    text = scalable_table_fences(text)
     text = repair(text, include_cases=True)
     text = legacy_choice(text)
     changes = []

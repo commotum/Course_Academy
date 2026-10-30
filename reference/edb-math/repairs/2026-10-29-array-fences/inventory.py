@@ -12,12 +12,12 @@ for line in(W/'current.jsonl').open():
  if a in links and isinstance(v,int):parents[v].append([e,a])
  if not isinstance(v,str):continue
  counts['strings']+=1
- if r'\begin{array}'not in v:continue
+ if not any(r'\begin{'+env+'}'in v for env in ['array','aligned','alignedat','gathered','matrix']):continue
  values.append(d);attrs[a]+=1
  for m in ENV.finditer(v):
-  if m[1]!='begin'or m[2]!='array':continue
-  s=environment(v,m.start());counts['array_environments']+=1
-  if not s:counts['unbalanced_arrays']+=1;continue
+  if m[1]!='begin'or m[2]not in ['array','aligned','alignedat','gathered','matrix']:continue
+  s=environment(v,m.start());counts['table_environments']+=1
+  if not s:counts['unbalanced_tables']+=1;continue
   contexts.append({'entity':e,'attribute':a,'left':v[max(0,m.start()-60):m.start()],'right':v[s[2]:s[2]+60],'start':m.start(),'end':s[2]})
 for n,v in [('metadata',meta),('parents',parents),('array-values',values)]: (W/(n+'.json')).write_text(json.dumps(v))
 (H/'array-contexts.json').write_text(json.dumps(contexts,indent=2)+'\n');report={**counts,'basis_t':json.loads((W/'current.manifest.json').read_text())['basis_t'],'array_strings':len(values),'array_strings_by_attribute':dict(attrs)};(H/'inventory.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

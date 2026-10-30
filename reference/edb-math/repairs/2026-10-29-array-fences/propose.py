@@ -1,31 +1,49 @@
-"""Candidate repairs change only existing array fence sizing in visible fields."""
+"""Repair visible table fences while preserving cells, rules and learner data."""
 import collections,json,re,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/array-fences-2026-10-29';sys.path.insert(0,str(R/'scripts'))
-from question_capture.math_format import MATH,scalable_array_fences,ENV,environment
-meta={int(k):v for k,v in json.loads((W/'metadata.json').read_text()).items()};names={e:v['db/ident']for e,v in meta.items()if'db/ident'in v}
-values=json.loads((W/'array-values.json').read_text());props=[];review=[];contexts=[];shapes=collections.Counter();bare_types=collections.Counter()
+from question_capture.math_format import MATH,scalable_table_fences,_matrix_layouts,ENV,environment,cells,validate_matrix_layouts
+meta={int(k):v for k,v in json.loads((W/'metadata.json').read_text()).items()};names={e:v['db/ident']for e,v in meta.items()if'db/ident'in v};parents={int(k):v for k,v in json.loads((W/'parents.json').read_text()).items()}
+values=json.loads((W/'array-values.json').read_text());props=[];review=[];excluded=[];shapes=collections.Counter();bare_types=collections.Counter()
 visible={'question/problem','question/worked-solution','tutorial/content','answer/value','answer/feedback','answer-field/feedback','answer-field/display-key','multistep/context','multistep/content','assigned-problem/instructions','activity/description','step/content'}
+strip=lambda x:re.sub(r'\\(?:left|right)(?![A-Za-z])','',re.sub(r'\\(?:left|right)\.','',x))
+def core(text):return _matrix_layouts(text)
+def normalize(text):return scalable_table_fences(core(text))
 for d in values:
  e,a,v=d['e'],d['a'],d['v'];bare=a=='answer/value'and names.get(meta[e].get('answer/type'),'').endswith('/math')
- if a=='answer/value':bare_types[names.get(meta[e].get('answer/type'),'unknown')]+=1
- if a not in visible:
-  if a=='answer-field/key'and names.get(meta[e].get('answer-field/type'),'').endswith('/checkbox')and v.startswith('DISPLAY:'):pass
-  else:
-   if scalable_array_fences(v)!=v:review.append({**d,'reason':'Non-presentation or field identity value; no automatic change'})
+ if a=='answer/value':
+  bare_types[names.get(meta[e].get('answer/type'),'unknown')]+=1
+  owners=[f for f,link in parents.get(e,[])if link=='answer-field/choices']
+  # Noncanonical blank answers are learner keystrokes; unowned values cannot be
+  # established as authored presentation. Preserve both, including their history.
+  if not owners or any(names.get(meta[f].get('answer-field/type'),'').endswith('/blank')and meta[f].get('answer-field/correct')!=e for f in owners):
+   if normalize(v)!=v:excluded.append({**d,'reason':'Learner/noncanonical blank or unowned answer; preserved'})
    continue
- new=scalable_array_fences(v)if bare else MATH.sub(lambda m:scalable_array_fences(m[0]),v)
+ if a not in visible:
+  # Checkbox keys are actual visible option labels, not blank placeholder names.
+  if a=='answer-field/key'and names.get(meta[e].get('answer-field/type'),'').endswith('/checkbox'):pass
+  else:
+   if normalize(v)!=v:review.append({**d,'reason':'Non-presentation or field identity value; no automatic change'})
+   continue
+ canonical=core(v)if bare else MATH.sub(lambda m:core(m[0]),v)
+ new=normalize(v)if bare else MATH.sub(lambda m:normalize(m[0]),v)
  if new!=v:
-  # The only permissible bytes added are left/right delimiter-sizing commands.
-  strip=lambda x:re.sub(r'\\(?:left|right)(?![A-Za-z])','',re.sub(r'\\(?:left|right)\.','',x))
-  assert strip(v)==strip(new),(e,a)
-  after_arrays=[];before_arrays=[]
-  for text,output in [(v,before_arrays),(new,after_arrays)]:
+  assert strip(canonical)==strip(new),(e,a,'Change beyond fence sizing')
+  # Independently compare each table's ordered cells, allowing environment names
+  # to differ only when a legacy fenced alignment becomes a true matrix.
+  grids=[]
+  for text in [v,new]:
+   payload=[]
    for m in ENV.finditer(text):
-    if m[1]=='begin'and m[2]=='array':
-     span=environment(text,m.start());assert span;output.append(strip(text[m.start():span[2]]))
-  assert before_arrays==after_arrays,(e,a,'Array data changed')
-  props.append({'entity':e,'attribute':a,'before':v,'after':new,'reason':'Make existing paired array delimiters scalable; preserve complete ordered cells, column rules, expressions and IDs.','bare_math':bare,'arrays_unchanged':len(before_arrays)})
-  shapes[a]+=1
- if new==v and scalable_array_fences(v)!=v:review.append({**d,'reason':'Fixed array fences outside protected math; review context before changing'})
-(H/'proposals.json').write_text(json.dumps(props,indent=2)+'\n');(H/'manual-review.json').write_text(json.dumps(review,indent=2)+'\n');report={'candidate_fields':len(props),'candidate_entities':len({p['entity']for p in props}),'attributes':dict(shapes),'manual_review':len(review),'answer_array_types':dict(bare_types)};(H/'proposal-summary.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+    if m[1]!='begin':continue
+    span=environment(text,m.start());assert span
+    body=strip(text[span[0]:span[1]])
+    body=ENV.sub(lambda t:'\\'+t[1]+'{TABLE}',body)
+    payload.append(cells(body))
+   grids.append(payload)
+  assert grids[0]==grids[1],(e,a,'Ordered table cells changed')
+  validate_matrix_layouts(new,bare_math=bare)
+  props.append({'entity':e,'attribute':a,'before':v,'after':new,'reason':'Make existing table fences scalable; preserve every ordered cell, rule, expression, field and answer identity.','bare_math':bare,'tables_unchanged':len(grids[0]),'legacy_matrix_environment_repair':canonical!=v});shapes[a]+=1
+ if new==v and normalize(v)!=v:review.append({**d,'reason':'Table fences outside protected math; inspect context'})
+for n,rows in [('proposals',props),('manual-review',review),('preserved-learner-values',excluded)]: (H/(n+'.json')).write_text(json.dumps(rows,indent=2)+'\n')
+report={'candidate_fields':len(props),'candidate_entities':len({p['entity']for p in props}),'attributes':dict(shapes),'manual_review':len(review),'preserved_learner_values':len(excluded),'legacy_matrix_environment_repairs':sum(p['legacy_matrix_environment_repair']for p in props),'answer_table_types':dict(bare_types)};(H/'proposal-summary.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

@@ -73,6 +73,19 @@ class MathContentTests(unittest.TestCase):
         self.assertEqual(result['answer_fields'][0]['choices'][0]['value'], good)
         self.assertEqual(source['answer_fields'][0]['correct_value'], bad)
 
+    def test_equation_system_and_gathered_condition_braces_stretch_too(self):
+        from math_format import scalable_table_fences, validate_matrix_layouts
+        for env in ['aligned', 'gathered']:
+            body = r'x=1\\y=2' if env == 'gathered' else r'x&=1\\y&=2'
+            source = r'\{\begin{' + env + '}' + body + r'\end{' + env + '}'
+            expected = r'\left' + source + r'\right.'
+            with self.subTest(env=env):
+                self.assertEqual(scalable_table_fences(source), expected)
+                with self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+                    validate_matrix_layouts('$' + source + '$')
+                validate_matrix_layouts('$' + expected + '$')
+                validate_tex(expected)
+
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
         guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'
