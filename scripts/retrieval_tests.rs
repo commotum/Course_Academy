@@ -2855,3 +2855,22 @@ fn study_projection_replay_rejects_changed_answer_key_without_saving_different_g
     assert!(error.to_string().contains("outcome changed"));
     Ok(())
 }
+
+
+#[test]
+fn deferred_study_preferences_do_not_prepare_or_clone_the_curriculum() -> Result<()> {
+    // No curriculum or policy is present: a background preparation could not
+    // run, while the validated learner preference itself remains admissible.
+    let snapshot=EntitySnapshot::new(BTreeMap::from([
+        (1,json!({"learner/id":"preference-test","learner/self-directed":true}).as_object().unwrap().clone()),
+        (2,json!({"topic/id":{"$uuid":uuid(2)}}).as_object().unwrap().clone()),
+    ]),1)?;
+    for action in ["target","queue-topic"] {
+        let body=json!({"topicId":2,"selected":true,"_deferQueue":true});
+        let (forms,_)=mutate(&snapshot,1,action,&body,Utc::now())?;
+        assert_eq!(forms.len(),1,"deferred {action} must only change its learner membership");
+        let direct=json!({"topicId":2,"selected":true});
+        assert!(mutate(&snapshot,1,action,&direct,Utc::now()).is_err(),"direct API still requires ordinary atomic preparation");
+    }
+    Ok(())
+}

@@ -8,6 +8,8 @@ from __future__ import annotations
 import copy
 from contextlib import contextmanager, nullcontext
 import fcntl
+import heapq
+import os
 import json
 from pathlib import Path
 import threading
@@ -33,6 +35,7 @@ class StudyOutbox:
         self.planning_lock = threading.Lock()
         self.wake = threading.Event()
         self.state_path = self.directory / 'study.json'
+        self.restore_home_cache()
 
     @contextmanager
     def locked(self):
@@ -49,6 +52,40 @@ class StudyOutbox:
         state['revision'] = state.get('revision', 0) + 1
         self.save(self.state_path, state)
 
+    def restore_home_cache(self):
+        # Upgrade the display cache from existing acknowledgements. Only the
+        # newest64 receipt bodies are inspected; no EDB work or learner intent
+        # is created, and exact-retry receipts remain immutable.
+        with self.locked():
+            state = self.load()
+            if isinstance(state.get('home'), dict):
+                return
+            rows = list(state['operations'])
+            directory = self.directory / 'receipts'
+            if directory.exists():
+                with os.scandir(directory) as entries:
+                    recent = heapq.nlargest(64, (entry for entry in entries if entry.is_file() and entry.name.endswith('.json')),
+                                           key=lambda entry: entry.stat().st_mtime_ns)
+                for entry in recent:
+                    try:
+                        rows.append(json.loads(Path(entry.path).read_text()))
+                    except (OSError, ValueError):
+                        continue  # A display cache can safely fall back to a read.
+            rows = list({row.get('requestId'): row for row in rows if row.get('requestId')}.values())
+            homes = [row for row in rows if row.get('input', {}).get('action') == 'queue'
+                     and isinstance(row.get('response', {}).get('activities'), list)]
+            if not homes:
+                return
+            source = max(homes, key=lambda row: (row.get('receivedAt', 0), row['requestId']))
+            state['home'] = copy.deepcopy(source['response'])
+            state['homeTasks'] = {}
+            ordered = sorted((row for row in rows if row.get('receivedAt', 0) >= source.get('receivedAt', 0)),
+                             key=lambda row: (row.get('receivedAt', 0), row['requestId']))
+            for row in ordered:
+                if isinstance(row.get('response'), dict):
+                    self.record_home_updates(state, row['response'], row['requestId'])
+            self.save(self.state_path, state)
+
     def pending(self, state):
         return [op for op in state['operations'] if not op.get('saved')]
 
@@ -64,6 +101,86 @@ class StudyOutbox:
         if not self.pending(state):
             value['idAliases'] = copy.deepcopy(state['aliases'])
         return value
+
+    def home_view(self, state):
+        if not isinstance(state.get('home'), dict):
+            return None
+        home = copy.deepcopy(state['home'])
+        local = (state['overlay'] or {}).get('entities', {})
+        aliases = {key: value for key, value in state['aliases'].items() if key not in local}
+        home = self.normalize_ids(home, aliases)
+        if state.get('homeLearner') is not None:
+            home['learner'] = copy.deepcopy(state['homeLearner'])
+        if 'homeCourse' in state:
+            home['course'] = copy.deepcopy(state['homeCourse'])
+            home['needsCourseSelection'] = state['homeCourse'] is None
+        activities = home.setdefault('activities', [])
+        waiting = home.setdefault('waitingActivities', [])
+        for saved in state.get('homeTasks', {}).values():
+            task = self.normalize_ids(saved, aliases)
+            task_id, activity_id = task.get('taskId'), task.get('activityId')
+            matches = lambda row: row.get('taskId') == task_id or (row.get('taskId') is None and activity_id is not None and row.get('activityId') == activity_id)
+            terminal = task.get('status') in {'completed', 'failed', 'locked'}
+            existing = next((row for row in activities if matches(row)), None)
+            if terminal or task.get('awaitingQuestions'):
+                activities[:] = [row for row in activities if not matches(row)]
+                waiting[:] = [row for row in waiting if row.get('taskId') != task_id]
+                if task.get('awaitingQuestions'):
+                    waiting.append({'taskId': task_id, 'activityId': activity_id, 'title': task.get('title', ''),
+                                    'pendingCount': len(task.get('deferredSteps') or []),
+                                    'canResumePractice': task.get('canResumePractice', False)})
+            elif task.get('status') in {'started', 'paused'}:
+                if existing is None:
+                    existing = {'activityId': activity_id, 'taskId': task_id, 'type': task.get('type'),
+                                'title': task.get('title', ''), 'reason': 'Continue your activity'}
+                    activities.insert(0, existing)
+                for key in ('taskId', 'activityId', 'type', 'title', 'status', 'progress', 'xpBase'):
+                    if key in task:
+                        existing[key] = copy.deepcopy(task[key])
+                waiting[:] = [row for row in waiting if row.get('taskId') != task_id]
+        return self.with_status(state, home)
+
+    def remember_home(self, view):
+        if not isinstance(view, dict) or not isinstance(view.get('activities'), list):
+            return view
+        with self.locked():
+            state = self.load()
+            if isinstance(state.get('home'), dict):
+                # A detached plan may have published while the first display
+                # read was running. Never replace it with that older fallback.
+                return self.home_view(state)
+            state['home'] = copy.deepcopy(view)
+            if not self.pending(state) and view.get('basis', 0) >= state.get('committedBasis', 0):
+                state['homeLearner'] = copy.deepcopy(view.get('learner'))
+                if 'course' in view:
+                    state['homeCourse'] = copy.deepcopy(view['course'])
+            # A display cache refresh is not a learner-state revision and must
+            # not invalidate an otherwise current background preparation.
+            self.save(self.state_path, state)
+            return self.home_view(state)
+
+    def record_home_updates(self, state, view, request):
+        if isinstance(view.get('activities'), list):
+            state['home'] = copy.deepcopy(view)
+            recommended = {row.get('taskId') for row in view['activities'] if row.get('taskId') is not None}
+            state['homeTasks'] = {key: task for key, task in state.get('homeTasks', {}).items() if task.get('taskId') not in recommended}
+        if view.get('learner') is not None:
+            state['homeLearner'] = copy.deepcopy(view['learner'])
+        if 'course' in view:
+            old_course = state.get('homeCourse', (state.get('home') or {}).get('course'))
+            if old_course != view['course'] and state.get('home'):
+                if not isinstance(view.get('activities'), list):
+                    state['home']['activities'] = []
+                    state['home']['waitingActivities'] = []
+                state['homeTasks'] = {}
+            state['homeCourse'] = copy.deepcopy(view['course'])
+        if view.get('type') not in {'lesson', 'review', 'assessment', 'diagnostic'} or type(view.get('taskId')) is not int:
+            return
+        summary = {key: copy.deepcopy(view[key]) for key in
+                   ('taskId', 'activityId', 'type', 'title', 'status', 'progress', 'xpBase',
+                    'awaitingQuestions', 'deferredSteps', 'canResumePractice') if key in view}
+        summary['requestId'] = request
+        state.setdefault('homeTasks', {})[str(view['taskId'])] = summary
 
     def decorate(self, view):
         with self.locked():
@@ -89,6 +206,9 @@ class StudyOutbox:
             return self.with_status(state, view) if view is not None else None
 
     def overlay_view(self, action, body):
+        if action in {'home', 'queue'}:
+            with self.locked():
+                return self.home_view(self.load())
         if action == 'task':
             value = self.task_view(body['taskId'])
             if value is not None:
@@ -176,6 +296,9 @@ class StudyOutbox:
         state['overlay'] = data['overlay']
         state['views'].update(data.get('views', {}))
         view = data['view']
+        for task_view in data.get('views', {}).values():
+            self.record_home_updates(state, task_view, body['requestId'])
+        self.record_home_updates(state, view, body['requestId'])
         if type(view.get('taskId')) is int:
             state['views'][str(view['taskId'])] = copy.deepcopy(view)
         if body['action'] == 'profile-settings':
@@ -299,6 +422,9 @@ class StudyOutbox:
                                     if durable == view['taskId'] and local in state['views']:
                                         state['views'][local] = copy.deepcopy(view)
                             state['overlay'] = None
+                            state['homeTasks'] = {str(self.normalize_ids(value, state['aliases'])['taskId']): self.normalize_ids(value, state['aliases']) for value in state.get('homeTasks', {}).values()}
+                            if state.get('home'):
+                                state['home'] = self.normalize_ids(state['home'], state['aliases'])
                     elif result.get('code') == 'basis-conflict':
                         # Recompute only after the writer proves this exact
                         # attempt was rejected, never after an unknown outcome.

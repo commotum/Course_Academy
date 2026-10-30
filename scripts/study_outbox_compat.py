@@ -80,6 +80,9 @@ class CompatibleStudyOutbox:
     def invalidate_plans(self):
         self.study.invalidate_plans()
 
+    def remember_home(self, view):
+        return self.study.remember_home(view)
+
     def decorate(self, view):
         return self.study.decorate(view)
 

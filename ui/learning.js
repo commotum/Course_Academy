@@ -611,12 +611,12 @@ async function showLessonStep(view, identity, earlier, content, buildEarlier) {
   }
 }
 
-function home({ preserve = false } = {}) {
+function home({ preserve = false, readOnly = false } = {}) {
   if (homeRequest) return homeRequest;
   const revision = targetRevision;
   const controller = new AbortController();
   homeController = controller;
-  const request = loadHome(controller.signal, preserve).finally(() => {
+  const request = loadHome(controller.signal, preserve, readOnly).finally(() => {
     if (homeRequest === request) {
       homeRequest = null; homeController = null;
       if (!task && !document.hidden && revision !== targetRevision) void home();
@@ -625,7 +625,7 @@ function home({ preserve = false } = {}) {
   homeRequest = request;
   return request;
 }
-async function loadHome(signal, preserve) {
+async function loadHome(signal, preserve, readOnly) {
   const revision = targetRevision;
   const previousTask = task;
   task = null; clock.running = false; assessmentClock = null;
@@ -648,25 +648,37 @@ async function loadHome(signal, preserve) {
     layout.append(createStudySidebar(), page); $('main').append(layout);
   }
   // A visible queue remains usable while fresh recommendations arrive.
-  setBusy(!reusable); clearError();
+  setBusy(!reusable);
+  if (!readOnly) clearError();
   try {
     // Reuse an uncertain request so a retry cannot create duplicate pending tasks.
-    if (!isDeveloperMode()) queueRequest ||= { requestId: crypto.randomUUID() };
+    if (!readOnly && !isDeveloperMode()) queueRequest ||= { requestId: crypto.randomUUID() };
     const data = isDeveloperMode()
       ? await api('/api/preview-home', undefined, { signal })
+      : readOnly ? await api('/api/home', undefined, { signal })
       : await api('/api/queue', queueRequest, { signal });
     if (signal.aborted || modeChanging) return;
-    queueRequest = null;
+    if (!readOnly) queueRequest = null;
     homeSnapshot = { data, revision, settings: settingsRevision, preview: isDeveloperMode() };
     renderHome(data, page, revision);
   } catch (error) {
     if (error.code === 'basis-conflict') queueRequest = null;
-    if (!signal.aborted) showError(error, home);
+    if (!signal.aborted && !readOnly) showError(error, home);
   }
   finally { if (!signal.aborted) setBusy(false); }
 }
+function pollHome() {
+  if (document.hidden || modeChanging || isDeveloperMode() || task || busy || !homeRendered || homeRequest) return;
+  // This read observes background planning without requesting another plan.
+  return home({ preserve: true, readOnly: true });
+}
 function renderHome(data, page, revision) {
-  updateHeader(data); page.replaceChildren();
+  updateHeader(data);
+  const { basis, saveState, idAliases, ...presentation } = data;
+  const key = JSON.stringify(presentation);
+  if (page.dataset.presentation === key) { homeRendered = revision === targetRevision; return; }
+  page.dataset.presentation = key;
+  page.replaceChildren();
   document.title = 'Study · Course Academy';
   if (data.needsCourseSelection) {
     const welcome = el('section', 'empty-state');
@@ -1312,6 +1324,7 @@ setInterval(() => {
   if (isDeveloperMode() || modeChanging) return;
   updateTaskTimer();
 }, 1000);
+setInterval(() => { void pollHome(); }, 5000);
 async function syncAfterVisibility() {
   if (isDeveloperMode() || modeChanging) return;
   if (pendingPause) await pendingPause;

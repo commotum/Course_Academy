@@ -94,7 +94,7 @@ function fixture(storage = new Map()) {
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      reconcileStudyIds, setManualPause, setDraft: (id, responses) => drafts.set(id, responses), showReviewSaveState, updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, leaveTask, toggleLessonPause, retry: () => retryOperation?.(),
+      reconcileStudyIds, setManualPause, setDraft: (id, responses) => drafts.set(id, responses), showReviewSaveState, updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, pollHome, leaveTask, toggleLessonPause, retry: () => retryOperation?.(),
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -961,4 +961,53 @@ test('committing a provisional presentation keeps its answer-option order stable
   f.h.reconcileStudyIds({ saveState: { status: 'saved' }, idAliases: { [localItem]: 52 } });
   await f.h.render(activity(52, 1, { step: { ...step, itemId: 52 } }));
   assert.deepEqual(f.h.view.current.querySelectorAll('input').map(input => input.value), order);
+});
+
+test('visible Study observes completed background planning with a read-only poll and retains unchanged queue controls', async () => {
+  const f = fixture(); f.server = { basis: 1, activities: [activity(1)] };
+  await f.h.home();
+  const main = f.document.getElementById('main');
+  const row = main.querySelector('.queue-card');
+  const control = row.querySelector('button'); control.focus();
+  f.server.basis = 2;
+  await f.h.pollHome();
+  assert.equal(f.calls.at(-1).path, '/api/home');
+  assert.equal(f.calls.at(-1).body, null);
+  assert.equal(main.querySelector('.queue-card'), row);
+  assert.equal(f.document.activeElement, control);
+  assert.equal(control.disabled, false);
+  f.server = { activities: [activity(2, 2, { title: 'Prepared recommendation' })] };
+  await f.h.pollHome();
+  assert.match(main.textContent, /Prepared recommendation/);
+  assert.equal(main.querySelector('.loading'), null);
+});
+
+test('home polling never interrupts a lesson or hidden/busy page and a stale poll cannot replace a newly opened lesson', async () => {
+  const f = fixture(); f.server = { activities: [activity(1)] };
+  await f.h.home();
+  f.document.hidden = true; await f.h.pollHome();
+  f.document.hidden = false; f.h.setBusy(true); await f.h.pollHome(); f.h.setBusy(false);
+  assert.equal(f.calls.length, 1);
+  let release;
+  f.respond = async path => path === '/api/home' ? new Promise(resolve => { release = () => resolve({ ok: true, json: async () => ({ activities: [] }) }); })
+    : { ok: true, json: async () => activity(2, 2) };
+  const refresh = f.h.pollHome(); const request = f.calls.at(-1);
+  await f.h.openTask(123);
+  assert.equal(request.signal.aborted, true);
+  release(); await refresh;
+  assert.equal(f.h.view.currentId, '2');
+  const calls = f.calls.length; await f.h.pollHome();
+  assert.equal(f.calls.length, calls);
+});
+
+test('a failed background home read keeps the visible queue usable and retries on the next poll', async () => {
+  const f = fixture(); f.server = { activities: [activity(1)] };
+  await f.h.home(); const row = f.document.getElementById('main').querySelector('.queue-card');
+  f.respond = async () => { throw new Error('Temporary read failure'); };
+  await f.h.pollHome();
+  assert.equal(f.document.getElementById('errorBanner').hidden, true);
+  assert.equal(row.querySelector('button').disabled, false);
+  f.respond = null; f.server = { activities: [activity(2, 2, { title: 'Fresh plan' })] };
+  await f.h.pollHome();
+  assert.match(f.document.getElementById('main').textContent, /Fresh plan/);
 });

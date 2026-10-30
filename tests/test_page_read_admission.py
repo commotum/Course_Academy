@@ -315,6 +315,9 @@ class PageReadAdmission(unittest.TestCase):
     def test_queue_browsing_reads_hot_state_without_waiting_for_planner_or_writer(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
+            from serve_graph_explorer import save_json
+            save_json(Path(directory) / 'study-outbox/learner/study.json', {
+                'home': {'activities': []}, 'operations': [], 'overlay': None, 'views': {}, 'aliases': {}, 'retryAt': 0})
             with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
                 def project(body):
                     self.assertEqual(body['action'], 'study-read')
@@ -336,7 +339,7 @@ class PageReadAdmission(unittest.TestCase):
                     self.assertEqual(status, 200)
                     self.assertEqual(response['saveState']['pending'], 0)
                     self.assertTrue(cls.queue_refresh.is_set())
-            self.assertEqual(workers.return_value.request.call_count, 2)
+            workers.return_value.request.assert_not_called()
 
     def test_lists_and_mode_read_finish_while_writer_lock_is_held(self):
         with tempfile.TemporaryDirectory() as directory:

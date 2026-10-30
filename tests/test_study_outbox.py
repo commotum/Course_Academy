@@ -26,7 +26,7 @@ class Grader:
         if body['action'] == 'study-read':
             return {'ok': True, 'data': {'action': body['operation']['action'], 'visibleLocal': True}}
         action = body['operation']['action']
-        view = {'taskId': 4000000000000001, 'type': 'lesson', 'status': 'started',
+        view = {'taskId': 4000000000000001, 'activityId': 10, 'title': 'Local lesson', 'type': 'lesson', 'status': 'started',
                 'step': {'itemId': 4000000000000002, 'status': 'correct' if action == 'answer' else 'started'}}
         return {'ok': True, 'data': {'view': view, 'views': {str(view['taskId']): view},
                                    'overlay': {'entities': {'4000000000000001': {}, '4000000000000002': {}}},
@@ -94,7 +94,7 @@ class StudyOutboxTest(unittest.TestCase):
             self.assertTrue(entered.wait(1))
             start = time.monotonic()
             self.assertEqual(self.queue.status()['pending'], 0)
-            self.assertTrue(self.queue.overlay_view('home', {'action': 'home'})['visibleLocal'])
+            self.assertIsNone(self.queue.overlay_view('home', {'action': 'home'}))
             other = self.make()
             answer = other.request({'action': 'answer', 'taskId': 4000000000000001,
                                     'itemId': 4000000000000002, 'requestId': 'new-answer-0001'}, 1100)
@@ -186,6 +186,78 @@ class StudyOutboxTest(unittest.TestCase):
                                              'requestId': 'lagging-base-queue-0001'}, 1000), {'_superseded': True})
         planner.request.assert_not_called()
         self.assertEqual(self.queue.status()['pending'], 0)
+
+    def home(self):
+        return {'basis': 1, 'learner': {'dailyXpGoal': 100, 'selfDirected': False},
+                'course': {'id': 'course-1', 'title': 'Original course'},
+                'activities': [{'activityId': 10, 'taskId': 4000000000000001,
+                                'type': 'lesson', 'title': 'Local lesson', 'status': 'unlocked'}],
+                'waitingActivities': []}
+
+    def test_home_never_calls_feedback_planner_and_returns_none_without_prepared_cache(self):
+        self.assertIsNone(self.queue.overlay_view('home', {'action': 'home'}))
+        self.assertEqual(self.grader.calls, [])
+        self.queue.remember_home(self.home())
+        self.grader.request = Mock(side_effect=AssertionError('home must not touch feedback actor'))
+        self.assertEqual(self.queue.overlay_view('home', {'action': 'home'})['activities'][0]['title'], 'Local lesson')
+        self.assertEqual(self.queue.overlay_view('queue', {'action': 'queue'})['activities'][0]['activityId'], 10)
+
+    def test_cached_home_tracks_active_and_completed_progress_after_restart_and_receipts(self):
+        self.queue.remember_home(self.home())
+        self.request('start', 'home-start-0001')
+        active = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(active['activities'][0]['status'], 'started')
+        original = self.grader.request
+        def complete(body):
+            result = original(body)
+            if body['action'] == 'study-project' and body['operation']['action'] == 'continue':
+                result['data']['view']['status'] = 'completed'
+                result['data']['views']['4000000000000001']['status'] = 'completed'
+            return result
+        self.grader.request = complete
+        self.request('continue', 'home-complete-0001')
+        self.assertEqual(self.queue.overlay_view('home', {'action': 'home'})['activities'], [])
+        while self.queue.run_one():
+            pass
+        self.queue = self.make()
+        self.assertEqual(self.queue.status()['pending'], 0)
+        self.assertEqual(self.queue.overlay_view('home', {'action': 'home'})['activities'], [])
+        # An older background display result must not resurrect accepted work.
+        self.assertEqual(self.queue.remember_home(self.home())['activities'], [])
+
+    def test_cached_home_applies_accepted_learner_goal_and_course_preferences(self):
+        self.queue.remember_home(self.home())
+        original = self.grader.request
+        def preferences(body):
+            result = original(body)
+            if body['action'] == 'study-project':
+                result['data']['view'] = {'learner': {'dailyXpGoal': 250, 'selfDirected': True},
+                                          'course': {'id': 'course-2', 'title': 'New course'}}
+                result['data']['views'] = {}
+            return result
+        self.grader.request = preferences
+        self.request('profile-settings', 'home-profile-0001')
+        home = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(home['learner']['dailyXpGoal'], 250)
+        self.assertTrue(home['learner']['selfDirected'])
+        self.assertEqual(home['course']['id'], 'course-2')
+        self.assertEqual(home['activities'], [])
+
+    def test_accepted_background_queue_plan_populates_durable_home_cache(self):
+        original = self.grader.request
+        def projected_home(body):
+            result = original(body)
+            if body['action'] == 'study-project' and body['operation']['action'] == 'queue':
+                result['data']['view'] = self.home()
+                result['data']['views'] = {}
+            return result
+        self.queue.planner = Mock()
+        self.queue.planner.request.side_effect = projected_home
+        self.queue.request({'action': 'queue', 'background': True, 'requestId': 'cached-home-queue-0001'}, 1000)
+        self.queue = self.make()
+        home = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(home['activities'][0]['activityId'], 10)
+        self.assertEqual(home['saveState']['pending'], 1)
 
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()

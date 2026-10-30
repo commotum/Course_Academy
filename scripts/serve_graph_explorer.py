@@ -398,6 +398,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved, learner=learner, planner=scheduler_worker, publication=publish_queue) if learning_worker else None
     candidate_reader = None
 
+    def home_preferences(view):
+        preference = focused_mode(focused_mode_path(request_directory, learner))
+        if preference is not None and isinstance(view.get('learner'), dict):
+            view = {**view, 'learner': {**view['learner'], 'focusedMode': preference}}
+        return view
+
     def inventory_hook():
         nonlocal candidate_reader
         # The finder owns its read connection. Never put its catalog scan under
@@ -546,6 +552,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         return
                     value = review_outbox.overlay_view(action, body) if action in READ_ACTIONS else None
                     if value is not None:
+                        if action == 'home':
+                            value = home_preferences(value)
                         self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         return
                     value = review_outbox.request(body, received)
@@ -554,6 +562,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             self.send_bytes(409, json.dumps({'error': value['_error'], 'code': value['_code']}).encode(), "application/json")
                         else:
                             read_cache.invalidate()
+                            if action in {'target', 'queue-topic', 'profile-settings', 'start', 'study-topic', 'review-topic', 'submit', 'expire', 'continue'}:
+                                queue_refresh.set()
                             self.send_bytes(200, json.dumps(value).encode(), "application/json")
                         print(f"Learning immediate {action}: {(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
                         return
@@ -609,7 +619,10 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     refresh_inventory = response.get('ok') and (focus_change or body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     if review_outbox and not developer_mode(mode_path):
-                        response['data'] = review_outbox.decorate(response['data'])
+                        response['data'] = (review_outbox.remember_home(response['data']) if action == 'home'
+                                            else review_outbox.decorate(response['data']))
+                        if action == 'home':
+                            response['data'] = home_preferences(response['data'])
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
                     if refresh_inventory:
                         inventory_refresh.set()
