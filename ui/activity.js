@@ -306,6 +306,11 @@ function activityRow(activity) {
       const message = el('p', 'history-note', error.message); message.setAttribute('role', 'alert'); host.replaceChildren(message, retry);
     } finally { pending = false; host.setAttribute('aria-busy', 'false'); }
   }
+  // Warm only the row the learner is about to open; do not fetch the whole
+  // history or render hidden solutions in advance.
+  const prefetch = () => { void detailRequest(activity.taskId).catch(() => {}); };
+  summary.addEventListener('pointerenter', prefetch, { once: true });
+  summary.addEventListener('focus', prefetch, { once: true });
   row.addEventListener('toggle', () => { if (row.open) void expand(); });
   return row;
 }

@@ -1,6 +1,7 @@
 //! Local learner application boundary: immutable EDB reads and guarded durable writes.
 mod activity_history;
 mod review_interaction;
+mod study_interaction;
 mod study_stats;
 mod forecast_reader;
 mod assignment_interaction;
@@ -219,6 +220,7 @@ struct Application {
     snapshot: EntitySnapshot,
     reference: SnapshotReference,
     home_cache: Option<(Instant, Duration, Json, bool)>,
+    study_projection: Option<study_interaction::Projection>,
     inventory_cache: Option<(Instant, Duration, Json)>,
 }
 impl Application {
@@ -253,6 +255,7 @@ impl Application {
             snapshot,
             reference,
             home_cache: None,
+            study_projection: None,
             inventory_cache: None,
         })
     }
@@ -377,7 +380,7 @@ impl Application {
 
     fn handle(&mut self, mut body: Json) -> Result<Json> {
         let started = Instant::now();
-        self.adopt(self.conn.sync()?)?;
+        if body["action"] != "study-project" { self.adopt(self.conn.sync()?)?; }
         trace("sync", started);
         let focused = body.as_object_mut().and_then(|body| body.remove("_focusedMode"))
             .map(|value| value.as_bool().ok_or("Focused mode must be a boolean"))
@@ -2535,7 +2538,7 @@ fn mutate_with_selection(
                 forms.push(add(json!(i), "task-item/responses", response));
             }
             let answered_state=if correct {"correct"}else{"incorrect"};
-            if let Some(millis)=body["submittedAt"].as_i64().filter(|_|body.get("_queuedReview").is_none()) {
+            if let Some(millis)=body["submittedAt"].as_i64().filter(|_|body.get("_queuedReview").is_none() && body.get("_queuedStudy").is_none()) {
                 let until=DateTime::from_timestamp_millis(millis).ok_or("Invalid submission instant")?;
                 let elapsed=timing::elapsed_until(s,i,at,until)?;
                 transition_with_elapsed(s,t,i,answered_state,elapsed,&mut forms)?;
@@ -2699,6 +2702,8 @@ impl Application {
     fn process(&mut self, body: &Json) -> Result<Json> {
         let action = body["action"].as_str().ok_or("Action required")?;
         if body["action"] == "persist-review" { return review_interaction::persist(self,body); }
+        if action == "study-project" { return study_interaction::project(self,body); }
+        if action == "persist-study" { return study_interaction::persist(self,body); }
         let s = &self.snapshot;
         let learner = &self.learner;
         if s.entities
@@ -2813,7 +2818,7 @@ impl Application {
         } else {
             let at = Utc::now();
             let planning = Instant::now();
-            let (mut forms, result) = if action == "queue" {
+            let (mut forms, mut result) = if action == "queue" {
                 let forms = if cached_queue.is_some() {
                     vec![]
                 } else {
@@ -2834,7 +2839,9 @@ impl Application {
             } else {
                 mutate(&s, l, action, &body, at)?
             };
-            review_interaction::attach_periods(s,l,body,at,&mut forms)?;
+            if body.get("_queuedStudy").is_some() {
+                study_interaction::prepare(s,&self.conn.db(),l,body,&mut forms,&mut result,at)?;
+            } else { review_interaction::attach_periods(s,l,body,at,&mut forms)?; }
             trace("plan", planning);
             let saved = json!({"input":body,"edn":schema::edn(&json!(forms))?,"basis":s.basis_t,"at":at.timestamp_millis(),"result":result,"empty":forms.is_empty(),"source":ENGINE_SOURCE});
             std::fs::create_dir_all(journal.parent().unwrap())?;

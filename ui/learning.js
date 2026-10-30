@@ -20,44 +20,54 @@ let retryOperation = null;
 let renderGeneration = 0;
 let clock = { at: 0, elapsed: 0, running: false };
 let assessmentClock = null;
-let reviewSaveTask = null;
-let reviewSavePending = false;
-let reviewSaveTimer = null;
-function showReviewSaveState(state, taskId) {
-  if (!state) return;
+// Accepted progress is already durable locally. Track background sync without
+// putting normal database work into the learner's flow; surface real failures.
+const reviewSaves = new Map();
+function renderReviewSaveStatus() {
   let node = document.getElementById('reviewSaveStatus');
   if (!node) {
     node = el('div', 'review-save-status'); node.id = 'reviewSaveStatus';
     node.setAttribute('role', 'status'); node.setAttribute('aria-live', 'polite');
     document.body.append(node);
   }
-  clearTimeout(reviewSaveTimer);
-  const settled = reviewSaveTask === taskId && reviewSavePending && state.status === 'saved';
-  reviewSaveTask = taskId;
-  reviewSavePending = state.status !== 'saved';
-  if (settled) {
-    window.dispatchEvent(new CustomEvent('course-academy:review-saved', { detail: { taskId } }));
-    window.dispatchEvent(new Event('course-academy:queue-changed'));
-    try { localStorage.setItem('course-academy-queue-changed', String(Date.now())); } catch { /* This tab still refreshes. */ }
+  const failed = [...reviewSaves.values()].find(entry => entry.state.status === 'error');
+  node.replaceChildren(); node.hidden = !failed;
+  node.dataset.status = failed ? 'error' : 'saved';
+  if (!failed) return;
+  node.append(el('span', '', 'Progress saved locally · Sync needs attention. '));
+  node.append(button('Retry saving', 'text-button', async () => {
+    try {
+      const state = await api('/api/review-save-retry', { taskId: failed.taskId });
+      if (reviewSaves.get(failed.taskId) === failed) showReviewSaveState(state, failed.taskId);
+    } catch {
+      if (node.firstChild) node.firstChild.textContent = 'Progress remains saved locally. Retry syncing. ';
+    }
+  }));
+}
+function showReviewSaveState(state, taskId) {
+  if (!state || taskId == null) return;
+  const previous = reviewSaves.get(taskId);
+  clearTimeout(previous?.timer);
+  if (state.status === 'saved') {
+    reviewSaves.delete(taskId);
+    if (previous) {
+      window.dispatchEvent(new CustomEvent('course-academy:review-saved', { detail: { taskId } }));
+      window.dispatchEvent(new Event('course-academy:queue-changed'));
+      try { localStorage.setItem('course-academy-queue-changed', String(Date.now())); } catch { /* This tab still refreshes. */ }
+    }
+  } else {
+    const entry = { taskId, state, timer: null };
+    reviewSaves.set(taskId, entry);
+    if (state.status === 'pending') entry.timer = setTimeout(async () => {
+      if (reviewSaves.get(taskId) !== entry) return;
+      let next;
+      try { next = await api('/api/review-save-status?taskId=' + encodeURIComponent(taskId)); }
+      catch { next = { status: 'pending' }; }
+      // A newer action may have supplied a newer sync state during the read.
+      if (reviewSaves.get(taskId) === entry) showReviewSaveState(next, taskId);
+    }, 700);
   }
-  node.replaceChildren();
-  node.hidden = state.status === 'saved';
-  node.dataset.status = state.status;
-  if (state.status === 'error') {
-    node.append(el('span', '', 'Answers queued · Saving needs attention. '));
-    node.append(button('Retry saving', 'text-button', async () => {
-      try { showReviewSaveState(await api('/api/review-save-retry', { taskId }), taskId); }
-      catch { node.firstChild.textContent = 'Answers remain queued. Retry saving. '; }
-    }));
-    return;
-  }
-  if (state.status !== 'pending') return;
-  node.textContent = state.retrying ? 'Answers queued · Retrying save…' : 'Saving…';
-  reviewSaveTimer = setTimeout(async () => {
-    if (reviewSaveTask !== taskId) return;
-    try { showReviewSaveState(await api('/api/review-save-status?taskId=' + encodeURIComponent(taskId)), taskId); }
-    catch { showReviewSaveState({ status: 'pending' }, taskId); }
-  }, 700);
+  renderReviewSaveStatus();
 }
 
 let typesetting = Promise.resolve();
@@ -126,6 +136,7 @@ let refreshAfterVisibility = false;
 let currentCourseId = null;
 let curriculumSnapshot = null;
 let homeRendered = false;
+let homeSnapshot = null;
 let homeRequest = null;
 let homeController = null;
 let queueRequest = null;
@@ -236,6 +247,8 @@ function actionButton(text, className, action, enabled = true) {
 async function mutation(path, values) {
   if (isDeveloperMode() || modeChanging) return;
   if (busy) return;
+  // A queue refresh must never hold up a choice that is already on screen.
+  homeController?.abort(); homeController = null; homeRequest = null;
   if (path === '/api/start' || path === '/api/study-topic' || path === '/api/review-topic') preloadLessonRendering();
   const body = { ...values, requestId: crypto.randomUUID() };
   if (path === '/api/answer' && task?.type !== 'assessment') {
@@ -543,7 +556,10 @@ async function showLessonStep(view, identity, earlier, content, buildEarlier) {
   view.current = content; view.currentId = identity;
   content.tabIndex = -1;
   view.feed.append(content);
-  for (const node of [...additions, content]) await typeset(node);
+  // Math rendering is presentation work. Release Check/Next as soon as the
+  // authoritative task is mounted, and prioritize its current card over history.
+  void typeset(content);
+  for (const node of additions) void typeset(node);
   if (generation !== renderGeneration || document.hidden || lessonView !== view) return;
   if (view.needsFocus) {
     content.scrollIntoView({ block: 'start', behavior: 'instant' });
@@ -568,101 +584,122 @@ function home({ preserve = false } = {}) {
 }
 async function loadHome(signal, preserve) {
   const revision = targetRevision;
+  const previousTask = task;
   task = null; clock.running = false; assessmentClock = null;
+  const saved = homeSnapshot;
+  const reusable = saved && saved.revision === revision && saved.settings === settingsRevision && saved.preview === isDeveloperMode();
+  if (reusable && previousTask) {
+    // The current task response is newer than the last queue response.
+    saved.data = { ...saved.data, activities: (saved.data.activities || []).flatMap(activity => {
+      if (String(activity.taskId) !== String(previousTask.taskId) && String(activity.activityId) !== String(previousTask.activityId)) return [activity];
+      return terminal(short(previousTask.status)) ? [] : [{ ...activity, taskId: previousTask.taskId, status: previousTask.status, progress: previousTask.progress }];
+    }) };
+  }
   let page = $('main').querySelector('.study-activities');
   if (!preserve || !page) {
     resetMain();
     const layout = el('div', 'study-layout');
     page = el('section', 'study-activities');
-    page.append(el('div', 'loading', 'Loading your next activities…'));
+    if (reusable) renderHome(saved.data, page, revision);
+    else page.append(el('div', 'loading', 'Loading your next activities…'));
     layout.append(createStudySidebar(), page); $('main').append(layout);
   }
-  setBusy(true); clearError();
+  // A visible queue remains usable while fresh recommendations arrive.
+  setBusy(!reusable); clearError();
   try {
     // Reuse an uncertain request so a retry cannot create duplicate pending tasks.
     if (!isDeveloperMode()) queueRequest ||= { requestId: crypto.randomUUID() };
     const data = isDeveloperMode()
       ? await api('/api/preview-home', undefined, { signal })
       : await api('/api/queue', queueRequest, { signal });
-    queueRequest = null;
     if (signal.aborted || modeChanging) return;
-    updateHeader(data); page.replaceChildren();
-    document.title = 'Study · Course Academy';
-    if (data.needsCourseSelection) {
-      const welcome = el('section', 'empty-state');
-      welcome.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Choose your first course'),
-        el('p', '', 'Select a course in your profile to see lessons and begin studying.'),
-        actionButton('Choose a course →', 'primary', () => $('learnerName').click()));
-      page.append(welcome);
-      homeRendered = revision === targetRevision;
-      return;
-    }
-    const selfDirected = data.learner?.selfDirected === true;
-    page.append(el('h1', 'sr-only', selfDirected ? 'Your study plan' : 'Next up'));
-    const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
-    const activities = (data.activities || []).slice(0, 5);
-    activities.forEach((activity, index) => {
-      const row = el('article', 'queue-card');
-      attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
-      const info = el('div');
-      const meta = el('div', 'queue-meta');
-      const type = short(activity.type) || 'lesson';
-      meta.append(el('span', '', type));
-      if (['started', 'paused'].includes(short(activity.status))) meta.append(el('span', '', 'In progress'));
-      if (!isDeveloperMode() && activity.expectedSeconds) meta.append(el('span', '', `About ${Math.round(activity.expectedSeconds / 60)} min`));
-      if (!isDeveloperMode() && Number.isFinite(activity.xpBase)) meta.append(el('span', '', `${activity.xpBase} XP`));
-      info.append(meta, el('h2', '', activity.title));
-      if (activity.reason) info.append(el('p', 'queue-reason', activity.reason));
-      const resume = Boolean(activity.taskId) && ['started', 'paused'].includes(short(activity.status));
-      const total = activity.progress?.totalSteps;
-      const number = activity.progress?.stepNumber;
-      if (!isDeveloperMode() && resume && Number.isInteger(total) && total > 0 && Number.isInteger(number) && number > 0) {
-        const completed = lessonCompletedSteps(number, total);
-        const percentage = Math.round(completed / total * 100);
-        const progress = el('div', 'queue-progress');
-        const track = el('div', 'queue-progress-track'), fill = el('div', 'queue-progress-fill');
-        track.setAttribute('role', 'progressbar');
-        track.setAttribute('aria-label', `${activity.title} progress`);
-        track.setAttribute('aria-valuemin', '0');
-        track.setAttribute('aria-valuemax', String(total));
-        track.setAttribute('aria-valuenow', String(completed));
-        track.setAttribute('aria-valuetext', `${percentage}% complete`);
-        fill.style.width = `${completed / total * 100}%`;
-        track.append(fill);
-        progress.append(track, el('span', 'queue-progress-value', `${percentage}%`));
-        info.append(progress);
-      }
-      row.append(el('span', 'queue-number', String(index + 1).padStart(2, '0')), info,
-        actionButton(isDeveloperMode() ? 'Preview →' : resume ? 'Resume →' : 'Begin →', 'primary', () => isDeveloperMode() ? openPreview({ activityId: activity.activityId }) : resume ? openTask(activity.taskId) : mutation('/api/start', { activityId: activity.activityId })));
-      queue.append(row);
-    });
-    if (!activities.length) {
-      const empty = el('div', 'empty-state');
-      const queueEmpty = selfDirected && !(data.learner?.queue || []).length && !(data.learner?.targets || []).length;
-      empty.append(el('h2', '', queueEmpty ? 'Your study plan is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue or targets, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your selected topics and their required prerequisites have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
-      queue.append(empty);
-    }
-    page.append(queue);
-    if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
-    if (data.waitingActivities?.length) {
-      const waiting = el('section', 'waiting-lessons');
-      waiting.append(el('h2', 'step-title', 'Unfinished practice'));
-      for (const activity of data.waitingActivities) {
-        const row = el('div', 'waiting-lesson');
-        attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
-        row.append(el('span', '', `${activity.title} · ${activity.pendingCount} unfinished ${activity.pendingCount === 1 ? 'skill' : 'skills'}`), actionButton(activity.canResumePractice ? 'Resume practice →' : 'Review · waiting for questions →', 'secondary', () => openTask(activity.taskId)));
-        waiting.append(row);
-      }
-      page.append(waiting);
-    }
-    if (data.notice) page.append(el('p', 'notice', data.notice));
-    homeRendered = revision === targetRevision;
+    queueRequest = null;
+    homeSnapshot = { data, revision, settings: settingsRevision, preview: isDeveloperMode() };
+    renderHome(data, page, revision);
   } catch (error) {
     if (error.code === 'basis-conflict') queueRequest = null;
     if (!signal.aborted) showError(error, home);
   }
   finally { if (!signal.aborted) setBusy(false); }
 }
+function renderHome(data, page, revision) {
+  updateHeader(data); page.replaceChildren();
+  document.title = 'Study · Course Academy';
+  if (data.needsCourseSelection) {
+    const welcome = el('section', 'empty-state');
+    welcome.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Choose your first course'),
+      el('p', '', 'Select a course in your profile to see lessons and begin studying.'),
+      actionButton('Choose a course →', 'primary', () => $('learnerName').click()));
+    page.append(welcome);
+    homeRendered = revision === targetRevision;
+    return;
+  }
+  const selfDirected = data.learner?.selfDirected === true;
+  page.append(el('h1', 'sr-only', selfDirected ? 'Your study plan' : 'Next up'));
+  const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
+  const activities = (data.activities || []).slice(0, 5);
+  activities.forEach((activity, index) => {
+    const row = el('article', 'queue-card');
+    attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
+    const info = el('div');
+    const meta = el('div', 'queue-meta');
+    const type = short(activity.type) || 'lesson';
+    meta.append(el('span', '', type));
+    if (['started', 'paused'].includes(short(activity.status))) meta.append(el('span', '', 'In progress'));
+    if (!isDeveloperMode() && activity.expectedSeconds) meta.append(el('span', '', `About ${Math.round(activity.expectedSeconds / 60)} min`));
+    if (!isDeveloperMode() && Number.isFinite(activity.xpBase)) meta.append(el('span', '', `${activity.xpBase} XP`));
+    info.append(meta, el('h2', '', activity.title));
+    if (activity.reason) info.append(el('p', 'queue-reason', activity.reason));
+    const resume = Boolean(activity.taskId) && ['started', 'paused'].includes(short(activity.status));
+    const total = activity.progress?.totalSteps;
+    const number = activity.progress?.stepNumber;
+    if (!isDeveloperMode() && resume && Number.isInteger(total) && total > 0 && Number.isInteger(number) && number > 0) {
+      const completed = lessonCompletedSteps(number, total);
+      const percentage = Math.round(completed / total * 100);
+      const progress = el('div', 'queue-progress');
+      const track = el('div', 'queue-progress-track'), fill = el('div', 'queue-progress-fill');
+      track.setAttribute('role', 'progressbar');
+      track.setAttribute('aria-label', `${activity.title} progress`);
+      track.setAttribute('aria-valuemin', '0');
+      track.setAttribute('aria-valuemax', String(total));
+      track.setAttribute('aria-valuenow', String(completed));
+      track.setAttribute('aria-valuetext', `${percentage}% complete`);
+      fill.style.width = `${completed / total * 100}%`;
+      track.append(fill);
+      progress.append(track, el('span', 'queue-progress-value', `${percentage}%`));
+      info.append(progress);
+    }
+    row.append(el('span', 'queue-number', String(index + 1).padStart(2, '0')), info,
+      actionButton(isDeveloperMode() ? 'Preview →' : resume ? 'Resume →' : 'Begin →', 'primary', () => isDeveloperMode() ? openPreview({ activityId: activity.activityId }) : resume ? openTask(activity.taskId) : mutation('/api/start', { activityId: activity.activityId })));
+    queue.append(row);
+  });
+  if (!activities.length) {
+    const empty = el('div', 'empty-state');
+    const queueEmpty = selfDirected && !(data.learner?.queue || []).length && !(data.learner?.targets || []).length;
+    empty.append(el('h2', '', queueEmpty ? 'Your study plan is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue or targets, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your selected topics and their required prerequisites have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
+    queue.append(empty);
+  }
+  page.append(queue);
+  if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
+  if (data.waitingActivities?.length) {
+    const waiting = el('section', 'waiting-lessons');
+    waiting.append(el('h2', 'step-title', 'Unfinished practice'));
+    for (const activity of data.waitingActivities) {
+      const row = el('div', 'waiting-lesson');
+      attachStepMenu(row, activity.activityId, null, { kind: 'activity' });
+      row.append(el('span', '', `${activity.title} · ${activity.pendingCount} unfinished ${activity.pendingCount === 1 ? 'skill' : 'skills'}`), actionButton(activity.canResumePractice ? 'Resume practice →' : 'Review · waiting for questions →', 'secondary', () => openTask(activity.taskId)));
+      waiting.append(row);
+    }
+    page.append(waiting);
+  }
+  if (data.notice) page.append(el('p', 'notice', data.notice));
+  homeRendered = revision === targetRevision;
+}
+function needsMathInputs(steps) {
+  return steps.some(step => step?.fields?.some(field => short(field.type) === 'blank'
+    && short(field.answerType || field.correctAnswer?.type || field.response?.type) === 'math'));
+}
+
 async function studyTopic(id, review = false) {
   if (modeChanging || busy) return;
   if (!/^[1-9]\d*$/.test(String(id)) || !Number.isSafeInteger(Number(id))) {
@@ -722,7 +759,10 @@ async function leaveTask(event) {
     setBusy(true);
     try {
       if (pendingPause) await pendingPause;
-      if (short(task.status) === 'started') await api('/api/pause', { taskId: task.taskId, responses: task.type === 'assessment' ? assessmentResponses?.() : undefined, requestId: crypto.randomUUID() });
+      if (short(task.status) === 'started') {
+        const result = await api('/api/pause', { taskId: task.taskId, responses: task.type === 'assessment' ? assessmentResponses?.() : undefined, requestId: crypto.randomUUID() });
+        showReviewSaveState((result.task || result).saveState, task.taskId);
+      }
     }
     catch (error) { showError(error, () => leaveTask()); setBusy(false); return; }
     setBusy(false);
@@ -905,7 +945,7 @@ function previewContent(data, step, index, archived = false) {
 async function renderPreview() {
   if (!isDeveloperMode() || modeChanging || !task) return;
   const data = task, steps = data.steps || [], step = steps[previewStepIndex];
-  await loadMathInputs();
+  if (needsMathInputs(steps.slice(0, previewStepIndex + 1))) await loadMathInputs();
   if (modeChanging || task !== data || !isDeveloperMode()) return;
   updateHeader(data);
   document.title = `Preview${data.title ? ' · ' + data.title : ''} · Course Academy`;
@@ -1122,7 +1162,7 @@ async function renderTask(data) {
   if (modeChanging) return;
   if (isDeveloperMode()) return openPreview({ taskId: data.taskId });
   const revision = settingsRevision;
-  await loadMathInputs();
+  if (needsMathInputs([data.step, ...(data.history || []).map(entry => entry.step)])) await loadMathInputs();
   if (modeChanging || task !== data || revision !== settingsRevision || isDeveloperMode()) return;
   updateHeader(data);
   const status = short(data.status);
@@ -1251,7 +1291,7 @@ function pauseWhenHidden({ unloading = false } = {}) {
   clearTimeout(assessmentSaveTimer);
   const responses = task.type === 'assessment' ? assessmentResponses?.() : undefined;
   pendingPause = assessmentSave.then(() => api('/api/pause', { taskId, responses, requestId: crypto.randomUUID() }, { keepalive: true }))
-    .then(data => { if (task?.taskId === taskId) task.status = (data.task || data).status; })
+    .then(data => { showReviewSaveState((data.task || data).saveState, taskId); if (task?.taskId === taskId) task.status = (data.task || data).status; })
     .catch(() => { /* Re-read authoritative state when the page becomes visible. */ })
     .finally(() => { pendingPause = null; if (!document.hidden) void syncAfterVisibility(); });
   return pendingPause;

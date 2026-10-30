@@ -78,11 +78,11 @@ for(let n=0;n<3;n++){
 }
 assert.equal((await page.evaluate(()=>currentState())).status,'completed');
 const before=await (await page.request.get(ORIGIN+'/test/state')).json();assert.equal(before.writes,1);assert.equal(before.pending,6);assert.equal(before.released,false);
-assert.equal(await page.locator('#reviewSaveStatus').isVisible(),true);
+assert.equal(await page.locator('#reviewSaveStatus').isVisible(),false);
 await page.screenshot({path:OUTPUT+'/review-before-background-save.png',fullPage:true});
 await page.reload();await page.waitForFunction(()=>window.ready);assert.equal((await page.evaluate(()=>currentState())).status,'completed');
 const reloadState=await (await page.request.get(ORIGIN+'/test/state')).json();assert.equal(reloadState.pending,6);assert.equal(reloadState.writes,1);
-await page.request.get(ORIGIN+'/test/release');await page.locator('#reviewSaveStatus').waitFor({state:'hidden'});
+await page.request.get(ORIGIN+'/test/release');await page.waitForFunction(async()=>{const state=await(await fetch('/test/state')).json();return state.pending===0;});
 const after=await (await page.request.get(ORIGIN+'/test/state')).json();assert.equal(after.pending,0);assert.equal(after.writes,6);
 assert.deepEqual(after.actions,['answer','continue','answer','continue','answer','continue']);assert.deepEqual(errors,[]);
 const result={passed:true,timings,completionBeforeAnyDatabaseSave:true,reloadRetainedQueuedAnswers:true,orderedWrites:after.actions,javascriptErrors:errors};fs.writeFileSync(OUTPUT+'/browser-verification.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

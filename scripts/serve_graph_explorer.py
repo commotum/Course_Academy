@@ -36,6 +36,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs, build_worker_count, review_worker_count
 from review_outbox import ReviewOutbox
+from read_cache import ReadCache
 from graph_preferences import read_preferences, update_preferences
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -51,6 +52,14 @@ ASSET_ROOTS = (ROOT.parent / "MA/DATA/Lessons", ROOT.parent / "study/vault",
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}
 MUTATING_ACTIONS = {"draft", "navigate", "submit", "start", "study-topic", "review-topic", "answer", "skip", "expire", "continue", "pause", "resume", "target", "queue", "queue-topic",
                     "assignment-focus", "assignment-answer", "assignment-pause", "regenerate-assessment"}
+# These handlers only inspect captured state. Neither writer admission nor an
+# unrelated transaction may hold their HTTP responses behind api.lock.
+READ_ACTIONS = {"home", "profile", "learner", "task", "assignment", "assignments",
+                "activity-history", "activity-history-detail", "study-stats",
+                "forecast-inputs", "topic-study-availability", "inventory",
+                "preview-home", "preview", "preview-answer", "preview-active-tasks"}
+CACHED_READ_ACTIONS = {"assignments", "activity-history", "activity-history-detail",
+                       "study-stats", "forecast-inputs", "home", "preview-home"}
 
 
 def database_environment(database: str) -> dict[str, str]:
@@ -359,6 +368,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     scheduler_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "scheduler-worker") if learning else None
     feedback_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "feedback-worker") if learning else None
     persistence_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "review-save-worker") if learning else None
+    read_worker = NativeWorker([str(learning), database, learner, environment["EDB_ENDPOINT"], "--serve"], environment, "study-read-worker") if learning else None
+    forecast_worker = NativeWorker([str(learning), database, learner, "--pages", "--serve"], environment, "forecast-read-worker") if learning else None
+    read_cache = ReadCache()
     request_directory = Path(environment["LEARNING_REQUEST_DIR"])
     graph_preferences_path = Path(environment.get('COURSE_ACADEMY_GRAPH_PREFERENCES', ROOT / '.local/graph-preferences.json'))
     mode_path = request_directory / "developer-mode.json"
@@ -535,7 +547,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 # Publishers can spend minutes validating under api.lock. Answers
                 # use the held native peer's mutex plus EDB's exact basis/status
                 # guards, so they may proceed while content is being prepared.
-                with (nullcontext() if page_read or body.get('action') in {'answer', 'topic-study-availability'} else (directory / "api.lock").open("a")) as lock:
+                with (nullcontext() if body.get('action') in READ_ACTIONS | {'answer'} else (directory / "api.lock").open("a")) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX)
                     admitted = time.monotonic()
@@ -554,8 +566,18 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
                     # XP must not wait behind a forecast or activity-history read.
-                    worker = stats_worker if body.get("action") == "study-stats" else page_worker if page_read else learning_worker
-                    response = worker.request(body)
+                    action = body.get('action')
+                    worker = (stats_worker if action == 'study-stats' else
+                              forecast_worker if action == 'forecast-inputs' else
+                              page_worker if page_read else
+                              read_worker if action in READ_ACTIONS else learning_worker)
+                    if action in CACHED_READ_ACTIONS:
+                        key = json.dumps(body, sort_keys=True, separators=(',', ':'))
+                        response = read_cache.request(key, lambda: worker.request(body))
+                    else:
+                        response = worker.request(body)
+                    if response.get('ok') and action not in READ_ACTIONS:
+                        read_cache.invalidate()
                     finished = time.monotonic()
                     refresh_inventory = response.get('ok') and (focus_change or body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic','review-topic','regenerate-assessment'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
@@ -799,7 +821,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                             self.send_bytes(400, b'{"error":"Provide one topic identifier."}', "application/json; charset=utf-8")
                             return
                         request = {"action": "topic", "topicId": identifiers[0]}
-                    result = graph_worker.request(request)
+                    key = 'graph:' + json.dumps(request, sort_keys=True, separators=(',', ':'))
+                    result = read_cache.request(key, lambda: graph_worker.request(request))
                     if not result.get("ok"):
                         if result.get("code") == "not-found":
                             label = "Topic" if path == "/api/topic" else "Course"
@@ -829,11 +852,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         def do_HEAD(self) -> None:
             self.do_GET()
 
-    Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker, scheduler_worker, feedback_worker, persistence_worker)
+    Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker, scheduler_worker, feedback_worker, persistence_worker, read_worker, forecast_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.mark_generator_interruption = staticmethod(inventory_jobs.mark_service_interruption)
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
+    Handler.read_cache = read_cache
     Handler.background = (scheduler_loop, review_outbox.loop, *(build_loop(slot) for slot in range(builder_count)),
                           generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
@@ -859,7 +883,7 @@ def main() -> None:
             worker.request(body)
         except (OSError, ValueError):
             pass  # A foreground request retries startup and reports any failure.
-    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "profile"}, {"action": "activity-history"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"})):
+    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "profile"}, {"action": "activity-history"}, {"action": "activity-history"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "activity-history"})):
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     def stop(_signum, _frame):

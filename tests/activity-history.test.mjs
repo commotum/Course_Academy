@@ -161,3 +161,26 @@ test('unknown dates share a group and relative headings refresh without fetching
   assert.equal(list.children[0].children[1], row);
   assert.equal(f.calls.length, 0);
 });
+
+test('pointer and keyboard intent prefetch only that activity and expansion reuses the request', async () => {
+  for (const event of ['pointerenter', 'focus']) {
+    const f = fixture();
+    const first = f.run('activityRow({taskId:10,title:"Calculus"})');
+    f.run('activityRow({taskId:11,title:"Algebra"})');
+    first.children[0].dispatchEvent(new Event(event)); await flush();
+    assert.deepEqual(f.calls, ['/api/activity?taskId=10']);
+    first.open = true; first.dispatchEvent(new Event('toggle')); await flush();
+    assert.deepEqual(f.calls, ['/api/activity?taskId=10']);
+    assert.match(first.textContent, /No item details/);
+  }
+});
+
+test('a failed history prefetch can be retried by expanding the row', async () => {
+  const f = fixture(); f.setFail(true);
+  const row = f.run('activityRow({taskId:10,title:"Calculus"})');
+  row.children[0].dispatchEvent(new Event('pointerenter')); await flush();
+  f.setFail(false);
+  row.open = true; row.dispatchEvent(new Event('toggle')); await flush();
+  assert.deepEqual(f.calls, ['/api/activity?taskId=10', '/api/activity?taskId=10']);
+  assert.match(row.textContent, /No item details/);
+});

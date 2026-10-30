@@ -361,7 +361,10 @@ impl Poly {
                     // 1/2 because the difference enclosure touches zero.
                     // Enclosures prove rejection only, never exact equality.
                     Atom::Pi => (Q::new(223.into(), 71.into()), Q::new(22.into(), 7.into())),
-                    Atom::E => exp_bounds(&Q::one())?,
+                    Atom::E => {
+                        static E_BOUNDS: std::sync::OnceLock<(Q, Q)> = std::sync::OnceLock::new();
+                        E_BOUNDS.get_or_init(|| exp_bounds(&Q::one()).unwrap()).clone()
+                    },
                     Atom::I => return None,
                     Atom::Variable(name) => {
                         let witness = sample?;
@@ -530,16 +533,18 @@ fn reduced_log_bounds(x: &Q) -> (Q, Q) {
     debug_assert!(*x >= Q::one() && *x <= Q::from_integer(2.into()));
     let t = (x - Q::one()) / (x + Q::one());
     let square = &t * &t;
-    let mut power = t.clone();
-    let mut sum = Q::zero();
+    let mut power = (t.clone(), t);
+    let mut sum = (Q::zero(), Q::zero());
     for k in 0..24 {
-        sum += &power / Q::from_integer((2 * k + 1).into());
-        power *= &square;
+        let divisor = Q::from_integer((2 * k + 1).into());
+        sum = round_interval((sum.0 + &power.0 / &divisor,
+                              sum.1 + &power.1 / &divisor)).unwrap();
+        power = round_interval((power.0 * &square, power.1 * &square)).unwrap();
     }
-    sum *= Q::from_integer(2.into());
-    let remainder = Q::from_integer(2.into()) * power.abs()
+    let two = Q::from_integer(2.into());
+    let remainder = &two * power.1
         / (Q::from_integer(49.into()) * (Q::one() - square));
-    (&sum - &remainder, sum + remainder)
+    (sum.0 * &two - &remainder, sum.1 * two + remainder)
 }
 fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
     if x.abs() > Q::from_integer(16.into()) {
@@ -569,18 +574,21 @@ fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
         return Some((lo - &radius, hi + radius));
     }
     let cosine = name == "cos";
-    let mut term = if cosine { Q::one() } else { x.clone() };
+    let first = if cosine { Q::one() } else { x.clone() };
+    let mut term = (first.clone(), first);
     let mut sum = term.clone();
     // Taylor's theorem: derivatives of real sine/cosine have absolute value
     // at most one. The next-degree absolute term bounds the remainder.
     let mut degree = if cosine { 0 } else { 1 };
     for _ in 0..39 {
-        term *= -x * x / Q::from_integer(((degree + 1) * (degree + 2)).into());
-        sum += &term;
+        let factor = -x * x / Q::from_integer(((degree + 1) * (degree + 2)).into());
+        term = round_interval(interval_mul(&term, &(factor.clone(), factor)))?;
+        sum = round_interval((sum.0 + &term.0, sum.1 + &term.1))?;
         degree += 2;
     }
-    let remainder = term.abs() * x.abs() / Q::from_integer((degree + 1).into());
-    Some((&sum - &remainder, sum + remainder))
+    let remainder = term.0.abs().max(term.1.abs()) * x.abs()
+        / Q::from_integer((degree + 1).into());
+    Some((sum.0 - &remainder, sum.1 + remainder))
 }
 fn exp_bounds(x: &Q) -> Option<(Q, Q)> {
     if x.abs() > Q::from_integer(128.into()) {
@@ -603,17 +611,17 @@ fn exp_bounds(x: &Q) -> Option<(Q, Q)> {
         return Some((bounded_endpoints(&(&lo * &lo))?.0,
                      bounded_endpoints(&(&hi * &hi))?.1));
     }
-    let mut sum = Q::one();
-    let mut term = Q::one();
+    let mut sum = (Q::one(), Q::one());
+    let mut term = (Q::one(), Q::one());
     for k in 1..=80 {
-        term *= x / Q::from_integer(k.into());
-        sum += &term;
+        let factor = x / Q::from_integer(k.into());
+        term = round_interval((term.0 * &factor, term.1 * factor))?;
+        sum = round_interval((sum.0 + &term.0, sum.1 + &term.1))?;
     }
     // Taylor remainder <= e^|x| * |x|^81/81!. Use e < 3.
     let factor = Q::from_integer(BigInt::from(3).pow(x.abs().ceil().to_integer().to_u32()?));
-    let remainder = term.abs() * x.abs() / Q::from_integer(81.into()) * factor;
-    Some((bounded_endpoints(&(&sum - &remainder))?.0,
-          bounded_endpoints(&(sum + remainder))?.1))
+    let remainder = term.1 * x.abs() / Q::from_integer(81.into()) * factor;
+    round_interval((sum.0 - &remainder, sum.1 + remainder))
 }
 // Principal real arctangent. Alternating-series bounds are rational and
 // are used only to prove inequality, never to accept numerical agreement.
@@ -635,17 +643,21 @@ fn atan_bounds(x: &Q) -> Option<(Q, Q)> {
         return Some((pi_lo / Q::from_integer(4.into()) + lo,
                      pi_hi / Q::from_integer(4.into()) + hi));
     }
-    let mut sum = Q::zero();
-    let mut power = x.clone();
+    let mut sum = (Q::zero(), Q::zero());
+    let mut power = (x.clone(), x.clone());
     let square = x * x;
     for n in 0..32 {
-        let term = &power / Q::from_integer((2*n+1).into());
-        if n % 2 == 0 { sum += term; } else { sum -= term; }
-        power *= &square;
+        let divisor = Q::from_integer((2*n+1).into());
+        sum = if n % 2 == 0 {
+            round_interval((sum.0 + &power.0 / &divisor, sum.1 + &power.1 / &divisor))?
+        } else {
+            round_interval((sum.0 - &power.1 / &divisor, sum.1 - &power.0 / &divisor))?
+        };
+        power = round_interval((power.0 * &square, power.1 * &square))?;
     }
     // 32 terms end below atan(x); the next positive term bounds the tail.
-    let upper = &sum + power / Q::from_integer(65.into());
-    Some((bounded_endpoints(&sum)?.0, bounded_endpoints(&upper)?.1))
+    let upper = sum.1 + power.1 / Q::from_integer(65.into());
+    round_interval((sum.0, upper))
 }
 // Monotonic principal arcsine, with rational enclosures only. For an
 // interior real input, asin(x)=atan(x/sqrt(1-x*x)); atan and root bounds
@@ -701,6 +713,16 @@ fn interval_mul(a: &(Q, Q), b: &(Q, Q)) -> (Q, Q) {
         products.iter().min().unwrap().clone(),
         products.iter().max().unwrap().clone(),
     )
+}
+
+// Taylor recurrences otherwise multiply the argument's exact denominator at
+// every step. Nested functions can turn a small witness into thousands-bit
+// fractions and seconds of GCD work. Outward rounding at each step retains a
+// rational proof enclosure while bounding the arithmetic throughout the series.
+// These intervals only disprove equality or discharge a strict sign obligation;
+// overlap never establishes equality.
+fn round_interval((lo, hi): (Q, Q)) -> Option<(Q, Q)> {
+    Some((bounded_endpoints(&lo)?.0, bounded_endpoints(&hi)?.1))
 }
 impl Value {
     fn number(q: Q) -> Self {
@@ -2855,8 +2877,14 @@ fn equivalent_domain_conditions(a: &BTreeSet<Condition>, b: &BTreeSet<Condition>
 }
 
 fn compare_single(a: &str, b: &str, context: Context) -> Result<bool> {
+    let identical_source = a == b;
     let a = parse(a, context)?;
+    // Identical input still passes the complete parser and domain checks, but
+    // does not need a second expansion or cross multiplication. Unknown input
+    // must never acquire correctness merely by matching the stored text.
+    if identical_source { return Ok(true); }
     let b = parse(b, context)?;
+    if a == b { return Ok(true); }
     match (a, b) {
         (Answer::Special(a), Answer::Special(b)) => Ok(a == b),
         (Answer::Special(_), Answer::Expression(..))
@@ -2987,6 +3015,84 @@ fn condition_at(c: &Condition, sample: &Witness) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn witness_series_keep_rational_enclosures_small_and_outward() {
+        use super::*;
+        // A 120-bit dyadic argument made exact Taylor denominators grow past
+        // 9,000 bits. Check against independent unrounded series and their
+        // rigorous remainder bounds, including negative and tiny arguments.
+        let dyadic = Q::new((BigInt::one() << 119) + BigInt::from(17), BigInt::one() << 120);
+        let tiny = Q::new(BigInt::one(), BigInt::one() << 120);
+        for x in [Q::zero(), Q::new(1.into(), 3.into()), dyadic, tiny] {
+            let check = |actual: (Q, Q), exact: (Q, Q)| {
+                assert!(actual.0 <= exact.0 && actual.1 >= exact.1);
+                for endpoint in [&actual.0, &actual.1] {
+                    assert!(endpoint.numer().bits().max(endpoint.denom().bits()) <= 512);
+                }
+            };
+            for name in ["sin", "cos"] {
+                for x in [x.clone(), -&x] {
+                    let mut term = if name == "cos" { Q::one() } else { x.clone() };
+                    let mut sum = term.clone();
+                    let mut degree = if name == "cos" { 0 } else { 1 };
+                    for _ in 0..39 {
+                        term *= -&x * &x / Q::from_integer(((degree + 1) * (degree + 2)).into());
+                        sum += &term;
+                        degree += 2;
+                    }
+                    let tail = term.abs() * x.abs() / Q::from_integer((degree + 1).into());
+                    check(trig_bounds(name, &x).unwrap(), (&sum - &tail, sum + tail));
+                }
+            }
+            let mut term = Q::one();
+            let mut sum = term.clone();
+            for k in 1..=80 {
+                term *= &x / Q::from_integer(k.into());
+                sum += &term;
+            }
+            let tail = term * &x / Q::from_integer(81.into())
+                * Q::from_integer(BigInt::from(3).pow(x.ceil().to_integer().to_u32().unwrap()));
+            check(exp_bounds(&x).unwrap(), (&sum - &tail, sum + tail));
+
+            let argument = Q::one() + &x;
+            let t = (&argument - Q::one()) / (&argument + Q::one());
+            let square = &t * &t;
+            let mut power = t;
+            let mut sum = Q::zero();
+            for k in 0..24 {
+                sum += &power / Q::from_integer((2*k+1).into());
+                power *= &square;
+            }
+            sum *= Q::from_integer(2.into());
+            let tail = Q::from_integer(2.into()) * power
+                / (Q::from_integer(49.into()) * (Q::one() - square));
+            check(reduced_log_bounds(&argument), (&sum - &tail, sum + tail));
+
+            let square = &x * &x;
+            let mut power = x.clone();
+            let mut sum = Q::zero();
+            for n in 0..32 {
+                let term = &power / Q::from_integer((2*n+1).into());
+                if n % 2 == 0 { sum += term; } else { sum -= term; }
+                power *= &square;
+            }
+            let upper = &sum + power / Q::from_integer(65.into());
+            check(atan_bounds(&x).unwrap(), (sum, upper));
+        }
+    }
+
+    #[test]
+    fn identical_answer_fast_paths_validate_domains_and_notation() {
+        use super::*;
+        for answer in ["(x+1)^16", "1/x", "ln(x)", "x/x=1"] {
+            assert_eq!(compare(answer, answer, Context::default()), Ok(true));
+        }
+        for answer in ["foo(x)", "1/0", "ln(-1)", "x=y=1"] {
+            assert!(compare(answer, answer, Context::default()).is_err());
+        }
+        assert!(compare("x/x", "1", Context::default()).is_err());
+    }
+
     #[test]
     fn expanded_polynomial_answers_retain_exact_grading_and_input_guards() {
         use super::{compare, lex, supports, Context};

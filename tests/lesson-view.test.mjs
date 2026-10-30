@@ -11,7 +11,7 @@ const visibility = source.slice(source.indexOf('async function syncAfterVisibili
 const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 
 function fixture(storage = new Map()) {
-  const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], notifications: [], dev: false, now: 10000 };
+  const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], notifications: [], events: [], mathInputLoads: 0, dev: false, now: 10000 };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.childNodes = []; this.dataset = {}; this.style = {}; this.attrs = {}; this.className = ''; }
     get children() { return this.childNodes.filter(node => node.tagName !== '#text'); }
@@ -56,9 +56,10 @@ function fixture(storage = new Map()) {
   }
   document.getElementById('errorBanner').hidden = true;
   f.document = document;
-  const window = { MathJax: { typesetClear(nodes) { f.cleared.push(...nodes); } } };
+  const window = { dispatchEvent(event) { f.events.push(event); }, MathJax: { typesetClear(nodes) { f.cleared.push(...nodes); } } };
   const context = vm.createContext({ document, window, MathJax: window.MathJax, crypto, URLSearchParams, AbortController, Event,
-    setTimeout, clearTimeout,
+    CustomEvent: class extends Event { constructor(type, settings = {}) { super(type); this.detail = settings.detail; } },
+    setTimeout, clearTimeout, fTypeset: node => f.typeset?.(node),
     Date: class extends Date { static now() { return f.now; } },
     isDeveloperMode: () => f.dev,
     attachStepMenu(node, id, mathAcademyId, options = {}) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; node.dataset.contentKind = options.kind; },
@@ -66,10 +67,10 @@ function fixture(storage = new Map()) {
     localStorage: { setItem: (key, value) => f.notifications.push({ key, value }) },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
     createStudySidebar: () => new Element('aside'),
-    loadMathInputs: async () => {},
+    loadMathInputs: async () => { f.mathInputLoads++; if (f.mathInputDelay) await f.mathInputDelay; },
     fetch: async (path, options) => {
       const body = options.body ? JSON.parse(options.body) : null;
-      f.calls.push({ path, body, keepalive: options.keepalive });
+      f.calls.push({ path, body, keepalive: options.keepalive, signal: options.signal });
       const response = await f.respond?.(path, body);
       if (response) return response;
       if (path === '/api/pause') { f.server.status = 'paused'; f.server.step.status = 'paused'; f.server.elapsedSeconds = f.h.clock.elapsed; }
@@ -83,17 +84,17 @@ function fixture(storage = new Map()) {
     ${controllers}
     ${visibility}
     markdown = (value, className = 'prose', fields = []) => {
-      const node = el('div', className, value || '');
+      const node = el('div', className); node.append(document.createTextNode(value || ''));
       for (const match of inlinePrompt(value, fields).matchAll(/data-field-key="([^"]+)"/g)) {
         const slot = el('span', 'field-location'); slot.dataset.fieldKey = match[1]; node.append(slot);
       }
       return node;
     };
-    typeset = async () => {};
+    typeset = async node => { if (fTypeset) await fTypeset(node); };
     loadMath = async () => {};
     return {
       get view() { return lessonView; }, get clock() { return clock; }, get pending() { return pendingPause; },
-      updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, toggleLessonPause, retry: () => retryOperation?.(),
+      showReviewSaveState, updateTaskTimer, mutation, setBusy, pauseWhenHidden, syncAfterVisibility, refreshPageOnReturn, openTask, studyTopic, home, leaveTask, toggleLessonPause, retry: () => retryOperation?.(),
       render: async data => { task = data; await renderTask(data); },
       preview: async (data, index) => { task = data; previewStepIndex = index; await renderPreview(); },
     };
@@ -631,10 +632,10 @@ test('returning to Study refreshes its queue without a Refresh button or a loadi
   let release;
   f.delay = new Promise(resolve => { release = resolve; });
   const refresh = f.h.refreshPageOnReturn();
-  await f.h.refreshPageOnReturn();
+  const coalesced = f.h.refreshPageOnReturn();
   assert.equal(f.calls.length, 2);
   assert.equal(f.document.getElementById('main').querySelector('.queue-card'), original);
-  release(); await refresh;
+  release(); await Promise.all([refresh, coalesced]);
   assert.match(f.document.getElementById('main').textContent, /Updated lesson/);
   f.delay = null; f.dev = true;
   await f.h.refreshPageOnReturn();
@@ -851,4 +852,86 @@ test('assessment completion replaces submitted archived cards with revealed serv
   assert.notEqual(revealed, old);
   assert.match(revealed.textContent, /Incorrect/);
   assert.match(revealed.textContent, /First solution/);
+});
+
+test('authoritative steps become usable while current and archived math renders in the background', async () => {
+  const f = fixture();
+  const rendered = [];
+  let release;
+  const delayedMath = new Promise(resolve => { release = resolve; });
+  f.typeset = node => { rendered.push(node); return delayedMath; };
+  f.server = activity(2, 2, { history: [{ order: 1, step: activity(1).step }] });
+  await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
+  assert.equal(f.h.view.currentId, '2');
+  assert.equal(rendered[0], f.h.view.current);
+  assert.equal(rendered.length, 2);
+  assert.equal(f.h.view.current.querySelector('.lesson-controls').querySelector('button').disabled, false);
+  assert.equal(f.document.getElementById('main').getAttribute('aria-busy'), 'false');
+  release();
+});
+
+test('tutorials and choice questions render without importing the math editor, while math blanks wait for it', async () => {
+  const f = fixture();
+  await f.h.render(activity(1));
+  await f.h.render(activity(2, 2, { step: question(2) }));
+  assert.equal(f.mathInputLoads, 0);
+  const step = question(3); step.fields = [{ id: 30, type: 'blank', answerType: 'math' }];
+  let release;
+  f.mathInputDelay = new Promise(resolve => { release = resolve; });
+  const rendering = f.h.render(activity(3, 3, { step }));
+  assert.equal(f.mathInputLoads, 1);
+  assert.equal(f.h.view.currentId, '2');
+  release(); await rendering;
+  assert.equal(f.h.view.current.querySelector('math-field').getAttribute('name'), '30');
+});
+
+test('Back to Study immediately shows the saved queue with confirmed completed tasks removed', async () => {
+  const f = fixture();
+  f.server = { activities: [activity(1), activity(2, 1, { taskId: 124, activityId: 457, title: 'Another lesson' })] };
+  await f.h.home();
+  await f.h.render(activity(1, 3, { status: 'completed' }));
+  let release;
+  f.delay = new Promise(resolve => { release = resolve; });
+  const returning = f.h.leaveTask();
+  const main = f.document.getElementById('main');
+  assert.equal(main.querySelector('.loading'), null);
+  assert.equal(main.querySelectorAll('.queue-card').length, 1);
+  assert.match(main.textContent, /Another lesson/);
+  assert.equal(main.querySelector('.queue-card').querySelector('button').disabled, false);
+  release(); await returning;
+});
+
+test('a slow background queue refresh cannot delay opening an already visible task or replace the resulting lesson', async () => {
+  const f = fixture(); f.server = { activities: [activity(1)] };
+  await f.h.home();
+  let release;
+  f.respond = async path => path === '/api/queue'
+    ? new Promise(resolve => { release = () => resolve({ ok: true, json: async () => ({ activities: [] }) }); })
+    : { ok: true, json: async () => activity(2, 2) };
+  const refresh = f.h.refreshPageOnReturn();
+  assert.equal(f.document.getElementById('main').querySelector('.queue-card').querySelector('button').disabled, false);
+  const queueCall = f.calls.at(-1);
+  await f.h.openTask(123);
+  assert.equal(queueCall.signal.aborted, true);
+  assert.equal(f.h.view.currentId, '2');
+  release(); await refresh;
+  assert.equal(f.h.view.currentId, '2');
+  assert.equal(f.document.getElementById('main').querySelector('.study-activities'), null);
+});
+
+test('normal durable progress sync stays invisible and genuine failures remain actionable across tasks', async () => {
+  const f = fixture();
+  f.h.showReviewSaveState({ status: 'pending' }, 123);
+  const status = f.document.getElementById('reviewSaveStatus');
+  assert.equal(status.hidden, true);
+  f.h.showReviewSaveState({ status: 'error' }, 123);
+  assert.equal(status.hidden, false);
+  assert.match(status.textContent, /saved locally.*Sync needs attention.*Retry saving/);
+  f.h.showReviewSaveState({ status: 'pending' }, 124);
+  assert.equal(status.hidden, false);
+  f.h.showReviewSaveState({ status: 'saved' }, 124);
+  assert.equal(status.hidden, false);
+  f.h.showReviewSaveState({ status: 'saved' }, 123);
+  assert.equal(status.hidden, true);
+  assert.equal(f.events.filter(event => event.type === 'course-academy:review-saved').length, 2);
 });

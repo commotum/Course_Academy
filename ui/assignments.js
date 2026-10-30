@@ -290,6 +290,10 @@ function questions(content, result = []) {
   else for (const step of content.steps || []) questions(step.content, result);
   return result;
 }
+function assignmentNeedsMathInputs(assignment) {
+  return (assignment.steps || []).some(step => questions(step.content).some(question => question.fields?.some(field => short(field.type) === 'blank'
+    && short(field.answerType || field.correctAnswer?.type || field.response?.type) === 'math')));
+}
 function applyAssignment(data, requestGeneration) {
   if (requestGeneration !== generation || modeChanging || Boolean(data.preview) !== Boolean(assignmentData?.preview)) return;
   if (Number(data.basis) < Number(assignmentData?.basis)) return;
@@ -684,7 +688,7 @@ async function load({ preserve = false } = {}) {
     const data = await api(id ? '/api/assignment?assignment=' + encodeURIComponent(id) : '/api/assignments', null, { signal: requestController.signal });
     if (request !== generation) return;
     if (id ? !data.assignment?.title || !Array.isArray(data.assignment.steps) : !Array.isArray(data.assignments)) throw new Error('The assignment data is unavailable. Try again.');
-    if (id) await loadMathInputs();
+    if (id && assignmentNeedsMathInputs(data.assignment)) await loadMathInputs();
     if (request !== generation) return;
     if (window.MathJax?.typesetClear) MathJax.typesetClear([$('main')]);
     updateHeader(data); $('main').replaceChildren();

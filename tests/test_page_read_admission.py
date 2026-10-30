@@ -26,7 +26,7 @@ class PageReadAdmission(unittest.TestCase):
                 return {"ok": True, "data": {"forecast": True}}
             page.request.side_effect = forecast
             stats.request.return_value = {"ok": True, "data": {"days": []}}
-            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), page, stats, Mock(), Mock(), Mock()]):
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), Mock(), stats, Mock(), Mock(), Mock(), Mock(), page]):
                 cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
             def read(action):
                 request = cls.__new__(cls)
@@ -50,7 +50,7 @@ class PageReadAdmission(unittest.TestCase):
         from serve_graph_explorer import save_json
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
-            workers = {name: Mock() for name in ['graph-worker','learning-worker','page-worker','stats-worker','scheduler-worker','feedback-worker','review-save-worker']}
+            workers = {name: Mock() for name in ['graph-worker','learning-worker','page-worker','stats-worker','scheduler-worker','feedback-worker','review-save-worker','study-read-worker','forecast-read-worker']}
             workers['feedback-worker'] = Grader()
             with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=lambda cmd,env,name: workers[name]):
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
@@ -257,14 +257,14 @@ class PageReadAdmission(unittest.TestCase):
                 with (Path(directory) / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
                     with ThreadPoolExecutor(max_workers=1) as executor:
-                        for action in ["assignments", "activity-history", "study-stats", "forecast-inputs", "mode", "answer", "topic-study-availability"]:
+                        for action in ["assignments", "activity-history", "study-stats", "forecast-inputs", "mode", "answer", "topic-study-availability", "profile", "learner", "task", "assignment", "activity-history-detail", "home", "preview", "preview-home"]:
                             request = cls.__new__(cls)
                             replies = []
                             request.send_bytes = lambda status, body, content_type: replies.append((status, json.loads(body)))
                             if action == "mode":
                                 pending = executor.submit(request.mode_request)
                             else:
-                                body = {"action": action}
+                                body = {"action": action, "taskId": 1}
                                 if action == 'answer':
                                     body.update(requestId='answer-test-request', submissionId='answer-test-submission', itemId=1, responses=[])
                                 pending = executor.submit(request.learning_request, body)

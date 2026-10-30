@@ -138,6 +138,9 @@ pub(super) fn compare(a: &str, b: &str, context: Context) -> Option<Result<bool>
             return Ok(false);
         };
         let (pa, ca) = residual(al, ar, context)?;
+        // `supports` validates an equation by comparing it with itself. One
+        // residual establishes support and retains every original side guard.
+        if a == b { return Ok(true); }
         let (pb, cb) = residual(bl, br, context)?;
         if ca != cb {
             return Err("equation comparison has unresolved domain differences".into());

@@ -111,3 +111,13 @@ test('same-titled courses stay separate and empty or storage-blocked lists remai
   assert.match(f.main.textContent, /All assignments completed/);
   assert.deepEqual(rows(f.main.querySelector('.assignment-completed')), ['Done']);
 });
+
+test('assignment editor loading is required only for math blanks, including nested assigned problems', () => {
+  const code = source.slice(source.indexOf('function questions('), source.indexOf('function applyAssignment('));
+  const needsEditor = vm.runInNewContext(`(() => { const short=value=>String(value||'').split('/').at(-1); ${code}; return assignmentNeedsMathInputs; })()`);
+  const assignment = field => ({ steps: [{ content: { kind: 'assigned-problem', content: { kind: 'question', fields: [field] } } }] });
+  assert.equal(needsEditor(assignment({ type: 'radio', choices: [] })), false);
+  assert.equal(needsEditor(assignment({ type: 'blank', answerType: 'text' })), false);
+  assert.equal(needsEditor(assignment({ type: 'blank', answerType: 'math' })), true);
+  assert.equal(needsEditor({ steps: [{ content: { kind: 'question-group', steps: [{ content: { kind: 'question', fields: [{ type: 'blank', response: { type: 'answer.type/math' } }] } }] } }] }), true);
+});
