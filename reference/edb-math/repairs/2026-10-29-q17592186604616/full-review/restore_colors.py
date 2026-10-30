@@ -77,12 +77,25 @@ for c in json.loads((H/'color-candidates.json').read_text()):
     if canonical(old_body)!=canonical(value):raise AssertionError('Scalar mathematical content changed')
     scalar_edits.append((m.start()+edge,m.end()-edge,value))
   for a,b,value in sorted(scalar_edits,reverse=True):new=new[:a]+value+new[b:]
+  # Successful verification ticks are authored source emphasis outside grids.
+  # Match every tick in order before adding its observed color.
+  all_source=source_tex(src['html']);source_ticks=list(re.finditer(r'✓|\\checkmark(?![A-Za-z])',all_source));current_ticks=[]
+  for block in MATH.finditer(new):
+   for tick in re.finditer(r'✓|\\checkmark(?![A-Za-z])',block[0]):current_ticks.append((block.start()+tick.start(),block.start()+tick.end()))
+  tick_edits=[]
+  if len(source_ticks)==len(current_ticks):
+   for tick,(a,b)in zip(source_ticks,current_ticks):
+    color=re.search(r'\{\\color\{([A-Za-z]+)\}$',all_source[:tick.start()])
+    if not color:continue
+    if re.search(r'\{\\color\{'+re.escape(color[1])+r'\}$',new[:a]):continue
+    tick_edits.append((a,b,r'{\color{'+color[1]+'}'+new[a:b]+'}'))
+  for a,b,value in sorted(tick_edits,reverse=True):new=new[:a]+value+new[b:]
   assert[t['key']for t in tables(new)]==[t['key']for t in ct]
   for fn in[validate_math_boundaries,validate_matrix_layouts,validate_math_structure]:fn(new)
-  options.append({'path':src['path'],'after':new,'colored_cells':painted,'scalar_formulas_restored':len(scalar_edits)})
+  options.append({'path':src['path'],'after':new,'colored_cells':painted,'scalar_formulas_restored':len(scalar_edits),'verification_tick_colors_restored':len(tick_edits)})
  if not options:review.append({**c,'notes':notes});continue
  assert len({o['after']for o in options})==1,(mid,attr,'Source colors disagree')
  o=options[0]
  if o['after']!=old:proposals.append({'entity':obj[':db/id'],'attribute':attr,'before':old,'after':o['after'],'reason':'Restore archived explanatory cell colors after verifying every ordered table cell is mathematically unchanged.'})
- verified.append({'entity':obj[':db/id'],'identity':mid,'attribute':attr,'matched_source':o['path'],'colored_cells_restored':o['colored_cells'],'scalar_formulas_restored':o['scalar_formulas_restored'],'all_table_cells_mathematically_unchanged':True})
+ verified.append({'entity':obj[':db/id'],'identity':mid,'attribute':attr,'matched_source':o['path'],'colored_cells_restored':o['colored_cells'],'scalar_formulas_restored':o['scalar_formulas_restored'],'verification_tick_colors_restored':o['verification_tick_colors_restored'],'all_table_cells_mathematically_unchanged':True})
 (H/'color-proposals.json').write_text(json.dumps(proposals,indent=2)+'\n');(H/'color-verification.json').write_text(json.dumps({'passed':not review,'checks':verified,'review':review},indent=2)+'\n');print('Color repairs',len(proposals),'verified candidates',len(verified),'review',len(review));print([(r['identity'],r['attribute'])for r in review])

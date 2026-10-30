@@ -22,6 +22,10 @@ Capture complete formulas, preserving MathML table rows, column roles, grid rule
 
 Matrix-entry controls are semantic matrix cells, not a spreadsheet. Preserve source row/column spans and every live math-editor field when capturing HTML tables. For authored or repaired matrix-answer prompts, use `matrix_answer()` with the existing field keys in source row-major order; keep labels and bracket decoration outside the answer cells.
 
+Source tables can draw matrix brackets with borders on empty cells, or place an inverse label on a spacer row between matrix rows. Recognize that decoration before stripping styles or converting to Markdown. Use `matrix_equation()` for a matrix product or a factored inverse, and `system_answer()` for editable equation rows under one brace. Keep prefactor blanks outside the matrix and bind observed field identities before rendering. Never copy a submitted historical value into the problem while replacing its widget. The shared Python and browser table extractors recognize these explicit layouts; ordinary data tables retain their table roles.
+
+Source fidelity includes explanatory cell colors, shaded pivot boxes and verification marks. A mathematically equivalent reconstruction can still lose the visual explanation. Compare complete prompts, worked solutions, tutorials and rendered checkbox labels; verify every matrix's ordered cells and dimensions as well as TeX syntax. Keep previously repaired grouping and delimiters while restoring source emphasis.
+
 ### Activity and steps
 
 1. Open or resume the activity using its queue details. Save instructions, task ID, title, and topic/course references before starting when possible. Read instructions before starting a timed activity; use the queue's question count/time limit and monitor the live timer.

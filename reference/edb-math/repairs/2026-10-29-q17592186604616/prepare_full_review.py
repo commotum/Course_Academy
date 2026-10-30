@@ -1,7 +1,7 @@
 """Freeze the complete requested four-lesson scope and its proposed repairs."""
 import copy,json,sys
 from pathlib import Path
-H=Path(__file__).resolve().parent;S1=json.loads((H/'lesson.json').read_text());S2=json.loads((H/'expanded-scope/current.json').read_text());questions=S1['questions']+S2['questions'];contents=S1['contents']+S2['contents'];first=json.loads((H/'lesson-proposals.json').read_text());pending=json.loads((H/'expanded-scope/layout-proposals.json').read_text())+json.loads((H/'completion-proposals.json').read_text());changes={(p['entity'],':'+p['attribute']):p['after']for p in first+pending};controls=[];render=[];native=[]
+H=Path(__file__).resolve().parent;S1=json.loads((H/'lesson.json').read_text());S2=json.loads((H/'expanded-scope/current.json').read_text());questions=S1['questions']+S2['questions'];contents=S1['contents']+S2['contents'];first=json.loads((H/'lesson-proposals.json').read_text());pending=json.loads((H/'expanded-scope/layout-proposals.json').read_text())+json.loads((H/'completion-proposals.json').read_text());colors=json.loads((H/'full-review/color-proposals.json').read_text())if(H/'full-review/color-proposals.json').exists()else[];changes={(p['entity'],':'+p['attribute']):p['after']for p in first+pending+colors};controls=[];render=[];native=[]
 def patch(o):
  if isinstance(o,list):return[patch(x)for x in o]
  if not isinstance(o,dict):return o
@@ -11,7 +11,7 @@ def patch(o):
  for(e,k),v in changes.items():
   if n.get(':db/id')==e:n[k]={':db/id':v}if k==':answer-field/correct'else v
  return n
-qs=patch(questions)
+contents=patch(contents);qs=patch(questions)
 for q in qs:
  fields=[]
  for f in q.get(':question/answer-fields',[]):
