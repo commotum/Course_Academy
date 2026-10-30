@@ -26,7 +26,7 @@ try:
        assert row['blankEditors']==sum(f['type']=='blank'for f in item['fields']),row
        assert g['unmounted']==0,row
        assert all(not t['nested']and not t['scroll']and not t['borders']for t in g['tables']),row
-       assert len(g['tables'])==3,row
+       assert len(g['tables'])==item.get('expected_tables',3),row
       checks.append(row)
      if width==760 and mode=='edit'and len(items)<=2:
       for i,item in enumerate(batch):page.locator('article').nth(i).screenshot(path=str(output.parent/(str(item['entity'])+'-760.png')))
