@@ -508,7 +508,10 @@ impl Application {
 
     fn handle(&mut self, mut body: Json) -> Result<Json> {
         let started = Instant::now();
-        if matches!(body["action"].as_str(),Some("study-project"|"study-read")) {
+        if body["action"] == "study-project" && body.get("baseReference").is_some() {
+            // Detached queue planning opens its explicitly captured immutable
+            // base below; it must not adopt a newer background publication.
+        } else if matches!(body["action"].as_str(),Some("study-project"|"study-read"|"study-capture")) {
             self.refresh_study_without_waiting(&body);
         } else { self.adopt(self.conn.sync()?)?; }
         trace("sync", started);
@@ -2832,6 +2835,13 @@ impl Application {
     fn process(&mut self, body: &Json) -> Result<Json> {
         let action = body["action"].as_str().ok_or("Action required")?;
         if body["action"] == "persist-review" { return review_interaction::persist(self,body); }
+        if action == "study-capture" {
+            let basis=self.reference.key().basis_t();
+            if body["overlay"].is_null() && basis < body["committedBasis"].as_u64().unwrap_or(0) {
+                return Ok(json!({"ready":false,"basis":basis}));
+            }
+            return Ok(json!({"ready":true,"reference":self.reference.encode()?,"basis":basis}));
+        }
         if action == "study-project" { return study_interaction::project(self,body); }
         if action == "study-read" { return study_interaction::read(self,body); }
         if action == "persist-study" { return study_interaction::persist(self,body); }

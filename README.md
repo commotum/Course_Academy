@@ -75,6 +75,9 @@ a retry action. Keep the request directory with the database when moving or
 restoring the installation: it contains accepted progress that may not yet have
 reached EDB, plus receipts needed to recover uncertain replies safely. Existing
 `review-outbox` journals are recovered using their original replay protocol.
+Queue preparation runs on a separate peer outside the interaction lock and
+publishes only if the captured local state is unchanged. Opening Study reads the
+resident view and requests a background refresh; it never waits for preparation.
 
 Display reads use separate peers and bounded last-good response caches while
 refreshing in the background. Relevant learner changes still invalidate native

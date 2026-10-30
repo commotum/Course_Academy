@@ -17,9 +17,12 @@ from serve_graph_explorer import save_json
 class Grader:
     def __init__(self):
         self.calls = []
+        self.reference = [1, 2, 3]
 
     def request(self, body):
         self.calls.append(copy.deepcopy(body))
+        if body['action'] == 'study-capture':
+            return {'ok': True, 'data': {'reference': copy.deepcopy(self.reference), 'basis': 1}}
         if body['action'] == 'study-read':
             return {'ok': True, 'data': {'action': body['operation']['action'], 'visibleLocal': True}}
         action = body['operation']['action']
@@ -152,6 +155,36 @@ class StudyOutboxTest(unittest.TestCase):
                                      'requestId': 'disabled-queue-0001'}, 1000)
         self.assertEqual(result, {'_disabled': True})
         self.assertEqual(observed, [0])
+        self.assertEqual(self.queue.status()['pending'], 0)
+
+    def test_detached_planner_is_pinned_and_discarded_if_hot_authored_base_changes(self):
+        planner = Mock()
+        captured = []
+        def plan(body):
+            captured.append(copy.deepcopy(body['baseReference']))
+            result = self.grader.request(body)
+            self.grader.reference = [4, 5, 6]  # A repaired bank became visible.
+            return result
+        planner.request.side_effect = plan
+        self.queue.planner = planner
+        result = self.queue.request({'action': 'queue', 'background': True,
+                                     'requestId': 'changed-bank-queue-0001'}, 1000)
+        self.assertEqual(captured, [[1, 2, 3]])
+        self.assertEqual(result, {'_superseded': True})
+        self.assertEqual(self.queue.status()['pending'], 0)
+
+    def test_detached_planner_waits_without_blocking_for_committed_base_after_drain(self):
+        planner = Mock()
+        self.queue.planner = planner
+        original = self.grader.request
+        def capture_not_ready(body):
+            if body['action'] == 'study-capture':
+                return {'ok': True, 'data': {'ready': False, 'basis': 10}}
+            return original(body)
+        self.grader.request = capture_not_ready
+        self.assertEqual(self.queue.request({'action': 'queue', 'background': True,
+                                             'requestId': 'lagging-base-queue-0001'}, 1000), {'_superseded': True})
+        planner.request.assert_not_called()
         self.assertEqual(self.queue.status()['pending'], 0)
 
     def test_unknown_outcome_replays_exact_operation_across_restart(self):

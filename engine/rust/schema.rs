@@ -372,7 +372,9 @@ impl EntitySnapshot {
             if old.is_some()&&changed_prefix("answer/") {
                 let dependents=(|| -> Result<Vec<u64>> {
                     let mut questions=vec![];
-                    for field in self.owners(eid,"answer-field/choices")? {
+                    let fields=self.owners(eid,"answer-field/choices")?.into_iter()
+                        .chain(self.owners(eid,"answer-field/correct")?).collect::<BTreeSet<_>>();
+                    for field in fields {
                         questions.extend(self.owners(field,"question/answer-fields")?);
                     }
                     Ok(questions)
@@ -1937,6 +1939,11 @@ mod tests {
         s.replace_records(BTreeMap::from([(6,record(json!({"answer/value":"corrected"})))]),4).unwrap();
         assert!(!s.entities.question_validated(2));
         assert!(s.entities.lesson_route(102).is_none());
+        // Imported repair states may temporarily omit the key from choices.
+        s.replace_records(BTreeMap::from([(4,record(json!({"answer-field/choices":[],"answer-field/correct":6})))]),5).unwrap();
+        s.entities.mark_question_validated(2);
+        s.replace_records(BTreeMap::from([(6,record(json!({"answer/value":"repaired-again"})))]),6).unwrap();
+        assert!(!s.entities.question_validated(2));
     }
 
     #[test]

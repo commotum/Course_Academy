@@ -307,7 +307,11 @@ fn overlay(base: &EntitySnapshot, delta: &Json) -> Result<EntitySnapshot> {
     let records: BTreeMap<u64, Record> = serde_json::from_value(delta["entities"].clone())?;
     let replaced = records.keys().copied().collect::<BTreeSet<_>>();
     for (id, e) in records {
-        s.entities.insert(id, e);
+        if e.is_empty() {
+            s.entities.remove(&id);
+        } else {
+            s.entities.insert(id, e);
+        }
     }
     s.status_history.retain(|h| !replaced.contains(&h.entity));
     s.status_history
@@ -324,10 +328,32 @@ fn overlay(base: &EntitySnapshot, delta: &Json) -> Result<EntitySnapshot> {
     result.focused_mode = base.focused_mode;
     Ok(result)
 }
+fn merge_overlay(projection: &mut Projection, incoming: &Json) -> Result<()> {
+    // A published plan extends an acknowledged stream: the Python actor checks
+    // its captured revision before publication. Keep accepted canonical rows
+    // that a newer planner base already contains, replacing only supplied rows.
+    let records: BTreeMap<u64, Record> = serde_json::from_value(incoming["entities"].clone())?;
+    let replaced = records.keys().copied().collect::<BTreeSet<_>>();
+    let history: Vec<StatusAssertion> = serde_json::from_value(incoming["history"].clone())?;
+    let basis = incoming["basis"]
+        .as_u64()
+        .ok_or("Study overlay basis required")?;
+    projection
+        .snapshot
+        .replace_records(records, projection.snapshot.basis_t.max(basis))?;
+    projection
+        .snapshot
+        .status_history
+        .retain(|event| !replaced.contains(&event.entity));
+    projection.snapshot.status_history.extend(history);
+    projection.touched.extend(replaced);
+    projection.fingerprint = course_academy_engine::core::fingerprint(incoming);
+    Ok(())
+}
 fn delta(s: &EntitySnapshot, touched: &BTreeSet<u64>) -> Json {
     let records = touched
         .iter()
-        .filter_map(|id| s.entities.get(id).map(|e| (*id, e)))
+        .map(|id| (*id, s.entities.get(id).cloned().unwrap_or_default()))
         .collect::<BTreeMap<_, _>>();
     let history = s
         .status_history
@@ -581,6 +607,23 @@ pub(super) fn clocks(
 }
 
 pub(super) fn project(app: &mut Application, body: &Json) -> Result<Json> {
+    if let Some(reference) = body.get("baseReference") {
+        let reference =
+            SnapshotReference::decode(&serde_json::from_value::<Vec<u8>>(reference.clone())?)?;
+        let db = app.conn.reopen_snapshot(&reference)?;
+        let focused = app.snapshot.focused_mode;
+        app.adopt(db.clone())?;
+        app.snapshot.focused_mode = focused;
+        // A superseded detached plan was never acknowledged. Reconstruct only
+        // from the captured durable base and actor overlay, never its old guess.
+        if let Some(old) = app.study_projection.take() {
+            std::thread::spawn(move || drop(old));
+        }
+        let (response, projection) =
+            project_value(&app.snapshot, &db, app.learner_eid, None, body)?;
+        app.study_projection = Some(projection);
+        return Ok(response);
+    }
     let db = app.study_db();
     align_projection(&app.snapshot, &db, &mut app.study_projection, body)?;
     project_on(
@@ -625,6 +668,30 @@ fn align_projection(
         if p.fingerprint == fingerprint {
             return Ok(());
         }
+        // Another peer may prepare a queue against this same acknowledged
+        // revision. Merge its small overlay into the hot projection rather
+        // than cloning the entire question bank on the next foreground read.
+        let incoming = body["overlay"]["entities"]
+            .as_object()
+            .ok_or("Study overlay entities required")?;
+        let aliases = body["aliases"]
+            .as_object()
+            .map(|aliases| {
+                aliases
+                    .iter()
+                    .filter(|(id, _)| !incoming.contains_key(*id))
+                    .map(|(id, value)| (id.clone(), value.clone()))
+                    .collect::<serde_json::Map<_, _>>()
+            })
+            .unwrap_or_default();
+        canonicalize(
+            p,
+            db,
+            &Json::Object(aliases),
+            body["committedBasis"].as_u64().unwrap_or(0),
+        )?;
+        merge_overlay(p, &body["overlay"])?;
+        return Ok(());
     }
     let projection = Projection {
         snapshot: overlay(base, &body["overlay"])?,
@@ -908,32 +975,8 @@ pub(super) fn persist(app: &mut Application, body: &Json) -> Result<Json> {
 }
 
 pub(super) fn read(app: &mut Application, body: &Json) -> Result<Json> {
-    let fingerprint = course_academy_engine::core::fingerprint(&body["overlay"]);
-    if body["overlay"].is_null() {
-        let db = app.study_db();
-        if let Some(projection) = &mut app.study_projection {
-            canonicalize(
-                projection,
-                &db,
-                &body["aliases"],
-                body["committedBasis"].as_u64().unwrap_or(0),
-            )?;
-        }
-    }
-    if app
-        .study_projection
-        .as_ref()
-        .is_none_or(|p| p.fingerprint != fingerprint)
-    {
-        app.study_projection = Some(Projection {
-            snapshot: overlay(&app.snapshot, &body["overlay"])?,
-            touched: body["overlay"]["entities"]
-                .as_object()
-                .map(|m| m.keys().filter_map(|id| id.parse().ok()).collect())
-                .unwrap_or_default(),
-            fingerprint,
-        });
-    }
+    let db = app.study_db();
+    align_projection(&app.snapshot, &db, &mut app.study_projection, body)?;
     let focused = body["operation"]["_focusedMode"]
         .as_bool()
         .unwrap_or(app.snapshot.focused_mode);
@@ -966,5 +1009,119 @@ pub(super) fn read(app: &mut Application, body: &Json) -> Result<Json> {
             Utc::now(),
         )),
         _ => Err("Unsupported local study read".into()),
+    }
+}
+
+#[cfg(test)]
+mod merge_tests {
+    use super::*;
+    use edb_core::{DB_SOURCE_SYSTEM, Database};
+
+    #[test]
+    fn published_planner_overlay_merges_without_cloning_bank_or_losing_recent_saved_rows()
+    -> Result<()> {
+        let db=Database::bootstrap()?.with_edn(
+            "[{:db/ident :learner/id :db/valueType :db.type/string :db/cardinality :db.cardinality/one} {:db/ident :learner/daily-xp-goal :db/valueType :db.type/long :db/cardinality :db.cardinality/one}]",
+            1,EntityRef::Id(DB_SOURCE_SYSTEM))?.db_after.database_value();
+        let base=EntitySnapshot::new(BTreeMap::from([
+            (1,json!({"learner/id":"test","learner/daily-xp-goal":100}).as_object().unwrap().clone()),
+            (2,json!({"question/id":"bank","question/problem":"Resident authored question text"}).as_object().unwrap().clone()),
+        ]),2)?;
+        let mut projection = resident(base.clone());
+        projection
+            .snapshot
+            .entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/daily-xp-goal".into(), json!(200));
+        projection.touched.insert(1);
+        let prose = projection.snapshot.entities[&2]["question/problem"]
+            .as_str()
+            .unwrap()
+            .as_ptr();
+        // The planner's newer durable base already includes goal200, so its
+        // delta contains only queue preparation rather than that saved row.
+        let incoming =
+            json!({"entities":{"3":{"learner-task/id":"queued-task"}},"history":[],"basis":3});
+        let mut slot = Some(projection);
+        align_projection(
+            &base,
+            &db,
+            &mut slot,
+            &json!({"overlay":incoming,"aliases":{},"committedBasis":3}),
+        )?;
+        let projection = slot.unwrap();
+        assert_eq!(
+            projection.snapshot.entities[&1]["learner/daily-xp-goal"],
+            200
+        );
+        assert_eq!(
+            projection.snapshot.entities[&2]["question/problem"]
+                .as_str()
+                .unwrap()
+                .as_ptr(),
+            prose,
+            "bank allocations must survive queue publication"
+        );
+        assert!(projection.snapshot.entities.contains_key(&3));
+        assert_eq!(projection.touched, BTreeSet::from([1, 3]));
+        Ok(())
+    }
+
+    #[test]
+    fn overlay_merge_replaces_entity_history_and_retains_deletion_tombstones() -> Result<()> {
+        let mut snapshot = EntitySnapshot::new(
+            BTreeMap::from([
+                (
+                    1,
+                    json!({"learner-task/id":"task","learner-task/status":10})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                ),
+                (
+                    2,
+                    json!({"answer/id":"removed"}).as_object().unwrap().clone(),
+                ),
+                (
+                    10,
+                    json!({"db/ident":kw("learner-task.status/started")})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                ),
+                (
+                    11,
+                    json!({"db/ident":kw("learner-task.status/completed")})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                ),
+            ]),
+            2,
+        )?;
+        snapshot.status_history.push(StatusAssertion {
+            entity: 1,
+            attribute: "learner-task/status".into(),
+            value: json!(10),
+            t: 1,
+            at: json!({"$instant":1}),
+        });
+        let mut projection = resident(snapshot);
+        let history = json!([
+            {"entity":1,"attribute":"learner-task/status","value":10,"t":1,"at":{"$instant":1}},
+            {"entity":1,"attribute":"learner-task/status","value":11,"t":3,"at":{"$instant":3}}
+        ]);
+        merge_overlay(
+            &mut projection,
+            &json!({"entities":{"1":{"learner-task/id":"task","learner-task/status":11},"2":{}},"history":history,"basis":3}),
+        )?;
+        assert_eq!(projection.snapshot.status_history.len(), 2);
+        assert!(!projection.snapshot.entities.contains_key(&2));
+        assert_eq!(
+            delta(&projection.snapshot, &projection.touched)["entities"]["2"],
+            json!({})
+        );
+        Ok(())
     }
 }

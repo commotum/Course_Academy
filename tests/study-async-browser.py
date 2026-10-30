@@ -20,7 +20,7 @@ from serve_graph_explorer import handler
 
 fixture = json.loads(Path(os.environ.get('STUDY_BROWSER_FIXTURE', '/tmp/study-browser-fixture.json')).read_text())
 sequence = fixture['sequence']
-assert sequence and sequence[0]['input']['action'] in {'queue', 'study-topic'}
+assert sequence and sequence[0]['input']['action'] == 'study-topic'
 source = (ROOT / 'ui/learning.js').read_text()
 controllers = source[source.index('const $'):source.index("$('retryButton').addEventListener")]
 html = '''<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/ui/learning.css"><link rel="stylesheet" href="/ui/navigation.css"><script src="/ui/vendor/dompurify/purify.min.js"></script></head><body>
@@ -36,12 +36,9 @@ window.currentState=()=>({status:task?.status||'home',taskId:task?.taskId,itemId
 const params=new URL(location.href).searchParams;
 if(params.has('topicId'))await studyTopic(params.get('topicId'));
 else if(params.has('taskId'))await openTask(params.get('taskId'));
-else if(FIXTURE_STARTS_WITH_QUEUE)await home();
-else {const page=el('section','study-activities');renderHome(FIXTURE_INITIAL,page,targetRevision);$('main').append(page);setBusy(false);}
+else await home();
 window.ready=true;
 </script></body></html>'''
-
-html=html.replace('FIXTURE_STARTS_WITH_QUEUE',json.dumps(sequence[0]['input']['action']=='queue')).replace('FIXTURE_INITIAL',json.dumps(fixture.get('initial',{})))
 
 released = threading.Event()
 projected = []
@@ -89,7 +86,7 @@ const {chromium}=require('/home/jake/.cache/codex-runtimes/codex-primary-runtime
 const page=await browser.newPage({viewport:{width:1200,height:950}});const errors=[];page.on('pageerror',e=>{errors.push(String(e));console.error('Browser error:',String(e));});page.setDefaultTimeout(15000);
 await page.goto(ORIGIN+'/fixture');await page.waitForFunction(()=>window.ready);
 const timings=[];let reloadedAnswer=false;
-for(const entry of sequence.slice(sequence[0].input.action==='queue'?1:0)){
+for(const entry of sequence){
  const operation=entry.input,expected=entry.data.view;
  if(operation.action==='answer')for(const response of operation.responses){
   const field=page.locator('.lesson-content:not([data-history]) [data-field-id="'+response.fieldId+'"]');

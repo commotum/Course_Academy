@@ -152,6 +152,10 @@ class StudyOutbox:
             raise ValueError('Study saving needs attention: ' + state['error'])
         return None
 
+    def capture_request(self, state):
+        return self.grader.request({'action': 'study-capture', 'overlay': state['overlay'],
+                                   'committedBasis': state.get('committedBasis', 0)})
+
     def projection_request(self, state, body, now):
         local = (state['overlay'] or {}).get('entities', {})
         aliases = {key: value for key, value in state['aliases'].items() if key not in local}
@@ -220,7 +224,14 @@ class StudyOutbox:
                     if prior is not None:
                         return prior
                     revision = state.get('revision', 0)
+                    capture = self.capture_request(state)
+                    if not capture.get('ok'):
+                        return {'_error': capture.get('error', 'Study snapshot unavailable'), '_code': capture.get('code', 'unavailable')}
+                    if capture['data'].get('ready') is False:
+                        return {'_superseded': True}
+                    reference = capture['data']['reference']
                     request = self.projection_request(state, body, now)
+                    request['baseReference'] = reference
                 projected = self.planner.request(request)
                 # Global mode/admission order precedes the state lock. The
                 # callback is held only for the short acknowledgement, never
@@ -234,6 +245,9 @@ class StudyOutbox:
                         if prior is not None:
                             return prior
                         if state.get('revision', 0) != revision:
+                            return {'_superseded': True}
+                        current_capture = self.capture_request(state)
+                        if not current_capture.get('ok') or current_capture['data'].get('ready') is False or current_capture['data'].get('reference') != reference:
                             return {'_superseded': True}
                         return self.accept_projection(state, body, now, projected)
         finally:
