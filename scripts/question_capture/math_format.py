@@ -761,6 +761,51 @@ def _matrix_layouts(text):
     raise ValueError('Excessive matrix nesting')
 
 
+def scalable_array_fences(text):
+    r"""Stretch existing paired array fences without changing cells or rules.
+
+    Arrays need their explicit column specification, so replacing them with a
+    bmatrix would discard augmentation rules. Respect deliberate delimiter
+    sizes and optional macro arguments, whose brackets are not visible fences.
+    """
+    groups = [('[', r'\lbrack', ']', r'\rbrack'),
+              ('(', r'\lparen', ')', r'\rparen'),
+              (r'\{', r'\lbrace', r'\}', r'\rbrace'),
+              ('|', r'\vert', r'\lvert', r'\rvert'),
+              (r'\Vert', r'\lVert', r'\rVert'),
+              (r'\langle', r'\rangle')]
+    families = {token: i for i, tokens in enumerate(groups) for token in tokens}
+    opening = ['[', r'\lbrack', '(', r'\lparen', r'\{', r'\lbrace',
+               '|', r'\vert', r'\lvert', r'\Vert', r'\lVert', r'\langle']
+    closing = [']', r'\rbrack', ')', r'\rparen', r'\}', r'\rbrace',
+               '|', r'\vert', r'\rvert', r'\Vert', r'\rVert', r'\rangle']
+    def pattern(tokens):
+        return '(?:' + '|'.join(re.escape(t) + (r'(?![A-Za-z])' if t[-1].isalpha() else '')
+                               for t in sorted(tokens, key=len, reverse=True)) + ')'
+    left_pattern = re.compile('(' + pattern(opening) + r')\s*$')
+    right_pattern = re.compile(r'\s*(' + pattern(closing) + ')')
+    sized = re.compile(r'\\(?:left|big|Big|bigg|Bigg)[lrm]?\s*$')
+    optional = re.compile(r'\\(?:sqrt|xrightarrow|xleftarrow|xleftrightarrow|'
+                          r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
+    changes = []
+    for token in ENV.finditer(text):
+        if token[1] != 'begin' or token[2] != 'array': continue
+        span = environment(text, token.start())
+        if not span: continue
+        left = left_pattern.search(text[:token.start()])
+        right = right_pattern.match(text[span[2]:])
+        if not left or not right or families[left[1]] != families[right[1]]: continue
+        prefix = text[:left.start(1)]
+        # A literal bracket immediately after a backslash is a math boundary,
+        # not a visible delimiter; named/escaped fence tokens are matched whole.
+        if left[1] in '[(' and prefix.endswith('\\'): continue
+        if sized.search(prefix) or optional.search(prefix): continue
+        changes.extend([(left.start(1), r'\left'), (span[2] + right.start(1), r'\right')])
+    for position, command in sorted(changes, reverse=True):
+        text = text[:position] + command + text[position:]
+    return text
+
+
 def validate_matrix_layouts(value, *, bare_math=False):
     """Reject fenced equation alignments that need actual matrix spacing.
 
@@ -771,6 +816,8 @@ def validate_matrix_layouts(value, *, bare_math=False):
     spans = [str(value)] if bare_math else [m[0] for m in MATH.finditer(str(value))]
     if any(_matrix_layouts(span) != span for span in spans):
         raise ValueError('Fenced matrix needs a matrix environment; normalize its complete formula')
+    if any(scalable_array_fences(span) != span for span in spans):
+        raise ValueError('Fenced array needs scalable delimiters; normalize its complete formula')
     return value
 
 
@@ -982,13 +1029,7 @@ def normalize_tex(value):
     text = text.replace(r'\lbrack', '[').replace(r'\rbrack', ']')
     text = text.replace(r'\lbrace', r'\{').replace(r'\rbrace', r'\}')
     text = scalable_fraction_parentheses(_matrix_layouts(_legacy_commands(text)))
-    # Arrays retain explicit column rules; make their existing fences scalable.
-    for match in list(re.finditer(r'(?<!\\left)\[\s*(?=\\begin\{array\})', text))[::-1]:
-        span = environment(text, match.end())
-        if not span: continue
-        closing = re.match(r'\s*\]', text[span[2]:])
-        if closing:
-            text = text[:match.start()] + r'\left[' + text[match.end():span[2]] + r'\right]' + text[span[2] + closing.end():]
+    text = scalable_array_fences(text)
     text = repair(text, include_cases=True)
     text = legacy_choice(text)
     changes = []
