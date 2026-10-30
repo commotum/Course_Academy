@@ -1,7 +1,7 @@
 {
   "path": "/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/3-JSON/lesson-json.py",
   "sha256": "5a29631e6a359ac9c8babb588ea6efc0a3a012f5fb5ecbbc5714e745e2905df7",
-  "proven_cause": "normalize_math_text_leaf ignores bold mathvariant; mover fallback serializes a non-accent mover as pseudo-TeX ^(...). Actual source bar lacks accent=true and follows that fallback.",
+  "proven_cause": "normalize_math_text_leaf ignores mathvariant=bold. The mover handler checks accent=true on the mover parent only; actual q162143 source sets accent=true on the child mo, so it falls through to pseudo-TeX PQ^(―).",
   "reproductions": [
     {
       "input": "<math><mi mathvariant=\"bold\">v</mi></math>",
