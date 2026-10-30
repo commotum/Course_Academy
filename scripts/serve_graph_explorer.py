@@ -16,7 +16,7 @@ Open /assignments for schoolwork and /assignments?assignment=... for its problem
 from __future__ import annotations
 
 import argparse
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 import fcntl
 import functools
 import gzip
@@ -380,13 +380,20 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     builder_count = build_worker_count(environment)
     review_worker_count(environment, builder_count)
     scheduler_stop = threading.Event()
+    queue_refresh = threading.Event()
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()
     inventory_refresh.set()
     def progress_saved():
         read_cache.invalidate()
         inventory_refresh.set()
-    review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved, learner=learner) if learning_worker else None
+    @contextmanager
+    def publish_queue():
+        request_directory.mkdir(parents=True, exist_ok=True)
+        with (request_directory / 'api.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            yield not developer_mode(mode_path)
+    review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved, learner=learner, planner=scheduler_worker, publication=publish_queue) if learning_worker else None
     candidate_reader = None
 
     def inventory_hook():
@@ -410,18 +417,21 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         # study clicks. A second writer must not prepare competing tasks against
         # the durable state while accepted answers are still in the outbox.
         while not scheduler_stop.is_set():
+            queue_refresh.clear()
             try:
-                request_directory.mkdir(parents=True, exist_ok=True)
-                with (request_directory / 'api.lock').open('a') as lock:
-                    fcntl.flock(lock, fcntl.LOCK_EX)
-                    if not developer_mode(mode_path) and not review_outbox.status()['pending']:
-                        response = review_outbox.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
-                        if response is None or response.get('_error'):
-                            raise ValueError((response or {}).get('_error', 'Queue preparation unavailable'))
+                if not developer_mode(mode_path):
+                    response = review_outbox.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
+                    if response is None or response.get('_error'):
+                        raise ValueError((response or {}).get('_error', 'Queue preparation unavailable'))
+                    if response.get('_superseded'):
+                        scheduler_stop.wait(1)
+                        queue_refresh.set()
+                    else:
+                        read_cache.invalidate()
                         inventory_refresh.set()
             except (OSError, ValueError) as error:
                 print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
-            scheduler_stop.wait(30)
+            queue_refresh.wait(30)
 
     def run_generator_lane(lane, slot=0):
         while not scheduler_stop.is_set():
@@ -521,6 +531,11 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 # Never accept server-only command envelopes from HTTP callers.
                 if any(key.startswith('_') for key in body):
                     raise ValueError("Private interaction fields are not accepted")
+                if body.get('action') == 'queue' and not developer_mode(mode_path):
+                    # Queue preparation may inspect the entire question bank.
+                    # Browsing Study never waits for that planner or writer.
+                    queue_refresh.set()
+                    body = {'action': 'home'}
                 if review_outbox and not developer_mode(mode_path):
                     action = body.get('action')
                     if action in {'review-save-status', 'review-save-retry'}:
@@ -550,7 +565,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 # Publishers can spend minutes validating under api.lock. Answers
                 # use the held native peer's mutex plus EDB's exact basis/status
                 # guards, so they may proceed while content is being prepared.
-                with (nullcontext() if body.get('action') in READ_ACTIONS | {'answer'} else (directory / "api.lock").open("a")) as lock:
+                with (nullcontext() if body.get('action') in READ_ACTIONS | {'answer', 'focused-mode'} else (directory / "api.lock").open("a")) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX)
                     admitted = time.monotonic()
@@ -574,7 +589,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                               forecast_worker if action == 'forecast-inputs' else
                               page_worker if page_read else
                               read_worker if action in READ_ACTIONS else learning_worker)
-                    if action in CACHED_READ_ACTIONS:
+                    if focus_change and review_outbox:
+                        response = {'ok': True, 'data': review_outbox.overlay_view('profile', body)}
+                    elif action in CACHED_READ_ACTIONS:
                         key = json.dumps(body, sort_keys=True, separators=(',', ':'))
                         response = read_cache.request(key, lambda: worker.request(body))
                     else:
@@ -850,6 +867,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
 
     Handler.workers = (graph_worker, learning_worker, page_worker, stats_worker, scheduler_worker, feedback_worker, persistence_worker, read_worker, forecast_worker)
     Handler.scheduler_stop = scheduler_stop
+    Handler.queue_refresh = queue_refresh
     Handler.mark_generator_interruption = staticmethod(inventory_jobs.mark_service_interruption)
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
@@ -884,10 +902,11 @@ def main() -> None:
             # Build the resident study projection and start its independent
             # freshness reader before the learner's first interaction.
             body = {'action': 'study-read', 'operation': {'action': 'profile'}, 'overlay': None}
-        if worker and index != 4:  # Scheduler now uses the shared local study projection.
+        if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     def stop(_signum, _frame):
         server.RequestHandlerClass.scheduler_stop.set()
+        server.RequestHandlerClass.queue_refresh.set()
         server.RequestHandlerClass.mark_generator_interruption()
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
@@ -902,6 +921,7 @@ def main() -> None:
         pass
     finally:
         server.RequestHandlerClass.scheduler_stop.set()
+        server.RequestHandlerClass.queue_refresh.set()
         server.server_close()
         for worker in server.RequestHandlerClass.workers:
             if worker:

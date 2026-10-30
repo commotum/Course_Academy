@@ -350,6 +350,52 @@ impl EntitySnapshot {
                 }
             }
         }
+        // Response answers share the authored answer-field choice relation.
+        // Changing one response must not discard symbolic support for every
+        // unrelated question in the catalog. Resolve dependencies at db-before;
+        // newly attached fields/answers also invalidate through their changed
+        // owning question/field in this same replacement batch.
+        let mut invalid_questions=BTreeSet::new();
+        let mut invalidate_all_questions=false;
+        for (&eid, record) in &normalized {
+            let old=self.entities.records.get(&eid);
+            let changed_prefix=|prefix:&str|old.into_iter().flat_map(|r|r.keys()).chain(record.keys())
+                .any(|attr|attr.starts_with(prefix)&&old.and_then(|r|r.get(attr))!=record.get(attr));
+            if changed_prefix("knowledge-point/"){invalidate_all_questions=true;}
+            if changed_prefix("question/"){invalid_questions.insert(eid);}
+            if changed_prefix("answer-field/") {
+                match self.owners(eid,"question/answer-fields") {
+                    Ok(owners)=>invalid_questions.extend(owners),
+                    Err(_)=>invalidate_all_questions=true,
+                }
+            }
+            if old.is_some()&&changed_prefix("answer/") {
+                let dependents=(|| -> Result<Vec<u64>> {
+                    let mut questions=vec![];
+                    for field in self.owners(eid,"answer-field/choices")? {
+                        questions.extend(self.owners(field,"question/answer-fields")?);
+                    }
+                    Ok(questions)
+                })();
+                match dependents {
+                    Ok(questions)=>invalid_questions.extend(questions),
+                    Err(_)=>invalidate_all_questions=true,
+                }
+            }
+        }
+        if invalidate_all_questions {
+            self.entities.validated_questions.get_mut().clear();
+            self.entities.validated_practice_questions.get_mut().clear();
+            self.entities.lesson_routes.get_mut().clear();
+        }else if !invalid_questions.is_empty(){
+            for question in &invalid_questions {
+                self.entities.validated_questions.get_mut().remove(question);
+                self.entities.validated_practice_questions.get_mut().remove(question);
+            }
+            self.entities.lesson_routes.get_mut().retain(|_,route|!route.iter().any(|step|
+                invalid_questions.contains(&step.content)||step.example.is_some_and(|q|invalid_questions.contains(&q))
+                    ||step.questions.iter().any(|q|invalid_questions.contains(q))));
+        }
         // Ordinary commits only invalidate reverse indexes for changed
         // attributes. New task items must not discard the curriculum indexes.
         for (&eid, record) in &normalized {
@@ -358,15 +404,6 @@ impl EntitySnapshot {
             // not task responses or retention. Keep successful validation across
             // learner commits; errors are never cached. Practice freshness is
             // separate; structural edits invalidate the standalone practice check.
-            if record.is_empty() || old.into_iter().flat_map(|r| r.keys()).chain(record.keys()).any(|attr| {
-                ["question/", "answer-field/", "answer/", "knowledge-point/"].iter()
-                    .any(|prefix| attr.starts_with(prefix))
-                    && old.and_then(|r| r.get(attr)) != record.get(attr)
-            }) {
-                self.entities.validated_questions.get_mut().clear();
-                self.entities.validated_practice_questions.get_mut().clear();
-                self.entities.lesson_routes.get_mut().clear();
-            }
             let changed = |attr: &str| old.and_then(|r| r.get(attr)) != record.get(attr);
             // New ordinary retrieval routes do not affect question membership.
             // Editing a multistep route or its assigned-problem wrappers does.
@@ -1867,6 +1904,41 @@ mod tests {
             .unwrap();
         assert!(!snapshot.is_multistep_question(2).unwrap());
     }
+    #[test]
+    fn response_edits_keep_unrelated_question_and_route_validation_warm() {
+        let mut s=EntitySnapshot::from_json(&json!({"basis_t":1,"entities":{
+            "1":{"question/id":"first","question/answer-fields":[3]},
+            "2":{"question/id":"second","question/answer-fields":[4]},
+            "3":{"answer-field/choices":[5],"answer-field/correct":5},
+            "4":{"answer-field/choices":[6],"answer-field/correct":6},
+            "5":{"answer/value":"2"},"6":{"answer/value":"3"},
+            "9":{"task-item/id":"old"}
+        }})).unwrap();
+        for q in [1,2] {
+            s.entities.mark_question_validated(q);
+            s.entities.mark_practice_question_validated(q);
+            s.entities.cache_lesson_route(q+100,&[crate::learning::LessonStep{
+                step:q+200,content:q,kind:"question".into(),example:None,questions:vec![],
+            }]);
+        }
+        let record=|v:Value|v.as_object().unwrap().clone();
+        s.replace_records(BTreeMap::from([
+            (7,record(json!({"answer/value":"learner response"}))),
+            (9,Record::new()),
+        ]),2).unwrap();
+        assert!(s.entities.question_validated(1)&&s.entities.question_validated(2));
+        s.replace_records(BTreeMap::from([(3,record(json!({"answer-field/choices":[5,7],"answer-field/correct":5})))]),3).unwrap();
+        assert!(!s.entities.question_validated(1));
+        assert!(!s.entities.practice_question_validated(1));
+        assert!(s.entities.question_validated(2)&&s.entities.practice_question_validated(2));
+        assert!(s.entities.lesson_route(101).is_none());
+        assert!(s.entities.lesson_route(102).is_some());
+        // A canonical key repair still invalidates its owning question.
+        s.replace_records(BTreeMap::from([(6,record(json!({"answer/value":"corrected"})))]),4).unwrap();
+        assert!(!s.entities.question_validated(2));
+        assert!(s.entities.lesson_route(102).is_none());
+    }
+
     #[test]
     fn replacing_projection_records_removes_retracted_attributes_and_deleted_entities() {
         let mut snapshot = EntitySnapshot::from_json(&json!({

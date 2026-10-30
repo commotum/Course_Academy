@@ -35,10 +35,11 @@ class PageReadAdmission(unittest.TestCase):
                         replies = []
                         request.send_bytes = lambda status, body, ctype: replies.append(json.loads(body))
                         executor.submit(request.learning_request, {'action': action, 'taskId': 1}).result(timeout=1)
-                        self.assertEqual([reply['name'] for reply in replies], ['study-read-worker'])
+                        self.assertEqual([reply['name'] for reply in replies], ['feedback-worker'])
             workers['learning-worker'].request.assert_not_called()
 
-    def test_activity_cache_returns_while_its_refresh_is_blocked(self):
+    @patch('serve_graph_explorer.developer_mode', return_value=True)
+    def test_inspection_activity_cache_returns_while_its_refresh_is_blocked(self, _mode):
         with tempfile.TemporaryDirectory() as directory:
             environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
             with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
@@ -77,7 +78,7 @@ class PageReadAdmission(unittest.TestCase):
                 return {"ok": True, "data": {"forecast": True}}
             page.request.side_effect = forecast
             stats.request.return_value = {"ok": True, "data": {"days": []}}
-            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), Mock(), stats, Mock(), Mock(), Mock(), Mock(), page]):
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=[Mock(), Mock(), Mock(), Mock(), Mock(), stats, Mock(), Mock(), page]):
                 cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
             def read(action):
                 request = cls.__new__(cls)
@@ -90,7 +91,9 @@ class PageReadAdmission(unittest.TestCase):
                 try:
                     self.assertTrue(entered.wait(1))
                     self.assertEqual(executor.submit(read, "study-stats").result(timeout=1), [200])
-                    stats.request.assert_called_once_with({"action": "study-stats"})
+                    stats.request.assert_called_once()
+                    self.assertEqual(stats.request.call_args.args[0]["action"], "study-read")
+                    self.assertEqual(stats.request.call_args.args[0]["operation"], {"action": "study-stats"})
                 finally:
                     release.set()
                     pending.result(timeout=2)
@@ -309,15 +312,14 @@ class PageReadAdmission(unittest.TestCase):
                 self.assertTrue(cls.inventory_refresh.is_set())
                 self.assertEqual(workers.return_value.request.call_count, 1)
 
-    def test_queue_prepares_locally_even_with_pending_work_and_held_writer_lock(self):
+    def test_queue_browsing_reads_hot_state_without_waiting_for_planner_or_writer(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused'}
             with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker') as workers:
                 def project(body):
-                    self.assertEqual(body['action'], 'study-project')
-                    self.assertEqual(body['operation']['action'], 'queue')
-                    return {'ok': True, 'data': {'view': {'activities': []}, 'views': {},
-                                                'overlay': {}, 'operation': body['operation']}}
+                    self.assertEqual(body['action'], 'study-read')
+                    self.assertEqual(body['operation']['action'], 'home')
+                    return {'ok': True, 'data': {'activities': []}}
                 workers.return_value.request.side_effect = project
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
             def queue(key):
@@ -332,7 +334,8 @@ class PageReadAdmission(unittest.TestCase):
                     self.assertEqual(executor.submit(queue, 'queue-test-0001').result(timeout=1)[0], 200)
                     status, response = executor.submit(queue, 'queue-test-0002').result(timeout=1)
                     self.assertEqual(status, 200)
-                    self.assertEqual(response['saveState']['pending'], 2)
+                    self.assertEqual(response['saveState']['pending'], 0)
+                    self.assertTrue(cls.queue_refresh.is_set())
             self.assertEqual(workers.return_value.request.call_count, 2)
 
     def test_lists_and_mode_read_finish_while_writer_lock_is_held(self):

@@ -9,13 +9,13 @@ import threading
 
 
 class CompatibleStudyOutbox:
-    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None, *, learner=None):
+    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None, *, learner=None, planner=None, publication=None):
         study_directory = directory.parent / 'study-outbox'
         if learner is not None:
             if not learner or not all(c.isascii() and (c.isalnum() or c == '-') for c in learner):
                 raise ValueError('Invalid learner journal namespace')
             study_directory /= learner
-        self.study = StudyOutbox(study_directory, grader, writer, save, stop, refresh)
+        self.study = StudyOutbox(study_directory, grader, writer, save, stop, refresh, planner=planner, publication=publication)
         self.legacy = ReviewOutbox(directory, grader, writer, save, stop, refresh, learner=learner)
         self.stop = stop
         self.index_lock = threading.RLock()

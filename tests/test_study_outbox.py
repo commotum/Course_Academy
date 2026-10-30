@@ -1,4 +1,5 @@
 import copy
+from contextlib import contextmanager
 import json
 from pathlib import Path
 import sys
@@ -72,6 +73,86 @@ class StudyOutboxTest(unittest.TestCase):
         finally:
             release.set()
             thread.join(2)
+
+    def test_background_queue_planning_never_holds_actor_or_publishes_over_new_progress(self):
+        entered, release = threading.Event(), threading.Event()
+        planner = Mock()
+        def slow_plan(body):
+            entered.set()
+            release.wait(3)
+            return self.grader.request(body)
+        planner.request.side_effect = slow_plan
+        self.queue.planner = planner
+        result = []
+        thread = threading.Thread(target=lambda: result.append(self.queue.request(
+            {'action': 'queue', 'background': True, 'requestId': 'background-queue-0001'}, 1000)))
+        thread.start()
+        try:
+            self.assertTrue(entered.wait(1))
+            start = time.monotonic()
+            self.assertEqual(self.queue.status()['pending'], 0)
+            self.assertTrue(self.queue.overlay_view('home', {'action': 'home'})['visibleLocal'])
+            other = self.make()
+            answer = other.request({'action': 'answer', 'taskId': 4000000000000001,
+                                    'itemId': 4000000000000002, 'requestId': 'new-answer-0001'}, 1100)
+            self.assertEqual(answer['step']['status'], 'correct')
+            self.assertLess(time.monotonic() - start, .2)
+        finally:
+            release.set()
+            thread.join(2)
+        self.assertEqual(result, [{'_superseded': True}])
+        state = self.queue.load()
+        self.assertEqual([op['input']['action'] for op in state['operations']], ['answer'])
+        self.assertEqual(planner.request.call_args.args[0]['overlay'], None)
+
+    def test_background_queue_can_prepare_from_pending_overlay_without_blocking_it(self):
+        self.request('answer', 'answer-before-queue-0001')
+        planner = Mock(wraps=self.grader)
+        self.queue.planner = planner
+        view = self.queue.request({'action': 'queue', 'background': True,
+                                   'requestId': 'background-pending-0001'}, 1200)
+        self.assertEqual(view['saveState']['pending'], 2)
+        self.assertIsNotNone(planner.request.call_args.args[0]['overlay'])
+        duplicate = self.queue.request({'action': 'queue', 'background': True,
+                                        'requestId': 'background-pending-0001'}, 1300)
+        self.assertEqual(duplicate, view)
+        self.assertEqual(planner.request.call_count, 1)
+
+    def test_only_one_background_planner_uses_captured_state_across_instances(self):
+        entered, release = threading.Event(), threading.Event()
+        planner = Mock()
+        def slow_plan(body):
+            entered.set(); release.wait(3)
+            return self.grader.request(body)
+        planner.request.side_effect = slow_plan
+        self.queue.planner = planner
+        result = []
+        thread = threading.Thread(target=lambda: result.append(self.queue.request(
+            {'action': 'queue', 'background': True, 'requestId': 'exclusive-queue-0001'}, 1000)))
+        thread.start()
+        try:
+            self.assertTrue(entered.wait(1))
+            other = self.make()
+            self.assertEqual(other.request({'action': 'queue', 'background': True,
+                                            'requestId': 'exclusive-queue-0002'}, 1100), {'_superseded': True})
+            self.assertEqual(other.status()['pending'], 0)
+        finally:
+            release.set(); thread.join(2)
+        self.assertEqual(result[0]['saveState']['pending'], 1)
+
+    def test_background_publication_rechecks_mode_without_holding_state_lock(self):
+        observed = []
+        @contextmanager
+        def publication():
+            # This would deadlock on the file lock if the state actor were held.
+            observed.append(self.queue.status()['pending'])
+            yield False
+        self.queue.publication = publication
+        result = self.queue.request({'action': 'queue', 'background': True,
+                                     'requestId': 'disabled-queue-0001'}, 1000)
+        self.assertEqual(result, {'_disabled': True})
+        self.assertEqual(observed, [0])
+        self.assertEqual(self.queue.status()['pending'], 0)
 
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()

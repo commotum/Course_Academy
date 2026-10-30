@@ -6,7 +6,7 @@ it never duplicates grading or stopping rules.
 """
 from __future__ import annotations
 import copy
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import fcntl
 import json
 from pathlib import Path
@@ -21,13 +21,16 @@ class StudyOutbox:
                'assignment-focus', 'assignment-answer', 'assignment-pause',
                'draft', 'navigate', 'submit', 'expire', 'regenerate-assessment'}
 
-    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None):
+    def __init__(self, directory, grader, writer, save, stop, refresh=lambda: None, *, planner=None, publication=None):
         self.directory = Path(directory)
         self.directory.mkdir(parents=True, exist_ok=True)
         self.grader, self.writer, self.save = grader, writer, save
+        self.planner = planner if planner is not None else grader
+        self.publication = publication if publication is not None else lambda: nullcontext(True)
         self.stop, self.refresh = stop, refresh
         self.lock = threading.RLock()
         self.writer_lock = threading.Lock()
+        self.planning_lock = threading.Lock()
         self.wake = threading.Event()
         self.state_path = self.directory / 'study.json'
 
@@ -41,6 +44,10 @@ class StudyOutbox:
         if self.state_path.exists():
             return json.loads(self.state_path.read_text())
         return {'operations': [], 'overlay': None, 'views': {}, 'aliases': {}, 'retryAt': 0}
+
+    def commit_state(self, state):
+        state['revision'] = state.get('revision', 0) + 1
+        self.save(self.state_path, state)
 
     def pending(self, state):
         return [op for op in state['operations'] if not op.get('saved')]
@@ -91,8 +98,6 @@ class StudyOutbox:
             return None
         with self.locked():
             state = self.load()
-            if not self.pending(state) and not state.get('committedBasis'):
-                return None
             local = (state['overlay'] or {}).get('entities', {})
             aliases = {key: value for key, value in state['aliases'].items() if key not in local}
             operation = self.normalize_ids(body, aliases)
@@ -111,7 +116,7 @@ class StudyOutbox:
             state = self.load()
             state.pop('error', None)
             state['retryAt'] = 0
-            self.save(self.state_path, state)
+            self.commit_state(state)
         self.wake.set()
         return self.status(task)
 
@@ -133,6 +138,52 @@ class StudyOutbox:
     def receipt_path(self, request):
         return self.directory / 'receipts' / f'{request}.json'
 
+    def prior_response(self, state, body):
+        request = body['requestId']
+        prior = next((op for op in state['operations'] if op['requestId'] == request), None)
+        receipt = self.receipt_path(request)
+        if prior is None and receipt.exists():
+            prior = json.loads(receipt.read_text())
+        if prior:
+            if prior['input'] != body:
+                raise ValueError('Request ID already used for another study interaction')
+            return copy.deepcopy(prior['response'])
+        if state.get('error'):
+            raise ValueError('Study saving needs attention: ' + state['error'])
+        return None
+
+    def projection_request(self, state, body, now):
+        local = (state['overlay'] or {}).get('entities', {})
+        aliases = {key: value for key, value in state['aliases'].items() if key not in local}
+        return {'action': 'study-project', 'operation': self.normalize_ids(body, aliases),
+                'overlay': state['overlay'], 'receivedAt': now,
+                'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)}
+
+    def accept_projection(self, state, body, now, projected):
+        if not projected.get('ok'):
+            return {'_error': projected.get('error', 'Unable to update study'),
+                    '_code': projected.get('code', 'validation')}
+        data = projected['data']
+        state['overlay'] = data['overlay']
+        state['views'].update(data.get('views', {}))
+        view = data['view']
+        if type(view.get('taskId')) is int:
+            state['views'][str(view['taskId'])] = copy.deepcopy(view)
+        if body['action'] == 'profile-settings':
+            state['profile'] = copy.deepcopy(view)
+        if body['action'] in {'profile-settings', 'target', 'queue-topic', 'daily-xp-goal'}:
+            state['learner'] = {'basis': view.get('basis'), 'learner': copy.deepcopy(view.get('learner'))}
+        op = {'requestId': body['requestId'], 'input': copy.deepcopy(body), 'operation': data['operation'],
+              'saved': False, 'receivedAt': now}
+        state['operations'].append(op)
+        response = self.with_status(state, view)
+        op['response'] = copy.deepcopy(response)
+        # Both the exact acknowledgement and its recoverable native plan
+        # reach local durable storage before the HTTP request can complete.
+        self.commit_state(state)
+        self.wake.set()
+        return response
+
     def request(self, body, now=None):
         if body.get('action') not in self.ACTIONS:
             return None
@@ -140,47 +191,53 @@ class StudyOutbox:
         if not isinstance(request, str) or not 8 <= len(request) <= 128 or not all(c.isascii() and (c.isalnum() or c == '-') for c in request):
             raise ValueError('A stable request ID is required')
         now = int(time.time() * 1000) if now is None else now
+        if body['action'] == 'queue':
+            return self.prepare_queue(body, now)
         with self.locked():
             state = self.load()
-            prior = next((op for op in state['operations'] if op['requestId'] == request), None)
-            receipt = self.receipt_path(request)
-            if prior is None and receipt.exists():
-                prior = json.loads(receipt.read_text())
-            if prior:
-                if prior['input'] != body:
-                    raise ValueError('Request ID already used for another study interaction')
-                return copy.deepcopy(prior['response'])
-            if state.get('error'):
-                raise ValueError('Study saving needs attention: ' + state['error'])
-            local = (state['overlay'] or {}).get('entities', {})
-            aliases = {key: value for key, value in state['aliases'].items() if key not in local}
-            operation = self.normalize_ids(body, aliases)
-            projected = self.grader.request({'action': 'study-project', 'operation': operation,
-                                             'overlay': state['overlay'], 'receivedAt': now,
-                                             'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
-            if not projected.get('ok'):
-                return {'_error': projected.get('error', 'Unable to update study'),
-                        '_code': projected.get('code', 'validation')}
-            data = projected['data']
-            state['overlay'] = data['overlay']
-            state['views'].update(data.get('views', {}))
-            view = data['view']
-            if type(view.get('taskId')) is int:
-                state['views'][str(view['taskId'])] = copy.deepcopy(view)
-            if body['action'] == 'profile-settings':
-                state['profile'] = copy.deepcopy(view)
-            if body['action'] in {'profile-settings', 'target', 'queue-topic', 'daily-xp-goal'}:
-                state['learner'] = {'basis': view.get('basis'), 'learner': copy.deepcopy(view.get('learner'))}
-            op = {'requestId': request, 'input': copy.deepcopy(body), 'operation': data['operation'],
-                  'saved': False, 'receivedAt': now}
-            state['operations'].append(op)
-            response = self.with_status(state, view)
-            op['response'] = copy.deepcopy(response)
-            # Both the exact acknowledgement and its recoverable native plan
-            # reach local durable storage before the HTTP request can complete.
-            self.save(self.state_path, state)
-            self.wake.set()
-            return response
+            prior = self.prior_response(state, body)
+            if prior is not None:
+                return prior
+            projected = self.grader.request(self.projection_request(state, body, now))
+            return self.accept_projection(state, body, now, projected)
+
+    def prepare_queue(self, body, now):
+        # Queue construction can inspect a large question bank. It runs on a
+        # separate native peer without holding the admission/state lock. A
+        # revision guard discards speculative results if any accepted operation
+        # or durable receipt changed the captured learner state meanwhile.
+        if not self.planning_lock.acquire(blocking=False):
+            return {'_superseded': True}
+        try:
+            with (self.directory / 'planner.lock').open('a') as planner_lock:
+                try:
+                    fcntl.flock(planner_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError:
+                    return {'_superseded': True}
+                with self.locked():
+                    state = self.load()
+                    prior = self.prior_response(state, body)
+                    if prior is not None:
+                        return prior
+                    revision = state.get('revision', 0)
+                    request = self.projection_request(state, body, now)
+                projected = self.planner.request(request)
+                # Global mode/admission order precedes the state lock. The
+                # callback is held only for the short acknowledgement, never
+                # while expensive native queue construction is running.
+                with self.publication() as allowed:
+                    if not allowed:
+                        return {'_disabled': True}
+                    with self.locked():
+                        state = self.load()
+                        prior = self.prior_response(state, body)
+                        if prior is not None:
+                            return prior
+                        if state.get('revision', 0) != revision:
+                            return {'_superseded': True}
+                        return self.accept_projection(state, body, now, projected)
+        finally:
+            self.planning_lock.release()
 
     def run_one(self):
         # Separate admission and writer locks: a hung EDB write never prevents
@@ -242,7 +299,7 @@ class StudyOutbox:
                             state['views'] = {}
                             state.pop('profile', None)
                             state.pop('learner', None)
-                    self.save(self.state_path, state)
+                    self.commit_state(state)
                 if result.get('ok'):
                     self.refresh()
                 return True

@@ -73,10 +73,11 @@ class Worker:
             write_finished.append(copy.deepcopy(body['operation']))
             return {'ok': True, 'data': {'view': copy.deepcopy(sequence[index]['data']['view']), 'aliases': {}}}
         if action == 'task': return {'ok': True, 'data': copy.deepcopy(last_view)}
+        if action == 'home': return {'ok': True, 'data': copy.deepcopy(fixture['initial'])}
         if action == 'study-read':
             operation = body['operation']
             if operation['action'] == 'task': return {'ok': True, 'data': copy.deepcopy(last_view)}
-            if operation['action'] in {'home', 'queue'}: return {'ok': True, 'data': copy.deepcopy(sequence[0]['data']['view'])}
+            if operation['action'] in {'home', 'queue'}: return {'ok': True, 'data': copy.deepcopy(fixture['initial'])}
         raise AssertionError(('Unexpected fixture worker request', self.name, body))
     def close(self): pass
 

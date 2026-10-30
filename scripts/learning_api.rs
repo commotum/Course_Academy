@@ -299,23 +299,34 @@ impl Application {
         let database=self.database.clone();
         let learner=self.learner.clone();
         let endpoint=self.endpoint.clone();
-        let mut delivered=self.reference.clone();
+        let mut delivered=None;
         std::thread::spawn(move || {
             let run = || -> Result<()> {
                 let mut reader=Application::connect(database,learner,endpoint)?;
                 loop {
                     std::thread::sleep(Duration::from_secs(1));
                     reader.adopt(reader.conn.sync()?)?;
-                    if reader.reference==delivered {
+                    if delivered.as_ref()==Some(&reader.reference) {
                         continue;
                     }
                     let learner=reader.snapshot.entities.with_attribute("learner/id").into_iter()
                         .find(|eid|reader.snapshot.entities[eid].get("learner/id").and_then(Json::as_str)==Some(&reader.learner))
                         .ok_or("Learner not found in fresh study capture")?;
+                    // Eligibility can validate thousands of symbolic keys.
+                    // Warm the exact captured snapshot before copying its
+                    // validation/route caches into the resident projection.
+                    // The generated plans are discarded; only ordinary guarded
+                    // study operations may publish tasks or learner evidence.
+                    if let Err(error)=queue_preparation(&reader.snapshot,learner,Utc::now()) {
+                        eprintln!("Study queue warmup: {error}");
+                    }
+                    if let Err(error)=home(&reader.snapshot,learner) {
+                        eprintln!("Study home warmup: {error}");
+                    }
                     // Expansion and cloning happen before publication, away
                     // from answer/Next/read admission.
                     let projection=study_interaction::resident(reader.snapshot.clone());
-                    delivered=reader.reference.clone();
+                    delivered=Some(reader.reference.clone());
                     let capture=StudyCapture {
                         snapshot:std::mem::replace(&mut reader.snapshot,EntitySnapshot::new(BTreeMap::new(),0)?),
                         db:reader.study_db(),reference:reader.reference.clone(),learner,
