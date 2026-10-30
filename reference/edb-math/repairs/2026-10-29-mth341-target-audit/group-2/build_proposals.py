@@ -13,7 +13,7 @@ def index(o):
 index(S);current=dict(original);reasons=collections.defaultdict(list);evidence=[]
 def setv(e,attr,value,reason):
  key=(e,':'+attr);current[key]=value;reasons[key].append(reason)
-for name in['decoration-proposals','layout-proposals','completion-proposals']:
+for name in['decoration-proposals','layout-proposals','completion-proposals','full-formula-proposals']:
  for p in json.loads((H/(name+'.json')).read_text()):setv(p['entity'],p['attribute'],p['after'],p['reason'])
 def edit_matrix(e,predicate,transform,reason):
  key=(e,':question/worked-solution');text=current[key];matches=[m for m in matrices(text)if predicate(m['matrix'])];assert len(matches)==1,(e,len(matches));m=matches[0];a=m['matrix'];b=transform(a.copy());body=r' \\ '.join(' & '.join(sp.latex(c)for c in row)for row in b.tolist());env=m['environment'];cols=''
@@ -35,6 +35,21 @@ prompt=current[(e,':question/problem')]
 new='Which expression is the unsimplified cofactor expansion along the $3$rd column? Retain a term for each nonzero entry of that column, with the sign supplied by $(-1)^{i+j}$, even if a minor has determinant $0$.\n\n'+prompt.replace('=\n$$','\n$$')
 setv(e,'question/problem',new,'Disambiguate three numerically equivalent choices by asking for the unsimplified source cofactor expansion with both nonzero-entry terms and their cofactor signs; preserve the existing bank and correct identity.')
 evidence.append({'question':e,'numerically_equivalent_answer_ids':[17592186370929,17592186370930,17592186370932],'M43':0,'M23':12,'unchanged_correct_answer':17592186370930,'proof':'Column 3 has entries 0,sqrt(2),0,sqrt(3). Both nonzero terms have negative cofactor signs. Only the keyed option retains both such terms and signs; all three evaluate to -12 sqrt(2) because M43=0.'})
+# Preserve the source vertical separator between A and the transformed identity.
+augmented_repairs=[]
+for key,text in list(current.items()):
+ e,attr=key
+ if attr not in[':question/problem',':question/worked-solution',':tutorial/content']or not isinstance(text,str):continue
+ edits=[]
+ for m in ENV.finditer(text):
+  if m[1]!='begin'or m[2]!='bmatrix':continue
+  span=environment(text,m.start());body=text[span[0]:span[1]];grid=cells(body)
+  if len(grid)in[2,4]and all(len(row)==2*len(grid)for row in grid):
+   n=len(grid);replacement=r'\left[\begin{array}{'+'c'*n+'|'+'c'*n+'}'+body+r'\end{array}\right]';edits.append((m.start(),span[2],replacement))
+ new=text
+ for a,b,v in reversed(edits):new=new[:a]+v+new[b:]
+ if new!=text:setv(e,attr[1:],new,'Restore the archived vertical separator between the coefficient and identity blocks of each augmented matrix.');augmented_repairs.append({'entity':e,'attribute':attr[1:],'source_augmented_separators_restored':len(edits)})
+(H/'augmented-separator-evidence.json').write_text(json.dumps(augmented_repairs,indent=2)+'\n')
 # Normalize operator semantics and repair the aligned optional-argument trap.
 for key,value in list(current.items()):
  e,attr=key
