@@ -1,3 +1,4 @@
+import { decorateEquationGroups } from './equation-groups.js';
 import { attachTopicMenu } from './topic-menu.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { createCoursePicker } from './navigation.js';
@@ -122,6 +123,7 @@ function markdown(value, className = 'prose') {
     else { anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
   }
   node.append(fragment);
+  decorateEquationGroups(node);
   if (math.length) node.dataset.math = 'true';
   return node;
 }
