@@ -137,7 +137,7 @@ pub(super) fn attach_periods(s:&EntitySnapshot,l:u64,body:&Json,at:DateTime<Utc>
     // Duration is server-measured from the acknowledged work intervals; database
     // status timestamps may lag several queued steps and cannot time the work.
     if action!="continue"{
-        let elapsed=periods.iter().map(|p|(p["end"].as_i64().unwrap_or(at)-p["start"].as_i64().unwrap()) as f64/1000.).sum::<f64>();
+        let elapsed=periods.iter().filter_map(|p|p["end"].as_i64().map(|end|(end-p["start"].as_i64().unwrap()) as f64/1000.)).sum::<f64>();
         forms.retain(|f|!(f.get(2)==Some(&kw("task-item/elapsed-seconds"))&&f.get(1)==Some(&target))&&!(f.get(2)==Some(&kw("learner-task/elapsed-seconds"))&&f.get(1)==Some(&json!(t))));
         forms.push(add(target.clone(),"task-item/elapsed-seconds",json!(elapsed)));
         let total=items(s,t)?.into_iter().map(|i|if target==json!(i){elapsed}else{number(s,i,"task-item/elapsed-seconds")}).sum::<f64>();

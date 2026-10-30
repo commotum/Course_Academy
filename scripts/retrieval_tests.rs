@@ -2759,3 +2759,77 @@ fn study_projection_reducer_matches_edb_for_status_cas_upserts_and_retractions()
     assert!(study_interaction::apply(&local,&f.db.database_value(),&forms,at).is_err(),"CAS sees db-before rather than sequential writes");
     Ok(())
 }
+
+#[test]
+fn study_projection_assessment_admission_deadline_survives_late_writer() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let activity=f.available("assessment")?;
+    let base=f.snapshot()?;let db=f.db.database_value();
+    let question=learning::lesson_steps(&base,activity)?[0].content;
+    let field=base.refs(question,"question/answer-fields")?[0];
+    let mut projection=None;let mut overlay=Json::Null;let mut queued=vec![];
+    let mut task=Json::Null;let mut item=Json::Null;
+    for (turn,action) in ["start","draft","pause","resume","submit"].iter().enumerate(){
+        let body=match *action {
+            "start"=>json!({"action":action,"activityId":activity,"requestId":"assessment-start-0001"}),
+            "draft"=>json!({"action":action,"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}],"requestId":"assessment-draft-0001"}),
+            _=>json!({"action":action,"taskId":task,"requestId":format!("assessment-{action}-0001")}),
+        };
+        let (data,next)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":body,"overlay":overlay,"receivedAt":f.now+1000+turn as i64*1000}))?;
+        projection=Some(next);overlay=data["overlay"].clone();queued.push(data["operation"].clone());
+        task=data["view"]["taskId"].clone();item=data["view"]["step"]["itemId"].clone();
+    }
+    for (n,operation) in queued.iter().enumerate(){
+        let s=f.snapshot()?;let op=study_interaction::bind(&s,operation)?;
+        let at=DateTime::from_timestamp_millis(f.now+1_000_000+n as i64*100).unwrap();
+        let logical=DateTime::from_timestamp_millis(op["_queuedStudy"]["at"].as_i64().unwrap()).unwrap();
+        let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,logical)?;
+        study_interaction::prepare(&s,&f.db.database_value(),f.learner,&op,&mut forms,&mut result,at)?;
+        f.tx(forms,at.timestamp_millis())?;
+    }
+    let saved=f.snapshot()?;
+    let task=saved.refs(f.learner,"learner/activity")?.into_iter().find(|t|saved.reference(*t,"learner-task/activity").ok()==Some(activity)).unwrap();
+    assert_eq!(status(&saved,task,"learner-task/status")?,"completed");
+    assert_eq!(timing::task_started(&saved,task)?.timestamp_millis(),f.now+1000);
+    assert_eq!(schema::parse_instant(&saved.entity(task)?["learner-task/finished-at"])?.timestamp_millis(),f.now+5000);
+    assert!(number(&saved,task,"learner-task/elapsed-seconds")<5.);
+    Ok(())
+}
+
+#[test]
+fn study_projection_queue_prepares_new_tasks_and_replays_stable_uuid_plans() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let s=f.snapshot()?;
+    let prepared=s.refs(f.learner,"learner/activity")?.into_iter().filter(|t|matches!(status(&s,*t,"learner-task/status").as_deref(),Ok("locked"|"unlocked"))).collect::<Vec<_>>();
+    assert!(!prepared.is_empty());
+    f.tx(prepared.iter().map(|t|json!([kw("db/retract"),f.learner,kw("learner/activity"),t])).collect(),f.now+100)?;
+    let base=f.snapshot()?;let db=f.db.database_value();
+    let logical=DateTime::from_timestamp_millis(f.now+1000).unwrap();
+    let (data,_)=study_interaction::project_value(&base,&db,f.learner,None,&json!({"operation":{"action":"queue","requestId":"local-queue-0001"},"overlay":null,"receivedAt":logical.timestamp_millis()}))?;
+    assert!(data["view"]["activities"].as_array().unwrap().iter().any(|a|a["taskId"].as_u64().is_some_and(|id|id>=4_000_000_000_000_000)));
+    let op=study_interaction::bind(&base,&data["operation"])?;
+    let mut forms=queue_preparation(&base,f.learner,logical)?.0;
+    let mut result=json!({"queue":true});
+    let durable=DateTime::from_timestamp_millis(f.now+30_000).unwrap();
+    study_interaction::prepare(&base,&db,f.learner,&op,&mut forms,&mut result,durable)?;
+    f.tx(forms,durable.timestamp_millis())?;
+    assert_eq!(home(&f.snapshot()?,f.learner)?["activities"].as_array().unwrap().len(),data["view"]["activities"].as_array().unwrap().len());
+    Ok(())
+}
+
+#[test]
+fn study_projection_replay_rejects_changed_answer_key_without_saving_different_grade() -> Result<()> {
+    let mut f=Fixture::new(true)?;let (task,base)=f.start("review")?;
+    let db=f.db.database_value();let item=items(&base,task)?[0];
+    let question=base.reference(item,"task-item/content")?;let field=base.refs(question,"question/answer-fields")?[0];
+    let (data,_)=study_interaction::project_value(&base,&db,f.learner,None,&json!({"operation":{"action":"answer","taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}],"requestId":"local-answer-0001"},"overlay":null,"receivedAt":f.now+1000}))?;
+    assert_eq!(data["view"]["step"]["status"],"correct");
+    let mut changed=base.clone();let answer=changed.reference(field,"answer-field/correct")?;
+    changed.entities.get_mut(&answer).unwrap().insert("answer/value".into(),json!("3"));
+    let op=study_interaction::bind(&changed,&data["operation"])?;
+    let logical=DateTime::from_timestamp_millis(f.now+1000).unwrap();
+    let (mut forms,mut result)=mutate(&changed,f.learner,"answer",&op,logical)?;
+    let error=study_interaction::prepare(&changed,&db,f.learner,&op,&mut forms,&mut result,logical).unwrap_err();
+    assert!(error.to_string().contains("outcome changed"));
+    Ok(())
+}

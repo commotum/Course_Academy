@@ -209,11 +209,36 @@ fn refresh_history(db: &DatabaseValue, s: &mut EntitySnapshot) -> Result<()> {
     Ok(())
 }
 
-/// Keep one authenticated EDB connection and projection alive. The durable
-/// head is synchronized before every request; cache hits never skip that check.
-/// SnapshotReference catches physical/noHistory publications at a stable basis.
+// Interactive admission receives fully prepared snapshots from a separate
+// reader. Both channels hold at most one capture; obsolete snapshots return to
+// that thread for incremental refresh or destruction, never foreground drops.
+struct StudyCapture {
+    snapshot: EntitySnapshot,
+    db: DatabaseValue,
+    reference: SnapshotReference,
+    learner: u64,
+    projection: Option<study_interaction::Projection>,
+}
+struct StudyFreshness {
+    ready: std::sync::mpsc::Receiver<StudyCapture>,
+    recycle: std::sync::mpsc::SyncSender<StudyCapture>,
+}
+
+fn take_prepared_study<T>(ready:&std::sync::mpsc::Receiver<T>, pending:bool)
+    -> std::result::Result<Option<T>,std::sync::mpsc::TryRecvError> {
+    if pending {return Ok(None);}
+    match ready.try_recv() {
+        Ok(value)=>Ok(Some(value)),
+        Err(std::sync::mpsc::TryRecvError::Empty)=>Ok(None),
+        Err(error)=>Err(error),
+    }
+}
+
+/// Ordinary writes synchronize their guarded durable basis. Interactive study
+/// reads and admission use resident projections and asynchronous fresh captures.
 struct Application {
     conn: Connection,
+    database: String,
     learner: String,
     learner_eid: u64,
     endpoint: String,
@@ -221,6 +246,8 @@ struct Application {
     reference: SnapshotReference,
     home_cache: Option<(Instant, Duration, Json, bool)>,
     study_projection: Option<study_interaction::Projection>,
+    study_database: DatabaseValue,
+    study_freshness: Option<StudyFreshness>,
     inventory_cache: Option<(Instant, Duration, Json)>,
 }
 impl Application {
@@ -228,7 +255,7 @@ impl Application {
         let started = Instant::now();
         let conn = Connection::connect_configured_with_cache_limits(
             postgres_config_from_env()?,
-            database,
+            database.clone(),
             2048,
             64 * 1024 * 1024,
         )?;
@@ -249,6 +276,7 @@ impl Application {
         trace("startup", started);
         Ok(Self {
             conn,
+            database,
             learner,
             learner_eid,
             endpoint,
@@ -256,13 +284,101 @@ impl Application {
             reference,
             home_cache: None,
             study_projection: None,
+            study_database: db,
+            study_freshness: None,
             inventory_cache: None,
         })
+    }
+
+    fn study_db(&self) -> DatabaseValue { self.study_database.clone() }
+
+    fn start_study_freshness(&mut self) {
+        if self.study_freshness.is_some() { return; }
+        let (ready_tx, ready) = std::sync::mpsc::sync_channel(1);
+        let (recycle, recycle_rx) = std::sync::mpsc::sync_channel::<StudyCapture>(1);
+        let database=self.database.clone();
+        let learner=self.learner.clone();
+        let endpoint=self.endpoint.clone();
+        let mut delivered=self.reference.clone();
+        std::thread::spawn(move || {
+            let run = || -> Result<()> {
+                let mut reader=Application::connect(database,learner,endpoint)?;
+                loop {
+                    std::thread::sleep(Duration::from_secs(1));
+                    reader.adopt(reader.conn.sync()?)?;
+                    if reader.reference==delivered {
+                        continue;
+                    }
+                    let learner=reader.snapshot.entities.with_attribute("learner/id").into_iter()
+                        .find(|eid|reader.snapshot.entities[eid].get("learner/id").and_then(Json::as_str)==Some(&reader.learner))
+                        .ok_or("Learner not found in fresh study capture")?;
+                    // Expansion and cloning happen before publication, away
+                    // from answer/Next/read admission.
+                    let projection=study_interaction::resident(reader.snapshot.clone());
+                    delivered=reader.reference.clone();
+                    let capture=StudyCapture {
+                        snapshot:std::mem::replace(&mut reader.snapshot,EntitySnapshot::new(BTreeMap::new(),0)?),
+                        db:reader.study_db(),reference:reader.reference.clone(),learner,
+                        projection:Some(projection),
+                    };
+                    if ready_tx.send(capture).is_err(){return Ok(());}
+                    let Ok(old)=recycle_rx.recv() else{return Ok(());};
+                    reader.snapshot=old.snapshot;
+                    reader.study_database=old.db;
+                    reader.reference=old.reference;
+                    reader.learner_eid=old.learner;
+                    drop(old.projection);
+                }
+            };
+            if let Err(error)=run(){eprintln!("Study freshness deferred: {error}");}
+        });
+        self.study_freshness=Some(StudyFreshness{ready,recycle});
+    }
+
+    fn refresh_study_without_waiting(&mut self, body:&Json) {
+        self.start_study_freshness();
+        let Some(freshness)=&self.study_freshness else{return;};
+        let fresh=match take_prepared_study(&freshness.ready,!body["overlay"].is_null()) {
+            Ok(Some(fresh))=>fresh,
+            Ok(None)=>return,
+            Err(std::sync::mpsc::TryRecvError::Disconnected)=>{
+                self.study_freshness=None;
+                return;
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty)=>return,
+        };
+        let minimum=body["committedBasis"].as_u64().unwrap_or(0).max(self.reference.key().basis_t());
+        let retired=if fresh.reference.key().basis_t()<minimum {
+            // A capture prepared during the backlog cannot replace locally
+            // acknowledged work until it includes all confirmed operations.
+            fresh
+        }else{
+            let old=StudyCapture {
+                snapshot:std::mem::replace(&mut self.snapshot,fresh.snapshot),
+                db:std::mem::replace(&mut self.study_database,fresh.db),
+                reference:std::mem::replace(&mut self.reference,fresh.reference),
+                learner:std::mem::replace(&mut self.learner_eid,fresh.learner),
+                projection:std::mem::replace(&mut self.study_projection,fresh.projection),
+            };
+            self.home_cache=None;
+            self.inventory_cache=None;
+            old
+        };
+        if let Err(error)=freshness.recycle.try_send(retired) {
+            // Disconnect/full is exceptional; even then avoid destroying a
+            // full question-bank projection on the interaction thread.
+            let retired=match error {
+                std::sync::mpsc::TrySendError::Full(value)
+                | std::sync::mpsc::TrySendError::Disconnected(value)=>value,
+            };
+            std::thread::spawn(move||drop(retired));
+        }
     }
 
     fn adopt(&mut self, db: DatabaseValue) -> Result<()> {
         let reference = db.snapshot_reference()?;
         if self.reference == reference {
+            self.study_database=db;
             return Ok(());
         }
         let started = Instant::now();
@@ -365,6 +481,7 @@ impl Application {
             self.snapshot = snapshot(&db)?;
         }
         self.reference = reference;
+        self.study_database=db;
         self.home_cache = None;
         self.inventory_cache = None;
         trace(
@@ -380,7 +497,9 @@ impl Application {
 
     fn handle(&mut self, mut body: Json) -> Result<Json> {
         let started = Instant::now();
-        if !matches!(body["action"].as_str(),Some("study-project"|"study-read")) || body["overlay"].is_null() { self.adopt(self.conn.sync()?)?; }
+        if matches!(body["action"].as_str(),Some("study-project"|"study-read")) {
+            self.refresh_study_without_waiting(&body);
+        } else { self.adopt(self.conn.sync()?)?; }
         trace("sync", started);
         let focused = body.as_object_mut().and_then(|body| body.remove("_focusedMode"))
             .map(|value| value.as_bool().ok_or("Focused mode must be a boolean"))
@@ -2826,7 +2945,7 @@ impl Application {
                 let forms = if cached_queue.is_some() {
                     vec![]
                 } else {
-                    let (mut forms, candidates) = queue_preparation(s, l, at)?;
+                    let (mut forms, candidates) = queue_preparation(s, l, work_at)?;
                     if body["background"] == true {
                         forms.retain(|f| f.get(2) != Some(&kw("learner-task/offered-at")));
                     }
@@ -3043,6 +3162,26 @@ fn main() {
 #[cfg(test)]
 mod lesson_progress_tests {
     use super::*;
+
+    #[test]
+    fn interactive_refresh_moves_ready_snapshots_without_waiting_or_cloning() -> Result<()> {
+        let (sender,ready)=std::sync::mpsc::sync_channel(1);
+        // An idle/background-busy provider never becomes a synchronous read.
+        assert!(take_prepared_study::<EntitySnapshot>(&ready,false)?.is_none());
+        let snapshot=EntitySnapshot::from_json(&json!({"basis_t":7,"entities":{
+            "1":{"learner/id":"resident learner with a heap allocation"}
+        }}))?;
+        let allocation=snapshot.entities[&1]["learner/id"].as_str().unwrap().as_ptr();
+        sender.send(snapshot)?;
+        // Pending admitted work keeps both its projection and the ready slot.
+        assert!(take_prepared_study(&ready,true)?.is_none());
+        let received=take_prepared_study(&ready,false)?.ok_or("Missing prepared snapshot")?;
+        assert_eq!(received.basis_t,7);
+        assert_eq!(allocation,received.entities[&1]["learner/id"].as_str().unwrap().as_ptr(),
+            "foreground handoff must move the prepared allocation");
+        assert!(take_prepared_study(&ready,false)?.is_none());
+        Ok(())
+    }
 
     #[test]
     fn inventory_cache_expires_before_review_and_assessment_eligibility_boundaries() {

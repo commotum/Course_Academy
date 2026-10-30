@@ -64,6 +64,27 @@ ordinary lessons and due reviews for topics in global graph layer 30 or above.
 Assessments may include eligible learned topics at any layer, including topics
 studied through an explicit request. Quizzes and required follow-up practice for
 assessment misses remain visible regardless of their topics' layers.
+
+Study interactions are acknowledged after an atomic, fsynced local journal save
+in `.local/learning/requests/<database>/study-outbox`, then replayed to EDB in
+order. The resident study projection runs the same grading and progression
+rules as durable persistence; pending task, activity, and statistics reads include
+accepted local work. The UI does not wait for the EDB writer or show routine
+background-save indicators. A real reconciliation failure remains visible with
+a retry action. Keep the request directory with the database when moving or
+restoring the installation: it contains accepted progress that may not yet have
+reached EDB, plus receipts needed to recover uncertain replies safely. Existing
+`review-outbox` journals are recovered using their original replay protocol.
+
+Display reads use separate peers and bounded last-good response caches while
+refreshing in the background. Relevant learner changes still invalidate native
+page projections; unrelated content repairs no longer rebuild activity and XP
+history. Cold startup, first-time content loads, and actual storage failures can
+still require waiting. The latency and recovery regressions include blocked
+writer tests in `tests/test_study_outbox.py`, `tests/test_page_read_admission.py`,
+and the isolated browser fixtures in `tests/study-async-browser.py` and
+`tests/review-async-browser.py`.
+
 In self-directed mode, new lessons come from `learner/targets`, `learner/queue`,
 and their prerequisites through two `topic/next` edges, matching the default
 Targets graph scope. Unlearned prerequisites never block an in-scope lesson or

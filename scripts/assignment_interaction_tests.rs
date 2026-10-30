@@ -646,3 +646,36 @@ fn mixed_free_assignment_reuses_text_even_when_reference_is_math_without_partial
     assert_eq!(field["choices"], json!([]));
     Ok(())
 }
+
+#[test]
+fn study_projection_assignment_focus_answer_and_switch_replay_with_stable_identities() -> Result<()> {
+    let mut f=Fixture::new()?;
+    let base=f.snapshot()?;let db=f.db.database_value();
+    let mut projection=None;let mut overlay=Json::Null;let mut queued=vec![];
+    let mut item=Json::Null;
+    for (turn,action) in ["assignment-focus","assignment-answer","assignment-focus","assignment-pause"].iter().enumerate(){
+        let mut body=match *action {
+            "assignment-focus"=>json!({"action":action,"assignmentId":ASSIGNMENT,"stepId":if turn==0{f.first}else{f.second}}),
+            "assignment-answer"=>json!({"action":action,"assignmentId":ASSIGNMENT,"itemId":item,"responses":[{"fieldId":f.first_field,"value":"2"}]}),
+            _=>json!({"action":action,"assignmentId":ASSIGNMENT}),
+        };
+        body["requestId"]=json!(format!("assignment-local-{turn:04}"));
+        let (data,next)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":body,"overlay":overlay,"receivedAt":2000+turn*1000}))?;
+        projection=Some(next);overlay=data["overlay"].clone();queued.push(data["operation"].clone());
+        item=data["view"]["assignment"]["steps"][0]["content"]["itemId"].clone();
+    }
+    for (n,operation) in queued.iter().enumerate(){
+        let s=f.snapshot()?;let op=study_interaction::bind(&s,operation)?;
+        let logical=DateTime::from_timestamp_millis(op["_queuedStudy"]["at"].as_i64().unwrap()).unwrap();
+        let durable=DateTime::from_timestamp_millis(20_000+n as i64*100).unwrap();
+        let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,logical)?;
+        study_interaction::prepare(&s,&f.db.database_value(),f.learner,&op,&mut forms,&mut result,durable)?;
+        f.db=offline_tx(&f.db,&schema::edn(&json!(forms))?,durable.timestamp_millis(),engine_source())?.db_after;
+    }
+    let s=f.snapshot()?;
+    let detail=assignment_reader::detail(&s,f.learner,ASSIGNMENT)?;
+    assert_eq!(detail["assignment"]["steps"][0]["content"]["status"],"correct");
+    assert_eq!(detail["assignment"]["steps"][1]["content"]["status"],"paused");
+    assert_eq!(status(&s,f.lesson_task,"learner-task/status")?,"locked");
+    Ok(())
+}

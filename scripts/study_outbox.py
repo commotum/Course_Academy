@@ -70,6 +70,15 @@ class StudyOutbox:
             view = state['views'].get(str(task))
             if view is None:
                 view = state['views'].get(str(state['aliases'].get(str(task))))
+            if view is not None and view.get('status') == 'started' and view.get('step', {}).get('status') == 'started':
+                local = (state['overlay'] or {}).get('entities', {})
+                aliases = {key: value for key, value in state['aliases'].items() if key not in local}
+                operation = self.normalize_ids({'action': 'task', 'taskId': task}, aliases)
+                result = self.grader.request({'action': 'study-read', 'operation': operation, 'overlay': state['overlay'],
+                                             'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
+                if not result.get('ok'):
+                    raise ValueError(result.get('error', 'Unable to read saved study progress'))
+                view = result['data']
             return self.with_status(state, view) if view is not None else None
 
     def overlay_view(self, action, body):
@@ -82,12 +91,13 @@ class StudyOutbox:
             return None
         with self.locked():
             state = self.load()
-            if not self.pending(state):
+            if not self.pending(state) and not state.get('committedBasis'):
                 return None
             local = (state['overlay'] or {}).get('entities', {})
             aliases = {key: value for key, value in state['aliases'].items() if key not in local}
             operation = self.normalize_ids(body, aliases)
-            result = self.grader.request({'action': 'study-read', 'operation': operation, 'overlay': state['overlay']})
+            result = self.grader.request({'action': 'study-read', 'operation': operation, 'overlay': state['overlay'],
+                                          'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
             if not result.get('ok'):
                 raise ValueError(result.get('error', 'Unable to read locally saved study progress'))
             return self.with_status(state, result['data'])
@@ -146,7 +156,8 @@ class StudyOutbox:
             aliases = {key: value for key, value in state['aliases'].items() if key not in local}
             operation = self.normalize_ids(body, aliases)
             projected = self.grader.request({'action': 'study-project', 'operation': operation,
-                                             'overlay': state['overlay'], 'receivedAt': now})
+                                             'overlay': state['overlay'], 'receivedAt': now,
+                                             'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
             if not projected.get('ok'):
                 return {'_error': projected.get('error', 'Unable to update study'),
                         '_code': projected.get('code', 'validation')}
@@ -202,6 +213,7 @@ class StudyOutbox:
                         state['retryAt'] = 0
                         data = result.get('data', {})
                         state['aliases'].update(data.get('aliases', {}))
+                        state['committedBasis'] = max(state.get('committedBasis', 0), data.get('basis', 0))
                         if not self.pending(state):
                             state['views'] = {key: self.normalize_ids(value, state['aliases']) for key, value in state['views'].items()}
                             if data.get('view', {}).get('taskId') is not None:

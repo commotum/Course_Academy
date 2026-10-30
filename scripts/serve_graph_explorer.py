@@ -406,17 +406,18 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         inventory_ready.set()
 
     def scheduler_loop():
-        # NativeWorker incrementally consumes the EDB log into one held projection;
-        # scans also cover age/retention transitions without a new transaction.
+        # Automatic learner changes share the same acknowledged ordering as
+        # study clicks. A second writer must not prepare competing tasks against
+        # the durable state while accepted answers are still in the outbox.
         while not scheduler_stop.is_set():
             try:
                 request_directory.mkdir(parents=True, exist_ok=True)
                 with (request_directory / 'api.lock').open('a') as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
-                    if not developer_mode(mode_path):
-                        response = scheduler_worker.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
-                        if not response.get('ok'):
-                            raise ValueError(response.get('error', 'Queue preparation unavailable'))
+                    if not developer_mode(mode_path) and not review_outbox.status()['pending']:
+                        response = review_outbox.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
+                        if response is None or response.get('_error'):
+                            raise ValueError((response or {}).get('_error', 'Queue preparation unavailable'))
                         inventory_refresh.set()
             except (OSError, ValueError) as error:
                 print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
@@ -586,15 +587,6 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     if review_outbox and not developer_mode(mode_path):
                         response['data'] = review_outbox.decorate(response['data'])
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
-                    if response['data'].get('type') == 'review' and body.get('action') in {'start','review-topic','resume','task'}:
-                        # Refresh a long-idle feedback peer while the learner
-                        # reads, rather than on their first Check answer click.
-                        def warm_review(task_id=response['data']['taskId']):
-                            try:
-                                feedback_worker.request({'action':'review-session','taskId':task_id})
-                            except (OSError, ValueError):
-                                pass
-                        threading.Thread(target=warm_review, daemon=True).start()
                     if refresh_inventory:
                         inventory_refresh.set()
                 else:
@@ -887,8 +879,12 @@ def main() -> None:
             worker.request(body)
         except (OSError, ValueError):
             pass  # A foreground request retries startup and reports any failure.
-    for worker, body in zip(server.RequestHandlerClass.workers, ({}, {"action": "profile"}, {"action": "activity-history"}, {"action": "activity-history"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "activity-history"})):
-        if worker:
+    for index, (worker, body) in enumerate(zip(server.RequestHandlerClass.workers, ({}, {"action": "profile"}, {"action": "activity-history"}, {"action": "activity-history"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "profile"}, {"action": "activity-history"}))):
+        if index == 5:
+            # Build the resident study projection and start its independent
+            # freshness reader before the learner's first interaction.
+            body = {'action': 'study-read', 'operation': {'action': 'profile'}, 'overlay': None}
+        if worker and index != 4:  # Scheduler now uses the shared local study projection.
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     def stop(_signum, _frame):
         server.RequestHandlerClass.scheduler_stop.set()
