@@ -26,7 +26,7 @@ for row in json.loads((H/'inventory.json').read_text()):
             assert not r.get('assets') and not r['generation'].get('plot_assets')
         fresh+=records;render.append(records[0])
     (h/'fresh-samples.json').write_text(json.dumps(fresh,indent=2)+'\n')
-    summary.append({'kp':kp,'title':row['title'],'imported':row['imported'],'active_generated':len(row['active_generated']),'total_captured_questions_including_canonical':len(questions),'stored_image_references':refs,'fresh_questions_checked':len(fresh),'fresh_plot_assets':0,'plotter_present':any('matplotlib' in p.read_text() or 'MaxNLocator' in p.read_text() for p in (h/'package').glob('*.py')),'decision':'No shared plot-readability defect; no generator or pool mutation needed'})
+    summary.append({'kp':kp,'title':row['title'],'imported':row['imported'],'active_generated':len(row['active_generated']),'total_captured_questions_including_canonical':len(questions),'stored_image_references':refs,'fresh_questions_checked':len(fresh),'fresh_plot_assets':0,'plotter_present':any('matplotlib' in p.read_text() or 'MaxNLocator' in p.read_text() for p in (h/'package').glob('*.py')),'decision':'No plotter present; presentation findings are recorded separately'})
 (H/'render-input.json').write_text(json.dumps(render,indent=2)+'\n')
 (H/'audit.json').write_text(json.dumps({'passed':True,'basis':json.loads((H/'inventory.json').read_text())[0]['basis'],'kps':summary,'database_writes':0},indent=2)+'\n')
 print(json.dumps(summary,indent=2))

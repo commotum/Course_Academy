@@ -165,7 +165,7 @@ def render_instance(level,profile,times,forms,targets,signs=None,guidance=None,s
     if combo:
         result=sp.simplify(sum(s*solved[n] for n,s in zip('abc',signs)))
         terms=''.join(('' if i==0 and s==1 else '+' if s==1 else '-')+r'\left('+tex(solved[n])+r'\right)' for i,(n,s) in enumerate(zip('abc',signs)))
-        sections.append('Substitute the three entries with the signs in the requested expression:\n\n$$\n'+r'\begin{aligned}'+combination_tex(signs)+' &='+terms+r' \\ &='+tex(result)+r'\end{aligned}'+'\n$$')
+        sections.append('Substitute the three entries with the signs in the requested expression:\n\n$$\n'+r'\begin{gathered}'+combination_tex(signs)+r' \\ ='+terms+r' \\ ='+tex(result)+r'\end{gathered}'+'\n$$')
         fields=[('result','blank',[tex(result)],tex(result))]
     else:
         result=None

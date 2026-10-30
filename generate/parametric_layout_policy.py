@@ -13,6 +13,8 @@ def validate_delivery_batch(records,kp_id):
                     if line.startswith('|') and len(line.strip().strip('|').split('|'))>4:
                         raise ValueError('Parametric value tables must use small panels with repeated headings')
         else:
+            if re.search(r'is\s+\{\{field-',q[':question/problem']):
+                raise ValueError('Coordinate range answer controls must start on their own line')
             for block in re.findall(r'\$\$(.*?)\$\$',q[':question/problem'],re.S):
                 if re.search(r'\bx\s*=',block) and re.search(r'\by\s*=',block):
                     raise ValueError('Trigonometric coordinate formulas must be independently visible')

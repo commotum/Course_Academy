@@ -86,11 +86,11 @@ def build(level,a,b,h,k,domain=(0,4,True,False),functions=('cos','sin'),family=N
         prompt+=' Use $<$ or $\\le$ in the comparison blanks.'
         for j,(var,v) in enumerate([('x',xr),('y',yr)]):
             n=4*j+1
-            prompt+='\n\nThe range of $'+var+'$ is {{field-'+str(n)+'}} {{field-'+str(n+1)+'}} $'+var+'$ {{field-'+str(n+2)+'}} {{field-'+str(n+3)+'}}.'
+            prompt+='\n\nThe range of $'+var+'$ is:\n\n{{field-'+str(n)+'}} {{field-'+str(n+1)+'}} $'+var+'$ {{field-'+str(n+2)+'}} {{field-'+str(n+3)+'}}.'
             vals.extend([tex(v[0]),cmp(v[2]),cmp(v[3]),tex(v[1])])
     else:
         if not all(xr[2:]+yr[2:]):raise ValueError('Six-blank scaffold requires attained bounds')
-        prompt+='\n\nThe range of $x$ is {{field-1}} {{field-2}} $x\\le$ {{field-3}}.\n\nThe range of $y$ is {{field-4}} $\\le y$ {{field-5}} {{field-6}}.'
+        prompt+='\n\nThe range of $x$ is:\n\n{{field-1}} {{field-2}} $x\\le$ {{field-3}}.\n\nThe range of $y$ is:\n\n{{field-4}} $\\le y$ {{field-5}} {{field-6}}.'
         vals=[tex(xr[0]),cmp(xr[2]),tex(xr[1]),tex(yr[0]),cmp(yr[3]),tex(yr[1])]
     solution='Consider each coordinate separately.\n\nFor $x$:\n\n'+xsolution+'\n\nFor $y$:\n\n'+ysolution+'\n\nContinuity gives every value between the stated bounds. The coordinate extrema need not occur at the same parameter value.'
     prompt,solution=map(normalize_prose,(prompt,solution));vals=list(map(normalize_tex,vals))

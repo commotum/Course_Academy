@@ -34,7 +34,11 @@ def main():
                 if kp==17592186087717:
                     for key in (':question/problem',':question/worked-solution'):
                         assert table_rows(qa[key])==table_rows(qb[key])
-                        assert '\n'.join(l for l in qa[key].splitlines() if l and not l.startswith('|'))=='\n'.join(l for l in qb[key].splitlines() if l and not l.startswith('|'))
+                        def without_layout(text):
+                            text='\n'.join(l for l in text.splitlines() if l and not l.startswith('|'))
+                            text=re.sub(r'\\(?:begin|end)\{(?:aligned|gathered)\}|\\\\|&|\s+','',text)
+                            return text
+                        assert without_layout(qa[key])==without_layout(qb[key])
                     for key in ('parameters','derivation','displayed_final','response_design'):assert a['generation'][key]==b['generation'][key]
                 else:
                     assert qa[':question/worked-solution']==qb[':question/worked-solution']
