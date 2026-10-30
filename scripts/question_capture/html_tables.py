@@ -8,6 +8,60 @@ except ImportError:
 
 STRUCTURAL={'table','thead','tbody','tfoot','tr','td','th','caption','colgroup','col'}
 INLINE={'strong','em','sup','sub','p','ul','ol','li'}
+
+def source_matrix_layout(table,render_leaf):
+    """Recognize explicit source bracket/brace decoration before sanitizing it.
+
+    Check the complete structure before visiting controls: speculative rendering
+    would register the same field twice when falling back to an ordinary table.
+    """
+    try:
+        from .math_format import matrix_equation,system_answer
+    except ImportError:
+        from math_format import matrix_equation,system_answer
+    def rows(t):return[r for r in t.find_all('tr')if r.find_parent('table')is t]
+    def cells(row):return row.find_all(['td','th'],recursive=False)
+    def empty(c):return not c.get_text(strip=True)and not c.select('input,select,textarea,.freeResponseTextbox,.matheditor-wrapper-answer,[contenteditable="true"]')
+    def edge(c,side):
+        p=properties(c);value=p.get('border-'+side,p.get('border',''))
+        return bool(value)and not re.match(r'^(?:hidden|none|0(?:px)?)(?:\s|$)',value)
+    def grid(t,has_label=False):
+        rr=rows(t);out=[];labels=[]
+        spanning=bool(rr and cells(rr[0])and cells(rr[0])[0].get('rowspan')==str(len(rr)))
+        for i,row in enumerate(rr):
+            cc=cells(row)
+            if has_label and(not spanning or i==0):labels.append(cc.pop(0))
+            if len(cc)<3 or not empty(cc[0])or not empty(cc[-1])or not edge(cc[0],'left')or not edge(cc[-1],'right'):return None
+            entries=cc[1:-1]
+            if not all(empty(c)for c in entries):out.append(entries)
+        if not out or len({len(r)for r in out})!=1 or any(empty(c)for r in out for c in r):return None
+        return out,labels
+    def entry(c):
+        text=render_leaf(c).strip()
+        return MATH.sub(lambda m:m[0][2:-2]if m[0].startswith(('$$',r'\(',r'\['))else m[0][1:-1],text).strip()
+    nested=[t for t in table.find_all('table')if t.find_parent('table')is table]
+    outer=rows(table)
+    if len(nested)==3 and len(outer)==1:
+        parsed=[grid(t)for t in nested]
+        if any(p is None for p in parsed):return None
+        outside=[c for c in cells(outer[0])if c.find('table')is None and not empty(c)]
+        if len(outside)!=1 or outside[0].get_text(strip=True)!='=':return None
+        gs=[[[entry(c)for c in r]for r in p[0]]for p in parsed]
+        return '\n\n'+matrix_equation([gs[0],gs[1],'=',gs[2]])+'\n\n'
+    if nested:return None
+    if len(outer)>=2:
+        first=cells(outer[0]);system=bool(first and first[0].get('rowspan')==str(len(outer))and first[0].get_text(strip=True)=='{')
+        if system:
+            rr=[cells(r)[1:]if i==0 else cells(r)for i,r in enumerate(outer)]
+            if all(len(r)==3 and r[1].get_text(strip=True)=='='for r in rr):
+                return '\n\n'+system_answer([[entry(c)for c in r]for r in rr])+'\n\n'
+    parsed=grid(table,has_label=True)
+    if parsed is not None:
+        rr,labels=parsed;nonempty=[c for c in labels if not empty(c)]
+        if len(nonempty)==1 and '='in nonempty[0].get_text():
+            label=entry(nonempty[0]);gs=[[entry(c)for c in r]for r in rr]
+            return '\n\n'+matrix_equation([label,gs])+'\n\n'
+    return None
 def escaped_text(value):
     """Keep protected TeX exact; escape only ordinary HTML text."""
     value=str(value);parts=[];end=0
@@ -66,6 +120,8 @@ def attrs(node,last_rows):
 
 def source_table_html(table,render_leaf,skip=lambda node:False):
     """Reuse the caller's math/widget/asset renderer, retaining actual cell roles."""
+    layout=source_matrix_layout(table,render_leaf)
+    if layout is not None:return layout
     last_rows={id(rows[-1])for t in [table]+table.find_all('table')if(rows:=[r for r in t.find_all('tr')if r.find_parent('table')is t])}
     def walk(node):
         if isinstance(node,Comment):return ''
