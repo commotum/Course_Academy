@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from edn import kw
-from provenance import Reconciler, mathematical_correction_records
+from provenance import Reconciler, mathematical_correction_records, field_value
 import test_replacement
 
 
@@ -37,8 +37,62 @@ class CorrectionRetentionTests(unittest.TestCase):
         self.evidence('question/problem', self.q['problem'])
         self.assertTrue(self.plan())
 
+    def test_attested_bank_prevents_scalar_to_set_distractor_regression(self):
+        values = [r'\{0\}', '0', 'n']
+        for answer, value in zip(self.answers, values):
+            answer[':answer/value'] = value
+        incoming = self.q['answer_fields'][0]
+        incoming.update(correct_value=values[0], choices=[{'type':'math','value':v} for v in values])
+        self.evidence('answer-field/choices', field_value(self.field, 'answer-field/choices'),
+                      'mathematical_correction', 'selection', local=True)
+        incoming['choices'][1]['value'] = r'\{0\}'
+        self.evidence('answer-field/choices', sorted(('math', a['value']) for a in incoming['choices']),
+                      'ma_complete_choices', 'selection')
+        self.assertEqual(self.plan(), [])
+        self.assertFalse(self.reconciler.needs_review)
+        self.assertEqual([(d['attribute'], d.get('action')) for d in self.reconciler.decisions],
+                         [('answer-field/choices', 'retain')])
+
+    def test_identical_protected_bank_keeps_normal_merge(self):
+        self.evidence('answer-field/choices', field_value(self.field, 'answer-field/choices'),
+                      'mathematical_correction', 'selection', local=True)
+        self.assertEqual(self.reconciler.field_action(self.mid, self.field, self.q['answer_fields'][0]), 'merge')
+        self.assertEqual(self.reconciler.decisions, [])
+
+    def test_bank_protection_requires_exact_attested_value(self):
+        self.evidence('answer-field/choices', [('math', 'different bank')],
+                      'mathematical_correction', 'selection', local=True)
+        self.q['answer_fields'][0]['choices'] = [{'type':'math','value':v} for v in ['120', '60']]
+        self.evidence('answer-field/choices', [('math', '120'), ('math', '60')],
+                      'ma_complete_choices', 'selection')
+        self.assertEqual(self.reconciler.field_action(self.mid, self.field, self.q['answer_fields'][0]), 'version')
+        self.assertFalse(self.reconciler.needs_review)
+
 
 class CorrectionEvidenceTests(unittest.TestCase):
+    def test_full_bank_evidence_is_opt_in_and_transaction_bound(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            directory = root/'mathematical-corrections/q-1'
+            directory.mkdir(parents=True)
+            review, tx = directory/'review.json', directory/'transaction.edn'
+            content = {'math_academy_id':'q-1', 'problem':'Null-space theorem', 'worked_solution':'Null(A)={0}.',
+                       'answer_fields':[{'key':'selection', 'correct_value':r'\{0\}', 'protect_choices':True,
+                                         'choices':[{'type':'math','value':r'\{0\}'}, {'type':'math','value':'0'}]}]}
+            review.write_text(json.dumps({'rationale':'Scalar zero differs from the singleton-zero set.',
+                                          'corrected_content':content}))
+            tx.write_text('[]')
+            proof = {'committed':True, 'mathematical_check_passed':True, 'basis_after':12,
+                     'review_sha256':hashlib.sha256(review.read_bytes()).hexdigest(),
+                     'transaction_sha256':hashlib.sha256(tx.read_bytes()).hexdigest()}
+            (directory/'verification.json').write_text(json.dumps(proof))
+            records = mathematical_correction_records(root, {'q-1'})
+            bank = [r for r in records if r['attribute']=='answer-field/choices']
+            self.assertEqual(len(bank), 1)
+            self.assertEqual(bank[0]['value'], [('math', '0'), ('math', r'\{0\}')])
+            tx.write_text('[changed]')
+            self.assertEqual(mathematical_correction_records(root, {'q-1'}), [])
+
     def test_canonical_example_correction_has_scalar_evidence_without_answer_fields(self):
         with tempfile.TemporaryDirectory() as name:
             root=Path(name);directory=root/'mathematical-corrections/e-21715';directory.mkdir(parents=True)
