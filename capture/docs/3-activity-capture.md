@@ -28,6 +28,8 @@ Source fidelity includes explanatory cell colors, shaded pivot boxes and verific
 
 Match answer notation using the structural math identity and observed field/choice lineage. Never erase visible set fences to match source choices: scalar `0`, `1`, or `n` differs from the corresponding singleton set. TeX grouping braces may be formatting; escaped visible braces are mathematical content. Check the complete bank for duplicate mathematical objects after restoration, and require an unambiguous one-to-one source match before changing an existing answer value.
 
+A committed mathematical correction may explicitly protect its complete typed choice bank with `protect_choices: true` in its reviewed provenance record. Reconciliation must attest that exact bank and field identity at the saved database basis before retaining it against conflicting source choices. Protecting only the correct answer is insufficient when the defect changes distractors. Ordinary source banks without this exact evidence continue through normal reconciliation.
+
 ### Activity and steps
 
 1. Open or resume the activity using its queue details. Save instructions, task ID, title, and topic/course references before starting when possible. Read instructions before starting a timed activity; use the queue's question count/time limit and monitor the live timer.

@@ -56,6 +56,6 @@ Archived originals were found for **904 of 905 source-identified fresh records**
 
 The 31 reused topics rely on their recorded completed audits and unchanged-pool comparison; their full content was not silently re-reviewed in this run. All 50 topics also received the parent's current structural sweep for missing solutions/keys, owned answers, duplicate keys and mathematical blank types. Numerical parsers and browser checks supplement the individual proofs; they do not establish every theorem or diagram interpretation by themselves. No learner attempts, timing, exposure, XP or progress records were created for testing.
 
-**Final global committed-state verification: PENDING parent verifier.**
+**Final global committed-state verification: PASSED.** See [final-live-verification.json](final-live-verification.json).
 
-**Authored-correction reconciliation/protection verification: PENDING parent verification.**
+**Authored-correction reconciliation/protection verification: PASSED.** [Registry](authored-reconciliation-verification.json), [actual importer proof](reconciliation-protection-verification.json), [tutorial source guards](tutorial-source-guard-verification.json).
