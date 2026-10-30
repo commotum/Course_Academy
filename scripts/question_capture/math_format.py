@@ -830,6 +830,9 @@ def scalable_table_fences(text, *, environments=None):
     if r'\begin{' not in text: return text
     environments = environments or {'array', 'aligned', 'alignedat', 'gathered', 'matrix',
                                     'bmatrix', 'pmatrix', 'vmatrix', 'Bmatrix', 'Vmatrix', 'cases'}
+    # Resolve paired composite expressions before deciding that a leading
+    # condition brace is one-sided.
+    text = _scalable_composite_fences(text, environments)
     groups = [('[', r'\lbrack', ']', r'\rbrack'),
               ('(', r'\lparen', ')', r'\rparen'),
               (r'\{', r'\lbrace', r'\}', r'\rbrace'),

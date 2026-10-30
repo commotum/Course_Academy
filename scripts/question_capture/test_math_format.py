@@ -111,6 +111,7 @@ class MathContentTests(unittest.TestCase):
         for source, expected in [
                 ('T(' + matrix + '-2' + matrix + ')', r'T\left(' + matrix + '-2' + matrix + r'\right)'),
                 ('({' + matrix + '})', r'\left({' + matrix + r'}\right)'),
+                (r'\{' + matrix + ',' + matrix + r'\}', r'\left\{' + matrix + ',' + matrix + r'\right\}'),
                 ('(' + matrix + '+' + matrix + ')', r'\left(' + matrix + '+' + matrix + r'\right)')]:
             with self.subTest(source=source):
                 result = scalable_table_fences(source)
