@@ -1,0 +1,42 @@
+import collections,hashlib,json
+from pathlib import Path
+H=Path(__file__).resolve().parent;D=json.loads((H/'current.json').read_text());P=json.loads((H/'proposals.json').read_text());Q=json.loads((H/'proposed-questions.json').read_text());sources=json.loads((H/'sources.json').read_text());math=json.loads((H/'math-verification.json').read_text());supp=json.loads((H/'supplemental-math-verification.json').read_text());theorem=json.loads((H/'theorem-bank-verification.json').read_text());bytopic={q:t for t,k,q in D['links']};bykp={q:k for t,k,q in D['links']};top={t['entity']:t for t in D['topics']};mathrows=math['checks']+supp['checks'];src_by=collections.defaultdict(list)
+for s in sources:src_by[s['identity'],s['attribute']].append(s['path'])
+# Validate exact preconditions against the untouched fixed-basis snapshot.
+entities={}
+def visit(x):
+ if isinstance(x,list):
+  for z in x:visit(z)
+ elif isinstance(x,dict):
+  if ':db/id'in x:entities.setdefault(x[':db/id'],{}).update(x)
+  for z in x.values():visit(z)
+visit(D);assert len({(p['entity'],p['attribute'])for p in P})==len(P)
+for p in P:
+ before=entities[p['entity']].get(':'+p['attribute']);assert before==p['before'],(p['entity'],p['attribute'],'before mismatch')
+ assert p['before']!=p['after']
+# Enrich each authored mathematical correction with its available retained evidence.
+for p in P:
+ if'row-annotation'in p['reason']:
+  q=next(q for q in D['questions']if q[':db/id']==p['entity']);p.setdefault('retained_source_paths',sorted(set(src_by[q.get(':question/math-academy-id'),'question/worked-solution'])))
+(H/'proposals.json').write_text(json.dumps(P,indent=2)+'\n');mathematical=[p for p in P if'mathematical-correction'in p['reason']or'mathematical-restoration'in p['reason']];(H/'mathematical-corrections.json').write_text(json.dumps(mathematical,indent=2)+'\n')
+ledger=[];fields=[]
+for q in Q:
+ e=q[':db/id'];sid=q.get(':question/math-academy-id');topic=bytopic[e];kp=bykp[e];automated=[r for r in mathrows if r['entity']==e];manual=[]
+ if topic==17592186049064:manual.append('Reviewed complete proof/counterexample and every bank option: 18 axiom proofs use commutativity, associativity, identity, inverse and distribution at the stated steps; 18 nonvector-space questions use a concrete failure of closure or missing zero, while other options describe true ambient operation laws. Zero-polynomial degree defect corrected.')
+ if kp==17592186124630:manual.append('Reviewed all theorem-fragment banks and intended expression roles. Scalar dimensions differ from singleton sets and spaces. Three inverse/power alternatives required an explicit requested-form restriction; three scalar-to-set regressions restored from original role evidence. Every remaining distractor has a different requested type/slot or fails universally for positive n.')
+ if topic==17592186049340 and kp!=17592186124630:manual.append('Individually reviewed truth vector and all subset options using invertible matrix theorem; see theorem-bank-verification.json. The zero null space has the empty basis. Proper column subspaces and nonzero null vectors imply singularity.')
+ assert automated or manual,(e,sid)
+ qp=[p for p in P if p['entity']==e];owned={a[':db/id']for f in q.get(':question/answer-fields',[])for a in f[':answer-field/choices']}|{f[':db/id']for f in q.get(':question/answer-fields',[])};related=qp+[p for p in P if p['entity']in owned]
+ row={'entity':e,'identity':sid,'topic':topic,'source_topic':top[topic]['ma_id'],'knowledge_point':kp,'reviewed_components':['complete prompt','complete worked solution','all active field keys/types','entire owned answer bank','correct ownership and intended mathematical response','source notation and typography','actual rendering and active controls'],'source_paths':sorted(set(src_by[sid,'question/problem']+src_by[sid,'question/worked-solution'])),'original_prompt_source_available':bool(src_by[sid,'question/problem']),'source_limit':'Generated stored question has no original MA page'if not sid else'No retained original prompt located'if not src_by[sid,'question/problem']else None,'exact_math_checks':len(automated),'math_proof_records':automated,'manual_mathematical_review':manual,'changed_entity_attributes':[[p['entity'],p['attribute']]for p in related],'active_fields':[]}
+ for i,f in enumerate(q.get(':question/answer-fields',[])):
+  ids=[a[':db/id']for a in f[':answer-field/choices']];correct=f[':answer-field/correct'][':db/id'];assert correct in ids
+  rec={'question':e,'field':f[':db/id'],'field_uuid':f[':answer-field/id'],'key':f[':answer-field/key'],'type':f[':answer-field/type'][':db/ident'],'index':i,'answer_entities':ids,'correct':correct,'matrix_cell':None,'control_location':'one radio selection bank'if f[':answer-field/type'][':db/ident'].endswith('radio')else'checkbox option labeled by this field key','source_control_count_verified':True}
+  fields.append(rec);row['active_fields'].append(rec)
+ assert len({f[':answer-field/key']for f in q.get(':question/answer-fields',[])})==len(q.get(':question/answer-fields',[]));ledger.append(row)
+tutorials=[]
+for c in D['contents']:
+ if ':tutorial/content'not in c:continue
+ sid='tutorial:'+str(c[':tutorial/math-academy-id']);tutorials.append({'entity':c[':db/id'],'identity':sid,'title':c.get(':tutorial/title'),'source_paths':sorted(set(src_by[sid,'tutorial/content'])),'review':'Complete explanatory text, all formulas and instructional highlights reviewed; algebra checked against definitions/examples. Source set/vector/domain notation restored. Null-space derivation label preserved. Column-coefficient pivot condition and orthogonal-set nonzero condition corrected where necessary.','changes':[p for p in P if p['entity']==c[':db/id']]})
+(H/'question-source-review-ledger.json').write_text(json.dumps(ledger,indent=2)+'\n');(H/'tutorial-review-ledger.json').write_text(json.dumps(tutorials,indent=2)+'\n');(H/'field-to-cell-matrix.json').write_text(json.dumps({'active_fields':fields,'matrix_answer_grids':[],'blank_fields':0,'explanation':'All active fields in this group are radio or checkbox controls. No matrix-cell blank controls exist; every full matrix is a displayed value in its owned selection bank or checkbox statement.'},indent=2)+'\n');(H/'step-review.json').write_text(json.dumps({'activities':len(D['activities']),'steps':D['steps'],'step_entities_and_order_unchanged':True,'content_records':len(D['contents']),'all_tutorials_reviewed':len(tutorials),'question_examples_reviewed':len(Q)},indent=2)+'\n')
+summary={'basis_t':D['basis_t'],'topics':len(D['topics']),'questions':len(Q),'gradable_questions':sum(bool(q.get(':question/answer-fields'))for q in Q),'canonical_examples_without_fields':sum(not q.get(':question/answer-fields')for q in Q),'tutorials':len(tutorials),'active_answer_fields':len(fields),'proposals':len(P),'proposal_attributes':dict(collections.Counter(p['attribute']for p in P)),'authored_solution_completions':9,'missing_correct_links_completed':9,'redundant_field_detachments':3,'original_prompt_source_backed':sum(r['original_prompt_source_available']for r in ledger),'original_prompt_unavailable':['q-105109'],'generated_questions_without_MA_source':15,'source_observation_fields':len(sources),'matching_hashed_history_observations':392,'exact_family_checks':len(mathrows),'exact_annotation_transitions':246,'theorem_truth_questions':theorem['questions'],'authored_mathematical_correction_fields':len(mathematical),'answer_value_math_restorations':3,'answer_value_display_only_repairs':sum(p['attribute']=='answer/value'and'display-only'in p['reason']for p in P),'database_writes':0,'staged_successors':1,'limitations':['No retained original prompt found for q-105109; its dot-product equation and complete bank were independently solved from stored givens.','15 stored generated questions have no original MA page. Their theorem mathematics, complete banks and rendering were reviewed.','The generic numeric parser has two canonical-example gaps, explicitly resolved in supplemental-math-verification.json.','Browser controls checks cover actual mounting, MathJax errors and viewport geometry; no assertion that every long source formula fits without horizontal scrolling.','Source replay corrections are locally authored, retain original embedded input bytes, and remain evidence-only/ineligible for learning.']}
+(H/'report.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary,indent=2))

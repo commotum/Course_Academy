@@ -4,7 +4,7 @@ Prepared only; no EDB transactions or learner writes. The snapshot covers 6 topi
 
 The final attribute proposals preserve all entity and UUID identities, bank membership, every existing key and field type. Nine absent keys reuse their existing owned choices; nine worked solutions are authored completions. Eight wrong displayed matrices in seven solutions and one erroneous cofactor-expansion sign in an eighth solution are corrected using independent algebra. Another mathematical evidence entry narrows one radio prompt whose zero minor made three values numerically equivalent. Source teaching colors, boxes, phantom cells, vector fonts, augmented separators, determinant operators and matrix controls are restored.
 
-Validation artifacts contain exact per-case evidence: `family-algebra-audit-after.json`, `inverse-key-verification.json`, `blank-algebra-verification.json`, `tutorial-verification.json`, `ordered-step-verification.json`, `source-exception-review.json`, `identity-verification.json`, `render-verification.json`, `control-verification.json` and `grading-verification.json`. Actual rendering uses the application MathJax/player code, and actual grading uses the native no-write check engine. Two screenshots were inspected: the 2×2 inverse representation with an external scalar control and a 4×4 inverse answer grid.
+Validation artifacts contain exact per-case evidence: `family-algebra-audit-after.json`, `inverse-key-verification.json`, `annotation-coverage-verification.json`, `solution-chain-verification.json`, `blank-algebra-verification.json`, `tutorial-verification.json`, `ordered-step-verification.json`, `source-exception-review.json`, `identity-verification.json`, `render-verification.json`, `control-verification.json` and `grading-verification.json`. Actual rendering uses the application MathJax/player code, and actual grading uses the native no-write check engine. Two screenshots were inspected: the 2×2 inverse representation with an external scalar control and a 4×4 inverse answer grid.
 
 ## Topic ledger
 
@@ -35,7 +35,7 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186425353 | q-77803 |  | 1/5 | 17 |  |
 | 17592186571454 | q-130046 |  | 1/5 | 17 |  |
 | 17592186585040 | q-130045 |  | 1/5 | 8 |  |
-| 17592186119587 | e-4418 | yes | 0/0 | 10 |  |
+| 17592186119587 | e-4418 | yes | 0/0 | 10 | question/worked-solution |
 | 17592186120404 | q-36224 |  | 1/5 | 3 | question/worked-solution |
 | 17592186120423 | q-42094 |  | 1/5 | 4 | question/worked-solution |
 | 17592186265821 | q-130092 |  | 1/5 | 4 | question/worked-solution |
@@ -53,7 +53,7 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186425352 | q-77807 |  | 1/5 | 6 |  |
 | 17592186571396 | q-130067 |  | 1/5 | 4 |  |
 | 17592186571440 | q-130069 |  | 1/5 | 4 |  |
-| 17592186119588 | e-4419 | yes | 0/0 | 5 |  |
+| 17592186119588 | e-4419 | yes | 0/0 | 5 | question/worked-solution |
 | 17592186120402 | q-36120 |  | 1/5 | 2 | question/worked-solution |
 | 17592186120403 | q-36221 |  | 1/5 | 6 | question/worked-solution |
 | 17592186265802 | q-130030 |  | 1/5 | 6 | question/worked-solution |
@@ -67,7 +67,7 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186571413 | q-130016 |  | 1/5 | 6 |  |
 | 17592186585067 | q-130011 |  | 1/5 | 6 |  |
 | 17592186604568 | q-77797 |  | 1/5 | 4 |  |
-| 17592186119657 | e-5182 | yes | 0/0 | 8 |  |
+| 17592186119657 | e-5182 | yes | 0/0 | 8 | question/worked-solution |
 | 17592186115731 | q-31862 |  | 1/5 | 9 | question/problem, question/worked-solution |
 | 17592186115853 | q-43006 |  | 1/5 | 9 | question/problem, question/worked-solution |
 | 17592186299766 | q-31946 |  | 1/5 | 9 | question/problem, question/worked-solution |
@@ -113,7 +113,7 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186573270 | q-131369 |  | 1/5 | 6 |  |
 | 17592186573313 | q-130869 |  | 1/5 | 6 |  |
 | 17592186646310 | q-131360 |  | 1/5 | 6 |  |
-| 17592186115080 | e-4725 | yes | 0/0 | 4 |  |
+| 17592186115080 | e-4725 | yes | 0/0 | 4 | question/worked-solution |
 | 17592186125012 | q-36822 |  | 1/5 | 1 | question/worked-solution |
 | 17592186125017 | q-36845 |  | 1/5 | 1 | question/worked-solution |
 | 17592186323857 | q-36860 |  | 1/5 | 1 | question/worked-solution |
@@ -163,8 +163,8 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186437293 | q-139279 |  | 1/5 | 5 | question/worked-solution |
 | 17592186660318 | q-139280 |  | 1/5 | 5 | question/worked-solution |
 | 17592186115085 | e-4735 | yes | 0/0 | 5 | question/worked-solution |
-| 17592186115756 | q-32269 |  | 1/5 | 4 | question/worked-solution |
-| 17592186115758 | q-32273 |  | 1/5 | 4 | question/worked-solution |
+| 17592186115756 | q-32269 |  | 1/5 | 6 | question/worked-solution |
+| 17592186115758 | q-32273 |  | 1/5 | 6 | question/worked-solution |
 | 17592186323827 | q-365877 |  | 4/4 | 6 | question/problem, question/worked-solution |
 | 17592186323832 | q-365969 |  | 4/4 | 6 | question/problem, question/worked-solution |
 | 17592186323833 | q-365970 |  | 4/4 | 6 | question/problem, question/worked-solution |
@@ -269,7 +269,7 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186605144 | q-320798 |  | 3/3 | 1 | question/problem |
 | 17592186607568 | q-138781 |  | 3/3 | 1 | question/problem |
 | 17592186613762 | q-137873 |  | 3/3 | 1 | question/problem |
-| 17592186092023 | e-4508 | yes | 0/0 | 1 |  |
+| 17592186092023 | e-4508 | yes | 0/0 | 1 | question/worked-solution |
 | 17592186092528 | q-12286 |  | 1/5 | 2 | question/worked-solution |
 | 17592186092884 | q-8857 |  | 1/5 | 2 | question/worked-solution |
 | 17592186237950 | q-102802 |  | 1/5 | 2 | question/worked-solution |
@@ -293,6 +293,6 @@ Validation artifacts contain exact per-case evidence: `family-algebra-audit-afte
 | 17592186386048 | q-102799 |  | 1/5 | 2 | question/worked-solution |
 | 17592186393215 | q-72726 |  | 1/5 | 2 | question/worked-solution |
 | 17592186605114 | q-32140 |  | 1/5 | 2 |  |
-| 17592186092024 | e-4509 | yes | 0/0 | 1 |  |
+| 17592186092024 | e-4509 | yes | 0/0 | 1 | question/worked-solution |
 
 Detailed mathematical and source evidence for every question appears in `question-ledger.json`; source-prose/grid differences have explicit resolutions in `source-exception-review.json`. `proposals.json` is the final consolidated CAS-ready list. The parent must preview/spec-check and commit the guarded integration; this group did not transact.

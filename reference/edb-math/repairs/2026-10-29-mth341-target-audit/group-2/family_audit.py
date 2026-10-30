@@ -70,7 +70,9 @@ for q in S['questions']:
   for attr,tt in [('problem',prompt),('solution',text)]:
    seq=matrices(tt)
    for first,second in zip(seq,seq[1:]):
-    a,b=first['matrix'],second['matrix'];between=tt[first['end']:second['start']];out,op=operation(between,a)
+    a,b=first['matrix'],second['matrix'];between=tt[first['end']:second['start']]
+    if a==b and '$$'in between and between.rstrip().endswith(r':\quad'):continue
+    out,op=operation(between,a)
     if out is not None and out.shape==b.shape:rec(q,'ordered row operation '+attr,out==b,operation=op,before=a.tolist(),after=b.tolist(),calculated=out.tolist())
   # Numeric final inverse in solution is checked directly when task asks inverse.
   if ('inverse'in prompt.lower())and numeric:

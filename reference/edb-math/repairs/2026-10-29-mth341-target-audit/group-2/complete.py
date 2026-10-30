@@ -27,7 +27,7 @@ for eid,q in qs.items():
    # Canonical column expansion family: use column 3.
    j=2;terms=[sp.latex(a[ii,j])+r'(-1)^{'+str(ii+1)+'+'+str(j+1)+'}'+T(a.minor_submatrix(ii,j)).replace('bmatrix','vmatrix')for ii in range(4)if a[ii,j]!=0];method='third column'
   else:terms=[sp.latex(a[i,j])+r'(-1)^{'+str(i+1)+'+'+str(j+1)+'}'+T(a.minor_submatrix(i,j)).replace('bmatrix','vmatrix')for j in range(4)if a[i,j]!=0];method='second row'
-  sol='Expand along the '+method+'. Terms with a zero entry vanish. The cofactor signs are $(-1)^{i+j}$.'+D(r'\det(A)='+ '+'.join(terms)+'.');det=a.det();sol+='Evaluating the smaller determinants gives'+D(r'\det(A)='+sp.latex(det)+'.');right=next(c for c in choices if c[':db/id']==fixed[eid])if eid in fixed else next(c for c in choices if scalar(c[':answer/value'])==det);pr={'matrix':a.tolist(),'determinant':det,'method':method}
+  sol='Let $A$ denote the given matrix. Expand along the '+method+'. Terms with a zero entry vanish. The cofactor signs are $(-1)^{i+j}$.'+D(r'\det(A)='+ '+'.join(terms)+'.');det=a.det();sol+='Evaluating the smaller determinants gives'+D(r'\det(A)='+sp.latex(det)+'.');right=next(c for c in choices if c[':db/id']==fixed[eid])if eid in fixed else next(c for c in choices if scalar(c[':answer/value'])==det);pr={'matrix':a.tolist(),'determinant':det,'method':method}
  elif eid in[17592186125012,17592186125016]:
   l=sp.Symbol('lambda');poly=(a-l*sp.eye(3)).det();roots=sorted(a.eigenvals().keys());right=next(c for c in choices if c[':db/id']==fixed[eid]);sol=r'The eigenvalues satisfy the characteristic equation $\det(A-\lambda I)=0$. We have'+D(r'A-\lambda I='+T(a-l*sp.eye(3))+'.')
   if eid==17592186125012:sol+='This matrix is triangular, so its determinant is the product of the diagonal entries.'
