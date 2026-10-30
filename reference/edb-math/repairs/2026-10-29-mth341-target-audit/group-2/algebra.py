@@ -7,7 +7,7 @@ R=Path(__file__).resolve().parents[5];sys.path.insert(0,str(R/'scripts'))
 from question_capture.math_format import ENV,environment,cells
 symbols={x:sp.Symbol(x)for x in['x','y','k','a','b','c','d','l']}
 def scalar(t):
- t=t.replace(r'\lambda','l');t=re.sub(r'\\color\{[^{}]*\}','',t);t=re.sub(r'\\hspace\{[^{}]*\}','',t);t=t.strip().strip('$').replace('−','-');t=re.sub(r'\\(?:displaystyle|textstyle|left|right)\b','',t);t=re.sub(r'\\[,;! ]|\\quad\b|\\qquad\b','',t);t=re.sub(r'\\(?:text|textrm|mathrm)\{[\s\u00a0]*\}','',t)
+ t=re.sub(r'\\bbox(?:\[[^]]*\])?', '',t);t=t.replace(r'\lambda','l');t=re.sub(r'\\color\{[^{}]*\}','',t);t=re.sub(r'\\hspace\{[^{}]*\}','',t);t=t.strip().strip('$').replace('−','-');t=re.sub(r'\\(?:displaystyle|textstyle|left|right)\b','',t);t=re.sub(r'\\[,;! ]|\\quad\b|\\qquad\b','',t);t=re.sub(r'\\(?:text|textrm|mathrm)\{[\s\u00a0]*\}','',t)
  def group(pos):
   while pos<len(t)and t[pos].isspace():pos+=1
   if t[pos]!='{':return t[pos],pos+1
@@ -17,9 +17,9 @@ def scalar(t):
   return t[pos+1:end-1],end
  while(m:=re.search(r'\\(?:dfrac|tfrac|frac)',t)):
   num,end=group(m.end());den,end=group(end);t=t[:m.start()]+'('+str(scalar(num))+')/('+str(scalar(den))+')'+t[end:]
- t=t.replace('{-}','-').replace('{+}','+')
+ t=t.replace(r'\sqrt','sqrt');t=t.replace('{-}','-').replace('{+}','+')
  t=t.replace('\\cdot','*').replace('\\times','*').replace('^','**').replace('{','(').replace('}',')').strip().rstrip('.,?')
- assert re.fullmatch(r'[\dxykabcdl+*/().\s-]+',t),(t,'Unsupported scalar')
+ assert re.fullmatch(r'[\dxykabcdlsqrt+*/().\s-]+',t),(t,'Unsupported scalar')
  return sp.simplify(parse_expr(t,local_dict=symbols,transformations=standard_transformations+(implicit_multiplication_application,)))
 def matrices(text):
  out=[]
