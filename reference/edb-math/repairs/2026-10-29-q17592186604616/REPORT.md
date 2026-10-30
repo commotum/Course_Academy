@@ -23,7 +23,7 @@ Validation:
 
 - [Source comparison](full-review/source-grid-audit.json) matched the ordered numeric/symbolic matrix grids for all 215 prompts and nine tutorials, including matrices rendered in checkbox labels. Reconstructed interactive cells have separate archived-source and algebra checks.
 - [Lesson-step verification](full-review/lesson-step-verification.json) confirmed source order and membership in all four lessons.
-- [Matrix shape verification](full-review/matrix-shape-verification.json) found no malformed or empty cells among 1,603 mathematical matrix environments.
+- [Matrix shape verification](full-review/matrix-shape-verification.json) found no malformed or empty cells among 1,648 mathematical matrix environments.
 - [Actual-player rendering](full-review/render-verification.json): 1,337 fields passed strict MathJax/layout checks. [All 45 source-emphasis repairs](full-review/color-render-verification.json), including the three updated tutorials, also passed separately.
 - [Actual controls](full-review/control-verification.json): all 215 prompts passed 1,935 desktop/phone and editable/correct/incorrect display cases, with no prompt or card overflow. All repaired controls mounted once; their matrix tables were borderless and unnested. Representative visuals: [system](full-review/17592186604576-760.png), [reported inverse](full-review/17592186638274-760.png).
 - [Native grading](full-review/grading-verification.json): all 203 practice questions checked; 296 accepted and 680 rejected responses, with no unresolved checks. The final database readback verified 296 fields and all 853 existing answer entities.

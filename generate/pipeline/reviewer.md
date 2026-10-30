@@ -59,6 +59,8 @@ Record this comparison in `checks.progression`, with evidence from easy, moderat
 
 For ordinary matrix multiplication practice, distinguish source-supported partial output matrices from added procedural hints. Supplied entries can reduce repetition while leaving the requested row/column selections intact. An expanded dot product for a requested entry, or a reminder of the process to follow, belongs in the worked solution unless an explicitly guided teaching stage justifies it. Easy difficulty alone does not justify either addition.
 
+Check the meaning of noninput matrix cells against the imports. A partial answer matrix with supplied numerical entries does not support replacing those entries with asterisks and an “unrequested cell” legend. In Calculating a Matrix Product Using the Distributive Law (KP 17592186115226), require the actual remaining values and independently verify them from the printed operands, along with the requested entries.
+
 Save `evidence_root/pedagogical-variation.json` using `generate/pipeline/pedagogical-variation.schema.json` under repo_root, and cite it in `checks.decision_variation.evidence_paths`. Include these exact fields:
 
 * `learner_operation`: a string describing the necessary learner reasoning; `fixed_features`: an array of objects with `feature` and `justification`; `answer_roles`: an array of objects with `role`, `eligible_variation`, and `observed`.

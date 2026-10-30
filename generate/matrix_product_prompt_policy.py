@@ -2,9 +2,17 @@
 import re
 
 KP = 17592186059747
+SUPPLIED_ENTRIES_KP = 17592186115226
 
 
 def validate_delivery_batch(records, kp_id):
+    if int(kp_id) == SUPPLIED_ENTRIES_KP:
+        for record in records:
+            prompt = record['question'][':question/problem']
+            marker = r'<td>\s*\$?\s*(?:\\+ast\b|\\+star\b|\*)\s*\$?\s*</td>'
+            if re.search(marker, prompt, re.I) or re.search(r'\basterisk\b', prompt, re.I):
+                raise ValueError('Distributive-law partial matrices must supply the actual unrequested entries')
+        return
     if int(kp_id) != KP:
         return
     for record in records:
