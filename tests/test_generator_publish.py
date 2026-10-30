@@ -36,6 +36,22 @@ def record(number=2):
 
 
 class MatrixLayoutPublicationTests(unittest.TestCase):
+    def test_rejects_fixed_array_fences_in_every_rendered_publication_field(self):
+        bad = r'[\begin{array}{cc|cc}1&0&1&0\\0&\frac{1}{12}&0&1\end{array}]'
+        for key in (':question/problem', ':question/worked-solution'):
+            q = record()['question']; q[key] = '$$' + bad + '$$'
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+                validate_question(q)
+        for kind, value in [(':answer.type/math', bad), (':answer.type/text', '$' + bad + '$')]:
+            q = record()['question']; a = q[':question/answer-fields'][0][':answer-field/choices'][0]
+            a[':answer/type'], a[':answer/value'] = kind, value
+            with self.subTest(kind=kind), self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+                validate_question(q)
+        q = record()['question']; q[':question/answer-fields'][0][':answer-field/choices'][0][':answer/feedback'] = '$' + bad + '$'
+        with self.assertRaisesRegex(ValueError, 'scalable delimiters'): validate_question(q)
+        q = record()['question']; q[':question/worked-solution'] = '$$' + bad.replace('[', r'\left[').replace(']', r'\right]') + '$$'
+        validate_question(q)
+
     def test_rejects_plain_limit_operator_and_relation_as_sized_bar(self):
         for value in (r'{lim}_{{x}\rightarrow2}f(x)', r'\big\mid A\big\mid'):
             q = record()['question']

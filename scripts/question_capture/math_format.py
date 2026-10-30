@@ -782,8 +782,9 @@ def scalable_array_fences(text):
     def pattern(tokens):
         return '(?:' + '|'.join(re.escape(t) + (r'(?![A-Za-z])' if t[-1].isalpha() else '')
                                for t in sorted(tokens, key=len, reverse=True)) + ')'
-    left_pattern = re.compile('(' + pattern(opening) + r')\s*$')
-    right_pattern = re.compile(r'\s*(' + pattern(closing) + ')')
+    spacing = r'(?:\s|\\[,;! ]|\\(?:quad|qquad)(?![A-Za-z])|\\hspace\{[^{}]*\})*'
+    left_pattern = re.compile('(' + pattern(opening) + ')' + spacing + '$')
+    right_pattern = re.compile(spacing + '(' + pattern(closing) + ')')
     sized = re.compile(r'\\(?:left|big|Big|bigg|Bigg)[lrm]?\s*$')
     optional = re.compile(r'\\(?:sqrt|xrightarrow|xleftarrow|xleftrightarrow|'
                           r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
@@ -794,12 +795,19 @@ def scalable_array_fences(text):
         if not span: continue
         left = left_pattern.search(text[:token.start()])
         right = right_pattern.match(text[span[2]:])
-        if not left or not right or families[left[1]] != families[right[1]]: continue
+        if not left: continue
         prefix = text[:left.start(1)]
         # A literal bracket immediately after a backslash is a math boundary,
         # not a visible delimiter; named/escaped fence tokens are matched whole.
         if left[1] in '[(' and prefix.endswith('\\'): continue
         if sized.search(prefix) or optional.search(prefix): continue
+        # A terminal condition table may have only its visible opening brace.
+        # Give that existing brace an invisible matching right delimiter.
+        if not right and left[1] in (r'\{', r'\lbrace') and re.fullmatch(
+                spacing + r'(?:\${1,2}|\\\]|\\\))?\s*', text[span[2]:]):
+            changes.extend([(left.start(1), r'\left'), (span[2], r'\right.')])
+            continue
+        if not right or families[left[1]] != families[right[1]]: continue
         changes.extend([(left.start(1), r'\left'), (span[2] + right.start(1), r'\right')])
     for position, command in sorted(changes, reverse=True):
         text = text[:position] + command + text[position:]

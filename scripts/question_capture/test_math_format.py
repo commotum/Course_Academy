@@ -6,6 +6,62 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_augmented_arrays_stretch_without_losing_rules_or_outer_alignment(self):
+        from math_format import scalable_array_fences, validate_matrix_layouts
+        array = r'\begin{array}{cc|cc}1&0&1&0\\0&\frac{1}{12}&0&1\end{array}'
+        source = r'\begin{aligned}{}[N\mid I]&=[' + array + r']&R_2:=12R_2\\&\sim[' + array + r']\end{aligned}'
+        with self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+            validate_matrix_layouts('$$' + source + '$$')
+        expected = source.replace('[' + array + ']', r'\left[' + array + r'\right]')
+        self.assertEqual(scalable_array_fences(source), expected)
+        self.assertEqual(normalize_tex(source), expected)
+        self.assertEqual(scalable_array_fences(expected), expected)
+        self.assertEqual(expected.count(array), 2)
+        validate_matrix_layouts('$$' + expected + '$$')
+        validate_tex(expected)
+
+    def test_array_fence_spellings_and_nested_arrays(self):
+        from math_format import scalable_array_fences
+        array = r'\begin{array}{c|c}a&b\\c&d\end{array}'
+        for left, right in [('[', ']'), ('(', ')'), (r'\{', r'\}'), ('|', '|'),
+                            (r'\lbrack', r'\rbrack'), (r'\lparen', r'\rparen'),
+                            (r'\lbrace', r'\rbrace'), (r'\vert', r'\vert'),
+                            (r'\lvert', r'\rvert'), (r'\Vert', r'\Vert'),
+                            (r'\lVert', r'\rVert'), (r'\langle', r'\rangle')]:
+            with self.subTest(left=left):
+                self.assertEqual(scalable_array_fences(left + array + right),
+                                 r'\left' + left + array + r'\right' + right)
+        nested = r'[\begin{array}{c}(' + array + r')\\x\end{array}]'
+        expected = r'\left[\begin{array}{c}\left(' + array + r'\right)\\x\end{array}\right]'
+        self.assertEqual(scalable_array_fences(nested), expected)
+        self.assertEqual(scalable_array_fences(expected), expected)
+
+    def test_array_fences_preserve_deliberate_sizes_optional_arguments_and_data_tables(self):
+        from math_format import scalable_array_fences, validate_matrix_layouts
+        array = r'\begin{array}{c}a\\b\end{array}'
+        values = [array, r'\left[' + array + r'\right]', r'\bigl[' + array + r'\bigr]',
+                  r'\Big[' + array + r'\Big]', r'\sqrt[' + array + r']{x}',
+                  r'A\xrightarrow[' + array + r']{f}B', r'P(A\mid B)',
+                  r'[x,y]', r'[\begin{array}{c}a\\b\end{array})']
+        for source in values:
+            with self.subTest(source=source):
+                self.assertEqual(scalable_array_fences(source), source)
+                validate_matrix_layouts('$' + source + '$')
+
+    def test_spaced_array_fences_and_one_sided_condition_brace(self):
+        from math_format import scalable_array_fences, validate_matrix_layouts
+        array = r'\begin{array}{rl}x&=1\\y&=2\end{array}'
+        source = r'\{\hspace{0.278em} ' + array
+        expected = r'\left\{\hspace{0.278em} ' + array + r'\right.'
+        self.assertEqual(scalable_array_fences(source), expected)
+        self.assertEqual(scalable_array_fences('$$' + source + '$$'), '$$' + expected + '$$')
+        self.assertEqual(scalable_array_fences(expected), expected)
+        validate_tex(expected)
+        with self.assertRaisesRegex(ValueError, 'scalable delimiters'):
+            validate_matrix_layouts('$' + source + '$')
+        spaced = r'[\quad ' + array + r'\,]'
+        self.assertEqual(scalable_array_fences(spaced), r'\left[\quad ' + array + r'\,\right]')
+
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
         guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'
