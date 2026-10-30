@@ -623,25 +623,63 @@ def matrix_operands(expressions, *, stacked=False):
     ) + '\n</div>'
 
 
-def matrix_answer(expression, rows):
-    """A borderless rectangular answer matrix with external brackets and label.
+def matrix_input_grid(rows):
+    """A borderless bracketed matrix, with actual controls in their source cells.
 
     Cells contain bare TeX or an exact {{answer-field-key}} placeholder. Field
     identities, row order, supplied entries, and grading are owned by the caller.
     """
     rows = [list(map(str, row)) for row in rows]
-    if not expression.strip() or '$' in expression:
-        raise ValueError('Matrix answer label requires delimiter-free TeX')
     if not rows or not rows[0] or len({len(row) for row in rows}) != 1 or any(not cell.strip() for row in rows for cell in row):
         raise ValueError('A matrix answer must have rectangular, nonempty cells')
     def entry(value):
         escaped = html.escape(value, quote=False)
         return escaped if re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', value) else '$' + value + '$'
-    return ('<div class="matrix-answer">\n'
-            '<span class="matrix-answer-label">$' + expression + '=$</span>\n'
-            '<div class="matrix-answer-brackets">\n'
+    return ('<div class="matrix-answer-brackets">\n'
             '<table aria-label="Answer matrix"><tbody>\n' + '\n'.join(
                 '<tr>' + ''.join('<td>' + entry(value) + '</td>' for value in row) + '</tr>' for row in rows
+            ) + '\n</tbody></table>\n</div>')
+
+
+def matrix_answer(expression, rows):
+    """A borderless rectangular answer matrix with external brackets and label."""
+    if not expression.strip() or '$' in expression:
+        raise ValueError('Matrix answer label requires delimiter-free TeX')
+    return ('<div class="matrix-answer">\n'
+            '<span class="matrix-answer-label">$' + expression + '=$</span>\n'
+            + matrix_input_grid(rows) + '\n</div>')
+
+
+def matrix_equation(parts):
+    """An ordered equation of bracketed grids and bare-TeX operators/labels.
+
+    Keep layout tables out of the mathematical representation. Rows may mix
+    supplied TeX entries with exact answer-field markers; all three operands
+    use the same row spacing and existing responsive matrix-input styling.
+    """
+    out = []
+    for part in parts:
+        if isinstance(part, str):
+            if not part.strip() or '$' in part:
+                raise ValueError('Matrix equation labels require nonempty, bare TeX')
+            out.append('<span class="matrix-answer-label">$' + html.escape(part, quote=False) + '$</span>')
+        else:
+            out.append(matrix_input_grid(part))
+    if not out:
+        raise ValueError('Matrix equation needs operands')
+    return '<div class="matrix-answer">\n' + '\n'.join(out) + '\n</div>'
+
+
+def system_answer(rows):
+    """Editable equation rows under one brace; never a bordered data table."""
+    rows = [list(map(str, row)) for row in rows]
+    if not rows or any(len(row) != 3 or row[1] != '=' or not row[0].strip() or not row[2].strip() for row in rows):
+        raise ValueError('System answer rows require a left side, equality and right side')
+    def entry(value):
+        return html.escape(value, quote=False) if re.fullmatch(r'\{\{(?:answer-field:)?[^{}]+\}\}', value) else '$' + html.escape(value, quote=False) + '$'
+    return ('<div class="matrix-answer">\n<div class="matrix-system" role="group" aria-label="System of equations">\n'
+            '<table aria-label="Equation rows"><tbody>\n' + '\n'.join(
+                '<tr>' + ''.join('<td>' + entry(cell) + '</td>' for cell in row) + '</tr>' for row in rows
             ) + '\n</tbody></table>\n</div>\n</div>')
 
 
