@@ -10,6 +10,7 @@ for q in S['questions']:
  for f in q.get(':question/answer-fields',[]):
   for a in f[':answer-field/choices']:render.append({'entity':a[':db/id'],'attribute':'answer/value','value':a[':answer/value'],'bare_math':a[':answer/type'][':db/ident']==':answer.type/math'})
  for phase in['before','after']:
+  if any(not f.get(':answer-field/correct')for f in q.get(':question/answer-fields',[])):continue
   rec=copy.deepcopy(q)
   if phase=='after'and q[':db/id']in changes:rec[':question/problem']=changes[q[':db/id']]
   checks=[]
