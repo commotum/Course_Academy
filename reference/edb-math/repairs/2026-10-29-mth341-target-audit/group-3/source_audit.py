@@ -8,7 +8,7 @@ S=json.loads((H/'current.json').read_text());qs={q.get(':question/math-academy-i
 def add(mid,node,path):
  if mid not in qs or node is None:return
  parts={}
- for attr,sel in [('question/problem','.exampleQuestion,.questionText,.questionWidget-text'),('question/worked-solution','.exampleSolution,.questionExplanation,.questionWidget-explanation')]:
+ for attr,sel in [('question/problem','.exampleQuestion,.questionText,.questionWidget-text'),('question/worked-solution','.exampleSolution,.exampleExplanation,.questionExplanation,.questionWidget-explanation')]:
   n=node.select_one(sel)
   if n is None:continue
   roots=n.select('.mjpage,mjx-container,math');ids={id(x)for x in roots};roots=[x for x in roots if not any(id(a)in ids for a in x.parents)];tex=[];err=[]

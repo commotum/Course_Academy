@@ -38,8 +38,10 @@ out=[];flags=[];skips=[]
 def check(q,kind,proof,ok=True):
  r={'entity':q[':db/id'],'identity':q.get(':question/math-academy-id'),'topic':bymid[q[':db/id']],'check':kind,'passed':bool(ok),'proof':str(proof)};out.append(r)
  if not ok:flags.append(r)
+detached={x['value']for x in json.loads((H/'detachments.json').read_text())}
 def qfields(q):
  for f in q.get(':question/answer-fields',[]):
+  if f[':db/id']in detached:continue
   aid=pm.get((f[':db/id'],'answer-field/correct'),f.get(':answer-field/correct',{}).get(':db/id'));choices=[{**a,':answer/value':pm.get((a[':db/id'],'answer/value'),a[':answer/value'])}for a in f[':answer-field/choices']];right=next(a for a in choices if a[':db/id']==aid);yield f,choices,right
 for q in D['questions']:
  mid=bymid[q[':db/id']];kp=bykp[q[':db/id']];v=pm.get((q[':db/id'],'question/problem'),q[':question/problem']);ms=mats(v);ms=[m[2]for m in ms];solution=pm.get((q[':db/id'],'question/worked-solution'),q.get(':question/worked-solution',''))

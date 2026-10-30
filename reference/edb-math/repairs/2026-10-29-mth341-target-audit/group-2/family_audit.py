@@ -3,7 +3,7 @@ from pathlib import Path
 import sympy as sp
 H=Path(__file__).resolve().parent;sys.path.insert(0,str(H));from algebra import matrices,scalar,equations,filled,fill,symbols
 from check_algebra import expr
-S=json.loads((H/'current.json').read_text());qs={q[':db/id']:q for q in S['questions']};topics={q:t for t,k,q in S['links']};checks=[];fails=[];review=[]
+S=json.loads((H/(sys.argv[1]if len(sys.argv)>1 else'current.json')).read_text());qs={q[':db/id']:q for q in S['questions']};topics={q:t for t,k,q in S['links']};checks=[];fails=[];review=[]
 def rec(q,kind,ok,**detail):
  r={'question':q[':db/id'],'kind':kind,'ok':bool(ok),**detail};checks.append(r)
  if not ok:fails.append(r)
@@ -39,11 +39,24 @@ for q in S['questions']:
    rec(q,'every displayed determinant is root or valid minor',ok,matrix=a.tolist())
  elif tid==17592186050376 and ms:
   a=ms[0]['matrix'];eigs=set(v for v in a.eigenvals()if v.is_real);f=q.get(':question/answer-fields',[None])[0]
+  if f and f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox':
+   eigenvals=a.eigenvals()
+   for ff in q[':question/answer-fields']:
+    key=ff[':answer-field/key'];m=re.search(r'\\lambda\s*=\s*([^$]+)',key);assert m,key;v=scalar(m[1]);mult=re.search(r'multiplicity \$(\d+)\$',key);expected=eigenvals.get(v,0)==int(mult[1])if mult else v in eigenvals;right=next(c for c in ff[':answer-field/choices']if c[':db/id']==ff[':answer-field/correct'][':db/id']);rec(q,'eigenvalue statement and algebraic multiplicity',right[':answer/value']==str(bool(expected)).lower(),statement=key,expected=bool(expected),eigenvalues={str(k):v for k,v in eigenvals.items()})
+   f=None
+  if f and 'statements are true'in prompt:
+   # q-124558: I true (-5), II false (-1), III false (-3 is simple).
+   right=next(c for c in f[':answer-field/choices']if c[':db/id']==f[':answer-field/correct'][':db/id']);ev=a.eigenvals();rec(q,'Roman eigenvalue statements',right[':answer/value']=='I only'and ev.get(-5)==1 and -1 not in ev and ev.get(-3)==1,eigenvalues={str(k):v for k,v in ev.items()});f=None
   if f:
    vals=[]
    for c in f[':answer-field/choices']:
     v=c[':answer/value'];m=re.search(r'\{([^{}]*)\}',v.replace(r'\{','{').replace(r'\}','}'))
-    try:ev=set(scalar(x)for x in m[1].split(','))if m else set();vals.append((c[':db/id'],ev==eigs))
+    try:
+     if '='in v:
+      lhs,rhs=v.split('=',1);pol=expr(lhs)-expr(rhs);ratio=sp.cancel(pol/(a-sp.Symbol('lambda')*sp.eye(a.rows)).det());ok=ratio!=0 and not ratio.free_symbols
+     else:
+      ev=set(scalar(x)for x in m[1].split(','))if m else set();ok=ev==eigs
+     vals.append((c[':db/id'],ok))
     except Exception as e:review.append({'question':q[':db/id'],'kind':'eigenvalue-choice','value':v,'error':str(e)})
    right=f.get(':answer-field/correct',{}).get(':db/id')
    if right:rec(q,'real eigenvalue set key',dict(vals).get(right,False),real_eigenvalues=sorted(map(str,eigs)),equivalent_choices=[a for a,v in vals if v])
@@ -78,4 +91,4 @@ for q in S['questions']:
      try:value=expr(v);vals.append((c[':db/id'],value==expected))
      except Exception as e:review.append({'question':q[':db/id'],'kind':'solution-choice','value':v,'error':str(e)})
     if right:rec(q,'inverse-system complete choice matches solution',dict(vals).get(right,False),matching_choices=[i for i,v in vals if v])
-(H/'family-algebra-audit.json').write_text(json.dumps({'checks':checks,'failures':fails,'review':review},default=str,indent=2)+'\n');print('Checks',len(checks),'Failures',len(fails),'Review',len(review));print('\n'.join(str(r)for r in fails));print('REVIEW',review[:15])
+(H/('family-algebra-audit-after.json'if len(sys.argv)>1 else'family-algebra-audit.json')).write_text(json.dumps({'checks':checks,'failures':fails,'review':review},default=str,indent=2)+'\n');print('Checks',len(checks),'Failures',len(fails),'Review',len(review));print('\n'.join(str(r)for r in fails));print('REVIEW',review[:15])
