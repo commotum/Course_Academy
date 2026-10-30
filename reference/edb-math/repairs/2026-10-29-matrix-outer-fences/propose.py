@@ -9,7 +9,8 @@ visible={'question/problem','question/worked-solution','tutorial/content','answe
 def strip(x):
  x=re.sub(r'\\(?:left|right)(?![A-Za-z])','',re.sub(r'\\(?:left|right)\.','',x))
  x=x.replace('∣','|').replace('‖',r'\|').replace('∥',r'\|')
- return re.sub(r'\\(langle|rangle)\s*',lambda m:'⟨'if m[1]=='langle'else'⟩',x)
+ x=re.sub(r'\\(langle|rangle)\s*',lambda m:'⟨'if m[1]=='langle'else'⟩',x)
+ return re.sub(r'([⟨⟩])\s*',r'\1',x)
 
 def core(text):return _matrix_layouts(text)
 def normalize(text):return scalable_table_fences(core(text))

@@ -37,7 +37,7 @@ def _scalable_composite_fences(text, environments):
     """
     optional = {'sqrt', 'xrightarrow', 'xleftarrow', 'xleftrightarrow',
                 'xRightarrow', 'xLeftarrow', 'xLeftrightarrow'}
-    candidates = re.finditer(r'\\(?:lparen|lbrack|lbrace|langle|lvert|lVert|vert|Vert)(?![A-Za-z])|\\\{|(?<!\\)[(\[|∣‖∥⟨]', text)
+    candidates = re.finditer(r'\\(?:lparen|lbrack|lbrace|langle|lvert|lVert|vert|Vert)(?![A-Za-z])|\\[{|]|(?<!\\)[(\[|∣‖∥⟨]', text)
     if not any(not _tex_sizing_command(_tex_command_before(text, m.start()))
                and _tex_command_before(text, m.start()) not in optional for m in candidates):
         return text
@@ -48,7 +48,7 @@ def _scalable_composite_fences(text, environments):
     closing = {')': 'paren', ']': 'bracket', r'\}': 'brace', r'\rparen': 'paren',
                r'\rbrack': 'bracket', r'\rbrace': 'brace', r'\rangle': 'angle', '⟩': 'angle',
                r'\rvert': 'bar', r'\rVert': 'doublebar'}
-    symmetric = {'|': 'bar', '∣': 'bar', r'\vert': 'bar', '‖': 'doublebar', '∥': 'doublebar', r'\Vert': 'doublebar'}
+    symmetric = {'|': 'bar', '∣': 'bar', r'\vert': 'bar', '‖': 'doublebar', '∥': 'doublebar', r'\Vert': 'doublebar', r'\|': 'doublebar'}
     annotation = {'underset', 'overset', 'stackrel', 'substack', 'text', 'textrm', 'operatorname'} | (optional - {'sqrt'})
     groups, frames, stacks, edits = [], [], {}, []
     def scope():
@@ -124,13 +124,13 @@ def scalable_table_fences(text, *, environments=None):
               ('(', r'\lparen', ')', r'\rparen'),
               (r'\{', r'\lbrace', r'\}', r'\rbrace'),
               ('|', '∣', r'\vert', r'\lvert', r'\rvert'),
-              ('‖', '∥', r'\Vert', r'\lVert', r'\rVert'),
+              ('‖', '∥', r'\|', r'\Vert', r'\lVert', r'\rVert'),
               ('⟨', '⟩', r'\langle', r'\rangle')]
     families = {token: i for i, tokens in enumerate(groups) for token in tokens}
     opening = ['[', r'\lbrack', '(', r'\lparen', r'\{', r'\lbrace',
-               '|', '∣', '‖', '∥', '⟨', r'\vert', r'\lvert', r'\Vert', r'\lVert', r'\langle']
+               '|', '∣', '‖', '∥', '⟨', r'\|', r'\vert', r'\lvert', r'\Vert', r'\lVert', r'\langle']
     closing = [']', r'\rbrack', ')', r'\rparen', r'\}', r'\rbrace',
-               '|', '∣', '‖', '∥', '⟩', r'\vert', r'\rvert', r'\Vert', r'\rVert', r'\rangle']
+               '|', '∣', '‖', '∥', '⟩', r'\|', r'\vert', r'\rvert', r'\Vert', r'\rVert', r'\rangle']
     def pattern(tokens):
         return '(?:' + '|'.join(re.escape(t) + (r'(?![A-Za-z])' if t[-1].isalpha() else '')
                                for t in sorted(tokens, key=len, reverse=True)) + ')'
@@ -162,4 +162,9 @@ def scalable_table_fences(text, *, environments=None):
         changes.extend([(left.start(1), r'\left'), (right.start(1), r'\right')])
     for position, command in sorted(changes, reverse=True):
         text = text[:position] + command + text[position:]
-    return _scalable_composite_fences(text, environments) if changes else text
+    text = _scalable_composite_fences(text, environments) if changes else text
+    # MathJax accepts these Unicode glyphs as ordinary relations but requires
+    # TeX delimiter tokens after left/right. Keep the same visible symbols.
+    delimiters = {'∣': '|', '‖': r'\|', '∥': r'\|', '⟨': r'\langle ', '⟩': r'\rangle '}
+    return re.sub(r'\\(left|right)([∣‖∥⟨⟩])',
+                  lambda m: '\\' + m[1] + delimiters[m[2]], text)

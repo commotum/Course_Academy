@@ -1,0 +1,227 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198380,
+      "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+      "title": "Evaluating Flux Through a Surface"
+    },
+    "question": {
+      ":question/id": "5d66430b-2283-53cc-8502-65fd2d32fd15",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Evaluate the signed flux\n\n$$\n\\Phi=\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S\n$$\n\nfor the vector field\n\n$$\n\\mathbf F(x,y,z)=\\langle x,2 y,- 2 z - 2\\rangle.\n$$\n\nThe parametric surface is\n\n$$\n\\mathbf r(u,v)=\\langle u,v,u v\\rangle.\n$$\n\nUse the parameter rectangle\n\n$$\n-1\\le u\\le 0,\\qquad 1\\le v\\le 3.\n$$\n\nUse the orientation induced by $\\mathbf r_v\\times\\mathbf r_u$. Enter an exact value.\n\n$\\Phi=$ {{flux}}",
+      ":question/worked-solution": "Use the parametric flux formula with the specified orientation:\n\n$$\n\\Phi=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N\\,\\mathrm du\\,\\mathrm dv.\n$$\n\nDifferentiate the parametrization:\n\n$$\n\\begin{aligned}\\mathbf r_u&=\\langle 1,0,v\\rangle \\\\ \\mathbf r_v&=\\langle 0,1,u\\rangle\\end{aligned}\n$$\n\nCompute the cross product:\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k \\\\ 1&0&v \\\\ 0&1&u\\end{vmatrix} \\\\ &=\\langle - v,- u,1\\rangle\\end{aligned}\n$$\n\nReverse its sign for the specified order:\n\n$$\n\\mathbf N=-\\mathbf r_u\\times\\mathbf r_v=\\langle v,u,-1\\rangle.\n$$\n\nSubstitute the surface coordinates into the field:\n\n$$\nx=u,\\quad y=v,\\quad z=u v.\n$$\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\langle u,2 v,- 2 u v - 2\\rangle.\n$$\n\nForm the three signed dot-product contributions:\n\n$$\n\\begin{aligned}T_{1}&=(u)(v) \\\\ &=u v \\\\ T_{2}&=(2 v)(u) \\\\ &=2 u v \\\\ T_{3}&=(- 2 u v - 2)(-1) \\\\ &=2 u v+2\\end{aligned}\n$$\n\nCollect the polynomial terms, writing $g(u,v)=T_1+T_2+T_3$:\n\n$$\n\\begin{aligned}g(u,v)&=5 u v+2\\end{aligned}\n$$\n\nA primitive with respect to $v$ is\n\n$$\n\\begin{aligned}P(u,v)&=\\frac{5 u v^{2}}{2}+2 v\\end{aligned}\n$$\n\nEvaluate both inner endpoints:\n\n$$\n\\begin{aligned}H(u)&=\\int_{1}^{3}g(u,v)\\,\\mathrm dv \\\\ &=\\left[P(u,v)\\right]_{v=1}^{v=3}\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}H(u)&=20 u+4\\end{aligned}\n$$\n\nA primitive of $H(u)$ with respect to $u$ is\n\n$$\n\\begin{aligned}Q(u)&=10 u^{2}+4 u\\end{aligned}\n$$\n\nEvaluate both outer endpoints:\n\n$$\n\\begin{aligned}\\Phi&=\\int_{-1}^{0}H(u)\\,\\mathrm du \\\\ &=\\left[Q(u)\\right]_{u=-1}^{u=0} \\\\ &=-6.\\end{aligned}\n$$\n\nThe cross product includes the surface area scale; there is no extra normalization factor.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a2708e83-c9f2-5509-8dd8-c189aeffde7b",
+          ":answer-field/key": "flux",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f0151eb6-483b-58a1-9a1f-d5991cba54ae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-6"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f0151eb6-483b-58a1-9a1f-d5991cba54ae"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-rectangular-2",
+      "seed": 8408850673246473169,
+      "template": "bilinear",
+      "authored_extension": true,
+      "response_contract": "exact scalar, authored blank",
+      "source_analysis": {
+        "database": "math",
+        "basis": 8735,
+        "question_ids": [],
+        "canonical": "e-12358",
+        "exemplar_entity": 17592186724174
+      },
+      "parameters": {
+        "multipliers": [
+          1,
+          2,
+          -2
+        ],
+        "shift": [
+          0,
+          0,
+          0
+        ],
+        "rotation": 0,
+        "orientation": -1,
+        "bounds": [
+          "-1",
+          "0",
+          "1",
+          "3"
+        ]
+      },
+      "calculation_fingerprint": "e41be000d8b82b0dc3486eff4f9367dd6cb83c80abbee8641fa9abdacf38d74f",
+      "solution_steps": {
+        "integrand": "5*u*v + 2",
+        "inner": "5*u*v**2/2 + 2*v",
+        "reduced": "20*u + 4",
+        "outer": "10*u**2 + 4*u",
+        "result": "-6"
+      },
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198380,
+      "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+      "title": "Evaluating Flux Through a Surface"
+    },
+    "question": {
+      ":question/id": "5afff03d-3803-5996-a66d-f18e38ce311d",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Evaluate the signed flux\n\n$$\n\\Phi=\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S\n$$\n\nfor the vector field\n\n$$\n\\mathbf F(x,y,z)=\\langle 1 - x,2 y,2 z + 2\\rangle.\n$$\n\nThe parametric surface is\n\n$$\n\\mathbf r(u,v)=\\langle u + v,u - v,u v\\rangle.\n$$\n\nUse the parameter rectangle\n\n$$\n0\\le u\\le 1,\\qquad 1\\le v\\le 3.\n$$\n\nUse the orientation induced by $\\mathbf r_v\\times\\mathbf r_u$. Enter an exact value.\n\n$\\Phi=$ {{flux}}",
+      ":question/worked-solution": "Use the parametric flux formula with the specified orientation:\n\n$$\n\\Phi=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N\\,\\mathrm du\\,\\mathrm dv.\n$$\n\nDifferentiate the parametrization:\n\n$$\n\\begin{aligned}\\mathbf r_u&=\\langle 1,1,v\\rangle \\\\ \\mathbf r_v&=\\langle 1,-1,u\\rangle\\end{aligned}\n$$\n\nCompute the cross product:\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k \\\\ 1&1&v \\\\ 1&-1&u\\end{vmatrix} \\\\ &=\\langle u + v,- u + v,-2\\rangle\\end{aligned}\n$$\n\nReverse its sign for the specified order:\n\n$$\n\\mathbf N=-\\mathbf r_u\\times\\mathbf r_v=\\langle - u - v,u - v,2\\rangle.\n$$\n\nSubstitute the surface coordinates into the field:\n\n$$\nx=u + v,\\quad y=u - v,\\quad z=u v.\n$$\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\langle - u - v + 1,2 u - 2 v,2 u v + 2\\rangle.\n$$\n\nForm the three signed dot-product contributions:\n\n$$\n\\begin{aligned}T_{1}&=(- u - v + 1)(- u - v) \\\\ &=u^{2}+2 u v \\\\ &\\quad {}- u+v^{2} \\\\ &\\quad {}- v \\\\ T_{2}&=(2 u - 2 v)(u - v) \\\\ &=2 u^{2}- 4 u v \\\\ &\\quad {}+2 v^{2} \\\\ T_{3}&=(2 u v + 2)(2) \\\\ &=4 u v+4\\end{aligned}\n$$\n\nCollect the polynomial terms, writing $g(u,v)=T_1+T_2+T_3$:\n\n$$\n\\begin{aligned}g(u,v)&=3 u^{2}+2 u v \\\\ &\\quad {}- u+3 v^{2} \\\\ &\\quad {}- v+4\\end{aligned}\n$$\n\nA primitive with respect to $v$ is\n\n$$\n\\begin{aligned}P(u,v)&=3 u^{2} v+u v^{2} \\\\ &\\quad {}- u v+v^{3} \\\\ &\\quad {}- \\frac{v^{2}}{2}+4 v\\end{aligned}\n$$\n\nEvaluate both inner endpoints:\n\n$$\n\\begin{aligned}H(u)&=\\int_{1}^{3}g(u,v)\\,\\mathrm dv \\\\ &=\\left[P(u,v)\\right]_{v=1}^{v=3}\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}H(u)&=6 u^{2}+6 u \\\\ &\\quad {}+30\\end{aligned}\n$$\n\nA primitive of $H(u)$ with respect to $u$ is\n\n$$\n\\begin{aligned}Q(u)&=2 u^{3}+3 u^{2} \\\\ &\\quad {}+30 u\\end{aligned}\n$$\n\nEvaluate both outer endpoints:\n\n$$\n\\begin{aligned}\\Phi&=\\int_{0}^{1}H(u)\\,\\mathrm du \\\\ &=\\left[Q(u)\\right]_{u=0}^{u=1} \\\\ &=35.\\end{aligned}\n$$\n\nThe cross product includes the surface area scale; there is no extra normalization factor.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "72a04156-86f9-55bd-b310-ce65e5f107cc",
+          ":answer-field/key": "flux",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "24eb719b-6dc6-5561-b06e-24b13b3847b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "35"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "24eb719b-6dc6-5561-b06e-24b13b3847b0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-rectangular-2",
+      "seed": 8497409054904747008,
+      "template": "mixed",
+      "authored_extension": true,
+      "response_contract": "exact scalar, authored blank",
+      "source_analysis": {
+        "database": "math",
+        "basis": 8735,
+        "question_ids": [],
+        "canonical": "e-12358",
+        "exemplar_entity": 17592186724183
+      },
+      "parameters": {
+        "multipliers": [
+          -1,
+          2,
+          2
+        ],
+        "shift": [
+          1,
+          0,
+          0
+        ],
+        "rotation": 0,
+        "orientation": -1,
+        "bounds": [
+          "0",
+          "1",
+          "1",
+          "3"
+        ]
+      },
+      "calculation_fingerprint": "abbe6ceac355131498c44d698eddc223ac25a6306170d12c7c09077f1df1491f",
+      "solution_steps": {
+        "integrand": "3*u**2 + 2*u*v - u + 3*v**2 - v + 4",
+        "inner": "v**3 + v**2*(u - 1/2) + v*(3*u**2 - u + 4)",
+        "reduced": "6*u**2 + 6*u + 30",
+        "outer": "2*u**3 + 3*u**2 + 30*u",
+        "result": "35"
+      },
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198380,
+      "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+      "title": "Evaluating Flux Through a Surface"
+    },
+    "question": {
+      ":question/id": "889840cb-d0e1-5863-98b8-ca4c1e38d92d",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Evaluate the signed flux\n\n$$\n\\Phi=\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S\n$$\n\nfor the vector field\n\n$$\n\\mathbf F(x,y,z)=\\langle - 2 x - 2,- y,- 2 z - 1\\rangle.\n$$\n\nThe parametric surface is\n\n$$\n\\mathbf r(u,v)=\\langle u v,u,v\\rangle.\n$$\n\nUse the parameter rectangle\n\n$$\n1\\le u\\le 3,\\qquad -1\\le v\\le 1.\n$$\n\nUse the orientation induced by $\\mathbf r_u\\times\\mathbf r_v$. Enter an exact value.\n\n$\\Phi=$ {{flux}}",
+      ":question/worked-solution": "Use the parametric flux formula with the specified orientation:\n\n$$\n\\Phi=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N\\,\\mathrm du\\,\\mathrm dv.\n$$\n\nDifferentiate the parametrization:\n\n$$\n\\begin{aligned}\\mathbf r_u&=\\langle v,1,0\\rangle \\\\ \\mathbf r_v&=\\langle u,0,1\\rangle\\end{aligned}\n$$\n\nCompute the cross product:\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k \\\\ v&1&0 \\\\ u&0&1\\end{vmatrix} \\\\ &=\\langle 1,- v,- u\\rangle\\end{aligned}\n$$\n\nThus $\\mathbf N=\\langle 1,- v,- u\\rangle$.\n\nSubstitute the surface coordinates into the field:\n\n$$\nx=u v,\\quad y=u,\\quad z=v.\n$$\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\langle - 2 u v - 2,- u,- 2 v - 1\\rangle.\n$$\n\nForm the three signed dot-product contributions:\n\n$$\n\\begin{aligned}T_{1}&=(- 2 u v - 2)(1) \\\\ &=- 2 u v-2 \\\\ T_{2}&=(- u)(- v) \\\\ &=u v \\\\ T_{3}&=(- 2 v - 1)(- u) \\\\ &=2 u v+u\\end{aligned}\n$$\n\nCollect the polynomial terms, writing $g(u,v)=T_1+T_2+T_3$:\n\n$$\n\\begin{aligned}g(u,v)&=u v+u \\\\ &\\quad {}-2\\end{aligned}\n$$\n\nA primitive with respect to $v$ is\n\n$$\n\\begin{aligned}P(u,v)&=\\frac{u v^{2}}{2}+u v \\\\ &\\quad {}- 2 v\\end{aligned}\n$$\n\nEvaluate both inner endpoints:\n\n$$\n\\begin{aligned}H(u)&=\\int_{-1}^{1}g(u,v)\\,\\mathrm dv \\\\ &=\\left[P(u,v)\\right]_{v=-1}^{v=1}\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}H(u)&=2 u-4\\end{aligned}\n$$\n\nA primitive of $H(u)$ with respect to $u$ is\n\n$$\n\\begin{aligned}Q(u)&=u^{2}- 4 u\\end{aligned}\n$$\n\nEvaluate both outer endpoints:\n\n$$\n\\begin{aligned}\\Phi&=\\int_{1}^{3}H(u)\\,\\mathrm du \\\\ &=\\left[Q(u)\\right]_{u=1}^{u=3} \\\\ &=0.\\end{aligned}\n$$\n\nThe cross product includes the surface area scale; there is no extra normalization factor.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "88a72c9c-1553-5593-8df8-bc72e1a56a2e",
+          ":answer-field/key": "flux",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6662e5b1-2cb5-5a8e-8fef-fee4f1cf41f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6662e5b1-2cb5-5a8e-8fef-fee4f1cf41f6"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-rectangular-2",
+      "seed": 5253239861920613801,
+      "template": "bilinear",
+      "authored_extension": true,
+      "response_contract": "exact scalar, authored blank",
+      "source_analysis": {
+        "database": "math",
+        "basis": 8735,
+        "question_ids": [],
+        "canonical": "e-12358",
+        "exemplar_entity": 17592186724174
+      },
+      "parameters": {
+        "multipliers": [
+          -1,
+          -2,
+          -2
+        ],
+        "shift": [
+          0,
+          -1,
+          0
+        ],
+        "rotation": 2,
+        "orientation": 1,
+        "bounds": [
+          "1",
+          "3",
+          "-1",
+          "1"
+        ]
+      },
+      "calculation_fingerprint": "950372d9feadcbf77ba7e56a0cbc9243eea3913622ae8f5f069a2ef4fa32e5d9",
+      "solution_steps": {
+        "integrand": "u*v + u - 2",
+        "inner": "u*v**2/2 + v*(u - 2)",
+        "reduced": "2*u - 4",
+        "outer": "u**2 - 4*u",
+        "result": "0"
+      },
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

@@ -45,4 +45,16 @@ class ArrayFenceGeometryTests(unittest.TestCase):
   self.assertEqual(before['errors'],[])
   self.assertTrue(before['matrix_layout_errors'])
   self.assertEqual(after['matrix_layout_errors'],[])
+ def test_unicode_determinant_fences_render_and_scalar_parentheses_are_not_fences(self):
+  from check_math_rendering import check
+  table=r'\begin{array}{cc}1&2\\3&4\end{array}'
+  sources=['∣'+table+'∣',r'‖2\begin{bmatrix}1\\2\end{bmatrix}‖',
+           r'⟨2\begin{bmatrix}1\\2\end{bmatrix}⟩',r'(1)\begin{bmatrix}1\\2\\3\end{bmatrix}']
+  result=check([{'entity':i,'value':'$$'+scalable_table_fences(v)+'$$'}for i,v in enumerate(sources)])
+  self.assertTrue(result['passed'])
+  for row in result['checks']:
+   self.assertTrue(row['fence_geometry'])
+   for g in row['fence_geometry']:
+    visible=[h for h in g['fence_heights']if h>1]
+    if visible:self.assertGreater(min(visible)/g['table_height'],0.8)
 if __name__=='__main__':unittest.main()

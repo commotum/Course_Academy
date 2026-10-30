@@ -2,7 +2,10 @@
 import collections,json,re,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/outer-fences-2026-10-29';sys.path.insert(0,str(R/'scripts'));from question_capture.math_format import ENV,environment
-spacing=r'(?:\s|\\[,;! ]|\\(?:quad|qquad)\b|\\hspace\{[^{}]*\})*';pattern=re.compile(r'(?P<f>\\(?:left|bigl?|Bigl?|biggl?|Biggl?)\s*(?:[\[|(]|\\(?:lbrack|lbrace|lvert|lVert|Vert|vert|langle)|\\\{)|[\[|(]|\\(?:lbrack|lbrace|lvert|lVert|Vert|vert|langle)|\\\{)'+spacing+'$');names={'array','aligned','alignedat','gathered','matrix','bmatrix','pmatrix','vmatrix','Bmatrix','Vmatrix','cases','split','align','align*','gather','gather*','multline','multline*'};counts=collections.Counter();reviewed=[];unexpected=[]
+spacing=r'(?:\s|\\[,;! ]|\\(?:quad|qquad)\b|\\hspace\{[^{}]*\})*'
+plain=r'(?:[\[|(|∣‖∥⟨]|\\[|{]|\\(?:lbrack|lbrace|lvert|lVert|Vert|vert|langle)(?![A-Za-z]))'
+pattern=re.compile(r'(?P<f>(?:\\(?:left|bigl?|Bigl?|biggl?|Biggl?)\s*)?'+plain+')'+spacing+'$')
+names={'array','aligned','alignedat','gathered','matrix','bmatrix','pmatrix','vmatrix','Bmatrix','Vmatrix','cases','split','align','align*','gather','gather*','multline','multline*'};counts=collections.Counter();reviewed=[];unexpected=[]
 for line in(W/'after.jsonl').open():
  d=json.loads(line);v=d['v']
  if not isinstance(v,str)or r'\begin'not in v:continue

@@ -1,0 +1,245 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "6bf9d48c-e942-5399-b45c-364c6b591eb3",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F(x,y,z)=⟨y - z,\\,- 2 y + z,\\,- xy⟩$ and the surface $S$ defined by $z=x - y$ for $1\\le x\\le 5$ and $-2\\le y\\le 5$. Orient $S$ so that its normal has a positive $\\mathbf k$-component.\n\nUsing the parametrization $x=u$ and $y=v$, the flux through $S$ can be expressed as\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{1}^{5}{\\int }_{-2}^{5}\\boxed{\\phantom{AAAAAAA}}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "The parametrization and its parameter domain are\n\n$$\n\\mathbf r(u,v)=⟨u,\\,v,\\,u - v⟩\n$$\n\n\n\n$$\nD=\\{(u,v):1\\le u\\le 5,\\ -2\\le v\\le 5\\}.\n$$\n\nDifferentiate and compute the natural vector area element:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨1,\\,0,\\,1⟩ \\\\ \\mathbf r_v&=⟨0,\\,1,\\,-1⟩ \\\\ \\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i & \\mathbf j & \\mathbf k \\\\ 1 & 0 & 1 \\\\ 0 & 1 & -1\\end{vmatrix} \\\\ &=⟨-1,\\,1,\\,1⟩.\\end{aligned}\n$$\n\nThe cross product already has the requested orientation, so\n\n$$\n\\mathbf N=\\mathbf r_u\\times\\mathbf r_v=⟨-1,\\,1,\\,1⟩.\n$$\n\nWrite $\\mathbf F=\\langle P,Q,R\\rangle$. Substitute all three coordinates into each component:\n\n$$\n\\begin{aligned}P(\\mathbf r(u,v))&=(v) - (u - v) \\\\ &=- u + 2 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}Q(\\mathbf r(u,v))&=- 2 (v) + (u - v) \\\\ &=u - 3 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}R(\\mathbf r(u,v))&=- (u)(v) \\\\ &=- uv.\\end{aligned}\n$$\n\nForm the oriented dot product and collect like terms:\n\n$$\nI(u,v)=\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N.\n$$\n\nIts three contributions are\n\n$$\n\\begin{aligned}T_1&=(- u + 2 v)(-1) \\\\ &=u - 2 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_2&=(u - 3 v)(1) \\\\ &=u - 3 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_3&=(- uv)(1) \\\\ &=- uv.\\end{aligned}\n$$\n\nAdding them gives the missing integrand:\n\n$$\n\\begin{aligned}I(u,v)&=T_1+T_2+T_3 \\\\ &=- uv + 2 u - 5 v.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{1}^{5}{\\int }_{-2}^{5}I(u,v)\\,\\text{d}v\\,\\text{d}u.\n$$\n\nThe missing expression is $- uv + 2 u - 5 v$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "59f7d687-fa56-555f-83e5-79e0dbbfd3bd",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "33cd729a-d055-570e-9742-84d638702ac4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- uv + u - 2 v"
+            },
+            {
+              ":answer/id": "cfd0c1e8-6a05-558e-ac3f-b765c27d6156",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "uv"
+            },
+            {
+              ":answer/id": "29b77472-af9a-52af-9a42-41ce7be206b4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- uv + 2 u - 5 v"
+            },
+            {
+              ":answer/id": "aadb057b-0121-5a1f-83f3-b6b136955dfa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "uv + 2 u - 5 v"
+            },
+            {
+              ":answer/id": "f49e1155-2a1b-5931-9d89-5731dcd632bc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- uv + u - 5 v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "29b77472-af9a-52af-9a42-41ce7be206b4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-3",
+      "seed": 29102977,
+      "template": "q-160887",
+      "profile": "distribution_and_dot",
+      "parameters": {
+        "a": 1,
+        "b": -1,
+        "s": -1,
+        "bounds": [
+          1,
+          5,
+          -2,
+          5
+        ]
+      },
+      "calculation_fingerprint": "c49500c70d8f18d822345fdd7847776565fdc1c3144f4494501f24b32604cd50",
+      "recipes": [
+        "correct_cross_dot",
+        "reverse_distributed_2_0",
+        "omit_distributed_1_0",
+        "dot_weights_1,0,1",
+        "dot_weights_0,0,-1"
+      ],
+      "orientation_factor": 1,
+      "source_support": [
+        "q-160887",
+        "e-12383"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "f10f0fbd-086b-5c13-ab36-6b66d0ac45bb",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F(x,y,z)=⟨x + z,\\,2 z,\\,y + z⟩$ and the surface $S$ defined by $z=- x - y$ for $1\\le x\\le 3$ and $-2\\le y\\le 4$. Orient $S$ so that its normal has a positive $\\mathbf k$-component.\n\nUsing the parametrization $x=u$ and $y=v$, the flux through $S$ can be expressed as\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{1}^{3}{\\int }_{-2}^{4}\\boxed{\\phantom{AAAAAAA}}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "The parametrization and its parameter domain are\n\n$$\n\\mathbf r(u,v)=⟨u,\\,v,\\,- u - v⟩\n$$\n\n\n\n$$\nD=\\{(u,v):1\\le u\\le 3,\\ -2\\le v\\le 4\\}.\n$$\n\nDifferentiate and compute the natural vector area element:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨1,\\,0,\\,-1⟩ \\\\ \\mathbf r_v&=⟨0,\\,1,\\,-1⟩ \\\\ \\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i & \\mathbf j & \\mathbf k \\\\ 1 & 0 & -1 \\\\ 0 & 1 & -1\\end{vmatrix} \\\\ &=⟨1,\\,1,\\,1⟩.\\end{aligned}\n$$\n\nThe cross product already has the requested orientation, so\n\n$$\n\\mathbf N=\\mathbf r_u\\times\\mathbf r_v=⟨1,\\,1,\\,1⟩.\n$$\n\nWrite $\\mathbf F=\\langle P,Q,R\\rangle$. Substitute all three coordinates into each component:\n\n$$\n\\begin{aligned}P(\\mathbf r(u,v))&=(u) + (- u - v) \\\\ &=- v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}Q(\\mathbf r(u,v))&=2 (- u - v) \\\\ &=- 2 u - 2 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}R(\\mathbf r(u,v))&=(v) + (- u - v) \\\\ &=- u.\\end{aligned}\n$$\n\nForm the oriented dot product and collect like terms:\n\n$$\nI(u,v)=\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N.\n$$\n\nIts three contributions are\n\n$$\n\\begin{aligned}T_1&=(- v)(1) \\\\ &=- v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_2&=(- 2 u - 2 v)(1) \\\\ &=- 2 u - 2 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_3&=(- u)(1) \\\\ &=- u.\\end{aligned}\n$$\n\nAdding them gives the missing integrand:\n\n$$\n\\begin{aligned}I(u,v)&=T_1+T_2+T_3 \\\\ &=- 3 u - 3 v.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{1}^{3}{\\int }_{-2}^{4}I(u,v)\\,\\text{d}v\\,\\text{d}u.\n$$\n\nThe missing expression is $- 3 u - 3 v$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cc104b67-fb84-5ea3-b922-a8532180ede2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "65c7247f-ccea-52d3-875a-6fac8ad2269d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u + 2 v"
+            },
+            {
+              ":answer/id": "14cc5be1-a4a3-521c-9e57-68a6839059ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- u"
+            },
+            {
+              ":answer/id": "52a318d2-eb15-5de3-ad71-76406f5a3477",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "v"
+            },
+            {
+              ":answer/id": "77d27351-3ce1-5164-8961-cfa6814b8df3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u - 3 v"
+            },
+            {
+              ":answer/id": "e111d945-d24c-5922-9e24-388ee3da9c83",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u + v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "77d27351-3ce1-5164-8961-cfa6814b8df3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-3",
+      "seed": 29102978,
+      "template": "q-161471",
+      "profile": "signed_contributions",
+      "parameters": {
+        "a": -1,
+        "b": -1,
+        "s": 1,
+        "bounds": [
+          1,
+          3,
+          -2,
+          4
+        ]
+      },
+      "calculation_fingerprint": "5fb861421796f0013fab2ff082877d5f9a7d8700265964bd218a46f27fffdaed",
+      "recipes": [
+        "correct_cross_dot",
+        "dot_weights_0,-1,1",
+        "dot_weights_1,-1,-1",
+        "dot_weights_-1,0,0",
+        "dot_weights_0,0,1"
+      ],
+      "orientation_factor": 1,
+      "source_support": [
+        "q-161471",
+        "e-12383"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198389,
+      "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+      "title": "Expressing Flux Over a Surface as a Repeated Integral"
+    },
+    "question": {
+      ":question/id": "811412a2-fb43-5257-b4eb-5c4465f2ba6b",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F(x,y,z)=⟨2 x,\\,2 y - 2 z,\\,2 x + 2 y⟩$ and the surface $S$ defined by $z=- 4 x + 3 y$ for $-1\\le x\\le 2$ and $-1\\le y\\le 3$. Orient $S$ so that its normal has a positive $\\mathbf k$-component.\n\nUsing the parametrization $x=u$ and $y=v$, the flux through $S$ can be expressed as\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{-1}^{2}{\\int }_{-1}^{3}\\boxed{\\phantom{AAAAAAA}}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+      ":question/worked-solution": "The parametrization and its parameter domain are\n\n$$\n\\mathbf r(u,v)=⟨u,\\,v,\\,- 4 u + 3 v⟩\n$$\n\n\n\n$$\nD=\\{(u,v):-1\\le u\\le 2,\\ -1\\le v\\le 3\\}.\n$$\n\nDifferentiate and compute the natural vector area element:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨1,\\,0,\\,-4⟩ \\\\ \\mathbf r_v&=⟨0,\\,1,\\,3⟩ \\\\ \\mathbf r_u\\times\\mathbf r_v&=\\begin{vmatrix}\\mathbf i & \\mathbf j & \\mathbf k \\\\ 1 & 0 & -4 \\\\ 0 & 1 & 3\\end{vmatrix} \\\\ &=⟨4,\\,-3,\\,1⟩.\\end{aligned}\n$$\n\nThe cross product already has the requested orientation, so\n\n$$\n\\mathbf N=\\mathbf r_u\\times\\mathbf r_v=⟨4,\\,-3,\\,1⟩.\n$$\n\nWrite $\\mathbf F=\\langle P,Q,R\\rangle$. Substitute all three coordinates into each component:\n\n$$\n\\begin{aligned}P(\\mathbf r(u,v))&=2 (u) \\\\ &=2 u.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}Q(\\mathbf r(u,v))&=2 (v) - 2 (- 4 u + 3 v) \\\\ &=8 u - 4 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}R(\\mathbf r(u,v))&=2 (u) + 2 (v) \\\\ &=2 u + 2 v.\\end{aligned}\n$$\n\nForm the oriented dot product and collect like terms:\n\n$$\nI(u,v)=\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N.\n$$\n\nIts three contributions are\n\n$$\n\\begin{aligned}T_1&=(2 u)(4) \\\\ &=8 u.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_2&=(8 u - 4 v)(-3) \\\\ &=- 24 u + 12 v.\\end{aligned}\n$$\n\n\n\n$$\n\\begin{aligned}T_3&=(2 u + 2 v)(1) \\\\ &=2 u + 2 v.\\end{aligned}\n$$\n\nAdding them gives the missing integrand:\n\n$$\n\\begin{aligned}I(u,v)&=T_1+T_2+T_3 \\\\ &=- 14 u + 14 v.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S={\\int }_{-1}^{2}{\\int }_{-1}^{3}I(u,v)\\,\\text{d}v\\,\\text{d}u.\n$$\n\nThe missing expression is $- 14 u + 14 v$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9f7b87e5-a3de-5d02-93a5-a2858d8b98dc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b97846fb-a557-5b2e-9d71-932d4cfb3286",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 34 u + 10 v"
+            },
+            {
+              ":answer/id": "79829ef6-1bc9-5b7b-b7f2-32e7392ea8ef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "34 u - 10 v"
+            },
+            {
+              ":answer/id": "d74b95a6-dee9-547d-94c2-eed41c6f4a3d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 14 u + 14 v"
+            },
+            {
+              ":answer/id": "a1b461a9-66f4-5533-b36d-a39b29eccb0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "26 u - 10 v"
+            },
+            {
+              ":answer/id": "eb6d8cb8-8583-52d3-a6b6-10f347d06f36",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u + 2 v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d74b95a6-dee9-547d-94c2-eed41c6f4a3d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "cartesian-flux-setup-3",
+      "seed": 29102979,
+      "template": "q-161441",
+      "profile": "signed_contributions",
+      "parameters": {
+        "a": -4,
+        "b": 3,
+        "s": 2,
+        "bounds": [
+          -1,
+          2,
+          -1,
+          3
+        ]
+      },
+      "calculation_fingerprint": "e4c75b85f4efdf17bdf8137ea5a85706d433eed368b76d1c646566bae4c9a23f",
+      "recipes": [
+        "correct_cross_dot",
+        "dot_weights_1,-1,1",
+        "dot_weights_0,-1,1",
+        "dot_weights_-1,1,-1",
+        "dot_weights_0,0,1"
+      ],
+      "orientation_factor": 1,
+      "source_support": [
+        "q-161441",
+        "e-12383"
+      ]
+    }
+  }
+]

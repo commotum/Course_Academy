@@ -1,0 +1,249 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "cecc1c0a-e94f-58ba-8bde-20e8084c75fa",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle 2 x - 3 y,\\,3 z,\\,- y + 3 z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle - u^{2},\\,2 u^{2} - v^{2},\\,v^{2}\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?\n\n*Hint: You may use $\\mathbf r_u\\times\\mathbf r_v=\\left\\langle 8 u v,\\,4 u v,\\,4 u v\\right\\rangle$.*",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. Use the supplied cross product:\n\n$$\n\\mathbf N=\\left\\langle 8 u v,\\,4 u v,\\,4 u v\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=- u^{2}$, $y=2 u^{2} - v^{2}$, $z=v^{2}$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle - 8 u^{2} + 3 v^{2},\\,3 v^{2},\\,- 2 u^{2} + 4 v^{2}\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(- 8 u^{2} + 3 v^{2}\\right)\\left(8 u v\\right) \\\\  & =- 64 u^{3} v + 24 u v^{3} \\\\ T_{y} & =\\left(3 v^{2}\\right)\\left(4 u v\\right) \\\\  & =12 u v^{3} \\\\ T_{z} & =\\left(- 2 u^{2} + 4 v^{2}\\right)\\left(4 u v\\right) \\\\  & =- 8 u^{3} v + 16 u v^{3}\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =- 72 u^{3} v + 52 u v^{3}\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(- 72 u^{3} v + 52 u v^{3}\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2806c838-57ed-5f75-b4fa-af413d37aac3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f1c3d2a7-fc1d-5dd1-be1a-a42121eca8df",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 64 u^{3} v + 36 u v^{3}"
+            },
+            {
+              ":answer/id": "4e090029-e82b-5a43-99ca-4fcaae5585a0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 72 u^{3} v + 64 u v^{3}"
+            },
+            {
+              ":answer/id": "5db84ffd-8f7c-5056-ba5a-5bca9a3b5a2b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 80 u^{3} v + 68 u v^{3}"
+            },
+            {
+              ":answer/id": "971b32aa-0f83-5ac2-99f9-437896d2cb87",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 72 u^{3} v + 52 u v^{3}"
+            },
+            {
+              ":answer/id": "76b3f9a2-a1c0-5a12-aba3-a540faf139e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "56 u^{3} v + 4 u v^{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "971b32aa-0f83-5ac2-99f9-437896d2cb87"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 11874026293960675686,
+      "template": "quadratic_cancel",
+      "parameters": {
+        "a": 2,
+        "b": -3,
+        "c": 3,
+        "d": -1,
+        "e": 3
+      },
+      "bank_profile": "mixed",
+      "recipes": {
+        "- 72 u^{3} v + 52 u v^{3}": "correct",
+        "56 u^{3} v + 4 u v^{3}": "flip0",
+        "- 72 u^{3} v + 64 u v^{3}": "double1",
+        "- 64 u^{3} v + 36 u v^{3}": "omit2",
+        "- 80 u^{3} v + 68 u v^{3}": "double2"
+      },
+      "source_question_ids": [
+        "q-160840"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 3,
+        "rank": 1
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "c04a514c-ee0c-5b98-833f-84fdaebeab93",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle x z,\\,2 y,\\,3 x z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u,\\,u v,\\,v\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?\n\n*Hint: You may use $\\mathbf r_u\\times\\mathbf r_v=\\left\\langle v,\\,-1,\\,u\\right\\rangle$.*",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. Use the supplied cross product:\n\n$$\n\\mathbf N=\\left\\langle v,\\,-1,\\,u\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u$, $y=u v$, $z=v$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle u v,\\,2 u v,\\,3 u v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(u v\\right)\\left(v\\right) \\\\  & =u v^{2} \\\\ T_{y} & =\\left(2 u v\\right)\\left(-1\\right) \\\\  & =- 2 u v \\\\ T_{z} & =\\left(3 u v\\right)\\left(u\\right) \\\\  & =3 u^{2} v\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =3 u^{2} v + u v^{2} - 2 u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(3 u^{2} v + u v^{2} - 2 u v\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2e3e9069-76c8-505f-8f1f-8b4f069b4f6b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bebddb65-7fd5-52dd-85d3-8063495ad20d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} v - u v^{2} + 2 u v"
+            },
+            {
+              ":answer/id": "41518adf-098b-5212-ab26-02a4a7b32475",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} v + u v^{2} - 2 u v"
+            },
+            {
+              ":answer/id": "d4531741-9605-523b-ac47-108f336d097d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} v + u v^{2} - 2 u v"
+            },
+            {
+              ":answer/id": "8169b648-474f-5b88-ae80-1b5d6a71817d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} v - u v^{2} - 2 u v"
+            },
+            {
+              ":answer/id": "6ad0ce69-0f6f-5dab-95f2-e8cc63f56189",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} v + u v^{2} - 2 u v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "41518adf-098b-5212-ab26-02a4a7b32475"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 5887125732033617027,
+      "template": "bilinear_hint",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": 3
+      },
+      "bank_profile": "two_mirror",
+      "recipes": {
+        "3 u^{2} v + u v^{2} - 2 u v": "correct",
+        "- 3 u^{2} v - u v^{2} + 2 u v": "reverse",
+        "3 u^{2} v - u v^{2} - 2 u v": "flip_first_active",
+        "- 3 u^{2} v + u v^{2} - 2 u v": "flip_last_active",
+        "6 u^{2} v + u v^{2} - 2 u v": "double_last_active"
+      },
+      "source_question_ids": [
+        "q-161383"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 1,
+        "rank": 2,
+        "opposite_pair_sign": -1
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "50249441-15bd-5d8e-815c-b2134e6b1dcc",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,2\\pi)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle x,\\,y,\\,- 3 z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u \\cos{\\left(v \\right)},\\,u \\sin{\\left(v \\right)},\\,2 u^{2}\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?\n\n*Hint: You may use $\\mathbf r_u\\times\\mathbf r_v=\\left\\langle - 4 u^{2} \\cos{\\left(v \\right)},\\,- 4 u^{2} \\sin{\\left(v \\right)},\\,u\\right\\rangle$.*",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. Use the supplied cross product:\n\n$$\n\\mathbf N=\\left\\langle - 4 u^{2} \\cos{\\left(v \\right)},\\,- 4 u^{2} \\sin{\\left(v \\right)},\\,u\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u \\cos{\\left(v \\right)}$, $y=u \\sin{\\left(v \\right)}$, $z=2 u^{2}$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle u \\cos{\\left(v \\right)},\\,u \\sin{\\left(v \\right)},\\,- 6 u^{2}\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(u \\cos{\\left(v \\right)}\\right)\\left(- 4 u^{2} \\cos{\\left(v \\right)}\\right) \\\\  & =- 4 u^{3} \\cos^{2}{\\left(v \\right)} \\\\ T_{y} & =\\left(u \\sin{\\left(v \\right)}\\right)\\left(- 4 u^{2} \\sin{\\left(v \\right)}\\right) \\\\  & =- 4 u^{3} \\sin^{2}{\\left(v \\right)} \\\\ T_{z} & =\\left(- 6 u^{2}\\right)\\left(u\\right) \\\\  & =- 6 u^{3}\\end{aligned}\n$$\n\nTake the dot product and use $\\cos^2 v+\\sin^2 v=1$:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =- 4 u^{3}(\\cos^2 v+\\sin^2 v)+- 6 u^{3} \\\\  & =- 10 u^{3}\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(- 10 u^{3}\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d5ff68af-22ec-583e-aef0-8f1842d5ea65",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "46deafac-b566-5eb3-8620-0cd0b53300c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{3}"
+            },
+            {
+              ":answer/id": "be2b9908-115c-5993-8919-c18aae8c7fb0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 10 u^{3}"
+            },
+            {
+              ":answer/id": "bf4bb58b-92aa-5dac-a2f1-48476a297101",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 u^{3} \\sin^{2}{\\left(v \\right)} - 14 u^{3}"
+            },
+            {
+              ":answer/id": "9139629b-6d5b-59cb-81c9-c257e6a119be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 16 u^{3}"
+            },
+            {
+              ":answer/id": "e599adb9-1c53-5e60-bdae-c8b00ffa2fcb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 u^{3} \\cos{\\left(2 v \\right)} - 8 u^{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "be2b9908-115c-5993-8919-c18aae8c7fb0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 2987834974673519058,
+      "template": "polar_hint",
+      "parameters": {
+        "a": 1,
+        "b": 1,
+        "c": -3,
+        "h": 2
+      },
+      "bank_profile": "two_scaled",
+      "recipes": {
+        "- 10 u^{3}": "correct",
+        "2 u^{3} \\cos{\\left(2 v \\right)} - 8 u^{3}": "omit_first_active",
+        "4 u^{3} \\sin^{2}{\\left(v \\right)} - 14 u^{3}": "double_first_active",
+        "- 16 u^{3}": "double_last_active",
+        "2 u^{3}": "flip_last_active"
+      },
+      "source_question_ids": [
+        "q-161251"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 1,
+        "rank": 2
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

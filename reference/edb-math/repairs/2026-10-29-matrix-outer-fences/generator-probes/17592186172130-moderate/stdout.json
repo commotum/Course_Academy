@@ -1,0 +1,272 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186172130,
+      "id": "e5256297-c928-54e3-bf4d-35f5734f5632",
+      "title": "Constructing Surface Integrals Over Parametric Surfaces"
+    },
+    "question": {
+      ":question/id": "fbfbf78e-024e-5421-9f91-5da91fe7abc8",
+      ":question/problem": "Consider $f(x,y,z)=2 x y z$ on the parametric surface\n\n$$\n\\mathbf r(u,v)=⟨3 u,\\,v,\\,u v⟩\n$$\n\nThe parameter region is $D\\subseteq\\mathbb{R}^{2}$. What expression completes the integral? Choose an integrand equal to the required expression as a function on $D$.\n\n$$\n\\iint_S f(x,y,z)\\,\\mathrm{d}S=\\iint_D\\boxed{\\phantom{AAAAAA}}\\,\\mathrm{d}A\n$$",
+      ":question/worked-solution": "For a parametrized surface, the scalar surface integral is\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D f(\\mathbf r(u,v))\\|\\mathbf r_u\\times\\mathbf r_v\\|\\,\\mathrm{d}A.\n$$\n\nDifferentiate each coordinate while holding the other parameter fixed:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨3,\\,0,\\,v⟩\\\\\\mathbf r_v&=⟨0,\\,1,\\,u⟩\\end{aligned}\n$$\n\nForm the cross product, including the negative middle cofactor:\n\n$$\n\\mathbf r_u\\times\\mathbf r_v=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\3&0&v\\\\0&1&u\\end{vmatrix}=⟨- v,\\,- 3 u,\\,3⟩.\n$$\n\nTake its nonnegative magnitude:\n\n$$\n\\begin{aligned}\\|\\mathbf r_u\\times\\mathbf r_v\\|&=\\sqrt{\\left(- v\\right)^{2}+\\left(- 3 u\\right)^{2}+\\left(3\\right)^{2}}\\\\&=\\sqrt{9 u^{2} + v^{2} + 9}.\\end{aligned}\n$$\n\nNow substitute the coordinates into the scalar function:\n\n$$\n\\begin{aligned}f(\\mathbf r(u,v))&=2 \\left(3 u\\right) \\left(v\\right) \\left(u v\\right)\\\\&=6 u^{2} v^{2}.\\end{aligned}\n$$\n\nMultiply the substituted scalar function by the area factor:\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D 6 u^{2} v^{2} \\sqrt{9 u^{2} + v^{2} + 9}\\,\\mathrm{d}A.\n$$\n\nThe missing expression is $6 u^{2} v^{2} \\sqrt{9 u^{2} + v^{2} + 9}$. The magnitude applies to the cross product; the scalar function retains its sign.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "02961933-b6cf-5584-bd86-0a02092adc98",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1ac5adf1-73c7-5626-9155-3045e683d1b8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u v^{2} \\sqrt{9 u^{2} + v^{2} + 18}"
+            },
+            {
+              ":answer/id": "399f0a6e-1c23-540a-b43c-c32874e85466",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} v^{2} \\sqrt{9 u^{2} + v^{2} + 18}"
+            },
+            {
+              ":answer/id": "de1c3416-2fef-5aa1-8556-68cd99bb3893",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u v^{2} \\sqrt{9 u^{2} + v^{2} + 9}"
+            },
+            {
+              ":answer/id": "f4169b4b-11e1-5a56-ae1d-c3df43993db0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} v^{2} \\sqrt{9 u^{2} + v^{2} + 9}"
+            },
+            {
+              ":answer/id": "781b0b53-02cf-513c-8217-85839276ecaa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6 u^{2} v^{2} \\left(9 u^{2} + v^{2} + 9\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f4169b4b-11e1-5a56-ae1d-c3df43993db0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-setup-2-grid-banks",
+      "level": "moderate",
+      "template": "saddle",
+      "parameters": {
+        "a": 3,
+        "p": 2,
+        "q": 1
+      },
+      "profile": "authored",
+      "seed": 29102977,
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186172375,
+      "source_references": [
+        17592186172375
+      ],
+      "authored_level": false,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "recipes": [
+        "correct/correct_metric",
+        "correct/double_count_cross_component:3",
+        "correct/square_metric",
+        "lose_u_factor_in_6 u^{2} v^{2}/correct_metric",
+        "lose_u_factor_in_6 u^{2} v^{2}/double_count_cross_component:3"
+      ],
+      "surface_fingerprint": "923b36a9471161a3e0d05c57feba27f218ed81e7ed9ee5a86ed16717ece8bd0f",
+      "mathematical_fingerprint": "20d36d0f0297bea78d4c9523581d21dfc285d1a0a07b2cc8d942585e55b64d72",
+      "content_fingerprint": "46ea3afaac5a6828e98e9688e29d47d9756a0f55024b104f92fc0df2862001fb",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "real u,v",
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186172130,
+      "id": "e5256297-c928-54e3-bf4d-35f5734f5632",
+      "title": "Constructing Surface Integrals Over Parametric Surfaces"
+    },
+    "question": {
+      ":question/id": "3aaef6bc-1f84-5835-bd69-bd11fd7ec0af",
+      ":question/problem": "Consider $f(x,y,z)=2 x - 2 z^{2}$ on the parametric surface\n\n$$\n\\mathbf r(u,v)=⟨u^{3},\\,v,\\,v^{2}⟩\n$$\n\nThe parameter region is $D\\subseteq\\mathbb{R}^{2}$. What expression completes the integral? Choose an integrand equal to the required expression as a function on $D$.\n\n$$\n\\iint_S f(x,y,z)\\,\\mathrm{d}S=\\iint_D\\boxed{\\phantom{AAAAAA}}\\,\\mathrm{d}A\n$$",
+      ":question/worked-solution": "For a parametrized surface, the scalar surface integral is\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D f(\\mathbf r(u,v))\\|\\mathbf r_u\\times\\mathbf r_v\\|\\,\\mathrm{d}A.\n$$\n\nDifferentiate each coordinate while holding the other parameter fixed:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨3 u^{2},\\,0,\\,0⟩\\\\\\mathbf r_v&=⟨0,\\,1,\\,2 v⟩\\end{aligned}\n$$\n\nForm the cross product, including the negative middle cofactor:\n\n$$\n\\mathbf r_u\\times\\mathbf r_v=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\3 u^{2}&0&0\\\\0&1&2 v\\end{vmatrix}=⟨0,\\,- 6 u^{2} v,\\,3 u^{2}⟩.\n$$\n\nTake its nonnegative magnitude:\n\n$$\n\\begin{aligned}\\|\\mathbf r_u\\times\\mathbf r_v\\|&=\\sqrt{\\left(0\\right)^{2}+\\left(- 6 u^{2} v\\right)^{2}+\\left(3 u^{2}\\right)^{2}}\\\\&=3 u^{2} \\sqrt{4 v^{2} + 1}.\\end{aligned}\n$$\n\nNow substitute the coordinates into the scalar function:\n\n$$\n\\begin{aligned}f(\\mathbf r(u,v))&=2 \\left(u^{3}\\right) - 2 \\left(v^{2}\\right)^{2}\\\\&=2 u^{3} - 2 v^{4}.\\end{aligned}\n$$\n\nMultiply the substituted scalar function by the area factor:\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D 3 u^{2} \\sqrt{4 v^{2} + 1} \\left(2 u^{3} - 2 v^{4}\\right)\\,\\mathrm{d}A.\n$$\n\nThe missing expression is $3 u^{2} \\sqrt{4 v^{2} + 1} \\left(2 u^{3} - 2 v^{4}\\right)$. The magnitude applies to the cross product; the scalar function retains its sign.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "17431d32-6171-5571-b057-24157e494a03",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f898b5a4-4749-58f6-8655-4a32b813a4d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} \\sqrt{4 v^{2} + 1} \\left(2 u^{3} - 2 v^{3}\\right)"
+            },
+            {
+              ":answer/id": "cada38a5-8498-5209-b3d4-2ec447d71e7e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} \\left(2 u^{3} - 2 v^{3}\\right)"
+            },
+            {
+              ":answer/id": "c20d4cfe-6dcb-5a33-92b6-aca8431b7401",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} \\left(2 u^{3} - 2 v^{4}\\right)"
+            },
+            {
+              ":answer/id": "4432084b-1f64-5766-a813-396869fff3bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(2 u^{3} - 2 v^{4}\\right) \\left(36 u^{4} v^{2} + 9 u^{4}\\right)"
+            },
+            {
+              ":answer/id": "d328915b-e9cd-5a82-abec-21c7793cdf2d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} \\sqrt{4 v^{2} + 1} \\left(2 u^{3} - 2 v^{4}\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d328915b-e9cd-5a82-abec-21c7793cdf2d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-setup-2-grid-banks",
+      "level": "moderate",
+      "template": "cylinder",
+      "parameters": {
+        "a": 1,
+        "p": -2,
+        "q": 2
+      },
+      "profile": "authored",
+      "seed": 29102978,
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186414461,
+      "source_references": [
+        17592186414461
+      ],
+      "authored_level": false,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "recipes": [
+        "correct/correct_metric",
+        "correct/omit_cross_component:- 6 u^{2} v",
+        "correct/square_metric",
+        "lose_v_factor_in_- 2 v^{4}/correct_metric",
+        "lose_v_factor_in_- 2 v^{4}/omit_cross_component:- 6 u^{2} v"
+      ],
+      "surface_fingerprint": "7033fa43ce4a670f99f07bfb810f5b807abd577f148e2873dfdaabb6818460c4",
+      "mathematical_fingerprint": "700884252cd7896d549f6d41032a6d28061e8169cac41bb5c624c7b31e87e166",
+      "content_fingerprint": "137aeda6c66973c46094ce5dcd6af144ce1de29ec38e27f45fccbb4d8838e7b3",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "real u,v",
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186172130,
+      "id": "e5256297-c928-54e3-bf4d-35f5734f5632",
+      "title": "Constructing Surface Integrals Over Parametric Surfaces"
+    },
+    "question": {
+      ":question/id": "4b5a99ea-af47-5a2d-ba13-2cb5df0b1106",
+      ":question/problem": "Consider $f(x,y,z)=x^{2} z^{2} + 2 y$ on the parametric surface\n\n$$\n\\mathbf r(u,v)=⟨- u,\\,- u,\\,- v⟩\n$$\n\nThe parameter region is $D\\subseteq\\mathbb{R}^{2}$. What expression completes the integral? Choose an integrand equal to the required expression as a function on $D$.\n\n$$\n\\iint_S f(x,y,z)\\,\\mathrm{d}S=\\iint_D\\boxed{\\phantom{AAAAAA}}\\,\\mathrm{d}A\n$$",
+      ":question/worked-solution": "For a parametrized surface, the scalar surface integral is\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D f(\\mathbf r(u,v))\\|\\mathbf r_u\\times\\mathbf r_v\\|\\,\\mathrm{d}A.\n$$\n\nDifferentiate each coordinate while holding the other parameter fixed:\n\n$$\n\\begin{aligned}\\mathbf r_u&=⟨-1,\\,-1,\\,0⟩\\\\\\mathbf r_v&=⟨0,\\,0,\\,-1⟩\\end{aligned}\n$$\n\nForm the cross product, including the negative middle cofactor:\n\n$$\n\\mathbf r_u\\times\\mathbf r_v=\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\-1&-1&0\\\\0&0&-1\\end{vmatrix}=⟨1,\\,-1,\\,0⟩.\n$$\n\nTake its nonnegative magnitude:\n\n$$\n\\begin{aligned}\\|\\mathbf r_u\\times\\mathbf r_v\\|&=\\sqrt{\\left(1\\right)^{2}+\\left(-1\\right)^{2}+\\left(0\\right)^{2}}\\\\&=\\sqrt{2}.\\end{aligned}\n$$\n\nNow substitute the coordinates into the scalar function:\n\n$$\n\\begin{aligned}f(\\mathbf r(u,v))&=\\left(- u\\right)^{2} \\left(- v\\right)^{2} + 2 \\left(- u\\right)\\\\&=u^{2} v^{2} - 2 u.\\end{aligned}\n$$\n\nMultiply the substituted scalar function by the area factor:\n\n$$\n\\iint_S f\\,\\mathrm{d}S=\\iint_D \\sqrt{2} \\left(u^{2} v^{2} - 2 u\\right)\\,\\mathrm{d}A.\n$$\n\nThe missing expression is $\\sqrt{2} \\left(u^{2} v^{2} - 2 u\\right)$. The magnitude applies to the cross product; the scalar function retains its sign.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "239b48be-b961-5068-a137-54a625a21457",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1d6c64fb-c8af-5ffa-bf12-5580c62e35ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{2} \\left(u^{2} v^{2} - 4 u\\right)"
+            },
+            {
+              ":answer/id": "0dc2e6d4-7bba-521a-b9a7-03ca9e1a06b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{3} \\left(u^{2} v^{2} - 2 u\\right)"
+            },
+            {
+              ":answer/id": "2f4d7384-8428-5e5e-b9e5-684f69da3031",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(u^{2} v^{2} - 4 u\\right) 2"
+            },
+            {
+              ":answer/id": "b61ef44a-5991-5d51-8de9-7d507d76fe68",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(u^{2} v^{2} - 2 u\\right) 2"
+            },
+            {
+              ":answer/id": "e77dfc6d-6caf-5de9-859b-28a5f3fc6881",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{2} \\left(u^{2} v^{2} - 2 u\\right)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e77dfc6d-6caf-5de9-859b-28a5f3fc6881"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-setup-2-grid-banks",
+      "level": "moderate",
+      "template": "negative_plane",
+      "parameters": {
+        "a": 1,
+        "p": 1,
+        "q": 2
+      },
+      "profile": "authored",
+      "seed": 29102979,
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186278462,
+      "source_references": [
+        17592186278462
+      ],
+      "authored_level": false,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "recipes": [
+        "correct/correct_metric",
+        "correct/double_count_cross_component:-1",
+        "correct/square_metric",
+        "duplicate_scalar_coefficient:2 y/correct_metric",
+        "duplicate_scalar_coefficient:2 y/square_metric"
+      ],
+      "surface_fingerprint": "55bb6a549c39eda606d7b277ac6b730e60b33a7cbe2cf24a8e7483ec43a9fd1a",
+      "mathematical_fingerprint": "bbb65bd4bae849e99ddebd5c93ed731d1fe90a0d7938e7896617d94dc4a7c0b9",
+      "content_fingerprint": "241bfb352336fc7db7e9290011f3d2d64fef4c6b67ad729d8be7179c8e1e238f",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "domain": "real u,v",
+      "plot_rating": "none",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

@@ -556,4 +556,18 @@ class MathContentTests(unittest.TestCase):
         record['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'] = 'x'
         self.assertEqual(validate_generated_record(record)['generation']['math_format'], 'course-academy-tex-v1')
 
+class UnicodeTableFenceTests(unittest.TestCase):
+    def test_unicode_and_tex_bars_keep_their_delimiter_meaning(self):
+        from math_format import scalable_table_fences
+        matrix = r'\begin{bmatrix}1\\2\end{bmatrix}'
+        for left, right, expected_left, expected_right in [
+            ('∣', '∣', r'\left|', r'\right|'),
+            ('‖', '‖', r'\left\|', r'\right\|'),
+            (r'\|', r'\|', r'\left\|', r'\right\|'),
+            ('⟨', '⟩', r'\left\langle ', r'\right\rangle ')]:
+            source = left + '2' + matrix + right
+            expected = expected_left + '2' + matrix + expected_right
+            self.assertEqual(scalable_table_fences(source), expected)
+            self.assertEqual(scalable_table_fences(expected), expected)
+
 if __name__ == '__main__': unittest.main()

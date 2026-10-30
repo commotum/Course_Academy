@@ -1,0 +1,353 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "07d877e9-f858-5825-a431-cc494d265a52",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}3 \\left(2 u + v\\right)^{3} \\\\ 3 \\left(2 u - 2 v\\right)^{3}\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x=3 \\left(2 u + v\\right)^{3}$ and $y=3 \\left(2 u - 2 v\\right)^{3}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=18 \\left(2 u + v\\right)^{2}\\\\\\frac{\\partial x}{\\partial v}&=9 \\left(2 u + v\\right)^{2}\\\\\\frac{\\partial y}{\\partial u}&=18 \\left(2 u - 2 v\\right)^{2}\\\\\\frac{\\partial y}{\\partial v}&=- 18 \\left(2 u - 2 v\\right)^{2}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}18 \\left(2 u + v\\right)^{2}&9 \\left(2 u + v\\right)^{2}\\\\18 \\left(2 u - 2 v\\right)^{2}&- 18 \\left(2 u - 2 v\\right)^{2}\\end{vmatrix}\\\\&=\\left(18 \\left(2 u + v\\right)^{2}\\right)\\cdot\\left(- 18 \\left(2 u - 2 v\\right)^{2}\\right)\\\\&\\quad{}-\\left(9 \\left(2 u + v\\right)^{2}\\right)\\cdot\\left(18 \\left(2 u - 2 v\\right)^{2}\\right)\\\\&=- 1944 \\left(u - v\\right)^{2} \\left(2 u + v\\right)^{2}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "654a50bd-04e8-5822-bb8c-b75cbfff10f8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f2953d6f-1fc5-5e8f-bfc1-70cfe3bfec18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 1296 \\left(u - v\\right)^{2} \\left(2 u + v\\right)^{2}"
+            },
+            {
+              ":answer/id": "0bef2256-0a10-5b9d-908d-999c10915d67",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1944 \\left(u - v\\right)^{2} \\left(2 u + v\\right)^{2}"
+            },
+            {
+              ":answer/id": "de8a9770-6943-5784-ba2a-c3e7c0b6cbe1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 839808 \\left(u - v\\right)^{4} \\left(2 u + v\\right)^{4}"
+            },
+            {
+              ":answer/id": "4fa7c2ce-9f5a-5d84-8683-9e6f9033150d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 648 \\left(u - v\\right)^{2} \\left(2 u + v\\right)^{2}"
+            },
+            {
+              ":answer/id": "ee4bd630-f054-5f79-891d-40158d26c3a2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 1944 \\left(u - v\\right)^{2} \\left(2 u + v\\right)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ee4bd630-f054-5f79-891d-40158d26c3a2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102977,
+      "template": "powers",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "m": 3,
+        "n": 3,
+        "p": 2,
+        "q": 1,
+        "r": 2,
+        "s": 2
+      },
+      "parameter_fingerprint": "39aa2dbd0078db53f8782fb99be15513d975a86a62ac5144625c93d8dfebae84",
+      "content_fingerprint": "388b5245591edd418b3eabe951335ab28064c6bf8fe4fc193a8669a96ab89baa",
+      "bank_profile": "authored_powers",
+      "bank_origin": "authored method errors",
+      "authored_extension": true,
+      "difficulty_origin": "authored missing level",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Integer(3), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(3)))",
+        "Mul(Integer(3), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(2), Symbol('v', real=True))), Integer(3)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(18), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+        "Mul(Integer(9), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+        "Mul(Integer(18), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(2), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(-1), Integer(18), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Mul(Integer(-1), Integer(2), Symbol('v', real=True))), Integer(2)))"
+      ],
+      "determinant": "Mul(Integer(-1), Integer(1944), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+      "answer_math": {
+        "ee4bd630-f054-5f79-891d-40158d26c3a2": {
+          "expression": "Mul(Integer(-1), Integer(1944), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+          "recipe": "correct"
+        },
+        "0bef2256-0a10-5b9d-908d-999c10915d67": {
+          "expression": "Mul(Integer(1944), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+          "recipe": "reverse_subtraction"
+        },
+        "f2953d6f-1fc5-5e8f-bfc1-70cfe3bfec18": {
+          "expression": "Mul(Integer(-1), Integer(1296), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+          "recipe": "omit_cross_product"
+        },
+        "4fa7c2ce-9f5a-5d84-8683-9e6f9033150d": {
+          "expression": "Mul(Integer(-1), Integer(648), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(2)))",
+          "recipe": "add_products"
+        },
+        "de8a9770-6943-5784-ba2a-c3e7c0b6cbe1": {
+          "expression": "Mul(Integer(-1), Integer(839808), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(4)), Pow(Add(Mul(Integer(2), Symbol('u', real=True)), Symbol('v', real=True)), Integer(4)))",
+          "recipe": "multiply_diagonal_products"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "8d080cbf-c7f1-516f-b913-d4a1d2115f27",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}3 \\left(u + 2 v\\right)^{3} \\\\ 3 \\left(u - v\\right)^{2}\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x=3 \\left(u + 2 v\\right)^{3}$ and $y=3 \\left(u - v\\right)^{2}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=9 \\left(u + 2 v\\right)^{2}\\\\\\frac{\\partial x}{\\partial v}&=18 \\left(u + 2 v\\right)^{2}\\\\\\frac{\\partial y}{\\partial u}&=6 u - 6 v\\\\\\frac{\\partial y}{\\partial v}&=- 6 u + 6 v\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}9 \\left(u + 2 v\\right)^{2}&18 \\left(u + 2 v\\right)^{2}\\\\6 u - 6 v&- 6 u + 6 v\\end{vmatrix}\\\\&=\\left(9 \\left(u + 2 v\\right)^{2}\\right)\\cdot\\left(- 6 u + 6 v\\right)\\\\&\\quad{}-\\left(18 \\left(u + 2 v\\right)^{2}\\right)\\cdot\\left(6 u - 6 v\\right)\\\\&=\\left(- 162 u + 162 v\\right) \\left(u + 2 v\\right)^{2}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5cc5278d-1f1a-5ef0-927f-cb55573ad64b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2e9f51a1-b02a-54a9-bab3-6ef7070b6e16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- 54 u + 54 v\\right) \\left(u + 2 v\\right)^{2}"
+            },
+            {
+              ":answer/id": "fd777c01-3d9f-5e97-ba61-b5ff61857a67",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(u + 2 v\\right)^{2} \\left(54 u - 54 v\\right)"
+            },
+            {
+              ":answer/id": "1fb6773c-1b0f-550c-abdc-35bb31d66b89",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- 54 u + 54 v\\right) \\left(u + 2 v\\right)^{4} \\left(108 u - 108 v\\right)"
+            },
+            {
+              ":answer/id": "6ba310b1-d73c-5549-9785-8218654ef017",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\left(- 162 u + 162 v\\right) \\left(u + 2 v\\right)^{2}"
+            },
+            {
+              ":answer/id": "1214e8f2-dac4-52a1-a95c-f442991675d3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left(- 162 u + 162 v\\right) \\left(u + 2 v\\right)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1214e8f2-dac4-52a1-a95c-f442991675d3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102978,
+      "template": "powers",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "m": 3,
+        "n": 2,
+        "p": 1,
+        "q": 2,
+        "r": 1,
+        "s": 1
+      },
+      "parameter_fingerprint": "f0ffbf4f5eb2fe5d4dae7c3074b84552401e027c3cd5a85368bc8842147343f6",
+      "content_fingerprint": "2afbf3953f37be886b7139c9362f44ba2112e597a4f30be3cfdc586a50fab92a",
+      "bank_profile": "authored_powers",
+      "bank_origin": "authored method errors",
+      "authored_extension": true,
+      "difficulty_origin": "authored missing level",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(3)))",
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(9), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(18), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+        "Add(Mul(Integer(6), Symbol('u', real=True)), Mul(Integer(-1), Integer(6), Symbol('v', real=True)))",
+        "Add(Mul(Integer(-1), Integer(6), Symbol('u', real=True)), Mul(Integer(6), Symbol('v', real=True)))"
+      ],
+      "determinant": "Mul(Add(Mul(Integer(-1), Integer(162), Symbol('u', real=True)), Mul(Integer(162), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+      "answer_math": {
+        "1214e8f2-dac4-52a1-a95c-f442991675d3": {
+          "expression": "Mul(Add(Mul(Integer(-1), Integer(162), Symbol('u', real=True)), Mul(Integer(162), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "correct"
+        },
+        "6ba310b1-d73c-5549-9785-8218654ef017": {
+          "expression": "Mul(Integer(-1), Add(Mul(Integer(-1), Integer(162), Symbol('u', real=True)), Mul(Integer(162), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "reverse_subtraction"
+        },
+        "2e9f51a1-b02a-54a9-bab3-6ef7070b6e16": {
+          "expression": "Mul(Add(Mul(Integer(-1), Integer(54), Symbol('u', real=True)), Mul(Integer(54), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "omit_cross_product"
+        },
+        "fd777c01-3d9f-5e97-ba61-b5ff61857a67": {
+          "expression": "Mul(Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)), Add(Mul(Integer(54), Symbol('u', real=True)), Mul(Integer(-1), Integer(54), Symbol('v', real=True))))",
+          "recipe": "add_products"
+        },
+        "1fb6773c-1b0f-550c-abdc-35bb31d66b89": {
+          "expression": "Mul(Add(Mul(Integer(-1), Integer(54), Symbol('u', real=True)), Mul(Integer(54), Symbol('v', real=True))), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(4)), Add(Mul(Integer(108), Symbol('u', real=True)), Mul(Integer(-1), Integer(108), Symbol('v', real=True))))",
+          "recipe": "multiply_diagonal_products"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129187,
+      "id": "d56cec4a-6121-5988-aaea-478fb6048a6d",
+      "title": "Finding the Jacobian Determinant of a Transformation"
+    },
+    "question": {
+      ":question/id": "e8b4eadb-0c47-5bcb-b36d-3612e5dbd486",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T,$ defined as\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\\longrightarrow\\begin{bmatrix}\\left(u + 2 v\\right)^{3} \\\\ 2 \\left(u - v\\right)^{3}\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "Given a transformation \n\n$$\nT:\\begin{bmatrix}u\\\\v\\end{bmatrix}\\to\\begin{bmatrix}x(u,v)\\\\y(u,v)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\\partial(x,y)}{\\partial(u,v)}$, is given by\n\n$$\n\\frac{\\partial(x,y)}{\\partial(u,v)}=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}.\n$$\n\nHere, we have $x=\\left(u + 2 v\\right)^{3}$ and $y=2 \\left(u - v\\right)^{3}.$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial x}{\\partial u}&=3 \\left(u + 2 v\\right)^{2}\\\\\\frac{\\partial x}{\\partial v}&=6 \\left(u + 2 v\\right)^{2}\\\\\\frac{\\partial y}{\\partial u}&=6 \\left(u - v\\right)^{2}\\\\\\frac{\\partial y}{\\partial v}&=- 6 \\left(u - v\\right)^{2}\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)}&=\\begin{vmatrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{vmatrix}\\\\&=\\begin{vmatrix}3 \\left(u + 2 v\\right)^{2}&6 \\left(u + 2 v\\right)^{2}\\\\6 \\left(u - v\\right)^{2}&- 6 \\left(u - v\\right)^{2}\\end{vmatrix}\\\\&=\\left(3 \\left(u + 2 v\\right)^{2}\\right)\\cdot\\left(- 6 \\left(u - v\\right)^{2}\\right)\\\\&\\quad{}-\\left(6 \\left(u + 2 v\\right)^{2}\\right)\\cdot\\left(6 \\left(u - v\\right)^{2}\\right)\\\\&=- 54 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)^{2}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c161aa20-22b0-5eb5-b353-674c6cd290d2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c979167c-d18c-551b-93e7-b4d1cacf0a41",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 18 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)^{2}"
+            },
+            {
+              ":answer/id": "3b6afc1e-3662-58df-9a5f-9a2ae1a01ec0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)^{2}"
+            },
+            {
+              ":answer/id": "e95456cf-f52a-58d8-8888-564f7ad93dc5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 648 \\left(u - v\\right)^{4} \\left(u + 2 v\\right)^{4}"
+            },
+            {
+              ":answer/id": "11f2fe75-73f4-532b-b788-51e1866b34ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 54 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)^{2}"
+            },
+            {
+              ":answer/id": "9869ec82-abca-5072-a12f-a80346f95ef5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "54 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)^{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "11f2fe75-73f4-532b-b788-51e1866b34ba"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "jacobian-2",
+      "sympy_version": "1.14.0",
+      "seed": 29102979,
+      "template": "powers",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "m": 3,
+        "n": 3,
+        "p": 1,
+        "q": 2,
+        "r": 1,
+        "s": 1
+      },
+      "parameter_fingerprint": "311ede5ca1cedf49c6fd116edb233c0cd4ae9996111be75987bc9a18e4d1d973",
+      "content_fingerprint": "991ba1763722f7d1d0635b472cad3f8ddef9ca8dc3c010887ef5b40f39459a4b",
+      "bank_profile": "authored_powers",
+      "bank_origin": "authored method errors",
+      "authored_extension": true,
+      "difficulty_origin": "authored missing level",
+      "source_analysis": {
+        "database": "math",
+        "basis": 2850,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "canonical_id": "e-6810"
+      },
+      "domain": "R^2",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "functions": [
+        "Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(3))",
+        "Mul(Integer(2), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(3)))"
+      ],
+      "partial_derivatives": [
+        "Mul(Integer(3), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(6), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(6), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))",
+        "Mul(Integer(-1), Integer(6), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)))"
+      ],
+      "determinant": "Mul(Integer(-1), Integer(54), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+      "answer_math": {
+        "11f2fe75-73f4-532b-b788-51e1866b34ba": {
+          "expression": "Mul(Integer(-1), Integer(54), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "correct"
+        },
+        "9869ec82-abca-5072-a12f-a80346f95ef5": {
+          "expression": "Mul(Integer(54), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "reverse_subtraction"
+        },
+        "c979167c-d18c-551b-93e7-b4d1cacf0a41": {
+          "expression": "Mul(Integer(-1), Integer(18), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "omit_cross_product"
+        },
+        "3b6afc1e-3662-58df-9a5f-9a2ae1a01ec0": {
+          "expression": "Mul(Integer(18), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(2)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(2)))",
+          "recipe": "add_products"
+        },
+        "e95456cf-f52a-58d8-8888-564f7ad93dc5": {
+          "expression": "Mul(Integer(-1), Integer(648), Pow(Add(Symbol('u', real=True), Mul(Integer(-1), Symbol('v', real=True))), Integer(4)), Pow(Add(Symbol('u', real=True), Mul(Integer(2), Symbol('v', real=True))), Integer(4)))",
+          "recipe": "multiply_diagonal_products"
+        }
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

@@ -1,0 +1,266 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "dc0c5b5d-5223-5c60-aa38-4686dedec269",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle x y,\\,- x,\\,3 z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u,\\,v,\\,2 u v\\right\\rangle.\n$$\n\nOrient $S$ so that its unit normal has a **negative $z$-component**.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle 1,\\,0,\\,2 v\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle 0,\\,1,\\,2 u\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\1&0&2 v\\\\0&1&2 u\\end{vmatrix} \\\\  & =\\left\\langle - 2 v,\\,- 2 u,\\,1\\right\\rangle\\end{aligned}\n$$\n\nIts $z$-component is positive. Reverse this direction to satisfy the stated orientation:\n\n$$\n\\mathbf N=-(\\mathbf r_u\\times\\mathbf r_v)=\\left\\langle 2 v,\\,2 u,\\,-1\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u$, $y=v$, $z=2 u v$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle u v,\\,- u,\\,6 u v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(u v\\right)\\left(2 v\\right) \\\\  & =2 u v^{2} \\\\ T_{y} & =\\left(- u\\right)\\left(2 u\\right) \\\\  & =- 2 u^{2} \\\\ T_{z} & =\\left(6 u v\\right)\\left(-1\\right) \\\\  & =- 6 u v\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =- 2 u^{2} + 2 u v^{2} - 6 u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(- 2 u^{2} + 2 u v^{2} - 6 u v\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b2ecddaa-7bf8-5c6c-8b48-2d4b861f707a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a0899583-1e05-5d22-9036-d10e0906b47f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 4 u v^{2} - 6 u v"
+            },
+            {
+              ":answer/id": "bf899e13-f91a-5b7f-bff6-ae2e06fdfb5d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 2 u v^{2} + 6 u v"
+            },
+            {
+              ":answer/id": "b7194ab9-7da6-5f43-be3c-aaf33a2dd1dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} - 6 u v"
+            },
+            {
+              ":answer/id": "d2ce434c-2d51-5d63-998b-a8c6fe498606",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 2 u v^{2} - 12 u v"
+            },
+            {
+              ":answer/id": "e9aaeaac-93a0-560a-92cf-4368f0f354de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 2 u^{2} + 2 u v^{2} - 6 u v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e9aaeaac-93a0-560a-92cf-4368f0f354de"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 3609586958563936352,
+      "template": "oriented_graph",
+      "parameters": {
+        "a": -1,
+        "b": 3,
+        "c": 1,
+        "h": 2,
+        "degree": 1,
+        "graph_sign": 1,
+        "axis": 2,
+        "wanted": -1,
+        "swapped": 1
+      },
+      "bank_profile": "component_scaled",
+      "recipes": {
+        "- 2 u^{2} + 2 u v^{2} - 6 u v": "correct",
+        "- 2 u^{2} - 6 u v": "component_omit_first_active",
+        "- 2 u^{2} + 4 u v^{2} - 6 u v": "component_double_first_active",
+        "- 2 u^{2} + 2 u v^{2} - 12 u v": "component_double_last_active",
+        "- 2 u^{2} + 2 u v^{2} + 6 u v": "component_flip_last_active"
+      },
+      "source_question_ids": [
+        "d51f128c-d67d-56d7-abe2-68e831969ea3"
+      ],
+      "orientation": -1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 4,
+        "rank": 2,
+        "modal_coefficients": true
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "2ed913af-98ec-5851-b80d-6aa39c79e944",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle 3 z,\\,- y,\\,- 3 x z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle v,\\,- u v,\\,u\\right\\rangle.\n$$\n\nOrient $S$ so that its unit normal has a **negative $y$-component**.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle 0,\\,- v,\\,1\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle 1,\\,- u,\\,0\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\0&- v&1\\\\1&- u&0\\end{vmatrix} \\\\  & =\\left\\langle u,\\,1,\\,v\\right\\rangle\\end{aligned}\n$$\n\nIts $y$-component is positive. Reverse this direction to satisfy the stated orientation:\n\n$$\n\\mathbf N=-(\\mathbf r_u\\times\\mathbf r_v)=\\left\\langle - u,\\,-1,\\,- v\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=v$, $y=- u v$, $z=u$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle 3 u,\\,u v,\\,- 3 u v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(3 u\\right)\\left(- u\\right) \\\\  & =- 3 u^{2} \\\\ T_{y} & =\\left(u v\\right)\\left(-1\\right) \\\\  & =- u v \\\\ T_{z} & =\\left(- 3 u v\\right)\\left(- v\\right) \\\\  & =3 u v^{2}\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =- 3 u^{2} + 3 u v^{2} - u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(- 3 u^{2} + 3 u v^{2} - u v\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "24fed238-51a2-5ce0-9e04-e9bb8f18a54f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ae36dc5c-2822-5ed0-a8e2-301688caa13b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} - 3 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "b535c7c7-b750-5198-8b72-c93ba1e43c82",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "d9356b72-d604-51b9-bbad-994097b6cc3d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + 3 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "9bace2a3-bfcb-5375-a4c4-6f03320538e7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} + 3 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "3a885b38-b8a6-573e-9d94-615dc2c16198",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 6 u^{2} + 3 u v^{2} - u v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d9356b72-d604-51b9-bbad-994097b6cc3d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 11349752978564315952,
+      "template": "oriented_graph",
+      "parameters": {
+        "a": 3,
+        "b": -1,
+        "c": -3,
+        "h": 1,
+        "degree": 1,
+        "graph_sign": -1,
+        "axis": 1,
+        "wanted": -1,
+        "swapped": 1
+      },
+      "bank_profile": "component_omit_signs",
+      "recipes": {
+        "- 3 u^{2} + 3 u v^{2} - u v": "correct",
+        "3 u v^{2} - u v": "component_omit_first_active",
+        "- 6 u^{2} + 3 u v^{2} - u v": "component_double_first_active",
+        "3 u^{2} + 3 u v^{2} - u v": "component_flip_first_active",
+        "- 3 u^{2} - 3 u v^{2} - u v": "component_flip_last_active"
+      },
+      "source_question_ids": [
+        "d51f128c-d67d-56d7-abe2-68e831969ea3"
+      ],
+      "orientation": -1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 2,
+        "rank": 2,
+        "modal_coefficients": true
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "7d879344-0651-5b19-a037-f4216120e2de",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle 3 z,\\,- y,\\,2 x z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle v,\\,u v,\\,u\\right\\rangle.\n$$\n\nOrient $S$ so that its unit normal has a **negative $y$-component**.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D ?\\,\\mathrm dA,\n$$\n\nwhat is the missing expression?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle 0,\\,v,\\,1\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle 1,\\,u,\\,0\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\0&v&1\\\\1&u&0\\end{vmatrix} \\\\  & =\\left\\langle - u,\\,1,\\,- v\\right\\rangle\\end{aligned}\n$$\n\nIts $y$-component is positive. Reverse this direction to satisfy the stated orientation:\n\n$$\n\\mathbf N=-(\\mathbf r_u\\times\\mathbf r_v)=\\left\\langle u,\\,-1,\\,v\\right\\rangle.\n$$\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=v$, $y=u v$, $z=u$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle 3 u,\\,- u v,\\,2 u v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(3 u\\right)\\left(u\\right) \\\\  & =3 u^{2} \\\\ T_{y} & =\\left(- u v\\right)\\left(-1\\right) \\\\  & =u v \\\\ T_{z} & =\\left(2 u v\\right)\\left(v\\right) \\\\  & =2 u v^{2}\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =3 u^{2} + 2 u v^{2} + u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(3 u^{2} + 2 u v^{2} + u v\\right)\\,\\mathrm dA.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e8dd43e8-48ff-5eea-9f8c-d5c18bb53b35",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "11e7a0bb-8702-5931-8eaf-ef0042044587",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} - 2 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "145102be-a37f-5a4a-b106-8c2b41c8d74b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + 2 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "ce014da3-f755-5209-82e8-1e84edbd795b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 3 u^{2} + 2 u v^{2} + u v"
+            },
+            {
+              ":answer/id": "1d39abe4-3443-5772-a10b-7498294ddd60",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} + 2 u v^{2} - u v"
+            },
+            {
+              ":answer/id": "d0934e0b-6e68-559b-81ba-61d001720068",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 u^{2} + 2 u v^{2} + u v"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d0934e0b-6e68-559b-81ba-61d001720068"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 3106806757918692807,
+      "template": "oriented_graph",
+      "parameters": {
+        "a": 3,
+        "b": -1,
+        "c": 2,
+        "h": 1,
+        "degree": 1,
+        "graph_sign": 1,
+        "axis": 1,
+        "wanted": -1,
+        "swapped": 1
+      },
+      "bank_profile": "paired",
+      "recipes": {
+        "3 u^{2} + 2 u v^{2} + u v": "correct",
+        "- 3 u^{2} - 2 u v^{2} - u v": "reverse",
+        "- 3 u^{2} + 2 u v^{2} + u v": "flip0",
+        "3 u^{2} + 2 u v^{2} - u v": "flip1",
+        "- 3 u^{2} + 2 u v^{2} - u v": "flip01"
+      },
+      "source_question_ids": [
+        "d51f128c-d67d-56d7-abe2-68e831969ea3"
+      ],
+      "orientation": -1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 4,
+        "rank": 4,
+        "opposite_pair_sign": 1
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

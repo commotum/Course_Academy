@@ -1,0 +1,246 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "03266424-9372-5666-b55f-a0f2a963974d",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle 2 x z,\\,- 3 y,\\,3\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u v,\\,u + v,\\,1 - v\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D (a u v^{2} + b v^{2} + c u v - 3 u + 3 v)\\,\\mathrm dA,\n$$\n\nwhat is the value of $a+b+c$?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle v,\\,1,\\,0\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle u,\\,1,\\,-1\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\v&1&0\\\\u&1&-1\\end{vmatrix} \\\\  & =\\left\\langle -1,\\,v,\\,- u + v\\right\\rangle\\end{aligned}\n$$\n\nUse $\\mathbf N=\\mathbf r_u\\times\\mathbf r_v$.\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u v$, $y=u + v$, $z=1 - v$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle - 2 u v^{2} + 2 u v,\\,- 3 u - 3 v,\\,3\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(- 2 u v^{2} + 2 u v\\right)\\left(-1\\right) \\\\  & =2 u v^{2} - 2 u v \\\\ T_{y} & =\\left(- 3 u - 3 v\\right)\\left(v\\right) \\\\  & =- 3 u v - 3 v^{2} \\\\ T_{z} & =\\left(3\\right)\\left(- u + v\\right) \\\\  & =- 3 u + 3 v\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =2 u v^{2} - 5 u v - 3 u - 3 v^{2} + 3 v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(2 u v^{2} - 5 u v - 3 u - 3 v^{2} + 3 v\\right)\\,\\mathrm dA.\n$$\n\nMatching coefficients gives $a=2$, $b=-3$, $c=-5$. Hence\n\n$$\na+b+c=(2)+(-3)+(-5)=-6.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9da1f04c-75da-5e73-9a8f-d458ba191b67",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "23b628f8-f4a0-572b-82bf-768f7a348ce2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-11"
+            },
+            {
+              ":answer/id": "d5ee73b3-5a19-5fcb-9212-5bf72195f556",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1"
+            },
+            {
+              ":answer/id": "25f6c0ba-c138-512b-ace3-14898e216758",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-6"
+            },
+            {
+              ":answer/id": "d4f4739b-2d2e-538d-950e-fecfcb09e02d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-10"
+            },
+            {
+              ":answer/id": "86785634-09b0-5ed8-9578-c84674386e05",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-9"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "25f6c0ba-c138-512b-ace3-14898e216758"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 11874026293960675686,
+      "template": "product_affine",
+      "parameters": {
+        "a": 2,
+        "b": -3,
+        "c": 3
+      },
+      "bank_profile": "mixed",
+      "recipes": {
+        "-6": "correct",
+        "-10": "flip0",
+        "-9": "double1",
+        "-1": "omit2",
+        "-11": "double2"
+      },
+      "source_question_ids": [
+        "q-160839"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 2,
+        "rank": 3
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "d4c2af32-057a-5b59-9b40-669760df43fc",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle 3 z,\\,2 x z,\\,3 y z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u,\\,u^{2},\\,v\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D (a u v + b u^{2} v)\\,\\mathrm dA,\n$$\n\nwhat is the value of $a+b$?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle 1,\\,2 u,\\,0\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle 0,\\,0,\\,1\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\1&2 u&0\\\\0&0&1\\end{vmatrix} \\\\  & =\\left\\langle 2 u,\\,-1,\\,0\\right\\rangle\\end{aligned}\n$$\n\nUse $\\mathbf N=\\mathbf r_u\\times\\mathbf r_v$.\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u$, $y=u^{2}$, $z=v$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle 3 v,\\,2 u v,\\,3 u^{2} v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(3 v\\right)\\left(2 u\\right) \\\\  & =6 u v \\\\ T_{y} & =\\left(2 u v\\right)\\left(-1\\right) \\\\  & =- 2 u v \\\\ T_{z} & =\\left(3 u^{2} v\\right)\\left(0\\right) \\\\  & =0\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =4 u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(4 u v\\right)\\,\\mathrm dA.\n$$\n\nMatching coefficients gives $a=4$, $b=0$. Hence\n\n$$\na+b=(4)+(0)=4.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "11c08578-842b-54d3-b9b2-4d2942819251",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1a54bcfa-a1c1-50ea-aca2-341ad4002a41",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "12a345d8-0edf-50ee-a235-e161af37b33c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2"
+            },
+            {
+              ":answer/id": "b7172091-bea2-576a-8252-8c2e6241c6ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "67de2282-8723-5c6a-8d36-16c761f86408",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10"
+            },
+            {
+              ":answer/id": "563d7913-1677-5bc3-84ba-771a4d72bc50",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1a54bcfa-a1c1-50ea-aca2-341ad4002a41"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 5887125732033617027,
+      "template": "parabolic_vertical",
+      "parameters": {
+        "a": 3,
+        "b": 2,
+        "c": 3
+      },
+      "bank_profile": "component_scaled",
+      "recipes": {
+        "4": "correct",
+        "-2": "component_omit_first_active",
+        "10": "component_double_first_active",
+        "2": "component_double_last_active",
+        "8": "component_flip_last_active"
+      },
+      "source_question_ids": [
+        "q-161253"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 6,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 0,
+        "rank": 2
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198378,
+      "id": "e9b46ce4-cfe0-5da6-bc91-65ae8c544393",
+      "title": "Expressing Flux Through a Surface as a Double Integral"
+    },
+    "question": {
+      ":question/id": "287510d0-e732-5955-b929-459317600724",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the vector field $\\mathbf F$ and the surface $S$ parametrized by $\\mathbf r(u,v)$ for $D=(0,1)\\times(0,1)$, where\n\n$$\n\\mathbf F(x,y,z)=\\left\\langle x^{2},\\,- 2 x y,\\,- 3 z\\right\\rangle.\n$$\n\n$$\n\\mathbf r(u,v)=\\left\\langle u,\\,v,\\,2 u v\\right\\rangle.\n$$\n\nOrient $S$ in the direction of $\\mathbf r_u\\times\\mathbf r_v$.\n\nIf\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D (a u v + b u^{2} v)\\,\\mathrm dA,\n$$\n\nwhat is the value of $a+b$?",
+      ":question/worked-solution": "The vector area element must agree with the specified orientation. First compute the tangent vectors:\n\n$$\n\\begin{aligned}\\mathbf r_u & =\\left\\langle 1,\\,0,\\,2 v\\right\\rangle \\\\ \\mathbf r_v & =\\left\\langle 0,\\,1,\\,2 u\\right\\rangle\\end{aligned}\n$$\n\nTheir ordered cross product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v & =\\begin{vmatrix}\\mathbf i&\\mathbf j&\\mathbf k\\\\1&0&2 v\\\\0&1&2 u\\end{vmatrix} \\\\  & =\\left\\langle - 2 v,\\,- 2 u,\\,1\\right\\rangle\\end{aligned}\n$$\n\nUse $\\mathbf N=\\mathbf r_u\\times\\mathbf r_v$.\n\nFor this orientation,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\mathbf F(\\mathbf r(u,v))\\cdot\\mathbf N(u,v)\\,\\mathrm dA.\n$$\n\nSubstitute $x=u$, $y=v$, $z=2 u v$ into the field:\n\n$$\n\\mathbf F(\\mathbf r(u,v))=\\left\\langle u^{2},\\,- 2 u v,\\,- 6 u v\\right\\rangle.\n$$\n\nCompute the three component contributions:\n\n$$\n\\begin{aligned}T_{x} & =\\left(u^{2}\\right)\\left(- 2 v\\right) \\\\  & =- 2 u^{2} v \\\\ T_{y} & =\\left(- 2 u v\\right)\\left(- 2 u\\right) \\\\  & =4 u^{2} v \\\\ T_{z} & =\\left(- 6 u v\\right)\\left(1\\right) \\\\  & =- 6 u v\\end{aligned}\n$$\n\nTake the dot product component by component:\n\n$$\n\\begin{aligned}\\mathbf F(\\mathbf r)\\cdot\\mathbf N & =T_x+T_y+T_z \\\\  & =2 u^{2} v - 6 u v\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\iint_S\\mathbf F\\cdot\\mathrm d\\mathbf S=\\iint_D\\left(2 u^{2} v - 6 u v\\right)\\,\\mathrm dA.\n$$\n\nMatching coefficients gives $a=-6$, $b=2$. Hence\n\n$$\na+b=(-6)+(2)=-4.\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "69645e5c-85c3-5b89-8065-cc2441b14ade",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b3d4c6e1-95d6-5d50-8379-64d2e804472b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-8"
+            },
+            {
+              ":answer/id": "becbcc2b-3abe-536e-b1fb-f52eb8d68339",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4"
+            },
+            {
+              ":answer/id": "a382ab84-c1c5-5795-be6b-004dff044994",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-10"
+            },
+            {
+              ":answer/id": "af45ec9f-b7f9-5c83-8453-059cb91d5fef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-2"
+            },
+            {
+              ":answer/id": "35661491-2f3c-5e0b-821c-7f2c219e72c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "becbcc2b-3abe-536e-b1fb-f52eb8d68339"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "flux-integral-2",
+      "seed": 2987834974673519058,
+      "template": "graph_sum",
+      "parameters": {
+        "a": 1,
+        "b": -2,
+        "c": -3,
+        "h": 2
+      },
+      "bank_profile": "two_scaled",
+      "recipes": {
+        "-4": "correct",
+        "2": "omit_first_active",
+        "-10": "double_first_active",
+        "-2": "double_last_active",
+        "-8": "flip_last_active"
+      },
+      "source_question_ids": [
+        "q-161304"
+      ],
+      "orientation": 1,
+      "plot_assets": {},
+      "rejections": 0,
+      "sympy_version": "1.14.0",
+      "bank_cues": {
+        "position": 1,
+        "rank": 2
+      },
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]
