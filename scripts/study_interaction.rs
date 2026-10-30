@@ -581,15 +581,15 @@ pub(super) fn clocks(
 }
 
 pub(super) fn project(app: &mut Application, body: &Json) -> Result<Json> {
-    let (response, projection) = project_value(
-        &app.snapshot,
-        &app.study_db(),
+    let db = app.study_db();
+    align_projection(&app.snapshot, &db, &mut app.study_projection, body)?;
+    project_on(
+        app.study_projection.as_mut().unwrap(),
+        &db,
         app.learner_eid,
-        app.study_projection.take(),
+        app.snapshot.focused_mode,
         body,
-    )?;
-    app.study_projection = Some(projection);
-    Ok(response)
+    )
 }
 pub(super) fn project_value(
     base: &EntitySnapshot,
@@ -598,29 +598,57 @@ pub(super) fn project_value(
     prior: Option<Projection>,
     body: &Json,
 ) -> Result<(Json, Projection)> {
+    let mut slot = prior;
+    align_projection(base, db, &mut slot, body)?;
+    let mut projection = slot.unwrap();
+    let response = project_on(&mut projection, db, learner, base.focused_mode, body)?;
+    Ok((response, projection))
+}
+
+fn align_projection(
+    base: &EntitySnapshot,
+    db: &DatabaseValue,
+    slot: &mut Option<Projection>,
+    body: &Json,
+) -> Result<()> {
     let fingerprint = course_academy_engine::core::fingerprint(&body["overlay"]);
-    let mut projection = match prior {
-        Some(mut p) if body["overlay"].is_null() => {
+    if let Some(p) = slot {
+        if body["overlay"].is_null() {
             canonicalize(
-                &mut p,
+                p,
                 db,
                 &body["aliases"],
                 body["committedBasis"].as_u64().unwrap_or(0),
             )?;
-            p
+            return Ok(());
         }
-        Some(p) if p.fingerprint == fingerprint => p,
-        _ => Projection {
-            snapshot: overlay(base, &body["overlay"])?,
-            touched: body["overlay"]["entities"]
-                .as_object()
-                .map(|m| m.keys().filter_map(|k| k.parse().ok()).collect())
-                .unwrap_or_default(),
-            fingerprint,
-        },
+        if p.fingerprint == fingerprint {
+            return Ok(());
+        }
+    }
+    let projection = Projection {
+        snapshot: overlay(base, &body["overlay"])?,
+        touched: body["overlay"]["entities"]
+            .as_object()
+            .map(|m| m.keys().filter_map(|k| k.parse().ok()).collect())
+            .unwrap_or_default(),
+        fingerprint,
     };
+    if let Some(old) = slot.replace(projection) {
+        std::thread::spawn(move || drop(old));
+    }
+    Ok(())
+}
+
+fn project_on(
+    projection: &mut Projection,
+    db: &DatabaseValue,
+    learner: u64,
+    focused: bool,
+    body: &Json,
+) -> Result<Json> {
     let s = &mut projection.snapshot;
-    s.focused_mode = base.focused_mode;
+    s.focused_mode = focused;
     if let Some(focused) = body["operation"]["_focusedMode"].as_bool() {
         s.focused_mode = focused;
     }
@@ -631,7 +659,11 @@ pub(super) fn project_value(
         .ok_or("Study receipt instant required")?;
     let at = DateTime::from_timestamp_millis(millis).ok_or("Invalid receipt instant")?;
     let (mut forms, result) = if action == "queue" {
-        (queue_preparation(s, learner, at)?.0, json!({"queue":true}))
+        let mut forms = queue_preparation(s, learner, at)?.0;
+        if op["background"] == true {
+            forms.retain(|form| form.get(2) != Some(&kw("learner-task/offered-at")));
+        }
+        (forms, json!({"queue":true}))
     } else {
         mutate(&s, learner, action, op, at)?
     };
@@ -643,72 +675,137 @@ pub(super) fn project_value(
             refs.insert(key.into(), identity(s, id)?);
         }
     }
-    let ids = apply_in_place(s, db, &forms, at)?;
-    let after = &projection.snapshot;
-    let output = view(after, learner, action, &result)?;
-    let mut clock_forms = vec![];
-    for f in &forms {
-        let clock = f
-            .as_object()
-            .is_some_and(|e| e.contains_key("working-period/id"))
-            || f.get(2).and_then(|v| ident(v).ok()).is_some_and(|a| {
-                matches!(
-                    a,
-                    "task-item/working-periods"
-                        | "working-period/ended-at"
-                        | "task-item/elapsed-seconds"
-                        | "learner-task/elapsed-seconds"
-                        | "learner-task/finished-at"
-                        | "task-item/working-ended-at"
-                )
-            });
-        if clock {
-            clock_forms.push(f.clone());
-        }
-    }
-    // References inside admitted clock forms are resolved by identity at replay.
-    let mut clock_refs = serde_json::Map::new();
-    for f in &clock_forms {
-        if let Some(id) = f.get(1).and_then(Json::as_u64).filter(|id| *id >= LOCAL_ID) {
-            clock_refs.insert(id.to_string(), identity(after, id)?);
-        }
-    }
-    let mut operation = op.clone();
-    operation["_focusedMode"] = json!(after.focused_mode);
-    operation["_deferQueue"] = json!(true);
-    operation["_queuedStudy"] = json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"locals":ids.values().filter_map(|id|identity(after,*id).ok().map(|key|(id.to_string(),key))).collect::<BTreeMap<_,_>>(),"expected":promise(after,&output),"at":millis});
-    let mut changed_tasks = BTreeSet::new();
+    // A rendering/validation error must not discard the resident question bank
+    // or admit half an operation. Back up only the records this small plan can
+    // replace, plus its appended history and local bookkeeping.
+    let planned_ids = collect_ids(s, &forms)?;
+    let mut before = BTreeMap::new();
     for form in &forms {
-        let target = form.get("db/id").or_else(|| form.get(1));
-        if let Some(target) = target {
-            if let Ok(id) = resolve(after, &ids, target) {
-                projection.touched.insert(id);
-                if after
-                    .entities
-                    .get(&id)
-                    .is_some_and(|e| e.contains_key("learner-task/id"))
-                {
-                    changed_tasks.insert(id);
-                }
-                for owner in after.owners(id, "learner-task/items")? {
-                    changed_tasks.insert(owner);
+        if let Some(target) = form.get("db/id").or_else(|| form.get(1)) {
+            let id = resolve(s, &planned_ids, target)?;
+            before
+                .entry(id)
+                .or_insert_with(|| s.entities.get(&id).cloned().unwrap_or_default());
+        }
+    }
+    let basis = s.basis_t;
+    let history_len = s.status_history.len();
+    let touched = projection.touched.clone();
+    let fingerprint = projection.fingerprint.clone();
+    let outcome = (|| -> Result<Json> {
+        let ids = apply_in_place(&mut projection.snapshot, db, &forms, at)?;
+        let after = &projection.snapshot;
+        let output = view(after, learner, action, &result)?;
+        let mut clock_forms = vec![];
+        for f in &forms {
+            let clock = f
+                .as_object()
+                .is_some_and(|e| e.contains_key("working-period/id"))
+                || f.get(2).and_then(|v| ident(v).ok()).is_some_and(|a| {
+                    matches!(
+                        a,
+                        "task-item/working-periods"
+                            | "working-period/ended-at"
+                            | "task-item/elapsed-seconds"
+                            | "learner-task/elapsed-seconds"
+                            | "learner-task/finished-at"
+                            | "task-item/working-ended-at"
+                    )
+                });
+            if clock {
+                clock_forms.push(f.clone());
+            }
+        }
+        // References inside admitted clock forms are resolved by identity at replay.
+        let mut clock_refs = serde_json::Map::new();
+        for f in &clock_forms {
+            if let Some(id) = f.get(1).and_then(Json::as_u64).filter(|id| *id >= LOCAL_ID) {
+                clock_refs.insert(id.to_string(), identity(after, id)?);
+            }
+        }
+        let mut operation = op.clone();
+        operation["_focusedMode"] = json!(after.focused_mode);
+        operation["_deferQueue"] = json!(true);
+        operation["_queuedStudy"] = json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"locals":ids.values().filter_map(|id|identity(after,*id).ok().map(|key|(id.to_string(),key))).collect::<BTreeMap<_,_>>(),"expected":promise(after,&output),"at":millis});
+        let mut changed_tasks = BTreeSet::new();
+        for form in &forms {
+            let target = form.get("db/id").or_else(|| form.get(1));
+            if let Some(target) = target {
+                if let Ok(id) = resolve(after, &ids, target) {
+                    projection.touched.insert(id);
+                    if after
+                        .entities
+                        .get(&id)
+                        .is_some_and(|e| e.contains_key("learner-task/id"))
+                    {
+                        changed_tasks.insert(id);
+                    }
+                    for owner in after.owners(id, "learner-task/items")? {
+                        changed_tasks.insert(owner);
+                    }
                 }
             }
         }
-    }
-    if let Some(task) = task(after, &result)? {
-        changed_tasks.insert(task);
-    }
-    let mut views = serde_json::Map::new();
-    for t in changed_tasks {
-        if let Ok(v) = task_json(after, learner, t) {
-            views.insert(t.to_string(), v);
+        if let Some(task) = task(after, &result)? {
+            changed_tasks.insert(task);
         }
+        let mut views = serde_json::Map::new();
+        for t in changed_tasks {
+            if let Ok(v) = task_json(after, learner, t) {
+                views.insert(t.to_string(), v);
+            }
+        }
+        let overlay = delta(after, &projection.touched);
+        projection.fingerprint = course_academy_engine::core::fingerprint(&overlay);
+        let response = json!({"view":output,"views":views,"overlay":overlay,"operation":operation});
+        Ok(response)
+    })();
+    if outcome.is_err() {
+        projection
+            .snapshot
+            .replace_records(before, projection.snapshot.basis_t)?;
+        projection.snapshot.basis_t = basis;
+        projection.snapshot.status_history.truncate(history_len);
+        projection.touched = touched;
+        projection.fingerprint = fingerprint;
     }
-    let overlay = delta(after, &projection.touched);
-    projection.fingerprint = course_academy_engine::core::fingerprint(&overlay);
-    let response = json!({"view":output,"views":views,"overlay":overlay,"operation":operation});
-    Ok((response, projection))
+    outcome
+}
+
+#[cfg(test)]
+mod projection_error_tests {
+    use super::*;
+    #[test]
+    fn invalid_answer_keeps_the_resident_projection_allocation() -> Result<()> {
+        let db = edb_core::Database::bootstrap()?.database_value();
+        let snapshot = EntitySnapshot::from_json(&json!({"basis_t":7,"entities":{
+            "1":{"learner/id":"resident learner with a heap allocation"}
+        }}))?;
+        let mut projection = resident(snapshot);
+        let allocation = projection.snapshot.entities[&1]["learner/id"]
+            .as_str()
+            .unwrap()
+            .as_ptr();
+        let fingerprint = projection.fingerprint.clone();
+        for operation in [
+            json!({"action":"answer"}),
+            json!({"action":"daily-xp-goal","dailyXpGoal":-1}),
+        ] {
+            let body = json!({"operation":operation,"receivedAt":1000});
+            assert!(project_on(&mut projection, &db, 1, false, &body).is_err());
+            assert_eq!(
+                allocation,
+                projection.snapshot.entities[&1]["learner/id"]
+                    .as_str()
+                    .unwrap()
+                    .as_ptr()
+            );
+            assert_eq!(projection.snapshot.basis_t, 7);
+            assert_eq!(projection.fingerprint, fingerprint);
+            assert!(projection.touched.is_empty());
+        }
+        Ok(())
+    }
 }
 
 /// Recompute read-dependent credit at the current durable basis; retain the

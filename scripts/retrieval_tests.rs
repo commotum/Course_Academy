@@ -2820,6 +2820,15 @@ fn study_projection_queue_prepares_new_tasks_and_replays_stable_uuid_plans() -> 
     let logical=DateTime::from_timestamp_millis(f.now+1000).unwrap();
     let (data,_)=study_interaction::project_value(&base,&db,f.learner,None,&json!({"operation":{"action":"queue","requestId":"local-queue-0001"},"overlay":null,"receivedAt":logical.timestamp_millis()}))?;
     assert!(data["view"]["activities"].as_array().unwrap().iter().any(|a|a["taskId"].as_u64().is_some_and(|id|id>=4_000_000_000_000_000)));
+    let (background,_)=study_interaction::project_value(&base,&db,f.learner,None,&json!({"operation":{"action":"queue","background":true,"requestId":"local-background-queue-0001"},"overlay":null,"receivedAt":logical.timestamp_millis()}))?;
+    for (id,record) in background["overlay"]["entities"].as_object().unwrap(){
+        let prior=base.entities.get(&id.parse::<u64>()?).and_then(|record|record.get("learner-task/offered-at"));
+        assert_eq!(record.get("learner-task/offered-at"),prior,"background preparation must not invent a shown lesson offer");
+    }
+    let background_op=study_interaction::bind(&base,&background["operation"])?;
+    let mut background_forms=queue_preparation(&base,f.learner,logical)?.0;
+    background_forms.retain(|form|form.get(2)!=Some(&kw("learner-task/offered-at")));
+    study_interaction::prepare(&base,&db,f.learner,&background_op,&mut background_forms,&mut json!({"queue":true}),logical)?;
     let op=study_interaction::bind(&base,&data["operation"])?;
     let mut forms=queue_preparation(&base,f.learner,logical)?.0;
     let mut result=json!({"queue":true});
