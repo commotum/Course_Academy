@@ -17,9 +17,10 @@ sys.dont_write_bytecode = True
 import sympy as sp
 from geometry import T, expr, shape, valid_bank, geometry_key
 from math_format import normalize_prose, validate_prose, validate_generated_record
+from parametric_plot_policy import plot_plan,UnreadableBank
 HERE = Path(__file__).resolve().parent
 SPECS = json.loads((HERE/'templates.json').read_text())
-VERSION = 'parametric-graphs-2'
+VERSION = 'parametric-graphs-3'
 KP = {'db_id':17592186087721,'id':'e0dc11d5-8eda-52b1-b7b1-42b481813ff4','title':'Graphing a Curve Defined Parametrically'}
 # Complete bank, chosen before target; each nonzero pair is eligible.
 CONTROLS = [(-1,-1),(-1,1),(1,-1),(1,1),(2,1)]
@@ -54,7 +55,8 @@ def render_plots(bank, ts, correct):
     if not out_root:
         raise ValueError('Set COURSE_ACADEMY_GENERATOR_OUTPUT_DIR to an asset output directory')
     out_root=Path(out_root).resolve()
-    key=digest({'version':VERSION,'bank':bank,'ts':list(map(str,ts))})
+    recipe=digest([(HERE/name).read_text() for name in ('render.py','parametric_plot_policy.py')])
+    key=digest({'version':VERSION,'recipe':recipe,'bank':bank,'ts':list(map(str,ts))})
     out=out_root/key
     expected=[out/f'choice-{i}.png' for i in range(5)]+[out/f'solution-{correct}.png']
     if not all(p.exists() and p.with_suffix('.json').exists() for p in expected):
@@ -98,6 +100,7 @@ def build_instance(level, seed=0, template=None, role=None, parameters=None):
     else:
         raise ValueError('difficulty must be easy, moderate or hard')
     valid_bank(bank)
+    plan=plot_plan(bank,ts)
     target=bank[role]
     x,y=expr(target['x']),expr(target['y'])
     # Preserve operator arguments; SymPy is not used to invent equivalent identities.
@@ -106,7 +109,7 @@ def build_instance(level, seed=0, template=None, role=None, parameters=None):
     yt=tex(y.subs(T,theta)) if label.startswith(r'\theta') else tex(y)
     return {'level':level,'template':template,'profile':profile,'parameters':p,'role':role,
             'bank':bank,'ts':list(map(str,ts)),'label':label,'x_tex':xt,'y_tex':yt,'domain':domain,
-            'source_ids':source}
+            'source_ids':source,'plot_plan':plan}
 
 def make_record(instance, seed=0, draw=True, order=None):
     d=copy.deepcopy(instance); bank=d['bank']; role=d['role']; target=bank[role]
@@ -135,7 +138,7 @@ def make_record(instance, seed=0, draw=True, order=None):
     choices=[choices[i] for i in order]
     field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid(fid+'/'+str(role))]}
     q={':question/id':uid(content),':question/difficulty':':question.difficulty/'+d['level'],':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]}
-    d.update({'seed':seed,'version':VERSION,'table_x':xs,'table_y':ys,'choice_order':order,'math_fingerprint':digest(geometry_key(target)),'paths':paths})
+    d.update({'seed':seed,'version':VERSION,'table_x':xs,'table_y':ys,'choice_order':order,'math_fingerprint':digest(geometry_key(target)),'paths':paths,'solution_path':solpath})
     return validate_generated_record({'knowledge_point':KP,'question':q,'generation':d})
 
 def generate(level,seed=0,template=None,role=None,parameters=None,draw=True):
@@ -167,7 +170,8 @@ def batch(level,count,seed):
         role=roles[i%5]
         for retry in range(100):
             case_seed=rng.getrandbits(64)
-            d=build_instance(level,case_seed,templates[i%len(templates)] if level=='easy' else None,role)
+            try:d=build_instance(level,case_seed,templates[i%len(templates)] if level=='easy' else None,role)
+            except UnreadableBank:continue
             fingerprint=digest(geometry_key(d['bank'][role]))
             if fingerprint not in seen:break
         else:raise ValueError('could not produce distinct mathematical instances')

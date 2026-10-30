@@ -358,6 +358,8 @@ def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_dir
     validate_triangle_complement(accepted, kp_id)
     from generate.matrix_product_prompt_policy import validate_delivery_batch as validate_matrix_prompt
     validate_matrix_prompt(accepted, kp_id)
+    from generate.parametric_plot_policy import validate_delivery_batch as validate_parametric_plots
+    validate_parametric_plots(accepted, kp_id, math_root, assets_directory)
     return accepted, duplicate_count
 
 
