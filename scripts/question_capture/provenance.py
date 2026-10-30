@@ -26,6 +26,9 @@ def field_value(field, attribute):
     if attribute == 'answer-field/correct':
         answer = field[':answer-field/correct']
         return [answer[':answer/type'][':db/ident'], answer[':answer/value']]
+    if attribute == 'answer-field/choices':
+        return sorted((str(answer[':answer/type'][':db/ident']).split('/')[-1], answer[':answer/value'])
+                      for answer in field.get(':answer-field/choices', []))
     raise ValueError(attribute)
 
 
@@ -371,6 +374,9 @@ def mathematical_correction_records(root, ids):
             for f in q['answer_fields']:
                 c = next(c for c in f['choices'] if c['value'] == f['correct_value'])
                 values.append((f['key'], 'answer-field/correct', [kw('answer.type/'+c['type']), c['value']]))
+                if f.get('protect_choices') is True:
+                    values.append((f['key'], 'answer-field/choices',
+                                   sorted((a['type'], a['value']) for a in f['choices'])))
             for field, attr, value in values:
                 records.append(dict(question=q['math_academy_id'], field=field, attribute=attr, value=value,
                     category='mathematical_correction', file=str(source), file_sha256=proof['review_sha256'],
@@ -619,6 +625,13 @@ class Reconciler:
         c = next(c for c in incoming['choices'] if c['value'] == incoming['correct_value'])
         new_correct = [kw('answer.type/'+c['type']), c['value']]
         old_correct = field_value(previous, 'answer-field/correct') if previous.get(':answer-field/correct') else None
+        old_bank = field_value(previous, 'answer-field/choices')
+        new_bank = sorted((a['type'], a['value']) for a in incoming['choices'])
+        if (kind == new_kind and previous[':answer-field/key'] == key and old_bank != new_bank
+                and any(r['category'] == 'mathematical_correction' for r in
+                        self.evidence(self.authored, mid, key, 'answer-field/choices', old_bank))):
+            self.replace(mid, key, 'answer-field/choices', old_bank, new_bank, set())
+            return 'retain'
         if (kind == new_kind and previous[':answer-field/key'] == key and old_correct is not None
                 and value_hash(old_correct) != value_hash(new_correct)
                 and any(r['category'] == 'mathematical_correction' for r in

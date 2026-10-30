@@ -1,0 +1,24 @@
+import json,copy,re,hashlib
+from pathlib import Path
+import sympy as sp
+from bs4 import BeautifulSoup
+H=Path(__file__).resolve().parent;R=H.parents[4];q=json.loads((H/'question.json').read_text());q[':question/answer-fields']=[f for f in q[':question/answer-fields']if f[':db/id']==17592186401847];assert len(q[':question/answer-fields'])==1;f=q[':question/answer-fields'][0];source=R/'reference/mathacademy/question-capture/14099457/q-20966-before.json';d=json.loads(source.read_text());soup=BeautifulSoup(d['html'],'html.parser');assert len(soup.select('.questionWidget'))==1 and len(soup.select('.questionWidget-choicesTable'))==1;assert len(d['fields'])==1 and d['fields'][0]['type']=='radio'and len(d['fields'][0]['choices'])==5
+source_matrix=soup.select_one('.questionWidget-text math mtable');grid=[[int(c.get_text().replace('−','-'))for c in row.find_all('mtd',recursive=False)]for row in source_matrix.find_all('mtr',recursive=False)];assert grid==[[1,-1,4,-1],[0,0,0,0],[0,0,0,0]]
+A=sp.Matrix([[1,-1,4],[0,0,0],[0,0,0]]);b=sp.Matrix([-1,0,0]);base=sp.Matrix([-1,0,0]);D=sp.Matrix.hstack(sp.Matrix([1,1,0]),sp.Matrix([-4,0,1]));assert A*base==b and A*D==sp.zeros(3,2)and D.rank()==2 and A.rank()==1
+proof=[];right=[]
+for a in f[':answer-field/choices']:
+ val=a[':answer/value'];matches=re.findall(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',val,re.S)
+ if len(matches)==3:
+  vs=[sp.Matrix([sp.sympify(x.strip())for x in m.split(r'\\')])for m in matches];p,u,v=vs;ds=sp.Matrix.hstack(u,v);ok=A*p==b and A*ds==sp.zeros(3,2)and ds.rank()==2;proof.append({'answer':a[':db/id'],'base':list(p),'directions':[list(u),list(v)],'satisfies_constant_equation':A*p==b,'directions_in_nullspace':A*ds==sp.zeros(3,2),'direction_rank':ds.rank(),'correct':ok})
+ else:ok=False;proof.append({'answer':a[':db/id'],'value':val,'correct':False,'proof':'The displayed base (-1,0,0) is a solution, so No solution is false.'})
+ if ok:right.append(a[':db/id'])
+assert right==[17592186401851]and f[':answer-field/correct'][':db/id']==right[0]
+record=copy.deepcopy(q);record.pop(':question/difficulty',None);checks=[]
+for ff in record[':question/answer-fields']:
+ correct=ff[':answer-field/correct'][':db/id'];answer=next(a for a in ff[':answer-field/choices']if a[':db/id']==correct);ff[':answer-field/type']=ff[':answer-field/type'][':db/ident'];ff[':answer-field/correct']=[':answer/id',answer[':answer/id']]
+ for a in ff[':answer-field/choices']:
+  a[':answer/type']=a[':answer/type'][':db/ident'];checks.append({'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':db/id']==correct else'rejected','purpose':'Every preserved choice graded after duplicate-edge removal'})
+fields=[{'id':f[':db/id'],'key':f[':answer-field/key'],'type':'radio','choices':[{'id':a[':db/id'],'value':a[':answer/value'],'type':a[':answer/type'][':db/ident'].split('/')[-1]}for a in f[':answer-field/choices']],'correctAnswer':{'id':17592186401851,'value':next(a[':answer/value']for a in f[':answer-field/choices']if a[':db/id']==17592186401851),'type':'math'}}];render=[{'entity':q[':db/id'],'attribute':a[1:],'value':q[a],'fields':fields}for a in[':question/problem',':question/worked-solution']]+[{'entity':a[':db/id'],'attribute':'answer/value','value':a[':answer/value'],'bare_math':a[':answer/type'][':db/ident']==':answer.type/math'}for a in f[':answer-field/choices']]
+report={'passed':True,'source_basis_t':11639,'duplicate_membership_committed_basis_t':11658,'question':q[':db/id'],'source_identity':'q-20966','owning_topic':17592186050178,'scope':'Narrow duplicate-control delta on a previously completed topic; full topic not re-audited.','retained_active_field':17592186401847,'detached_field':17592186102770,'correct_owned_answer':17592186401851,'source_path':str(source),'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'source_radio_widgets':1,'source_choices':5,'source_augmented_matrix':grid,'independent_solution':'x=-1+y-4z; y,z arbitrary reals. Vector form (-1,0,0)+y(1,1,0)+z(-4,0,1).','rank_A':A.rank(),'nullity':3-A.rank(),'affine_base_verified':True,'two_independent_null_directions_verified':True,'all_choice_proofs':proof,'existing_solution_and_correct_answer_unchanged':True,'database_writes':0}
+for name,v in[('proof',report),('projected-question',q),('render-input',render),('grading-input',[{'label':'q-20966-duplicate-control-delta','record':{'question':record,'knowledge_point':{'title':'General solutions of singular systems'},'generation':{'template':'unchanged-stored-content-after-duplicate-membership-repair'}},'checks':checks}]),('controls-input',[{'entity':q[':db/id'],'problem':q[':question/problem'],'fields':fields,'expected_tables':0}])]: (H/(name+'.json')).write_text(json.dumps(v,default=str,indent=2)+'\n')
+print('q-20966 source one-widget contract and full affine bank proved; active field preserved; no content changes')

@@ -12,6 +12,7 @@ for q in qs:
   values=[a[':answer/value']for a in f[':answer-field/choices']];assert len(set(values))==len(values),(q[':db/id'],values)
   if not f[':answer-field/type'][':db/ident'].endswith('radio'):continue
   right=next(a for a in f[':answer-field/choices']if a[':db/id']==f[':answer-field/correct'][':db/id']);v=right[':answer/value'];mm=m.mats(v)
+  if right[':answer/type'][':db/ident']!=':answer.type/math':continue
   try:
    if mm and len(mm)==1 and r'\{'not in v and not mm[0][2].free_symbols:
     target=mm[0][2];same=[a[':db/id']for a in f[':answer-field/choices']if len(m.mats(a[':answer/value']))==1 and m.mats(a[':answer/value'])[0][2]==target and r'\{'not in a[':answer/value']]
