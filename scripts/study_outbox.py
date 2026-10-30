@@ -16,7 +16,7 @@ import uuid
 
 
 class StudyOutbox:
-    ACTIONS = {'answer', 'continue', 'pause', 'resume', 'skip', 'start', 'study-topic',
+    ACTIONS = {'queue', 'answer', 'continue', 'pause', 'resume', 'skip', 'start', 'study-topic',
                'review-topic', 'profile-settings', 'daily-xp-goal', 'target', 'queue-topic',
                'assignment-focus', 'assignment-answer', 'assignment-pause',
                'draft', 'navigate', 'submit', 'expire', 'regenerate-assessment'}

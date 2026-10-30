@@ -84,6 +84,11 @@ function studyId(id) {
   }
   return id;
 }
+function studyChoiceId(id) {
+  const canonical = studyId(id);
+  for (const local of studyIdAliases.keys()) if (studyId(local) === canonical) return local;
+  return id;
+}
 function reconcileStudyIds(data) {
   // Provisional IDs remain stable throughout admission. Once the whole stream
   // is committed, migrate local-only UI state to the database entity IDs.
@@ -841,7 +846,7 @@ function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
   for (const paragraph of legendContent.querySelectorAll('p')) paragraph.replaceWith(...paragraph.childNodes);
   legend.append(...legendContent.childNodes);
   set.append(legend);
-  const choices = choiceOrder(field.choices || [], `${itemId}:${field.id}`);
+  const choices = choiceOrder(field.choices || [], `${studyChoiceId(itemId)}:${field.id}`);
   const responseId = response?.choiceId ?? response?.id;
   const checklist = checkboxControl(field, label => answerValue({ type: 'text', value: label }), readOnly);
   if (checklist) {

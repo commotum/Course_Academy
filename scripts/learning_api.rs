@@ -2802,7 +2802,7 @@ impl Application {
             .ok_or("A stable requestId is required")?;
         let journal = PathBuf::from(std::env::var("LEARNING_REQUEST_DIR")?)
             .join(format!("{learner}-{request}.json"));
-        let cached_queue = if action == "queue"
+        let cached_queue = if body.get("_queuedStudy").is_none() && action == "queue"
             && reset_unstarted_lessons(s, l)?.is_empty()
         {
             self.cached_home(true)
@@ -2818,6 +2818,9 @@ impl Application {
             saved
         } else {
             let at = Utc::now();
+            let work_at = body.get("_queuedStudy").and_then(|q|q["at"].as_i64())
+                .map(|millis|DateTime::from_timestamp_millis(millis).ok_or("Invalid queued study instant"))
+                .transpose()?.unwrap_or(at);
             let planning = Instant::now();
             let (mut forms, mut result) = if action == "queue" {
                 let forms = if cached_queue.is_some() {
@@ -2838,7 +2841,7 @@ impl Application {
                     .any(|t| retrieval::remaining(s, t, at).ok().flatten() == Some(0.0));
                 (forms, json!({"queue":true,"expired":expired,"resetUnstarted":!reset_unstarted_lessons(s,l)?.is_empty()}))
             } else {
-                mutate(&s, l, action, &body, at)?
+                mutate(&s, l, action, &body, work_at)?
             };
             if body.get("_queuedStudy").is_some() {
                 study_interaction::prepare(s,&self.conn.db(),l,body,&mut forms,&mut result,at)?;
@@ -2886,12 +2889,12 @@ impl Application {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
         }
         if action == "queue" {
-            if result["resetUnstarted"] == true {
+            if body.get("_queuedStudy").is_none() && result["resetUnstarted"] == true {
                 let mut next = body.clone();
                 next["requestId"] = json!(format!("{request}-unstarted"));
                 return self.process(&next);
             }
-            if result["expired"] == true {
+            if body.get("_queuedStudy").is_none() && result["expired"] == true {
                 let mut next = body.clone();
                 next["requestId"] = json!(format!("{request}-expiry"));
                 return self.process(&next);
@@ -2902,7 +2905,7 @@ impl Application {
                 }
             }
             let view = home_with_candidates(s, l, planned_candidates)?;
-            return if body["background"] == true {
+            return if body["background"] == true || body.get("_queuedStudy").is_some() {
                 Ok(view)
             } else {
                 self.record_queue_offer(view, request)

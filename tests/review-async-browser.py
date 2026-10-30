@@ -15,6 +15,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from serve_graph_explorer import handler
+from review_outbox import ReviewOutbox
 
 fixture = json.loads(Path('/tmp/review-browser-fixture.json').read_text())
 source = (ROOT / 'ui/learning.js').read_text()
@@ -90,9 +91,18 @@ const result={passed:true,timings,completionBeforeAnyDatabaseSave:true,reloadRet
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
 '''
 
+# Keep this fixture on the old replay protocol to cover journals accepted before
+# the generalized study outbox upgrade. New study interactions have a separate
+# native-projection browser regression.
+class LegacyReviewFixture(ReviewOutbox):
+    def overlay_view(self, action, body):
+        return self.task_view(body['taskId']) if action == 'task' else None
+    def resolve_ids(self, body): return body
+    def decorate(self, view): return view
+
 with tempfile.TemporaryDirectory(prefix='review-ui-test-') as tmp:
     env = {'LEARNING_REQUEST_DIR': tmp, 'EDB_ENDPOINT': '/unused', 'COURSE_ACADEMY_DISABLE_GENERATION': '1'}
-    with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker', side_effect=lambda command, environment, name: Worker(name)):
+    with patch('serve_graph_explorer.CompatibleStudyOutbox', LegacyReviewFixture), patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker', side_effect=lambda command, environment, name: Worker(name)):
         base = handler(Path('/unused'), 'fixture', 'learner', env, Path('/unused'))
     outbox = next(fn.__self__ for fn in base.background if fn.__name__ == 'loop')
     class Handler(base):

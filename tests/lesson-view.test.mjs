@@ -951,3 +951,14 @@ test('committed provisional IDs preserve a manual pause and its answer draft whe
   assert.equal(f.h.view.pause.textContent, 'Resume');
   assert.equal(f.h.view.current.querySelectorAll('input').find(input => input.value === '42').checked, true);
 });
+
+test('committing a provisional presentation keeps its answer-option order stable', async () => {
+  const f = fixture(); const localItem = 4_000_000_000_000_042;
+  const step = question(localItem);
+  step.fields[0].choices.push({ id: 43, value: 'Third option' }, { id: 44, value: 'Fourth option' });
+  await f.h.render(activity(localItem, 1, { step }));
+  const order = f.h.view.current.querySelectorAll('input').map(input => input.value);
+  f.h.reconcileStudyIds({ saveState: { status: 'saved' }, idAliases: { [localItem]: 52 } });
+  await f.h.render(activity(52, 1, { step: { ...step, itemId: 52 } }));
+  assert.deepEqual(f.h.view.current.querySelectorAll('input').map(input => input.value), order);
+});

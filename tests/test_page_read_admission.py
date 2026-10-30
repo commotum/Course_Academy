@@ -35,7 +35,7 @@ class PageReadAdmission(unittest.TestCase):
                         replies = []
                         request.send_bytes = lambda status, body, ctype: replies.append(json.loads(body))
                         executor.submit(request.learning_request, {'action': action, 'taskId': 1}).result(timeout=1)
-                        self.assertEqual(replies, [{'name': 'study-read-worker'}])
+                        self.assertEqual([reply['name'] for reply in replies], ['study-read-worker'])
             workers['learning-worker'].request.assert_not_called()
 
     def test_activity_cache_returns_while_its_refresh_is_blocked(self):
@@ -102,7 +102,14 @@ class PageReadAdmission(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
             workers = {name: Mock() for name in ['graph-worker','learning-worker','page-worker','stats-worker','scheduler-worker','feedback-worker','review-save-worker','study-read-worker','forecast-read-worker']}
-            workers['feedback-worker'] = Grader()
+            grader = Grader()
+            def project(body):
+                self.assertEqual(body['action'], 'study-project')
+                view = grader.request({'action': 'review-session', 'taskId': 1})['data']['view']
+                view['step'] = grader.request({'action': 'review-grade', 'taskId': 1, 'questionId': 10, 'responses': body['operation']['responses']})['data']['step']
+                view['step']['itemId'] = 100
+                return {'ok': True, 'data': {'view': view, 'views': {'1': view}, 'overlay': {}, 'operation': body['operation']}}
+            workers['feedback-worker'].request.side_effect = project
             with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker", side_effect=lambda cmd,env,name: workers[name]):
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
             # Simulate the scheduler/publication holding admission while EDB save is unavailable.
@@ -120,7 +127,7 @@ class PageReadAdmission(unittest.TestCase):
             workers['learning-worker'].request.assert_not_called()
             workers['scheduler-worker'].request.assert_not_called()
             workers['review-save-worker'].request.assert_not_called()
-            self.assertTrue((Path(directory)/'review-outbox/1.json').exists())
+            self.assertTrue((Path(directory)/'study-outbox/study.json').exists())
 
     def test_forecast_get_uses_only_the_read_only_page_reader(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -287,15 +294,18 @@ class PageReadAdmission(unittest.TestCase):
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
             with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker") as workers:
                 def respond(body):
-                    self.assertEqual(body["action"], "study-topic", "Inventory must run after the API response")
-                    return {"ok": True, "data": {"taskId": 1}}
+                    self.assertEqual(body["action"], "study-project", "Inventory must run after the API response")
+                    self.assertEqual(body["operation"]["action"], "study-topic")
+                    return {"ok": True, "data": {"view": {"taskId": 1}, "views": {}, "overlay": {}, "operation": body["operation"]}}
                 workers.return_value.request.side_effect = respond
                 cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
                 request = cls.__new__(cls)
                 replies = []
                 request.send_bytes = lambda status, body, content_type: replies.append((status, json.loads(body)))
-                request.learning_request({"action": "study-topic", "topicId": 2})
-                self.assertEqual(replies, [(200, {"taskId": 1})])
+                request.learning_request({"action": "study-topic", "topicId": 2, "requestId": "study-topic-test"})
+                self.assertEqual(replies[0][0], 200)
+                self.assertEqual(replies[0][1]["taskId"], 1)
+                self.assertEqual(replies[0][1]["saveState"]["status"], "pending")
                 self.assertTrue(cls.inventory_refresh.is_set())
                 self.assertEqual(workers.return_value.request.call_count, 1)
 
@@ -308,7 +318,7 @@ class PageReadAdmission(unittest.TestCase):
                 with (Path(directory) / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
                     with ThreadPoolExecutor(max_workers=1) as executor:
-                        for action in ["assignments", "activity-history", "study-stats", "forecast-inputs", "mode", "answer", "topic-study-availability", "profile", "learner", "task", "assignment", "activity-history-detail", "home", "preview", "preview-home"]:
+                        for action in ["assignments", "activity-history", "study-stats", "forecast-inputs", "mode", "topic-study-availability", "profile", "learner", "task", "assignment", "activity-history-detail", "home", "preview", "preview-home"]:
                             request = cls.__new__(cls)
                             replies = []
                             request.send_bytes = lambda status, body, content_type: replies.append((status, json.loads(body)))

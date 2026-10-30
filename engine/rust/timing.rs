@@ -138,11 +138,24 @@ pub fn task_started(snapshot: &EntitySnapshot, task: u64) -> Result<DateTime<Utc
         saved_elapsed(snapshot, task, "learner-task/elapsed-seconds")?;
         return Ok(events[0].0);
     }
-    events
+    let recorded = events
         .into_iter()
         .find(|(_, s)| s == "learner-task.status/started")
         .map(|(at, _)| at)
-        .ok_or("task has no recorded start".into())
+        .ok_or("task has no recorded start")?;
+    // An admitted start can wait behind the writer while its working interval
+    // already runs locally. The monotonic transaction instant records saving,
+    // not when the assessment's wall-clock deadline began. Existing task starts
+    // remain the lower bound when intervals were introduced on a later resume.
+    let mut started = recorded;
+    for item in snapshot.refs(task, "learner-task/items")? {
+        for period in snapshot.refs(item, "task-item/working-periods")? {
+            let value = snapshot.entity(period)?.get("working-period/started-at")
+                .ok_or("working period needs a start")?;
+            started = started.min(parse_instant(value)?);
+        }
+    }
+    Ok(started)
 }
 
 fn saved_elapsed(snapshot: &EntitySnapshot, entity: u64, attribute: &str) -> Result<f64> {
@@ -163,14 +176,22 @@ pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Resul
             Ok((parse_instant(e.get("working-period/started-at").ok_or("working period needs a start")?)?,e.get("working-period/ended-at").map(parse_instant).transpose()?))
         }).collect::<Result<Vec<_>>>()?;
         intervals.sort_by_key(|p|p.0);
-        let mut total=0.;let mut previous=None;let mut open=false;
+        let mut closed=0.;let mut active=0.;let mut previous=None;let mut open=false;
         for (start,end) in intervals {
             if start>at || end.is_some_and(|end|end<start||end>at) || previous.is_some_and(|end|start<end) || open {return Err("invalid working periods".into());}
             open=end.is_none(); previous=end;
-            total+=(end.unwrap_or(at)-start).num_milliseconds() as f64/1000.;
+            let seconds=(end.unwrap_or(at)-start).num_milliseconds() as f64/1000.;
+            if open {active+=seconds;} else {closed+=seconds;}
         }
         if open!=running {return Err("working period disagrees with presentation status".into());}
-        return Ok(total);
+        // Imported items can have accumulated work whose original intervals
+        // are unknown. A checkpoint includes all work through the last closed
+        // transition; known periods add the currently open interval exactly
+        // once without inventing a calendar interval for the imported balance.
+        let checkpoint=if snapshot.entity(item)?.contains_key("task-item/elapsed-seconds") {
+            saved_elapsed(snapshot,item,"task-item/elapsed-seconds")?
+        } else {0.};
+        return Ok(closed.max(checkpoint)+active);
     }
     let events = history(snapshot, item, "task-item/status")?;
     let imported = events[0].1 != "task-item.status/started";
@@ -268,16 +289,21 @@ pub fn elapsed_until(snapshot:&EntitySnapshot,item:u64,at:DateTime<Utc>,until:Da
     let periods=snapshot.refs(item,"task-item/working-periods")?;
     if !periods.is_empty(){
         elapsed(snapshot,item,at)?; // Validate the observed intervals and state.
-        let mut total=0.;let mut first=None;
+        let mut total=0.;let mut closed=0.;let mut first=None;
         for period in periods {
             let e=snapshot.entity(period)?;
             let start=parse_instant(e.get("working-period/started-at").ok_or("working period needs a start")?)?;
-            let end=e.get("working-period/ended-at").map(parse_instant).transpose()?.unwrap_or(at);
+            let recorded_end=e.get("working-period/ended-at").map(parse_instant).transpose()?;
+            let end=recorded_end.unwrap_or(at);
             first=Some(first.map_or(start,|before:DateTime<Utc>|before.min(start)));
             total+=(end.min(until)-start).num_milliseconds().max(0) as f64/1000.;
+            if recorded_end.is_some(){closed+=(end-start).num_milliseconds() as f64/1000.;}
         }
         if until>at||first.is_some_and(|start|until<start){return Err("invalid submission instant".into());}
-        return Ok(total);
+        let checkpoint=if snapshot.entity(item)?.contains_key("task-item/elapsed-seconds") {
+            saved_elapsed(snapshot,item,"task-item/elapsed-seconds")?
+        } else {0.};
+        return Ok(total+(checkpoint-closed).max(0.));
     }
     if until>at || until<events_first(snapshot,item)? {return Err("invalid submission instant".into());}
     Ok((elapsed(snapshot,item,at)?-working_after(snapshot,item,until,at)?).max(0.))
@@ -500,5 +526,52 @@ mod tests {
         assert_eq!(task_started(&native, 1).unwrap(), at(20));
         let missing = captured("learner-task/status", &[("paused", 10)], None);
         assert!(task_started(&missing, 1).is_err());
+    }
+
+    #[test]
+    fn admitted_working_start_survives_delayed_save_without_resetting_deadlines() {
+        let mut snapshot = captured("learner-task/status", &[("unlocked", 5), ("started", 100)], Some(0.));
+        snapshot.entities.get_mut(&1).unwrap().insert("learner-task/items".into(), json!([2]));
+        snapshot.entities.insert(2, serde_json::from_value(json!({"task-item/id":"first","task-item/working-periods":[3]})).unwrap());
+        snapshot.entities.insert(3, serde_json::from_value(json!({"working-period/id":"start","working-period/started-at":instant_value(at(10))})).unwrap());
+        snapshot.entities.get_mut(&1).unwrap().insert("learner-task/activity".into(), json!(4));
+        snapshot.entities.insert(4, serde_json::from_value(json!({"activity/id":"assessment","activity/type":5,"activity/time-limit-seconds":60})).unwrap());
+        snapshot.entities.insert(5, serde_json::from_value(json!({"db/ident":keyword("activity.type/assessment")})).unwrap());
+        assert_eq!(task_started(&snapshot, 1).unwrap(), at(10));
+        assert_eq!(crate::retrieval::remaining(&snapshot, 1, at(45)).unwrap(), Some(25.));
+        assert_eq!(crate::retrieval::remaining(&snapshot, 1, at(120)).unwrap(), Some(0.));
+        // Saving, pausing and resuming must never grant more assessment time.
+        snapshot.entities.get_mut(&3).unwrap().insert("working-period/started-at".into(), instant_value(at(120)));
+        assert_eq!(task_started(&snapshot, 1).unwrap(), at(100));
+
+        // Imported tasks retain their first recorded bound, even when later
+        // resumes acquire explicit periods. Their original start is unknown.
+        let mut imported = captured("learner-task/status", &[("paused", 50), ("started", 100)], Some(20.));
+        imported.entities.get_mut(&1).unwrap().insert("learner-task/items".into(), json!([2]));
+        imported.entities.insert(2, snapshot.entities[&2].clone());
+        imported.entities.insert(3, snapshot.entities[&3].clone());
+        assert_eq!(task_started(&imported, 1).unwrap(), at(50));
+    }
+
+    #[test]
+    fn explicit_periods_retain_imported_balance_through_resume_and_pause() {
+        let mut s=captured("task-item/status", &[("paused",10),("started",20)],Some(38.));
+        s.entities.get_mut(&1).unwrap().insert("task-item/working-periods".into(),json!([2]));
+        s.entities.insert(2,serde_json::from_value(json!({"working-period/id":"resumed","working-period/started-at":instant_value(at(20))})).unwrap());
+        assert_eq!(elapsed(&s,1,at(25)).unwrap(),43.);
+        assert_eq!(elapsed_until(&s,1,at(25),at(23)).unwrap(),41.);
+        s.entities.get_mut(&2).unwrap().insert("working-period/ended-at".into(),instant_value(at(30)));
+        s.entities.get_mut(&1).unwrap().insert("task-item/status".into(),keyword("task-item.status/paused"));
+        s.entities.get_mut(&1).unwrap().insert("task-item/elapsed-seconds".into(),json!(48.));
+        assert_eq!(elapsed(&s,1,at(40)).unwrap(),48.);
+        s.entities.get_mut(&1).unwrap().insert("task-item/status".into(),keyword("task-item.status/started"));
+        s.entities.get_mut(&1).unwrap().insert("task-item/working-periods".into(),json!([2,3]));
+        s.entities.insert(3,serde_json::from_value(json!({"working-period/id":"resumed-again","working-period/started-at":instant_value(at(40))})).unwrap());
+        assert_eq!(elapsed(&s,1,at(45)).unwrap(),53.);
+        assert_eq!(elapsed_until(&s,1,at(45),at(42)).unwrap(),50.);
+        // Native periods also remain authoritative when their complete total
+        // exceeds an older checkpoint; neither balance is added twice.
+        s.entities.get_mut(&1).unwrap().insert("task-item/elapsed-seconds".into(),json!(5.));
+        assert_eq!(elapsed(&s,1,at(45)).unwrap(),15.);
     }
 }

@@ -2696,8 +2696,10 @@ fn study_projection_lesson_backlog_replays_exact_route_and_logical_clocks() -> R
     let mut projection=None;let mut overlay=Json::Null;let mut queued=vec![];
     let mut body=json!({"action":"study-topic","topicId":topic,"requestId":"local-start-0001"});
     let mut final_view=Json::Null;
+    let mut browser_sequence=vec![];
     for turn in 0..16 {
         let (data,next)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":body,"overlay":overlay,"receivedAt":f.now+1000+turn*1000}))?;
+        browser_sequence.push(json!({"input":body,"data":data}));
         projection=Some(next);overlay=data["overlay"].clone();queued.push(data["operation"].clone());
         final_view=data["view"].clone();
         if final_view["status"]=="completed"{break;}
@@ -2707,11 +2709,13 @@ fn study_projection_lesson_backlog_replays_exact_route_and_logical_clocks() -> R
         }else{json!({"action":"continue","taskId":final_view["taskId"],"itemId":step["itemId"],"requestId":format!("local-next-{turn:04}")})};
     }
     assert_eq!(final_view["status"],"completed");
+    if let Ok(path)=std::env::var("STUDY_BROWSER_FIXTURE"){std::fs::write(path,serde_json::to_vec(&json!({"initial":home(&base,f.learner)?,"sequence":browser_sequence}))?)?;}
     for (n,operation) in queued.iter().enumerate(){
         let s=f.snapshot()?;
         let op=study_interaction::bind(&s,operation)?;
         let at=DateTime::from_timestamp_millis(f.now+30_000+n as i64*100).unwrap();
-        let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,at)?;
+        let work_at=DateTime::from_timestamp_millis(op["_queuedStudy"]["at"].as_i64().unwrap()).unwrap();
+        let (mut forms,mut result)=mutate(&s,f.learner,op["action"].as_str().unwrap(),&op,work_at)?;
         study_interaction::prepare(&s,&f.db.database_value(),f.learner,&op,&mut forms,&mut result,at)?;
         f.tx(forms,at.timestamp_millis())?;
     }

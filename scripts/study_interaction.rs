@@ -145,8 +145,9 @@ fn view(s:&EntitySnapshot,l:u64,action:&str,result:&Json)->Result<Json>{
     let t=task(s,result)?.ok_or("Missing local task result")?;
     task_json(s,l,t)
 }
-fn promise(view:&Json)->Json{
-    json!({"type":view["type"],"status":view["status"],"contentId":view["step"]["contentId"],"stepStatus":view["step"]["status"],"xp":view["xp"],"assignmentId":view["assignmentId"]})
+fn promise(s:&EntitySnapshot,view:&Json)->Json{
+    let activities=view["activities"].as_array().map(|activities|activities.iter().map(|a|json!({"type":a["type"],"activity":a["activityId"].as_u64().and_then(|id|s.entities.get(&id)).and_then(|e|e.get("activity/id")),"task":a["taskId"].as_u64().and_then(|id|s.entities.get(&id)).and_then(|e|e.get("learner-task/id"))})).collect::<Vec<_>>());
+    json!({"activities":activities,"type":view["type"],"status":view["status"],"contentId":view["step"]["contentId"],"stepStatus":view["step"]["status"],"xp":view["xp"],"assignmentId":view["assignmentId"]})
 }
 fn generated(forms:&[Json])->Json{
     let mut values=serde_json::Map::new();
@@ -169,22 +170,39 @@ pub(super) fn clocks(s:&EntitySnapshot,db:&DatabaseValue,forms:&mut Vec<Json>,at
         let prior=s.entities.get(&item).map(|_|status(s,item,"task-item/status")).transpose()?;
         if prior.as_deref()==Some(next){continue;}
         let existing=if s.entities.contains_key(&item){s.refs(item,"task-item/working-periods")?}else{vec![]};
+        let mut clock_at=at;
+        if let Some(task)=s.owners(item,"learner-task/items")?.first().copied(){
+            let activity=s.reference(task,"learner-task/activity")?;
+            if retrieval::kind(s,activity)?=="assessment" {
+                let deadline=timing::task_started(s,task)?+chrono::Duration::milliseconds((number(s,activity,"activity/time-limit-seconds")*1000.).round() as i64);
+                clock_at=clock_at.min(deadline);
+            }
+        }
         if existing.is_empty()&&prior.is_some(){
-            let elapsed=timing::elapsed(s,item,at)?;
-            if elapsed>0. {
-                let key=format!("study-clock-{item}-prior");
-                forms.push(json!({"db/id":key,"working-period/id":{"$uuid":uid()?},"working-period/started-at":{"$instant":at.timestamp_millis()-(elapsed*1000.).round() as i64},"working-period/ended-at":{"$instant":at.timestamp_millis()}}));
+            let events=timing::history(s,item,"task-item/status")?;
+            let cutoff=s.entity(item)?.get("task-item/working-ended-at").map(schema::parse_instant).transpose()?;
+            for (n,(start,state)) in events.iter().enumerate(){
+                if state!="task-item.status/started" || cutoff.is_some_and(|end|*start>=end){continue;}
+                let end=events.get(n+1).map(|event|event.0).unwrap_or(clock_at).min(clock_at).min(cutoff.unwrap_or(clock_at));
+                if end<*start {return Err("Working clock moved backwards".into());}
+                let key=format!("study-clock-{item}-prior-{n}");
+                forms.push(json!({"db/id":key,"working-period/id":{"$uuid":uid()?},"working-period/started-at":{"$instant":start.timestamp_millis()},"working-period/ended-at":{"$instant":end.timestamp_millis()}}));
                 forms.push(add(target.clone(),"task-item/working-periods",json!(key)));
             }
         }
         if next!="started" {
-            for period in existing {if !s.entity(period)?.contains_key("working-period/ended-at"){forms.push(json!([kw("db/cas"),period,kw("working-period/ended-at"),null,{"$instant":at.timestamp_millis()}]));}}
+            for period in existing {if !s.entity(period)?.contains_key("working-period/ended-at"){forms.push(json!([kw("db/cas"),period,kw("working-period/ended-at"),null,{"$instant":clock_at.timestamp_millis()}]));}}
         }else{
             let key=format!("study-clock-{item}-open");
             forms.push(json!({"db/id":key,"working-period/id":{"$uuid":uid()?},"working-period/started-at":{"$instant":at.timestamp_millis()}}));
             forms.push(add(target,"task-item/working-periods",json!(key)));
         }
     }
+    let finished=forms.iter().filter(|f|f.get(2)==Some(&kw("learner-task/status"))).filter_map(|f|{
+        let target=f.get(1)?.clone();let status=ident(f.get(if ident(&f[0]).ok()?=="db/cas"{4}else{3})?).ok()?;
+        matches!(status,"learner-task.status/completed"|"learner-task.status/failed").then_some(target)
+    }).collect::<Vec<_>>();
+    for target in finished {forms.push(add(target,"learner-task/finished-at",json!({"$instant":at.timestamp_millis()})));}
     let _=db;Ok(())
 }
 
@@ -204,7 +222,9 @@ pub(super) fn project_value(base:&EntitySnapshot,db:&DatabaseValue,learner:u64,p
     let op=&body["operation"];let action=op["action"].as_str().ok_or("Action required")?;
     let millis=body["receivedAt"].as_i64().ok_or("Study receipt instant required")?;
     let at=DateTime::from_timestamp_millis(millis).ok_or("Invalid receipt instant")?;
-    let (mut forms,result)=mutate(&s,learner,action,op,at)?;
+    let (mut forms,result)=if action=="queue" {
+        (queue_preparation(s,learner,at)?.0,json!({"queue":true}))
+    }else{mutate(&s,learner,action,op,at)?};
     clocks(&s,db,&mut forms,at)?;
     // Resolve the pre-operation synthetic references before applying new data.
     let mut refs=serde_json::Map::new();
@@ -214,14 +234,14 @@ pub(super) fn project_value(base:&EntitySnapshot,db:&DatabaseValue,learner:u64,p
     let output=view(after,learner,action,&result)?;
     let mut clock_forms=vec![];
     for f in &forms{
-        let clock=f.as_object().is_some_and(|e|e.contains_key("working-period/id"))||f.get(2).and_then(|v|ident(v).ok()).is_some_and(|a|matches!(a,"task-item/working-periods"|"working-period/ended-at"|"task-item/elapsed-seconds"|"learner-task/elapsed-seconds"|"task-item/working-ended-at"));
+        let clock=f.as_object().is_some_and(|e|e.contains_key("working-period/id"))||f.get(2).and_then(|v|ident(v).ok()).is_some_and(|a|matches!(a,"task-item/working-periods"|"working-period/ended-at"|"task-item/elapsed-seconds"|"learner-task/elapsed-seconds"|"learner-task/finished-at"|"task-item/working-ended-at"));
         if clock{clock_forms.push(f.clone());}
     }
     // References inside admitted clock forms are resolved by identity at replay.
     let mut clock_refs=serde_json::Map::new();
     for f in &clock_forms{if let Some(id)=f.get(1).and_then(Json::as_u64).filter(|id|*id>=LOCAL_ID){clock_refs.insert(id.to_string(),identity(after,id)?);}}
     let mut operation=op.clone();operation["_deferQueue"]=json!(true);
-    operation["_queuedStudy"]=json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"locals":ids.values().map(|id|Ok((id.to_string(),identity(after,*id)?))).collect::<Result<BTreeMap<_,_>>>()?,"expected":promise(&output),"at":millis});
+    operation["_queuedStudy"]=json!({"refs":refs,"clockRefs":clock_refs,"clocks":clock_forms,"generated":generated(&forms),"locals":ids.values().filter_map(|id|identity(after,*id).ok().map(|key|(id.to_string(),key))).collect::<BTreeMap<_,_>>(),"expected":promise(after,&output),"at":millis});
     let mut changed_tasks=BTreeSet::new();
     for form in &forms {
         let target=form.get("db/id").or_else(||form.get(1));
@@ -251,7 +271,7 @@ pub(super) fn prepare(s:&EntitySnapshot,db:&DatabaseValue,l:u64,body:&Json,forms
     let Some(queued)=body.get("_queuedStudy")else{return Ok(())};
     reuse_ids(forms,&queued["generated"]);
     if let Some(id)=queued["generated"]["new-task|learner-task/id"]["$uuid"].as_str(){if result.get("taskUuid").is_some(){result["taskUuid"]=json!(id);}}
-    forms.retain(|f|!f.get(2).and_then(|v|ident(v).ok()).is_some_and(|a|matches!(a,"task-item/working-periods"|"working-period/ended-at"|"task-item/elapsed-seconds"|"learner-task/elapsed-seconds"|"task-item/working-ended-at")));
+    forms.retain(|f|!f.get(2).and_then(|v|ident(v).ok()).is_some_and(|a|matches!(a,"task-item/working-periods"|"working-period/ended-at"|"task-item/elapsed-seconds"|"learner-task/elapsed-seconds"|"learner-task/finished-at"|"task-item/working-ended-at")));
     for f in queued["clocks"].as_array().ok_or("Queued study clocks required")?{
         let mut f=f.clone();
         if let Some(id)=f.get(1).and_then(Json::as_u64).filter(|id|*id>=LOCAL_ID){f[1]=json!(lookup(s,&queued["clockRefs"][id.to_string()])?);}
@@ -260,7 +280,7 @@ pub(super) fn prepare(s:&EntitySnapshot,db:&DatabaseValue,l:u64,body:&Json,forms
     // Clock tempid names include provisional entity IDs, but UUID identity is
     // stable and all new references stay local to this exact transaction.
     let (after,_)=apply(s,db,forms,at)?;
-    let actual=promise(&view(&after,l,body["action"].as_str().unwrap_or(""),result)?);
+    let actual=promise(&after,&view(&after,l,body["action"].as_str().unwrap_or(""),result)?);
     if actual!=queued["expected"]{return Err("Study content or outcome changed before saving; accepted work retained".into());}
     Ok(())
 }
