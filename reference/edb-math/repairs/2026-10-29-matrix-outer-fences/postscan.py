@@ -3,7 +3,7 @@ import collections,json,re,sys
 from pathlib import Path
 H=Path(__file__).resolve().parent;R=H.parents[3];W=R/'.local/edb/outer-fences-2026-10-29';sys.path.insert(0,str(R/'scripts'))
 from question_capture.math_format import MATH,ENV,environment,scalable_table_fences,_matrix_layouts
-read=lambda p:json.loads(p.read_text());qs=read(H/'questions.json');ps=read(H/'proposals.json');changes={(p['entity'],p['attribute']):p['after']for p in ps};initial=read(R/'reference/edb-math/repairs/2026-10-29-q17592186551286/preview.json');changes[17592186551286,'question/worked-solution']=initial['after'];original_meta={int(k):v for k,v in read(W/'metadata.json').items()};identids={v['db/ident']:e for e,v in original_meta.items()if'db/ident'in v}
+read=lambda p:json.loads(p.read_text());A=H.parent/'2026-10-29-array-fences';qs=list({q[':db/id']:q for q in read(A/'questions.json')+read(H/'questions.json')}.values());ps=read(A/'proposals.json')+read(H/'proposals.json');changes={(p['entity'],p['attribute']):p['after']for p in ps};initial=read(R/'reference/edb-math/repairs/2026-10-29-q17592186551286/preview.json');changes[17592186551286,'question/worked-solution']=initial['after'];original_meta={int(k):v for k,v in read(W/'metadata.json').items()};identids={v['db/ident']:e for e,v in original_meta.items()if'db/ident'in v}
 expected=collections.defaultdict(set);bank_fields={};scope_questions={q[':db/id']for q in qs}
 for q in qs:
  e=q[':db/id'];expected[e,'question/id']={q[':question/id']};expected[e,'question/answer-fields']={f[':db/id']for f in q.get(':question/answer-fields',[])}

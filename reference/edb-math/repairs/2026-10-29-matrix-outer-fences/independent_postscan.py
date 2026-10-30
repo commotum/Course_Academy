@@ -18,6 +18,7 @@ for line in(W/'after.jsonl').open():
   record={'entity':d['e'],'attribute':d['a'],'left':left,'right':right,'environment':m[2]}
   if f=='['and left.rstrip().endswith(r'\[')and right.lstrip().startswith(r'\]'):record['classification']='Display-math delimiters, not visible brackets'
   elif f in ['|',r'\vert',r'\lvert']and r'\left\{'in left and right.lstrip().startswith(r'\right\}'):record['classification']='Conditional separator inside an already scalable set, not a table fence'
+  elif d['e']==17592186360463 and d['a']=='question/problem'and f=='|'and r'F={A\in 'in left and right.startswith('A=A'):record['classification']='Conditional set-builder separator between membership and a matrix relation, not a determinant or enclosing table fence; retained.'
   else:unexpected.append(record);continue
   reviewed.append(record)
 result={'passed':not unexpected,'counts':dict(counts),'reviewed_residual_contexts':reviewed,'unexpected_plain_fences':unexpected,'database_writes':0};(H/'independent-final-verification.json').write_text(json.dumps(result,indent=2)+'\n');print('Independentcontextscan:',dict(counts),'benignresiduals',len(reviewed),'unexpected',len(unexpected));print(unexpected[:3]);assert result['passed']
