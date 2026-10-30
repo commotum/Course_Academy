@@ -1,11 +1,7 @@
-# Parametric graph generator
+# Parametric graph recognition
 
-Run `.venv/bin/python generate/scratch/17592186087721/validate.py` for source prose/table/asset fidelity, independent displayed mathematics, complete graph-bank uniqueness, native radio grading and concurrent render checks. Run `.venv/bin/python generate/scratch/17592186087721.py --difficulty all --seed 42 --count 2 --format json` for local previews. No database operations.
+Production version parametric-graphs-3 uses readable one-unit grids, labels outside the plot, common bank-wide bounds and unmarked choices. Table-point dots appear only in the solution. Unreadable oversized banks are resampled, retaining all 16 source families.
 
-Observed coverage:16 easy questions,80 exact unchanged answer assets,16 exact correct parametrizations,16 full two-table worked sequences. The64 wrong graph formulas are residual source assets, not claimed recovered operations. Default banks are authored, parameter-dependent and rendered via cached Matplotlib3.10 dependencies; source replay is restricted to the original complete profiles. Moderate/hard levels are authored bounded table/graph-recognition extensions, described in classification.md.
+Use `COURSE_ACADEMY_GENERATOR_OUTPUT_DIR=/tmp/parametric-plots .venv/bin/python generate/scratch/17592186087721.py --difficulty easy --count 5 --seed 42`.
 
-`capabilities.json` records the supported levels and finite restrictions. Moderate and hard share the same 96 parameter combinations; changing the bank does not create another mathematical task. Replenishment deduplicates complete loci and domains across source and generated questions and across difficulty levels.
-
-Run `.venv/bin/python generate/scratch/17592186087721/replenish.py` to recheck current inventory and prepare validated, previewed transactions. Add `--commit` to submit. The helper acquires the application's `api.lock`, reads current inventory and source evidence at one basis, retains that lock through basis-guarded submission and exact-basis verification, and recovers an existing saved request before preparing another. It preserves the generator UUID once registered. Existing request recovery can confirm a previously submitted transaction even without `--commit`.
-
-The scoped `reference/replenishment/` folder retains current source reads, exact selected instances, native grader reports, published asset hashes, preparation, preview, complete request, durable receipt and readback. `freeze.json` records the generator identity and hashes. No captured question or learner history is rewritten.
+Current immutable reference: `generators/4f/4fde422f2d9b6e0a75ffb58938000e8e0516aa1218d19d731d85a7bc103b1e03/generator.py`. Repair and exact publication evidence: `reference/edb-math/repairs/2026-10-30-parametric-plot-readability/`. Older files in this folder retain historical investigations and are not the registered renderer.

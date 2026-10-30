@@ -1,67 +1,42 @@
-"""Matplotlib plots from exact instance data, using cached dependencies read-only."""
-import json,os,re,sys,subprocess,tempfile,math
+"""Matplotlib bank rendering with readable, target-independent coordinate grids."""
+import hashlib,json,os,sys,tempfile
 from pathlib import Path
-HERE=Path(__file__).parent
-os.environ['MPLCONFIGDIR']='/tmp/kp17592186087721-mpl'
-provenance={}
-try:import matplotlib
-except ImportError:
- runtime=Path('/home/jake/.local/share/uv/python/cpython-3.10.13-linux-x86_64-gnu/bin/python3.10')
- if sys.version_info[:2]!=(3,10):
-  subprocess.run([str(runtime),str(Path(__file__).resolve()),*sys.argv[1:]],check=True);sys.exit(0)
- cache=Path('/home/jake/.cache/uv/wheels-v5/pypi')
- for package in ('matplotlib','numpy','pillow','contourpy','kiwisolver','fonttools','cycler','packaging','pyparsing','python-dateutil','six'):
-  candidates=[p for p in (cache/package).iterdir() if p.is_dir() and ('cp310' in p.name and 'manylinux' in p.name or 'none-any' in p.name or p.name.startswith('4.59.1-'))]
-  if not candidates:raise RuntimeError('missing dependency '+package)
-  path=sorted(candidates,key=lambda p:tuple(int(x) for x in re.match(r'(\d+)\.(\d+)\.(\d+)',p.name).groups()) if re.match(r'(\d+)\.(\d+)\.(\d+)',p.name) else (0,))[-1]
-  sys.path.insert(0,str(path));provenance[package]=str(path.resolve())
- import matplotlib
+os.environ.setdefault('MPLCONFIGDIR','/tmp/course-academy-parametric-mpl')
+import matplotlib
 matplotlib.use('Agg')
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
-D=json.loads(Path(sys.argv[1]).read_text());out=Path(D['output_dir']);out.mkdir(parents=True,exist_ok=True)
-def evaluate(s,t):
- env={'t':t,'sqrt':np.sqrt,'cos':np.cos,'sin':np.sin,'pi':np.pi}
- return np.broadcast_to(eval(s,{'__builtins__':{}},env),t.shape).copy()
-def scalar(s):return eval(s,{'__builtins__':{}},{'pi':np.pi,'oo':np.inf})
-curves=[]
-for s in D['bank']:
- lo,hi=scalar(s['lo']),scalar(s['hi'])
- # Infinite positive reciprocal domain is viewport-clipped, never truncated as
- # an assessed closed segment and never joined across its singularity.
- t=np.geomspace(.002,2000,3000) if s['kind']=='rational' else np.linspace(lo,hi,1601)
- x=evaluate(s['x'],t);y=evaluate(s['y'],t);curves.append((s,t,x,y))
-if any(s['kind']=='rational' for s,*_ in curves):
- # Meaningful observed table points set a common window for all five options.
- points=[]
- for s,*_ in curves:
-  t=np.array([scalar(v) for v in D['ts']]);points.extend(zip(evaluate(s['x'],t),evaluate(s['y'],t)))
- xs,ys=zip(*points);xl=(min(0,min(xs))-1,max(xs)+2);yl=(min(0,min(ys))-1,max(ys)+2)
-else:
- xs=np.concatenate([x for _,_,x,_ in curves]);ys=np.concatenate([y for _,_,_,y in curves]);dx=max(2,np.ptp(xs));dy=max(2,np.ptp(ys));xl=(min(0,np.min(xs))-.1*dx,max(0,np.max(xs))+.1*dx);yl=(min(0,np.min(ys))-.1*dy,max(0,np.max(ys))+.1*dy)
-# Equal numeric axis aspect across all options, with same union bounds.
-for i in range(6):
- s,t,x,y=curves[min(i,0) if i==5 else i]
- fig,ax=plt.subplots(figsize=(4.4,4.4),dpi=120);ax.set_xlim(xl);ax.set_ylim(yl);ax.set_aspect('equal',adjustable='box')
- ax.xaxis.set_major_locator(MaxNLocator(7,integer=False));ax.yaxis.set_major_locator(MaxNLocator(7,integer=False));ax.grid(color='#c8c8c8',linewidth=.65)
- for spine in ax.spines.values():spine.set_visible(False)
- ax.tick_params(length=0,labelsize=9)
- ax.annotate('',(xl[1],0),(xl[0],0),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
- ax.annotate('',(0,yl[1]),(0,yl[0]),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
- ax.text(xl[1],0,'$x$',ha='left',va='bottom',fontsize=12);ax.text(0,yl[1],'$y$',ha='left',va='bottom',fontsize=12)
- ax.plot(x,y,color='#2477bc',lw=1.5)
- endpoints=[]
- if s['kind'] not in ('ellipse','rational'):
-  ax.plot([x[0],x[-1]],[y[0],y[-1]],'o',color='#2477bc',markersize=3);endpoints=[[float(x[0]),float(y[0])],[float(x[-1]),float(y[-1])]]
- if i==5:
-  tt=np.array([scalar(v) for v in D['ts']]);ax.plot(evaluate(s['x'],tt),evaluate(s['y'],tt),'o',color='#2477bc',markersize=3.8)
- fig.subplots_adjust(left=.12,right=.90,bottom=.12,top=.90);fig.canvas.draw()
- file=out/('solution.png' if i==5 else f'choice-{i}.png')
- fd,tmp=tempfile.mkstemp(prefix=file.stem+'-',suffix='.png',dir=out);os.close(fd)
- try:fig.savefig(tmp,dpi=120,facecolor='white');os.replace(tmp,file)
- finally:Path(tmp).unlink(missing_ok=True);plt.close(fig)
- side={'shape':s,'bounds':[list(xl),list(yl)],'endpoints':endpoints,'curve_arrows':False,'axis_arrows':True,'solution_points':D['ts'] if i==5 else [],'samples':len(t),'renderer':'matplotlib','version':matplotlib.__version__,'python':sys.version,'dependency_paths':provenance}
- fd,tmp=tempfile.mkstemp(prefix=file.stem+'-',suffix='.json',dir=out)
- with os.fdopen(fd,'w') as f:json.dump(side,f,indent=2)
- os.replace(tmp,file.with_suffix('.json'))
+from matplotlib.ticker import MultipleLocator
+import numpy as np
+from parametric_plot_policy import plot_plan,coordinates,scalar,IMAGE_PIXELS,AXES_RECT,LABEL_POINTS
+
+def render(data):
+    out=Path(data['output_dir']);out.mkdir(parents=True,exist_ok=True)
+    bank=data['bank'];plan=plot_plan(bank,data['ts']);xl,yl=plan['bounds']
+    for i in range(6):
+        role=data['correct'] if i==5 else i;shape=bank[role]
+        t=np.geomspace(.002,2000,3000) if shape['kind']=='rational' else np.linspace(scalar(shape['lo']),scalar(shape['hi']),1601)
+        xy=coordinates(shape,t)
+        fig=plt.figure(figsize=(IMAGE_PIXELS/120,IMAGE_PIXELS/120),dpi=120);ax=fig.add_axes(AXES_RECT)
+        ax.set_xlim(xl);ax.set_ylim(yl);ax.set_aspect('equal',adjustable='box')
+        for axis in (ax.xaxis,ax.yaxis):
+            axis.set_major_locator(MultipleLocator(plan['major_step']));axis.set_minor_locator(MultipleLocator(1))
+        ax.grid(which='major',color='#bcbcbc',linewidth=.7);ax.grid(which='minor',color='#dedede',linewidth=.55)
+        ax.set_axisbelow(True)
+        for spine in ax.spines.values():spine.set_visible(False)
+        ax.tick_params(which='both',length=0,labelsize=LABEL_POINTS,pad=5)
+        ax.annotate('',(xl[1],0),(xl[0],0),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
+        ax.annotate('',(0,yl[1]),(0,yl[0]),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
+        ax.annotate('$x$',(xl[1],0),xytext=(5,-6),textcoords='offset points',ha='left',va='top',fontsize=LABEL_POINTS+1)
+        ax.annotate('$y$',(0,yl[1]),xytext=(5,2),textcoords='offset points',ha='left',va='bottom',fontsize=LABEL_POINTS+1)
+        ax.plot(xy[:,0],xy[:,1],color='#2477bc',lw=1.6)
+        if i==5:
+            points=np.array(plan['checkpoints'][role]);ax.plot(points[:,0],points[:,1],'o',color='#2477bc',markersize=4)
+        fig.canvas.draw();bbox=list(ax.get_window_extent().bounds)
+        file=out/(f'solution-{role}.png' if i==5 else f'choice-{i}.png')
+        fd,tmp=tempfile.mkstemp(prefix=file.stem+'-',suffix='.png',dir=out);os.close(fd)
+        try:fig.savefig(tmp,dpi=120,facecolor='white');os.replace(tmp,file)
+        finally:Path(tmp).unlink(missing_ok=True);plt.close(fig)
+        side={'shape':shape,'plot_plan':plan,'bounds':plan['bounds'],'axes_pixel_bounds':bbox,'major_ticks':[ax.get_xticks().tolist(),ax.get_yticks().tolist()],'endpoints':[],'coordinate_labels':False,'curve_arrows':False,'axis_arrows':True,'solution_points':data['ts'] if i==5 else [],'samples':len(t),'renderer':'matplotlib','version':matplotlib.__version__,'image_sha256':hashlib.sha256(file.read_bytes()).hexdigest()}
+        file.with_suffix('.json').write_text(json.dumps(side,indent=2)+'\n')
+
+if __name__=='__main__':render(json.loads(Path(sys.argv[1]).read_text()))
