@@ -768,14 +768,17 @@ def _scalable_composite_fences(text, environments):
     group. Tables in subscripts and teaching labels do not enlarge unrelated
     proposition parentheses. Alignment cells are independent fence scopes.
     """
+    sizing = re.compile(r'\\(left|right|big|Big|bigg|Bigg)[lrm]?\s*$')
+    optional = re.compile(r'\\(?:sqrt|xrightarrow|xleftarrow|xleftrightarrow|'
+                          r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
+    candidates = re.finditer(r'\\(?:lparen|lbrack|lbrace|langle)(?![A-Za-z])|\\\{|(?<!\\)[(\[]', text)
+    if not any(not sizing.search(text[:m.start()]) and not optional.search(text[:m.start()]) for m in candidates):
+        return text
     tokens = re.compile(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|[{}()\[\]&.]')
     opening = {'(': 'paren', '[': 'bracket', r'\{': 'brace', r'\lparen': 'paren',
                r'\lbrack': 'bracket', r'\lbrace': 'brace', r'\langle': 'angle'}
     closing = {')': 'paren', ']': 'bracket', r'\}': 'brace', r'\rparen': 'paren',
                r'\rbrack': 'bracket', r'\rbrace': 'brace', r'\rangle': 'angle'}
-    sizing = re.compile(r'\\(left|right|big|Big|bigg|Bigg)[lrm]?\s*$')
-    optional = re.compile(r'\\(?:sqrt|xrightarrow|xleftarrow|xleftrightarrow|'
-                          r'xRightarrow|xLeftarrow|xLeftrightarrow)\s*$')
     annotation = re.compile(r'(?<!\\)[_^]\s*$|\\(?:underset|overset|stackrel|substack|text|textrm|operatorname)\s*$')
     groups, frames, stacks, edits = [], [], {}, []
     def scope():
@@ -801,11 +804,14 @@ def _scalable_composite_fences(text, environments):
         if value in ('&', r'\\'):
             if frames and tuple(g[0] for g in groups) == frames[-1][2]: frames[-1][3] += 1
             continue
+        if value not in opening and value not in closing and value != '.': continue
         key = scope(); stack = stacks.setdefault(key, [])
         size = sizing.search(text[:token.start()]); explicit = bool(size)
         if value == '.' and size:
             if size[1] == 'left': stack.append({'kind': '*', 'explicit': True, 'table': False})
-            elif size[1] == 'right' and stack and stack[-1]['explicit']: stack.pop()
+            elif size[1] == 'right' and stack and stack[-1]['explicit']:
+                stack.pop()
+                if not stack: stacks.pop(key, None)
             continue
         if value in opening:
             stack.append({'kind': opening[value], 'start': token.start(), 'explicit': explicit,
@@ -814,6 +820,7 @@ def _scalable_composite_fences(text, environments):
             entry = stack[-1]
             if entry['kind'] != closing[value] and not (entry['kind'] == '*' and size and size[1] == 'right'): continue
             stack.pop()
+            if not stack: stacks.pop(key, None)
             if entry['table'] and not entry['explicit'] and not explicit and not entry.get('optional'):
                 edits.extend([(entry['start'], r'\left'), (token.start(), r'\right')])
     for position, command in sorted(edits, reverse=True): text = text[:position] + command + text[position:]

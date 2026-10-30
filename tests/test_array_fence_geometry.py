@@ -32,4 +32,17 @@ class ArrayFenceGeometryTests(unittest.TestCase):
    visible=[h for h in geometry['fence_heights']if h>1]
    self.assertTrue(visible)
    self.assertGreater(min(visible)/geometry['table_height'],0.8)
+ def test_function_fence_is_checked_separately_from_the_correct_inner_matrix(self):
+  from check_math_rendering import check
+  bad=r'T(\begin{bmatrix}1\\2\\3\end{bmatrix})'
+  result=check([{'entity':1,'value':'$$'+bad+'$$'},
+                {'entity':2,'value':'$$'+scalable_table_fences(bad)+'$$'}])
+  before,after=result['checks']
+  ratios=lambda row:[min(h for h in g['fence_heights']if h>1)/g['table_height']
+                    for g in row['fence_geometry']if g['table_height']>0 and any(h>1 for h in g['fence_heights'])]
+  self.assertTrue(any(r<0.6 for r in ratios(before)))
+  self.assertTrue(all(r>0.8 for r in ratios(after)))
+  self.assertEqual(before['errors'],[])
+  self.assertTrue(before['matrix_layout_errors'])
+  self.assertEqual(after['matrix_layout_errors'],[])
 if __name__=='__main__':unittest.main()

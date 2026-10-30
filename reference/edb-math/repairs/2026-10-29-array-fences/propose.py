@@ -44,6 +44,9 @@ for d in values:
   assert grids[0]==grids[1],(e,a,'Ordered table cells changed')
   validate_matrix_layouts(new,bare_math=bare)
   props.append({'entity':e,'attribute':a,'before':v,'after':new,'reason':'Make existing table fences scalable; preserve every ordered cell, rule, expression, field and answer identity.','bare_math':bare,'tables_unchanged':len(grids[0]),'legacy_matrix_environment_repair':canonical!=v});shapes[a]+=1
- if new==v and normalize(v)!=v:review.append({**d,'reason':'Table fences outside protected math; inspect context'})
+ if new==v and not bare:
+  protected=[(m.start(),m.end())for m in MATH.finditer(v)]
+  unprotected=[m.start()for m in ENV.finditer(v)if m[1]=='begin'and not any(a<=m.start()<b for a,b in protected)]
+  if unprotected and normalize(v)!=v:review.append({**d,'reason':'Table fences outside protected math; inspect context'})
 for n,rows in [('proposals',props),('manual-review',review),('preserved-learner-values',excluded)]: (H/(n+'.json')).write_text(json.dumps(rows,indent=2)+'\n')
 report={'candidate_fields':len(props),'candidate_entities':len({p['entity']for p in props}),'attributes':dict(shapes),'manual_review':len(review),'preserved_learner_values':len(excluded),'legacy_matrix_environment_repairs':sum(p['legacy_matrix_environment_repair']for p in props),'answer_table_types':dict(bare_types)};(H/'proposal-summary.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

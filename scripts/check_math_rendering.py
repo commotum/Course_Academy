@@ -49,16 +49,17 @@ def check(items):
                       ['4','5','OPEN','CLOSE'].includes(e.getAttribute('data-mjx-texclass'))||
                       [...e.querySelectorAll('[data-c]')].some(p=>glyphs.has(p.getAttribute('data-c'))));
                     return [...n.querySelectorAll('[data-mml-node="mtable"]')].flatMap(t=>{
-                      let child=t;
-                      for(let level=0;level<4&&child.parentElement;level++,child=child.parentElement){
+                      let child=t;const measurements=[];
+                      for(let level=0;level<8&&child.parentElement;level++,child=child.parentElement){
                         const siblings=[...child.parentElement.children].filter(e=>e.getAttribute('data-mml-node')!=='mspace'&&
                           !(e.getAttribute('data-mml-node')==='mstyle'&&e.getBoundingClientRect().height<0.1));
                         const i=siblings.indexOf(child),fences=[siblings[i-1],siblings[i+1]].filter(isFence);
-                        if(fences.length)return [{table_height:t.getBoundingClientRect().height,
-                          fence_heights:fences.map(e=>e.getBoundingClientRect().height)}];
-                        if(siblings.length!==1)break;
+                        if(fences.length)measurements.push({table_height:child.getBoundingClientRect().height,
+                          matrix_body_height:t.getBoundingClientRect().height,scope_level:level,
+                          fence_heights:fences.map(e=>e.getBoundingClientRect().height)});
+                        if(!['mrow','mstyle','TeXAtom'].includes(child.parentElement.getAttribute('data-mml-node')))break;
                       }
-                      return [];
+                      return measurements;
                     });
                   };
                   return [...content.children].map(n=>({
