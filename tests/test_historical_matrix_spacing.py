@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from import_historical_question_content import Renderer
 class HistoricalMatrixTests(unittest.TestCase):
+ def test_augmented_array_preserves_divider_and_stretches_brackets(self):
+  html='<math display="block"><mrow><mo>[</mo><mtable columnalign="center" columnlines="none solid none"><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mfrac><mn>1</mn><mn>12</mn></mfrac></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>'
+  result=Renderer(None).text(BeautifulSoup(html,'html.parser').math)
+  self.assertEqual(result,'$$\n'+r'\left[\begin{array}{cc|cc}1 & 0 & 1 & 0 \\ 0 & \frac{1}{12} & 0 & 1\end{array}\right]'+'\n$$')
  def test_nested_determinant_keeps_outer_derivation(self):
   html='<math display="block"><mtable columnalign="right left"><mtr><mtd><mi>D</mi></mtd><mtd><mo>=</mo><mrow><mo>|</mo><mtable columnspacing="1em"><mtr><mtd><mn>1</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>3</mn></mtd></mtr></mtable><mo>|</mo></mrow></mtd></mtr><mtr><mtd></mtd><mtd><mo>=</mo><mo>−</mo><mn>9</mn></mtd></mtr></mtable></math>'
   result=Renderer(None).text(BeautifulSoup(html,'html.parser').math)

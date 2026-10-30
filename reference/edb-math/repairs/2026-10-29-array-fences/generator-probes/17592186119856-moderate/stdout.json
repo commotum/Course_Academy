@@ -1,0 +1,278 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119856,
+      "id": "fac58a79-2d3f-5ad3-b1ab-c5ce279c4ebe",
+      "title": "Finding the Value of an Unknown Such That a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "f117b59e-dbff-524b-a9b2-5350ffa6b8ee",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the value of $k$ such that $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$, where\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}-2 \\\\ 4 \\\\ 3\\end{bmatrix},\\qquad\\mathbf{a}_2=\\begin{bmatrix}3 \\\\ -6 \\\\ -3\\end{bmatrix},\\qquad\\mathbf{b}=\\begin{bmatrix}-14 \\\\ k \\\\ 18\\end{bmatrix}.\n$$\n\n",
+      ":question/worked-solution": "By definition, $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$ exactly when $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2=\\mathbf{b}$ has a solution. Equating coordinates gives\n\n$$\n\\left\\{\\begin{aligned}- 2 x_{1} + 3 x_{2} &=-14 \\\\ 4 x_{1} - 6 x_{2} &=k \\\\ 3 x_{1} - 3 x_{2} &=18\\end{aligned}\\right.\n$$\n\nForm the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}-2 & 3 & -14 \\\\ 4 & -6 & k \\\\ 3 & -3 & 18\\end{array}\\right]\n$$\n\nPlace the two known-coordinate equations first (a row permutation).\n\n$$\n\\left[\\begin{array}{cc|c}-2 & 3 & -14 \\\\ 3 & -3 & 18 \\\\ 4 & -6 & k\\end{array}\\right]\n$$\n\nApply $R_1\\leftarrow \\left(- \\frac{1}{2}\\right)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{3}{2} & 7 \\\\ 3 & -3 & 18 \\\\ 4 & -6 & k\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-(3)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{3}{2} & 7 \\\\ 0 & \\frac{3}{2} & -3 \\\\ 4 & -6 & k\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-(4)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{3}{2} & 7 \\\\ 0 & \\frac{3}{2} & -3 \\\\ 0 & 0 & k - 28\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow \\left(\\frac{2}{3}\\right)R_2$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{3}{2} & 7 \\\\ 0 & 1 & -2 \\\\ 0 & 0 & k - 28\\end{array}\\right]\n$$\n\nThe last row represents $0x_1+0x_2=k - 28$. Consistency therefore requires\n\n$$\n\\begin{aligned}0 &=k - 28 \\\\ k &=28.\\end{aligned}\n$$\n\nThe pivot equations give $x_2=-2$ and $x_1=4$. These values also establish sufficiency:\n\n$$\n(4)\\mathbf{a}_1+(-2)\\mathbf{a}_2=\\begin{bmatrix}-14 \\\\ 28 \\\\ 18\\end{bmatrix}.\n$$\n\nTherefore, $k=28$ is the only value for which the vector lies in the span.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "13c8c267-ceeb-5901-935d-42b818bccca6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0ae492f8-b570-5882-a721-46a2a7d1c639",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28"
+            },
+            {
+              ":answer/id": "242956bd-742d-5c89-89ef-e34dbc16f2cf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-32"
+            },
+            {
+              ":answer/id": "468d7908-07c1-5ec1-80a2-96b2480e72cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "8d3b68ea-5e6a-5cec-b6e2-3b80bda1639e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            },
+            {
+              ":answer/id": "d8c42702-ed62-5cdc-a0c0-650dda76dd31",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0ae492f8-b570-5882-a721-46a2a7d1c639"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.0.1-content-identity",
+      "template": "span-parameter",
+      "profile": "contributions",
+      "rows": [
+        [
+          -2,
+          3
+        ],
+        [
+          4,
+          -6
+        ],
+        [
+          3,
+          -3
+        ]
+      ],
+      "rhs": [
+        -14,
+        "k",
+        18
+      ],
+      "source_ids": [
+        "f53bb678-a419-585c-a65e-c61f25afddb3",
+        "4e417e2f-54d8-52fa-a283-38ee2e22e96c"
+      ],
+      "target_coordinate": 1,
+      "combination": [
+        "4",
+        "-2"
+      ],
+      "final": "28",
+      "math_format": "course-academy-tex-v1",
+      "dependency_row": 0,
+      "dependency_scale": -2,
+      "attempts": 3,
+      "seed": 29102977,
+      "index": 0,
+      "batch_attempts": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119856,
+      "id": "fac58a79-2d3f-5ad3-b1ab-c5ce279c4ebe",
+      "title": "Finding the Value of an Unknown Such That a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "81926019-92b6-5da3-af06-8c483f812b22",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the value of $k$ such that $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$, where\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}-1 \\\\ -3 \\\\ 1\\end{bmatrix},\\qquad\\mathbf{a}_2=\\begin{bmatrix}1 \\\\ 3 \\\\ 2\\end{bmatrix},\\qquad\\mathbf{b}=\\begin{bmatrix}6 \\\\ k \\\\ 3\\end{bmatrix}.\n$$\n\n",
+      ":question/worked-solution": "By definition, $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$ exactly when $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2=\\mathbf{b}$ has a solution. Equating coordinates gives\n\n$$\n\\left\\{\\begin{aligned}- x_{1} + x_{2} &=6 \\\\ - 3 x_{1} + 3 x_{2} &=k \\\\ x_{1} + 2 x_{2} &=3\\end{aligned}\\right.\n$$\n\nForm the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}-1 & 1 & 6 \\\\ -3 & 3 & k \\\\ 1 & 2 & 3\\end{array}\\right]\n$$\n\nPlace the two known-coordinate equations first (a row permutation).\n\n$$\n\\left[\\begin{array}{cc|c}-1 & 1 & 6 \\\\ 1 & 2 & 3 \\\\ -3 & 3 & k\\end{array}\\right]\n$$\n\nApply $R_1\\leftarrow (-1)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & -1 & -6 \\\\ 1 & 2 & 3 \\\\ -3 & 3 & k\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-(1)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & -1 & -6 \\\\ 0 & 3 & 9 \\\\ -3 & 3 & k\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-(-3)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & -1 & -6 \\\\ 0 & 3 & 9 \\\\ 0 & 0 & k - 18\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow \\left(\\frac{1}{3}\\right)R_2$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & -1 & -6 \\\\ 0 & 1 & 3 \\\\ 0 & 0 & k - 18\\end{array}\\right]\n$$\n\nThe last row represents $0x_1+0x_2=k - 18$. Consistency therefore requires\n\n$$\n\\begin{aligned}0 &=k - 18 \\\\ k &=18.\\end{aligned}\n$$\n\nThe pivot equations give $x_2=3$ and $x_1=-3$. These values also establish sufficiency:\n\n$$\n(-3)\\mathbf{a}_1+(3)\\mathbf{a}_2=\\begin{bmatrix}6 \\\\ 18 \\\\ 3\\end{bmatrix}.\n$$\n\nTherefore, $k=18$ is the only value for which the vector lies in the span.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c328aa5a-9dfb-5ba4-9097-9ffc24862d95",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1ab39395-d585-5966-9b46-fde25b65ddb4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-9"
+            },
+            {
+              ":answer/id": "e50a3ad5-6cf7-52b6-9447-b199aed06a9b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "db2feef1-3529-58cb-9a10-bd979255d33a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "3f14d97e-43a1-5559-beb7-c0945bd4b19c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            },
+            {
+              ":answer/id": "9d7c55d7-c67f-55b1-b007-781121d62f9e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3f14d97e-43a1-5559-beb7-c0945bd4b19c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.0.1-content-identity",
+      "template": "span-parameter",
+      "profile": "coordinates",
+      "rows": [
+        [
+          -1,
+          1
+        ],
+        [
+          -3,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "rhs": [
+        6,
+        "k",
+        3
+      ],
+      "source_ids": [
+        "f53bb678-a419-585c-a65e-c61f25afddb3",
+        "4e417e2f-54d8-52fa-a283-38ee2e22e96c"
+      ],
+      "target_coordinate": 1,
+      "combination": [
+        "-3",
+        "3"
+      ],
+      "final": "18",
+      "math_format": "course-academy-tex-v1",
+      "dependency_row": 0,
+      "dependency_scale": 3,
+      "attempts": 1,
+      "seed": 29102977,
+      "index": 1,
+      "batch_attempts": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119856,
+      "id": "fac58a79-2d3f-5ad3-b1ab-c5ce279c4ebe",
+      "title": "Finding the Value of an Unknown Such That a Vector Lies in the Span of Given Vectors"
+    },
+    "question": {
+      ":question/id": "d3ce2b79-1fe9-5c61-9659-3b402c11c62e",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the value of $k$ such that $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$, where\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}-3 \\\\ -1 \\\\ 1\\end{bmatrix},\\qquad\\mathbf{a}_2=\\begin{bmatrix}2 \\\\ -2 \\\\ 2\\end{bmatrix},\\qquad\\mathbf{b}=\\begin{bmatrix}-4 \\\\ -12 \\\\ k\\end{bmatrix}.\n$$\n\n",
+      ":question/worked-solution": "By definition, $\\mathbf{b}\\in\\operatorname{Span}\\{\\mathbf{a}_1,\\mathbf{a}_2\\}$ exactly when $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2=\\mathbf{b}$ has a solution. Equating coordinates gives\n\n$$\n\\left\\{\\begin{aligned}- 3 x_{1} + 2 x_{2} &=-4 \\\\ - x_{1} - 2 x_{2} &=-12 \\\\ x_{1} + 2 x_{2} &=k\\end{aligned}\\right.\n$$\n\nForm the augmented matrix:\n\n$$\n\\left[\\begin{array}{cc|c}-3 & 2 & -4 \\\\ -1 & -2 & -12 \\\\ 1 & 2 & k\\end{array}\\right]\n$$\n\nApply $R_1\\leftarrow \\left(- \\frac{1}{3}\\right)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{2}{3} & \\frac{4}{3} \\\\ -1 & -2 & -12 \\\\ 1 & 2 & k\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-(-1)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{2}{3} & \\frac{4}{3} \\\\ 0 & - \\frac{8}{3} & - \\frac{32}{3} \\\\ 1 & 2 & k\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-(1)R_1$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{2}{3} & \\frac{4}{3} \\\\ 0 & - \\frac{8}{3} & - \\frac{32}{3} \\\\ 0 & \\frac{8}{3} & k - \\frac{4}{3}\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow \\left(- \\frac{3}{8}\\right)R_2$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{2}{3} & \\frac{4}{3} \\\\ 0 & 1 & 4 \\\\ 0 & \\frac{8}{3} & k - \\frac{4}{3}\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-\\left(\\frac{8}{3}\\right)R_2$.\n\n$$\n\\left[\\begin{array}{cc|c}1 & - \\frac{2}{3} & \\frac{4}{3} \\\\ 0 & 1 & 4 \\\\ 0 & 0 & k - 12\\end{array}\\right]\n$$\n\nThe last row represents $0x_1+0x_2=k - 12$. Consistency therefore requires\n\n$$\n\\begin{aligned}0 &=k - 12 \\\\ k &=12.\\end{aligned}\n$$\n\nThe pivot equations give $x_2=4$ and $x_1=4$. These values also establish sufficiency:\n\n$$\n(4)\\mathbf{a}_1+(4)\\mathbf{a}_2=\\begin{bmatrix}-4 \\\\ -12 \\\\ 12\\end{bmatrix}.\n$$\n\nTherefore, $k=12$ is the only value for which the vector lies in the span.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9ce99698-f66e-5c0b-aca6-28a8da799adf",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b8c72120-0280-50d5-a6a3-e1577f824820",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-12"
+            },
+            {
+              ":answer/id": "051ccf4d-6723-596d-a473-2563d1c3a5ac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-28"
+            },
+            {
+              ":answer/id": "d108794d-fafc-5d8b-9f0d-a9e2a57f3388",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4"
+            },
+            {
+              ":answer/id": "ae45b59f-cd33-5068-83b0-2aca3abea4c5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "c2ddc184-e63b-562d-b88e-5814173a6072",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c2ddc184-e63b-562d-b88e-5814173a6072"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.0.1-content-identity",
+      "template": "span-parameter",
+      "profile": "coordinates",
+      "rows": [
+        [
+          -3,
+          2
+        ],
+        [
+          -1,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "rhs": [
+        -4,
+        -12,
+        "k"
+      ],
+      "source_ids": [
+        "f53bb678-a419-585c-a65e-c61f25afddb3",
+        "4e417e2f-54d8-52fa-a283-38ee2e22e96c"
+      ],
+      "target_coordinate": 2,
+      "combination": [
+        "4",
+        "4"
+      ],
+      "final": "12",
+      "math_format": "course-academy-tex-v1",
+      "dependency_row": 1,
+      "dependency_scale": -1,
+      "attempts": 2,
+      "seed": 29102977,
+      "index": 2,
+      "batch_attempts": 1
+    }
+  }
+]

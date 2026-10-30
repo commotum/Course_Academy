@@ -1,0 +1,577 @@
+[
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}0 \\\\ 1 \\\\ 2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}1 \\\\ -2 \\\\ -5\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}2 \\\\ -2 \\\\ -5\\end{bmatrix}.\n$$\n\nAssume that $x_1,x_2,x_3$ are real numbers. Use row reduction to decide which statements are true.\n\nI. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.\n\nII. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.\n\nIII. The equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ has infinitely many solutions with coefficients not all zero.\n\nChoose the correct combination.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_2+2x_3 &=0 \\\\ x_1-2x_2-2x_3 &=0 \\\\ 2x_1-5x_2-5x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}0 & 1 & 2 & 0 \\\\ 1 & -2 & -2 & 0 \\\\ 2 & -5 & -5 & 0\\end{array}\\right]\n$$\n\nApply $R_1\\leftrightarrow R_2$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 2 & -5 & -5 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & -1 & -1 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+R_2$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2,3$. Back substitution, beginning with the last row, gives\n\n$$\n\\begin{aligned}x_3&=0\\quad\\Longrightarrow\\quad x_3=0 \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=0 \\\\ x_1-2x_2-2x_3&=0\\quad\\Longrightarrow\\quad x_1=0\\end{aligned}\n$$\n\nThus $x_1=x_2=x_3=0$ is the only solution. The vectors are **linearly independent**; there is no nontrivial solution and no free variable.\n\nI is true. II is false. III is false. Choose “I only”.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I only",
+              ":answer/id": "d33012d5-47f5-5456-8e1f-8ba97f1a043e"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I and II and III only",
+              ":answer/id": "f3d9d829-9c8e-52d9-a8de-069d038c09f9"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "None of the statements are true",
+              ":answer/id": "f9ca79c6-dcef-506d-9fd8-aea4ece04ef8"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II and III only",
+              ":answer/id": "d479ff09-f5d9-5591-a104-5f9e63d43585"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II only",
+              ":answer/id": "cbb22c97-9f5d-5979-aae5-1a8e3e46a0d0"
+            }
+          ],
+          ":answer-field/id": "bc50b5e7-68e5-539b-9cb3-33b1d43384aa",
+          ":answer-field/correct": [
+            ":answer/id",
+            "d33012d5-47f5-5456-8e1f-8ba97f1a043e"
+          ]
+        }
+      ],
+      ":question/id": "64f2cf9e-dc20-5add-a2a2-007b95f8fd8c"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ],
+        [
+          2,
+          -5,
+          -5
+        ]
+      ],
+      "concepts": [
+        "independent",
+        "dependent",
+        "infinite"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "radio",
+      "challenge": "initial-exchange",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2,
+        3
+      ],
+      "operations": [
+        {
+          "kind": "swap",
+          "i": 0,
+          "j": 1
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "-2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 1,
+          "factor": "1"
+        }
+      ],
+      "states": [
+        [
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "2",
+            "-5",
+            "-5"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "2",
+            "-5",
+            "-5"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "-1",
+            "-1"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "1"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 0,
+      "difficulty": "hard"
+    }
+  },
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}1 \\\\ 2 \\\\ -2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}1 \\\\ 2 \\\\ -1\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}-2 \\\\ -4 \\\\ 6\\end{bmatrix}.\n$$\n\nAssume that $x_1,x_2,x_3$ are real numbers. Use row reduction to decide which statements are true.\n\nI. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.\n\nII. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.\n\nIII. The equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ has infinitely many solutions with coefficients not all zero.\n\nChoose the correct combination.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_1+x_2-2x_3 &=0 \\\\ 2x_1+2x_2-4x_3 &=0 \\\\ -2x_1-x_2+6x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 2 & 2 & -4 & 0 \\\\ -2 & -1 & 6 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ -2 & -1 & 6 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 1 & 2 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftrightarrow R_3$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2$. The variable $x_3$ is free. Set $x_3=t$ and back-substitute:\n\n$$\n\\begin{aligned}x_3&=t \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=-2t \\\\ x_1+x_2-2x_3&=0\\quad\\Longrightarrow\\quad x_1=4t\\end{aligned}\n$$\n\nHence\n\n$$\n(x_1,x_2,x_3)=(4t,-2t,t),\\qquad t\\in\\mathbb{R}.\n$$\n\nFor every $t\\ne0$, the coefficients are not all zero. Therefore there are infinitely many nontrivial solutions, and the vectors are **linearly dependent**. A zero final row imposes no additional constraint.\n\nI is false. II is true. III is true. Choose “II and III only”.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "None of the statements are true",
+              ":answer/id": "b4532b6b-171d-5c25-b1b6-ef3659bb4a1e"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II and III only",
+              ":answer/id": "fba12cc1-2aeb-5e93-b944-388ecbd9458d"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I only",
+              ":answer/id": "df32746f-5ea2-5934-833f-35b3e2c5c06f"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II only",
+              ":answer/id": "aca34a79-529a-5de5-89f4-0cb44d6e4ab6"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I and II only",
+              ":answer/id": "ac55685d-5475-527d-8738-f0b000433809"
+            }
+          ],
+          ":answer-field/id": "1734dd7e-dd63-5f1c-a79f-5c7a11ea5ed7",
+          ":answer-field/correct": [
+            ":answer/id",
+            "fba12cc1-2aeb-5e93-b944-388ecbd9458d"
+          ]
+        }
+      ],
+      ":question/id": "7778f810-245f-53df-a056-0c4fcb0b641f"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          2,
+          -4
+        ],
+        [
+          -2,
+          -1,
+          6
+        ]
+      ],
+      "concepts": [
+        "independent",
+        "dependent",
+        "infinite"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "radio",
+      "challenge": "interior-exchange",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2
+      ],
+      "operations": [
+        {
+          "kind": "add",
+          "i": 1,
+          "j": 0,
+          "factor": "-2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "2"
+        },
+        {
+          "kind": "swap",
+          "i": 1,
+          "j": 2
+        }
+      ],
+      "states": [
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "2",
+            "2",
+            "-4"
+          ],
+          [
+            "-2",
+            "-1",
+            "6"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "-2",
+            "-1",
+            "6"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 1,
+      "difficulty": "hard"
+    }
+  },
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}1 \\\\ -1 \\\\ -2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}-2 \\\\ 2 \\\\ 5\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}2 \\\\ -3 \\\\ -2\\end{bmatrix}.\n$$\n\nAssume that $x_1,x_2,x_3$ are real numbers. Use row reduction to decide which statements are true.\n\nSelect all that apply.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_1-2x_2+2x_3 &=0 \\\\ -x_1+2x_2-3x_3 &=0 \\\\ -2x_1+5x_2-2x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ -1 & 2 & -3 & 0 \\\\ -2 & 5 & -2 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2+R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 0 & -1 & 0 \\\\ -2 & 5 & -2 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 0 & -1 & 0 \\\\ 0 & 1 & 2 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftrightarrow R_3$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & -1 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2,3$. Back substitution, beginning with the last row, gives\n\n$$\n\\begin{aligned}-x_3&=0\\quad\\Longrightarrow\\quad x_3=0 \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=0 \\\\ x_1-2x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_1=0\\end{aligned}\n$$\n\nThus $x_1=x_2=x_3=0$ is the only solution. The vectors are **linearly independent**; there is no nontrivial solution and no free variable.\n\nEvery column of the coefficient matrix contains a pivot in row echelon form. This is true. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent. This is false. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent. This is true. “None of the above” is false.",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "7bc69c92-266e-5c4b-abbe-4d798863adbe"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "7ffbb268-ea41-52f6-89fe-2b00a286e696"
+            }
+          ],
+          ":answer-field/id": "54cffa8c-02ad-528d-9c18-c2bcce0d8c7e",
+          ":answer-field/correct": [
+            ":answer/id",
+            "7bc69c92-266e-5c4b-abbe-4d798863adbe"
+          ]
+        },
+        {
+          ":answer-field/key": "None of the above",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "6c6a101f-69d7-599b-8300-5a96e65a69d3"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "3129427b-5001-559f-95f9-601ed1478703"
+            }
+          ],
+          ":answer-field/id": "4834598a-481f-5720-8689-46f234736463",
+          ":answer-field/correct": [
+            ":answer/id",
+            "6c6a101f-69d7-599b-8300-5a96e65a69d3"
+          ]
+        },
+        {
+          ":answer-field/key": "Every column of the coefficient matrix contains a pivot in row echelon form.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "9285c0a5-8e30-5344-8d32-1812b1afafa0"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "eb7bef0c-fdf0-58d9-83f7-868bd19d29f8"
+            }
+          ],
+          ":answer-field/id": "4d260f96-fc6f-5882-b9c5-f953f2fdaaf5",
+          ":answer-field/correct": [
+            ":answer/id",
+            "eb7bef0c-fdf0-58d9-83f7-868bd19d29f8"
+          ]
+        },
+        {
+          ":answer-field/key": "The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "f0dd906c-8e8e-5c89-b7ca-30057157d464"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "7a75dc7b-b518-5ba3-bf76-202bbc285c55"
+            }
+          ],
+          ":answer-field/id": "5b48fca6-da5d-5aec-bb8e-029b6f1eb34f",
+          ":answer-field/correct": [
+            ":answer/id",
+            "7a75dc7b-b518-5ba3-bf76-202bbc285c55"
+          ]
+        }
+      ],
+      ":question/id": "ba0b36a2-c14c-5800-a42d-9e09a2e00075"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          1,
+          -2,
+          2
+        ],
+        [
+          -1,
+          2,
+          -3
+        ],
+        [
+          -2,
+          5,
+          -2
+        ]
+      ],
+      "concepts": [
+        "pivot",
+        "dependent",
+        "independent"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "checkbox",
+      "challenge": "interior-exchange",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2,
+        3
+      ],
+      "operations": [
+        {
+          "kind": "add",
+          "i": 1,
+          "j": 0,
+          "factor": "1"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "2"
+        },
+        {
+          "kind": "swap",
+          "i": 1,
+          "j": 2
+        }
+      ],
+      "states": [
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "-1",
+            "2",
+            "-3"
+          ],
+          [
+            "-2",
+            "5",
+            "-2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "-1"
+          ],
+          [
+            "-2",
+            "5",
+            "-2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "-1"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "-1"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 2,
+      "difficulty": "hard"
+    }
+  }
+]

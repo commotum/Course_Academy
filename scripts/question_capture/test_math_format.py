@@ -62,6 +62,17 @@ class MathContentTests(unittest.TestCase):
         spaced = r'[\quad ' + array + r'\,]'
         self.assertEqual(scalable_array_fences(spaced), r'\left[\quad ' + array + r'\,\right]')
 
+    def test_capture_normalizes_array_choices_and_updates_matching_correct_value(self):
+        bad = r'|\begin{array}{c|c}a&b\\c&d\end{array}|'
+        source = {'problem': '$' + bad + '$', 'worked_solution': '$' + bad + '$',
+                  'answer_fields': [{'correct_value': bad, 'choices': [{'type': 'math', 'value': bad}]}]}
+        result = normalize_capture_question(source)
+        good = r'\left' + bad[:-1] + r'\right|'
+        self.assertEqual(result['problem'], '$' + good + '$')
+        self.assertEqual(result['answer_fields'][0]['correct_value'], good)
+        self.assertEqual(result['answer_fields'][0]['choices'][0]['value'], good)
+        self.assertEqual(source['answer_fields'][0]['correct_value'], bad)
+
     def test_visible_aligned_prefix_survives_optional_placement_parsing(self):
         value = r'\begin{aligned}[A\,|\,I] &= M\end{aligned}'
         guarded = r'\begin{aligned}{}[A\,|\,I] &= M\end{aligned}'

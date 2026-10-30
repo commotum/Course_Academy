@@ -1,0 +1,580 @@
+[
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}1 \\\\ 1 \\\\ 2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}-2 \\\\ -1 \\\\ -5\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}-2 \\\\ 0 \\\\ -5\\end{bmatrix}.\n$$\n\nFor real $x_1,x_2,x_3$, form the equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$. Its augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 1 & -1 & 0 & 0 \\\\ 2 & -5 & -5 & 0\\end{array}\\right]\n$$\n\nCarry out these operations in the order shown: $R_2\\leftarrow R_2-R_1$; then $R_3\\leftarrow R_3-2R_1$; then $R_3\\leftarrow R_3+R_2$. Use the resulting pivots and free variables to decide which statements are true.\n\nI. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.\n\nII. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.\n\nIII. The equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ has infinitely many solutions with coefficients not all zero.\n\nChoose the correct combination.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_1-2x_2-2x_3 &=0 \\\\ x_1-x_2 &=0 \\\\ 2x_1-5x_2-5x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 1 & -1 & 0 & 0 \\\\ 2 & -5 & -5 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 2 & -5 & -5 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & -1 & -1 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+R_2$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 1 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2,3$. Back substitution, beginning with the last row, gives\n\n$$\n\\begin{aligned}x_3&=0\\quad\\Longrightarrow\\quad x_3=0 \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=0 \\\\ x_1-2x_2-2x_3&=0\\quad\\Longrightarrow\\quad x_1=0\\end{aligned}\n$$\n\nThus $x_1=x_2=x_3=0$ is the only solution. The vectors are **linearly independent**; there is no nontrivial solution and no free variable.\n\nI is true. II is false. III is false. Choose “I only”.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I only",
+              ":answer/id": "c7cf1886-ddc9-5036-9c83-5bc5a72b0476"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II and III only",
+              ":answer/id": "69383234-d1b9-5115-8fc5-b650e30af01d"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "None of the statements are true",
+              ":answer/id": "8d06ce56-9040-5b51-b6d0-fb5be65293d2"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I and II only",
+              ":answer/id": "de08498e-3a4b-51f1-9c54-1608ec483a9f"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "III only",
+              ":answer/id": "edbf6c2f-a7ba-5d10-9db4-2a6bb6cd7c65"
+            }
+          ],
+          ":answer-field/id": "3bdab9b9-97d9-5642-9993-889560ea38fd",
+          ":answer-field/correct": [
+            ":answer/id",
+            "c7cf1886-ddc9-5036-9c83-5bc5a72b0476"
+          ]
+        }
+      ],
+      ":question/id": "3023929d-e55b-5369-b322-0a8b5a9278d7"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -1,
+          0
+        ],
+        [
+          2,
+          -5,
+          -5
+        ]
+      ],
+      "concepts": [
+        "independent",
+        "dependent",
+        "infinite"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "radio",
+      "challenge": "direct",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2,
+        3
+      ],
+      "operations": [
+        {
+          "kind": "add",
+          "i": 1,
+          "j": 0,
+          "factor": "-1"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "-2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 1,
+          "factor": "1"
+        }
+      ],
+      "states": [
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "1",
+            "-1",
+            "0"
+          ],
+          [
+            "2",
+            "-5",
+            "-5"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "2",
+            "-5",
+            "-5"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "-1",
+            "-1"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "1"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 0,
+      "difficulty": "easy"
+    }
+  },
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}1 \\\\ 2 \\\\ -2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}1 \\\\ 3 \\\\ -3\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}-2 \\\\ -2 \\\\ 2\\end{bmatrix}.\n$$\n\nFor real $x_1,x_2,x_3$, form the equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$. Its augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 2 & 3 & -2 & 0 \\\\ -2 & -3 & 2 & 0\\end{array}\\right]\n$$\n\nCarry out these operations in the order shown: $R_2\\leftarrow R_2-2R_1$; then $R_3\\leftarrow R_3+2R_1$; then $R_3\\leftarrow R_3+R_2$. Use the resulting pivots and free variables to decide which statements are true.\n\nI. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.\n\nII. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.\n\nIII. The equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ has infinitely many solutions with coefficients not all zero.\n\nChoose the correct combination.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_1+x_2-2x_3 &=0 \\\\ 2x_1+3x_2-2x_3 &=0 \\\\ -2x_1-3x_2+2x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 2 & 3 & -2 & 0 \\\\ -2 & -3 & 2 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2-2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ -2 & -3 & 2 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & -1 & -2 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+R_2$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & 1 & -2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2$. The variable $x_3$ is free. Set $x_3=t$ and back-substitute:\n\n$$\n\\begin{aligned}x_3&=t \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=-2t \\\\ x_1+x_2-2x_3&=0\\quad\\Longrightarrow\\quad x_1=4t\\end{aligned}\n$$\n\nHence\n\n$$\n(x_1,x_2,x_3)=(4t,-2t,t),\\qquad t\\in\\mathbb{R}.\n$$\n\nFor every $t\\ne0$, the coefficients are not all zero. Therefore there are infinitely many nontrivial solutions, and the vectors are **linearly dependent**. A zero final row imposes no additional constraint.\n\nI is false. II is true. III is true. Choose “II and III only”.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "I only",
+              ":answer/id": "91709b78-7abc-5643-a1c4-2290a6ef1d97"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II and III only",
+              ":answer/id": "24bbf1ef-a3b0-5f40-b9af-9719913aaeee"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "None of the statements are true",
+              ":answer/id": "35731e83-e00f-531d-ba33-61d8cce03799"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "III only",
+              ":answer/id": "a6933cb6-b2d2-5187-89e7-71296ca4ee29"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "II only",
+              ":answer/id": "f6b43c48-2415-55b9-87fb-a0ff8a775fe1"
+            }
+          ],
+          ":answer-field/id": "f903294c-bfe6-5b5d-8bbd-783f26bc2f21",
+          ":answer-field/correct": [
+            ":answer/id",
+            "24bbf1ef-a3b0-5f40-b9af-9719913aaeee"
+          ]
+        }
+      ],
+      ":question/id": "3b0e7267-d24e-5fc7-8d8e-0add02eac830"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          -2,
+          -3,
+          2
+        ]
+      ],
+      "concepts": [
+        "independent",
+        "dependent",
+        "infinite"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "radio",
+      "challenge": "direct",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2
+      ],
+      "operations": [
+        {
+          "kind": "add",
+          "i": 1,
+          "j": 0,
+          "factor": "-2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 1,
+          "factor": "1"
+        }
+      ],
+      "states": [
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "2",
+            "3",
+            "-2"
+          ],
+          [
+            "-2",
+            "-3",
+            "2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "-2",
+            "-3",
+            "2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "-1",
+            "-2"
+          ]
+        ],
+        [
+          [
+            "1",
+            "1",
+            "-2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 1,
+      "difficulty": "easy"
+    }
+  },
+  {
+    "knowledge_point": 17592186119925,
+    "question": {
+      ":question/problem": "Consider the following vectors:\n\n$$\n\\mathbf{a}_1=\\begin{bmatrix}1 \\\\ -1 \\\\ -2\\end{bmatrix},\\qquad \\mathbf{a}_2=\\begin{bmatrix}-2 \\\\ 3 \\\\ 5\\end{bmatrix},\\qquad \\mathbf{a}_3=\\begin{bmatrix}2 \\\\ 0 \\\\ -3\\end{bmatrix}.\n$$\n\nFor real $x_1,x_2,x_3$, form the equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$. Its augmented matrix is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ -1 & 3 & 0 & 0 \\\\ -2 & 5 & -3 & 0\\end{array}\\right]\n$$\n\nCarry out these operations in the order shown: $R_2\\leftarrow R_2+R_1$; then $R_3\\leftarrow R_3+2R_1$; then $R_3\\leftarrow R_3-R_2$. Use the resulting pivots and free variables to decide which statements are true.\n\nSelect all that apply.",
+      ":question/worked-solution": "Place the three vectors in the columns of the coefficient matrix. The homogeneous equation $x_1\\mathbf{a}_1+x_2\\mathbf{a}_2+x_3\\mathbf{a}_3=\\mathbf{0}$ corresponds to\n\n$$\n\\left\\{\\begin{aligned}x_1-2x_2+2x_3 &=0 \\\\ -x_1+3x_2 &=0 \\\\ -2x_1+5x_2-3x_3 &=0\\end{aligned}\\right.\n$$\n\nAppend the zero right-hand side and use the following row operations in order.\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ -1 & 3 & 0 & 0 \\\\ -2 & 5 & -3 & 0\\end{array}\\right]\n$$\n\nApply $R_2\\leftarrow R_2+R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ -2 & 5 & -3 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3+2R_1$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 1 & 1 & 0\\end{array}\\right]\n$$\n\nApply $R_3\\leftarrow R_3-R_2$:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -2 & 2 & 0 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & -1 & 0\\end{array}\\right]\n$$\n\nThe pivot columns are $1,2,3$. Back substitution, beginning with the last row, gives\n\n$$\n\\begin{aligned}-x_3&=0\\quad\\Longrightarrow\\quad x_3=0 \\\\ x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_2=0 \\\\ x_1-2x_2+2x_3&=0\\quad\\Longrightarrow\\quad x_1=0\\end{aligned}\n$$\n\nThus $x_1=x_2=x_3=0$ is the only solution. The vectors are **linearly independent**; there is no nontrivial solution and no free variable.\n\nEvery column of the coefficient matrix contains a pivot in row echelon form. This is true. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent. This is false. The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent. This is true. “None of the above” is false.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly independent.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "fc9a54ab-40cc-577a-bdec-fab62889cc3a"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "270cd547-65ce-5ba3-9c7f-e8c89529fcb2"
+            }
+          ],
+          ":answer-field/id": "127e78dc-c4ab-5991-810c-391438f2d377",
+          ":answer-field/correct": [
+            ":answer/id",
+            "270cd547-65ce-5ba3-9c7f-e8c89529fcb2"
+          ]
+        },
+        {
+          ":answer-field/key": "Every column of the coefficient matrix contains a pivot in row echelon form.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "fb973ba1-947a-50b1-a175-4f0de567ac21"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "58e4b4c0-33f6-54e2-9f7d-e63a144a593b"
+            }
+          ],
+          ":answer-field/id": "c8a3b077-9413-5340-8de3-38e994dffffa",
+          ":answer-field/correct": [
+            ":answer/id",
+            "58e4b4c0-33f6-54e2-9f7d-e63a144a593b"
+          ]
+        },
+        {
+          ":answer-field/key": "The vectors $\\mathbf{a}_1,\\mathbf{a}_2,\\mathbf{a}_3$ are linearly dependent.",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "4fb4d4f1-4f71-5a8f-a46c-162281e69dfb"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "4186910c-8901-57ba-9a9d-2a6d367f3a31"
+            }
+          ],
+          ":answer-field/id": "70467481-fc53-59e1-a267-c5fef0a65563",
+          ":answer-field/correct": [
+            ":answer/id",
+            "4fb4d4f1-4f71-5a8f-a46c-162281e69dfb"
+          ]
+        },
+        {
+          ":answer-field/key": "None of the above",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false",
+              ":answer/id": "29dc9351-0fc5-59c4-a087-a7b64abcf019"
+            },
+            {
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true",
+              ":answer/id": "2b9d5831-49ff-5b8b-b4ef-9cacfa9dc3a1"
+            }
+          ],
+          ":answer-field/id": "6105cbf1-9fd6-5868-93cd-73d737efcf1a",
+          ":answer-field/correct": [
+            ":answer/id",
+            "29dc9351-0fc5-59c4-a087-a7b64abcf019"
+          ]
+        }
+      ],
+      ":question/id": "fa01885e-04b5-5b1c-9361-67137ce9a414"
+    },
+    "generation": {
+      "version": "row-reduction-3",
+      "matrix": [
+        [
+          1,
+          -2,
+          2
+        ],
+        [
+          -1,
+          3,
+          0
+        ],
+        [
+          -2,
+          5,
+          -3
+        ]
+      ],
+      "concepts": [
+        "pivot",
+        "dependent",
+        "independent"
+      ],
+      "target": "homogeneous solution classification",
+      "shape": "checkbox",
+      "challenge": "direct",
+      "source_ids": [
+        17592186119499
+      ],
+      "pivots": [
+        1,
+        2,
+        3
+      ],
+      "operations": [
+        {
+          "kind": "add",
+          "i": 1,
+          "j": 0,
+          "factor": "1"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 0,
+          "factor": "2"
+        },
+        {
+          "kind": "add",
+          "i": 2,
+          "j": 1,
+          "factor": "-1"
+        }
+      ],
+      "states": [
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "-1",
+            "3",
+            "0"
+          ],
+          [
+            "-2",
+            "5",
+            "-3"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "-2",
+            "5",
+            "-3"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "1",
+            "1"
+          ]
+        ],
+        [
+          [
+            "1",
+            "-2",
+            "2"
+          ],
+          [
+            "0",
+            "1",
+            "2"
+          ],
+          [
+            "0",
+            "0",
+            "-1"
+          ]
+        ]
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "ordinal": 2,
+      "difficulty": "easy"
+    }
+  }
+]
