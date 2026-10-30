@@ -1,0 +1,212 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "b794d8a0-026f-5c9d-a54d-23904b4cfa25",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Let $D=\\{(x,y):x^{2}+(y+\\frac{3}{2})^{2}\\leq\\frac{9}{4},\\ x\\leq0\\}$. Rewrite\n\n$$\n\\iint_D \\ln{\\left(x^{2} + y^{2} + 1 \\right)}\\,\\mathrm{d}A.\n$$\n\nSelect the polar-coordinate setup whose bounds cover $D$ once with $r\\geq0$ and whose integrand includes the area factor. Do not evaluate the integral.",
+      ":question/worked-solution": "Use $x=r\\cos\\theta$, $y=r\\sin\\theta$, and $\\mathrm{d}A=r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$. The full disk has radius $\\frac{3}{2}$ and center $(0,- \\frac{3}{2})$.\n\n**Radial bounds.** Expanding the disk inequality gives\n\n$$\n\\begin{aligned}x^2+y^2+3y&\\leq0\\\\r^2+3r\\sin{\\left(\\theta \\right)}&\\leq0\\\\r(r-(- 3 \\sin{\\left(\\theta \\right)}))&\\leq0.\\end{aligned}\n$$\n\nFor $r>0$, divide by $r$; the origin is included as well. Thus $0\\leq r\\leq - 3 \\sin{\\left(\\theta \\right)}$.\n\n**Angular bounds.** The upper radial bound must be nonnegative. The full disk permits $\\pi\\leq\\theta\\leq2 \\pi$. Intersect this sweep with $x\\leq0$, or $r\\cos\\theta\\leq0$. Choose $\\pi\\leq\\theta\\leq\\frac{3 \\pi}{2}$. Every interior point is covered once.\n\n![Region, representative radial segment and angular sweep](/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-29-array-fences/generator-probes/17592186129275-hard/fc8ead294cae14190f3a.png)\n\n**Transformed integrand.** Use $\\cos^2\\theta+\\sin^2\\theta=1$. The density substitution and area factor give\n\n$$\n\\begin{aligned}\\ln{\\left(x^{2} + y^{2} + 1 \\right)}&=\\ln{\\left(r^{2} \\sin^{2}{\\left(\\theta \\right)} + r^{2} \\cos^{2}{\\left(\\theta \\right)} + 1 \\right)}\\\\&=\\ln{\\left(r^{2} + 1 \\right)}\\\\\\ln{\\left(x^{2} + y^{2} + 1 \\right)}\\,\\mathrm{d}A&=r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta\\end{aligned}\n$$\n\nTherefore the required setup is\n\n$$\n\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{- 3 \\sin{\\left(\\theta \\right)}}r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta.\n$$\n\n**Other choices.** $\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{- 3 \\sin{\\left(\\theta \\right)}}\\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The area factor is missing. $\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{\\frac{3}{2}}\\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The center-to-boundary radius is incorrectly used as a constant polar upper bound. The area factor is missing. $\\displaystyle\\int_{- \\frac{\\pi}{2}}^{0}\\int_{0}^{3 \\cos{\\left(\\theta \\right)}}r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. $\\displaystyle\\int_{- \\frac{\\pi}{2}}^{0}\\int_{0}^{3 \\cos{\\left(\\theta \\right)}}r^{2} \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. The area factor was squared instead of used once.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3429b6a4-e9e3-56e4-bb51-2ea1c7d4cb6d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "30016606-ee28-5cdf-b332-76d17567def4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{- 3 \\sin{\\left(\\theta \\right)}}r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "b2604ec4-dc21-56ba-bd97-81c51c3f0f06",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{- \\frac{\\pi}{2}}^{0}\\int_{0}^{3 \\cos{\\left(\\theta \\right)}}r^{2} \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "101919c5-7603-52b3-9111-d460d0bcb83b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{- \\frac{\\pi}{2}}^{0}\\int_{0}^{3 \\cos{\\left(\\theta \\right)}}r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "d79dbdb2-23e0-5c23-8e07-f8bdfc54d49a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{\\frac{3}{2}}\\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "6af61d43-b6b1-5e22-b612-d8a00f4119b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{- 3 \\sin{\\left(\\theta \\right)}}\\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "30016606-ee28-5cdf-b332-76d17567def4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-setup-3",
+      "template": "log",
+      "profile": "mixed",
+      "parameters": {
+        "axis": "y",
+        "sign": -1,
+        "part": "left",
+        "radius": "3/2"
+      },
+      "source_question_ids": [
+        "b1de76f2-2bbf-5f6f-8001-65ebe80eec1b"
+      ],
+      "final_expression": "\\displaystyle\\int_{\\pi}^{\\frac{3 \\pi}{2}}\\int_{0}^{- 3 \\sin{\\left(\\theta \\right)}}r \\ln{\\left(r^{2} + 1 \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta",
+      "domain": "r>=0; tangent axis disk; once-only interior coverage",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 0
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "4308b085-f8e6-5206-94ee-de9f775f88ed",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Let $D=\\{(x,y):x^{2}+(y+1)^{2}\\leq1,\\ x\\geq0\\}$. Rewrite\n\n$$\n\\iint_D x^{2} + y^{2}\\,\\mathrm{d}A.\n$$\n\nSelect the polar-coordinate setup whose bounds cover $D$ once with $r\\geq0$ and whose integrand includes the area factor. Do not evaluate the integral.",
+      ":question/worked-solution": "Use $x=r\\cos\\theta$, $y=r\\sin\\theta$, and $\\mathrm{d}A=r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$. The full disk has radius $1$ and center $(0,-1)$.\n\n**Radial bounds.** Expanding the disk inequality gives\n\n$$\n\\begin{aligned}x^2+y^2+2y&\\leq0\\\\r^2+2r\\sin{\\left(\\theta \\right)}&\\leq0\\\\r(r-(- 2 \\sin{\\left(\\theta \\right)}))&\\leq0.\\end{aligned}\n$$\n\nFor $r>0$, divide by $r$; the origin is included as well. Thus $0\\leq r\\leq - 2 \\sin{\\left(\\theta \\right)}$.\n\n**Angular bounds.** The upper radial bound must be nonnegative. The full disk permits $\\pi\\leq\\theta\\leq2 \\pi$. Intersect this sweep with $x\\geq0$, or $r\\cos\\theta\\geq0$. Choose $\\frac{3 \\pi}{2}\\leq\\theta\\leq2 \\pi$. Every interior point is covered once.\n\n![Region, representative radial segment and angular sweep](/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-29-array-fences/generator-probes/17592186129275-hard/680793990000f961fec9.png)\n\n**Transformed integrand.** Use $\\cos^2\\theta+\\sin^2\\theta=1$. The density substitution and area factor give\n\n$$\n\\begin{aligned}x^{2} + y^{2}&=r^{2} \\sin^{2}{\\left(\\theta \\right)} + r^{2} \\cos^{2}{\\left(\\theta \\right)}\\\\&=r^{2}\\\\x^{2} + y^{2}\\,\\mathrm{d}A&=r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta\\end{aligned}\n$$\n\nTherefore the required setup is\n\n$$\n\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta.\n$$\n\n**Other choices.** $\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r^{4}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The area factor was squared instead of used once. $\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{1}r^{2}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The center-to-boundary radius is incorrectly used as a constant polar upper bound. The area factor is missing. $\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{2 \\cos{\\left(\\theta \\right)}}r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. $\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{2 \\cos{\\left(\\theta \\right)}}r^{2}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. The area factor is missing.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "25b96fc7-70aa-59a3-a36f-13d096d07533",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "188af630-0686-5f05-a9b3-469fb8db4a50",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{2 \\cos{\\left(\\theta \\right)}}r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "0b6af708-35d6-55c6-bdb0-ab3cf396d9dd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r^{4}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "e3e12eb9-1101-5787-a52d-ef0b8c552d32",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{2 \\cos{\\left(\\theta \\right)}}r^{2}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "a0dc6c39-a94f-55dd-84f8-f3d8ad431d2c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{1}r^{2}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "c26d8462-7d5e-5d95-9e74-dd9f7362a724",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c26d8462-7d5e-5d95-9e74-dd9f7362a724"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-setup-3",
+      "template": "radial2",
+      "profile": "square",
+      "parameters": {
+        "axis": "y",
+        "sign": -1,
+        "part": "right",
+        "radius": "1"
+      },
+      "source_question_ids": [
+        "1b9a1961-cfec-5ea0-aa17-358f76216410"
+      ],
+      "final_expression": "\\displaystyle\\int_{\\frac{3 \\pi}{2}}^{2 \\pi}\\int_{0}^{- 2 \\sin{\\left(\\theta \\right)}}r^{3}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta",
+      "domain": "r>=0; tangent axis disk; once-only interior coverage",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129275,
+      "id": "de1091c5-d81a-565f-a281-b2fb0d00c973",
+      "title": "Rewriting a Double Integral Over a Circle or Part-Circle Not Centered at the Origin"
+    },
+    "question": {
+      ":question/id": "63570d4c-7a87-56ae-9f63-5345dd224826",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Let $D=\\{(x,y):x^{2}+(y-3)^{2}\\leq9,\\ x\\geq0\\}$. Rewrite\n\n$$\n\\iint_D x y^{2}\\,\\mathrm{d}A.\n$$\n\nSelect the polar-coordinate setup whose bounds cover $D$ once with $r\\geq0$ and whose integrand includes the area factor. Do not evaluate the integral.",
+      ":question/worked-solution": "Use $x=r\\cos\\theta$, $y=r\\sin\\theta$, and $\\mathrm{d}A=r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$. The full disk has radius $3$ and center $(0,3)$.\n\n**Radial bounds.** Expanding the disk inequality gives\n\n$$\n\\begin{aligned}x^2+y^2-6y&\\leq0\\\\r^2-6r\\sin{\\left(\\theta \\right)}&\\leq0\\\\r(r-(6 \\sin{\\left(\\theta \\right)}))&\\leq0.\\end{aligned}\n$$\n\nFor $r>0$, divide by $r$; the origin is included as well. Thus $0\\leq r\\leq 6 \\sin{\\left(\\theta \\right)}$.\n\n**Angular bounds.** The upper radial bound must be nonnegative. The full disk permits $0\\leq\\theta\\leq\\pi$. Intersect this sweep with $x\\geq0$, or $r\\cos\\theta\\geq0$. Choose $0\\leq\\theta\\leq\\frac{\\pi}{2}$. Every interior point is covered once.\n\n![Region, representative radial segment and angular sweep](/home/jake/Developer/Course_Academy/reference/edb-math/repairs/2026-10-29-array-fences/generator-probes/17592186129275-hard/d3e3c47f83568e38d2f9.png)\n\n**Transformed integrand.** The density substitution and area factor give\n\n$$\n\\begin{aligned}x y^{2}&=r^{3} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\x y^{2}\\,\\mathrm{d}A&=r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta\\end{aligned}\n$$\n\nTherefore the required setup is\n\n$$\n\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6 \\sin{\\left(\\theta \\right)}}r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta.\n$$\n\n**Other choices.** $\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6 \\sin{\\left(\\theta \\right)}}r^{2} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The area factor was divided out instead of multiplied in. $\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{3}r^{2} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: The center-to-boundary radius is incorrectly used as a constant polar upper bound. The area factor was divided out instead of multiplied in. $\\displaystyle\\int_{\\frac{\\pi}{2}}^{\\pi}\\int_{0}^{- 6 \\cos{\\left(\\theta \\right)}}r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. $\\displaystyle\\int_{\\frac{\\pi}{2}}^{\\pi}\\int_{0}^{- 6 \\cos{\\left(\\theta \\right)}}r^{3} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$: These bounds describe a different disk or part-disk, with a different center direction. The area factor is missing.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "15afd943-7f5f-5c29-8b4a-7d542f532906",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3ed561ce-3df5-57a1-a1e2-114283dd7a71",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\frac{\\pi}{2}}^{\\pi}\\int_{0}^{- 6 \\cos{\\left(\\theta \\right)}}r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "8e8a7c21-23a8-5646-be3c-f0670e376f5d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{3}r^{2} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "f40540f8-02ab-58f0-8454-5f128834b101",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6 \\sin{\\left(\\theta \\right)}}r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "f86c82ac-c61d-5de4-84fc-b30ee1856680",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6 \\sin{\\left(\\theta \\right)}}r^{2} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            },
+            {
+              ":answer/id": "762b2857-00b3-55ff-ac4d-64c4072176db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\displaystyle\\int_{\\frac{\\pi}{2}}^{\\pi}\\int_{0}^{- 6 \\cos{\\left(\\theta \\right)}}r^{3} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f40540f8-02ab-58f0-8454-5f128834b101"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "polar-setup-3",
+      "template": "xy2",
+      "profile": "divide",
+      "parameters": {
+        "axis": "y",
+        "sign": 1,
+        "part": "right",
+        "radius": "3"
+      },
+      "source_question_ids": [
+        "f578d29d-0823-5f21-864f-baa92f133476"
+      ],
+      "final_expression": "\\displaystyle\\int_{0}^{\\frac{\\pi}{2}}\\int_{0}^{6 \\sin{\\left(\\theta \\right)}}r^{4} \\sin^{2}{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\,\\mathrm{d}r\\,\\mathrm{d}\\theta",
+      "domain": "r>=0; tangent axis disk; once-only interior coverage",
+      "math_format": "course-academy-tex-v1",
+      "seed": 29102977,
+      "batch_index": 2
+    }
+  }
+]
