@@ -49,7 +49,7 @@ def plot_plan(bank, ts):
             pair_differences.append({'pair':[b,a],'pixels':pixels})
     for sample in points:
         if not ((sample>=low).all() and (sample<=high).all()):raise UnreadableBank('A table checkpoint is clipped')
-    return {'version':VERSION,'bounds':[[float(low[0]),float(high[0])],[float(low[1]),float(high[1])]],'minor_step':1,'major_step':2 if longest<=24 else 5,'image_pixels':IMAGE_PIXELS,'axes_rect':AXES_RECT,'label_points':LABEL_POINTS,'narrow_image_pixels':NARROW_IMAGE_PIXELS,'narrow_unit_pixels':grid_pixels,'pair_differences':pair_differences,'checkpoints':[p.tolist() for p in points],'choice_point_markers':False,'choice_coordinate_labels':False}
+    return {'version':VERSION,'bounds':[[float(low[0]),float(high[0])],[float(low[1]),float(high[1])]],'minor_step':1,'major_step':2 if longest<=24 else 5,'image_pixels':IMAGE_PIXELS,'axes_rect':AXES_RECT,'label_points':LABEL_POINTS,'label_placement':'outside-grid','narrow_image_pixels':NARROW_IMAGE_PIXELS,'narrow_unit_pixels':grid_pixels,'pair_differences':pair_differences,'checkpoints':[p.tolist() for p in points],'choice_point_markers':False,'choice_coordinate_labels':False}
 
 def validate_delivery_batch(records,kp_id,math_root=None,assets_directory=None):
     if int(kp_id)!=KP:return

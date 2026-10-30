@@ -5,7 +5,7 @@ os.environ.setdefault('MPLCONFIGDIR','/tmp/course-academy-parametric-mpl')
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator,FuncFormatter
+from matplotlib.ticker import MultipleLocator
 import numpy as np
 from parametric_plot_policy import plot_plan,coordinates,scalar,IMAGE_PIXELS,AXES_RECT,LABEL_POINTS
 
@@ -20,17 +20,14 @@ def render(data):
         ax.set_xlim(xl);ax.set_ylim(yl);ax.set_aspect('equal',adjustable='box')
         for axis in (ax.xaxis,ax.yaxis):
             axis.set_major_locator(MultipleLocator(plan['major_step']));axis.set_minor_locator(MultipleLocator(1))
-            axis.set_major_formatter(FuncFormatter(lambda value,pos:'' if abs(value)<1e-8 else f'{value:g}'))
         ax.grid(which='major',color='#bcbcbc',linewidth=.7);ax.grid(which='minor',color='#dedede',linewidth=.55)
         ax.set_axisbelow(True)
-        for name in ('left','bottom'):ax.spines[name].set_position('zero');ax.spines[name].set_color('#222');ax.spines[name].set_linewidth(1.1)
-        for name in ('right','top'):ax.spines[name].set_visible(False)
+        for spine in ax.spines.values():spine.set_visible(False)
         ax.tick_params(which='both',length=0,labelsize=LABEL_POINTS,pad=5)
-        ax.plot(1,0,'>k',transform=ax.get_yaxis_transform(),clip_on=False,markersize=5)
-        ax.plot(0,1,'^k',transform=ax.get_xaxis_transform(),clip_on=False,markersize=5)
+        ax.annotate('',(xl[1],0),(xl[0],0),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
+        ax.annotate('',(0,yl[1]),(0,yl[0]),arrowprops={'arrowstyle':'->','color':'#222','lw':1.1},annotation_clip=False)
         ax.annotate('$x$',(xl[1],0),xytext=(5,-6),textcoords='offset points',ha='left',va='top',fontsize=LABEL_POINTS+1)
         ax.annotate('$y$',(0,yl[1]),xytext=(5,2),textcoords='offset points',ha='left',va='bottom',fontsize=LABEL_POINTS+1)
-        ax.annotate('0',(0,0),xytext=(-6,-6),textcoords='offset points',ha='right',va='top',fontsize=LABEL_POINTS)
         ax.plot(xy[:,0],xy[:,1],color='#2477bc',lw=1.6)
         if i==5:
             points=np.array(plan['checkpoints'][role]);ax.plot(points[:,0],points[:,1],'o',color='#2477bc',markersize=4)
