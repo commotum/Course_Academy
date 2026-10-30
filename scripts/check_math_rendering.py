@@ -51,7 +51,8 @@ def check(items):
                     return [...n.querySelectorAll('[data-mml-node="mtable"]')].flatMap(t=>{
                       let child=t;
                       for(let level=0;level<4&&child.parentElement;level++,child=child.parentElement){
-                        const siblings=[...child.parentElement.children].filter(e=>e.getAttribute('data-mml-node')!=='mspace');
+                        const siblings=[...child.parentElement.children].filter(e=>e.getAttribute('data-mml-node')!=='mspace'&&
+                          !(e.getAttribute('data-mml-node')==='mstyle'&&e.getBoundingClientRect().height<0.1));
                         const i=siblings.indexOf(child),fences=[siblings[i-1],siblings[i+1]].filter(isFence);
                         if(fences.length)return [{table_height:t.getBoundingClientRect().height,
                           fence_heights:fences.map(e=>e.getBoundingClientRect().height)}];
