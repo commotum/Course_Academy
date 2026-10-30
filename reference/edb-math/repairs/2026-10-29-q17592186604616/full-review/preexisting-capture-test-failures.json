@@ -1,0 +1,28 @@
+{
+  "baseline_failures_reproduced": true,
+  "tests": 4,
+  "original_table_helper_used": true,
+  "failures": [
+    {
+      "test": "test_matrix_capture.MatrixCaptureTests.test_percent_identifier_is_literal_content_in_mathml",
+      "kind": "failure",
+      "details": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/test_matrix_capture.py\", line 49, in test_percent_identifier_is_literal_content_in_mathml\n    self.assertEqual(item['problem'], r'A 30% discount is $30\\%$.')\nAssertionError: 'A 30% discount is $30\\\\mathrm{\\\\%}$.' != 'A 30% discount is $30\\\\%$.'\n- A 30% discount is $30\\mathrm{\\%}$.\n?                       -------- -\n+ A 30% discount is $30\\%$.\n\n"
+    },
+    {
+      "test": "test_matrix_capture.MatrixCaptureTests.test_saved_four_by_three_matrix_retains_every_cell",
+      "kind": "failure",
+      "details": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/test_matrix_capture.py\", line 41, in test_saved_four_by_three_matrix_retains_every_cell\n    self.assertEqual(item['problem'], r'$\\begin{bmatrix}2 & -1 & 0 \\\\ -5 & 0 & -2 \\\\ -1 & 8 & 1 \\\\ 0 & 3 & -7\\end{bmatrix}$')\nAssertionError: '$$\\n\\\\begin{bmatrix}2 & -1 & 0 \\\\\\\\ -5 & 0[51 chars]\\n$$' != '$\\\\begin{bmatrix}2 & -1 & 0 \\\\\\\\ -5 & 0 & [45 chars]ix}$'\n- $$\n- \\begin{bmatrix}2 & -1 & 0 \\\\ -5 & 0 & -2 \\\\ -1 & 8 & 1 \\\\ 0 & 3 & -7\\end{bmatrix}\n?                                                                                  ^\n+ $\\begin{bmatrix}2 & -1 & 0 \\\\ -5 & 0 & -2 \\\\ -1 & 8 & 1 \\\\ 0 & 3 & -7\\end{bmatrix}$? +                                                                                 ^\n- $$\n"
+    },
+    {
+      "test": "test_capture.DOMTests.test_empty_zero_width_mathjax_formula_is_not_a_missing_visual_asset",
+      "kind": "failure",
+      "details": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/test_capture.py\", line 957, in test_empty_zero_width_mathjax_formula_is_not_a_missing_visual_asset\n    self.assertIn('| x | f(x) |',item['problem'])\nAssertionError: '| x | f(x) |' not found in '<div class=\"source-table-scroll\"><table class=\"source-table\" data-rules=\"none\"><tbody><tr data-next-row=\"true\"><td>x</td><td>f(x)</td></tr><tr><td>0</td><td>1</td></tr></tbody></table></div>\\n\\nFind the derivative.'\n"
+    },
+    {
+      "test": "test_capture.DOMTests.test_real_submitting_dropdown_checkpoint_recovers_without_submit",
+      "kind": "error",
+      "details": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/test_capture.py\", line 918, in test_real_submitting_dropdown_checkpoint_recovers_without_submit\n    reader.review(state,work,{})\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/browser.py\", line 735, in review\n    return self.activity(state, directory, topic)\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/browser.py\", line 1138, in activity\n    raise ValueError('Previous submission needs a complete saved result before advancing: ' + mid)\nValueError: Previous submission needs a complete saved result before advancing: q-278484\n"
+    }
+  ],
+  "database_writes": 0
+}
