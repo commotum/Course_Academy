@@ -140,13 +140,27 @@ pub fn lesson_steps(s: &EntitySnapshot, activity: u64) -> Result<Vec<LessonStep>
     Ok(result)
 }
 
+const UNSUPPORTED_BLANK_KEY:&str="this blank needs a symbolic grader before it can be served";
+
 pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     if s.entities.question_validated(question) {
         return Ok(());
     }
-    validate_response_question(s, question)?;
-    if has_free_fields(s, question)? {
-        return Err("free responses do not supply correctness observations for practice".into());
+    if s.entities.question_unsupported(question){return Err(UNSUPPORTED_BLANK_KEY.into());}
+    let validation=(|| -> Result<()> {
+        validate_response_question(s, question)?;
+        if has_free_fields(s, question)? {
+            return Err("free responses do not supply correctness observations for practice".into());
+        }
+        Ok(())
+    })();
+    if let Err(error)=validation {
+        // Support depends only on captured authored content and context. Keep
+        // this deterministic rejection alongside successful support, with the
+        // same scoped invalidation on every dependency edit. Missing references
+        // and other structural failures intentionally remain uncached.
+        if error==UNSUPPORTED_BLANK_KEY{s.entities.mark_question_unsupported(question);}
+        return Err(error);
     }
     s.entities.mark_question_validated(question);
     Ok(())
@@ -277,7 +291,7 @@ pub fn validate_response_question(s: &EntitySnapshot, question: u64) -> Result<(
                             .is_some_and(|values| values.iter().all(|v| symbolic::supports(v, context))) => {}
                 "answer.type/text" => {}
                 _ => {
-                    return Err("this blank needs a symbolic grader before it can be served".into());
+                    return Err(UNSUPPORTED_BLANK_KEY.into());
                 }
             }
         }
@@ -3148,6 +3162,28 @@ pub fn credit(
 pub(crate) mod tests {
     use super::*;
     use crate::core::Policy;
+
+    #[test]
+    fn unsupported_key_cache_survives_learner_updates_and_expires_on_key_repair() {
+        let mut s=fixture();
+        s.entities.get_mut(&200).unwrap().insert("answer-field/type".into(),json!("answer-field.type/blank"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("(x+y+z)^64"));
+        assert_eq!(validate_question(&s,100),Err(UNSUPPORTED_BLANK_KEY.into()));
+        assert!(s.entities.question_unsupported(100));
+        assert_eq!(validate_practice_question(&s,100),Err(UNSUPPORTED_BLANK_KEY.into()));
+        let mut learner=s.entity(1).unwrap().clone();
+        learner.insert("learner/daily-xp-goal".into(),json!(200));
+        s.replace_records(BTreeMap::from([(1,learner)]),s.basis_t+1).unwrap();
+        assert!(s.entities.question_unsupported(100));
+        let mut key=s.entity(300).unwrap().clone();
+        key.insert("answer/value".into(),json!("2"));
+        s.replace_records(BTreeMap::from([(300,key)]),s.basis_t+1).unwrap();
+        assert!(!s.entities.question_unsupported(100));
+        assert_eq!(validate_question(&s,100),Ok(()));
+        s.entities.get_mut(&100).unwrap().remove("question/problem");
+        assert!(validate_question(&s,100).is_err());
+        assert!(!s.entities.question_unsupported(100),"structural errors are not support rejections");
+    }
 
     #[test]
     fn whole_circle_equations_are_admitted_and_graded_without_response_writes() {

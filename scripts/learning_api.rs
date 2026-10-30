@@ -2316,7 +2316,7 @@ fn mutate_with_selection(
             .insert("learner/queue".into(), json!(queue));
         // Selection and preparation commit atomically. Exact retries replay this
         // transaction; they do not create a second pending attempt or unlock it.
-        forms.extend(queue_forms(&prospective, l, at)?);
+        if body["_deferQueue"] != true { forms.extend(queue_forms(&prospective, l, at)?); }
         return Ok((forms, json!({"queueTopic":true})));
     }
     if action == "target" {
@@ -2354,7 +2354,7 @@ fn mutate_with_selection(
             .get_mut(&l)
             .unwrap()
             .insert("learner/targets".into(), json!(targets));
-        forms.extend(queue_forms(&prospective, l, at)?);
+        if body["_deferQueue"] != true { forms.extend(queue_forms(&prospective, l, at)?); }
         return Ok((forms, json!({"targets":true})));
     }
     if action == "review-topic" {

@@ -135,6 +135,11 @@ class StudyOutbox:
             aliases = {key: value for key, value in state['aliases'].items() if key not in local}
             return self.normalize_ids(body, aliases)
 
+    def invalidate_plans(self):
+        """Local selection preferences participate in detached plan admission."""
+        with self.locked():
+            self.commit_state(self.load())
+
     def receipt_path(self, request):
         return self.directory / 'receipts' / f'{request}.json'
 

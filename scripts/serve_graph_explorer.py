@@ -392,7 +392,9 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
         request_directory.mkdir(parents=True, exist_ok=True)
         with (request_directory / 'api.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
-            yield not developer_mode(mode_path)
+            with (request_directory / 'selection.lock').open('a') as selection:
+                fcntl.flock(selection, fcntl.LOCK_EX)
+                yield not developer_mode(mode_path)
     review_outbox = CompatibleStudyOutbox(request_directory / "review-outbox", feedback_worker, persistence_worker, save_json, scheduler_stop, progress_saved, learner=learner, planner=scheduler_worker, publication=publish_queue) if learning_worker else None
     candidate_reader = None
 
@@ -576,7 +578,12 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                     if focus_change:
                         if type(body.get('focusedMode')) is not bool:
                             raise ValueError('Focused mode must be a boolean')
-                        save_json(focused_mode_path(directory, learner), {'enabled': body['focusedMode']})
+                        with (directory / 'selection.lock').open('a') as selection:
+                            fcntl.flock(selection, fcntl.LOCK_EX)
+                            save_json(focused_mode_path(directory, learner), {'enabled': body['focusedMode']})
+                            if review_outbox:
+                                review_outbox.invalidate_plans()
+                        queue_refresh.set()
                         body = {'action': 'profile'}
                     if body.get("action") == "assignment":
                         # The server setting selects inspection-only answer keys;

@@ -77,6 +77,9 @@ class CompatibleStudyOutbox:
     def resolve_ids(self, body):
         return self.study.resolve_ids(body)
 
+    def invalidate_plans(self):
+        self.study.invalidate_plans()
+
     def decorate(self, view):
         return self.study.decorate(view)
 

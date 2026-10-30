@@ -125,6 +125,8 @@ pub struct SnapshotRecords {
     #[serde(skip)]
     validated_questions: RefCell<BTreeSet<u64>>,
     #[serde(skip)]
+    unsupported_questions: RefCell<BTreeSet<u64>>,
+    #[serde(skip)]
     validated_practice_questions: RefCell<BTreeSet<u64>>,
     #[serde(skip)]
     lesson_routes: RefCell<BTreeMap<u64, Vec<crate::learning::LessonStep>>>,
@@ -141,6 +143,7 @@ impl DerefMut for SnapshotRecords {
         *self.attributes.get_mut() = None;
         *self.topic_neighbors.get_mut() = None;
         self.validated_questions.get_mut().clear();
+        self.unsupported_questions.get_mut().clear();
         self.validated_practice_questions.get_mut().clear();
         self.lesson_routes.get_mut().clear();
         &mut self.records
@@ -160,6 +163,7 @@ impl From<BTreeMap<u64, Record>> for SnapshotRecords {
             attributes: RefCell::new(Some(Arc::new(attributes))),
             topic_neighbors: RefCell::default(),
             validated_questions: RefCell::default(),
+            unsupported_questions: RefCell::default(),
             validated_practice_questions: RefCell::default(),
             lesson_routes: RefCell::default(),
         }
@@ -181,7 +185,16 @@ impl SnapshotRecords {
     }
 
     pub(crate) fn mark_question_validated(&self, question: u64) {
+        self.unsupported_questions.borrow_mut().remove(&question);
         self.validated_questions.borrow_mut().insert(question);
+    }
+
+    pub(crate) fn question_unsupported(&self, question:u64)->bool {
+        self.unsupported_questions.borrow().contains(&question)
+    }
+
+    pub(crate) fn mark_question_unsupported(&self, question:u64) {
+        self.unsupported_questions.borrow_mut().insert(question);
     }
 
     pub(crate) fn practice_question_validated(&self, question: u64) -> bool {
@@ -387,11 +400,13 @@ impl EntitySnapshot {
         }
         if invalidate_all_questions {
             self.entities.validated_questions.get_mut().clear();
+            self.entities.unsupported_questions.get_mut().clear();
             self.entities.validated_practice_questions.get_mut().clear();
             self.entities.lesson_routes.get_mut().clear();
         }else if !invalid_questions.is_empty(){
             for question in &invalid_questions {
                 self.entities.validated_questions.get_mut().remove(question);
+                self.entities.unsupported_questions.get_mut().remove(question);
                 self.entities.validated_practice_questions.get_mut().remove(question);
             }
             self.entities.lesson_routes.get_mut().retain(|_,route|!route.iter().any(|step|
@@ -404,7 +419,8 @@ impl EntitySnapshot {
             let old = self.entities.records.get(&eid);
             // Question structure and grader support depend on authored content,
             // not task responses or retention. Keep successful validation across
-            // learner commits; errors are never cached. Practice freshness is
+            // learner commits. Deterministic unsupported-key rejections share
+            // this dependency invalidation; structural errors are uncached. Practice freshness is
             // separate; structural edits invalidate the standalone practice check.
             let changed = |attr: &str| old.and_then(|r| r.get(attr)) != record.get(attr);
             // New ordinary retrieval routes do not affect question membership.

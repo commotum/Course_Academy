@@ -719,7 +719,9 @@ fn project_on(
     if let Some(focused) = body["operation"]["_focusedMode"].as_bool() {
         s.focused_mode = focused;
     }
-    let op = &body["operation"];
+    let mut admitted_operation = body["operation"].clone();
+    admitted_operation["_deferQueue"] = json!(true);
+    let op = &admitted_operation;
     let action = op["action"].as_str().ok_or("Action required")?;
     let millis = body["receivedAt"]
         .as_i64()
