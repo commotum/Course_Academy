@@ -3,7 +3,7 @@ import { equationGroup } from './equation-groups.js';
 const display = value => '$$' + value + '$$';
 const yes = [
   String.raw`x=t(t-2)-1,\,y=t(1-t)-2,\,-2\le t\le2`,
-  String.raw`x=3t-2,\,\,\,y=\frac{10}{t^2+1},\,-3\le t\le3,`,
+  String.raw`x=3t-2,\,\,\,y=\frac{10}{{t}^{2}+1},\,-3\le t\le3,`,
   String.raw`x=-\frac{5t^3}{4}-\frac{4t^2}{3}-6,\,y=-\frac{3t^3}{4}-\frac{t^2}{3}+6,\,0\le t\le5.`,
   String.raw`x=f(s,t),\qquad y=g(s,t),\quad t\in[0,2)`,
   String.raw`x=\left\{1,2\right\}, y=\max(a,b)`,
@@ -11,6 +11,7 @@ const yes = [
   String.raw`x(t)=2t, y(t)=t^2`,
 ];
 for (const body of yes) assert.ok(equationGroup(display(body)), body);
+assert.ok(equationGroup(display(String.raw`\displaystyle x=2t\quad y=t^2\qquad -2\le t\le2`)));
 const no = [
   '$x=1,y=2$', String.raw`\(x=1,y=2\)`,
   display(String.raw`\begin{aligned}x&=t\\y&=t^2\end{aligned}`),

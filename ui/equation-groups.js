@@ -7,7 +7,8 @@ const assignment = new RegExp('^(' + variable + '(?:_\\{[^{}]+\\}|_[A-Za-z0-9])?
 export function equationGroup(tex) {
   let body = tex.startsWith('$$') && tex.endsWith('$$') ? tex.slice(2, -2)
     : tex.startsWith('\\[') && tex.endsWith('\\]') ? tex.slice(2, -2) : null;
-  if (body === null || /\\(?:begin|end|tag|label|def|gdef|newcommand|color|underbrace|overbrace)\b|\\\\|&|\{\{|\|/.test(body)) return null;
+  if (body === null || /\\(?:begin|end|tag|label|def|gdef|newcommand|color|underbrace|overbrace)\b|\\\\|&|\{\{(?:answer-field:)?(?:field-\d+|selection)\}\}|\|/.test(body)) return null;
+  body = body.trim().replace(/^\\displaystyle\s*/, '');
   const trailing = /[,;]\s*$/.exec(body);
   if (trailing) body = body.slice(0, trailing.index);
   const stack = [], parts = [], separators = [];
@@ -23,9 +24,12 @@ export function equationGroup(tex) {
     if (open) stack.push(open);
     else if (['}', ')', ']', '\\}', '\\rbrace', '\\rangle'].includes(token)) {
       if (stack.pop() !== (token === ')' || token === ']' ? 'bracket' : token)) return null;
-    } else if (!stack.length && (token === ',' || token === ';')) {
-      parts.push(body.slice(start, i).replace(spacing, '').trim());
-      separators.push(token); start = i + 1;
+    } else if (!stack.length && [',', ';', '\\quad', '\\qquad'].includes(token)) {
+      const part = body.slice(start, i + 1 - token.length).replace(spacing, '').trim();
+      // A spacing command after a comma belongs to that same boundary.
+      if (part) { parts.push(part); separators.push(token.length === 1 ? token : ''); }
+      else if (token.length === 1) return null;
+      start = i + 1;
     }
   }
   if (stack.length || !parts.length) return null;
@@ -50,7 +54,7 @@ export function decorateEquationGroups(root) {
     if (!node.parentElement?.closest('pre, code, script, style, textarea, math-field, mjx-container, .equation-group') && /\$\$|\\\[/.test(node.data)) nodes.push(node);
   }
   for (const node of nodes) {
-    const displays = /\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]/g;
+    const displays = /(?<!\\)\$\$[\s\S]*?(?<!\\)\$\$|(?<!\\)\\\[[\s\S]*?(?<!\\)\\\]/g;
     const fragment = doc.createDocumentFragment();
     let offset = 0, match, changed = false;
     while ((match = displays.exec(node.data))) {
