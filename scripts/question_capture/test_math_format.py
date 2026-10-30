@@ -6,6 +6,17 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_flattened_vector_accents_are_rejected_at_capture_boundary(self):
+        for value in ['OR^(→)', 'PQ^(―)', r'OP^(\to)', 'OT^ ( → )']:
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, 'Flattened arrow or bar accent'):
+                    validate_tex(value)
+                with self.assertRaisesRegex(ValueError, 'Flattened arrow or bar accent'):
+                    normalize_capture_question({'problem': '$' + value + '$', 'answer_fields': []})
+        for value in [r'\overrightarrow{OR}', r'\overline{PQ}', r'\mathbf{p}+t\mathbf{v}',
+                      r'x^{(n+1)}', r'A\xrightarrow{f}B', r'v^{\rightarrow}']:
+            self.assertEqual(validate_tex(value), value)
+
     def test_augmented_arrays_stretch_without_losing_rules_or_outer_alignment(self):
         from math_format import scalable_array_fences, validate_matrix_layouts
         array = r'\begin{array}{cc|cc}1&0&1&0\\0&\frac{1}{12}&0&1\end{array}'

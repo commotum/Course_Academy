@@ -1,0 +1,25 @@
+{
+  "path": "/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/3-JSON/lesson-json.py",
+  "sha256": "5a29631e6a359ac9c8babb588ea6efc0a3a012f5fb5ecbbc5714e745e2905df7",
+  "proven_cause": "normalize_math_text_leaf ignores bold mathvariant; mover fallback serializes a non-accent mover as pseudo-TeX ^(...). Actual source bar lacks accent=true and follows that fallback.",
+  "reproductions": [
+    {
+      "input": "<math><mi mathvariant=\"bold\">v</mi></math>",
+      "current_output": "v"
+    },
+    {
+      "input": "<math><mi>v</mi></math>",
+      "current_output": "v"
+    },
+    {
+      "input": "<math><mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo>―</mo></mover></math>",
+      "current_output": "PQ^(―)"
+    },
+    {
+      "source_selector": "#question-162143 mjx-assistive-mml mover",
+      "input": "<mover><mrow><mi>P</mi><mi>Q</mi></mrow><mo accent=\"true\">―</mo></mover>",
+      "current_output": "PQ^(―)"
+    }
+  ],
+  "source_changed": false
+}

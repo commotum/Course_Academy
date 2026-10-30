@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import parse_qs,urlsplit
 from playwright.sync_api import sync_playwright
 from serve_graph_explorer import image_path,DEFAULT_MATH_ROOT,IMAGE_TYPES
-from question_capture.math_format import validate_matrix_layouts
+from question_capture.math_format import validate_matrix_layouts, validate_math_structure
 ROOT=Path(__file__).resolve().parents[1]
 class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
@@ -78,10 +78,13 @@ def check(items):
                     layout_errors=[]
                     try:validate_matrix_layouts(f['value'],bare_math=f.get('bare_math',False))
                     except ValueError as error:layout_errors.append(str(error))
-                    out.append({'entity':f.get('entity'),'attribute':f.get('attribute'),**v,'matrix_layout_errors':layout_errors})
+                    structure_errors=[]
+                    try:validate_math_structure(f['value'],bare_math=f.get('bare_math',False))
+                    except ValueError as error:structure_errors.append(str(error))
+                    out.append({'entity':f.get('entity'),'attribute':f.get('attribute'),**v,'matrix_layout_errors':layout_errors,'math_structure_errors':structure_errors})
             browser.close()
     finally:server.shutdown();server.server_close()
-    failures=[v for v in out if v['errors']or v['raw_display_delimiters']or v['matrix_layout_errors']]
+    failures=[v for v in out if v['errors']or v['raw_display_delimiters']or v['matrix_layout_errors']or v['math_structure_errors']]
     return {'passed':not failures,'strict_undefined_commands':True,'actual_player_renderer':True,'fields':len(out),'failures':failures,'checks':out,'database_writes':0}
 
 def main():

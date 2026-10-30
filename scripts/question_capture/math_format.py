@@ -1267,6 +1267,8 @@ def normalize_prose(value):
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
     text = str(value); depth = 0; stack = []; fences = []
+    if re.search(r'\^\s*\(\s*(?:[→←↔―¯‾]|\\(?:to|rightarrow|leftarrow|leftrightarrow))\s*\)', text):
+        raise ValueError('Flattened arrow or bar accent; recover overrightarrow/overline from source')
     if re.search(r'\\begin\{aligned\}\s*\[(?!\s*[tbc]\s*\])', text):
         raise ValueError('Visible initial bracket in aligned is consumed as placement; insert {} or use scalable fences')
     if re.search(r'\\(?:left|right|middle)(?![A-Za-z])\s*$', text):
