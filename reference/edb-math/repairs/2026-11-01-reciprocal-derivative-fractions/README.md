@@ -2,7 +2,9 @@
 
 Completed 2026-11-01. Text repairs committed to math at **T12062**; fresh readback, served styles and grading verified at **T12064**.
 
-Topic **17592186049248 — Calculating dy/dx Using dx/dy**; its only KP is **17592186119939**. All nine practice questions are imported. There is no registered question generator for this topic.
+Topic **17592186049248 — Calculating dy/dx Using dx/dy** has three KPs. The initial repair below covered **17592186119939**, with nine imported practice questions. My initial claim that this was the only KP was incorrect. The other KPs are **17592186119940 — Calculating dy/dx at a Point Using dx/dy** (13 questions) and **17592186119941 — Finding the Equation of a Tangent Line Using dx/dy** (14 questions). All three have no registered question generator.
+
+The follow-up audit in `whole-topic-audit.json` covers all **36 practice questions and three canonical examples** at one fresh basis. It found no additional fraction tables in the remaining two KPs. Their complete presentation review is saved in `render-remaining-topic/`; this formatting review is distinct from the pedagogical weakness of the self-reciprocal answer in question 17592186317173.
 
 ## Repairs
 

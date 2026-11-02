@@ -748,11 +748,17 @@ function renderHome(data, page, revision) {
   if (!activities.length) {
     const empty = el('div', 'empty-state');
     const queueEmpty = selfDirected && !(data.learner?.queue || []).length && !(data.learner?.targets || []).length;
-    empty.append(el('h2', '', queueEmpty ? 'Your study plan is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue or targets, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your selected topics and their required prerequisites have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
+    if (data.studyGate?.active) {
+      const quiz = data.studyGate.kind === 'assessment';
+      empty.append(el('h2', '', quiz ? 'Required quiz pending' : 'Required practice pending'),
+        el('p', '', quiz ? 'A required quiz is pending, but it is not available in Study yet.' : 'Your assessment follow-up is still required. Its activities are not available in Study yet.'));
+    } else {
+      empty.append(el('h2', '', queueEmpty ? 'Your study plan is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue or targets, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your selected topics and their required prerequisites have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
+    }
     queue.append(empty);
   }
   page.append(queue);
-  if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
+  if (!isDeveloperMode() && !data.studyGate?.active && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
   if (data.waitingActivities?.length) {
     const waiting = el('section', 'waiting-lessons');
     waiting.append(el('h2', 'step-title', 'Unfinished practice'));

@@ -1072,3 +1072,23 @@ test('voluntary topic study remains callable while the automatic Study feed is g
   await f.h.studyTopic(56, true);
   assert.equal(f.calls.at(-1).path, '/api/review-topic');
 });
+
+test('an empty required gate reports its pending obligation without inventing a target or question shortage', async () => {
+  for (const kind of ['repairs', 'assessment']) {
+    const f = fixture();
+    f.server = { learner: { selfDirected: true, queue: [], targets: [] }, activities: [],
+      studyGate: { active: true, kind, activityIds: [], taskIds: [] },
+      message: 'Your selected topics have no unfinished lessons with enough available questions.',
+      assessmentStatus: { unavailableReason: 'Not enough eligible assessment topics' } };
+    await f.h.home();
+    const main = f.document.getElementById('main');
+    assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, kind === 'assessment' ? 'Required quiz pending' : 'Required practice pending');
+    assert.match(main.textContent, /not available in Study yet/);
+    assert.doesNotMatch(main.textContent, /Your study plan is empty|No ready activities|selected topics|enough available questions|Not enough eligible|You can continue studying/);
+    f.server.studyGate = { active: false, kind: null, activityIds: [], taskIds: [] };
+    f.server.message = '';
+    await f.h.pollHome();
+    assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'Your study plan is empty');
+    assert.match(main.textContent, /Add topics to your queue or targets/);
+  }
+});

@@ -45,6 +45,7 @@ const completed={taskId:99903,activityId:99904,type:'assessment',title:'Complete
 await page.evaluate(({home,submit})=>harness.configure({home,submit,hold:true}),{home:{...fixture,activities:[retake,...fixture.activities],studyGate:completed.studyGate},submit:completed});
 await page.evaluate(()=>harness.submit());await page.evaluate(()=>{void harness.back();});await page.locator('.study-activities').waitFor();
 assert.equal(await page.locator('.queue-card').count(),0);assert.equal(await page.getByText('Optional retake fixture',{exact:true}).count(),0);
+assert.equal(await page.getByRole('heading',{name:'Required practice pending',exact:true}).count(),1);assert.equal(await page.getByRole('heading',{name:'No ready activities yet',exact:true}).count(),0);
 const repairsHome={...fixture,activities:[retake,...fixture.activities],studyGate:gate('repairs',required)};
 await page.evaluate(home=>harness.configure({home}),repairsHome);await page.evaluate(()=>harness.release());
 await page.waitForFunction(()=>document.querySelectorAll('.queue-card').length===4);

@@ -3607,6 +3607,38 @@ mod study_queue_tests {
     }
 
     #[test]
+    #[ignore = "read-only required-study parity diagnosis against configured database"]
+    fn diagnose_required_study_gate()->Result<()>{
+        let app=Application::connect(std::env::var("EDB_DATABASE")?,std::env::var("PAGE_TEST_LEARNER")?,std::env::var("EDB_ENDPOINT").unwrap_or_default())?;
+        let s=&app.snapshot;let l=app.learner_eid;let at=Utc::now();
+        let h=course_academy_engine::scheduling::lifecycle(s,l)?;
+        eprintln!("GATE-DIAG basis={} gate={}",s.basis_t,serde_json::to_string(&course_academy_engine::study_gate::resolve(s,l,at)?)?);
+        for (&(origin,topic),kind) in &h.repairs {
+            eprintln!("GATE-DIAG repair origin={origin} topic={topic} title={:?} kind={kind} retry={} blocked={} assessment={}",text(s,topic,"topic/title"),h.retry_ready(topic),h.lesson_blocked(s,topic)?,h.assessment_origin(s,origin)?);
+            let seen=learning::unavailable_questions(s,l)?;
+            eprintln!("GATE-DIAG topic-stock {:?}",course_academy_engine::inventory::lesson_shortages(s,&s.refs(topic,"topic/knowledge-points")?,&seen));
+            for activity in s.owners(topic,"activity/scope")? {
+                if retrieval::kind(s,activity)?=="lesson" {
+                    eprintln!("GATE-DIAG lesson={activity} first={:?}",learning::first_content(s,activity,l));
+                }
+            }
+        }
+        for task in s.refs(l,"learner/activity")? {
+            if !matches!(status(s,task,"learner-task/status")?.as_str(),"locked"|"unlocked"|"started"|"paused"){continue;}
+            let a=s.reference(task,"learner-task/activity")?;
+            if s.optional_ref(a,"activity/scope")?.is_some_and(|t|h.repairs.keys().any(|(_,topic)|*topic==t)) {
+                eprintln!("GATE-DIAG task={task} activity={a} kind={} state={} origins={:?} priority={}",retrieval::kind(s,a)?,status(s,task,"learner-task/status")?,s.refs(task,"learner-task/remediation-for")?,number(s,task,"learner-task/priority"));
+            }
+        }
+        let plan=learning::study_candidates(s,l,course(s,l)?,at)?;
+        eprintln!("GATE-DIAG candidates={:?}",plan.iter().map(|p|(p.activity,p.topic,p.priority)).collect::<Vec<_>>());
+        let definitions=retrieval::schedule(s,l,course(s,l)?,at)?;
+        eprintln!("GATE-DIAG definitions={:?}",definitions.iter().map(|d|(&d.kind,d.topic,d.existing_activity,&d.remediation_for)).collect::<Vec<_>>());
+        let(forms,_)=queue_preparation(s,l,at)?;eprintln!("GATE-DIAG forms={}",serde_json::to_string(&forms)?);
+        Ok(())
+    }
+
+    #[test]
     #[ignore = "read-only performance measurement against the configured database"]
     fn profile_study_now_reads() -> Result<()> {
         let app = Application::connect(
