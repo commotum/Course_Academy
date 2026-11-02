@@ -59,7 +59,7 @@ fn practice_prefix(
         } else if lesson && incorrect_streak == 2 {
             "failed"
         } else if decision.attempted == 5 {
-            if lesson { "exhausted" } else { "failed" }
+            "exhausted"
         } else {
             "continue"
         }
@@ -73,8 +73,10 @@ pub fn evaluate_kp_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
     practice_prefix(outcomes, 2, true)
 }
 pub fn evaluate_review_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
-    // Reviews present at least three questions; recovery on questions four or
-    // five passes as soon as the last two answers are correct.
+    // Reviews present at least three questions and finish early when the last
+    // two answers are correct at question three or four. The fifth
+    // presentation always completes the review successfully; accuracy and XP
+    // still retain the actual answer outcomes independently.
     practice_prefix(outcomes, 2, false)
 }
 
@@ -461,7 +463,7 @@ mod tests {
             evaluate_review_prefix(&[Some(true), Some(true), Some(false), Some(false), Some(true)])
                 .unwrap()
                 .passed(),
-            Some(false)
+            Some(true)
         );
         assert!(evaluate_kp_prefix(&[Some(true), Some(true), Some(false)]).is_err());
         assert!(evaluate_review_prefix(&[Some(true); 4]).is_err());
@@ -470,7 +472,7 @@ mod tests {
     #[test]
     fn review_stopping_requires_three_presentations_and_final_two_correct() {
         let decode=|pattern:&str|pattern.chars().map(|c|match c{'C'=>Some(true),'I'=>Some(false),'S'=>None,_=>panic!("bad pattern")}).collect::<Vec<_>>();
-        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false),("SCC",true),("CCSCC",true),("CCSIC",false)] {
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",true),("CCIIC",true),("SCC",true),("CCSCC",true),("CCSIC",true),("ICICI",true),("IIIII",true),("SSSSS",true)] {
             let outcomes=decode(pattern);
             for prefix in 0..outcomes.len() {
                 assert!(!evaluate_review_prefix(&outcomes[..prefix]).unwrap().complete(),"{pattern} prefix={prefix}");

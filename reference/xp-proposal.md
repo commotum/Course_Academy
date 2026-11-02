@@ -2,7 +2,7 @@
 
 This is an initial policy for our application, using Math Academy's published design and Jake's recorded activity. It chooses usable rules where the evidence does not determine an exact formula. It is a proposal, not a description of behavior already implemented.
 
-**Review-controller update — November 1, 2026:** The user explicitly accepted the minimum-three/final-two-correct/maximum-five review controller discussed below. The fifth question can complete the passing pair. This supersedes the earlier local three-correct streak. The proposal's original XP discussion remains historical; [the accepted earned-XP report](xp-docs/earned-xp-formula-report.md) records the scoring formulas separately.
+**Review-controller update — clarified November 1, 2026:** The user's latest explicit instruction supersedes the proposal's failure-at-five interpretation. Reviews serve at least three questions; two consecutive correct answers allow early completion. Otherwise finishing all five successfully completes the review regardless of the answer sequence. Accuracy, XP, and retention updates still use the actual outcomes. The original XP discussion and failure labels below remain historical; [the accepted earned-XP report](xp-docs/earned-xp-formula-report.md) records scoring formulas separately.
 
 **Recommendation:** treat XP as a reward for a task's expected productive workload, adjusted for performance. Preserve the observed lesson/review bonuses and adopt the assessment and multistep formulas that fit our samples. Use explicit local rules for imperfect practice, diagnostics, and unfinished work. Keep XP separate from accuracy, mastery, and FIRe repetition credit.
 
@@ -70,7 +70,7 @@ This rule will not reproduce every old partial lesson award. That is preferable 
 
 ## Reviews
 
-Use the [scheduling proposal](scheduling-proposal.md)'s practice controller: at least three questions, stop successfully when the last two are correct, and stop after five questions at most. At proposal time, this differed from the then-current code's three-consecutive-correct rule, which could not explain captured three-question `ICC` reviews. The user accepted this controller on November 1, 2026.
+Use the [scheduling proposal](scheduling-proposal.md)'s practice controller: at least three questions, stop successfully when the last two are correct, and stop after five questions at most. At proposal time, this differed from the then-current code's three-consecutive-correct rule, which could not explain captured three-question `ICC` reviews. The user clarified on November 1, 2026 that the pair is only an early-exit condition: finishing all five successfully completes the review regardless of the sequence. The historical pass/fail labels in this section are superseded.
 
 | Terminal performance | XP |
 |---|---:|

@@ -1,6 +1,6 @@
 # Our FIRe implementation: design, evidence, and validation
 
-Research snapshot: September 26, 2026. Schema integration updated September 28, 2026; Rust port September 29, 2026. Review stopping updated November 1, 2026 on explicit user instruction; that controller supersedes the original local three-correct streak.
+Research snapshot: September 26, 2026. Schema integration updated September 28, 2026; Rust port September 29, 2026. Review stopping clarified November 1, 2026 on explicit user instruction: a correct pair after the three-question minimum allows early completion; otherwise completing all five succeeds. This supersedes the original local three-correct streak and the later proposal's failure-at-five interpretation.
 
 We now have a working implementation of Fractional Implicit Repetition in
 [engine/rust](../engine/rust/). It implements the disclosed structure, including
@@ -175,7 +175,7 @@ they do not claim to recover every MA activity controller.
 | Activity | Implemented completion and evidence rule |
 | --- | --- |
 | Lesson | Follow ordered tutorials/KPs and use fresh questions from each KP bank. Two consecutive correct within five questions passes a KP; all topic KPs must pass to establish learning. Prerequisites must already be learned and not due, a conservative local readiness rule. |
-| Review | Prepare five questions from one topic. Serve at least three and pass when the final two answers are correct; the fifth question may complete the passing pair. Fail after five presentations without a passing pair. Accepted by the user November 1, 2026, replacing the original local three-correct streak. This precise stopping policy is local. |
+| Review | Prepare five questions from one topic. Serve at least three; two consecutive correct answers permit early completion. Otherwise finishing all five successfully completes the review regardless of the answer sequence, while actual accuracy, XP, and retention updates remain intact. Clarified by the user November 1, 2026, superseding the original local three-correct streak and the proposal's failure-at-five cases. |
 | Lesson/review retention | One aggregate unit at completion, scaled by mean supplied submitted performance. Answers have already updated accuracy individually, including failed initial work. |
 | Assessment/multistep retention | Each submitted item contributes `performance / questions_for_its_topic_in_the_definition`, a local allocation policy. Multistep placements retain authored order. |
 | Diagnostic | Follow the prepared probe graph; missing ordinary branches end the path. Offer an available alternate after any submitted wrong answer, without a timing gate, and require an explicit retry choice. Alternate probes do not offer another retry. |

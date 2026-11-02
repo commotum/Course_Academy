@@ -66,10 +66,10 @@ studied through an explicit request. Quizzes and required follow-up practice for
 assessment misses remain visible regardless of their topics' layers.
 
 Reviews present at least three and at most five questions. Starting with question
-three, the review passes as soon as its last two answers are correct; the fifth
-question can complete that pair. It fails if the pair has not been achieved by
-question five. This is the user-approved Course Academy rule from November 1,
-2026; [scheduler decisions](scheduler-report.md#5-spaced-reviews-across-study-modes)
+three, two correct answers in a row finish the review early. Otherwise, answering
+all five successfully completes the review regardless of the answer sequence.
+Accuracy, XP, and retention updates still reflect the actual answers. This is the
+user-approved Course Academy rule clarified on November 1, 2026; [scheduler decisions](scheduler-report.md#5-spaced-reviews-across-study-modes)
 record the policy and its evidence limits.
 
 Study interactions are acknowledged after an atomic, fsynced local journal save

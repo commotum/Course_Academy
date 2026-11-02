@@ -1599,7 +1599,7 @@ mod tests {
 
     #[test]
     fn review_recovery_stopping_updates_runtime_once_and_keeps_xp_separate() {
-        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false)] {
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",true),("CCIIC",true),("ICICI",true),("IIIII",true)] {
             let mut f=Fixture::new("review");f.seed(20,0.0);f.set(3,"learner-task/xp-base",json!(6));
             for (slot,result) in pattern.chars().enumerate(){
                 let done=f.answer(100+slot as u64,Some(result=='C'));
@@ -2027,7 +2027,7 @@ mod tests {
         }
     }
     #[test]
-    fn default_xp_scores_failed_practice_without_changing_mastery() {
+    fn default_xp_scores_unsuccessful_answers_independently_of_completion() {
         for (kind, outcomes, expected) in [
             ("lesson", vec![true, false, true, false, true], 4),
             ("lesson", vec![false; 2], -1),
@@ -2041,7 +2041,7 @@ mod tests {
                 f.answer(210, None);
                 f.answer(200, None);
             }
-            let passed = kind == "lesson" && outcomes.last() == Some(&true);
+            let passed = kind == "review" || outcomes.last() == Some(&true);
             for (n, outcome) in outcomes.into_iter().enumerate() {
                 f.answer(100 + n as u64, Some(outcome));
             }

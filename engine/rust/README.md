@@ -4,8 +4,9 @@
 implement FIRe and activity completion, including
 lesson KPs that advance on two consecutive correct answers, fail the lesson on
 two consecutive incorrect answers or skips, and advance after five questions
-when neither streak occurs; reviews that pass once the final two answers are
-correct after at least three questions, with at most five presentations; accepted earned-XP rules,
+when neither streak occurs; reviews that finish early on two consecutive correct
+answers after at least three questions, or successfully complete after all five
+regardless of the answer sequence; accepted earned-XP rules,
 and completed diagnostic retries replacing the original placement evidence.
 The study app uses `learning` for the current generic activity/step schema,
 lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
@@ -30,10 +31,10 @@ exercise either policy through the capture's transient `focused_mode` field.
 
 In engine mode, opening Study and finishing a task refresh the recommendations.
 Due reviews require explicitly learned FIRe state and five fresh gradable
-questions. Under the user-approved November 1, 2026 rule, a review requires at
-least three presentations and passes when its final two answers are correct. The
-fifth question can complete that pair; without it, the review fails after five
-presentations. A bounded pool of 16 due topics is ranked by FIRe review coverage,
+questions. Under the user-clarified November 1, 2026 rule, a review requires at
+least three presentations. Two consecutive correct answers allow early completion;
+otherwise all five successfully complete the review regardless of accuracy.
+Accuracy, XP, and retention updates still use the actual submitted outcomes. A bounded pool of 16 due topics is ranked by FIRe review coverage,
 and up to three new review definitions are prepared per refresh. Obsolete
 unstarted tasks are locked; started and paused work remains resumable in both
 modes. Self-directed mode combines explicit queued lessons with targets and their

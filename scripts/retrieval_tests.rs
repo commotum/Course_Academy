@@ -706,7 +706,7 @@ fn submitted_answer_clock_ends_before_grading_and_database_admission_finish() ->
 
 #[test]
 fn generic_review_recovery_completes_without_escalating_required_lesson() -> Result<()> {
-    for pattern in ["ICC","CCICC","CCIIC"] {
+    for pattern in ["ICC","CCICC","CCIIC","ICICI","IIIII"] {
         let mut f=Fixture::new(true)?;
         let (task,mut s)=f.start("review")?;
         for (slot,result) in pattern.chars().enumerate(){
@@ -716,7 +716,7 @@ fn generic_review_recovery_completes_without_escalating_required_lesson() -> Res
             s=f.act("continue",json!({"taskId":task,"itemId":item}),f.now+300+slot as i64*200)?;
             assert_eq!(matches!(status(&s,task,"learner-task/status")?.as_str(),"completed"|"failed"),slot+1==pattern.len());
         }
-        assert_eq!(status(&s,task,"learner-task/status")?,if pattern=="CCIIC"{"failed"}else{"completed"});
+        assert_eq!(status(&s,task,"learner-task/status")?,"completed");
         assert_eq!(items(&s,task)?.len(),pattern.len());
         let saved=task_json(&s,f.learner,task)?;
         assert_eq!(saved["history"].as_array().unwrap().len()+1,pattern.len());
@@ -771,7 +771,7 @@ fn automatic_generic_reviews_commit_reservations_grade_streak_award_xp_and_updat
     Ok(())
 }
 #[test]
-fn failed_review_refresh_persists_and_delays_prepared_and_new_reviews_until_due() -> Result<()> {
+fn exhausted_review_refresh_persists_and_delays_prepared_and_new_reviews_until_due() -> Result<()> {
     let mut f = Fixture::new(true)?;
     let (task, mut s) = f.start("review")?;
     let activity = s.reference(task, "learner-task/activity")?;
@@ -796,11 +796,12 @@ fn failed_review_refresh_persists_and_delays_prepared_and_new_reviews_until_due(
         s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
         at += 100;
     }
-    assert_eq!(status(&s, task, "learner-task/status")?, "failed");
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
     assert!(
         number(&s, progress, "progress/repetitions")
-            < before["progress/repetitions"].as_f64().unwrap()
+            > before["progress/repetitions"].as_f64().unwrap()
     );
+    assert!(number(&s,progress,"progress/practice-accuracy")<before["progress/practice-accuracy"].as_f64().unwrap(),"successful completion must preserve the five incorrect observations");
     assert!(number(&s, progress, "progress/memory") > 0.5);
     assert_eq!(number(&s, progress, "progress/practice-mass"), 5.0);
     assert!(
@@ -1349,7 +1350,7 @@ fn study_now_and_lesson_resume_bypass_required_queue_work_without_changing_it() 
 }
 
 #[test]
-fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps() -> Result<()> {
+fn exhausted_required_review_clears_obligation_and_legacy_failure_still_escalates() -> Result<()> {
     let mut f = Fixture::new(false)?;
     let (original, mut s) = f.start("assessment")?;
     let a = s.reference(original, "learner-task/activity")?;
@@ -1426,7 +1427,13 @@ fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps(
         at += 100;
         s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
     }
-    assert_eq!(status(&s, task, "learner-task/status")?, "failed");
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+    assert!(!course_academy_engine::scheduling::lifecycle(&s,f.learner)?.repairs.contains_key(&(original,repair_topic)),"five completed presentations clear the linked review obligation regardless of accuracy");
+    // Preserve the old saved-failure recovery path for imported/frozen history.
+    // New reviews above no longer produce this failed terminal status.
+    at+=10;
+    f.tx(vec![cas(&s,task,"learner-task/status","learner-task.status/failed")?],at)?;
+    s=f.snapshot()?;
     at += 100;
     let (forms, _) =
         queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;

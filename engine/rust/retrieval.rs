@@ -1028,7 +1028,7 @@ mod tests {
     }
     #[test]
     fn review_routes_follow_recovery_rule_and_preserve_frozen_terminal_history() {
-        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false),("SCC",true)] {
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",true),("CCIIC",true),("SCC",true),("ICICI",true),("IIIII",true)] {
             let mut s=fixture();
             for (slot,result) in pattern.chars().enumerate() {
                 let items=s.refs(9,"learner-task/items").unwrap();
@@ -1050,7 +1050,7 @@ mod tests {
         }
     }
     #[test]
-    fn review_failure_skip_and_current_presentation_are_replayed_without_extra_draws() {
+    fn review_exhaustion_skip_and_current_presentation_are_replayed_without_extra_draws() {
         let mut s = fixture();
         let item = present(&mut s, 100, "started");
         assert_eq!(position(&s, 60, &[item]).unwrap().next, Some(100));
@@ -1066,7 +1066,8 @@ mod tests {
             );
         }
         let items = s.refs(9, "learner-task/items").unwrap();
-        assert!(position(&s, 60, &items).unwrap().failed);
+        assert!(position(&s, 60, &items).unwrap().passed);
+        assert!(!position(&s, 60, &items).unwrap().failed);
         assert_eq!(xp(&s, 60, &items, 5).unwrap(), -1);
     }
     #[test]
