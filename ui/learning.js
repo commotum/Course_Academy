@@ -179,6 +179,7 @@ let currentCourseId = null;
 let curriculumSnapshot = null;
 let homeRendered = false;
 let homeSnapshot = null;
+let studyGate = null;
 let homeRequest = null;
 let homeController = null;
 let queueRequest = null;
@@ -659,6 +660,7 @@ async function loadHome(signal, preserve, readOnly) {
       : await api('/api/queue', queueRequest, { signal });
     if (signal.aborted || modeChanging) return;
     if (!readOnly) queueRequest = null;
+    updateStudyGate(data);
     homeSnapshot = { data, revision, settings: settingsRevision, preview: isDeveloperMode() };
     renderHome(data, page, revision);
   } catch (error) {
@@ -667,12 +669,27 @@ async function loadHome(signal, preserve, readOnly) {
   }
   finally { if (!signal.aborted) setBusy(false); }
 }
+function updateStudyGate(data) {
+  if (typeof data?.studyGate?.active !== 'boolean') return;
+  studyGate = data.studyGate;
+  if (homeSnapshot) homeSnapshot.data = studyHomeView({ ...homeSnapshot.data, studyGate });
+}
+function studyHomeView(data) {
+  const gate = isDeveloperMode() ? null : studyGate || data.studyGate;
+  if (!gate?.active) return data;
+  const activities = new Set((gate.activityIds || []).map(id => String(studyId(id))));
+  const tasks = new Set((gate.taskIds || []).map(id => String(studyId(id))));
+  const allowed = activity => activities.has(String(studyId(activity.activityId))) || tasks.has(String(studyId(activity.taskId)));
+  return { ...data, studyGate: gate, activities: (data.activities || []).filter(allowed),
+    waitingActivities: (data.waitingActivities || []).filter(allowed) };
+}
 function pollHome() {
   if (document.hidden || modeChanging || isDeveloperMode() || task || busy || !homeRendered || homeRequest) return;
   // This read observes background planning without requesting another plan.
   return home({ preserve: true, readOnly: true });
 }
 function renderHome(data, page, revision) {
+  data = studyHomeView(data);
   updateHeader(data);
   const { basis, saveState, idAliases, ...presentation } = data;
   const key = JSON.stringify(presentation);
@@ -1220,6 +1237,7 @@ async function renderTask(data) {
   const seen = rememberTaskStep(data);
   if (needsMathInputs(seen.map(entry => entry.step))) await loadMathInputs();
   if (modeChanging || task !== data || revision !== settingsRevision || isDeveloperMode()) return;
+  updateStudyGate(data);
   updateHeader(data);
   const status = short(data.status);
   clock = { at: Date.now(), elapsed: Number(data.elapsedSeconds) || 0, running: !document.hidden && status === 'started' && short(data.step?.status) === 'started' };
@@ -1397,7 +1415,7 @@ window.addEventListener('course-academy:developer-mode-settled', event => {
   }
 });
 window.addEventListener('course-academy:profile-changed', event => {
-  modeChanging = false; curriculumSnapshot = null; queueRequest = null;
+  modeChanging = false; curriculumSnapshot = null; queueRequest = null; studyGate = null;
   refreshAfterVisibility = false;
   updateHeader(event.detail);
   history.replaceState(null, '', '/home');

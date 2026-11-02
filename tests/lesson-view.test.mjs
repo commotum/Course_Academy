@@ -1011,3 +1011,64 @@ test('a failed background home read keeps the visible queue usable and retries o
   await f.h.pollHome();
   assert.match(f.document.getElementById('main').textContent, /Fresh plan/);
 });
+
+const gate = (kind, activities) => ({ active: true, kind, activityIds: activities.map(activity => activity.activityId), taskIds: activities.map(activity => activity.taskId) });
+const queueTitles = f => f.document.getElementById('main').querySelectorAll('.queue-card').map(row => row.querySelector('h2').textContent);
+
+test('assessment repairs exclusively render every required card before the five-card limit, hiding paused work and premature retakes', async () => {
+  const f = fixture();
+  const repairs = [1, 2, 3, 4].map(n => activity(n, 1, { taskId: 200 + n, activityId: 300 + n, type: 'review', status: 'locked', title: `Required repair ${n}` }));
+  const unrelated = [1, 2, 3, 4, 5].map(n => activity(n, 1, { taskId: 500 + n, activityId: 600 + n, status: 'paused', title: `Unrelated paused ${n}` }));
+  f.server = { activities: [...unrelated, activity(99, 1, { type: 'assessment', title: 'Optional retake' }), ...repairs],
+    waitingActivities: [{ taskId: 999, activityId: 1000, title: 'Unrelated unfinished practice', pendingCount: 1 }], studyGate: gate('repairs', repairs) };
+  await f.h.home();
+  assert.deepEqual(queueTitles(f), repairs.map(activity => activity.title));
+  assert.equal(f.document.getElementById('main').querySelector('.waiting-lessons'), null);
+  assert.doesNotMatch(f.document.getElementById('main').textContent, /Unrelated|Optional retake/);
+});
+
+test('the required assessment is the only Study recommendation, including when unrelated activities are already in progress', async () => {
+  const f = fixture();
+  const quiz = activity(8, 1, { taskId: 201, activityId: 301, type: 'assessment', status: 'paused', title: 'Required quiz' });
+  f.server = { activities: [activity(1, 1, { status: 'started', title: 'Unrelated lesson' }), quiz], studyGate: gate('assessment', [quiz]) };
+  await f.h.home();
+  assert.deepEqual(queueTitles(f), ['Required quiz']);
+});
+
+test('a failed assessment immediately filters the cached home before its next read, then a read-only poll reveals prepared repairs', async () => {
+  const f = fixture();
+  const unrelated = activity(1, 1, { taskId: 999, activityId: 1000, title: 'Old unrelated recommendation' });
+  f.server = { activities: [unrelated, activity(2, 1, { title: 'Optional retake' })] };
+  await f.h.home();
+  const blocked = { active: true, kind: 'repairs', activityIds: [], taskIds: [] };
+  await f.h.render(activity(4, 3, { type: 'assessment', status: 'completed', studyGate: blocked }));
+  let release;
+  f.delay = new Promise(resolve => { release = resolve; });
+  f.server = { activities: [unrelated], studyGate: blocked };
+  const returning = f.h.leaveTask();
+  assert.deepEqual(queueTitles(f), []);
+  assert.doesNotMatch(f.document.getElementById('main').textContent, /Old unrelated|Optional retake/);
+  release(); await returning; f.delay = null;
+  const repair = activity(5, 1, { taskId: 202, activityId: 302, type: 'review', status: 'locked', title: 'Prepared required review' });
+  f.server = { activities: [unrelated, repair], studyGate: gate('repairs', [repair]) };
+  await f.h.pollHome();
+  assert.equal(f.calls.at(-1).path, '/api/home');
+  assert.deepEqual(queueTitles(f), ['Prepared required review']);
+  await f.h.render({ ...repair, status: 'completed', studyGate: { active: false, kind: null, activityIds: [], taskIds: [] } });
+  f.server = { activities: [unrelated, activity(6, 1, { type: 'assessment', title: 'Optional retake' })], studyGate: { active: false, kind: null, activityIds: [], taskIds: [] } };
+  await f.h.leaveTask();
+  assert.deepEqual(queueTitles(f), ['Old unrelated recommendation', 'Optional retake']);
+});
+
+test('voluntary topic study remains callable while the automatic Study feed is gated', async () => {
+  const f = fixture(); const quiz = activity(8, 1, { taskId: 201, activityId: 301, type: 'assessment', title: 'Required quiz' });
+  f.server = { activities: [quiz], studyGate: gate('assessment', [quiz]) };
+  await f.h.home();
+  f.server = activity(7, 1, { title: 'Voluntary topic lesson', studyGate: gate('assessment', [quiz]) });
+  await f.h.studyTopic(55);
+  assert.equal(f.calls.at(-1).path, '/api/study-topic');
+  assert.match(f.h.view.current.textContent, /Read this/);
+  f.server = activity(8, 1, { type: 'review', title: 'Voluntary topic review', studyGate: gate('assessment', [quiz]) });
+  await f.h.studyTopic(56, true);
+  assert.equal(f.calls.at(-1).path, '/api/review-topic');
+});

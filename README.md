@@ -108,8 +108,13 @@ Course mode and explicit Study Now retain their separate selection rules.
 Equal-priority ordinary reviews fill the five visible slots with graph variety:
 the longest-overdue review comes first, followed by topics farthest from the
 closest review already selected, using prerequisite links in both directions.
-Further ties use overdue age and task ID. Required and ongoing work keep their
-positions, as does the optional lesson offered after three ordinary reviews.
+Further ties use overdue age and task ID. Ready assessment remediation exclusively
+occupies Study; otherwise a ready required assessment does. Unrelated in-progress
+activities stay hidden during either gate. After required repairs clear, an eligible
+retake is optional alongside normal study. Explicit right-click Study now and Review
+now actions remain available. Preserve the documented break after a failed required
+lesson when no required repair is ready. Outside these gates, ongoing work keeps its
+position, as does the optional lesson offered after three ordinary reviews.
 Completed failed reviews reduce long-term retention strength but refresh current
 memory, so their next ordinary review follows a shorter, positive decay interval
 instead of returning immediately. Required remediation keeps its existing gates.

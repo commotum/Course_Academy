@@ -107,6 +107,19 @@ class StudyOutbox:
             value['idAliases'] = copy.deepcopy(state['aliases'])
         return value
 
+    def home_gate(self, state, home):
+        gate = state.get('homeGate', home.get('studyGate'))
+        if isinstance(gate, dict):
+            return gate
+        # Older caches predate explicit gate metadata. Preserve the exclusive
+        # native rows already selected there; this is display migration only.
+        required = [row for row in home.get('activities', [])
+                    if type(row.get('priority')) in {int, float} and row['priority'] >= 11000]
+        return {'active': bool(required),
+                'kind': ('repairs' if any(row.get('type') != 'assessment' for row in required) else 'assessment') if required else None,
+                'activityIds': [row['activityId'] for row in required if row.get('activityId') is not None],
+                'taskIds': [row['taskId'] for row in required if row.get('taskId') is not None]}
+
     def home_view(self, state):
         if not isinstance(state.get('home'), dict):
             return None
@@ -143,6 +156,14 @@ class StudyOutbox:
                     if key in task:
                         existing[key] = copy.deepcopy(task[key])
                 waiting[:] = [row for row in waiting if row.get('taskId') != task_id]
+        gate = self.normalize_ids(self.home_gate(state, home), aliases)
+        home['studyGate'] = gate
+        if gate.get('active'):
+            activity_ids = set(gate.get('activityIds') or [])
+            task_ids = set(gate.get('taskIds') or [])
+            allowed = lambda row: row.get('activityId') in activity_ids or row.get('taskId') in task_ids
+            activities[:] = [row for row in activities if allowed(row)]
+            waiting[:] = [row for row in waiting if allowed(row)]
         return self.with_status(state, home)
 
     def remember_home(self, view):
@@ -155,6 +176,8 @@ class StudyOutbox:
                 # read was running. Never replace it with that older fallback.
                 return self.home_view(state)
             state['home'] = copy.deepcopy(view)
+            if 'homeGate' not in state and isinstance(view.get('studyGate'), dict):
+                state['homeGate'] = copy.deepcopy(view['studyGate'])
             fresh = not self.pending(state) and view.get('basis', 0) >= state.get('committedBasis', 0)
             if not fresh and 'homeCourse' in state and state['homeCourse'] != view.get('course'):
                 state['home']['activities'] = []
@@ -169,6 +192,8 @@ class StudyOutbox:
             return self.home_view(state)
 
     def record_home_updates(self, state, view, request):
+        if isinstance(view.get('studyGate'), dict):
+            state['homeGate'] = copy.deepcopy(view['studyGate'])
         if isinstance(view.get('activities'), list):
             state['home'] = copy.deepcopy(view)
             recommended = {row.get('taskId') for row in view['activities'] if row.get('taskId') is not None}
@@ -251,7 +276,8 @@ class StudyOutbox:
 
     def normalize_ids(self, value, aliases):
         if isinstance(value, dict):
-            return {key: aliases.get(str(item), item) if key in {'taskId', 'itemId', 'activityId', 'questionId', 'entityId', 'choiceId', 'fieldId', 'id'} and type(item) is int
+            return {key: [aliases.get(str(identifier), identifier) for identifier in item] if key in {'taskIds', 'activityIds'} and isinstance(item, list)
+                    else aliases.get(str(item), item) if key in {'taskId', 'itemId', 'activityId', 'questionId', 'entityId', 'choiceId', 'fieldId', 'id'} and type(item) is int
                     else self.normalize_ids(item, aliases) for key, item in value.items()}
         if isinstance(value, list):
             return [self.normalize_ids(item, aliases) for item in value]
