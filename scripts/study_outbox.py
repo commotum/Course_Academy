@@ -127,6 +127,7 @@ class StudyOutbox:
         local = (state['overlay'] or {}).get('entities', {})
         aliases = {key: value for key, value in state['aliases'].items() if key not in local}
         home = self.normalize_ids(home, aliases)
+        gate = self.normalize_ids(self.home_gate(state, home), aliases)
         if state.get('homeLearner') is not None:
             home['learner'] = copy.deepcopy(state['homeLearner'])
         if 'homeCourse' in state:
@@ -156,7 +157,6 @@ class StudyOutbox:
                     if key in task:
                         existing[key] = copy.deepcopy(task[key])
                 waiting[:] = [row for row in waiting if row.get('taskId') != task_id]
-        gate = self.normalize_ids(self.home_gate(state, home), aliases)
         home['studyGate'] = gate
         if gate.get('active'):
             activity_ids = set(gate.get('activityIds') or [])

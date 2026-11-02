@@ -302,6 +302,107 @@ class StudyOutboxTest(unittest.TestCase):
         self.assertEqual(restored['activities'][0]['activityId'], 20)
         self.assertEqual(restored['saveState']['pending'], 1)
 
+    def gated_home(self, kind='repairs'):
+        home = self.home()
+        home['activities'] = [{'activityId': 20, 'taskId': 200, 'type': 'review', 'title': 'Required repair', 'status': 'unlocked', 'priority': 12000}]
+        home['studyGate'] = {'active': True, 'kind': kind, 'activityIds': [20], 'taskIds': [200]}
+        return home
+
+    def test_required_repairs_filter_local_paused_and_started_cards_and_waiting_work(self):
+        home = self.gated_home()
+        home['activities'].append({'activityId': 30, 'taskId': 300, 'type': 'assessment', 'title': 'Optional retake', 'status': 'unlocked'})
+        home['waitingActivities'] = [{'activityId': 40, 'taskId': 400, 'title': 'Unrelated deferred lesson'}]
+        self.queue.remember_home(home)
+        state = self.queue.load()
+        state['homeTasks'] = {
+            '100': {'taskId': 100, 'activityId': 10, 'type': 'lesson', 'status': 'paused', 'title': 'Other paused lesson'},
+            '101': {'taskId': 101, 'activityId': 11, 'type': 'review', 'status': 'started', 'title': 'Other ongoing review'},
+            '300': {'taskId': 300, 'activityId': 30, 'type': 'assessment', 'status': 'paused', 'title': 'Optional retake'},
+            '200': {'taskId': 200, 'activityId': 20, 'type': 'review', 'status': 'paused', 'title': 'Required repair'},
+        }
+        save_json(self.queue.state_path, state)
+        self.grader.request = Mock(side_effect=AssertionError('cached home must make zero native calls'))
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual([row['taskId'] for row in actual['activities']], [200])
+        self.assertEqual(actual['activities'][0]['status'], 'paused')
+        self.assertEqual(actual['waitingActivities'], [])
+        self.assertEqual(actual['studyGate']['kind'], 'repairs')
+
+    def test_legacy_required_native_rows_still_exclude_local_overlays_without_gate_metadata(self):
+        home = self.gated_home()
+        del home['studyGate']
+        self.queue.remember_home(home)
+        state = self.queue.load()
+        state['homeTasks'] = {'100': {'taskId': 100, 'activityId': 10, 'type': 'lesson', 'status': 'paused', 'title': 'Unrelated'}}
+        save_json(self.queue.state_path, state)
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual([row['taskId'] for row in actual['activities']], [200])
+        self.assertTrue(actual['studyGate']['active'])
+        self.assertEqual(self.grader.calls, [])
+
+    def test_required_assessment_excludes_optional_retake_and_all_unrelated_local_work(self):
+        home = self.gated_home('assessment')
+        home['activities'][0].update(type='assessment', title='Required quiz', priority=11000)
+        self.queue.remember_home(home)
+        state = self.queue.load()
+        state['homeTasks'] = {'300': {'taskId': 300, 'activityId': 30, 'type': 'assessment', 'status': 'started', 'title': 'Optional retake'},
+                              '100': {'taskId': 100, 'activityId': 10, 'type': 'lesson', 'status': 'paused', 'title': 'Old lesson'}}
+        save_json(self.queue.state_path, state)
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual([(row['taskId'], row['title']) for row in actual['activities']], [(200, 'Required quiz')])
+
+    def test_post_submit_gate_hides_stale_cached_feed_before_background_preparation(self):
+        self.queue.remember_home(self.home())
+        original = self.grader.request
+        gate = {'active': True, 'kind': 'repairs', 'activityIds': [], 'taskIds': []}
+        def assessment_result(body):
+            result = original(body)
+            if body['action'] == 'study-project':
+                result['data']['view'].update(type='assessment', status='completed', studyGate=gate)
+                result['data']['views'] = {}
+            return result
+        self.grader.request = assessment_result
+        submitted = self.request('submit', 'failed-quiz-submit-0001')
+        self.assertEqual(submitted['studyGate'], gate)
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(actual['activities'], [])
+        self.assertEqual(actual['waitingActivities'], [])
+        self.assertTrue(actual['studyGate']['active'])
+        self.queue = self.make()
+        self.assertEqual(self.queue.overlay_view('home', {'action': 'home'})['activities'], [])
+        self.assertEqual(self.request('submit', 'failed-quiz-submit-0001'), submitted, 'exact acknowledgement survives cached gate changes/restart')
+
+    def test_gate_persists_through_drain_and_remaps_provisional_allowlist_ids(self):
+        home = self.home()
+        home['studyGate'] = {'active': True, 'kind': 'assessment', 'activityIds': [], 'taskIds': [4000000000000001]}
+        self.queue.remember_home(home)
+        self.request('start', 'required-quiz-start-0001')
+        self.queue.run_one()
+        self.queue = self.make()
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual(actual['studyGate']['taskIds'], [100])
+        self.assertEqual([row['taskId'] for row in actual['activities']], [100])
+        self.assertTrue(actual['studyGate']['active'])
+
+    def test_explicit_inactive_gate_after_last_repair_restores_normal_cached_work(self):
+        self.queue.remember_home(self.gated_home())
+        state = self.queue.load()
+        state['homeTasks'] = {'100': {'taskId': 100, 'activityId': 10, 'type': 'lesson', 'status': 'paused', 'title': 'Paused normal lesson'}}
+        self.queue.record_home_updates(state, {'taskId': 200, 'activityId': 20, 'type': 'review', 'status': 'completed',
+                                              'studyGate': {'active': False, 'kind': None, 'activityIds': [], 'taskIds': []}}, 'last-repair-0001')
+        save_json(self.queue.state_path, state)
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertFalse(actual['studyGate']['active'])
+        self.assertEqual([row['taskId'] for row in actual['activities']], [100])
+
+    def test_exclusive_study_feed_does_not_block_explicit_topic_interactions(self):
+        self.queue.remember_home(self.gated_home())
+        response = self.request('study-topic', 'explicit-topic-0001')
+        self.assertEqual(response['status'], 'started')
+        actual = self.queue.overlay_view('home', {'action': 'home'})
+        self.assertEqual([row['taskId'] for row in actual['activities']], [200])
+        self.assertEqual(self.grader.calls[0]['operation']['action'], 'study-topic')
+
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()
         self.writer.request.return_value = {'ok': False, 'code': 'unavailable', 'error': 'lost receipt'}

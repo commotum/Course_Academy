@@ -619,6 +619,11 @@ pub fn candidates(
     }
     Ok(result)
 }
+pub(crate) fn review_ready_for_gate(s:&EntitySnapshot,learner:u64,topic:u64,seen:&BTreeSet<u64>,h:&crate::scheduling::Lifecycle)->Result<bool>{
+    let policy=crate::question_selection::active_policy(s)?;
+    Ok(review_definition(s,learner,topic,seen,h,policy)?.is_some())
+}
+
 fn review_definition(
     s: &EntitySnapshot, learner: u64, topic: u64, seen: &BTreeSet<u64>,
     h: &crate::scheduling::Lifecycle, policy: u64,
