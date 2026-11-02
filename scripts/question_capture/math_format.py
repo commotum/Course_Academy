@@ -1244,6 +1244,51 @@ def normalize_source_tex(value):
     return normalize_tex(''.join(parts))
 
 
+def fraction_answer_equation(numerator, denominator):
+    """HTML fraction whose numerator/denominator may contain real input slots."""
+    return ('<div class="question-equation fraction-equation">\n'
+            '<span>$\\frac{\\text{d}y}{\\text{d}x}=$</span>\n'
+            '<span class="answer-fraction">\n'
+            '<span class="answer-fraction-numerator">'+numerator.strip()+'</span>\n'
+            '<span class="answer-fraction-denominator">'+denominator.strip()+'</span>\n'
+            '</span>\n</div>')
+
+
+def normalize_fraction_answer_tables(value):
+    """Recover a narrow, unambiguous derivative fraction layout, not data grids.
+
+    Source controls stay outside MathJax, retaining their keys and positions.
+    Ordinary tables, longer tables and code examples are left unchanged.
+    """
+    saved=[];prefix='CAFRACTIONCODETOKEN'
+    while prefix in value:prefix+='X'
+    def protect(m):saved.append(m[0]);return prefix+str(len(saved)-1)+'END'
+    text=re.sub(r'```[\s\S]*?```|`[^`\n]*`',protect,str(value))
+    def derivative(cell):
+        cell=re.sub(r'<[^>]+>','',cell).strip().strip('$ ')
+        cell=re.sub(r'\\(?:text|mathrm|textrm)\s*\{?\s*d\s*\}?','d',cell)
+        return re.sub(r'[{}\s]|\\[,!]','',cell)
+    def layout(rows):
+        if len(rows)!=2 or any(len(row)!=3 for row in rows):return None
+        if derivative(rows[0][0])!='dy' or derivative(rows[1][0])!='dx':return None
+        if rows[0][1].strip().strip('$ ')!='=' or rows[1][1].strip():return None
+        if not all(row[2].strip() for row in rows):return None
+        if not re.search(r'\{\{(?:answer-field:)?[^{}]+\}\}',rows[0][2]+rows[1][2]):return None
+        return fraction_answer_equation(rows[0][2],rows[1][2])
+    def markdown(m):
+        if text[m.end():].lstrip('\r\n').startswith('|'):return m[0]
+        rows=[[c.strip() for c in row.strip().strip('|').split('|')] for row in (m[1],m[3])]
+        return layout(rows) or m[0]
+    text=re.sub(r'(?m)^(\|[^\n]+\|)[ \t]*\n(\|[ \t:|\-]+\|)[ \t]*\n(\|[^\n]+\|)[ \t]*(?=\n|$)',markdown,text)
+    def source_html(m):
+        if re.search(r'<table\b',m[1],re.I):return m[0]
+        rows=[re.findall(r'<t[dh]\b[^>]*>(.*?)</t[dh]>',row,re.S|re.I) for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>',m[1],re.S|re.I)]
+        return layout(rows) or m[0]
+    text=re.sub(r'<table\b[^>]*>(.*?)</table>',source_html,text,flags=re.S|re.I)
+    text=re.sub(r'<div class="source-table-scroll">\s*(<div class="question-equation fraction-equation">.*?</div>)\s*</div>',lambda m:m[1],text,flags=re.S)
+    return re.sub(prefix+r'(\d+)END',lambda m:saved[int(m[1])],text)
+
+
 def normalize_prose(value):
     def replace(match):
         whole = match[0]; display = whole.startswith(('$$', r'\['))
@@ -1261,7 +1306,7 @@ def normalize_prose(value):
     # Browser indentation is not a Markdown code-block instruction.
     if '{{field-' in text:
         text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
-    return text
+    return normalize_fraction_answer_tables(text)
 
 
 def validate_tex(value):

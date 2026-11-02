@@ -26,7 +26,7 @@ from capture.scripts.database.images import ImageLibrary
 from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_json
 from scripts.generator_packages import resolve_registered_script
 from scripts.question_markers import validate_prompt_markers
-from scripts.question_capture.math_format import normalize_math_boundaries, validate_math_boundaries, validate_matrix_layouts, validate_math_structure
+from scripts.question_capture.math_format import normalize_math_boundaries, normalize_fraction_answer_tables, validate_math_boundaries, validate_matrix_layouts, validate_math_structure
 from scripts.generator_source_policy import exclusion_query, question_entities, filter_material, reject_excluded_sources, source_references
 
 
@@ -157,7 +157,7 @@ def localize_record(record, math_root, assets_directory, *, library=None):
     q = result['question']
     for key in (':question/problem', ':question/worked-solution'):
         if key in q:
-            q[key] = normalize_math_boundaries(library.text(q[key]))
+            q[key] = normalize_fraction_answer_tables(normalize_math_boundaries(library.text(q[key])))
     for field in q.get(':question/answer-fields', []):
         for answer in field.get(':answer-field/choices', []):
             value = answer[':answer/value']

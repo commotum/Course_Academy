@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 def markdown(source: str) -> str:
     from .math_content import formatter
-    source = formatter().normalize_math_boundaries(source)
+    source = formatter().normalize_fraction_answer_tables(formatter().normalize_math_boundaries(source))
     if not re.search(r'<(?:p|div|span|table|img|h[1-6]|ul|ol|br|mjx-container|math)(?:\s[^<>]*|/?)>', source, re.I):
         return source.strip()
     # These are authored UI layouts, not source tables to flatten into Markdown.
@@ -13,7 +13,7 @@ def markdown(source: str) -> str:
     layouts, layout_prefix = [], 'CAMATRIXLAYOUTTOKEN'
     while layout_prefix in source:
         layout_prefix += 'X'
-    pattern = re.compile(r'<div\b[^>]*\bclass=["\'](?:[^"\']*\s)?matrix-(?:answer|operands)(?=[\s"\'])[^"\']*["\'][^>]*>', re.I)
+    pattern = re.compile(r'<div\b[^>]*\bclass=["\'](?:[^"\']*\s)?(?:matrix-(?:answer|operands)|fraction-equation)(?=[\s"\'])[^"\']*["\'][^>]*>', re.I)
     offset = 0
     while match := pattern.search(source, offset):
         depth, end = 0, None
@@ -107,4 +107,4 @@ def markdown(source: str) -> str:
         result = re.sub(table_math_prefix + r'(\d+)END', lambda match: table_math[int(match[1])], result)
     if layouts:
         result = re.sub(layout_prefix + r'(\d+)END', lambda match: layouts[int(match[1])], result)
-    return result
+    return formatter().normalize_fraction_answer_tables(result)

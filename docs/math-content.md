@@ -47,3 +47,6 @@ For lesson migrations, also render the complete affected content with the player
 actual Markdown, sanitization, and MathJax pipeline. A lack of MathJax errors alone
 is insufficient: check for exposed delimiters, row counts, scalable braces, and
 aligned equals signs.
+# Fraction answer controls
+
+Tables used to arrange a numerator, denominator and equals sign carry mathematical structure. Preserve their fraction bars and input positions rather than turning the first row into Markdown column headings. The canonical interactive form uses a `fraction-equation` wrapper and an `answer-fraction` with `answer-fraction-numerator` and `answer-fraction-denominator` children. Keep field markers outside TeX so the real input controls remain in the correct part of the fraction. The shared formatter recognizes the unambiguous legacy two-row dy/dx layout at capture, import and generator publication boundaries.
