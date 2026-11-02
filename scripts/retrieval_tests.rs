@@ -2795,6 +2795,7 @@ fn study_gate_hides_unrelated_paused_work_and_covers_unprepared_required_quizzes
     assert!(!course_academy_engine::study_gate::resolve(&f.snapshot()?,f.learner,DateTime::from_timestamp_millis(f.now+103).unwrap())?.active);
     let s=f.snapshot()?;
     let (forms,_)=queue_preparation(&s,f.learner,DateTime::from_timestamp_millis(f.now+104).unwrap())?;f.tx(forms,f.now+104)?;
+    f.now+=200;
     let (quiz,_)=f.start("assessment")?;
     let s=f.act("submit",json!({"taskId":quiz}),f.now+200)?;
     let (mut forms,_)=queue_preparation(&s,f.learner,DateTime::from_timestamp_millis(f.now+201).unwrap())?;

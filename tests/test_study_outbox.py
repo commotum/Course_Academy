@@ -403,6 +403,67 @@ class StudyOutboxTest(unittest.TestCase):
         self.assertEqual([row['taskId'] for row in actual['activities']], [200])
         self.assertEqual(self.grader.calls[0]['operation']['action'], 'study-topic')
 
+    def test_acknowledged_gate_changes_reach_reads_and_drafts_without_fact_or_alias_changes(self):
+        state = self.queue.load()
+        inactive = {'active': False, 'kind': None, 'activityIds': [], 'taskIds': []}
+        state['homeGate'] = inactive
+        save_json(self.queue.state_path, state)
+        self.queue.overlay_view('profile', {'action': 'profile'})
+        first_read = self.grader.calls[-1]
+        self.assertEqual(first_read['acknowledgedStudyGate'], inactive)
+        facts, aliases = copy.deepcopy(state['overlay']), copy.deepcopy(state['aliases'])
+        required = {'active': True, 'kind': 'repairs', 'activityIds': [20], 'taskIds': [200]}
+        # A detached queue can update the acknowledged display gate without
+        # changing the resident fact-overlay fingerprint or any aliases.
+        self.queue.record_home_updates(state, {**self.gated_home(), 'studyGate': required}, 'new-gate-queue-0001')
+        save_json(self.queue.state_path, state)
+        self.assertEqual(state['overlay'], facts)
+        self.assertEqual(state['aliases'], aliases)
+        self.queue.overlay_view('profile', {'action': 'profile'})
+        second_read = self.grader.calls[-1]
+        self.assertEqual(second_read['overlay'], first_read['overlay'])
+        self.assertEqual(second_read['aliases'], first_read['aliases'])
+        self.assertEqual(second_read['acknowledgedStudyGate'], required)
+        body = {'action': 'draft', 'taskId': 4000000000000001, 'itemId': 4000000000000002,
+                'requestId': 'gate-synced-draft-0001'}
+        acknowledgement = self.queue.request(body, 1000)
+        project = self.grader.calls[-1]
+        self.assertEqual(project['acknowledgedStudyGate'], required)
+        self.assertNotIn('acknowledgedStudyGate', project['operation'])
+        self.assertEqual(self.queue.load()['operations'][-1]['input'], body)
+        state = self.queue.load()
+        state['homeGate'] = inactive
+        save_json(self.queue.state_path, state)
+        count = len(self.grader.calls)
+        self.assertEqual(self.queue.request(body, 2000), acknowledgement)
+        self.assertEqual(len(self.grader.calls), count, 'an exact retry returns its original acknowledgement unchanged')
+
+    def test_pending_started_task_read_and_projection_normalize_acknowledged_gate_aliases(self):
+        self.request('start', 'gate-start-0001')
+        state = self.queue.load()
+        state['aliases'] = {'4000000000000001': 100, '5000000000000001': 200}
+        state['homeGate'] = {'active': True, 'kind': 'assessment',
+                             'activityIds': [5000000000000001], 'taskIds': [4000000000000001]}
+        original = copy.deepcopy(state['homeGate'])
+        save_json(self.queue.state_path, state)
+        expected = {'active': True, 'kind': 'assessment', 'activityIds': [200], 'taskIds': [4000000000000001]}
+        self.queue.task_view(4000000000000001)
+        task_read = self.grader.calls[-1]
+        self.assertEqual(task_read['action'], 'study-read')
+        self.assertEqual(task_read['acknowledgedStudyGate'], expected)
+        self.assertEqual(task_read['operation']['taskId'], 4000000000000001, 'still-local overlay references must remain provisional')
+        projected = self.queue.projection_request(state, {'action': 'draft', 'requestId': 'gate-normalize-0001'}, 2000)
+        self.assertEqual(projected['acknowledgedStudyGate'], expected)
+        self.assertEqual(state['homeGate'], original)
+
+    def test_legacy_state_without_explicit_gate_omits_trusted_gate_metadata(self):
+        self.queue.overlay_view('profile', {'action': 'profile'})
+        self.assertNotIn('acknowledgedStudyGate', self.grader.calls[-1])
+        self.request('start', 'legacy-gate-start-0001')
+        self.assertNotIn('acknowledgedStudyGate', self.grader.calls[-1])
+        self.queue.task_view(4000000000000001)
+        self.assertNotIn('acknowledgedStudyGate', self.grader.calls[-1])
+
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()
         self.writer.request.return_value = {'ok': False, 'code': 'unavailable', 'error': 'lost receipt'}

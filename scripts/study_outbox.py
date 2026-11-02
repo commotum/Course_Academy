@@ -216,6 +216,12 @@ class StudyOutbox:
         summary['requestId'] = request
         state.setdefault('homeTasks', {})[str(view['taskId'])] = summary
 
+    def acknowledged_gate_fields(self, state, aliases):
+        gate = state.get('homeGate')
+        if not isinstance(gate, dict):
+            return {}
+        return {'acknowledgedStudyGate': self.normalize_ids(gate, aliases)}
+
     def decorate(self, view):
         with self.locked():
             return self.with_status(self.load(), view)
@@ -233,7 +239,8 @@ class StudyOutbox:
                 aliases = {key: value for key, value in state['aliases'].items() if key not in local}
                 operation = self.normalize_ids({'action': 'task', 'taskId': task}, aliases)
                 result = self.grader.request({'action': 'study-read', 'operation': operation, 'overlay': state['overlay'],
-                                             'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
+                                             'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0),
+                                             **self.acknowledged_gate_fields(state, aliases)})
                 if not result.get('ok'):
                     raise ValueError(result.get('error', 'Unable to read saved study progress'))
                 view = result['data']
@@ -256,7 +263,8 @@ class StudyOutbox:
             aliases = {key: value for key, value in state['aliases'].items() if key not in local}
             operation = self.normalize_ids(body, aliases)
             result = self.grader.request({'action': 'study-read', 'operation': operation, 'overlay': state['overlay'],
-                                          'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)})
+                                          'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0),
+                                          **self.acknowledged_gate_fields(state, aliases)})
             if not result.get('ok'):
                 raise ValueError(result.get('error', 'Unable to read locally saved study progress'))
             return self.with_status(state, result['data'])
@@ -321,7 +329,8 @@ class StudyOutbox:
         aliases = {key: value for key, value in state['aliases'].items() if key not in local}
         return {'action': 'study-project', 'operation': self.normalize_ids(body, aliases),
                 'overlay': state['overlay'], 'receivedAt': now,
-                'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0)}
+                'aliases': state['aliases'], 'committedBasis': state.get('committedBasis', 0),
+                **self.acknowledged_gate_fields(state, aliases)}
 
     def accept_projection(self, state, body, now, projected):
         if not projected.get('ok'):

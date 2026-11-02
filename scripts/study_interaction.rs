@@ -23,6 +23,17 @@ pub(super) fn warm_gate(projection: &mut Projection, view: &Json) {
         projection.gate = Some((projection.snapshot.focused_mode, view["studyGate"].clone()));
     }
 }
+fn acknowledged_gate(projection: &mut Projection, body: &Json) {
+    // This outer field comes from the outbox's latest acknowledged native home
+    // or task result, rather than from the learner's operation. A detached
+    // queue can change display eligibility without changing authored facts.
+    if body["acknowledgedStudyGate"].is_object() {
+        projection.gate = Some((
+            projection.snapshot.focused_mode,
+            body["acknowledgedStudyGate"].clone(),
+        ));
+    }
+}
 fn gate(projection: &mut Projection, learner: u64, refresh: bool) -> Result<Json> {
     if !refresh && let Some((focused, value)) = &projection.gate {
         if *focused == projection.snapshot.focused_mode {
@@ -659,6 +670,7 @@ pub(super) fn project(app: &mut Application, body: &Json) -> Result<Json> {
     }
     let db = app.study_db();
     align_projection(&app.snapshot, &db, &mut app.study_projection, body)?;
+    acknowledged_gate(app.study_projection.as_mut().unwrap(), body);
     project_on(
         app.study_projection.as_mut().unwrap(),
         &db,
@@ -677,6 +689,7 @@ pub(super) fn project_value(
     let mut slot = prior;
     align_projection(base, db, &mut slot, body)?;
     let mut projection = slot.unwrap();
+    acknowledged_gate(&mut projection, body);
     let response = project_on(&mut projection, db, learner, base.focused_mode, body)?;
     Ok((response, projection))
 }
@@ -900,6 +913,13 @@ mod projection_error_tests {
         for _ in 0..10 {
             assert_eq!(gate(&mut projection, 1, false)?, expected);
         }
+        let updated = json!({"active":false,"kind":null,"activityIds":[],"taskIds":[]});
+        acknowledged_gate(&mut projection, &json!({"acknowledgedStudyGate":updated}));
+        assert_eq!(
+            gate(&mut projection, 1, false)?,
+            updated,
+            "detached metadata changes synchronize even without a record/fingerprint change"
+        );
         assert!(gate(&mut projection, 1, true).is_err());
         Ok(())
     }
@@ -1038,6 +1058,7 @@ pub(super) fn persist(app: &mut Application, body: &Json) -> Result<Json> {
 pub(super) fn read(app: &mut Application, body: &Json) -> Result<Json> {
     let db = app.study_db();
     align_projection(&app.snapshot, &db, &mut app.study_projection, body)?;
+    acknowledged_gate(app.study_projection.as_mut().unwrap(), body);
     let focused = body["operation"]["_focusedMode"]
         .as_bool()
         .unwrap_or(app.snapshot.focused_mode);
