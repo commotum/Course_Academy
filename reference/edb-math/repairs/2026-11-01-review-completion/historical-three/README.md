@@ -1,4 +1,4 @@
-# Historical local review correction (speculative)
+# Historical local review correction
 
 This bundle corrects three controller-owned five-question reviews that the old three-in-a-row implementation marked failed. The current user policy is: answer at least three; finish early when the latest two are correct; completion after all five is successful regardless of correctness.
 
@@ -18,4 +18,4 @@ The five progress rows are disjoint between these three corrections. The final h
 
 `transaction.edn` is exact intended logical data; `ready.json` contains its stable request key, explicit source, captured basis, original dates/XP, guards, and preview datoms. `native-preview.json` is speculative and is not a durable transaction receipt. `replay-report.json` and per-task replay traces contain source journal paths and verified control results. Parent must submit the exact saved EDN under the saved request key/source and compare the captured basis; a stale basis must not be silently recomputed under the same key.
 
-No durable database writes are performed by the audit or final-batch helper.
+The audit and final-batch helper performed no durable writes. The exact saved transaction was subsequently committed at basis **12109**, under the request key recorded in `intent.json`. `commit.edn` is the confirmed durable receipt; `verified-state.json` records the exact-basis postcondition checks.
