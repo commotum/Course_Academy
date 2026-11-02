@@ -103,6 +103,11 @@ class StudyOutbox:
     def with_status(self, state, view):
         value = copy.deepcopy(view)
         value['saveState'] = self.save_state(state)
+        local = (state['overlay'] or {}).get('entities', {})
+        aliases = {key: durable for key, durable in state['aliases'].items() if key not in local}
+        gate = self.acknowledged_gate_fields(state, aliases).get('acknowledgedStudyGate')
+        if gate is not None:
+            value['studyGate'] = gate
         if not self.pending(state):
             value['idAliases'] = copy.deepcopy(state['aliases'])
         return value

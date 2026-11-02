@@ -464,6 +464,33 @@ class StudyOutboxTest(unittest.TestCase):
         self.queue.task_view(4000000000000001)
         self.assertNotIn('acknowledgedStudyGate', self.grader.calls[-1])
 
+    def test_reopened_pending_answered_or_completed_view_uses_latest_gate_without_native_read(self):
+        inactive = {'active': False, 'kind': None, 'activityIds': [], 'taskIds': []}
+        active = {'active': True, 'kind': 'repairs', 'activityIds': [20], 'taskIds': [200]}
+        state = self.queue.load()
+        state['homeGate'] = inactive
+        save_json(self.queue.state_path, state)
+        acknowledgement = self.request('answer', 'old-answered-gate-0001')
+        self.assertEqual(acknowledgement['studyGate'], inactive)
+        original_calls = len(self.grader.calls)
+        for status in ('started', 'completed'):
+            for gate in (active, inactive):
+                with self.subTest(status=status, active=gate['active']):
+                    state = self.queue.load()
+                    cached = state['views']['4000000000000001']
+                    cached['status'] = status
+                    cached['step']['status'] = 'correct'
+                    cached['studyGate'] = active if gate is inactive else inactive
+                    state['homeGate'] = copy.deepcopy(gate)
+                    save_json(self.queue.state_path, state)
+                    reopened = self.queue.task_view(4000000000000001)
+                    self.assertEqual(reopened['studyGate'], gate)
+                    self.assertEqual(reopened['status'], status)
+                    self.assertEqual(len(self.grader.calls), original_calls)
+                    self.assertEqual(self.request('answer', 'old-answered-gate-0001'), acknowledgement,
+                                     'fresh display decoration must not rewrite exact acknowledgements')
+                    self.assertEqual(len(self.grader.calls), original_calls)
+
     def test_unknown_outcome_replays_exact_operation_across_restart(self):
         self.request()
         self.writer.request.return_value = {'ok': False, 'code': 'unavailable', 'error': 'lost receipt'}
