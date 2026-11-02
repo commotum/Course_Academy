@@ -2,6 +2,8 @@
 
 Proposed initial policy, September 29, 2026. This combines Math Academy's published mechanisms, Jake's captured activity, and explicit local choices. It specifies behavior for our application; it is not a claim to have recovered Math Academy's private selector. No schema or runtime changes are made by this document.
 
+**Review-controller status — November 1, 2026:** The user explicitly adopted the review stopping rule in section 3 as Course Academy's policy: at least three questions, pass when the final two are correct, maximum five, with the fifth answer allowed to complete the pair. It supersedes the original local three-correct streak. This acceptance applies to that controller; the historical proposal and evidence limits below are preserved. Current decisions are recorded in [scheduler-report.md](../scheduler-report.md#5-spaced-reviews-across-study-modes).
+
 The central recommendation is a dynamic menu: finish any current task, resolve required work, then choose among useful lessons, reviews, and multisteps. Self-selected lessons enter the same delivery and learning-update path. Every completed question updates the available evidence; task completion can award XP, establish lesson mastery, create remediation, and refresh the menu. Opening the application also refreshes due reviews, because retention can change without a new answer.
 
 ## What the evidence supports
@@ -58,7 +60,7 @@ Module membership is only a weak tie-breaker for variety, not a newly invented c
 
 Keep **two consecutive correct answers, at most five presented questions per KP** as the initial lesson rule. A skip consumes a presentation and breaks the streak. Pass the lesson only after all required KPs pass. Completion by itself, a positive XP award, or passing one KP does not establish whole-topic mastery. This follows the published adaptive practice structure recorded in the [engine analysis](mathacademy_engine_analysis.md), while remaining a local rule for our implementation.
 
-For reviews, prepare five unseen questions from the topic's KP banks, interleave KPs/cases, and select the first three to cover different cases where possible. Then use **at least three questions, passing when the final two are correct, with a maximum of five**. The fifth question may complete the passing streak. This improves the current three-consecutive rule:
+For reviews, prepare five unseen questions from the topic's KP banks, interleave KPs/cases, and select the first three to cover different cases where possible. Then use **at least three questions, passing when the final two are correct, with a maximum of five**. The fifth question may complete the passing streak. At proposal time, this was a proposed replacement for the then-current three-consecutive rule; the user accepted it on November 1, 2026:
 
 | Observed response sequence | Observed award | Proposed interpretation |
 | --- | --- | --- |
@@ -140,7 +142,7 @@ Prepare enough supply before beginning: up to five unseen questions per lesson K
 
 The schemas already separate reusable content, learner attempts, question presentations, current progress, and the current queue. They can express the proposed selected activities and resulting evidence without duplicating topic/course links on every record. Scheduling reasons remain display text; eligibility and obligations are derived by application rules.
 
-The existing runtime already contains adaptive lesson/review delivery, per-answer updates, task completion, and FIRe transitions. The existing ranker is a useful compression primitive, not the complete scheduler described here. Work still needed includes candidate construction, the required-work rules, assessment assembly, robust timing estimates, and atomic cross-task question reservation. The review stopping change and start-time prerequisite check are explicit differences from current code.
+The existing runtime already contains adaptive lesson/review delivery, per-answer updates, task completion, and FIRe transitions. The existing ranker is a useful compression primitive, not the complete scheduler described here. Work still needed includes candidate construction, the required-work rules, assessment assembly, robust timing estimates, and atomic cross-task question reservation. At the proposal date, the review stopping change and start-time prerequisite check were explicit differences from the code. The review controller was subsequently accepted on November 1, 2026; see the status note above.
 
 Keep scheduling constants in a small application policy initially. They are different from the mathematical FIRe parameters in `engine/1-fire-policy.edn`; if editable scheduling settings need persistent history, add that focused configuration later rather than treating every decision as a new content attribute. The proposals do not require a new engine-update event table.
 

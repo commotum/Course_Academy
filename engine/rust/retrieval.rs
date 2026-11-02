@@ -97,6 +97,9 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
             return Err("Retrieval presentations must follow their reserved route".into());
         }
         let Some(outcome) = learning::question_outcome(s, *item)? else {
+            if recorded.is_some() {
+                return Err("Completed review contains an unanswered presentation".into());
+            }
             if index + 1 != items.len() {
                 return Err("Unanswered question precedes later content".into());
             }

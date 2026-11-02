@@ -1092,3 +1092,17 @@ test('an empty required gate reports its pending obligation without inventing a 
     assert.match(main.textContent, /Add topics to your queue or targets/);
   }
 });
+
+test('review completion follows the authoritative minimum-three final-two result without requiring a local three-answer streak', async () => {
+  for (const sequence of ['ICC', 'CCICC', 'CCIIC']) {
+    const f = fixture();
+    const history = [...sequence].map((answer, index) => ({ order: index + 1, step: question(index + 1, answer === 'C' ? 'correct' : 'incorrect') }));
+    const passed = sequence !== 'CCIIC';
+    await f.h.render(activity(sequence.length, 1, { type: 'review', status: passed ? 'completed' : 'failed',
+      history, step: history.at(-1).step, progress: { stepNumber: 1, totalSteps: 1, presented: sequence.length } }));
+    const completion = f.h.view.current;
+    assert.equal(completion.querySelector('h2').textContent, passed ? 'Activity complete' : 'More practice needed');
+    assert.match(completion.textContent, passed ? /Your answers and progress have been saved/ : /This attempt did not establish mastery/);
+    assert.equal(f.h.clock.running, false);
+  }
+});

@@ -811,13 +811,15 @@ fn project_on(
     let previous_gate = projection.gate.clone();
     let outcome = (|| -> Result<Json> {
         let ids = apply_in_place(&mut projection.snapshot, db, &forms, at)?;
-        let study_gate = gate(
-            projection,
-            learner,
-            !matches!(action, "draft" | "navigate" | "answer"),
-        )?;
+        let mut output = view(&projection.snapshot, learner, action, &result)?;
+        let study_gate = if action == "queue" {
+            // The completed planner owns readiness and its supply fallback.
+            warm_gate(projection, &output);
+            output["studyGate"].clone()
+        } else {
+            gate(projection, learner, !matches!(action, "draft" | "navigate" | "answer"))?
+        };
         let after = &projection.snapshot;
-        let mut output = view(after, learner, action, &result)?;
         output["studyGate"] = study_gate.clone();
         let mut clock_forms = vec![];
         for f in &forms {

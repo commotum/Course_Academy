@@ -705,6 +705,26 @@ fn submitted_answer_clock_ends_before_grading_and_database_admission_finish() ->
 }
 
 #[test]
+fn generic_review_recovery_completes_without_escalating_required_lesson() -> Result<()> {
+    for pattern in ["ICC","CCICC","CCIIC"] {
+        let mut f=Fixture::new(true)?;
+        let (task,mut s)=f.start("review")?;
+        for (slot,result) in pattern.chars().enumerate(){
+            let item=*items(&s,task)?.last().unwrap();let q=s.reference(item,"task-item/content")?;
+            let field=s.refs(q,"question/answer-fields")?[0];
+            s=f.act("answer",json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":if result=='C'{"2"}else{"3"}}]}),f.now+200+slot as i64*200)?;
+            s=f.act("continue",json!({"taskId":task,"itemId":item}),f.now+300+slot as i64*200)?;
+            assert_eq!(matches!(status(&s,task,"learner-task/status")?.as_str(),"completed"|"failed"),slot+1==pattern.len());
+        }
+        assert_eq!(status(&s,task,"learner-task/status")?,if pattern=="CCIIC"{"failed"}else{"completed"});
+        assert_eq!(items(&s,task)?.len(),pattern.len());
+        let saved=task_json(&s,f.learner,task)?;
+        assert_eq!(saved["history"].as_array().unwrap().len()+1,pattern.len());
+    }
+    Ok(())
+}
+
+#[test]
 fn automatic_generic_reviews_commit_reservations_grade_streak_award_xp_and_update_fire_once()
 -> Result<()> {
     let mut f = Fixture::new(true)?;
@@ -2209,7 +2229,7 @@ fn three_ordinary_reviews_offer_a_lesson_and_only_an_actual_offer_resets_the_str
 
 #[test]
 fn mixed_repair_origins_share_lesson_precedence_and_supply_fallback() -> Result<()> {
-    let mut f=Fixture::new(false)?;
+    let mut f=Fixture::new(true)?;
     let s=f.snapshot()?;
     let topic=s.entities.with_attribute("topic/title").into_iter().find(|t|text(&s,*t,"topic/title")=="Topic 0").unwrap();
     let kp=s.refs(topic,"topic/knowledge-points")?[0];
