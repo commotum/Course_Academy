@@ -2258,6 +2258,8 @@ fn failed_required_lesson_releases_global_gate_until_five_other_successes() -> R
         DateTime::from_timestamp_millis(at).unwrap(),
     )?;
     assert!(!plan.iter().any(|p| p.priority >= 11000.0));
+    assert!(!course_academy_engine::study_gate::resolve(&s,f.learner,DateTime::from_timestamp_millis(at).unwrap())?.active,
+        "failed required lesson break reopens ordinary Study");
     // Four successful repairs on other topics advance the break; one further
     // ordinary success reaches five. Failures never count as that fifth.
     let other = s.reference(reviews[1], "activity/scope")?;
@@ -2774,6 +2776,40 @@ fn study_projection_reducer_matches_edb_for_status_cas_upserts_and_retractions()
 }
 
 #[test]
+fn study_gate_hides_unrelated_paused_work_and_covers_unprepared_required_quizzes()->Result<()>{
+    let mut f=Fixture::with_admission(false,3*86400000,false)?;
+    let initial=f.snapshot()?;
+    let learned=initial.refs(f.learner,"learner/activity")?.into_iter().find(|task|
+        status(&initial,*task,"learner-task/status").ok().as_deref()==Some("completed")).unwrap();
+    let mut forms=vec![add(json!(learned),"learner-task/xp-earned",json!(50))];
+    for task in initial.refs(f.learner,"learner/activity")? {
+        if retrieval::kind(&initial,initial.reference(task,"learner-task/activity")?)?=="assessment" {
+            forms.push(json!([kw("db/retract"),f.learner,kw("learner/activity"),task]));
+        }
+    }
+    f.tx(forms,f.now+100)?;
+    let s=f.snapshot()?;
+    let pending=course_academy_engine::study_gate::resolve(&s,f.learner,DateTime::from_timestamp_millis(f.now+101).unwrap())?;
+    assert!(pending.active);assert_eq!(pending.kind,Some("assessment"));assert!(pending.activity_ids.is_empty());
+    f.tx(vec![add(json!(learned),"learner-task/xp-earned",json!(25))],f.now+102)?;
+    assert!(!course_academy_engine::study_gate::resolve(&f.snapshot()?,f.learner,DateTime::from_timestamp_millis(f.now+103).unwrap())?.active);
+    let s=f.snapshot()?;
+    let (forms,_)=queue_preparation(&s,f.learner,DateTime::from_timestamp_millis(f.now+104).unwrap())?;f.tx(forms,f.now+104)?;
+    let (quiz,_)=f.start("assessment")?;
+    let s=f.act("submit",json!({"taskId":quiz}),f.now+200)?;
+    let (mut forms,_)=queue_preparation(&s,f.learner,DateTime::from_timestamp_millis(f.now+201).unwrap())?;
+    let lesson=s.reference(learned,"learner-task/activity")?;
+    forms.push(json!({"db/id":"unrelated-paused","learner-task/id":{"$uuid":uid()?},"learner-task/activity":lesson,"learner-task/status":kw("learner-task.status/paused"),"learner-task/elapsed-seconds":0.}));
+    forms.push(add(json!(f.learner),"learner/activity",json!("unrelated-paused")));f.tx(forms,f.now+201)?;
+    let view=home(&f.snapshot()?,f.learner)?;
+    assert_eq!(view["studyGate"]["kind"],"repairs");
+    assert_eq!(view["activities"].as_array().unwrap().len(),5);
+    assert!(view["activities"].as_array().unwrap().iter().all(|a|a["type"]=="review"&&a["activityId"]!=lesson));
+    assert_eq!(view["waitingActivities"],json!([]));
+    Ok(())
+}
+
+#[test]
 fn study_projection_assessment_admission_deadline_survives_late_writer() -> Result<()> {
     let mut f=Fixture::new(false)?;
     let activity=f.available("assessment")?;
@@ -2791,6 +2827,11 @@ fn study_projection_assessment_admission_deadline_survives_late_writer() -> Resu
         let (data,next)=study_interaction::project_value(&base,&db,f.learner,projection,&json!({"operation":body,"overlay":overlay,"receivedAt":f.now+1000+turn as i64*1000}))?;
         projection=Some(next);overlay=data["overlay"].clone();queued.push(data["operation"].clone());
         task=data["view"]["taskId"].clone();item=data["view"]["step"]["itemId"].clone();
+        if *action=="submit" {
+            assert_eq!(data["view"]["studyGate"]["active"],true);
+            assert_eq!(data["view"]["studyGate"]["kind"],"repairs");
+            assert_eq!(data["view"]["studyGate"]["activityIds"],json!([]),"newly required reviews await background materialization");
+        }
     }
     for (n,operation) in queued.iter().enumerate(){
         let s=f.snapshot()?;let op=study_interaction::bind(&s,operation)?;

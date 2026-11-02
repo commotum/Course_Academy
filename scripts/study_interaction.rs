@@ -8,13 +8,34 @@ pub(super) struct Projection {
     snapshot: EntitySnapshot,
     touched: BTreeSet<u64>,
     fingerprint: String,
+    gate: Option<(bool, Json)>,
 }
 pub(super) fn resident(snapshot: EntitySnapshot) -> Projection {
     Projection {
         snapshot,
         touched: BTreeSet::new(),
         fingerprint: course_academy_engine::core::fingerprint(&Json::Null),
+        gate: None,
     }
+}
+pub(super) fn warm_gate(projection: &mut Projection, view: &Json) {
+    if view["studyGate"].is_object() {
+        projection.gate = Some((projection.snapshot.focused_mode, view["studyGate"].clone()));
+    }
+}
+fn gate(projection: &mut Projection, learner: u64, refresh: bool) -> Result<Json> {
+    if !refresh && let Some((focused, value)) = &projection.gate {
+        if *focused == projection.snapshot.focused_mode {
+            return Ok(value.clone());
+        }
+    }
+    let value = serde_json::to_value(course_academy_engine::study_gate::resolve(
+        &projection.snapshot,
+        learner,
+        Utc::now(),
+    )?)?;
+    projection.gate = Some((projection.snapshot.focused_mode, value.clone()));
+    Ok(value)
 }
 fn canonicalize(
     projection: &mut Projection,
@@ -59,6 +80,17 @@ fn canonicalize(
         .replace_records(replacements, projection.snapshot.basis_t.max(basis))?;
     for event in &mut projection.snapshot.status_history {
         event.entity = remap(event.entity);
+    }
+    if let Some((_, gate)) = &mut projection.gate {
+        for key in ["activityIds", "taskIds"] {
+            if let Some(ids) = gate[key].as_array_mut() {
+                for id in ids {
+                    if let Some(n) = id.as_u64() {
+                        *id = json!(remap(n));
+                    }
+                }
+            }
+        }
     }
     projection.touched = projection.touched.iter().map(|id| remap(*id)).collect();
     projection.fingerprint = course_academy_engine::core::fingerprint(&Json::Null);
@@ -329,6 +361,7 @@ fn overlay(base: &EntitySnapshot, delta: &Json) -> Result<EntitySnapshot> {
     Ok(result)
 }
 fn merge_overlay(projection: &mut Projection, incoming: &Json) -> Result<()> {
+    projection.gate = None;
     // A published plan extends an acknowledged stream: the Python actor checks
     // its captured revision before publication. Keep accepted canonical rows
     // that a newer planner base already contains, replacing only supplied rows.
@@ -700,6 +733,7 @@ fn align_projection(
             .map(|m| m.keys().filter_map(|k| k.parse().ok()).collect())
             .unwrap_or_default(),
         fingerprint,
+        gate: None,
     };
     if let Some(old) = slot.replace(projection) {
         std::thread::spawn(move || drop(old));
@@ -761,10 +795,17 @@ fn project_on(
     let history_len = s.status_history.len();
     let touched = projection.touched.clone();
     let fingerprint = projection.fingerprint.clone();
+    let previous_gate = projection.gate.clone();
     let outcome = (|| -> Result<Json> {
         let ids = apply_in_place(&mut projection.snapshot, db, &forms, at)?;
+        let study_gate = gate(
+            projection,
+            learner,
+            !matches!(action, "draft" | "navigate" | "answer"),
+        )?;
         let after = &projection.snapshot;
-        let output = view(after, learner, action, &result)?;
+        let mut output = view(after, learner, action, &result)?;
+        output["studyGate"] = study_gate.clone();
         let mut clock_forms = vec![];
         for f in &forms {
             let clock = f
@@ -820,7 +861,8 @@ fn project_on(
         }
         let mut views = serde_json::Map::new();
         for t in changed_tasks {
-            if let Ok(v) = task_json(after, learner, t) {
+            if let Ok(mut v) = task_json(after, learner, t) {
+                v["studyGate"] = study_gate.clone();
                 views.insert(t.to_string(), v);
             }
         }
@@ -837,6 +879,7 @@ fn project_on(
         projection.snapshot.status_history.truncate(history_len);
         projection.touched = touched;
         projection.fingerprint = fingerprint;
+        projection.gate = previous_gate;
     }
     outcome
 }
@@ -844,6 +887,22 @@ fn project_on(
 #[cfg(test)]
 mod projection_error_tests {
     use super::*;
+    #[test]
+    fn warmed_gate_is_reused_without_touching_eligibility_or_question_stock() -> Result<()> {
+        let snapshot = EntitySnapshot::from_json(
+            &json!({"basis_t":1,"entities":{"1":{"learner/id":"gate-cache","learner/activity":[999]}}}),
+        )?;
+        let mut projection = resident(snapshot);
+        let expected = json!({"active":true,"kind":"assessment","activityIds":[10],"taskIds":[20]});
+        warm_gate(&mut projection, &json!({"studyGate":expected}));
+        // The intentionally absent task would make a new lifecycle/eligibility
+        // scan fail. Draft/navigation paths must use the authoritative cache.
+        for _ in 0..10 {
+            assert_eq!(gate(&mut projection, 1, false)?, expected);
+        }
+        assert!(gate(&mut projection, 1, true).is_err());
+        Ok(())
+    }
     #[test]
     fn invalid_answer_keeps_the_resident_projection_allocation() -> Result<()> {
         let db = edb_core::Database::bootstrap()?.database_value();
@@ -983,10 +1042,15 @@ pub(super) fn read(app: &mut Application, body: &Json) -> Result<Json> {
         .as_bool()
         .unwrap_or(app.snapshot.focused_mode);
     app.study_projection.as_mut().unwrap().snapshot.focused_mode = focused;
+    let study_gate = gate(
+        app.study_projection.as_mut().unwrap(),
+        app.learner_eid,
+        false,
+    )?;
     let s = &app.study_projection.as_ref().unwrap().snapshot;
     let l = app.learner_eid;
     let op = &body["operation"];
-    match op["action"].as_str().ok_or("Study read action required")? {
+    let mut value = match op["action"].as_str().ok_or("Study read action required")? {
         "home" | "queue" => home(s, l),
         "task" => {
             let t = required(op, "taskId")?;
@@ -1011,7 +1075,9 @@ pub(super) fn read(app: &mut Application, body: &Json) -> Result<Json> {
             Utc::now(),
         )),
         _ => Err("Unsupported local study read".into()),
-    }
+    }?;
+    value["studyGate"] = study_gate;
+    Ok(value)
 }
 
 #[cfg(test)]

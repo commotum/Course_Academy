@@ -320,12 +320,12 @@ impl Application {
                     if let Err(error)=queue_preparation(&reader.snapshot,learner,Utc::now()) {
                         eprintln!("Study queue warmup: {error}");
                     }
-                    if let Err(error)=home(&reader.snapshot,learner) {
-                        eprintln!("Study home warmup: {error}");
-                    }
+                    let warmed_home=home(&reader.snapshot,learner);
+                    if let Err(error)=&warmed_home {eprintln!("Study home warmup: {error}");}
                     // Expansion and cloning happen before publication, away
                     // from answer/Next/read admission.
-                    let projection=study_interaction::resident(reader.snapshot.clone());
+                    let mut projection=study_interaction::resident(reader.snapshot.clone());
+                    if let Ok(view)=&warmed_home {study_interaction::warm_gate(&mut projection,view);}
                     delivered=Some(reader.reference.clone());
                     let capture=StudyCapture {
                         snapshot:std::mem::replace(&mut reader.snapshot,EntitySnapshot::new(BTreeMap::new(),0)?),
@@ -950,10 +950,11 @@ fn home_with_candidates(
     l: u64,
     candidates: Option<Vec<learning::PlannedActivity>>,
 ) -> Result<Json> {
+    let gate=course_academy_engine::study_gate::resolve(s,l,Utc::now())?;
     let Some(c) = s.optional_ref(l, "learner/course")? else {
         return Ok(json!({
             "basis": s.basis_t, "learner": learner_json(s, l), "course": null,
-            "activities": [], "waitingActivities": [], "needsCourseSelection": true,
+            "activities": [], "waitingActivities": [], "studyGate":gate,"needsCourseSelection": true,
             "queueDescription": "Choose a course in your profile to begin studying.",
             "practiceNotice": "",
         }));
@@ -968,6 +969,7 @@ fn home_with_candidates(
     for candidate in candidates {
         let a = candidate.activity;
         let task = task_for(s, l, a)?;
+        if !gate.allows(a,task){continue;}
         let state = match task {
             Some(task) => status(s, task, "learner-task/status")?,
             None if self_directed => "selected".into(),
@@ -1010,6 +1012,7 @@ fn home_with_candidates(
         if status(s, a, "activity/type")? != "lesson" {
             continue;
         }
+        if !gate.allows(a,Some(t)){continue;}
         let topic = s.reference(a, "activity/scope")?;
         if !learning::topic_in_study_focus(s, l, topic)? { continue; }
         if layers.get(&topic).is_none_or(|&layer| layer + 1 < learning::MIN_STUDY_LAYER) {
@@ -1033,7 +1036,7 @@ fn home_with_candidates(
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"studyGate":gate,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
     )
 }
 
@@ -3562,6 +3565,12 @@ mod study_queue_tests {
         measure!("unavailable questions", learning::unavailable_questions(s, l));
         measure!("lifecycle", course_academy_engine::scheduling::lifecycle(s, l));
         measure!("assessment status", course_academy_engine::inventory::assessment_status(s, l, Utc::now()));
+        measure!("study gate", course_academy_engine::study_gate::resolve(s,l,Utc::now()));
+        for run in 0..5 {
+            let started=Instant::now();
+            let gate=course_academy_engine::study_gate::resolve(s,l,Utc::now())?;
+            eprintln!("Profile warm study gate run={run} elapsed={:.3} ms kind={:?} allowed={}",started.elapsed().as_secs_f64()*1000.,gate.kind,gate.activity_ids.len());
+        }
         for run in 0..3 {
             let started = Instant::now();
             let (forms, candidates) = queue_preparation(s, l, Utc::now())?;
