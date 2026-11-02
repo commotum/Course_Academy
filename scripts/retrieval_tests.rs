@@ -2208,6 +2208,80 @@ fn three_ordinary_reviews_offer_a_lesson_and_only_an_actual_offer_resets_the_str
 }
 
 #[test]
+fn mixed_repair_origins_share_lesson_precedence_and_supply_fallback() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let s=f.snapshot()?;
+    let topic=s.entities.with_attribute("topic/title").into_iter().find(|t|text(&s,*t,"topic/title")=="Topic 0").unwrap();
+    let kp=s.refs(topic,"topic/knowledge-points")?[0];
+    let questions=s.refs(kp,"knowledge-point/questions")?;
+    let mut forms=vec![];
+    for index in 0..2 {
+        forms.push(json!({"db/id":format!("mixed-quiz-{index}"),"activity/id":{"$uuid":uid()?},"activity/type":kw("activity.type/assessment"),"activity/steps":[format!("mixed-step-{index}")],"activity/first-step":format!("mixed-step-{index}")}));
+        forms.push(json!({"db/id":format!("mixed-step-{index}"),"step/id":{"$uuid":uid()?},"step/content":questions[index]}));
+    }
+    f.tx(forms,f.now+1)?;
+    let s=f.snapshot()?;
+    let quizzes=s.entities.with_attribute("activity/type").into_iter().filter(|a|retrieval::kind(&s,*a).unwrap()=="assessment"&&s.refs(*a,"activity/steps").unwrap().len()==1).collect::<Vec<_>>();
+    let a=finish(&mut f,quizzes[0],None,true,0,f.now+10)?;
+    let b=finish(&mut f,quizzes[1],None,true,0,f.now+20)?;
+    let s=f.snapshot()?;
+    let review=retrieval::selected_review(&s,f.learner,topic)?;
+    let forms=definition_forms(&s,&review,"mixed-review",Some(course(&s,f.learner)?))?;
+    f.tx(forms,f.now+30)?;
+    let s=f.snapshot()?;
+    let review_activity=s.entities.with_attribute("activity/id").into_iter().find(|id|retrieval::kind(&s,*id).unwrap()=="review"&&s.refs(*id,"activity/steps").unwrap().len()==5&&s.optional_ref(*id,"activity/scope").unwrap()==Some(topic)).unwrap();
+    finish_origin(&mut f,review_activity,None,false,-1,f.now+40,Some(a))?;
+    let mut s=f.snapshot()?;
+    let mut kp_record=s.entity(kp)?.clone();
+    let extra=9_999_000;
+    let mut extra_record=kp_record.clone();extra_record.insert("knowledge-point/id".into(),json!({"$uuid":uid()?}));
+    extra_record.insert("knowledge-point/questions".into(),json!(&questions[2..]));
+    kp_record.insert("knowledge-point/questions".into(),json!(&questions[..2]));
+    let mut topic_record=s.entity(topic)?.clone();topic_record.insert("topic/knowledge-points".into(),json!([kp,extra]));
+    s.replace_records(BTreeMap::from([(kp,kp_record),(extra,extra_record),(topic,topic_record)]),s.basis_t+1)?;
+    let h=course_academy_engine::scheduling::lifecycle(&s,f.learner)?;
+    assert_eq!(h.repairs[&(a,topic)],"lesson");assert_eq!(h.repairs[&(b,topic)],"review");
+    assert_eq!(h.repair_kind(topic),Some("lesson"));
+    assert!(retrieval::selected_review(&s,f.learner,topic).is_ok(),"review stock exists across the topic");
+    let at=DateTime::from_timestamp_millis(f.now+50).unwrap();
+    assert!(!course_academy_engine::study_gate::resolve(&s,f.learner,at)?.active,"unavailable relearning must release ordinary Study, rather than gate on a superseded review");
+    assert!(!h.retake_ready(&s,a)?);assert!(!h.retake_ready(&s,b)?);
+    assert!(!retrieval::schedule(&s,f.learner,course(&s,f.learner)?,at)?.iter().any(|d|d.topic==Some(topic)));
+    let plan=learning::study_candidates(&s,f.learner,course(&s,f.learner)?,at)?;
+    assert!(!plan.is_empty());
+    assert!(!course_academy_engine::study_gate::StudyGate::from_candidates(&s,f.learner,&plan)?.active);
+    Ok(())
+}
+
+#[test]
+fn paused_voluntary_review_does_not_suppress_later_required_review() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let s=f.snapshot()?;
+    let topic=s.entities.with_attribute("topic/title").into_iter().find(|t|text(&s,*t,"topic/title")=="Topic 0").unwrap();
+    let definition=retrieval::selected_review(&s,f.learner,topic)?;
+    let mut forms=definition_forms(&s,&definition,"voluntary-review",Some(course(&s,f.learner)?))?;
+    forms.push(json!({"db/id":"voluntary-task","learner-task/id":{"$uuid":uid()?},"learner-task/activity":"voluntary-review","learner-task/status":kw("learner-task.status/paused")}));
+    forms.push(add(json!(f.learner),"learner/activity",json!("voluntary-task")));
+    f.tx(forms,f.now+1)?;
+    let (quiz,_)=f.start("assessment")?;
+    let s=f.act("submit",json!({"taskId":quiz}),f.now+200)?;
+    let at=DateTime::from_timestamp_millis(f.now+300).unwrap();
+    let definitions=retrieval::schedule(&s,f.learner,course(&s,f.learner)?,at)?;
+    assert!(definitions.iter().any(|d|d.kind=="review"&&d.topic==Some(topic)&&d.remediation_for.contains(&quiz)),"unlinked paused review cannot discharge the quiz obligation");
+    let(forms,_)=queue_preparation(&s,f.learner,at)?;f.tx(forms,f.now+300)?;
+    let s=f.snapshot()?;
+    let view=home(&s,f.learner)?;
+    assert_eq!(view["studyGate"]["kind"],"repairs");
+    assert!(view["activities"].as_array().unwrap().iter().any(|card| {
+        let task=card["taskId"].as_u64().unwrap();
+        s.refs(task,"learner-task/remediation-for").unwrap().contains(&quiz)
+            && s.optional_ref(card["activityId"].as_u64().unwrap(),"activity/scope").unwrap()==Some(topic)
+    }));
+    assert!(view["activities"].as_array().unwrap().iter().all(|card|card["priority"].as_f64().unwrap()>=12000.));
+    Ok(())
+}
+
+#[test]
 fn failed_required_lesson_releases_global_gate_until_five_other_successes() -> Result<()> {
     let mut f = Fixture::new(false)?;
     let (original, mut s) = f.start("assessment")?;

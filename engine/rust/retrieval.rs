@@ -535,6 +535,9 @@ pub fn candidates(
         let required = origins
             .iter()
             .any(|o| h.repairs.get(&(*o, topic)).is_some_and(|k| k == &kind));
+        if required && h.repair_kind(topic) != Some(kind.as_str()) {
+            continue;
+        }
         if !origins.is_empty() && !required {
             continue;
         }
@@ -728,11 +731,15 @@ pub fn schedule(
             .keys()
             .filter_map(|(origin, t)| (*t == topic).then_some(*origin))
             .collect();
-        let needs_lesson = origins.iter().any(|o| h.repairs[&(*o, topic)] == "lesson");
+        let needs_lesson = h.repair_kind(topic) == Some("lesson");
         let next = if needs_lesson { "lesson" } else { "review" };
+        // A voluntarily started route has no repair links and cannot discharge
+        // a later obligation. Keep it resumable without letting it suppress a
+        // distinct required review that records the triggering origins.
         if pending
             .iter()
-            .any(|p| p.topic == topic && kind(s, p.activity).ok().as_deref() == Some(next))
+            .any(|p| p.topic == topic && kind(s, p.activity).ok().as_deref() == Some(next)
+                && (origins.is_empty() || matches!(p.reason.as_str(), "Required practice after assessment" | "Required prerequisite repair")))
         {
             continue;
         }
@@ -768,12 +775,6 @@ pub fn schedule(
                     });
                 }
             }
-            continue;
-        }
-        if pending
-            .iter()
-            .any(|p| p.topic == topic && kind(s, p.activity).ok().as_deref() == Some("review"))
-        {
             continue;
         }
         if let Some(definition) = review_definition(s, learner, topic, &seen, &h, policy)? {

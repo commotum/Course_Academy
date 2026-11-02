@@ -176,6 +176,17 @@ pub fn lifecycle(s: &EntitySnapshot, learner: u64) -> Result<Lifecycle> {
     Ok(h)
 }
 impl Lifecycle {
+    /// Relearning supersedes review for every obligation on the same topic.
+    pub fn repair_kind(&self, topic: u64) -> Option<&str> {
+        let mut kind = None;
+        for (&(_, t), required) in &self.repairs {
+            if t == topic {
+                if required == "lesson" { return Some("lesson"); }
+                kind = Some("review");
+            }
+        }
+        kind
+    }
     pub fn retry_ready(&self, topic: u64) -> bool {
         let Some(task) = self.lesson_failures.get(&topic) else {
             return true;

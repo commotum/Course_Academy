@@ -950,8 +950,8 @@ fn home_with_candidates(
     l: u64,
     candidates: Option<Vec<learning::PlannedActivity>>,
 ) -> Result<Json> {
-    let gate=course_academy_engine::study_gate::resolve(s,l,Utc::now())?;
     let Some(c) = s.optional_ref(l, "learner/course")? else {
+        let gate=course_academy_engine::study_gate::StudyGate::default();
         return Ok(json!({
             "basis": s.basis_t, "learner": learner_json(s, l), "course": null,
             "activities": [], "waitingActivities": [], "studyGate":gate,"needsCourseSelection": true,
@@ -964,6 +964,7 @@ fn home_with_candidates(
         Some(candidates) => candidates,
         None => learning::study_candidates(s, l, c, Utc::now())?,
     };
+    let gate=course_academy_engine::study_gate::StudyGate::from_candidates(s,l,&candidates)?;
     let mut activities = vec![];
     let quiz_labels = QuizLabels::capture(s, l)?;
     for candidate in candidates {
@@ -3635,6 +3636,8 @@ mod study_queue_tests {
         let definitions=retrieval::schedule(s,l,course(s,l)?,at)?;
         eprintln!("GATE-DIAG definitions={:?}",definitions.iter().map(|d|(&d.kind,d.topic,d.existing_activity,&d.remediation_for)).collect::<Vec<_>>());
         let(forms,_)=queue_preparation(s,l,at)?;eprintln!("GATE-DIAG forms={}",serde_json::to_string(&forms)?);
+        let (projected,_)=study_interaction::project_value(s,&app.study_db(),l,None,&json!({"operation":{"action":"queue","background":true,"requestId":"read-only-gate-diagnosis"},"overlay":null,"receivedAt":at.timestamp_millis()}))?;
+        eprintln!("GATE-DIAG speculative-home={}",serde_json::to_string(&projected["view"])?);
         Ok(())
     }
 

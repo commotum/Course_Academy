@@ -18,6 +18,32 @@ impl StudyGate {
             || self.activity_ids.contains(&activity)
             || task.is_some_and(|id| self.task_ids.contains(&id))
     }
+
+    /// Published queue metadata uses the scheduler's selected ready work.
+    /// Prospective obligations belong only to the immediate terminal view;
+    /// they must never erase the planner's valid supply/retry fallback.
+    pub fn from_candidates(s: &EntitySnapshot, learner: u64, candidates: &[learning::PlannedActivity]) -> Result<Self> {
+        let mut gate = Self::default();
+        for candidate in candidates {
+            let kind = retrieval::kind(s, candidate.activity)?;
+            let required = candidate.priority >= 12000.0;
+            let assessment = kind == "assessment" && candidate.priority >= 11000.0;
+            if required || assessment {
+                gate.active = true;
+                gate.kind = Some(if required { "repairs" } else { "assessment" });
+                gate.activity_ids.insert(candidate.activity);
+            }
+        }
+        if gate.active {
+            for task in s.refs(learner, "learner/activity")? {
+                if gate.activity_ids.contains(&s.reference(task, "learner-task/activity")?)
+                    && matches!(scheduling::state(s, task)?.as_str(), "locked"|"unlocked"|"started"|"paused") {
+                    gate.task_ids.insert(task);
+                }
+            }
+        }
+        Ok(gate)
+    }
 }
 
 /// Resolve only mandatory work, without ranking ordinary lessons/reviews or
@@ -27,17 +53,20 @@ pub fn resolve(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Result<St
     let h = scheduling::lifecycle(s, learner)?;
     let tasks = s.refs(learner, "learner/activity")?;
     let mut repairs = BTreeSet::new();
-    for (&(origin, topic), kind) in &h.repairs {
+    for &(origin, topic) in h.repairs.keys() {
         if h.assessment_origin(s, origin)?
             && learning::topic_in_study_focus(s, learner, topic)?
-            && (kind != "lesson" || (h.retry_ready(topic) && !h.lesson_blocked(s, topic)?))
         {
-            repairs.insert((topic, kind.clone()));
+            repairs.insert(topic);
         }
     }
     let mut gate = StudyGate::default();
     let mut seen = None;
-    for (topic, kind) in repairs {
+    for topic in repairs {
+        let kind = h.repair_kind(topic).unwrap();
+        if kind == "lesson" && (!h.retry_ready(topic) || h.lesson_blocked(s, topic)?) {
+            continue;
+        }
         let mut ready = false;
         for &task in &tasks {
             let state = scheduling::state(s, task)?;
@@ -53,7 +82,7 @@ pub fn resolve(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>) -> Result<St
             let ongoing = matches!(state.as_str(), "started" | "paused");
             let origins = s.refs(task, "learner-task/remediation-for")?;
             let linked = origins.iter().any(|origin| {
-                h.repairs.get(&(*origin, topic)) == Some(&kind)
+                h.repairs.get(&(*origin, topic)).map(String::as_str) == Some(kind)
                     && h.assessment_origin(s, *origin).unwrap_or(false)
             });
             if !linked && (ongoing || !origins.is_empty()) {
