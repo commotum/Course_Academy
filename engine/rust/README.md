@@ -76,12 +76,15 @@ The 15-minute wall-clock limit continues while paused. Answers are graded and
 recorded immediately, but correctness, feedback, and solutions are hidden by
 the task API until completion. Explicit skips create remediation; expiry does
 not fabricate wrong-answer evidence for unanswered or unpresented questions.
-Failed ordinary reviews lower repetition progress and retain their accuracy
+Imported or legacy failed ordinary reviews lower repetition progress and retain their accuracy
 penalties, while completed review re-exposure refreshes current memory just
 above the due threshold. The next ordinary review follows memory decay instead
-of an activity counter. Failed remediation reviews still lead to their linked
-lessons; observed assessment misses still lead to immediate required reviews,
+of an activity counter. Imported or legacy failed remediation reviews still lead
+to their linked lessons; observed assessment misses still lead to immediate required reviews,
 including topics outside the current course.
+
+The current controller never enters those failed-review branches merely because
+a review lacks two consecutive correct answers at question five.
 
 The runtime policy's `failed_review_refresh_fraction` defaults to `0.01` and
 requires no new EDB attributes. It restores 1% of the log-memory headroom between
@@ -144,8 +147,9 @@ answer-field count do not weight accuracy. Rounding is `floor(x + 0.5)`, once
 at the end; intermediate coefficients use exact rational arithmetic.
 
 Both `runtime` completion and the study app's `learning::continuation` use these
-rules. A finished failed lesson/review still receives its calculated XP, while
-its mastery/status decision remains separate. Unfinished work receives no final
+rules. A finished failed lesson or imported/legacy failed review still receives
+its calculated XP, while its mastery/status decision remains separate. New full
+five-question reviews complete successfully even with low accuracy. Unfinished work receives no final
 award. Assessment completion and expiry use every assigned question in the XP
 denominator, without creating responses or FIRe evidence for unanswered work.
 Diagnostics retain their separate placement rules. Explicit observed/imported

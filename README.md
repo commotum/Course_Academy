@@ -122,8 +122,8 @@ retake is optional alongside normal study. Explicit right-click Study now and Re
 now actions remain available. Preserve the documented break after a failed required
 lesson when no required repair is ready. Outside these gates, ongoing work keeps its
 position, as does the optional lesson offered after three ordinary reviews.
-Completed failed reviews reduce long-term retention strength but refresh current
-memory, so their next ordinary review follows a shorter, positive decay interval
+Imported or legacy failed reviews reduce long-term retention strength but refresh
+current memory, so their next ordinary review follows a shorter, positive decay interval
 instead of returning immediately. Required remediation keeps its existing gates.
 
 For private remote access, use Tailscale Serve while keeping the app bound to
