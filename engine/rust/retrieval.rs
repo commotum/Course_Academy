@@ -79,6 +79,17 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
             deferred: vec![],
         });
     }
+    // Completed attempts retain their recorded outcome and full frozen route.
+    // A controller change must not reinterpret legacy ICCC/CCICC histories or
+    // make an idempotent terminal read fail its new stopping-prefix check.
+    let recorded = if let Some(last) = items.last() {
+        s.owners(*last, "learner-task/items")?.into_iter().find_map(|task| {
+            (s.optional_ref(task,"learner-task/activity").ok().flatten()==Some(activity)
+                && learning::ordered_presentations(s,task).ok().as_deref()==Some(items))
+                .then(|| state(s,task,"learner-task/status").ok()).flatten()
+                .and_then(|state|match state.as_str(){"completed"=>Some(true),"failed"=>Some(false),_=>None})
+        })
+    } else { None };
     let mut answered = vec![];
     for (index, item) in items.iter().enumerate() {
         if index >= steps.len() || s.reference(*item, "task-item/content")? != steps[index].content
@@ -98,7 +109,7 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
             });
         };
         answered.push(outcome);
-        if kind(s, activity)? == "review" {
+        if kind(s, activity)? == "review" && recorded.is_none() {
             let decision = activities::evaluate_review_prefix(&answered)?;
             if decision.complete() {
                 if index + 1 != items.len() {
@@ -113,6 +124,9 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
                 });
             }
         }
+    }
+    if let Some(passed) = recorded {
+        return Ok(learning::Position { next:None,passed,failed:!passed,shortage:None,deferred:vec![] });
     }
     let next = steps.get(items.len()).map(|step| step.content);
     Ok(learning::Position {
@@ -1008,6 +1022,29 @@ mod tests {
         assert!(learning::continuation_state(&s, 60, &items, false, true).is_err());
         present(&mut s, 103, "correct");
         assert!(position(&s, 60, &s.refs(9, "learner-task/items").unwrap()).is_err());
+    }
+    #[test]
+    fn review_routes_follow_recovery_rule_and_preserve_frozen_terminal_history() {
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false),("SCC",true)] {
+            let mut s=fixture();
+            for (slot,result) in pattern.chars().enumerate() {
+                let items=s.refs(9,"learner-task/items").unwrap();
+                assert_eq!(position(&s,60,&items).unwrap().next,Some(100+slot as u64),"{pattern}");
+                present(&mut s,100+slot as u64,match result{'C'=>"correct",'I'=>"incorrect",_=>"skipped"});
+            }
+            let items=s.refs(9,"learner-task/items").unwrap();
+            let result=position(&s,60,&items).unwrap();
+            assert_eq!((result.next,result.passed,result.failed),(None,passed,!passed),"{pattern}");
+        }
+        for (pattern,state,passed) in [("ICCC","completed",true),("CCICC","failed",false)] {
+            let mut s=fixture();
+            for (slot,result) in pattern.chars().enumerate(){present(&mut s,100+slot as u64,if result=='C'{"correct"}else{"incorrect"});}
+            s.entities.get_mut(&9).unwrap().insert("learner-task/status".into(),json!(format!("learner-task.status/{state}")));
+            let before=s.entities.clone();
+            let result=position(&s,60,&s.refs(9,"learner-task/items").unwrap()).unwrap();
+            assert_eq!((result.next,result.passed,result.failed),(None,passed,!passed));
+            assert_eq!(s.entities,before,"reading history must not revise saved outcomes");
+        }
     }
     #[test]
     fn review_failure_skip_and_current_presentation_are_replayed_without_extra_draws() {

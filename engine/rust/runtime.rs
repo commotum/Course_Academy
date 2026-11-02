@@ -1598,6 +1598,21 @@ mod tests {
     }
 
     #[test]
+    fn review_recovery_stopping_updates_runtime_once_and_keeps_xp_separate() {
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false)] {
+            let mut f=Fixture::new("review");f.seed(20,0.0);f.set(3,"learner-task/xp-base",json!(6));
+            for (slot,result) in pattern.chars().enumerate(){
+                let done=f.answer(100+slot as u64,Some(result=='C'));
+                assert_eq!(done.delivery.complete,slot+1==pattern.len(),"{pattern} slot={slot}");
+                assert_eq!(done.delivery.passed,(slot+1==pattern.len()).then_some(passed));
+                assert_eq!(f.state(20).ability.practice_mass,(slot+1)as f64);
+            }
+            assert_eq!(f.entities[&3]["learner-task/status"],f.enums[if passed{"learner-task.status/completed"}else{"learner-task.status/failed"}]);
+            let expected=earned_xp("review",6,pattern.chars().filter(|c|*c=='C').count(),pattern.len(),pattern.ends_with('C').then_some(true).or(Some(false))).unwrap();
+            assert_eq!(f.entities[&3]["learner-task/xp-earned"],json!(expected.to_string().parse::<i64>().unwrap()));
+        }
+    }
+    #[test]
     fn review_accuracy_updates_once_and_retention_only_on_terminal_streak() {
         let mut f = Fixture::new("review");
         f.seed(20, 0.0);

@@ -53,7 +53,8 @@ fn practice_prefix(
             decision.streak = 0;
             incorrect_streak += 1;
         }
-        decision.status = if decision.streak >= required_streak {
+        decision.status = if decision.streak >= required_streak
+            && (lesson || decision.attempted >= 3) {
             "passed"
         } else if lesson && incorrect_streak == 2 {
             "failed"
@@ -72,7 +73,9 @@ pub fn evaluate_kp_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
     practice_prefix(outcomes, 2, true)
 }
 pub fn evaluate_review_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
-    practice_prefix(outcomes, 3, false)
+    // Reviews present at least three questions; recovery on questions four or
+    // five passes as soon as the last two answers are correct.
+    practice_prefix(outcomes, 2, false)
 }
 
 /// Convert numeric inputs to an exact rational. Floats use their decimal
@@ -449,7 +452,7 @@ mod tests {
             Some(true)
         );
         assert_eq!(
-            evaluate_review_prefix(&[Some(false), Some(false), Some(true), Some(true), Some(true)])
+            evaluate_review_prefix(&[Some(false), Some(false), Some(false), Some(true), Some(true)])
                 .unwrap()
                 .passed(),
             Some(true)
@@ -463,6 +466,20 @@ mod tests {
         assert!(evaluate_kp_prefix(&[Some(true), Some(true), Some(false)]).is_err());
         assert!(evaluate_review_prefix(&[Some(true); 4]).is_err());
         assert!(evaluate_kp_prefix(&[Some(false); 6]).is_err());
+    }
+    #[test]
+    fn review_stopping_requires_three_presentations_and_final_two_correct() {
+        let decode=|pattern:&str|pattern.chars().map(|c|match c{'C'=>Some(true),'I'=>Some(false),'S'=>None,_=>panic!("bad pattern")}).collect::<Vec<_>>();
+        for (pattern,passed) in [("CCC",true),("ICC",true),("CICC",true),("CCICC",true),("CCICI",false),("CCIIC",false),("SCC",true),("CCSCC",true),("CCSIC",false)] {
+            let outcomes=decode(pattern);
+            for prefix in 0..outcomes.len() {
+                assert!(!evaluate_review_prefix(&outcomes[..prefix]).unwrap().complete(),"{pattern} prefix={prefix}");
+            }
+            let result=evaluate_review_prefix(&outcomes).unwrap();
+            assert_eq!(result.passed(),Some(passed),"{pattern}");
+            let mut extra=outcomes;extra.push(Some(true));
+            assert!(evaluate_review_prefix(&extra).is_err(),"{pattern} continued past terminal");
+        }
     }
     #[test]
     fn exact_awards_and_rounding() {
