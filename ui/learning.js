@@ -110,6 +110,11 @@ function reconcileStudyIds(data) {
     if (resolved !== item) { drafts.set(resolved, responses); drafts.delete(item); }
   }
   if (task?.taskId != null) {
+    if (lessonView?.key === `task:${task.learner?.id || 'learner'}:${task.taskId}`) {
+      lessonView.key = `task:${task.learner?.id || 'learner'}:${studyId(task.taskId)}`;
+      if (lessonView.currentId != null) lessonView.currentId = String(studyId(lessonView.currentId));
+      lessonView.history = new Map([...lessonView.history].map(([id, node]) => [String(studyId(id)), node]));
+    }
     task.taskId = studyId(task.taskId);
     if (task.step?.itemId != null) task.step.itemId = studyId(task.step.itemId);
   }
@@ -868,6 +873,18 @@ function choiceOrder(choices, seed) {
   const hash = value => { let n = 2166136261; for (const c of value) n = Math.imul(n ^ c.charCodeAt(0), 16777619); return n >>> 0; };
   return [...choices].sort((a, b) => hash(`${seed}:${a.id}`) - hash(`${seed}:${b.id}`));
 }
+// EDB membership is a set. Its enumeration order is not a presentation order.
+function orderedFields(fields = []) {
+  return [...fields].sort((a, b) => String(a.id).localeCompare(String(b.id), 'en', { numeric: true }));
+}
+function questionLayout(step) {
+  return JSON.stringify([step.contentId, step.markdown ?? step.problem ?? '', orderedFields(step.fields).map(field =>
+    [field.id, field.key, field.type, field.answerType, [...(field.choices || [])].sort((a, b) => a.id - b.id)])]);
+}
+function answerResult(data, step) {
+  return JSON.stringify([data.status, step.status, step.canContinue, step.feedback, step.solution, step.unanswered,
+    orderedFields(step.fields).map(field => [field.id, field.response, field.correctAnswer, field.grade])]);
+}
 function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
   const set = el('fieldset', 'answer-field');
   set.dataset.fieldId = String(field.id);
@@ -1115,19 +1132,22 @@ function resumeOnAnswerInteraction(form, content, data, step) {
 
 function taskContent(data, step, number, total, archived = false) {
   const content = el('section', 'lesson-content');
+  content.questionLayout = questionLayout(step);
+  content.answerStatus = short(step.status);
+  content.answerResult = answerResult(data, step);
   if (number) content.dataset.stepNumber = String(number);
   if (total) content.dataset.totalSteps = String(total);
   attachStepMenu(content, step.contentId, step.mathAcademyId, { kind: step.kind === 'tutorial' ? 'tutorial' : 'question' });
   const kind = short(step.kind);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
-  const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
+  const fields = orderedFields(step.fields);
+  const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', fields);
   card.append(prompt);
   const isAnswered = answered(short(step.status));
   const paused = ['paused', 'locked', 'unlocked'].includes(short(data.status));
   const resumeFromAnswer = paused && !archived && !isAnswered && !data.awaitingQuestions && ['lesson', 'review'].includes(data.type);
   const readOnly = archived || terminal(short(data.status)) || (data.type !== 'assessment' && isAnswered) || paused && !resumeFromAnswer;
-  const fields = step.fields || [];
   let assessmentControls = null;
   if (kind === 'question' && fields.length) {
     const form = el('form'); form.noValidate = false;
@@ -1235,6 +1255,48 @@ function taskContent(data, step, number, total, archived = false) {
   return content;
 }
 
+function updateAnswerFeedback(view, data, step, number, total) {
+  const content = view.current;
+  if (!content || String(studyId(view.currentId)) !== String(studyId(step.itemId))
+    || data.type === 'assessment' || short(step.kind) !== 'question'
+    || !answered(short(step.status))
+    || content.questionLayout !== questionLayout(step)) return false;
+  if (answered(content.answerStatus)) return content.answerResult === answerResult(data, step);
+  const form = content.querySelector('form');
+  if (!form) return false;
+  // Keep the prompt, MathJax, MathLive editors and field positions mounted.
+  // Removing the whole card temporarily shortened the page and moved scroll.
+  const graded = taskContent(data, step, number, total);
+  for (const control of form.querySelectorAll('[data-answer-input]')) {
+    control.disabled = true; control.dataset.readOnly = 'true';
+  }
+  for (const field of step.fields || []) {
+    for (const host of form.querySelectorAll('[data-field-id]')) {
+      if (host.dataset.fieldId === String(field.id)) fieldFeedback(host, field, step.status);
+    }
+  }
+  for (const actions of form.querySelectorAll('.answer-actions')) actions.remove();
+  const card = content.querySelector('.content-card');
+  const feedback = graded.querySelector('.feedback');
+  if (feedback) form.append(feedback);
+  const solution = graded.querySelector('.worked-solution');
+  if (solution) card.append(solution);
+  const controls = graded.querySelector('.lesson-controls');
+  if (controls) content.append(controls);
+  content.answerStatus = short(step.status);
+  content.answerResult = answerResult(data, step);
+  ++renderGeneration;
+  for (const node of [feedback, solution]) if (node) void typeset(node);
+  const heading = feedback?.querySelector('.feedback-heading');
+  const rect = heading?.getBoundingClientRect?.();
+  // Usually the result replaces Check answer at the same spot. Enter from an
+  // earlier field in a tall form may need to reveal the result explicitly.
+  if (rect && (rect.top < 80 || rect.bottom > window.innerHeight)) {
+    heading.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  }
+  return true;
+}
+
 async function renderTask(data) {
   showReviewSaveState(data.saveState, data.taskId);
   if (modeChanging) return;
@@ -1298,6 +1360,7 @@ async function renderTask(data) {
   if (!step) { view.feed.replaceChildren(el('p', 'notice', 'No current step is available. Return to study and try again.')); return; }
   const identity = String(step.itemId);
   const earlier = (data.type === "assessment" && !terminal(status) ? [] : seen).filter(entry => String(entry.step.itemId) !== identity).map(entry => ({ ...entry, id: String(entry.step.itemId) }));
+  if (updateAnswerFeedback(view, data, step, number, total)) return;
   await showLessonStep(view, identity, earlier, taskContent(data, step, number, total), buildEarlier);
 }
 

@@ -293,12 +293,37 @@ test('answer feedback updates the same presentation without duplicating history 
   assert.equal(f.h.view.current.querySelector('.step-meta'), null);
   assert.equal(f.h.view.current.querySelector('legend').className, 'sr-only');
   assert.equal(f.h.view.current.querySelector('.lesson-controls'), null);
+  const original = f.h.view.current;
+  const input = original.querySelector('input');
   await f.h.render(activity(1, 1, { step: question(1, 'correct') }));
+  assert.equal(f.h.view.current, original);
+  assert.equal(f.h.view.current.querySelector('input'), input);
   assert.equal(f.h.view.feed.children.length, 1);
   assert.equal(f.h.view.history.size, 0);
   assert.equal(f.scrolls.length, 1);
   assert.match(f.h.view.current.textContent, /Correct/);
   assert.ok(f.h.view.current.querySelector('.lesson-controls'));
+});
+
+test('unordered field sets retain deterministic positions and mounted controls after grading and refresh', async () => {
+  const f = fixture();
+  const fields = [20, 3, 11].map(id => ({ id, key: 'value-' + id, type: 'blank', answerType: 'text' }));
+  const step = { ...question(1), markdown: 'Enter three values.', fields };
+  await f.h.render(activity(1, 1, { step }));
+  const content = f.h.view.current;
+  const inputs = content.querySelectorAll('input');
+  assert.deepEqual(inputs.map(input => input.getAttribute('name')), ['3', '11', '20']);
+  inputs.forEach(input => { input.value = 'my answer'; });
+  const graded = { ...step, status: 'incorrect', canContinue: true,
+    fields: [fields[2], fields[0], fields[1]].map(field => ({ ...field, grade: 'incorrect', response: { value: 'my answer' }, correctAnswer: { value: 'expected' } })) };
+  await f.h.render(activity(1, 1, { step: graded }));
+  assert.equal(f.h.view.current, content);
+  assert.deepEqual(content.querySelectorAll('input'), inputs);
+  assert.ok(inputs.every(input => input.disabled && input.value === 'my answer' && input.dataset.grade === 'incorrect'));
+  await f.h.render(activity(1, 1, { step: { ...graded, fields: [...graded.fields].reverse() } }));
+  assert.equal(f.h.view.current, content);
+  assert.deepEqual(content.querySelectorAll('input'), inputs);
+  assert.equal(f.scrolls.length, 1);
 });
 
 test('reload restores previously revealed steps as read-only and separates task histories', async () => {
