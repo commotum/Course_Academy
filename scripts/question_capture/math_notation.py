@@ -15,7 +15,11 @@ LAYOUT = {'displaystyle','textstyle','scriptstyle','scriptscriptstyle','left','r
           'big','Big','bigg','Bigg','bigl','bigr','Bigl','Bigr','biggl','biggr',
           'Biggl','Biggr','quad','qquad','enspace','thinspace'}
 OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log',
-             'exp','arcsin','arccos','arctan','arcsec','arccsc','arccot','arg','lim','min','max'}
+             'exp','arcsin','arccos','arctan','arcsec','arccsc','arccot','arg','lim','min','max',
+             'sech','csch','coth','arsinh','arcosh','artanh','arsech','arcsch','arcoth',
+             'arcsinh','arccosh','arctanh','arcsech','arccsch','arccoth','det','gcd','lcm',
+             'dim','ker','rank','trace','tr','diag','sgn','cis','mean','curl','div','grad',
+             'Var','Cov','Pr','Re','Im','Exp','sup','inf','limsup','liminf'}
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
 UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h',

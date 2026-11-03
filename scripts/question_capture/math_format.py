@@ -1176,6 +1176,7 @@ def normalize_inverse_trig_operators(text):
     argument, or retain it as the unsupported control word ``\\arcsecx``.
     Recognize those narrow spellings, not arbitrary words or identifiers.
     """
+    if not any(name in text for name in INVERSE_RECIPROCAL_OPERATORS):return text
     def group(start):
         if start >= len(text) or text[start] != '{':return None
         depth, end = 1, start+1
@@ -1231,6 +1232,7 @@ NAMED_FUNCTION_OPERATORS = (
 _BUILTIN_OPERATORS = frozenset(('arcsin','arccos','arctan','sin','cos','tan','sec','csc','cot',
     'sinh','cosh','tanh','coth','ln','log','lg','exp','arg','lim','limsup','liminf',
     'min','max','inf','sup','det','gcd','dim','ker','Pr','Re','Im'))
+_NAMED_FUNCTION_PATTERN = re.compile('|'.join(sorted(NAMED_FUNCTION_OPERATORS,key=len,reverse=True)))
 
 
 def normalize_function_operators(text):
@@ -1240,6 +1242,7 @@ def normalize_function_operators(text):
     products. A MathML application marker, a function argument, or a known
     joined legacy command establishes the recoverable function boundary.
     """
+    if not _NAMED_FUNCTION_PATTERN.search(text):return text
     text=normalize_inverse_trig_operators(text)
     # The escaped spelling is an old JSON capture artifact, not a TeX command.
     text=text.replace(r'\u2061','\u2061')
@@ -1277,7 +1280,7 @@ def normalize_function_operators(text):
             boundary=not before.isalpha() or adjacent
             stripped=suffix.lstrip()
             call=bool(stripped) and (stripped[0] in '({[\\' or stripped.startswith(r'\left'))
-            single=bool(suffix) and (suffix[0] in 'xyztuvwABCDEFGHIJKLMNOPQRSTUVWXYZαβγδθλμρσωπ' or suffix[0].isdigit()) and (len(suffix)==1 or not suffix[1].isalpha())
+            single=bool(suffix) and (suffix[0] in 'xyztuvwABCDEFGHIJKLMNOPQRSTUVWXYZαβγδθλμρσωπ' or (name=='mod' and suffix[0].isdigit())) and (len(suffix)==1 or not suffix[1].isalpha())
             scripted=name in ('min','max','sup','inf','lim','limsup','liminf') and bool(re.match(r'[_^]\{',suffix))
             if boundary and (marked or call or single or scripted):
                 out.append(operator(name));i+=len(name);continue

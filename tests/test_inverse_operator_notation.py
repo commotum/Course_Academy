@@ -5,7 +5,7 @@ import unittest
 from bs4 import BeautifulSoup
 from scripts.question_capture.math_format import (
     normalize_inverse_trig_operators as fix, normalize_prose, normalize_tex,
-    validate_math_structure,
+    validate_math_structure, normalize_function_operators,
 )
 from capture.scripts.database.math_content import question as normalize_import
 
@@ -55,6 +55,24 @@ class InverseOperatorNotationTests(unittest.TestCase):
         renderer=Renderer(1721)
         node=BeautifulSoup('<mi>xarccot</mi>','html.parser').mi
         self.assertEqual(renderer.m(node),'xarccot')
+
+    def test_other_operator_losses_keep_factors_domains_and_powers(self):
+        cases={
+            'xln⁡x':r'x\ln ⁡x',
+            '{sin}^{2}⁡x':r'{\sin }^{2}⁡x',
+            'det(A)':r'\det (A)',
+            'max(|x|,|y|)':r'\max (|x|,|y|)',
+            'xmod2':r'x\bmod 2',
+            r'\siny':r'\sin y',
+            r'arsech(x)':r'\operatorname{arsech} (x)',
+            'rcis(θ)':r'r\operatorname{cis} (θ)',
+        }
+        for source,expected in cases.items():
+            self.assertEqual(normalize_function_operators(source),expected)
+            self.assertEqual(normalize_function_operators(expected),expected)
+        for unchanged in (r'\coth x',r'\sech x',r'\csch x',r'\text{min}',r'\lambda_{min}',
+                          'log10(x)','atan2(y,x)','maximum','model','xlnvalue',r'\text{sin(x)}'):
+            self.assertEqual(normalize_function_operators(unchanged),unchanged)
 
 
 if __name__=='__main__':unittest.main()

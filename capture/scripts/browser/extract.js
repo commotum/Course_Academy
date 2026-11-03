@@ -422,7 +422,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       case 'mtext': return '\\text{' + literalDollar(n.textContent) + '}';
       case 'mo': return n.textContent === '\u2061' ? '' : ops[n.textContent] || greek[n.textContent] || literalFence(literalDollar(n.textContent));
       case 'mi':
-        if (/^(?:arcsec|arccsc|arccot)$/.test(n.textContent)) return '\\operatorname{' + n.textContent + '} ';
+        if (/^(?:arcsinh|arccosh|arctanh|arcsech|arccsch|arccoth|arsinh|arcosh|artanh|arsech|arcsch|arcoth|arcsin|arccos|arctan|arcsec|arccsc|arccot|sinh|cosh|tanh|sech|csch|coth|sin|cos|tan|sec|csc|cot|asin|acos|atan|asec|acsc|acot|limsup|liminf|lim|inf|sup|min|max|det|gcd|lcm|dim|ker|rank|trace|tr|diag|sgn|arg|exp|ln|log|lg|cis|mean|curl|div|grad|mod|Var|Cov|Pr|Re|Im|Exp)$/.test(n.textContent)) return n.textContent === 'lim' ? '\\lim ' : n.textContent === 'mod' ? '\\bmod ' : '\\operatorname{' + n.textContent + '} ';
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
         if (/^[A-Za-z]+$/.test(n.textContent) &&
