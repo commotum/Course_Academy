@@ -116,6 +116,8 @@ def to_tex(node):
             if '[math]' in value or '\\' in value:
                 raise ValueError('unrendered markup inside MathML literal text')
             return r'\text{' + text_chars(value) + '}' if value else ''
+        if name == 'mi' and value in ('arcsec','arccsc','arccot'):
+            return '\\operatorname{' + value + '} '
         if name == 'mi' and value in CAPTURE.MATHML_TEX_OPERATOR_NAMES:
             return '\\' + value + ' '
         result = tex_chars(value)
