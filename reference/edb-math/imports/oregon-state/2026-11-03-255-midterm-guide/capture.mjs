@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+const [port,dir]=process.argv.slice(2);
+const tabs=await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
+const tab=tabs.find(t=>t.type==='page'&&t.url.includes('/assignments'));
+const ws=new WebSocket(tab.webSocketDebuggerUrl);await new Promise(r=>ws.addEventListener('open',r,{once:true}));let id=0;const pending=new Map();
+ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(new Error(JSON.stringify(m.error))):p.resolve(m.result);}};
+const call=(method,params={})=>new Promise((resolve,reject)=>{pending.set(++id,{resolve,reject});ws.send(JSON.stringify({id,method,params}));});
+await call('Page.enable');
+await call('Runtime.evaluate',{expression:`new Promise((resolve,reject)=>{let n=0;const t=setInterval(()=>{if(document.getElementById('ingest-render-report')){clearInterval(t);resolve(true)}else if(++n>100){clearInterval(t);reject(new Error('Rendering timed out'))}},100)})`,awaitPromise:true,returnByValue:true});
+await call('Runtime.evaluate',{expression:`new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(r,300))))`,awaitPromise:true});
+const dom=await call('Runtime.evaluate',{expression:'document.documentElement.outerHTML',returnByValue:true});fs.writeFileSync(dir+'/render.html',dom.result.value);
+const shot=await call('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:false});fs.writeFileSync(dir+'/assignment-preview.png',Buffer.from(shot.data,'base64'));
+ws.close();process.stdout.write(dom.result.value);

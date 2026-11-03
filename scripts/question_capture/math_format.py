@@ -849,7 +849,17 @@ def _scalable_composite_fences(text, environments, *, fractions=False):
         cursor=start
         for _ in range(2):
             while cursor<len(text) and text[cursor].isspace():cursor+=1
-            if cursor>=len(text) or text[cursor]!='{':return False
+            if cursor>=len(text):return False
+            # TeX also accepts single-token arguments: \frac12,
+            # \frac{\sqrt3}2 and \frac\pi2 have genuine fraction height.
+            # Never consume a closing fence or an argument-taking macro as
+            # evidence that an incomplete fraction is well formed.
+            if text[cursor]!='{':
+                if text[cursor].isascii() and text[cursor].isalnum():
+                    cursor+=1;continue
+                symbol=re.match(r'\\(?:alpha|beta|gamma|delta|epsilon|varepsilon|zeta|eta|theta|vartheta|iota|kappa|lambda|mu|nu|xi|pi|varpi|rho|varrho|sigma|varsigma|tau|upsilon|phi|varphi|chi|psi|omega|Gamma|Delta|Theta|Lambda|Xi|Pi|Sigma|Upsilon|Phi|Psi|Omega|infty)(?![A-Za-z])',text[cursor:])
+                if symbol:cursor+=len(symbol[0]);continue
+                return False
             depth=1;cursor+=1
             while cursor<len(text) and depth:
                 if text[cursor]=='\\':

@@ -19,6 +19,15 @@ class FractionExpressionFenceTests(unittest.TestCase):
         for source in (r'[x+\frac{1}{2}]',r'\langle x,\frac{1}{2}\rangle',r'((x+\frac{1}{2}))'):
             result=fix(source);self.assertNotEqual(result,source);self.assertEqual(fix(result),result);validate_tex(result)
 
+    def test_single_token_fraction_arguments_keep_the_same_tex_tokens(self):
+        for source in (r'(\frac12)',r'⟨4,\frac32⟩',r'(\tfrac{5\sqrt3}2,-\tfrac52)',r'[\frac\pi2+x]',r'(\dfrac1{t+1})'):
+            result=fix(source)
+            self.assertNotEqual(result,source);self.assertEqual(fix(result),result);validate_tex(result)
+            restored=result.replace(r'\left','').replace(r'\right','').replace(r'\langle ','⟨').replace(r'\rangle ','⟩')
+            self.assertEqual(restored,source)
+        for source in (r'(\frac1)',r'(\frac{1})',r'(\frac\sqrt2)',r'(x^{\frac12})',r'\sqrt[\frac12]{x}'):
+            self.assertEqual(fix(source),source)
+
     def test_scripts_annotations_indices_and_manual_sizes_keep_their_scope(self):
         for source in (r'(x^{\frac{1}{2}})',r'(x_{\frac{1}{2}})',
                        r'\sqrt[\frac{1}{2}]{x}',r'\text{(\frac{1}{2})}',
