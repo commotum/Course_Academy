@@ -7,7 +7,7 @@ const {chromium}=require(config.playwright);
  try{
   for(const path of config.extractors){
    const source=fs.readFileSync(path,'utf8');
-   for(const name of ['arcsec','arccsc','arccot']){
+   for(const name of ['arcsec','arccsc','arccot','arsinh','arcosh','arcoth','arsech','det','min','cis','curl','ln','sin']){
     for(const powered of [false,true]){
      const operator='<mi>'+name+'</mi>';
      const body=(powered?'<msup>'+operator+'<mn>2</mn></msup>':operator)+'<mi>x</mi>';

@@ -224,7 +224,9 @@ class MathPreparationTests(unittest.TestCase):
 
 class MathRequestTests(unittest.TestCase):
     def test_invalid_math_stops_before_creating_an_immutable_request(self):
-        for invalid in (r'$C^T=\=$', r'$$\begin{aligned}x &= 1 \[5pt] y &= 2\end{aligned}$$', r'$\matrix{$'):
+        # Concrete legacy lengths such as 5pt are deliberately repaired by
+        # the formatter; an unknown length must still block publication.
+        for invalid in (r'$C^T=\=$', r'$$\begin{aligned}x &= 1 \[not-a-length] y &= 2\end{aligned}$$', r'$\matrix{$'):
             with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as directory:
                 capture, config = fixtures.PipelineTests().setup(directory)
                 content = json.loads((capture / 'content.json').read_text())

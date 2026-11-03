@@ -1268,7 +1268,10 @@ def normalize_function_operators(text):
                 while start<len(text) and text[start].isspace():start+=1
                 closing=closing_group(start)
                 if closing:out.append(text[i:closing]);i=closing;continue
-            # Do not mistake valid coth/sech/csch for cot(h)/sec(h)/csc(h).
+            # Nonstandard names such as sech/csch/arsech need operatorname;
+            # coth is a standard command and must never become cot(h).
+            if name in NAMED_FUNCTION_OPERATORS and name not in _BUILTIN_OPERATORS:
+                out.append(operator(name));i=end;continue
             joined=None if name in NAMED_FUNCTION_OPERATORS else next(
                 (op for op in names if name.startswith(op) and name[len(op):] in ('x','y','z','t','u','v','w')),None)
             out.append(operator(joined)+name[len(joined):] if joined else text[i:end]);i=end;continue
