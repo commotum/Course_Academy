@@ -8,6 +8,7 @@ from scripts.question_capture.math_format import (
     validate_math_structure, normalize_function_operators,
 )
 from capture.scripts.database.math_content import question as normalize_import
+from capture.scripts.database.prepare import choice_signature
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
@@ -73,6 +74,14 @@ class InverseOperatorNotationTests(unittest.TestCase):
         for unchanged in (r'\coth x',r'\sech x',r'\csch x',r'\text{min}',r'\lambda_{min}',
                           'log10(x)','atan2(y,x)','maximum','model','xlnvalue',r'\text{sin(x)}'):
             self.assertEqual(normalize_function_operators(unchanged),unchanged)
+
+    def test_reimport_matches_operator_aliases_without_merging_arguments(self):
+        for left,right in ((r'\sin x',r'\operatorname{sin}x'),
+                           ('xln⁡x',r'x\ln x'),
+                           (r'\arccscx',r'\operatorname{arccsc}x')):
+            self.assertEqual(choice_signature('math',left),choice_signature('math',right))
+        self.assertNotEqual(choice_signature('math',r'x\cot x'),choice_signature('math',r'\operatorname{xcot}x'))
+        self.assertNotEqual(choice_signature('math',r'\sin x^2'),choice_signature('math',r'\sin^2x'))
 
 
 if __name__=='__main__':unittest.main()

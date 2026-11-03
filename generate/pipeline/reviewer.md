@@ -20,6 +20,8 @@ Incomplete imported questions are valid partial evidence and must remain unchang
 
 Check the Markdown/TeX boundary explicitly: every intended equation and multiline row must appear in the actual rendered UI. Reject exposed `\begin`/`\end` text, lost `\\` row breaks, legacy `[math]` tokens, formulas trapped in code blocks, and currency or percentage glyphs misparsed as delimiters/comments. Require the shared prose boundary validation on prompts, solutions, text choices and feedback. A zero MathJax error count is insufficient because unrecognized math may never reach MathJax.
 
+Inspect named operators as mathematical operators, including inverse reciprocal/hyperbolic functions, determinants and extrema. A stored `arccscx` may render as separate italic letters without raising an error; `\arcsecx` is an undefined control word. Require proper upright operator glyph groups and unchanged argument, power, subscript and neighboring-factor scope. Keep literal text and unrelated variable products intact.
+
 Write Markdown emphasis as `**bold**` and `*italic*`, with whitespace outside the delimiters. Never copy padded source HTML as `** bold **` or `* italic *`. Omit empty emphasis wrappers. Check that labels and hints render with emphasis rather than visible stars.
 Preserve data-table structure and augmented-matrix partition lines from the source. Use TeX `array` column rules (`|`) and `\hline` for ruled tables; `aligned` is for equation alignment. Check borders, cell alignment, and every cell, since valid TeX can still describe the wrong layout.
 

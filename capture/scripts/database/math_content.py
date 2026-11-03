@@ -20,6 +20,24 @@ def formatter():
     return module
 
 
+@lru_cache(maxsize=1)
+def notation():
+    path = Path(__file__).resolve().parents[3] / 'scripts/question_capture/math_notation.py'
+    spec = importlib.util.spec_from_file_location('course_academy_capture_math_notation', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def operator_identity(value):
+    """Keep equivalent operator typography from allocating new answer IDs."""
+    import re
+    names='|'.join(sorted(formatter().NAMED_FUNCTION_OPERATORS,key=len,reverse=True))
+    if re.search(r'\\(?:operatorname\{(?:'+names+r')\}|(?:'+names+r')\b)',value):
+        return ('named-operator',notation().identity(value,preserve_form=True))
+    return value
+
+
 def value(kind, source):
     """Canonical display spelling only; image references stay byte-for-byte."""
     if kind == 'math':

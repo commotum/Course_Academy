@@ -9,7 +9,7 @@ from .edn import kw, dumps
 from .evidence import UnsupportedContent, authoritative_question
 from .images import ImageLibrary, MissingImage
 from .text import markdown
-from .math_content import prose as formatted_prose, question as formatted_question, value as formatted_value
+from .math_content import prose as formatted_prose, question as formatted_question, value as formatted_value, operator_identity
 from .difficulty import calibrate
 from ..activity.evidence import question_key
 from ..activity.task_payload import semantic_identity, task_payload
@@ -35,7 +35,7 @@ def choice_signature(kind, value):
             # Matching must not reinterpret or reject their retained history;
             # fresh source values are validated separately before planning.
             pass
-    return kind, value
+    return kind, operator_identity(value) if kind=='math' and isinstance(value,str) else value
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
          'activity', 'step', 'multistep', 'assigned-problem')
 ALLOWED = {f'{kind}/{name}' for kind, names in {

@@ -20,6 +20,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 import reconcile_ma_instruction as original
+from question_capture.math_format import NAMED_FUNCTION_OPERATORS
 
 
 EXTRACTOR = Path('/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/3-JSON/lesson-json.py')
@@ -116,7 +117,7 @@ def to_tex(node):
             if '[math]' in value or '\\' in value:
                 raise ValueError('unrendered markup inside MathML literal text')
             return r'\text{' + text_chars(value) + '}' if value else ''
-        if name == 'mi' and value in ('arcsec','arccsc','arccot'):
+        if name == 'mi' and value in NAMED_FUNCTION_OPERATORS:
             return '\\operatorname{' + value + '} '
         if name == 'mi' and value in CAPTURE.MATHML_TEX_OPERATOR_NAMES:
             return '\\' + value + ' '
