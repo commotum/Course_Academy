@@ -31,12 +31,22 @@ audit=old.replace('fonts:document.fonts.status',r'''
           .map(node=>[...node.querySelectorAll('use[data-c]')].map(glyph=>String.fromCodePoint(parseInt(glyph.getAttribute('data-c'),16))).join('')),
         fonts:document.fonts.status''')
 r.BROWSER_SCRIPT=r.BROWSER_SCRIPT.replace(old,audit)
-r.render(rows,H/'desktop',[Path('/media/jake/SSD/EDB/math')])
-report=json.loads((H/'desktop/rendering.json').read_text());assert report['passed']
-for row,case in zip(rows,report['cases']):
+cached={}
+if (H/'desktop/rendering.json').exists():
+    oldrows=json.loads((H/'desktop/input.json').read_text());oldreport=json.loads((H/'desktop/rendering.json').read_text())
+    for row,case in zip(oldrows,oldreport['cases']):
+        if case['passed']:cached[json.dumps(row,sort_keys=True)]=case
+pending=[row for row in rows if json.dumps(row,sort_keys=True) not in cached]
+if pending:
+    r.render(pending,H/'desktop-updated',[Path('/media/jake/SSD/EDB/math')])
+    report=json.loads((H/'desktop-updated/rendering.json').read_text());assert report['passed']
+    for row,case in zip(pending,report['cases']):cached[json.dumps(row,sort_keys=True)]=case
+for row in rows:
+    case=cached[json.dumps(row,sort_keys=True)]
     name=row['verification']['profile'].split('/')[0]
     assert name in case['operators'] or (name in ('Re','Im') and any(g in case['operators'] for g in ('ℜ','ℑ'))),(name,case['operators'])
 result={'passed':True,'operator_names':sorted(inserted),'new_operator_occurrences':dict(inserted),
         'profiles_rendered':len(rows),'actual_changed_formula_samples':True,
-        'all_operator_glyphs_present':True,'lesson_rendered_questions':37,'lesson_phone_examples':4}
+        'all_operator_glyphs_present':True,'lesson_rendered_questions':37,'lesson_phone_examples':4,
+        'new_previews':len(pending),'reused_identical_passing_previews':len(rows)-len(pending)}
 (H/'render-verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'passed':True,'profiles':len(rows),'operators':len(inserted)}))
