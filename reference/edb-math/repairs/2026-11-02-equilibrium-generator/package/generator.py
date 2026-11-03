@@ -80,7 +80,7 @@ def render(m,difficulty):
     derivative=r'\frac{dy}{d'+var+'}'
     if lhs==0:left=derivative
     else:left=derivative+(' ' if tex(lhs).startswith('-') else ' + ')+tex(lhs)
-    prompt='Consider the differential equation\n\n$$\n'+equation_display(left,tex(rhs),rhs)+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
+    prompt='Consider the differential equation\n\n$$\n'+equation_display(left,tex(rhs),rhs)+'\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
     # Subtract only what the given equation requires. Do not expand factors or
     # introduce another representation before testing the supplied constants.
     residual=rhs if lhs==0 else rhs-lhs
@@ -88,7 +88,7 @@ def render(m,difficulty):
     if m['restrictions']:
         conditions=[tex(e)+('>0' if kind=='positive' else r'\ne0') for kind,e in m['restrictions']]
         steps.append('First keep the original domain: $'+r',\quad '.join(conditions)+'$.')
-    steps.append(('Rearranging once, test' if lhs!=0 else 'Test')+' whether $f(c)=0$, where\n\n$$\n'+equation_display('f(c)',tex(residual).replace('y','c'),residual.xreplace({Y:S.Symbol('c',real=True)}))+'.\n$$')
+    steps.append(('Rearranging once, test' if lhs!=0 else 'Test')+' whether $f(c)=0$, where\n\n$$\n'+equation_display('f(c)',tex(residual).replace('y','c'),residual.xreplace({Y:S.Symbol('c',real=True)}))+'\n$$')
     truths=[];paths=[]
     for c in m['candidates']:
         yes=decision(m,c);truths.append(yes)
