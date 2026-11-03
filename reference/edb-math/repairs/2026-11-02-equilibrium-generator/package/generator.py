@@ -25,7 +25,7 @@ def tex(x):
     return S.latex(x, ln_notation=True, order='lex')
 
 def uid(text):
-    return str(uuid.uuid5(uuid.NAMESPACE_URL, 'ca-equilibrium-v1/'+text))
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, 'ca-equilibrium-v2/'+text))
 
 def fraction(n,d):
     # Keep the ORIGINAL denominator even when numerator and denominator share factors.
@@ -46,72 +46,62 @@ def original_substitution(expr,c):
     # Substitute textually, retaining function arguments, powers and divisions.
     return tex(expr).replace('y',r'\left('+tex(c)+r'\right)')
 
+def display_substitution(expr,c):
+    """Keep useful factors and show known function values without nesting shifts."""
+    if not expr.atoms(S.Function):return original_substitution(expr,c)
+    def walk(part):
+        if not part.has(Y):return part
+        if not part.atoms(S.Function):return S.simplify(part.subs(Y,c))
+        if part.is_Function:
+            return part.func(*(S.simplify(a.subs(Y,c)) for a in part.args),evaluate=False)
+        return part.func(*(walk(a) for a in part.args),evaluate=False)
+    return tex(walk(expr))
+
 @checked_math_content
 def render(m,difficulty):
-    lhs,rhs=m['lhs'],m['rhs']; var=m['independent']
+    lhs,rhs=m['lhs'],m['rhs'];var=m['independent']
     derivative=r'\frac{dy}{d'+var+'}'
     left=derivative if lhs==0 else derivative+r' + \left('+tex(lhs)+r'\right)'
-    prompt='Consider the differential equation\n\n$$\n'+left+' = '+tex(rhs)+'.\n$$\n\n'
-    if difficulty=='easy':
-        prompt+='A constant function $y('+var+')=c$ is an **equilibrium solution** when it is in the domain of the equation and makes the derivative zero.\n\n'
-    prompt+='Which of the following are equilibrium solutions? Select all that apply.'
-    residual=S.factor_terms(S.expand(rhs-lhs)) if lhs!=0 else rhs
-    steps=['A constant function $y('+var+')=c$ has derivative $dy/d'+var+'=0$. It must satisfy the original equation and its domain restrictions.']
+    prompt='Consider the differential equation\n\n$$\n'+left+' = '+tex(rhs)+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
+    # Subtract only what the given equation requires. Do not expand factors or
+    # introduce another representation before testing the supplied constants.
+    residual=rhs if lhs==0 else rhs-lhs
+    steps=['An equilibrium is a constant function $y('+var+')=c$. Set $dy/d'+var+'=0$ and test the resulting equation.']
     if m['restrictions']:
         conditions=[tex(e)+('>0' if kind=='positive' else r'\ne0') for kind,e in m['restrictions']]
-        steps.append('The original equation requires $'+r',\quad '.join(conditions)+'$.')
-    if lhs!=0:
-        steps.append('Isolating the derivative gives\n\n$$\n'+derivative+' = '+tex(residual)+'.\n$$')
-    steps.append('Test each supplied constant in the original equation, with the derivative set to zero.')
-    truths=[]; paths=[]
+        steps.append('First keep the original domain: $'+r',\quad '.join(conditions)+'$.')
+    steps.append(('Rearranging once, we need' if lhs!=0 else 'We need')+'\n\n$$\nf(c)='+tex(residual).replace('y','c')+'=0.\n$$')
+    truths=[];paths=[]
     for c in m['candidates']:
-        yes=decision(m,c); truths.append(yes)
+        yes=decision(m,c);truths.append(yes)
         if not valid(m,c):
             bad=[]
             for kind,e in m['restrictions']:
-                v=S.simplify(e.subs(Y,c))
-                if (kind=='positive' and v<=0) or (kind=='nonzero' and v==0):
-                    bad.append('$'+tex(e)+'='+original_substitution(e,c)+'='+tex(v)+'$')
-            steps.append('- For $y=c='+tex(c)+'$, '+', '.join(bad)+' violates the original domain. This is *not* an equilibrium solution; cancellation cannot restore an excluded value.')
+                value=S.simplify(e.subs(Y,c))
+                if (kind=='positive' and value<=0) or (kind=='nonzero' and value==0):
+                    bad.append('$'+tex(e).replace('y','c')+'='+tex(value)+'$')
+            steps.append('- For $c='+tex(c)+'$, '+', '.join(bad)+' violates the original domain, so it is not an equilibrium solution.')
             paths.append({'candidate':tex(c),'domain':False,'key':False,'shown':'domain rejection before evaluation'})
             continue
-        lv=S.expand(lhs.subs(Y,c)); rv=S.expand(rhs.subs(Y,c))
-        # Declare c once instead of repeatedly nesting a translated e/pi value.
-        # Each chain puts its evaluated result on a separate visible row.
-        C=S.Symbol('c',real=True)
-        rows=[]
-        functions=sorted([f for f in set(lhs.atoms(S.Function))|set(rhs.atoms(S.Function)) if f.has(Y)],key=str)
-        for func in functions:
-            arg=func.args[0]; av=S.expand(arg.subs(Y,c))
-            fv=S.expand(func.subs(Y,c))
-            rows += [tex(func).replace('y','c')+' &= '+tex(func.func(av,evaluate=False)), ' &= '+tex(fv)]
-        for label,expr,value in [('L',lhs,lv),('R',rhs,rv)]:
-            rendered=tex(expr).replace('y','c')
-            rows += [label+'(c) &= '+rendered,' &= '+tex(value)]
-        status='is' if yes else 'is *not*'
-        steps.append('- For $y=c='+tex(c)+'$, evaluate the non-derivative left and right sides, denoted $L(c)$ and $R(c)$:\n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$\n\nThe values '+('agree' if yes else 'differ')+', so this '+status+' an equilibrium solution.')
-        paths.append({'candidate':tex(c),'domain':True,'left':tex(lv),'right':tex(rv),'key':yes,
-                      'operator_inputs':{'left':original_substitution(lhs,c),'right':original_substitution(rhs,c)},'shown_steps':rows})
-    assert 0<sum(truths)<=len(truths)
+        value=S.expand(residual.subs(Y,c));substitution=display_substitution(residual,c)
+        chain='f('+tex(c)+') &='+substitution
+        if substitution!=tex(value):chain+=r' \\ &='+tex(value)
+        steps.append('- For $c='+tex(c)+'$:\n\n$$\n'+r'\begin{aligned}'+chain+r'\end{aligned}'+'\n$$\n\n'+('This is zero, so it is an equilibrium solution.' if yes else 'This is nonzero, so it is not an equilibrium solution.'))
+        paths.append({'candidate':tex(c),'domain':True,'value':tex(value),'key':yes,'substitution':substitution})
+    assert 0<sum(truths)<len(truths)
     final='Select '+ ' and '.join('$y='+tex(c)+'$' for c,b in zip(m['candidates'],truths) if b)+'.'
-    steps.append(final)
-    prompt=normalize_prose(prompt); solution=normalize_prose('\n\n'.join(steps))
-    identity=json.dumps([difficulty,prompt,[tex(c) for c in m['candidates']]],ensure_ascii=False)
-    qid=uid(identity); fields=[]
+    steps.append(final);prompt=normalize_prose(prompt);solution=normalize_prose('\n\n'.join(steps))
+    identity=json.dumps([difficulty,prompt,[tex(c) for c in m['candidates']]],ensure_ascii=False);qid=uid(identity);fields=[]
     for i,(c,b) in enumerate(zip(m['candidates'],truths)):
-        fid=uid(qid+'/field/'+str(i))
-        choices=[{':answer/id':uid(fid+'/'+str(v)),':answer/type':':answer.type/text',':answer/value':str(v).lower()} for v in (False,True)]
-        fields.append({':answer-field/id':fid,':answer-field/key':normalize_prose('$y='+tex(c)+'$'),
-            ':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,
-            ':answer-field/correct':[':answer/id',choices[int(b)][':answer/id']]})
-    family=m['family']; source=m['source'] or SOURCES[family.split('-')[0]]
-    return {'knowledge_point':KP,'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+difficulty,
-        ':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},
-        'generation':{'version':'1.0.1','dependencies':{'python':'.'.join(map(str,sys.version_info[:3])),'sympy':S.__version__},'template':family,'source_question_ids':[source],
-            'original_equation':{'lhs':str(lhs),'rhs':str(rhs)},
-            'restrictions':[[k,str(e)] for k,e in m['restrictions']],
-            'parameters':{'candidates':[str(c) for c in m['candidates']],'independent_variable':var},
-            'solution_path':paths,'displayed_final':final}}
+        fid=uid(qid+'/field/'+str(i));choices=[{':answer/id':uid(fid+'/'+str(v)),':answer/type':':answer.type/text',':answer/value':str(v).lower()} for v in (False,True)]
+        fields.append({':answer-field/id':fid,':answer-field/key':normalize_prose('$y='+tex(c)+'$'),':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[int(b)][':answer/id']]})
+    family=m['family'];source=m['source'] or SOURCES[family.split('-')[0]]
+    return {'knowledge_point':KP,'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+difficulty,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},
+        'generation':{'version':'2.0.0','dependencies':{'python':'.'.join(map(str,sys.version_info[:3])),'sympy':S.__version__},'template':family,'source_question_ids':[source],
+        'original_equation':{'lhs':str(lhs),'rhs':str(rhs)},'residual':str(residual),'printed_residual':tex(residual).replace('y','c'),
+        'restrictions':[[k,str(e)] for k,e in m['restrictions']],
+        'parameters':{'candidates':[str(c) for c in m['candidates']],'independent_variable':var},'solution_path':paths,'displayed_final':final}}
+
 
 def sampled_model(rng,difficulty,family=None):
     family=family or rng.choice(FAMILIES[difficulty])
@@ -162,23 +152,31 @@ def sampled_model(rng,difficulty,family=None):
         u=orientation*(Y-h); restrictions=[('positive',u)]
         product=family.endswith('-domain') or rng.choice([False,True])
         if product:
-            k=rng.choice([-1,1,2]); root=S.exp(k)
+            k=1; root=S.exp(k)
             f=(u-root)*S.log(u);good=[S.Integer(h+orientation),h+orientation*root]
-            bad=[h+orientation*S.exp(j) for j in [-1,0,1,2] if j not in [0,k]]
+            bad=[S.Integer(h+orientation*j) for j in (2,3)]
         else:
-            k=rng.choice([-1,0,1,2]); f=u**2*S.log(u)-k*S.exp(2*k)
+            k=rng.choice([0,1]); f=u**2*S.log(u)-k*S.exp(2*k)
             good=[h+orientation*S.exp(k)]; ntrue=1
-            bad=[h+orientation*S.exp(j) for j in [-1,0,1,2] if j!=k]
+            bad=[h+orientation*v for v in (S.Integer(1),S.Integer(2),S.E) if v!=S.exp(k)]
         if family.endswith('-domain'):candidates=[S.Integer(h-orientation*rng.choice([0,1]))]
     else:raise ValueError(family)
     candidates+=rng.sample(good,min(ntrue,len(good)))
-    candidates+=rng.sample(bad,3-len(candidates)); rng.shuffle(candidates)
+    count=4 if difficulty=='hard' else 3
+    candidates+=rng.sample(bad,count-len(candidates)); rng.shuffle(candidates)
     lhs=S.Integer(0)
     rhs=f
     if difficulty=='moderate':
-        # Deliberately require balance: same residual, extra term on both sides.
-        lhs=rng.choice([-1,1,2])*Y+rng.choice([-1,0,1])
-        rhs=S.Add(f,lhs,evaluate=False)
+        # Move an actual term of the model; never append a cancelling wrapper.
+        if family in ('polynomial','cubic'):
+            linear=f.coeff(Y)*Y+f.subs(Y,0)
+            lhs=-linear;rhs=S.expand(f-linear)
+        elif family=='rational':
+            lhs=fraction(a*k**2,u**2);rhs=S.Integer(a)
+        elif family=='trigonometric':
+            if drift:lhs=u;rhs=a*S.sin(u)+k*S.pi
+        elif family=='logarithmic' and not product:
+            lhs=k*S.exp(2*k);rhs=u**2*S.log(u)
     return model(lhs,rhs,candidates,family,restrictions)
 
 def label_strategies(record):
