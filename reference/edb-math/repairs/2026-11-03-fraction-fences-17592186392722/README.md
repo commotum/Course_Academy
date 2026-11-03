@@ -1,0 +1,13 @@
+# Differentiating Vector-Valued Functions: fraction fence follow-up
+
+The earlier repair for question 17592186387353 audited Defining Vector-Valued Functions (topic 17592186050171), including its solutions and tutorials. The follow-up question 17592186392722 is imported q-50371 in a different lesson: Differentiating Vector-Valued Functions (topic 17592186048999). That lesson was outside the earlier audit.
+
+Captured all three KPs (17592186198355, 17592186198356, 17592186198473) at basis 12430: 91 practice questions, 3 canonical examples, and 2 tutorials. The audit visited 699 unique text attributes, including all 89 existing worked solutions, math/text answer values, field labels, and tutorial contents and titles. Five question/example records have no stored solution; this formatting repair does not invent missing solutions.
+
+Applied the existing shared fraction-fence normalizer to 109 attributes: 28 worked solutions, 6 question stems, 73 answer values, and 2 tutorial contents. These affect 30 practice questions and 2 canonical examples. Only scalable fence commands, equivalent angle delimiter spellings, and spacing changed. Every mathematical token and all answer identities and correct links were preserved. All 73 changed answer values retain equal source-import matching signatures. No questions were retired or regenerated for these presentation changes.
+
+All changed questions and canonical examples plus both actual tutorial steps rendered through the unchanged learning UI (34 cases). The reported question also passed a phone render. Its display vector brackets around the fraction grew from about 29 px to 86 px; the brackets on the preceding short vector remained about 29 px. The corrected reported question is desktop/question-007.png. Render fixtures omit answer fields lacking imported correct links; they do not modify those records or invent keys.
+
+The shared formatter, importer formatting boundary, structural validation, and generator publication boundary already contain the correction from the preceding repair. No additional generator mathematics or prompt change was needed. The relevant formatter/publication/delivery suites passed 54 tests.
+
+The exact compare-and-set transaction committed as T12431. Durable request capture-11d161aa-a94b-49e3-b8bd-a3946a43fbc5 was verified and archived. Native entity readback, all three full KP readbacks, and full lesson activity readback match the fresh pretransaction snapshot with only the proposed patches. Learner and engine facts are unchanged. See verification.json and publication/ for receipts and exact evidence. Live grading results are in completion.json.
