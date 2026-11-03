@@ -39,6 +39,10 @@ const audit = () => {
         danglingGlyphs:[...document.querySelectorAll('mjx-container use')].map(node=>node.getAttribute('href') || node.getAttribute('xlink:href'))
           .filter(href=>href?.startsWith('#') && !document.getElementById(href.slice(1))),
         text:document.querySelector('.lesson-content').innerText,
+        
+        overflowingMath:[...root.querySelectorAll('mjx-container[display="true"]')]
+          .filter(node=>node.querySelector('svg')?.getBoundingClientRect().width > node.clientWidth+2)
+          .map(node=>({math:node.textContent,width:node.querySelector('svg').getBoundingClientRect().width,available:node.clientWidth})),
         fonts:document.fonts.status
       }};
 (async () => {

@@ -61,11 +61,17 @@ def display_substitution(expr,c):
         return part.func(*(walk(a) for a in part.args),evaluate=False)
     return tex(walk(expr))
 
-def equation_display(left,right):
+def equation_display(left,right,expression=None):
     # TeX source length is conservative here; the retained phone preview
     # measures actual geometry for the delivered bank.
-    if len(left+right)>90:
-        return r'\begin{gathered}'+left+r'= \\ '+right+r'\end{gathered}'
+    if len(left+right)>35:
+        rows=[right]
+        if expression is not None and expression.is_Add and len(right)>55:
+            rows=[]
+            for term in expression.as_ordered_terms():
+                text=tex(term)
+                rows.append(text if not rows or text.startswith('-') else '+ '+text)
+        return r'\begin{gathered}'+left+r'= \\ '+r' \\ '.join(rows)+r'\end{gathered}'
     return left+' = '+right
 
 @checked_math_content
@@ -74,7 +80,7 @@ def render(m,difficulty):
     derivative=r'\frac{dy}{d'+var+'}'
     if lhs==0:left=derivative
     else:left=derivative+(' ' if tex(lhs).startswith('-') else ' + ')+tex(lhs)
-    prompt='Consider the differential equation\n\n$$\n'+equation_display(left,tex(rhs))+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
+    prompt='Consider the differential equation\n\n$$\n'+equation_display(left,tex(rhs),rhs)+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
     # Subtract only what the given equation requires. Do not expand factors or
     # introduce another representation before testing the supplied constants.
     residual=rhs if lhs==0 else rhs-lhs
@@ -82,7 +88,7 @@ def render(m,difficulty):
     if m['restrictions']:
         conditions=[tex(e)+('>0' if kind=='positive' else r'\ne0') for kind,e in m['restrictions']]
         steps.append('First keep the original domain: $'+r',\quad '.join(conditions)+'$.')
-    steps.append(('Rearranging once, we need' if lhs!=0 else 'We need')+'\n\n$$\n'+equation_display('f(c)',tex(residual).replace('y','c')+'=0')+'.\n$$')
+    steps.append(('Rearranging once, test' if lhs!=0 else 'Test')+' whether $f(c)=0$, where\n\n$$\n'+equation_display('f(c)',tex(residual).replace('y','c'),residual.xreplace({Y:S.Symbol('c',real=True)}))+'.\n$$')
     truths=[];paths=[]
     for c in m['candidates']:
         yes=decision(m,c);truths.append(yes)
@@ -98,6 +104,11 @@ def render(m,difficulty):
         value=S.Integer(0) if yes else residual.subs(Y,c);substitution=display_substitution(residual,c)
         chain='f('+tex(c)+') &='+substitution
         if substitution!=tex(value):chain+=r' \\ &='+tex(value)
+        display=r'\begin{aligned}'+chain+r'\end{aligned}'
+        if len(tex(c)+substitution)>35:
+            display=r'\begin{gathered}f('+tex(c)+r')= \\ '+substitution
+            if substitution!=tex(value):display+=r' \\ ='+tex(value)
+            display+=r'\end{gathered}'
         conversions=[]
         for func in sorted(residual.atoms(S.Function),key=str):
             if not func.has(Y):continue
@@ -105,7 +116,7 @@ def render(m,difficulty):
             evaluated=func.subs(Y,c)
             if tex(raw)!=tex(evaluated):conversions.append(tex(raw)+'='+tex(evaluated))
         note=(' Use '+', '.join('$'+conversion+'$' for conversion in conversions)+'.') if conversions else ''
-        steps.append('- For $c='+tex(c)+'$:'+note+'\n\n$$\n'+r'\begin{aligned}'+chain+r'\end{aligned}'+'\n$$\n\n'+('This is zero, so it is an equilibrium solution.' if yes else 'This is nonzero, so it is not an equilibrium solution.'))
+        steps.append('- For $c='+tex(c)+'$:'+note+'\n\n$$\n'+display+'\n$$\n\n'+('This is zero, so it is an equilibrium solution.' if yes else 'This is nonzero, so it is not an equilibrium solution.'))
         paths.append({'candidate':tex(c),'domain':True,'value':tex(value),'key':yes,'substitution':substitution,'shown_function_values':conversions})
     assert 0<sum(truths)<len(truths)
     final='Select '+ ' and '.join('$y='+tex(c)+'$' for c,b in zip(m['candidates'],truths) if b)+'.'
