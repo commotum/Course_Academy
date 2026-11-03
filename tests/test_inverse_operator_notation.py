@@ -69,11 +69,12 @@ class InverseOperatorNotationTests(unittest.TestCase):
             'rcis(θ)':r'r\operatorname{cis} (θ)',
             r'\sech x':r'\operatorname{sech}  x',
             r'\csch x':r'\operatorname{csch}  x',
+            '$ln$':r'$\ln $',
         }
         for source,expected in cases.items():
             self.assertEqual(normalize_function_operators(source),expected)
             self.assertEqual(normalize_function_operators(expected),expected)
-        for unchanged in (r'\coth x',r'\text{min}',r'\lambda_{min}',
+        for unchanged in (r'\coth x',r'6\div4',r'a\mod n',r'\text{min}',r'\lambda_{min}',
                           'log10(x)','atan2(y,x)','maximum','model','xlnvalue',r'\text{sin(x)}'):
             self.assertEqual(normalize_function_operators(unchanged),unchanged)
 

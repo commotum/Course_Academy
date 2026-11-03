@@ -18,6 +18,21 @@ def read_entities(p,work,label,ids,basis):
     (directory/'read.log').write_text(result.stderr);result.check_returncode()
     return loads((directory/'entities.edn').read_text())
 
+def patched(value,changes):
+    import copy
+    result=copy.deepcopy(value);by_entity=defaultdict(list)
+    for row in changes:by_entity[row['entity']].append(row)
+    def walk(node):
+        if isinstance(node,dict):
+            for row in by_entity.get(node.get(':db/id'),[]):
+                key=kw(row['attribute'])
+                if key in node:
+                    assert node[key]==row['before'];node[key]=row['after']
+            for child in node.values():walk(child)
+        elif isinstance(node,list):
+            for child in node:walk(child)
+    walk(result);return result
+
 def plan():
     proposals=json.loads((H/'proposals.json').read_text());groups=defaultdict(list)
     for row in proposals:groups[row['entity']].append(row)
@@ -30,6 +45,9 @@ def plan():
     out={'proposals_sha256':digest(proposals),'batches':batches};atomic_json(H/'plan.json',out);return out
 
 def prepare(p,work,rows,schema):
+    from scripts.question_capture.math_format import normalize_function_operators,normalize_operator_prose
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('operator_build',H/'build.py');builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
     status=p.client.status();basis=status['basis'];ids=sorted({r['entity'] for r in rows})
     result=read_entities(p,work,'native-before',ids,basis)
     before={r[':db/id']:r for r in result};assert set(before)==set(ids)
@@ -37,7 +55,10 @@ def prepare(p,work,rows,schema):
     for r in rows:
         value=before[r['entity']][':'+r['attribute']]
         if value==r['after']:already.append(r);continue
-        assert value==r['before'],('Concurrent content edit needs review',r['entity'],r['attribute'])
+        if value!=r['before']:
+            corrected=normalize_function_operators(value) if r['attribute']=='answer/value' else normalize_operator_prose(value)
+            assert builder.skeleton(value)==builder.skeleton(r['before']) and corrected==r['after'],('Concurrent content edit needs review',r['entity'],r['attribute'])
+            r={**r,'original_before':r['before'],'before':value}
         forms.append([kw('db/cas'),r['entity'],kw(r['attribute']),r['before'],r['after']]);changed.append(r)
         adds.append([r['entity'],kw(r['attribute']),r['after']]);removes.append([r['entity'],kw(r['attribute']),r['before']])
     batch={'source':p.config.source,'forms':forms,'assertions':adds,'retractions':removes}
@@ -49,8 +70,7 @@ def apply(p,work,prepared,c,request):
     assert request['content_sha256']==digest(prepared)
     receipt=c.submit(request);proof=c.verify_receipt(request,receipt);basis=receipt[':edb/db-after-t'];before=loads(prepared['before_edn'])
     result=read_entities(p,work,'native-after',[r[':db/id'] for r in before],basis)
-    now={r[':db/id']:r for r in result};expected={r[':db/id']:r for r in before}
-    for row in prepared['changed']:expected[row['entity']][kw(row['attribute'])]=row['after']
+    now={r[':db/id']:r for r in result};expected={r[':db/id']:r for r in patched(before,prepared['changed'])}
     assert now==expected
     result={'passed':True,'committed':True,'basis_before':request['basis'],'basis_after':basis,
         'fields_repaired':len(prepared['changed']),'already_repaired':len(prepared['already']),

@@ -1270,7 +1270,7 @@ def normalize_function_operators(text):
                 if closing:out.append(text[i:closing]);i=closing;continue
             # Nonstandard names such as sech/csch/arsech need operatorname;
             # coth is a standard command and must never become cot(h).
-            if name in NAMED_FUNCTION_OPERATORS and name not in _BUILTIN_OPERATORS:
+            if name in NAMED_FUNCTION_OPERATORS and name not in _BUILTIN_OPERATORS and name not in ('div','mod'):
                 out.append(operator(name));i=end;continue
             joined=None if name in NAMED_FUNCTION_OPERATORS else next(
                 (op for op in names if name.startswith(op) and name[len(op):] in ('x','y','z','t','u','v','w')),None)
@@ -1285,7 +1285,8 @@ def normalize_function_operators(text):
             call=bool(stripped) and (stripped[0] in '({[\\' or stripped.startswith(r'\left'))
             single=bool(suffix) and (suffix[0] in 'xyztuvwABCDEFGHIJKLMNOPQRSTUVWXYZαβγδθλμρσωπ' or (name=='mod' and suffix[0].isdigit())) and (len(suffix)==1 or not suffix[1].isalpha())
             scripted=name in ('min','max','sup','inf','lim','limsup','liminf') and bool(re.match(r'[_^]\{',suffix))
-            if boundary and (marked or call or single or scripted):
+            standalone=text.strip().strip('$').strip()==name
+            if boundary and (marked or call or single or scripted or standalone):
                 out.append(operator(name));i+=len(name);continue
         out.append(text[i]);i+=1
     return ''.join(out)

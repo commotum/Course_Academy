@@ -6,7 +6,10 @@ H=Path(__file__).resolve().parent;ROOT=H.parents[3];sys.path.insert(0,str(ROOT))
 from scripts.question_capture.math_format import MATH,NAMED_FUNCTION_OPERATORS
 import generate.pipeline.render_preview as r
 names='|'.join(sorted(NAMED_FUNCTION_OPERATORS,key=len,reverse=True));token=re.compile(r'\\(?:operatorname\{('+names+r')\}|('+names+r')(?![A-Za-z]))')
-def counts(text):return Counter(m[1] or m[2] for m in token.finditer(text))
+def counts(text):
+    result=Counter(m[1] or m[2] for m in token.finditer(text))
+    result['mod']+=len(re.findall(r'\\bmod(?![A-Za-z])',text))
+    return +result
 proposals=json.loads((H/'proposals.json').read_text());options={};inserted=Counter()
 for change in proposals:
     delta=counts(change['after'])-counts(change['before']);inserted.update(delta)

@@ -10,6 +10,8 @@ def prose(text):return MATH.sub(lambda m:fix(m[0]),text)
 def skeleton(text):
     names='|'.join(sorted(NAMED_FUNCTION_OPERATORS,key=len,reverse=True))
     text=text.replace(r'\u2061','\u2061')
+    text=re.sub(r'\\div(?![A-Za-z])','CA-BINARY-DIVISION',text)
+    text=re.sub(r'\\mod(?![A-Za-z])','CA-VALID-MOD-COMMAND',text)
     text=re.sub(r'\\operatorname\{('+names+r')\}',r' \1 ',text)
     text=re.sub(r'\\(?:text|textrm|mathrm|mathit|mathbf)\s*\{\s*(arcsec|arccsc|arccot)\s*\}',r'\1',text)
     text=re.sub(r'\\bmod\b','mod',text)
@@ -31,6 +33,8 @@ def main():
         if after!=text:potential.append({'entity':r['e'],'attribute':a,'before':text,'after':after,'source':r['source'],'tx':r['tx']})
     if reuse:
         potential=json.loads((H/'potential.json').read_text());scanned=Counter(manifest['all_content_attribute_counts'])
+        for row in potential:
+            row['after']=fix(row['before']) if row['attribute']=='answer/value' else prose(row['before'])
     else:
         stream.close();(H/'potential.json').write_text(json.dumps(potential,indent=2)+'\n')
     p=Publisher.from_environment(source=':agent/codex');ids=sorted({r['entity'] for r in potential if r['attribute'] in ('answer/value','answer-field/key')})
