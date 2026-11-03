@@ -58,6 +58,13 @@ Open [Study](http://127.0.0.1:8765/home) for the next five eligible lessons, or
 the [Progress](http://127.0.0.1:8765/progress), or the
 [knowledge graph](http://127.0.0.1:8765/). Course pages read curriculum metadata
 and repetition values from EDB; browsing them leaves the study course unchanged.
+
+On Assignments, right-click an assignment and choose **View assignment targets in
+graph**. The graph starts at depth zero with that assignment's topics. Shift-scroll
+changes upstream prerequisite depth, including prerequisites below the personal
+Targets view's layer cutoff. Assignment scope is retained in the URL and uses
+assignment coverage independently of personal target filters.
+
 Lessons present one item at a time
 and save responses, active elapsed time, XP, and FIRe progress to EDB. Study serves
 ordinary lessons and due reviews for topics in global graph layer 30 or above.

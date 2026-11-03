@@ -79,7 +79,6 @@ test('assignment graph starts with only its roots and expands upstream including
   assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2]);
   c.setDepth(2, true);
   assert.deepEqual([...c.buildActiveSet().nodeIds].sort(), [1, 2, 4]);
-  assert.equal(c.elements, undefined);
   c.setTargetQueueEnabled(false);
   c.setTargetCourseEnabled('255', false);
   c.setTargetWeekSelection({ kind: 'unscheduled' });

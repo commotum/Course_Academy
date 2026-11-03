@@ -66,7 +66,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
     copyEntityId: (id, label) => f.copied.push([id, label]),
     academyEntityId: value => value == null ? null : String(value),
     snapshot: { learner: structuredClone(f.learner) }, courseId: 'course',
-    targetsView, colorCodeEnabled: true, repetitions: { 20: 5 }, isLightTheme: () => false, themeColor: color => color,
+    targetsView, assignmentScope: null, colorCodeEnabled: true, repetitions: { 20: 5 }, isLightTheme: () => false, themeColor: color => color,
     loading: false, refreshTargetColors() {},
     PALETTE: ['#000000', '#303030', '#5A5A5A', '#858585', '#AEAEAE', '#D6D6D6', '#FFFFFF'],
     topicReferenceURL: (_snapshot, node) => '/topic?topic=' + node.uuid,
