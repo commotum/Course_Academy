@@ -1,0 +1,702 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186166788,
+      "id": "6a6ca425-0e94-5b83-8729-fda13fbf3d7d",
+      "title": "Identifying Equilibrium Solutions of a Differential Equation"
+    },
+    "question": {
+      ":question/id": "2d3f2f04-1be4-58b9-8169-d7e66f016023",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{dy}{dt} + \\frac{1}{\\left(y + 1\\right)^{2}} = 1.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.",
+      ":question/worked-solution": "An equilibrium is a constant function $y(t)=c$. Set $dy/dt=0$ and test the resulting equation.\n\nFirst keep the original domain: $y + 1\\ne0$.\n\nRearranging once, we need\n\n$$\nf(c) = 1 - \\frac{1}{\\left(c + 1\\right)^{2}}=0.\n$$\n\n- For $c=2$:\n\n$$\n\\begin{aligned}f(2) &=- \\frac{1}{9} + 1 \\\\ &=\\frac{8}{9}\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=-2$:\n\n$$\n\\begin{aligned}f(-2) &=-1 + 1 \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\n- For $c=-3$:\n\n$$\n\\begin{aligned}f(-3) &=- \\frac{1}{4} + 1 \\\\ &=\\frac{3}{4}\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\nSelect $y=-2$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "062d7013-e971-55d1-8921-befea2ebc373",
+          ":answer-field/key": "$y=2$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "59d58556-1687-546e-8b16-f19c8cf1edcd",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "02add674-9173-5af3-8cd2-76ac5bcec38b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "59d58556-1687-546e-8b16-f19c8cf1edcd"
+          ]
+        },
+        {
+          ":answer-field/id": "5149ca46-0c72-5b8f-a634-bb771d974b89",
+          ":answer-field/key": "$y=-2$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5f37db96-606f-5829-81cd-6f845e43b332",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "b0f8dd88-59dd-5fa4-9811-6336e9dbbe2e",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b0f8dd88-59dd-5fa4-9811-6336e9dbbe2e"
+          ]
+        },
+        {
+          ":answer-field/id": "147ee4e8-83f0-5883-84e4-f2a6a63856ea",
+          ":answer-field/key": "$y=-3$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4dda023b-e321-5a79-99a2-320d9d9bcd83",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "09a789ff-1e5a-588f-9448-eedd01f4e0fa",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4dda023b-e321-5a79-99a2-320d9d9bcd83"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.0.0",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "template": "rational",
+      "source_question_ids": [
+        "09328241-3b39-5707-a62b-8ca38e3a3a9c"
+      ],
+      "original_equation": {
+        "lhs": "(y + 1)**(-2)",
+        "rhs": "1"
+      },
+      "residual": "1 - 1/(y + 1)**2",
+      "printed_residual": "1 - \\frac{1}{\\left(c + 1\\right)^{2}}",
+      "restrictions": [
+        [
+          "nonzero",
+          "y + 1"
+        ]
+      ],
+      "parameters": {
+        "candidates": [
+          "2",
+          "-2",
+          "-3"
+        ],
+        "independent_variable": "t"
+      },
+      "solution_path": [
+        {
+          "candidate": "2",
+          "domain": true,
+          "value": "\\frac{8}{9}",
+          "key": false,
+          "substitution": "- \\frac{1}{9} + 1",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "-2",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "-1 + 1",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "-3",
+          "domain": true,
+          "value": "\\frac{3}{4}",
+          "key": false,
+          "substitution": "- \\frac{1}{4} + 1",
+          "shown_function_values": []
+        }
+      ],
+      "displayed_final": "Select $y=-2$.",
+      "math_format": "course-academy-tex-v1",
+      "seed": 202611021,
+      "index": 0,
+      "difficulty": "moderate"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186166788,
+      "id": "6a6ca425-0e94-5b83-8729-fda13fbf3d7d",
+      "title": "Identifying Equilibrium Solutions of a Differential Equation"
+    },
+    "question": {
+      ":question/id": "e1d17f82-45af-50a1-8872-b0e09f659b31",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{dy}{dt} = \\left(y + 1\\right)^{2} \\ln{\\left(y + 1 \\right)}.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.",
+      ":question/worked-solution": "An equilibrium is a constant function $y(t)=c$. Set $dy/dt=0$ and test the resulting equation.\n\nFirst keep the original domain: $y + 1>0$.\n\nWe need\n\n$$\nf(c) = \\left(c + 1\\right)^{2} \\ln{\\left(c + 1 \\right)}=0.\n$$\n\n- For $c=1$:\n\n$$\n\\begin{aligned}f(1) &=4 \\ln{\\left(2 \\right)}\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=-1 + e$: Use $\\ln{\\left(e \\right)}=1$.\n\n$$\n\\begin{aligned}f(-1 + e) &=e^{2} \\ln{\\left(e \\right)} \\\\ &=e^{2}\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=0$: Use $\\ln{\\left(1 \\right)}=0$.\n\n$$\n\\begin{aligned}f(0) &=1 \\ln{\\left(1 \\right)} \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\nSelect $y=0$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f4f251fd-8c2d-57a0-8c61-cdf2aae62cc5",
+          ":answer-field/key": "$y=1$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3bf8d436-dce7-528c-b102-b089d4596c6c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "29cbed72-1736-5d34-a16f-5c052451cd47",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3bf8d436-dce7-528c-b102-b089d4596c6c"
+          ]
+        },
+        {
+          ":answer-field/id": "f4b0537a-957c-5b19-ae3e-dc451660f3c3",
+          ":answer-field/key": "$y=-1 + e$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7994a635-8252-5f98-9bb6-bfff3164d2d1",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "13fd7a92-15e9-5e92-8213-cdb45c0de686",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7994a635-8252-5f98-9bb6-bfff3164d2d1"
+          ]
+        },
+        {
+          ":answer-field/id": "894c5da0-bf0e-5d8a-b974-d951804fcf26",
+          ":answer-field/key": "$y=0$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b3cfc2f3-33db-5e21-bd03-084142e377f3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "c955c607-3b2a-5c2c-9768-f226f49f3fbc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c955c607-3b2a-5c2c-9768-f226f49f3fbc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.0.0",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "template": "logarithmic",
+      "source_question_ids": [
+        "7617131b-e756-503f-ac7c-f76ae1870fab"
+      ],
+      "original_equation": {
+        "lhs": "0",
+        "rhs": "(y + 1)**2*log(y + 1)"
+      },
+      "residual": "(y + 1)**2*log(y + 1)",
+      "printed_residual": "\\left(c + 1\\right)^{2} \\ln{\\left(c + 1 \\right)}",
+      "restrictions": [
+        [
+          "positive",
+          "y + 1"
+        ]
+      ],
+      "parameters": {
+        "candidates": [
+          "1",
+          "-1 + E",
+          "0"
+        ],
+        "independent_variable": "t"
+      },
+      "solution_path": [
+        {
+          "candidate": "1",
+          "domain": true,
+          "value": "4 \\ln{\\left(2 \\right)}",
+          "key": false,
+          "substitution": "4 \\ln{\\left(2 \\right)}",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "-1 + e",
+          "domain": true,
+          "value": "e^{2}",
+          "key": false,
+          "substitution": "e^{2} \\ln{\\left(e \\right)}",
+          "shown_function_values": [
+            "\\ln{\\left(e \\right)}=1"
+          ]
+        },
+        {
+          "candidate": "0",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "1 \\ln{\\left(1 \\right)}",
+          "shown_function_values": [
+            "\\ln{\\left(1 \\right)}=0"
+          ]
+        }
+      ],
+      "displayed_final": "Select $y=0$.",
+      "math_format": "course-academy-tex-v1",
+      "seed": 202611021,
+      "index": 1,
+      "difficulty": "moderate"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186166788,
+      "id": "6a6ca425-0e94-5b83-8729-fda13fbf3d7d",
+      "title": "Identifying Equilibrium Solutions of a Differential Equation"
+    },
+    "question": {
+      ":question/id": "4d3f4211-f14f-5b11-9922-0ff291a085ba",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{dy}{dt} = 2 \\sin{\\left(y - 1 \\right)}.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.",
+      ":question/worked-solution": "An equilibrium is a constant function $y(t)=c$. Set $dy/dt=0$ and test the resulting equation.\n\nWe need\n\n$$\nf(c) = 2 \\sin{\\left(c - 1 \\right)}=0.\n$$\n\n- For $c=- \\frac{\\pi}{2} + 1$: Use $\\sin{\\left(- \\frac{\\pi}{2} \\right)}=-1$.\n\n$$\n\\begin{aligned}f(- \\frac{\\pi}{2} + 1) &=2 \\sin{\\left(- \\frac{\\pi}{2} \\right)} \\\\ &=-2\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=1$: Use $\\sin{\\left(0 \\right)}=0$.\n\n$$\n\\begin{aligned}f(1) &=2 \\sin{\\left(0 \\right)} \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\n- For $c=1 + \\frac{\\pi}{2}$: Use $\\sin{\\left(\\frac{\\pi}{2} \\right)}=1$.\n\n$$\n\\begin{aligned}f(1 + \\frac{\\pi}{2}) &=2 \\sin{\\left(\\frac{\\pi}{2} \\right)} \\\\ &=2\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\nSelect $y=1$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4625b206-5a3d-56c1-b193-1d3e3e02b8ce",
+          ":answer-field/key": "$y=- \\frac{\\pi}{2} + 1$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fc642b60-ab3e-5a04-889e-90970e756eba",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "165801ea-c38d-59e4-869d-e7f2fe1774c8",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fc642b60-ab3e-5a04-889e-90970e756eba"
+          ]
+        },
+        {
+          ":answer-field/id": "e63230ec-ddff-518a-89d7-3b3b33d9dfdc",
+          ":answer-field/key": "$y=1$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "78fb5ef2-5574-58f9-9af0-c5a268b018dc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "f830d636-4e7f-5ae7-a664-c4a2ec356336",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f830d636-4e7f-5ae7-a664-c4a2ec356336"
+          ]
+        },
+        {
+          ":answer-field/id": "72d22304-e339-5fda-91c0-e03a73396667",
+          ":answer-field/key": "$y=1 + \\frac{\\pi}{2}$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "db4f0c36-0872-5ba3-9bb3-f9589f40ee73",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "cc630069-7c3a-5e70-895d-e939af810189",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "db4f0c36-0872-5ba3-9bb3-f9589f40ee73"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.0.0",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "template": "trigonometric",
+      "source_question_ids": [
+        "c7b0ec58-a026-543f-8622-101c6f9cdc96"
+      ],
+      "original_equation": {
+        "lhs": "0",
+        "rhs": "2*sin(y - 1)"
+      },
+      "residual": "2*sin(y - 1)",
+      "printed_residual": "2 \\sin{\\left(c - 1 \\right)}",
+      "restrictions": [],
+      "parameters": {
+        "candidates": [
+          "1 - pi/2",
+          "1",
+          "1 + pi/2"
+        ],
+        "independent_variable": "t"
+      },
+      "solution_path": [
+        {
+          "candidate": "- \\frac{\\pi}{2} + 1",
+          "domain": true,
+          "value": "-2",
+          "key": false,
+          "substitution": "2 \\sin{\\left(- \\frac{\\pi}{2} \\right)}",
+          "shown_function_values": [
+            "\\sin{\\left(- \\frac{\\pi}{2} \\right)}=-1"
+          ]
+        },
+        {
+          "candidate": "1",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "2 \\sin{\\left(0 \\right)}",
+          "shown_function_values": [
+            "\\sin{\\left(0 \\right)}=0"
+          ]
+        },
+        {
+          "candidate": "1 + \\frac{\\pi}{2}",
+          "domain": true,
+          "value": "2",
+          "key": false,
+          "substitution": "2 \\sin{\\left(\\frac{\\pi}{2} \\right)}",
+          "shown_function_values": [
+            "\\sin{\\left(\\frac{\\pi}{2} \\right)}=1"
+          ]
+        }
+      ],
+      "displayed_final": "Select $y=1$.",
+      "math_format": "course-academy-tex-v1",
+      "seed": 202611021,
+      "index": 2,
+      "difficulty": "moderate"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186166788,
+      "id": "6a6ca425-0e94-5b83-8729-fda13fbf3d7d",
+      "title": "Identifying Equilibrium Solutions of a Differential Equation"
+    },
+    "question": {
+      ":question/id": "af05090c-44f3-55f5-a78d-f6eb188ebae1",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{dy}{dt} -2 = y^{3} - y^{2}.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.",
+      ":question/worked-solution": "An equilibrium is a constant function $y(t)=c$. Set $dy/dt=0$ and test the resulting equation.\n\nRearranging once, we need\n\n$$\nf(c) = c^{3} - c^{2} + 2=0.\n$$\n\n- For $c=2$:\n\n$$\n\\begin{aligned}f(2) &=-4 + 2 + 8 \\\\ &=6\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=-1$:\n\n$$\n\\begin{aligned}f(-1) &=-1 - 1 + 2 \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\n- For $c=0$:\n\n$$\n\\begin{aligned}f(0) &=0 + 0 + 2 \\\\ &=2\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\nSelect $y=-1$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ded4f0d4-ab8b-5dfa-a97c-d73de97be067",
+          ":answer-field/key": "$y=2$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0e0ef6e1-44e4-5995-900b-59103d6a6860",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "2ff9c4c6-a492-5478-8a2c-b51e4eff71b7",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0e0ef6e1-44e4-5995-900b-59103d6a6860"
+          ]
+        },
+        {
+          ":answer-field/id": "ada3ef33-b4ce-5c54-b3b5-c5a2a6eb1ca7",
+          ":answer-field/key": "$y=-1$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f76c59bb-7a86-53ae-8f7f-e50667bbfcfe",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "1a465e09-9a5d-57ef-8626-f6ef364abb14",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1a465e09-9a5d-57ef-8626-f6ef364abb14"
+          ]
+        },
+        {
+          ":answer-field/id": "e7d371c5-5a39-5e34-ada5-f318acad3ecc",
+          ":answer-field/key": "$y=0$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b1ec2473-baba-5e4b-8c38-8ea756ab5b77",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "01a0dfe6-f849-5bc9-a364-d00f8ccd343f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b1ec2473-baba-5e4b-8c38-8ea756ab5b77"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.0.0",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "template": "cubic",
+      "source_question_ids": [
+        "73083626-cc38-5982-9c18-9459efa65b4d"
+      ],
+      "original_equation": {
+        "lhs": "-2",
+        "rhs": "y**3 - y**2"
+      },
+      "residual": "y**3 - y**2 + 2",
+      "printed_residual": "c^{3} - c^{2} + 2",
+      "restrictions": [],
+      "parameters": {
+        "candidates": [
+          "2",
+          "-1",
+          "0"
+        ],
+        "independent_variable": "t"
+      },
+      "solution_path": [
+        {
+          "candidate": "2",
+          "domain": true,
+          "value": "6",
+          "key": false,
+          "substitution": "-4 + 2 + 8",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "-1",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "-1 - 1 + 2",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "0",
+          "domain": true,
+          "value": "2",
+          "key": false,
+          "substitution": "0 + 0 + 2",
+          "shown_function_values": []
+        }
+      ],
+      "displayed_final": "Select $y=-1$.",
+      "math_format": "course-academy-tex-v1",
+      "seed": 202611021,
+      "index": 3,
+      "difficulty": "moderate"
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186166788,
+      "id": "6a6ca425-0e94-5b83-8729-fda13fbf3d7d",
+      "title": "Identifying Equilibrium Solutions of a Differential Equation"
+    },
+    "question": {
+      ":question/id": "25069b0e-f5d8-540d-8cff-abcabe1c8d84",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{dy}{dt} + 4 y = - 2 y^{2}.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.",
+      ":question/worked-solution": "An equilibrium is a constant function $y(t)=c$. Set $dy/dt=0$ and test the resulting equation.\n\nRearranging once, we need\n\n$$\nf(c) = - 2 c^{2} - 4 c=0.\n$$\n\n- For $c=-2$:\n\n$$\n\\begin{aligned}f(-2) &=-8 + 8 \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\n- For $c=1$:\n\n$$\n\\begin{aligned}f(1) &=-4 - 2 \\\\ &=-6\\end{aligned}\n$$\n\nThis is nonzero, so it is not an equilibrium solution.\n\n- For $c=0$:\n\n$$\n\\begin{aligned}f(0) &=0 + 0 \\\\ &=0\\end{aligned}\n$$\n\nThis is zero, so it is an equilibrium solution.\n\nSelect $y=-2$ and $y=0$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e6afab53-0621-5107-9c55-b45910448cd2",
+          ":answer-field/key": "$y=-2$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4afc6103-6403-5e61-8023-69b71261d531",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "126dd7f2-2b6f-5b45-8d34-7fa8736fa4ec",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "126dd7f2-2b6f-5b45-8d34-7fa8736fa4ec"
+          ]
+        },
+        {
+          ":answer-field/id": "e29b8c9d-9a06-5995-a6bf-1df24232faad",
+          ":answer-field/key": "$y=1$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f587befc-2e0c-5218-8599-ca35a25341cf",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "22a13938-bf5e-5db4-9f52-582e56caa607",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f587befc-2e0c-5218-8599-ca35a25341cf"
+          ]
+        },
+        {
+          ":answer-field/id": "3f1dfee3-b181-5167-8aa0-fbcafa6454f2",
+          ":answer-field/key": "$y=0$",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d261d249-b0c7-5e10-827a-fdfab0de806a",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "c2a581f3-b06c-51e1-892a-bbf1e32758fc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c2a581f3-b06c-51e1-892a-bbf1e32758fc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.0.0",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "template": "polynomial",
+      "source_question_ids": [
+        "4bdcd03c-4e33-5af2-a43a-72ec614b803e"
+      ],
+      "original_equation": {
+        "lhs": "4*y",
+        "rhs": "-2*y**2"
+      },
+      "residual": "-2*y**2 - 4*y",
+      "printed_residual": "- 2 c^{2} - 4 c",
+      "restrictions": [],
+      "parameters": {
+        "candidates": [
+          "-2",
+          "1",
+          "0"
+        ],
+        "independent_variable": "t"
+      },
+      "solution_path": [
+        {
+          "candidate": "-2",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "-8 + 8",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "1",
+          "domain": true,
+          "value": "-6",
+          "key": false,
+          "substitution": "-4 - 2",
+          "shown_function_values": []
+        },
+        {
+          "candidate": "0",
+          "domain": true,
+          "value": "0",
+          "key": true,
+          "substitution": "0 + 0",
+          "shown_function_values": []
+        }
+      ],
+      "displayed_final": "Select $y=-2$ and $y=0$.",
+      "math_format": "course-academy-tex-v1",
+      "seed": 202611021,
+      "index": 4,
+      "difficulty": "moderate"
+    },
+    "assets": {}
+  }
+]

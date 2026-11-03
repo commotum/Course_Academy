@@ -32,8 +32,8 @@ def validate_delivery_batch(records, kp_id):
             raise ValueError('Do not add a cancelling copy of the left side to manufacture difficulty')
         expected = S.latex(residual, ln_notation=True, order='lex').replace('y', 'c')
         # Compare normalized display text: the normalizer may escape inline TeX.
-        visible = normalize_prose('$$\nf(c)='+expected+'=0.\n$$')
-        if visible not in solution:
+        visible = normalize_prose('$$\n'+expected+'\n$$').split('$$')[1].strip()
+        if not any('f(c)' in block and visible in block for block in re.findall(r'\$\$(.*?)\$\$', solution, re.S)):
             raise ValueError('The solution must retain the useful residual structure before substitution')
         # Derive the original domain from the actual expression, before cancellation.
         domain = []

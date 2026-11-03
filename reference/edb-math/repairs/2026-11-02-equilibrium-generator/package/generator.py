@@ -48,7 +48,11 @@ def original_substitution(expr,c):
 
 def display_substitution(expr,c):
     """Keep useful factors and show known function values without nesting shifts."""
-    if not expr.atoms(S.Function):return original_substitution(expr,c)
+    if not expr.atoms(S.Function):
+        # Evaluate simple powers/products first; don't print a wide row of
+        # parenthesized copies of the same candidate.
+        if expr.is_Add:return tex(S.Add(*(term.subs(Y,c) for term in expr.args),evaluate=False))
+        return tex(expr.subs(Y,c))
     def walk(part):
         if not part.has(Y):return part
         if not part.atoms(S.Function):return S.simplify(part.subs(Y,c))
@@ -57,13 +61,20 @@ def display_substitution(expr,c):
         return part.func(*(walk(a) for a in part.args),evaluate=False)
     return tex(walk(expr))
 
+def equation_display(left,right):
+    # TeX source length is conservative here; the retained phone preview
+    # measures actual geometry for the delivered bank.
+    if len(left+right)>90:
+        return r'\begin{gathered}'+left+r'= \\ '+right+r'\end{gathered}'
+    return left+' = '+right
+
 @checked_math_content
 def render(m,difficulty):
     lhs,rhs=m['lhs'],m['rhs'];var=m['independent']
     derivative=r'\frac{dy}{d'+var+'}'
     if lhs==0:left=derivative
     else:left=derivative+(' ' if tex(lhs).startswith('-') else ' + ')+tex(lhs)
-    prompt='Consider the differential equation\n\n$$\n'+left+' = '+tex(rhs)+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
+    prompt='Consider the differential equation\n\n$$\n'+equation_display(left,tex(rhs))+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
     # Subtract only what the given equation requires. Do not expand factors or
     # introduce another representation before testing the supplied constants.
     residual=rhs if lhs==0 else rhs-lhs
@@ -71,7 +82,7 @@ def render(m,difficulty):
     if m['restrictions']:
         conditions=[tex(e)+('>0' if kind=='positive' else r'\ne0') for kind,e in m['restrictions']]
         steps.append('First keep the original domain: $'+r',\quad '.join(conditions)+'$.')
-    steps.append(('Rearranging once, we need' if lhs!=0 else 'We need')+'\n\n$$\nf(c)='+tex(residual).replace('y','c')+'=0.\n$$')
+    steps.append(('Rearranging once, we need' if lhs!=0 else 'We need')+'\n\n$$\n'+equation_display('f(c)',tex(residual).replace('y','c')+'=0')+'.\n$$')
     truths=[];paths=[]
     for c in m['candidates']:
         yes=decision(m,c);truths.append(yes)
@@ -84,11 +95,18 @@ def render(m,difficulty):
             steps.append('- For $c='+tex(c)+'$, '+', '.join(bad)+' violates the original domain, so it is not an equilibrium solution.')
             paths.append({'candidate':tex(c),'domain':False,'key':False,'shown':'domain rejection before evaluation'})
             continue
-        value=S.expand(residual.subs(Y,c));substitution=display_substitution(residual,c)
+        value=S.Integer(0) if yes else residual.subs(Y,c);substitution=display_substitution(residual,c)
         chain='f('+tex(c)+') &='+substitution
         if substitution!=tex(value):chain+=r' \\ &='+tex(value)
-        steps.append('- For $c='+tex(c)+'$:\n\n$$\n'+r'\begin{aligned}'+chain+r'\end{aligned}'+'\n$$\n\n'+('This is zero, so it is an equilibrium solution.' if yes else 'This is nonzero, so it is not an equilibrium solution.'))
-        paths.append({'candidate':tex(c),'domain':True,'value':tex(value),'key':yes,'substitution':substitution})
+        conversions=[]
+        for func in sorted(residual.atoms(S.Function),key=str):
+            if not func.has(Y):continue
+            raw=func.func(*(S.simplify(arg.subs(Y,c)) for arg in func.args),evaluate=False)
+            evaluated=func.subs(Y,c)
+            if tex(raw)!=tex(evaluated):conversions.append(tex(raw)+'='+tex(evaluated))
+        note=(' Use '+', '.join('$'+conversion+'$' for conversion in conversions)+'.') if conversions else ''
+        steps.append('- For $c='+tex(c)+'$:'+note+'\n\n$$\n'+r'\begin{aligned}'+chain+r'\end{aligned}'+'\n$$\n\n'+('This is zero, so it is an equilibrium solution.' if yes else 'This is nonzero, so it is not an equilibrium solution.'))
+        paths.append({'candidate':tex(c),'domain':True,'value':tex(value),'key':yes,'substitution':substitution,'shown_function_values':conversions})
     assert 0<sum(truths)<len(truths)
     final='Select '+ ' and '.join('$y='+tex(c)+'$' for c,b in zip(m['candidates'],truths) if b)+'.'
     steps.append(final);prompt=normalize_prose(prompt);solution=normalize_prose('\n\n'.join(steps))
@@ -109,16 +127,16 @@ def sampled_model(rng,difficulty,family=None):
     ntrue=rng.choice([1,2]); a=rng.choice([-1,1] if difficulty=='easy' else [-2,-1,1,2]); h=0 if difficulty=='easy' else rng.choice([-1,1])
     candidates=[]; restrictions=[]
     if family in ['polynomial','cubic']:
-        r,s=rng.sample(range(-2,3) if difficulty=='easy' else range(-2,4),2)
+        r,s=rng.sample(range(-1,2) if family=='cubic' else range(-2,3),2)
         if family=='polynomial':
             f=S.expand(a*(Y-r)*(Y-s)); good=[S.Integer(r),S.Integer(s)]
         else:
             if rng.choice([False,True]):
-                q=rng.choice([x for x in range(-2,4) if x not in [r,s]])
+                q=rng.choice([x for x in range(-1,2) if x not in [r,s]])
                 f=S.expand((Y-r)*(Y-s)*(Y-q)); good=list(map(S.Integer,[r,s,q]))
             else:
                 f=S.expand((Y-r)*((Y-s)**2+1)); good=[S.Integer(r)]; ntrue=1
-        bad=[S.Integer(x) for x in range(-3,5) if x not in good]
+        bad=[S.Integer(x) for x in range(-2,3) if x not in good]
     elif family=='rational':
         k=rng.choice([1,2]); u=Y-h
         f=fraction(a*S.expand(u**2-k**2),u**2)
