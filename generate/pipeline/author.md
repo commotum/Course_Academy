@@ -14,6 +14,8 @@ Treat imported formatting as evidence to normalize, not a template to copy blind
 
 Preserve named function/operator nodes as operators: use `\sin`, `\ln`, `\det`, and `\operatorname{arccsc}` rather than bare letters or undefined controls such as `arccscx` or `\arcsecx`. Include inverse hyperbolic functions and powered/subscripted function names. Check upright operator glyphs and argument/power scope in the UI; bare letters can parse without error while displaying the wrong notation. Do not repair arbitrary variable products or literal text by guessing function names.
 
+Size balanced parentheses, brackets and vector angles around complete fraction-containing expressions, including products such as `(5\cdot\frac{\pi}{3})`. A rule for a lone fraction is insufficient. Keep script/annotation fractions local, preserve optional macro arguments and deliberate delimiter sizes, and inspect the actual rendered fence height.
+
 Write Markdown emphasis as `**bold**` and `*italic*`, with whitespace outside the delimiters. Never copy padded source HTML as `** bold **` or `* italic *`. Omit empty emphasis wrappers. Check that labels and hints render with emphasis rather than visible stars.
 Preserve data-table structure and augmented-matrix partition lines from the source. Use TeX `array` column rules (`|`) and `\hline` for ruled tables; `aligned` is for equation alignment. Check borders, cell alignment, and every cell, since valid TeX can still describe the wrong layout.
 
