@@ -26,7 +26,7 @@ from capture.scripts.database.images import ImageLibrary
 from capture.scripts.storage import atomic_json, atomic_text, file_lock, read_json
 from scripts.generator_packages import resolve_registered_script
 from scripts.question_markers import validate_prompt_markers
-from scripts.question_capture.math_format import normalize_math_boundaries, normalize_fraction_answer_tables, validate_math_boundaries, validate_matrix_layouts, validate_math_structure
+from scripts.question_capture.math_format import normalize_math_boundaries, normalize_fraction_answer_tables, normalize_operator_prose, normalize_function_operators, validate_math_boundaries, validate_matrix_layouts, validate_math_structure
 from scripts.generator_source_policy import exclusion_query, question_entities, filter_material, reject_excluded_sources, source_references
 
 
@@ -157,8 +157,10 @@ def localize_record(record, math_root, assets_directory, *, library=None):
     q = result['question']
     for key in (':question/problem', ':question/worked-solution'):
         if key in q:
-            q[key] = normalize_fraction_answer_tables(normalize_math_boundaries(library.text(q[key])))
+            q[key] = normalize_operator_prose(normalize_fraction_answer_tables(normalize_math_boundaries(library.text(q[key]))))
     for field in q.get(':question/answer-fields', []):
+        if enum(field.get(':answer-field/type')) == ':answer-field.type/checkbox':
+            field[':answer-field/key'] = normalize_operator_prose(field[':answer-field/key'])
         for answer in field.get(':answer-field/choices', []):
             value = answer[':answer/value']
             if enum(answer[':answer/type']) == ':answer.type/image' and not any(tag in value for tag in ('<img', '![')):
@@ -166,9 +168,11 @@ def localize_record(record, math_root, assets_directory, *, library=None):
             else:
                 answer[':answer/value'] = library.text(value)
                 if enum(answer[':answer/type']) == ':answer.type/text':
-                    answer[':answer/value'] = normalize_math_boundaries(answer[':answer/value'])
+                    answer[':answer/value'] = normalize_operator_prose(normalize_math_boundaries(answer[':answer/value']))
+                elif enum(answer[':answer/type']) == ':answer.type/math':
+                    answer[':answer/value'] = normalize_function_operators(answer[':answer/value'])
             if ':answer/feedback' in answer:
-                answer[':answer/feedback'] = normalize_math_boundaries(library.text(answer[':answer/feedback']))
+                answer[':answer/feedback'] = normalize_operator_prose(normalize_math_boundaries(library.text(answer[':answer/feedback'])))
     result['assets'] = library.saved
     return result
 

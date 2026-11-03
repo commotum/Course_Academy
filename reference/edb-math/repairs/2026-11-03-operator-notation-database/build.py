@@ -10,17 +10,18 @@ def prose(text):return MATH.sub(lambda m:fix(m[0]),text)
 def skeleton(text):
     names='|'.join(sorted(NAMED_FUNCTION_OPERATORS,key=len,reverse=True))
     text=text.replace(r'\u2061','\u2061')
-    text=re.sub(r'\\operatorname\{('+names+r')\}',r'\1',text)
+    text=re.sub(r'\\operatorname\{('+names+r')\}',r' \1 ',text)
     text=re.sub(r'\\(?:text|textrm|mathrm|mathit|mathbf)\s*\{\s*(arcsec|arccsc|arccot)\s*\}',r'\1',text)
     text=re.sub(r'\\bmod\b','mod',text)
-    text=re.sub(r'\\('+names+r')(?=[^A-Za-z]|$)',r'\1',text)
     # Joined unsupported controls preserve their operator and single argument.
     text=re.sub(r'\\('+names+r')([xyztuvw])(?=[^A-Za-z]|$)',r'\1\2',text)
+    text=re.sub(r'\\('+names+r')(?=[^A-Za-z]|$)',r'\1',text)
     return re.sub(r'\s+','',text)
 
 def main():
     manifest=json.loads((H/'snapshot.manifest.json').read_text());basis=manifest['basis_t'];potential=[];seen={};scanned=Counter()
-    path=H/'snapshot.jsonl';stream=path.open() if path.exists() else gzip.open(path.with_suffix('.jsonl.gz'),'rt')
+    path=H/'snapshot.jsonl';reuse='--reuse' in sys.argv
+    stream=[] if reuse else path.open() if path.exists() else gzip.open(path.with_suffix('.jsonl.gz'),'rt')
     for line in stream:
         r=json.loads(line);a=r['a'];text=r['raw_string'];key=(r['e'],a)
         if key in seen:assert seen[key]==text;continue
@@ -28,10 +29,13 @@ def main():
         if not isinstance(text,str):continue
         after=fix(text) if a=='answer/value' else prose(text)
         if after!=text:potential.append({'entity':r['e'],'attribute':a,'before':text,'after':after,'source':r['source'],'tx':r['tx']})
-    stream.close();(H/'potential.json').write_text(json.dumps(potential,indent=2)+'\n')
+    if reuse:
+        potential=json.loads((H/'potential.json').read_text());scanned=Counter(manifest['all_content_attribute_counts'])
+    else:
+        stream.close();(H/'potential.json').write_text(json.dumps(potential,indent=2)+'\n')
     p=Publisher.from_environment(source=':agent/codex');ids=sorted({r['entity'] for r in potential if r['attribute'] in ('answer/value','answer-field/key')})
-    types={}
-    for start in range(0,len(ids),1000):
+    types={int(k):v for k,v in json.loads((H/'types.json').read_text()).items()} if reuse else {}
+    for start in ([] if reuse else range(0,len(ids),1000)):
         rows=p.client.query('[:find (pull ?e [:db/id {:answer/type [:db/ident]} {:answer-field/type [:db/ident]}]) :in $ [?e ...] :where [?e ?a ?v]]',[ids[start:start+1000]],H/'types','types-'+str(start),basis)
         types.update({r[0][':db/id']:jsonable(r[0]) for r in rows})
     (H/'types.json').write_text(json.dumps(types,indent=2)+'\n');proposals=[];excluded=[]

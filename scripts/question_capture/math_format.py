@@ -1288,6 +1288,11 @@ def normalize_function_operators(text):
     return ''.join(out)
 
 
+def normalize_operator_prose(value):
+    """Repair operators inside formulas while preserving surrounding prose."""
+    return MATH.sub(lambda match:normalize_function_operators(match[0]),value)
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
