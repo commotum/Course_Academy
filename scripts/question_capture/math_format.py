@@ -1352,7 +1352,7 @@ def normalize_tex(value):
             if body.startswith(r'\left\{\begin{aligned}') and body.endswith(r'\end{aligned}\right.'):
                 text = text[:match.start()] + body + text[span[2]:]; changed = True; break
         if not changed: break
-    return normalize_equality_chains(text)
+    return normalize_equality_chains(text).strip()
 
 
 def normalize_source_tex(value):

@@ -103,6 +103,14 @@ class InverseOperatorNotationTests(unittest.TestCase):
         self.assertIn(r'\sin',result[':question/worked-solution'])
         self.assertIn(r'\det',result[':question/answer-fields'][0][':answer-field/key'])
         self.assertIn(r'\operatorname{arsech}',result[':question/answer-fields'][1][':answer-field/choices'][0][':answer/value'])
+        record['question'][':question/answer-fields'][1][':answer-field/choices'][0][':answer/value']='mod'
+        fixed=localize_record(record,Path('/tmp'),Path('/tmp'),library=SimpleNamespace(text=lambda x:x,saved={}))
+        self.assertEqual(fixed['question'][':question/answer-fields'][1][':answer-field/choices'][0][':answer/value'],r'\bmod')
+
+    def test_standalone_operator_normalization_is_canonical(self):
+        for name in ('ln','mod','csc','min','arccsc'):
+            normalized=normalize_tex(name)
+            self.assertEqual(normalize_tex(normalized),normalized)
 
 
 if __name__=='__main__':unittest.main()

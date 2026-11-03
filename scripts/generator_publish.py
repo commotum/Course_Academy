@@ -170,7 +170,7 @@ def localize_record(record, math_root, assets_directory, *, library=None):
                 if enum(answer[':answer/type']) == ':answer.type/text':
                     answer[':answer/value'] = normalize_operator_prose(normalize_math_boundaries(answer[':answer/value']))
                 elif enum(answer[':answer/type']) == ':answer.type/math':
-                    answer[':answer/value'] = normalize_function_operators(answer[':answer/value'])
+                    answer[':answer/value'] = normalize_function_operators(answer[':answer/value']).strip()
             if ':answer/feedback' in answer:
                 answer[':answer/feedback'] = normalize_operator_prose(normalize_math_boundaries(library.text(answer[':answer/feedback'])))
     result['assets'] = library.saved
