@@ -328,9 +328,10 @@ class MathContentTests(unittest.TestCase):
             self.assertEqual(normalize_tex(source), expected)
         for source in (r'\left(-\dfrac{3}{2}\right)^3', r'\bigl(\frac{1}{2}\bigr)',
                        r'\big(\frac{1}{2})', r'(-2)^3', r'(4\div11)^3',
-                       r'f(x)', r'\frac{(-2)^2}{5^2}', r'(\frac{1}{2}+x)',
+                       r'f(x)', r'\frac{(-2)^2}{5^2}',
                        r'(\frac{1}{2}', r'(\frac{1})', r'ordinary (prose)'):
             self.assertEqual(normalize_tex(source), source)
+        self.assertEqual(normalize_tex(r'(\frac{1}{2}+x)'),r'\left(\frac{1}{2}+x\right)')
 
     def test_archived_svg_row_spacing_is_canonicalized_in_labels_and_spacing_formulas(self):
         for source in (r'\underset{\substack{\phantom{.} \[4pt] \uparrow \[6pt] I}}{x}',

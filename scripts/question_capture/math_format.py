@@ -814,7 +814,7 @@ def _tex_sizing_command(name):
     return name in ('left', 'right') or bool(re.fullmatch(r'(?:big|Big|bigg|Bigg)[lrm]?', name))
 
 
-def _scalable_composite_fences(text, environments):
+def _scalable_composite_fences(text, environments, *, fractions=False):
     """Size balanced expression fences containing tables in the same TeX scope.
 
     A table may be one operand in a matrix sum, or appear inside a formatting
@@ -839,29 +839,51 @@ def _scalable_composite_fences(text, environments):
     groups, frames, stacks, edits = [], [], {}, []
     def scope():
         return (tuple(g[0] for g in groups), tuple((f[0], f[1], f[3]) for f in frames))
+    def mark_tall():
+        group_path, frame_path = scope()
+        for (old_groups, old_frames), entries in stacks.items():
+            if old_frames == frame_path and group_path[:len(old_groups)] == old_groups \
+                    and not any(role for _, role in groups[len(old_groups):]):
+                for entry in entries:entry['table'] = True
+    def complete_fraction(start):
+        cursor=start
+        for _ in range(2):
+            while cursor<len(text) and text[cursor].isspace():cursor+=1
+            if cursor>=len(text) or text[cursor]!='{':return False
+            depth=1;cursor+=1
+            while cursor<len(text) and depth:
+                if text[cursor]=='\\':
+                    command=re.match(r'\\(?:[A-Za-z]+|.)',text[cursor:])
+                    cursor+=len(command[0]) if command else 1;continue
+                depth+=(text[cursor]=='{')-(text[cursor]=='}');cursor+=1
+            if depth:return False
+        return True
     for token in tokens.finditer(text):
         value = token[0]; env = ENV.fullmatch(value)
         if env:
             if env[1] == 'begin':
                 if env[2] in environments:
-                    group_path, frame_path = scope()
-                    for (old_groups, old_frames), entries in stacks.items():
-                        if old_frames == frame_path and group_path[:len(old_groups)] == old_groups \
-                                and not any(role for _, role in groups[len(old_groups):]):
-                            for entry in entries: entry['table'] = True
+                    mark_tall()
                 frames.append([env[2], token.start(), tuple(g[0] for g in groups), 0])
             elif frames and frames[-1][0] == env[2]: frames.pop()
             continue
         if value == '{':
             end = _tex_nonspace_before(text, token.start())
             script = end and text[end - 1] in '_^' and (end < 2 or text[end - 2] != '\\')
-            groups.append((token.start(), bool(script or _tex_command_before(text, token.start()) in annotation))); continue
+            role='script' if script else 'annotation' if _tex_command_before(text, token.start()) in annotation else None
+            groups.append((token.start(), role)); continue
         if value == '}':
             if groups: groups.pop()
             continue
         if value in ('&', r'\\'):
             if frames and tuple(g[0] for g in groups) == frames[-1][2]: frames[-1][3] += 1
             continue
+        if fractions and value in (r'\frac',r'\dfrac',r'\tfrac'):
+            if not any(role=='annotation' for _,role in groups) and complete_fraction(token.end()):mark_tall()
+            continue
+        # Conditional bars are ambiguous. Fraction sizing targets balanced
+        # parentheses/brackets/angles; table sizing retains its bar handling.
+        if fractions and (value in symmetric or value in (r'\lvert',r'\rvert',r'\lVert',r'\rVert',r'\{',r'\}',r'\lbrace',r'\rbrace')):continue
         if value not in opening and value not in closing and value not in symmetric and value != '.': continue
         key = scope(); stack = stacks.setdefault(key, [])
         command = _tex_command_before(text, token.start()); explicit = _tex_sizing_command(command)
@@ -1072,38 +1094,22 @@ def normalize_equality_chains(text):
 
 
 def scalable_fraction_parentheses(text):
-    """Size parentheses enclosing a signed fraction, including nested groups."""
-    changes = []
-    for opening in re.finditer(r'\(\s*[+-]?\s*\\(?:dfrac|tfrac|frac)\s*(?=\{)', text):
-        # Respect explicitly chosen delimiter sizes. Already scalable pairs
-        # also have a \\right before the closing parenthesis and do not match.
-        if re.search(r'\\(?:left|big|Big|bigg|Bigg)[lr]?\s*$', text[:opening.start()]):
-            continue
-        end = opening.end()
-        for _ in range(2):
-            while end < len(text) and text[end].isspace():
-                end += 1
-            if end >= len(text) or text[end] != '{':
-                break
-            depth = 1
-            end += 1
-            while end < len(text) and depth:
-                if text[end] == '\\':
-                    command = re.match(r'\\(?:[A-Za-z]+|.)', text[end:])
-                    end += len(command[0]) if command else 1
-                    continue
-                depth += (text[end] == '{') - (text[end] == '}')
-                end += 1
-            if depth:
-                break
-        else:
-            while end < len(text) and text[end].isspace():
-                end += 1
-            if end < len(text) and text[end] == ')':
-                changes.extend([(opening.start(), r'\left'), (end, r'\right')])
-    for position, command in sorted(changes, reverse=True):
-        text = text[:position] + command + text[position:]
-    return text
+    """Size balanced fences around fraction expressions in the same math scope.
+
+    The historical public name is retained for bundled callers. Fractions can
+    be mixed with other terms; vector angles and brackets also need to enclose
+    them. Script fractions, annotations, optional indices and explicit sizes
+    must not enlarge unrelated fences.
+    """
+    if not re.search(r'\\(?:dfrac|tfrac|frac)(?![A-Za-z])',text):return text
+    result=_scalable_composite_fences(text,set(),fractions=True)
+    return re.sub(r'\\(left|right)([⟨⟩])',
+                  lambda m:'\\'+m[1]+({'⟨':r'\langle ','⟩':r'\rangle '}[m[2]]),result)
+
+
+def normalize_fraction_fences_prose(value):
+    """Resize fraction-containing fences only inside delimited formulas."""
+    return MATH.sub(lambda match:scalable_fraction_parentheses(match[0]),value)
 
 
 def normalize_sized_bars(text):
@@ -1513,6 +1519,8 @@ def validate_math_structure(value, *, bare_math=False):
             size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
             span = span[size:-size]
         validate_tex(span)
+        if scalable_fraction_parentheses(span) != span:
+            raise ValueError('Fraction-containing expression needs scalable fences')
         if normalize_function_operators(span) != span:
             raise ValueError('Named mathematical function needs explicit operator notation')
         if normalize_limit_operators(span) != span:
