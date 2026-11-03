@@ -1287,7 +1287,8 @@ def normalize_function_operators(text):
             scripted=name in ('min','max','sup','inf','lim','limsup','liminf') and bool(re.match(r'[_^]\{',suffix))
             standalone=text.strip().strip('$').strip()==name
             if boundary and (marked or call or single or scripted or standalone):
-                out.append(operator(name));i+=len(name);continue
+                spelling=operator(name)
+                out.append(spelling.rstrip() if name=='lim' and scripted else spelling);i+=len(name);continue
         out.append(text[i]);i+=1
     return ''.join(out)
 
