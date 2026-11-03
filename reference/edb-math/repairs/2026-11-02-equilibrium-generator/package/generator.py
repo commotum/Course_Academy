@@ -61,7 +61,8 @@ def display_substitution(expr,c):
 def render(m,difficulty):
     lhs,rhs=m['lhs'],m['rhs'];var=m['independent']
     derivative=r'\frac{dy}{d'+var+'}'
-    left=derivative if lhs==0 else derivative+r' + \left('+tex(lhs)+r'\right)'
+    if lhs==0:left=derivative
+    else:left=derivative+(' ' if tex(lhs).startswith('-') else ' + ')+tex(lhs)
     prompt='Consider the differential equation\n\n$$\n'+left+' = '+tex(rhs)+'.\n$$\n\nWhich of the following are equilibrium solutions? Select all that apply.'
     # Subtract only what the given equation requires. Do not expand factors or
     # introduce another representation before testing the supplied constants.
@@ -105,10 +106,10 @@ def render(m,difficulty):
 
 def sampled_model(rng,difficulty,family=None):
     family=family or rng.choice(FAMILIES[difficulty])
-    ntrue=rng.choice([1,2]); a=rng.choice([-2,-1,1,2]); h=rng.randint(-2,2)
+    ntrue=rng.choice([1,2]); a=rng.choice([-1,1] if difficulty=='easy' else [-2,-1,1,2]); h=0 if difficulty=='easy' else rng.choice([-1,1])
     candidates=[]; restrictions=[]
     if family in ['polynomial','cubic']:
-        r,s=rng.sample(range(-2,4),2)
+        r,s=rng.sample(range(-2,3) if difficulty=='easy' else range(-2,4),2)
         if family=='polynomial':
             f=S.expand(a*(Y-r)*(Y-s)); good=[S.Integer(r),S.Integer(s)]
         else:
@@ -137,7 +138,7 @@ def sampled_model(rng,difficulty,family=None):
         bad=[S.Integer(x) for x in range(-3,5) if x not in roots and x!=hole]
         candidates=[S.Integer(hole)]
     elif family=='trigonometric':
-        h=0 if difficulty=='easy' else rng.choice([-1,0,1])
+        h=0 if difficulty=='easy' else rng.choice([-1,1])
         u=Y-h; k=rng.choice([-1,0,1]); drift=rng.choice([False,True])
         f=a*S.sin(u)-(u-k*S.pi) if drift else a*S.sin(u)
         if drift:
@@ -147,10 +148,10 @@ def sampled_model(rng,difficulty,family=None):
             good=[h+j*S.pi for j in [-1,0,1]]
             bad=[h+S.pi/2,h-S.pi/2]
     elif family in ['logarithmic','logarithmic-domain']:
-        h=0 if difficulty=='easy' else rng.choice([-1,0,1])
+        h=0 if difficulty=='easy' else rng.choice([-1,1])
         orientation=1 if difficulty=='easy' else rng.choice([-1,1])
         u=orientation*(Y-h); restrictions=[('positive',u)]
-        product=family.endswith('-domain') or rng.choice([False,True])
+        product=family.endswith('-domain') or (difficulty!='easy' and rng.choice([False,True]))
         if product:
             k=1; root=S.exp(k)
             f=(u-root)*S.log(u);good=[S.Integer(h+orientation),h+orientation*root]
@@ -172,7 +173,7 @@ def sampled_model(rng,difficulty,family=None):
             linear=f.coeff(Y)*Y+f.subs(Y,0)
             lhs=-linear;rhs=S.expand(f-linear)
         elif family=='rational':
-            lhs=fraction(a*k**2,u**2);rhs=S.Integer(a)
+            lhs=a*k**2/u**2;rhs=S.Integer(a)
         elif family=='trigonometric':
             if drift:lhs=u;rhs=a*S.sin(u)+k*S.pi
         elif family=='logarithmic' and not product:
@@ -182,13 +183,15 @@ def sampled_model(rng,difficulty,family=None):
 def label_strategies(record):
     """Choice-only actions, without inspecting the equation or target values."""
     values=[S.sympify(c) for c in record['generation']['parameters']['candidates']]
-    order=sorted(range(3),key=lambda i:float(values[i]))
+    n=len(values);order=sorted(range(n),key=lambda i:float(values[i]))
     actions={name:frozenset(indices) for name,indices in [
-        ('first',[0]),('middle',[1]),('last',[2]),('first-two',[0,1]),
-        ('last-two',[1,2]),('outer-two',[0,2]),('smallest',[order[0]]),
-        ('median',[order[1]]),('largest',[order[2]]),
-        ('two-smallest',order[:2]),('two-largest',order[1:]),
-        ('rank-outer-two',[order[0],order[2]])]}
+        ('first',[0]),('last',[n-1]),('first-two',[0,1]),
+        ('last-two',[n-2,n-1]),('outer-two',[0,n-1]),('smallest',[order[0]]),
+        ('largest',[order[-1]]),('two-smallest',order[:2]),
+        ('two-largest',order[-2:]),('rank-outer-two',[order[0],order[-1]])]}
+    for i in range(n):
+        actions['position-'+str(i)]=frozenset([i])
+        actions['rank-'+str(i)]=frozenset([order[i]])
     actions.update({name:frozenset(i for i,c in enumerate(values) if predicate(c))
         for name,predicate in [('positive',lambda c:c>0),('negative',lambda c:c<0),('zero',lambda c:c==0)]})
     truth=frozenset(i for i,path in enumerate(record['generation']['solution_path']) if path['key'])
@@ -232,11 +235,13 @@ def generate(difficulty,seed,count):
     rng=random.Random(seed)
     for batch_attempt in range(500):
         out=[];seen=set()
+        families=[]
+        while len(families)<count:
+            cycle=FAMILIES[difficulty][:];rng.shuffle(cycle);families+=cycle
         for _ in range(count):
             for attempt in range(500):
-                m=sampled_model(rng,difficulty);record=render(m,difficulty)
-                signature=json.dumps([record['question'][':question/problem'],
-                    sorted(f[':answer-field/key'] for f in record['question'][':question/answer-fields'])])
+                m=sampled_model(rng,difficulty,families[len(out)]);record=render(m,difficulty)
+                signature=record['question'][':question/problem']
                 if signature not in seen:
                     seen.add(signature)
                     record['generation'].update({'seed':seed,'index':len(out),'difficulty':difficulty})
