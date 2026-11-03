@@ -877,14 +877,6 @@ function choiceOrder(choices, seed) {
 function orderedFields(fields = []) {
   return [...fields].sort((a, b) => String(a.id).localeCompare(String(b.id), 'en', { numeric: true }));
 }
-function presentationFields(fields, itemId) {
-  const ordered = orderedFields(fields);
-  // Checkbox statements are answer options too. Shuffle once per presentation,
-  // with the same alias-stable seed used for radio and dropdown choices.
-  const statements = choiceOrder(ordered.filter(field => short(field.type) === 'checkbox'), `${studyChoiceId(itemId)}:fields`);
-  let index = 0;
-  return ordered.map(field => short(field.type) === 'checkbox' ? statements[index++] : field);
-}
 function questionLayout(step) {
   return JSON.stringify([step.contentId, step.markdown ?? step.problem ?? '', orderedFields(step.fields).map(field =>
     [field.id, field.key, field.type, field.answerType, [...(field.choices || [])].sort((a, b) => a.id - b.id)])]);
@@ -1149,7 +1141,7 @@ function taskContent(data, step, number, total, archived = false) {
   const kind = short(step.kind);
   const card = el('div', 'content-card');
   appendStepHeading(card, step, kind);
-  const fields = presentationFields(step.fields, step.itemId);
+  const fields = orderedFields(step.fields);
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', fields);
   card.append(prompt);
   const isAnswered = answered(short(step.status));
