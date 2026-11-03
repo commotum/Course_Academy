@@ -82,6 +82,8 @@ class InverseOperatorNotationTests(unittest.TestCase):
     def test_reimport_matches_operator_aliases_without_merging_arguments(self):
         for left,right in ((r'\sin x',r'\operatorname{sin}x'),
                            ('xln⁡x',r'x\ln x'),
+                           ('{log}_{4}⁡x',r'\log_{4}x'),
+                           ('{sin}^{2}⁡x',r'\sin^{2}x'),
                            (r'\arccscx',r'\operatorname{arccsc}x')):
             self.assertEqual(choice_signature('math',left),choice_signature('math',right))
         self.assertNotEqual(choice_signature('math',r'x\cot x'),choice_signature('math',r'\operatorname{xcot}x'))
