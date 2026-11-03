@@ -15,7 +15,7 @@ LAYOUT = {'displaystyle','textstyle','scriptstyle','scriptscriptstyle','left','r
           'big','Big','bigg','Bigg','bigl','bigr','Bigl','Bigr','biggl','biggr',
           'Biggl','Biggr','quad','qquad','enspace','thinspace'}
 OPERATORS = {'sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','ln','log',
-             'exp','arcsin','arccos','arctan','arg','lim','min','max'}
+             'exp','arcsin','arccos','arctan','arcsec','arccsc','arccot','arg','lim','min','max'}
 SUPERSCRIPTS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻', '0123456789+-')
 SUBSCRIPTS = str.maketrans('₀₁₂₃₄₅₆₇₈₉₊₋', '0123456789+-')
 UNITS = ('ft','in','yd','mi','mm','cm','km','m','kg','mg','lb','oz','g','ms','min','hr','s','h',

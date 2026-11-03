@@ -189,6 +189,7 @@ class Renderer:
         if t=='mtext':return '\\text{'+re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text())+'}'
         if t=='mo':return OPS.get(n.get_text(),GREEK.get(n.get_text(),re.sub(r'[$%#{}]',lambda m:'\\'+m[0],n.get_text())))
         if t=='mi':
+            if n.get_text() in ('arcsec','arccsc','arccot'):return '\\operatorname{'+n.get_text()+'} '
             if re.fullmatch('[A-Za-z]+',n.get_text()) and self.function_application(n):return '\\lim' if n.get_text()=='lim' else '\\operatorname{'+n.get_text()+'}'
             return GREEK.get(n.get_text(),re.sub(r'[$%#]',lambda m:'\\'+m[0],n.get_text()))
         if t=='mtable':

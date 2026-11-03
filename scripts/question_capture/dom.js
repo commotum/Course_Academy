@@ -450,6 +450,7 @@ function sourceHTMLTable(table, renderLeaf, reportError) {
       case 'mtext': return '\\text{' + literalMathGlyph(n.textContent) + '}';
       case 'mo': return n.textContent === '\u2061' ? '' : ops[n.textContent] || greek[n.textContent] || literalMathGlyph(n.textContent);
       case 'mi':
+        if (/^(?:arcsec|arccsc|arccot)$/.test(n.textContent)) return '\\operatorname{' + n.textContent + '} ';
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
         if (/^[A-Za-z]+$/.test(n.textContent) &&

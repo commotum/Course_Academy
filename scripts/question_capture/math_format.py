@@ -1166,6 +1166,58 @@ def normalize_limit_operators(text):
     return text
 
 
+INVERSE_RECIPROCAL_OPERATORS = ('arccsc', 'arcsec', 'arccot')
+
+
+def normalize_inverse_trig_operators(text):
+    """Recover known inverse-function names without rewriting literal text.
+
+    Older captures concatenate an explicit MathML function node with its x
+    argument, or retain it as the unsupported control word ``\\arcsecx``.
+    Recognize those narrow spellings, not arbitrary words or identifiers.
+    """
+    def group(start):
+        if start >= len(text) or text[start] != '{':return None
+        depth, end = 1, start+1
+        while end < len(text) and depth:
+            if text[end] == '\\':end += 2;continue
+            depth += (text[end] == '{') - (text[end] == '}');end += 1
+        return end if not depth else None
+    out=[];i=0
+    while i < len(text):
+        if text[i] == '\\':
+            command=re.match(r'\\([A-Za-z]+)\*?',text[i:])
+            if not command:
+                out.append(text[i:i+2]);i+=2;continue
+            name=command[1];end=i+command.end()
+            if name in ('operatorname','text','textrm','mathrm','mathit','mathbf'):
+                start=end
+                while start < len(text) and text[start].isspace():start+=1
+                closing=group(start)
+                if closing:
+                    body=text[start+1:closing-1].strip()
+                    if body in INVERSE_RECIPROCAL_OPERATORS and name!='operatorname':
+                        out.append(r'\operatorname{'+body+'} ')
+                    else:out.append(text[i:closing])
+                    i=closing;continue
+            inverse=next((op for op in INVERSE_RECIPROCAL_OPERATORS if name in (op,op+'x')),None)
+            if inverse:out.append(r'\operatorname{'+inverse+'} '+name[len(inverse):])
+            else:out.append(text[i:end])
+            i=end;continue
+        inverse=next((op for op in INVERSE_RECIPROCAL_OPERATORS if text.startswith(op,i)),None)
+        if inverse:
+            before=text[i-1] if i else ''
+            after=i+len(inverse)
+            # A lone preceding x can be a neighboring factor, as in ln(x)*arccot(x^3).
+            boundary=not before.isalpha() or (before=='x' and (i<2 or not text[i-2].isalpha()))
+            suffix=text[after:]
+            argument=not suffix or not suffix[0].isalpha() or (len(suffix)==1 or not suffix[1].isalpha())
+            if boundary and argument:
+                out.append(r'\operatorname{'+inverse+'} ');i=after;continue
+        out.append(text[i]);i+=1
+    return ''.join(out)
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
@@ -1178,6 +1230,7 @@ def normalize_tex(value):
     # Archived SVG titles spell optional row spacing with one backslash,
     # including in substack labels and standalone spacing formulas. A concrete
     # TeX length distinguishes this from an actual display-math delimiter.
+    text = normalize_inverse_trig_operators(text)
     text = normalize_piecewise_cases(normalize_sized_bars(normalize_limit_operators(_label_row_spacing(text))))
     # These extensions are loaded by the application's MathJax configuration.
     # Its restricted TeX input does not enable the runtime \\require command.
@@ -1380,6 +1433,8 @@ def validate_math_structure(value, *, bare_math=False):
             size = 2 if span.startswith(('$$', r'\[', r'\(')) else 1
             span = span[size:-size]
         validate_tex(span)
+        if normalize_inverse_trig_operators(span) != span:
+            raise ValueError('Inverse trigonometric function needs explicit operator notation')
         if normalize_limit_operators(span) != span:
             raise ValueError('Malformed limit operator; normalize the tendency condition')
         if normalize_sized_bars(span) != span:
