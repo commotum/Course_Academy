@@ -53,6 +53,24 @@ function fixture() {
   return { c, elements, fills, storage };
 }
 
+test('assignment coloring retains personal targets among prerequisites as well as its own roots', () => {
+  const { c } = fixture();
+  c.assignmentScope = { assignmentId: 'one' };
+  c.courseTopics = new Set([2]);
+  c.setColorCode(true);
+  assert.equal(c.nodeAppearance(2).target, true);
+  assert.equal(c.nodeAppearance(1).status, 'completed-target');
+  assert.equal(c.nodeAppearance(3).status, 'target');
+  assert.equal(c.nodeAppearance(3).fill, c.statusMasteryAppearance('target', c.competencyFor(3)).fill);
+  c.snapshot.learner.queue = [3];
+  assert.equal(c.nodeAppearance(3).queued, true);
+  assert.equal(c.nodeAppearance(3).status, 'queue');
+  assert.equal(c.nodeAppearance(3).fill, c.statusMasteryAppearance('queue', c.competencyFor(3)).fill);
+  c.snapshot.learner.targets = [];
+  assert.equal(c.nodeAppearance(3).target, false);
+  assert.equal(c.nodeAppearance(2).target, true);
+});
+
 test('new-topic count uses band one independently of an incomplete flag', () => {
   const { c, elements } = fixture();
   c.targetsView = true;

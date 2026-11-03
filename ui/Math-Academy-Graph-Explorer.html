@@ -1330,7 +1330,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   }
   function nodeAppearance(nodeOrId) {
     const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
-    const target=assignmentScope ? courseTopics.has(id) : (snapshot?.learner.targets || []).some(value=>String(value)===String(id));
+    const target=(assignmentScope && courseTopics.has(id)) || (snapshot?.learner.targets || []).some(value=>String(value)===String(id));
     const queued=(snapshot?.learner.queue || []).some(value=>String(value)===String(id));
     const appearance={...competencyFor(nodeOrId),target,queued};
     const learned=snapshot?.learned?.[id];
