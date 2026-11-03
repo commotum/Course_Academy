@@ -28,6 +28,17 @@ def matrix_question(mid='q-11'):
 
 
 class MathPreparationTests(unittest.TestCase):
+    def test_checkbox_statements_format_without_changing_placeholder_keys(self):
+        statement = r'$x=(\frac12)$'
+        field = {'type': 'checkbox', 'key': statement, 'correct_type': 'text',
+            'correct_value': 'true', 'choices': [{'type': 'text', 'value': 'true'}, {'type': 'text', 'value': 'false'}]}
+        placeholder = {**copy.deepcopy(field), 'type': 'blank'}
+        q = {'problem': 'Select all true statements.', 'answer_fields': [field, placeholder]}
+        result = format_question(q)
+        self.assertEqual(result['answer_fields'][0]['key'], r'$x=\left(\frac12\right)$')
+        self.assertEqual(result['answer_fields'][1]['key'], statement)
+        self.assertEqual([f['correct_value'] for f in result['answer_fields']], ['true', 'true'])
+
     def test_supplementary_definition_creates_missing_review_topic_and_kp(self):
         q = question('q-99')
         example = question('e-98')

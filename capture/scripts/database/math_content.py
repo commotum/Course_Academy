@@ -57,6 +57,11 @@ def question(source):
         if isinstance(source.get(key), str):
             source[key] = prose(source[key])
     for field in source.get('answer_fields', []):
+        if field.get('type') == 'checkbox':
+            # Checkbox keys are displayed statements; other keys can be
+            # placeholders and must retain their literal binding identity.
+            field['key'] = formatter().normalize_fraction_fences_prose(
+                formatter().normalize_operator_prose(field['key']))
         correct = (field['correct_type'], field['correct_value'])
         seen = {}
         for choice in field.get('choices', []):
